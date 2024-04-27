@@ -1,0 +1,48 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>intellispaces</groupId>
+        <artifactId>intellispacesframework-parent-pom</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>intellispacesframework-core-root</artifactId>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>intellispacesframework-core-model</module>
+        <module>intellispacesframework-core</module>
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- Intellispaces -->
+            <dependency>
+                <groupId>intellispaces</groupId>
+                <artifactId>intellispacesframework-core-model</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>intellispaces</groupId>
+                <artifactId>intellispacesframework-template-engine-model</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>intellispaces</groupId>
+                <artifactId>intellispacesframework-commons</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>intellispaces</groupId>
+                <artifactId>intellispacesframework-annotation-processor</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>intellispaces</groupId>
+                <artifactId>intellispacesframework-dynamic-proxy</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+</project>

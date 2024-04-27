@@ -1,0 +1,15 @@
+package tech.intellispacesframework.core.annotation;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Include {
+
+  Class<?> value() default Void.class;
+
+  String path() default "";
+}

@@ -38,12 +38,12 @@ public interface Mover2<S, Q1, Q2> extends
   }
 
   @Override
-  default S sync(S source, Q1 qualifier1, Q2 qualifier2) throws TraverseException {
+  default S traverse(S source, Q1 qualifier1, Q2 qualifier2) throws TraverseException {
     return move(source, qualifier1, qualifier2);
   }
 
   @SuppressWarnings("unchecked")
-  default S sync(S source, Object... qualifiers) throws TraverseException {
+  default S traverse(S source, Object... qualifiers) throws TraverseException {
     return move(source, (Q1) qualifiers[0], (Q2) qualifiers[1]);
   }
 }

@@ -28,13 +28,5 @@ public interface Guide<S, T> {
    * @return target object.
    * @throws TraverseException throws if guide was started, but can't traverse source object.
    */
-  T sync(S source, Object... qualifiers) throws TraverseException;
-
-  /**
-   * Asynchronous execution of the guide.
-   *
-   * @param source source object.
-   * @param qualifiers guide qualifiers.
-   */
-  void async(S source, Object... qualifiers);
+  T traverse(S source, Object... qualifiers) throws TraverseException;
 }

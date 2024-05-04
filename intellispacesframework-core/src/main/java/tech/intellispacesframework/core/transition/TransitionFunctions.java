@@ -3,7 +3,9 @@ package tech.intellispacesframework.core.transition;
 import tech.intellispacesframework.commons.exception.UnexpectedViolationException;
 import tech.intellispacesframework.core.annotation.Transition;
 import tech.intellispacesframework.core.domain.DomainFunctions;
-import tech.intellispacesframework.core.utils.ProxyFunctions;
+import tech.intellispacesframework.dynamicproxy.tracker.Tracker;
+import tech.intellispacesframework.dynamicproxy.tracker.TrackerBuilder;
+import tech.intellispacesframework.dynamicproxy.tracker.TrackerFunctions;
 
 import java.lang.reflect.Method;
 import java.util.List;
@@ -14,10 +16,11 @@ import java.util.function.BiFunction;
  */
 public interface TransitionFunctions {
 
-  static <S, T, Q> String getTransitionId(Class<S> sourceDomain, BiFunction<S, Q, T> transitionMethod, Q qualifierAnyValue) {
-    S tracker = ProxyFunctions.getTracker(sourceDomain);
-    transitionMethod.apply(tracker, qualifierAnyValue);
-    List<Method> trackedMethods = ProxyFunctions.getTrackedMethods(tracker);
+  static <S, T, Q> String getTransitionId(Class<S> sourceDomain, BiFunction<S, Q, T> transitionMethod, Q qualifierAnyValidValue) {
+    Tracker tracker = TrackerBuilder.build();
+    S trackedObject = TrackerFunctions.createTrackedObject(sourceDomain, tracker);
+    transitionMethod.apply(trackedObject, qualifierAnyValidValue);
+    List<Method> trackedMethods = tracker.getInvokedMethods();
     return extractTransitionId(trackedMethods, sourceDomain, transitionMethod);
   }
 

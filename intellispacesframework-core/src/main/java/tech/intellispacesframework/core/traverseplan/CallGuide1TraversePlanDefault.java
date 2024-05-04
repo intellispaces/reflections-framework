@@ -29,6 +29,6 @@ public class CallGuide1TraversePlanDefault implements CallGuide1TraversePlan {
 
   @Override
   public Object traverse(Object source, Object qualifier) throws TraverseException {
-    return guide.sync(source, qualifier);
+    return guide.traverse(source, qualifier);
   }
 }

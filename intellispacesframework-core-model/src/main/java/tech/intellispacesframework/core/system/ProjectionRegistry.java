@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.Optional;
 
 /**
- * Module projections register.
+ * Projections register.
  */
 public interface ProjectionRegistry {
 

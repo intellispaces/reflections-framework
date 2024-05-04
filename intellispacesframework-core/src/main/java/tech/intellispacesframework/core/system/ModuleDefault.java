@@ -18,20 +18,20 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * Default implementation of the {@link SystemModule}.
+ * Default implementation of the {@link Module}.
  */
-class SystemModuleDefault implements SystemModule {
-  private final List<SystemUnit> units;
+class ModuleDefault implements Module {
+  private final List<Unit> units;
   private final ProjectionRegistry projectionRegistry;
   private final TraverseAnalyzer traverseAnalyzer;
 
   private final AtomicBoolean started = new AtomicBoolean();
-  private final Getter<SystemUnit> mainUnitGetter = ActionBuilders.cachedLazyGetter(this::mainUnit);
+  private final Getter<Unit> mainUnitGetter = ActionBuilders.cachedLazyGetter(this::mainUnit);
 
-  private static final Logger LOG = LoggerFactory.getLogger(SystemModuleDefault.class);
+  private static final Logger LOG = LoggerFactory.getLogger(ModuleDefault.class);
 
-  public SystemModuleDefault(
-      List<SystemUnit> units,
+  public ModuleDefault(
+      List<Unit> units,
       ProjectionRegistry projectionRegistry,
       TraverseAnalyzer traverseAnalyzer
   ) {
@@ -41,7 +41,7 @@ class SystemModuleDefault implements SystemModule {
   }
 
   @Override
-  public List<SystemUnit> units() {
+  public List<Unit> units() {
     return units;
   }
 
@@ -54,7 +54,7 @@ class SystemModuleDefault implements SystemModule {
   }
 
   @Override
-  public SystemModule start() {
+  public Module start() {
     if (started.compareAndSet(false, true)) {
       startInternal();
     } else {
@@ -97,7 +97,7 @@ class SystemModuleDefault implements SystemModule {
   }
   
   private void invokeStartupMethod() {
-    SystemUnit mainUnit = mainUnitGetter.get();
+    Unit mainUnit = mainUnitGetter.get();
     if (mainUnit.startupMethod().isPresent()) {
       Method startupMethod = mainUnit.startupMethod().get();
       Object[] arguments = prepareMethodArguments(startupMethod);
@@ -122,9 +122,9 @@ class SystemModuleDefault implements SystemModule {
     return arguments.toArray();
   }
 
-  private SystemUnit mainUnit() {
+  private Unit mainUnit() {
     return units.stream()
-        .filter(SystemUnit::isMain)
+        .filter(Unit::isMain)
         .findFirst()
         .orElseThrow();
   }

@@ -4,18 +4,20 @@ import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Optional;
 
-class SystemUnitDefault implements SystemUnit {
+class UnitDefault implements Unit {
   private final boolean main;
   private final Class<?> unitClass;
   private final Object instance;
+  private final List<Injection> injections;
   private final List<UnitProjectionProvider> projectionProviders;
   private final Method startupMethod;
   private final Method shutdownMethod;
 
-  public SystemUnitDefault(
+  public UnitDefault(
       boolean main,
       Class<?> unitClass,
       Object instance,
+      List<Injection> injections,
       List<UnitProjectionProvider> projectionProviders,
       Method startupMethod,
       Method shutdownMethod
@@ -23,6 +25,7 @@ class SystemUnitDefault implements SystemUnit {
     this.main = main;
     this.unitClass = unitClass;
     this.instance = instance;
+    this.injections = injections;
     this.projectionProviders = projectionProviders;
     this.startupMethod = startupMethod;
     this.shutdownMethod = shutdownMethod;
@@ -41,6 +44,11 @@ class SystemUnitDefault implements SystemUnit {
   @Override
   public Object instance() {
     return instance;
+  }
+
+  @Override
+  public List<Injection> injections() {
+    return injections;
   }
 
   @Override

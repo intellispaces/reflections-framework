@@ -7,7 +7,7 @@ import java.lang.reflect.Method;
  */
 public interface UnitProjectionProvider extends ProjectionProvider {
 
-  SystemUnit unit();
+  Unit unit();
 
   Method providerMethod();
 }

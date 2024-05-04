@@ -8,6 +8,7 @@ import tech.intellispacesframework.core.exception.ConfigurationException;
 import tech.intellispacesframework.core.object.ObjectFunctions;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.util.Arrays;
 import java.util.List;
 
@@ -59,8 +60,7 @@ class UnitDeclarationValidator {
   }
 
   private void checkStartupOrShutdownMethod(Method method) {
-
-
+    checkMethodParams(method);
   }
 
   private void validateProjectionMethods(Class<?> unitClass) {
@@ -75,10 +75,24 @@ class UnitDeclarationValidator {
       throw ConfigurationException.withMessage("Method of the projection '{}' in unit {} should return value",
           method.getName(), method.getDeclaringClass().getCanonicalName());
     }
-    if (!ObjectFunctions.isObjectHandleClass(returnType) && !DomainFunctions.isDomainClass(returnType)) {
+    if (!isValidType(returnType)) {
       throw ConfigurationException.withMessage("Method of the projection '{}' in unit {} should return object handle or domain class",
           method.getName(), method.getDeclaringClass().getCanonicalName());
     }
+    checkMethodParams(method);
   }
 
+  private void checkMethodParams(Method method) {
+    for (Parameter param : method.getParameters()) {
+      Class<?> paramType = param.getType();
+      if (!isValidType(paramType)) {
+        throw ConfigurationException.withMessage("Parameter '{}' of method '{}' in unit {} should be object handle or domain class",
+            param.getName(), method.getName(), method.getDeclaringClass().getCanonicalName());
+      }
+    }
+  }
+
+  private boolean isValidType(Class<?> type) {
+    return ObjectFunctions.isObjectHandleClass(type) || DomainFunctions.isDomainClass(type);
+  }
 }

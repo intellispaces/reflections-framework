@@ -9,5 +9,5 @@ public interface SystemModuleFactory {
    * @param args command line arguments.
    * @return system module.
    */
-  SystemModule createModule(Class<?> moduleClass, String[] args);
+  Module createModule(Class<?> moduleClass, String[] args);
 }

@@ -4,7 +4,10 @@ import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Optional;
 
-public interface SystemUnit {
+/**
+ * Module unit.
+ */
+public interface Unit {
 
   boolean isMain();
 
@@ -15,6 +18,8 @@ public interface SystemUnit {
   Optional<Method> startupMethod();
 
   Optional<Method> shutdownMethod();
+
+  List<Injection> injections();
 
   List<UnitProjectionProvider> projectionProviders();
 }

@@ -10,12 +10,12 @@ public class ModuleFactories {
     return MODULE_FACTORY;
   }
 
-  static SystemModuleDefaultFactory buildSystemModuleDefaultFactory() {
+  static ModuleDefaultFactory buildSystemModuleDefaultFactory() {
     var unitDeclarationValidator = new UnitDeclarationValidator();
     var moduleValidator = new ModuleValidator();
-    var moduleAssembler = new SystemModuleDefaultAssembler(unitDeclarationValidator);
-    var moduleLoader = new SystemModuleDefaultLoader();
-    return new SystemModuleDefaultFactory(moduleAssembler, moduleLoader, moduleValidator);
+    var moduleAssembler = new ModuleDefaultAssembler(unitDeclarationValidator);
+    var moduleLoader = new ModuleDefaultLoader();
+    return new ModuleDefaultFactory(moduleAssembler, moduleLoader, moduleValidator);
   }
 
   private ModuleFactories() {}

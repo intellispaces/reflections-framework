@@ -35,11 +35,6 @@ public class EmbeddedMover1<S, Q> implements Mover1<S, Q> {
   }
 
   @Override
-  public void async(S source, Object... qualifiers) {
-
-  }
-
-  @Override
   public BiConsumer<S, Q> asBiConsumer() {
     return (source, qualifier) -> {
       try {

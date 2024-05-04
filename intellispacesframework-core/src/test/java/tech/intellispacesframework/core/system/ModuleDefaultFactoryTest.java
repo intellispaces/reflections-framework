@@ -5,20 +5,20 @@ import tech.intellispacesframework.core.test.sample.domain.DomainEmpty;
 import tech.intellispacesframework.core.test.sample.object.ObjectHandleOfDomainEmpty;
 import tech.intellispacesframework.core.test.sample.system.EmptyUnit;
 import tech.intellispacesframework.core.test.sample.system.UnitWithStartupSndShutdownMethods;
-import tech.intellispacesframework.core.test.sample.system.UnitWithValidProjections;
+import tech.intellispacesframework.core.test.sample.system.UnitWithValidProjectionReturnTypes;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * Tests for {@link SystemModuleDefaultFactory} class.
+ * Tests for {@link ModuleDefaultFactory} class.
  */
-public class SystemModuleDefaultFactoryTest {
-  private final SystemModuleDefaultFactory factory = ModuleFactories.buildSystemModuleDefaultFactory();
+public class ModuleDefaultFactoryTest {
+  private final ModuleDefaultFactory factory = ModuleFactories.buildSystemModuleDefaultFactory();
 
   @Test
   public void testCreateModule_whenEmptyUnit() {
     // When
-    SystemModuleDefault module = factory.createModule(EmptyUnit.class, null);
+    ModuleDefault module = factory.createModule(EmptyUnit.class, null);
 
     // Then
     assertThat(module.isStarted()).isFalse();
@@ -32,7 +32,7 @@ public class SystemModuleDefaultFactoryTest {
   @Test
   public void testCreateModule_whenUnitWithStartupSndShutdownMethods() {
     // When
-    SystemModuleDefault module = factory.createModule(UnitWithStartupSndShutdownMethods.class, null);
+    ModuleDefault module = factory.createModule(UnitWithStartupSndShutdownMethods.class, null);
 
     // Then
     assertThat(module.isStarted()).isFalse();
@@ -48,12 +48,12 @@ public class SystemModuleDefaultFactoryTest {
   @Test
   public void testCreateModule_whenUnitWithValidProjections() {
     // When
-    SystemModuleDefault module = factory.createModule(UnitWithValidProjections.class, null);
+    ModuleDefault module = factory.createModule(UnitWithValidProjectionReturnTypes.class, null);
 
     // Then
     assertThat(module.isStarted()).isFalse();
     assertThat(module.units()).hasSize(1);
-    assertThat(module.units().get(0).unitClass()).isSameAs(UnitWithValidProjections.class);
+    assertThat(module.units().get(0).unitClass()).isSameAs(UnitWithValidProjectionReturnTypes.class);
     assertThat(module.units().get(0).startupMethod()).isEmpty();
     assertThat(module.units().get(0).shutdownMethod()).isEmpty();
     assertThat(module.projectionRegistry().allProjections()).hasSize(18);

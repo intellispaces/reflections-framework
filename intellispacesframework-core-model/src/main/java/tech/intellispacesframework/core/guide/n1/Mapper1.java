@@ -49,13 +49,13 @@ public interface Mapper1<S, T, Q> extends
   }
 
   @Override
-  default T sync(S source, Q qualifier) throws TraverseException {
+  default T traverse(S source, Q qualifier) throws TraverseException {
     return map(source, qualifier);
   }
 
   @Override
   @SuppressWarnings("unchecked")
-  default T sync(S source, Object... qualifiers) throws TraverseException {
+  default T traverse(S source, Object... qualifiers) throws TraverseException {
     return map(source, (Q) qualifiers[0]);
   }
 }

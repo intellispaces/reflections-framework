@@ -5,7 +5,6 @@ import tech.intellispacesframework.core.exception.ConfigurationException;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -13,29 +12,30 @@ import java.util.stream.Collectors;
  */
 class ModuleValidator {
 
-  public void validateModule(SystemModule module) {
+  public void validateModule(Module module) {
     checkThatOneMainUnit(module);
     checkThatOneStartupMethod(module);
     checkThatOneShutdownMethod(module);
     checkThatThereAreNoProjectionsWithSameName(module);
+    checkInjections(module);
   }
 
-  private void checkThatOneMainUnit(SystemModule module) {
-    List<SystemUnit> mainUnits = module.units().stream()
-        .filter(SystemUnit::isMain)
+  private void checkThatOneMainUnit(Module module) {
+    List<Unit> mainUnits = module.units().stream()
+        .filter(Unit::isMain)
         .toList();
     if (mainUnits.isEmpty()) {
       throw ConfigurationException.withMessage("Main unit was not found");
     }
     if (mainUnits.size() > 1) {
       throw ConfigurationException.withMessage("Multiple main units found: {}",
-          mainUnits.stream().map(SystemUnit::unitClass).map(Class::getSimpleName).collect(Collectors.joining(", ")));
+          mainUnits.stream().map(Unit::unitClass).map(Class::getSimpleName).collect(Collectors.joining(", ")));
     }
   }
 
-  private void checkThatOneStartupMethod(SystemModule module) {
+  private void checkThatOneStartupMethod(Module module) {
     List<Method> methods = module.units().stream()
-        .map(SystemUnit::startupMethod)
+        .map(Unit::startupMethod)
         .filter(Optional::isPresent)
         .map(Optional::get)
         .toList();
@@ -45,9 +45,9 @@ class ModuleValidator {
     }
   }
 
-  private void checkThatOneShutdownMethod(SystemModule module) {
+  private void checkThatOneShutdownMethod(Module module) {
     List<Method> methods = module.units().stream()
-        .map(SystemUnit::shutdownMethod)
+        .map(Unit::shutdownMethod)
         .filter(Optional::isPresent)
         .map(Optional::get)
         .toList();
@@ -57,21 +57,33 @@ class ModuleValidator {
     }
   }
 
-  private void checkThatThereAreNoProjectionsWithSameName(SystemModule module) {
+  private void checkThatThereAreNoProjectionsWithSameName(Module module) {
     String message = module.units().stream()
-        .map(SystemUnit::projectionProviders)
+        .map(Unit::projectionProviders)
         .flatMap(List::stream)
         .collect(Collectors.groupingBy(UnitProjectionProvider::name))
         .entrySet().stream()
         .filter(e -> e.getValue().size() > 1)
-        .map(e -> "Projection name '" + e.getKey() + "', projection providers: " + e.getValue().stream().map(this::getProjectionProviderName).collect(Collectors.joining(", ")))
+        .map(e -> makeSameProjectionsInfo(e.getKey(), e.getValue()))
         .collect(Collectors.joining("; "));
     if (!message.isEmpty()) {
       throw ConfigurationException.withMessage("Found multiple projections with same name: {}", message);
     }
   }
 
-  private String getProjectionProviderName(UnitProjectionProvider pp) {
-    return pp.unit().unitClass().getCanonicalName() + "#" + pp.providerMethod().getName();
+  private void checkInjections(Module module) {
+
+
+
+
+  }
+
+  private String makeSameProjectionsInfo(String projectionName, List<UnitProjectionProvider> projectionProviders) {
+    return "Projection name '" + projectionName +
+        "', projection providers: " + projectionProviders.stream().map(this::getProjectionProviderName).collect(Collectors.joining(", "));
+  }
+
+  private String getProjectionProviderName(UnitProjectionProvider projectionProvider) {
+    return projectionProvider.unit().unitClass().getCanonicalName() + "#" + projectionProvider.providerMethod().getName();
   }
 }

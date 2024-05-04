@@ -5,15 +5,18 @@ import tech.intellispacesframework.core.guide.n1.Mover1;
 import java.util.List;
 import java.util.Optional;
 
-public interface SystemModule {
+/**
+ * System module.
+ */
+public interface Module {
 
-  SystemModule start();
+  Module start();
 
   void shutdown();
 
   boolean isStarted();
 
-  List<SystemUnit> units();
+  List<Unit> units();
 
   <T> Optional<T> projection(String name, Class<T> targetClass);
 

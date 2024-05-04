@@ -42,13 +42,13 @@ public interface Mapper2<S, T, Q1, Q2> extends
   }
 
   @Override
-  default T sync(S source, Q1 qualifier1, Q2 qualifier2) throws TraverseException {
+  default T traverse(S source, Q1 qualifier1, Q2 qualifier2) throws TraverseException {
     return map(source, qualifier1, qualifier2);
   }
 
   @Override
   @SuppressWarnings("unchecked")
-  default T sync(S source, Object... qualifiers) throws TraverseException {
+  default T traverse(S source, Object... qualifiers) throws TraverseException {
     return map(source, (Q1) qualifiers[0], (Q2) qualifiers[1]);
   }
 }

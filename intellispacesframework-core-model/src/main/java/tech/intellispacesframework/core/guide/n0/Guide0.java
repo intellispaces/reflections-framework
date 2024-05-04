@@ -5,5 +5,5 @@ import tech.intellispacesframework.core.guide.Guide;
 
 public interface Guide0<S, T> extends Guide<S, T> {
 
-  T sync(S source) throws TraverseException;
+  T traverse(S source) throws TraverseException;
 }

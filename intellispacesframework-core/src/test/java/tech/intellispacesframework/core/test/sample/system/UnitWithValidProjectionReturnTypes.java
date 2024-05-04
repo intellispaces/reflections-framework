@@ -4,7 +4,7 @@ import tech.intellispacesframework.core.annotation.Projection;
 import tech.intellispacesframework.core.test.sample.domain.DomainEmpty;
 import tech.intellispacesframework.core.test.sample.object.ObjectHandleOfDomainEmpty;
 
-public class UnitWithValidProjections {
+public class UnitWithValidProjectionReturnTypes {
 
   @Projection
   public boolean booleanProjection1() {

@@ -3,12 +3,12 @@ package tech.intellispacesframework.core.system;
 import java.lang.reflect.Method;
 
 class UnitProjectionProviderDefault implements UnitProjectionProvider {
-  private final Class<?> type;
   private final String name;
-  private final SystemUnit unit;
+  private final Class<?> type;
+  private final Unit unit;
   private final Method providerMethod;
 
-  public UnitProjectionProviderDefault(Class<?> type, String name, SystemUnit unit, Method providerMethod) {
+  public UnitProjectionProviderDefault(String name, Class<?> type, Unit unit, Method providerMethod) {
     this.type = type;
     this.name = name;
     this.unit = unit;
@@ -21,17 +21,17 @@ class UnitProjectionProviderDefault implements UnitProjectionProvider {
   }
 
   @Override
-  public Class<?> type() {
-    return type;
-  }
-
-  @Override
   public String name() {
     return name;
   }
 
   @Override
-  public SystemUnit unit() {
+  public Class<?> type() {
+    return type;
+  }
+
+  @Override
+  public Unit unit() {
     return unit;
   }
 

@@ -55,12 +55,12 @@ public interface Mapper0<S, T> extends
   }
 
   @Override
-  default T sync(S source) throws TraverseException {
+  default T traverse(S source) throws TraverseException {
     return map(source);
   }
 
   @Override
-  default T sync(S source, Object... qualifiers) throws TraverseException {
+  default T traverse(S source, Object... qualifiers) throws TraverseException {
     return map(source);
   }
 }

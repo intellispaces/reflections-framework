@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Specifies that the class or interface is a system unit.
+ * Specifies that the class or interface is a module unit.
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

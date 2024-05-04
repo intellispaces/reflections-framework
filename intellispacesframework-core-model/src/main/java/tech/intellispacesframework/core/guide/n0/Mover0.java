@@ -54,12 +54,12 @@ public interface Mover0<S> extends
   }
 
   @Override
-  default S sync(S source) throws TraverseException {
+  default S traverse(S source) throws TraverseException {
     return move(source);
   }
 
   @Override
-  default S sync(S source, Object... qualifiers) throws TraverseException {
+  default S traverse(S source, Object... qualifiers) throws TraverseException {
     return move(source);
   }
 }

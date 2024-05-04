@@ -29,9 +29,4 @@ public class AutoMover1<S, Q> implements Mover1<S, Q> {
       }
     };
   }
-
-  @Override
-  public void async(S source, Object... qualifiers) {
-
-  }
 }

@@ -6,12 +6,18 @@ import tech.intellispacesframework.core.exception.ConfigurationException;
 import tech.intellispacesframework.core.test.sample.system.EmptyUnit;
 import tech.intellispacesframework.core.test.sample.system.UnitWithOneShutdownMethod;
 import tech.intellispacesframework.core.test.sample.system.UnitWithOneStartupMethod;
+import tech.intellispacesframework.core.test.sample.system.UnitWithProjectionAndFileParameter;
+import tech.intellispacesframework.core.test.sample.system.UnitWithProjectionAndStringParameter;
 import tech.intellispacesframework.core.test.sample.system.UnitWithProjectionWithoutReturnedType;
+import tech.intellispacesframework.core.test.sample.system.UnitWithShutdownMethodAndFileParameter;
+import tech.intellispacesframework.core.test.sample.system.UnitWithShutdownMethodAndStringParameter;
 import tech.intellispacesframework.core.test.sample.system.UnitWithShutdownMethodReturnedString;
+import tech.intellispacesframework.core.test.sample.system.UnitWithStartupMethodAndFileParameter;
+import tech.intellispacesframework.core.test.sample.system.UnitWithStartupMethodAndStringParameter;
 import tech.intellispacesframework.core.test.sample.system.UnitWithStartupMethodReturnedString;
 import tech.intellispacesframework.core.test.sample.system.UnitWithTwoShutdownMethods;
 import tech.intellispacesframework.core.test.sample.system.UnitWithTwoStartupMethods;
-import tech.intellispacesframework.core.test.sample.system.UnitWithValidProjections;
+import tech.intellispacesframework.core.test.sample.system.UnitWithValidProjectionReturnTypes;
 
 /**
  * Tests for {@link UnitDeclarationValidator} class.
@@ -65,6 +71,19 @@ public class UnitDeclarationValidatorTest {
   }
 
   @Test
+  public void testValidateModule_whenUnitWithStartupMethodAndStringParameter() {
+    Assertions.assertThatCode(() -> validator.validateUnitDeclaration(UnitWithStartupMethodAndStringParameter.class, true))
+        .doesNotThrowAnyException();
+  }
+
+  @Test
+  public void testValidateModule_whenUnitWithStartupMethodAndFileParameter() {
+    Assertions.assertThatThrownBy(() -> validator.validateUnitDeclaration(UnitWithStartupMethodAndFileParameter.class, true))
+        .isExactlyInstanceOf(ConfigurationException.class)
+        .hasMessage("Parameter 'value' of method 'startup' in unit " + UnitWithStartupMethodAndFileParameter.class.getCanonicalName() + " should be object handle or domain class", UnitWithTwoStartupMethods.class.getCanonicalName());
+  }
+
+  @Test
   public void testValidateModule_whenMainUnitWithOneShutdownMethod() {
     Assertions.assertThatCode(() -> validator.validateUnitDeclaration(UnitWithOneShutdownMethod.class, true))
         .doesNotThrowAnyException();
@@ -98,8 +117,21 @@ public class UnitDeclarationValidatorTest {
   }
 
   @Test
+  public void testValidateModule_whenUnitWithShutdownMethodAndStringParameter() {
+    Assertions.assertThatCode(() -> validator.validateUnitDeclaration(UnitWithShutdownMethodAndStringParameter.class, true))
+        .doesNotThrowAnyException();
+  }
+
+  @Test
+  public void testValidateModule_whenUnitWithShutdownMethodAndFileParameter() {
+    Assertions.assertThatThrownBy(() -> validator.validateUnitDeclaration(UnitWithShutdownMethodAndFileParameter.class, true))
+        .isExactlyInstanceOf(ConfigurationException.class)
+        .hasMessage("Parameter 'value' of method 'shutdown' in unit " + UnitWithShutdownMethodAndFileParameter.class.getCanonicalName() + " should be object handle or domain class", UnitWithTwoStartupMethods.class.getCanonicalName());
+  }
+
+  @Test
   public void testValidateModule_whenUnitWithValidProjections() {
-    Assertions.assertThatCode(() -> validator.validateUnitDeclaration(UnitWithValidProjections.class, true))
+    Assertions.assertThatCode(() -> validator.validateUnitDeclaration(UnitWithValidProjectionReturnTypes.class, true))
         .doesNotThrowAnyException();
   }
 
@@ -108,5 +140,18 @@ public class UnitDeclarationValidatorTest {
     Assertions.assertThatThrownBy(() -> validator.validateUnitDeclaration(UnitWithProjectionWithoutReturnedType.class, false))
         .isExactlyInstanceOf(ConfigurationException.class)
         .hasMessage("Method of the projection 'projection' in unit %s should return value", UnitWithProjectionWithoutReturnedType.class.getCanonicalName());
+  }
+
+  @Test
+  public void testValidateModule_whenUnitWithProjectionAndStringParameter() {
+    Assertions.assertThatCode(() -> validator.validateUnitDeclaration(UnitWithProjectionAndStringParameter.class, true))
+        .doesNotThrowAnyException();
+  }
+
+  @Test
+  public void testValidateModule_whenUnitWithProjectionAndFileParameter() {
+    Assertions.assertThatThrownBy(() -> validator.validateUnitDeclaration(UnitWithProjectionAndFileParameter.class, false))
+        .isExactlyInstanceOf(ConfigurationException.class)
+        .hasMessage("Parameter 'value' of method 'projection' in unit " + UnitWithProjectionAndFileParameter.class.getCanonicalName() + " should be object handle or domain class");
   }
 }

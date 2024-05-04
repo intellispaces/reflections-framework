@@ -1,4 +1,4 @@
-package tech.intellispacesframework.core.test.sample.system;
+package tech.intellispacesframework.core.test.samples.system;
 
 import tech.intellispacesframework.core.annotation.Shutdown;
 

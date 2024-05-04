@@ -3,21 +3,21 @@ package tech.intellispacesframework.core.system;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import tech.intellispacesframework.core.exception.ConfigurationException;
-import tech.intellispacesframework.core.test.sample.system.EmptyUnit;
-import tech.intellispacesframework.core.test.sample.system.UnitWithOneShutdownMethod;
-import tech.intellispacesframework.core.test.sample.system.UnitWithOneStartupMethod;
-import tech.intellispacesframework.core.test.sample.system.UnitWithProjectionAndFileParameter;
-import tech.intellispacesframework.core.test.sample.system.UnitWithProjectionAndStringParameter;
-import tech.intellispacesframework.core.test.sample.system.UnitWithProjectionWithoutReturnedType;
-import tech.intellispacesframework.core.test.sample.system.UnitWithShutdownMethodAndFileParameter;
-import tech.intellispacesframework.core.test.sample.system.UnitWithShutdownMethodAndStringParameter;
-import tech.intellispacesframework.core.test.sample.system.UnitWithShutdownMethodReturnedString;
-import tech.intellispacesframework.core.test.sample.system.UnitWithStartupMethodAndFileParameter;
-import tech.intellispacesframework.core.test.sample.system.UnitWithStartupMethodAndStringParameter;
-import tech.intellispacesframework.core.test.sample.system.UnitWithStartupMethodReturnedString;
-import tech.intellispacesframework.core.test.sample.system.UnitWithTwoShutdownMethods;
-import tech.intellispacesframework.core.test.sample.system.UnitWithTwoStartupMethods;
-import tech.intellispacesframework.core.test.sample.system.UnitWithValidProjectionReturnTypes;
+import tech.intellispacesframework.core.test.samples.system.EmptyUnit;
+import tech.intellispacesframework.core.test.samples.system.UnitWithOneShutdownMethod;
+import tech.intellispacesframework.core.test.samples.system.UnitWithOneStartupMethod;
+import tech.intellispacesframework.core.test.samples.system.UnitWithProjectionAndFileParameter;
+import tech.intellispacesframework.core.test.samples.system.UnitWithProjectionAndStringParameter;
+import tech.intellispacesframework.core.test.samples.system.UnitWithProjectionWithoutReturnedType;
+import tech.intellispacesframework.core.test.samples.system.UnitWithShutdownMethodAndFileParameter;
+import tech.intellispacesframework.core.test.samples.system.UnitWithShutdownMethodAndStringParameter;
+import tech.intellispacesframework.core.test.samples.system.UnitWithShutdownMethodReturnedString;
+import tech.intellispacesframework.core.test.samples.system.UnitWithStartupMethodAndFileParameter;
+import tech.intellispacesframework.core.test.samples.system.UnitWithStartupMethodAndStringParameter;
+import tech.intellispacesframework.core.test.samples.system.UnitWithStartupMethodReturnedString;
+import tech.intellispacesframework.core.test.samples.system.UnitWithTwoShutdownMethods;
+import tech.intellispacesframework.core.test.samples.system.UnitWithTwoStartupMethods;
+import tech.intellispacesframework.core.test.samples.system.UnitWithValidProjectionReturnTypes;
 
 /**
  * Tests for {@link UnitDeclarationValidator} class.

@@ -1,4 +1,4 @@
-package tech.intellispacesframework.core.test.sample.domain;
+package tech.intellispacesframework.core.test.samples.domain;
 
 import tech.intellispacesframework.core.annotation.AutoGeneration;
 import tech.intellispacesframework.core.annotation.Domain;

@@ -1,8 +1,8 @@
-package tech.intellispacesframework.core.test.sample.system;
+package tech.intellispacesframework.core.test.samples.system;
 
 import tech.intellispacesframework.core.annotation.Projection;
-import tech.intellispacesframework.core.test.sample.domain.DomainEmpty;
-import tech.intellispacesframework.core.test.sample.object.ObjectHandleOfDomainEmpty;
+import tech.intellispacesframework.core.test.samples.domain.DomainEmpty;
+import tech.intellispacesframework.core.test.samples.object.ObjectHandleOfDomainEmpty;
 
 public class UnitWithValidProjectionReturnTypes {
 

@@ -4,7 +4,7 @@ import tech.intellispacesframework.core.annotation.Module;
 import tech.intellispacesframework.core.annotation.Startup;
 
 @Module
-public class UnitWithTwoStartupMethods {
+public class ModuleWithTwoStartupMethods {
 
   @Startup
   public void startup1() {

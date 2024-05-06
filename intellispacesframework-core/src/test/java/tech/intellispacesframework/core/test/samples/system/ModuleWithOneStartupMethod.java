@@ -4,15 +4,10 @@ import tech.intellispacesframework.core.annotation.Module;
 import tech.intellispacesframework.core.annotation.Startup;
 
 @Module
-public class UnitWithTwoStartupMethods {
+public class ModuleWithOneStartupMethod {
 
   @Startup
-  public void startup1() {
-
-  }
-
-  @Startup
-  public void startup2() {
+  public void startup() {
 
   }
 }

@@ -7,9 +7,7 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Include {
+public @interface Module {
 
-  Class<?> value() default Void.class;
-
-  String path() default "";
+  Class<?>[] include() default {};
 }

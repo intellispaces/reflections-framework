@@ -1,10 +1,10 @@
 package tech.intellispacesframework.core.test.samples.system;
 
+import tech.intellispacesframework.core.annotation.Module;
 import tech.intellispacesframework.core.annotation.Shutdown;
-import tech.intellispacesframework.core.annotation.Unit;
 
-@Unit
-public class UnitWithOneShutdownMethod {
+@Module
+public class ModuleWithOneShutdownMethod {
 
   @Shutdown
   public void shutdown() {

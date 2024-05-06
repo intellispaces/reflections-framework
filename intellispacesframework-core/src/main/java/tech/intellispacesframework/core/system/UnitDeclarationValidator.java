@@ -1,8 +1,10 @@
 package tech.intellispacesframework.core.system;
 
+import tech.intellispacesframework.core.annotation.Module;
 import tech.intellispacesframework.core.annotation.Projection;
 import tech.intellispacesframework.core.annotation.Shutdown;
 import tech.intellispacesframework.core.annotation.Startup;
+import tech.intellispacesframework.core.annotation.Unit;
 import tech.intellispacesframework.core.domain.DomainFunctions;
 import tech.intellispacesframework.core.exception.ConfigurationException;
 import tech.intellispacesframework.core.object.ObjectFunctions;
@@ -18,9 +20,22 @@ import java.util.List;
 class UnitDeclarationValidator {
 
   public void validateUnitDeclaration(Class<?> unitClass, boolean mainUnit) {
+    validateModuleUnitAnnotations(unitClass, mainUnit);
     validateStartupMethods(unitClass, mainUnit);
     validateShutdownMethods(unitClass, mainUnit);
     validateProjectionMethods(unitClass);
+  }
+
+  private void validateModuleUnitAnnotations(Class<?> unitClass, boolean mainUnit) {
+    if (mainUnit) {
+      if (!unitClass.isAnnotationPresent(Module.class)) {
+        throw ConfigurationException.withMessage("Class {} is not marked with annotation {}", unitClass.getCanonicalName(), Module.class.getSimpleName());
+      }
+    } else {
+      if (!unitClass.isAnnotationPresent(Unit.class)) {
+        throw ConfigurationException.withMessage("Class {} is not marked with annotation {}", unitClass.getCanonicalName(), Unit.class.getSimpleName());
+      }
+    }
   }
 
   private void validateStartupMethods(Class<?> unitClass, boolean mainUnit) {

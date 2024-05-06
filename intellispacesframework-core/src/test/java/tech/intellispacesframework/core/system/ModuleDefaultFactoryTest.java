@@ -3,9 +3,9 @@ package tech.intellispacesframework.core.system;
 import org.junit.jupiter.api.Test;
 import tech.intellispacesframework.core.test.samples.domain.DomainEmpty;
 import tech.intellispacesframework.core.test.samples.object.ObjectHandleOfDomainEmpty;
-import tech.intellispacesframework.core.test.samples.system.EmptyUnit;
-import tech.intellispacesframework.core.test.samples.system.UnitWithStartupSndShutdownMethods;
-import tech.intellispacesframework.core.test.samples.system.UnitWithValidProjectionReturnTypes;
+import tech.intellispacesframework.core.test.samples.system.EmptyModule;
+import tech.intellispacesframework.core.test.samples.system.ModuleWithStartupSndShutdownMethods;
+import tech.intellispacesframework.core.test.samples.system.ModuleWithValidProjectionReturnTypes;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -16,28 +16,28 @@ public class ModuleDefaultFactoryTest {
   private final ModuleDefaultFactory factory = ModuleFactories.buildSystemModuleDefaultFactory();
 
   @Test
-  public void testCreateModule_whenEmptyUnit() {
+  public void testCreateEmptyModule() {
     // When
-    ModuleDefault module = factory.createModule(EmptyUnit.class, null);
+    ModuleDefault module = factory.createModule(EmptyModule.class, null);
 
     // Then
     assertThat(module.isStarted()).isFalse();
     assertThat(module.units()).hasSize(1);
-    assertThat(module.units().get(0).unitClass()).isSameAs(EmptyUnit.class);
+    assertThat(module.units().get(0).unitClass()).isSameAs(EmptyModule.class);
     assertThat(module.units().get(0).startupMethod()).isEmpty();
     assertThat(module.units().get(0).shutdownMethod()).isEmpty();
     assertThat(module.projectionRegistry().allProjections()).isEmpty();
   }
 
   @Test
-  public void testCreateModule_whenUnitWithStartupSndShutdownMethods() {
+  public void testCreateModuleWithStartupAndShutdownMethods() {
     // When
-    ModuleDefault module = factory.createModule(UnitWithStartupSndShutdownMethods.class, null);
+    ModuleDefault module = factory.createModule(ModuleWithStartupSndShutdownMethods.class, null);
 
     // Then
     assertThat(module.isStarted()).isFalse();
     assertThat(module.units()).hasSize(1);
-    assertThat(module.units().get(0).unitClass()).isSameAs(UnitWithStartupSndShutdownMethods.class);
+    assertThat(module.units().get(0).unitClass()).isSameAs(ModuleWithStartupSndShutdownMethods.class);
     assertThat(module.units().get(0).startupMethod()).isPresent();
     assertThat(module.units().get(0).startupMethod().orElseThrow().getName()).isEqualTo("startup");
     assertThat(module.units().get(0).shutdownMethod()).isPresent();
@@ -48,12 +48,12 @@ public class ModuleDefaultFactoryTest {
   @Test
   public void testCreateModule_whenUnitWithValidProjections() {
     // When
-    ModuleDefault module = factory.createModule(UnitWithValidProjectionReturnTypes.class, null);
+    ModuleDefault module = factory.createModule(ModuleWithValidProjectionReturnTypes.class, null);
 
     // Then
     assertThat(module.isStarted()).isFalse();
     assertThat(module.units()).hasSize(1);
-    assertThat(module.units().get(0).unitClass()).isSameAs(UnitWithValidProjectionReturnTypes.class);
+    assertThat(module.units().get(0).unitClass()).isSameAs(ModuleWithValidProjectionReturnTypes.class);
     assertThat(module.units().get(0).startupMethod()).isEmpty();
     assertThat(module.units().get(0).shutdownMethod()).isEmpty();
     assertThat(module.projectionRegistry().allProjections()).hasSize(18);

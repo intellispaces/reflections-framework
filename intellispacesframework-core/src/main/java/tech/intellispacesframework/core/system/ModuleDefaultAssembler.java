@@ -2,7 +2,7 @@ package tech.intellispacesframework.core.system;
 
 import tech.intellispacesframework.commons.exception.UnexpectedViolationException;
 import tech.intellispacesframework.commons.type.TypeFunctions;
-import tech.intellispacesframework.core.annotation.Include;
+import tech.intellispacesframework.core.annotation.Module;
 import tech.intellispacesframework.core.annotation.Projection;
 import tech.intellispacesframework.core.annotation.Shutdown;
 import tech.intellispacesframework.core.annotation.Startup;
@@ -41,16 +41,14 @@ class ModuleDefaultAssembler {
   }
 
   private void addIncludedUnits(Class<?> moduleClass, List<Unit> units) {
-    Arrays.stream(moduleClass.getAnnotations())
-        .filter(a -> Include.class == a.annotationType())
-        .map(a -> (Include) a)
-        .map(this::processInclude)
+    Arrays.stream(moduleClass.getAnnotation(Module.class).include())
+        .map(this::processIncludedUnit)
         .forEach(units::addAll);
   }
 
-  private List<UnitDefault> processInclude(Include include) {
-    if (include.value() != Void.class) {
-      return List.of(createUnit(include.value(), false));
+  private List<UnitDefault> processIncludedUnit(Class<?> unitClass) {
+    if (unitClass != Void.class) {
+      return List.of(createUnit(unitClass, false));
     }
     throw UnexpectedViolationException.withMessage("Not implemented");
   }

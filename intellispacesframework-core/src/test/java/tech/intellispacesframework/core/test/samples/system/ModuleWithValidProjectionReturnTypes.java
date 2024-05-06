@@ -1,10 +1,12 @@
 package tech.intellispacesframework.core.test.samples.system;
 
+import tech.intellispacesframework.core.annotation.Module;
 import tech.intellispacesframework.core.annotation.Projection;
 import tech.intellispacesframework.core.test.samples.domain.DomainEmpty;
 import tech.intellispacesframework.core.test.samples.object.ObjectHandleOfDomainEmpty;
 
-public class UnitWithValidProjectionReturnTypes {
+@Module
+public class ModuleWithValidProjectionReturnTypes {
 
   @Projection
   public boolean booleanProjection1() {

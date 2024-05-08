@@ -1,4 +1,4 @@
-package tech.intellispacesframework.core.domain;
+package tech.intellispacesframework.core.space.domain;
 
 import tech.intellispacesframework.core.annotation.Domain;
 

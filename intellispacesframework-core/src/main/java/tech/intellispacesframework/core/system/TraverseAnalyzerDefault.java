@@ -3,7 +3,7 @@ package tech.intellispacesframework.core.system;
 import tech.intellispacesframework.core.annotation.Mover;
 import tech.intellispacesframework.core.guide.EmbeddedMover1;
 import tech.intellispacesframework.core.guide.n1.Guide1;
-import tech.intellispacesframework.core.transition.TransitionFunctions;
+import tech.intellispacesframework.core.space.transition.TransitionFunctions;
 import tech.intellispacesframework.core.traverseplan.CallGuide1TraversePlan;
 import tech.intellispacesframework.core.traverseplan.CallGuide1TraversePlanDefault;
 import tech.intellispacesframework.core.traverseplan.MoveObjectHandleThruTransition1TraversePlan;

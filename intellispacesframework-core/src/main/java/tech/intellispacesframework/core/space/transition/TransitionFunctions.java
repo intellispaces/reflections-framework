@@ -1,4 +1,4 @@
-package tech.intellispacesframework.core.transition;
+package tech.intellispacesframework.core.space.transition;
 
 import tech.intellispacesframework.commons.exception.UnexpectedViolationException;
 import tech.intellispacesframework.core.annotation.Transition;

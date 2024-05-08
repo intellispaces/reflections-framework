@@ -40,17 +40,17 @@ class ModuleDefault implements Module {
     this.traverseAnalyzer = traverseAnalyzer;
   }
 
-  @Override
-  public List<Unit> units() {
-    return units;
-  }
-
-  public ProjectionRegistry projectionRegistry() {
+  ProjectionRegistry projectionRegistry() {
     return projectionRegistry;
   }
 
-  public TraverseAnalyzer traverseAnalyzer() {
+  TraverseAnalyzer traverseAnalyzer() {
     return traverseAnalyzer;
+  }
+
+  @Override
+  public List<Unit> units() {
+    return units;
   }
 
   @Override

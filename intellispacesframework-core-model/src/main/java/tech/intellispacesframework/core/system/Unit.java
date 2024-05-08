@@ -15,11 +15,11 @@ public interface Unit {
 
   Object instance();
 
-  Optional<Method> startupMethod();
-
-  Optional<Method> shutdownMethod();
-
   List<Injection> injections();
 
   List<UnitProjectionProvider> projectionProviders();
+
+  Optional<Method> startupMethod();
+
+  Optional<Method> shutdownMethod();
 }

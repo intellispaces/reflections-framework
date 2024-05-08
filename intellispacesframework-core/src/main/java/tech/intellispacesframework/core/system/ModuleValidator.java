@@ -1,10 +1,14 @@
 package tech.intellispacesframework.core.system;
 
 import tech.intellispacesframework.core.exception.ConfigurationException;
+import tech.intellispacesframework.core.object.ObjectFunctions;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -72,10 +76,67 @@ class ModuleValidator {
   }
 
   private void checkInjections(Module module) {
+    Map<String, UnitProjectionProvider> projectionProviders = module.units().stream()
+        .map(Unit::projectionProviders)
+        .flatMap(List::stream)
+        .collect(Collectors.toMap(UnitProjectionProvider::name, Function.identity()));
 
+    checkUnitInjections(module, projectionProviders);
+    checkStartupMethodInjections(module, projectionProviders);
+    checkShutdownMethodInjections(module, projectionProviders);
+  }
 
+  private void checkUnitInjections(Module module, Map<String, UnitProjectionProvider> projectionProviders) {
+    List<ProjectionInjection> unitInjections = module.units().stream()
+        .map(Unit::injections)
+        .flatMap(List::stream)
+        .filter(injection -> InjectionTypes.ProjectionInjection == injection.type())
+        .map(inj -> (ProjectionInjection) inj)
+        .toList();
+    for (ProjectionInjection injection : unitInjections) {
+      UnitProjectionProvider provider = projectionProviders.get(injection.name());
+      if (provider == null) {
+        throw ConfigurationException.withMessage("Projection injection by name '{}' declared in unit {} was not found",
+            injection.name(), injection.unitClass().getCanonicalName());
+      }
+      if (!ObjectFunctions.isCompatibleObjectType(injection.targetClass(), provider.type())) {
+        throw ConfigurationException.withMessage("Projection injection '{}' declared in unit {} has an incompatible target type. Expected type {}, actual type {}",
+            injection.name(), injection.unitClass().getCanonicalName(),
+            injection.targetClass().getCanonicalName(), provider.type().getCanonicalName());
+      }
+    }
+  }
 
+  private void checkStartupMethodInjections(Module module, Map<String, UnitProjectionProvider> projectionProviders) {
+    module.units().stream()
+        .filter(Unit::isMain)
+        .findFirst()
+        .flatMap(Unit::startupMethod)
+        .ifPresent(method -> checkMethodParamInjections(method, projectionProviders));
+  }
 
+  private void checkShutdownMethodInjections(Module module, Map<String, UnitProjectionProvider> projectionProviders) {
+    module.units().stream()
+        .filter(Unit::isMain)
+        .findFirst()
+        .flatMap(Unit::shutdownMethod)
+        .ifPresent(method -> checkMethodParamInjections(method, projectionProviders));
+  }
+
+  private void checkMethodParamInjections(Method method, Map<String, UnitProjectionProvider> projectionProviders) {
+    for (Parameter param : method.getParameters()) {
+      UnitProjectionProvider provider = projectionProviders.get(param.getName());
+      if (provider == null) {
+        throw ConfigurationException.withMessage("Injection '{}' required in method '{}' declared in unit {} was not found",
+                param.getName(), method.getName(), method.getDeclaringClass().getCanonicalName());
+      }
+      if (!ObjectFunctions.isCompatibleObjectType(param.getType(), provider.type())) {
+        throw ConfigurationException.withMessage("Injection '{}' required in method '{}' declared in unit {} has an incompatible target type. " +
+                        "Expected type {}, actual type {}",
+                param.getName(), method.getName(), method.getDeclaringClass().getCanonicalName(),
+                param.getType().getCanonicalName(), provider.type().getCanonicalName());
+      }
+    }
   }
 
   private String makeSameProjectionsInfo(String projectionName, List<UnitProjectionProvider> projectionProviders) {

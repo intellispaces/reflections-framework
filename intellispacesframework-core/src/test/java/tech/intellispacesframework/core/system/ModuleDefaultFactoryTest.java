@@ -1,11 +1,11 @@
 package tech.intellispacesframework.core.system;
 
 import org.junit.jupiter.api.Test;
-import tech.intellispacesframework.core.test.samples.domain.DomainEmpty;
-import tech.intellispacesframework.core.test.samples.object.ObjectHandleOfDomainEmpty;
-import tech.intellispacesframework.core.test.samples.system.EmptyModule;
-import tech.intellispacesframework.core.test.samples.system.ModuleWithStartupSndShutdownMethods;
-import tech.intellispacesframework.core.test.samples.system.ModuleWithValidProjectionReturnTypes;
+import tech.intellispacesframework.core.samples.domain.DomainEmpty;
+import tech.intellispacesframework.core.samples.object.ObjectHandleOfDomainEmpty;
+import tech.intellispacesframework.core.samples.system.EmptyModule;
+import tech.intellispacesframework.core.samples.system.ModuleWithStartupSndShutdownMethods;
+import tech.intellispacesframework.core.samples.system.ModuleWithValidProjectionReturnTypes;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

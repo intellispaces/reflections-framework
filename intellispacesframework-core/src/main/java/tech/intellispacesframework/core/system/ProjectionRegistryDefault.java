@@ -1,6 +1,6 @@
 package tech.intellispacesframework.core.system;
 
-import tech.intellispacesframework.commons.type.TypeFunctions;
+import tech.intellispacesframework.core.object.ObjectFunctions;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -21,13 +21,10 @@ class ProjectionRegistryDefault implements ProjectionRegistry {
     if (p == null) {
       return Optional.empty();
     }
-
-    Class<?> actualTargetClass = TypeFunctions.getObjectClass(targetClass);
-    Class<?> actualProjectionTargetClass = TypeFunctions.getObjectClass(p.targetClass());
-    if (actualProjectionTargetClass == actualTargetClass || actualTargetClass.isAssignableFrom(actualProjectionTargetClass)) {
-      return (Optional<T>) Optional.ofNullable(p.target());
+    if (!ObjectFunctions.isCompatibleObjectType(targetClass, p.targetClass())) {
+      return Optional.empty();
     }
-    return Optional.empty();
+    return (Optional<T>) Optional.ofNullable(p.target());
   }
 
   @Override

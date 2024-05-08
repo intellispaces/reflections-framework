@@ -2,7 +2,7 @@ package tech.intellispacesframework.core.transition;
 
 import tech.intellispacesframework.commons.exception.UnexpectedViolationException;
 import tech.intellispacesframework.core.annotation.Transition;
-import tech.intellispacesframework.core.domain.DomainFunctions;
+import tech.intellispacesframework.core.object.ObjectFunctions;
 import tech.intellispacesframework.dynamicproxy.tracker.Tracker;
 import tech.intellispacesframework.dynamicproxy.tracker.TrackerBuilder;
 import tech.intellispacesframework.dynamicproxy.tracker.TrackerFunctions;
@@ -25,7 +25,7 @@ public interface TransitionFunctions {
   }
 
   static String getTransitionIdOfEmbeddedGuide(Class<?> objectHandleClass, Method guideMethod) {
-    Class<?> domainClass = DomainFunctions.getDomainClassOfObjectHandle(objectHandleClass);
+    Class<?> domainClass = ObjectFunctions.getDomainClassOfObjectHandle(objectHandleClass);
     for (Method m : domainClass.getDeclaredMethods()) {
       if (m.getName().equals(guideMethod.getName())) {
         Transition ta = m.getAnnotation(Transition.class);
@@ -46,7 +46,7 @@ public interface TransitionFunctions {
     }
     Transition ta = trackedMethods.get(0).getAnnotation(Transition.class);
     if (ta == null) {
-      throw UnexpectedViolationException.withMessage("Method {} of the domain class {} hasn't annotation {}",
+      throw UnexpectedViolationException.withMessage("Method '{}' of the domain class {} hasn't annotation {}",
           transitionMethod, sourceDomain.getCanonicalName(), Transition.class.getCanonicalName());
     }
     return ta.value();

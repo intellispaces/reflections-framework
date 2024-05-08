@@ -7,7 +7,6 @@ import tech.intellispacesframework.core.annotation.Projection;
 import tech.intellispacesframework.core.annotation.Shutdown;
 import tech.intellispacesframework.core.annotation.Startup;
 import tech.intellispacesframework.core.exception.ConfigurationException;
-import tech.intellispacesframework.core.object.ObjectFunctions;
 import tech.intellispacesframework.dynamicproxy.DynamicProxy;
 import tech.intellispacesframework.dynamicproxy.proxy.contract.ProxyContract;
 import tech.intellispacesframework.dynamicproxy.proxy.contract.ProxyContractBuilder;
@@ -116,17 +115,12 @@ class ModuleDefaultAssembler {
   private <T> void createInjection(
       Class<?> unitClass, Method method, ProxyContractBuilder<T> proxyContractBuilder, List<Injection> injections
   ) {
-    Class<?> returnClass = method.getReturnType();
-    if (ObjectFunctions.isCustomObjectHandleClass(returnClass)) {
-      if (method.getParameterCount() == 0) {
-        createProjectionInjection(unitClass, method, proxyContractBuilder, injections);
-      } else {
-        throw ConfigurationException.withMessage("Unit projection injection method can't have parameters. See method {} in unit {}",
-            method.getName(), method.getDeclaringClass().getCanonicalName()
-        );
-      }
+    if (method.getParameterCount() == 0) {
+      createProjectionInjection(unitClass, method, proxyContractBuilder, injections);
     } else {
-      throw UnexpectedViolationException.withMessage("Not implemented");
+      throw ConfigurationException.withMessage("Unit projection injection method can't have parameters. See method {} in unit {}",
+          method.getName(), method.getDeclaringClass().getCanonicalName()
+      );
     }
   }
 

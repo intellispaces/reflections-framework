@@ -6,12 +6,14 @@ class UnitProjectionProviderDefault implements UnitProjectionProvider {
   private final String name;
   private final Class<?> type;
   private final Unit unit;
+  private final boolean lazy;
   private final Method providerMethod;
 
-  public UnitProjectionProviderDefault(String name, Class<?> type, Unit unit, Method providerMethod) {
+  public UnitProjectionProviderDefault(String name, Class<?> type, Unit unit, boolean lazy, Method providerMethod) {
     this.type = type;
     this.name = name;
     this.unit = unit;
+    this.lazy = lazy;
     this.providerMethod = providerMethod;
   }
 
@@ -33,6 +35,11 @@ class UnitProjectionProviderDefault implements UnitProjectionProvider {
   @Override
   public Unit unit() {
     return unit;
+  }
+
+  @Override
+  public boolean isLazy() {
+    return lazy;
   }
 
   @Override

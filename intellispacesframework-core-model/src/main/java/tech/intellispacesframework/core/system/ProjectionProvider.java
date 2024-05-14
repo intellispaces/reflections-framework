@@ -12,5 +12,7 @@ public interface ProjectionProvider {
    */
   Class<?> type();
 
+  boolean isLazy();
+
   ProjectionProviderType providerType();
 }

@@ -6,7 +6,5 @@ public interface Injection {
 
   boolean isDefined();
 
-  boolean isLazy();
-
   Object value();
 }

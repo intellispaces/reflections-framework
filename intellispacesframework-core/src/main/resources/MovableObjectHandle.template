@@ -1,0 +1,24 @@
+package {{$PACKAGE_NAME}};
+
+{{for importedClass : $importedClasses}}
+import {{$importedClass}};
+{{end}}
+
+/**
+ * This class auto generated from class {@link {{$SOURCE_CLASS_NAME}}}.
+ */
+public class {{$CLASS_SIMPLE_NAME}} extends {{$SOURCE_CLASS_SIMPLE_NAME}} {
+
+  @Override
+  public <Q> {{$SOURCE_CLASS_SIMPLE_NAME}} moveThru(String tid, Q qualifier) throws TraverseException {
+    Mover1<SystemConsoleHandle, Q> mover = Modules.activeModule().autoMoverThruTransition1({{$SOURCE_CLASS_SIMPLE_NAME}}.class, tid);
+    return mover.move(this, qualifier);
+  }
+
+  @Override
+  public <Q> {{$SOURCE_CLASS_SIMPLE_NAME}} moveThru(TransitionMethod1<{{$DOMAIN_CLASS_SIMPLE_NAME}}, {{$DOMAIN_CLASS_SIMPLE_NAME}}, Q> transitionMethod, Q qualifier) throws TraverseException {
+    String tid = TransitionFunctions.getTransitionId({{$DOMAIN_CLASS_SIMPLE_NAME}}.class, transitionMethod, null);
+    Mover1<SystemConsoleHandle, Q> mover = Modules.activeModule().autoMoverThruTransition1({{$SOURCE_CLASS_SIMPLE_NAME}}.class, tid);
+    return mover.move(this, qualifier);
+  }
+}

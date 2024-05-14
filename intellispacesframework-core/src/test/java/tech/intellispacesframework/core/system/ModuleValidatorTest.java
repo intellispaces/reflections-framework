@@ -18,7 +18,7 @@ import static org.mockito.Mockito.when;
  * Tests for {@link ModuleValidator} class.
  */
 public class ModuleValidatorTest {
-  private final ModuleValidator validator = new ModuleValidator();
+  private final ModuleValidator moduleValidator = new ModuleValidator();
 
   @Test
   public void testValidateModule_whenNoMainUnit() {
@@ -33,7 +33,7 @@ public class ModuleValidatorTest {
     when(module.units()).thenReturn(List.of(unit1, unit2));
 
     // Then
-    Assertions.assertThatThrownBy(() -> validator.validateModule(module))
+    Assertions.assertThatThrownBy(() -> moduleValidator.validateModule(module))
         .isExactlyInstanceOf(ConfigurationException.class)
         .hasMessage("Main unit was not found");
   }
@@ -57,7 +57,7 @@ public class ModuleValidatorTest {
     when(module.units()).thenReturn(List.of(unit1, unit2));
 
     // Then
-    Assertions.assertThatThrownBy(() -> validator.validateModule(module))
+    Assertions.assertThatThrownBy(() -> moduleValidator.validateModule(module))
         .isExactlyInstanceOf(ConfigurationException.class)
         .hasMessage("Multiple main units found: " + unitClass1.getSimpleName() + ", " + unitClass2.getSimpleName());
   }
@@ -77,7 +77,7 @@ public class ModuleValidatorTest {
     when(module.units()).thenReturn(List.of(unit1, unit2));
 
     // Then
-    Assertions.assertThatThrownBy(() -> validator.validateModule(module))
+    Assertions.assertThatThrownBy(() -> moduleValidator.validateModule(module))
         .isExactlyInstanceOf(ConfigurationException.class)
         .hasMessage("Multiple startup methods found: String#isEmpty, String#isBlank");
   }
@@ -97,7 +97,7 @@ public class ModuleValidatorTest {
     when(module.units()).thenReturn(List.of(unit1, unit2));
 
     // Then
-    Assertions.assertThatThrownBy(() -> validator.validateModule(module))
+    Assertions.assertThatThrownBy(() -> moduleValidator.validateModule(module))
         .isExactlyInstanceOf(ConfigurationException.class)
         .hasMessage("Multiple shutdown methods found: String#isEmpty, String#isBlank");
   }
@@ -134,7 +134,7 @@ public class ModuleValidatorTest {
     when(module.units()).thenReturn(List.of(unit1, unit2));
 
     // Then
-    Assertions.assertThatThrownBy(() -> validator.validateModule(module))
+    Assertions.assertThatThrownBy(() -> moduleValidator.validateModule(module))
         .isExactlyInstanceOf(ConfigurationException.class)
         .hasMessage("Found multiple projections with same name: Projection name '" + projectionName + "', projection providers: " +
             unitClass1.getCanonicalName() + "#trim, " +
@@ -143,7 +143,7 @@ public class ModuleValidatorTest {
 
   @Test
   @SuppressWarnings("unchecked,rawtypes")
-  public void testValidateModule_whenUnitProjectionInjectionMiss() {
+  public void testValidateModule_whenUnitProjectionMiss() {
     // Given
     Class unitClass = EmptyModule.class;
     String projectionName = "projection";
@@ -166,14 +166,14 @@ public class ModuleValidatorTest {
     when(module.units()).thenReturn(List.of(unit));
 
     // Then
-    Assertions.assertThatThrownBy(() -> validator.validateModule(module))
+    Assertions.assertThatThrownBy(() -> moduleValidator.validateModule(module))
         .isExactlyInstanceOf(ConfigurationException.class)
         .hasMessage("Projection injection by name '" + projectionName + "' declared in unit " + EmptyModule.class.getCanonicalName() + " was not found");
   }
 
   @Test
   @SuppressWarnings("unchecked,rawtypes")
-  public void testValidateModule_whenUnitProjectionInjectionTypeIncompatible() {
+  public void testValidateModule_whenUnitProjectionTypeIncompatible() {
     // Given
     Class unitClass = EmptyModule.class;
     String projectionName = "projection";
@@ -205,7 +205,7 @@ public class ModuleValidatorTest {
     when(module.units()).thenReturn(List.of(unit));
 
     // Then
-    Assertions.assertThatThrownBy(() -> validator.validateModule(module))
+    Assertions.assertThatThrownBy(() -> moduleValidator.validateModule(module))
         .isExactlyInstanceOf(ConfigurationException.class)
         .hasMessage("Projection injection '" + projectionName + "' declared in unit " + unitClass.getCanonicalName() + " has an incompatible target type. " +
             "Expected type " + injectionType.getCanonicalName() + ", actual type " + projectionType.getCanonicalName());
@@ -239,7 +239,7 @@ public class ModuleValidatorTest {
     when(module.units()).thenReturn(List.of(unit));
 
     // Then
-    Assertions.assertThatThrownBy(() -> validator.validateModule(module))
+    Assertions.assertThatThrownBy(() -> moduleValidator.validateModule(module))
         .isExactlyInstanceOf(ConfigurationException.class)
         .hasMessage("Injection '" + projectionName + "' required in method '" + startupMethodName +
             "' declared in unit " + unitClass.getCanonicalName() + " was not found");
@@ -283,7 +283,7 @@ public class ModuleValidatorTest {
     when(module.units()).thenReturn(List.of(unit));
 
     // Then
-    Assertions.assertThatThrownBy(() -> validator.validateModule(module))
+    Assertions.assertThatThrownBy(() -> moduleValidator.validateModule(module))
         .isExactlyInstanceOf(ConfigurationException.class)
         .hasMessage("Injection '" + projectionName + "' required in method '" + startupMethodName +
             "' declared in unit " + unitClass.getCanonicalName() + " has an incompatible target type. " +
@@ -318,7 +318,7 @@ public class ModuleValidatorTest {
     when(module.units()).thenReturn(List.of(unit));
 
     // Then
-    Assertions.assertThatThrownBy(() -> validator.validateModule(module))
+    Assertions.assertThatThrownBy(() -> moduleValidator.validateModule(module))
         .isExactlyInstanceOf(ConfigurationException.class)
         .hasMessage("Injection '" + projectionName + "' required in method '" + shutdownMethodName +
             "' declared in unit " + unitClass.getCanonicalName() + " was not found");
@@ -362,7 +362,7 @@ public class ModuleValidatorTest {
     when(module.units()).thenReturn(List.of(unit));
 
     // Then
-    Assertions.assertThatThrownBy(() -> validator.validateModule(module))
+    Assertions.assertThatThrownBy(() -> moduleValidator.validateModule(module))
         .isExactlyInstanceOf(ConfigurationException.class)
         .hasMessage("Injection '" + projectionName + "' required in method '" + shutdownMethodName +
             "' declared in unit " + unitClass.getCanonicalName() + " has an incompatible target type. " +
@@ -398,7 +398,7 @@ public class ModuleValidatorTest {
     when(module.units()).thenReturn(List.of(unit1, unit2));
 
     // Then
-    Assertions.assertThatCode(() -> validator.validateModule(module))
+    Assertions.assertThatCode(() -> moduleValidator.validateModule(module))
         .doesNotThrowAnyException();
   }
 }

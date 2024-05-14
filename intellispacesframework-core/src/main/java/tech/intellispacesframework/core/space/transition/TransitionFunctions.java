@@ -26,9 +26,9 @@ public interface TransitionFunctions {
 
   static String getTransitionIdOfEmbeddedGuide(Class<?> objectHandleClass, Method guideMethod) {
     Class<?> domainClass = ObjectFunctions.getDomainClassOfObjectHandle(objectHandleClass);
-    for (Method m : domainClass.getDeclaredMethods()) {
-      if (m.getName().equals(guideMethod.getName())) {
-        Transition ta = m.getAnnotation(Transition.class);
+    for (Method method : domainClass.getDeclaredMethods()) {
+      if (method.getName().equals(guideMethod.getName())) {
+        Transition ta = method.getAnnotation(Transition.class);
         return ta.value();
       }
     }

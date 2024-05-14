@@ -28,7 +28,7 @@
     </build>
 
     <dependencies>
-        <!-- Intellispaces -->
+        <!-- Intellispaces framework -->
         <dependency>
             <groupId>intellispaces</groupId>
             <artifactId>intellispacesframework-core-model</artifactId>
@@ -36,6 +36,16 @@
         <dependency>
             <groupId>intellispaces</groupId>
             <artifactId>intellispacesframework-dynamicproxy</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>intellispaces</groupId>
+            <artifactId>intellispacesframework-annotationprocessor</artifactId>
+        </dependency>
+
+        <!-- Auto-service library -->
+        <dependency>
+            <groupId>com.google.auto.service</groupId>
+            <artifactId>auto-service</artifactId>
         </dependency>
 
         <!-- Logging -->

@@ -10,7 +10,7 @@ import tech.intellispacesframework.core.transition.TransitionMethod1;
  */
 public interface MovableObjectHandle<D> extends ObjectHandle<D> {
 
-  <Q> MovableObjectHandle<D> moveThru(String cid, Q qualifier) throws TraverseException;
+  <Q> MovableObjectHandle<D> moveThru(String tid, Q qualifier) throws TraverseException;
 
-  <Q> MovableObjectHandle<D> moveThru(TransitionMethod1<? super D, ? extends D, Q> channelMethod, Q qualifier) throws TraverseException;
+  <Q> MovableObjectHandle<D> moveThru(TransitionMethod1<D, D, Q> transitionMethod, Q qualifier) throws TraverseException;
 }

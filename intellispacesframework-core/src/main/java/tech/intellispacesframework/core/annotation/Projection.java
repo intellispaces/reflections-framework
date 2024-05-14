@@ -13,4 +13,6 @@ public @interface Projection {
    * Projection name. By default, method name is used.
    */
   String value() default "";
+
+  boolean lazy() default true;
 }

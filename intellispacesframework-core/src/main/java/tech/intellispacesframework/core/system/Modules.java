@@ -1,15 +1,28 @@
 package tech.intellispacesframework.core.system;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import tech.intellispacesframework.commons.exception.UnexpectedViolationException;
 
-public class Modules {
-  private static Module CURRENT;
+import java.util.concurrent.atomic.AtomicReference;
 
-  public static Module currentModule() {
-    if (CURRENT == null) {
-      throw UnexpectedViolationException.withMessage("Current system module is not defined. It is possible that the system is not loaded yet");
+public class Modules {
+  private static final AtomicReference<Module> CURRENT = new AtomicReference<>();
+  private static final Logger LOG = LoggerFactory.getLogger(Modules.class);
+
+  public static Module activeModule() {
+    Module module = CURRENT.get();
+    if (module == null) {
+      throw UnexpectedViolationException.withMessage("Application active module is not defined. It is possible that the module is not loaded yet");
     }
-    return CURRENT;
+    return module;
+  }
+
+  static void setActiveModule(Module module) {
+    Module previous = CURRENT.getAndSet(module);
+    if (previous != null) {
+      LOG.warn("Application active module has been changed");
+    }
   }
 
   private Modules() {}

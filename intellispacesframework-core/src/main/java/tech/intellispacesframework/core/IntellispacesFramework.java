@@ -1,41 +1,28 @@
 package tech.intellispacesframework.core;
 
-import tech.intellispacesframework.commons.exception.UnexpectedViolationException;
-import tech.intellispacesframework.commons.reflection.ReflectionFunctions;
-import tech.intellispacesframework.core.system.ModuleFactories;
-import tech.intellispacesframework.core.system.Modules;
+import tech.intellispacesframework.core.system.ModuleLoaders;
 import tech.intellispacesframework.core.system.Module;
 
 public interface IntellispacesFramework {
 
   /**
-   * Creates system module.
+   * Loads system module to current application.
    *
    * @param moduleClass the module class.
    * @return system module.
    */
-  static Module createModule(Class<?> moduleClass) {
-    return createModule(moduleClass, new String[] {});
+  static Module loadModule(Class<?> moduleClass) {
+    return loadModule(moduleClass, new String[] {});
   }
 
   /**
-   * Creates system module.
+   * Loads system module to current application.
    *
    * @param moduleClass the module class.
    * @param args the command line arguments.
    * @return system module.
    */
-  static Module createModule(Class<?> moduleClass, String[] args) {
-    Module module = ModuleFactories.get().createModule(moduleClass, args);
-    storeCurrentModule(module);
-    return module;
-  }
-
-  static private void storeCurrentModule(Module module) {
-    try {
-      ReflectionFunctions.setStaticField(Modules.class, "CURRENT", module);
-    } catch (Exception e) {
-      throw UnexpectedViolationException.withCauseAndMessage(e, "Failed to store reference to current module");
-    }
+  static Module loadModule(Class<?> moduleClass, String[] args) {
+    return ModuleLoaders.defaultLoader().loadModule(moduleClass, args);
   }
 }

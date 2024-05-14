@@ -1,5 +1,8 @@
 package tech.intellispacesframework.core.system;
 
+import tech.intellispacesframework.commons.action.ActionBuilders;
+import tech.intellispacesframework.commons.action.Getter;
+import tech.intellispacesframework.commons.action.ResettableGetter;
 import tech.intellispacesframework.commons.exception.UnexpectedViolationException;
 import tech.intellispacesframework.commons.type.TypeFunctions;
 import tech.intellispacesframework.core.annotation.Module;
@@ -7,6 +10,8 @@ import tech.intellispacesframework.core.annotation.Projection;
 import tech.intellispacesframework.core.annotation.Shutdown;
 import tech.intellispacesframework.core.annotation.Startup;
 import tech.intellispacesframework.core.exception.ConfigurationException;
+import tech.intellispacesframework.core.traverse.TraverseAnalyzer;
+import tech.intellispacesframework.core.traverse.TraverseExecutor;
 import tech.intellispacesframework.dynamicproxy.DynamicProxy;
 import tech.intellispacesframework.dynamicproxy.proxy.contract.ProxyContract;
 import tech.intellispacesframework.dynamicproxy.proxy.contract.ProxyContractBuilder;
@@ -19,48 +24,54 @@ import java.util.List;
 import java.util.Optional;
 
 class ModuleDefaultAssembler {
-  private final UnitDeclarationValidator unitDeclarationValidator;
+  private final UnitValidator unitValidator;
 
-  public ModuleDefaultAssembler(UnitDeclarationValidator unitDeclarationValidator) {
-    this.unitDeclarationValidator = unitDeclarationValidator;
+  public ModuleDefaultAssembler(UnitValidator unitValidator) {
+    this.unitValidator = unitValidator;
   }
 
   public ModuleDefault assembleModule(Class<?> moduleClass, String[] args) {
-    List<Unit> units = assembleUnits(moduleClass);
-    ProjectionRegistry projectionRegistry = new ProjectionRegistryDefault();
+    ResettableGetter<ProjectionRegistry> projectionRegistryGetter = ActionBuilders.resettableGetter();
+
+    List<Unit> units = assembleUnits(moduleClass, projectionRegistryGetter);
+
+    ProjectionRegistryDefault projectionRegistry = createProjectionRegistry(units);
+    projectionRegistryGetter.set(projectionRegistry);
+
     TraverseAnalyzer traverseAnalyzer = new TraverseAnalyzerDefault();
-    return new ModuleDefault(units, projectionRegistry, traverseAnalyzer);
+    TraverseExecutor traverseExecutor = new TraverseExecutorDefault(traverseAnalyzer);
+    return new ModuleDefault(units, projectionRegistry, traverseAnalyzer, traverseExecutor);
   }
 
-  private List<Unit> assembleUnits(Class<?> moduleClass) {
+  private List<Unit> assembleUnits(Class<?> moduleClass, Getter<ProjectionRegistry> projectionRegistryGetter) {
     List<Unit> units = new ArrayList<>();
-    units.add(createUnit(moduleClass, true));
-    addIncludedUnits(moduleClass, units);
+    units.add(createUnit(moduleClass, true, projectionRegistryGetter));
+    addIncludedUnits(moduleClass, units, projectionRegistryGetter);
     return units;
   }
 
-  private void addIncludedUnits(Class<?> moduleClass, List<Unit> units) {
+  private void addIncludedUnits(Class<?> moduleClass, List<Unit> units, Getter<ProjectionRegistry> projectionRegistryGetter) {
     Arrays.stream(moduleClass.getAnnotation(Module.class).include())
-        .map(this::processIncludedUnit)
+        .map(unit -> processIncludedUnit(unit, projectionRegistryGetter))
         .forEach(units::addAll);
   }
 
-  private List<UnitDefault> processIncludedUnit(Class<?> unitClass) {
+  private List<UnitDefault> processIncludedUnit(Class<?> unitClass, Getter<ProjectionRegistry> projectionRegistryGetter) {
     if (unitClass != Void.class) {
-      return List.of(createUnit(unitClass, false));
+      return List.of(createUnit(unitClass, false, projectionRegistryGetter));
     }
     throw UnexpectedViolationException.withMessage("Not implemented");
   }
 
-  private UnitDefault createUnit(Class<?> unitClass, boolean main) {
-    unitDeclarationValidator.validateUnitDeclaration(unitClass, main);
+  private UnitDefault createUnit(Class<?> unitClass, boolean main, Getter<ProjectionRegistry> projectionRegistryGetter) {
+    unitValidator.validateUnitDeclaration(unitClass, main);
 
     List<Injection> injections = new ArrayList<>();
     List<UnitProjectionProvider> projectionProviders = new ArrayList<>();
     Optional<Method> startupMethod = findStartupMethod(unitClass);
     Optional<Method> shutdownMethod = findShutdownMethod(unitClass);
 
-    Object unitInstance = createUnitInstance(unitClass, injections);
+    Object unitInstance = createUnitInstance(unitClass, injections, projectionRegistryGetter);
     var unit = new UnitDefault(
         main,
         unitClass,
@@ -75,11 +86,11 @@ class ModuleDefaultAssembler {
     return unit;
   }
 
-  private <T> T createUnitInstance(Class<T> unitClass, List<Injection> injections) {
+  private <T> T createUnitInstance(Class<T> unitClass, List<Injection> injections, Getter<ProjectionRegistry> projectionRegistryGetter) {
     if (unitClass.isInterface()) {
       throw UnexpectedViolationException.withMessage("Not implemented");
     } else if (TypeFunctions.isAbstractClass(unitClass)) {
-      return createUnitInstanceWhenAbstractClass(unitClass, injections);
+      return createUnitInstanceWhenAbstractClass(unitClass, injections, projectionRegistryGetter);
     } else {
       return createUnitInstanceWhenClass(unitClass);
     }
@@ -93,14 +104,14 @@ class ModuleDefaultAssembler {
     }
   }
 
-  private <T> T createUnitInstanceWhenAbstractClass(Class<T> unitClass, List<Injection> injections) {
+  private <T> T createUnitInstanceWhenAbstractClass(Class<T> unitClass, List<Injection> injections, Getter<ProjectionRegistry> projectionRegistryGetter) {
     ProxyContractBuilder<T> proxyContractBuilder = ProxyContractBuilder.get()
         .className(unitClass.getCanonicalName() + "Proxy")
         .type(unitClass);
 
     List<Method> injectedMethods = findInjectedMethods(unitClass);
     for (Method injectedMethod : injectedMethods) {
-      createInjection(unitClass, injectedMethod, proxyContractBuilder, injections);
+      createInjection(unitClass, injectedMethod, proxyContractBuilder, injections, projectionRegistryGetter);
     }
 
     ProxyContract<T> proxyContract = proxyContractBuilder.build();
@@ -113,10 +124,10 @@ class ModuleDefaultAssembler {
   }
 
   private <T> void createInjection(
-      Class<?> unitClass, Method method, ProxyContractBuilder<T> proxyContractBuilder, List<Injection> injections
+      Class<?> unitClass, Method method, ProxyContractBuilder<T> proxyContractBuilder, List<Injection> injections, Getter<ProjectionRegistry> projectionRegistryGetter
   ) {
     if (method.getParameterCount() == 0) {
-      createProjectionInjection(unitClass, method, proxyContractBuilder, injections);
+      createProjectionInjection(unitClass, method, proxyContractBuilder, injections, projectionRegistryGetter);
     } else {
       throw ConfigurationException.withMessage("Unit projection injection method can't have parameters. See method {} in unit {}",
           method.getName(), method.getDeclaringClass().getCanonicalName()
@@ -125,9 +136,9 @@ class ModuleDefaultAssembler {
   }
 
   private <T> void createProjectionInjection(
-      Class<?> unitClass, Method method, ProxyContractBuilder<T> proxyContractBuilder, List<Injection> injections
+      Class<?> unitClass, Method method, ProxyContractBuilder<T> proxyContractBuilder, List<Injection> injections, Getter<ProjectionRegistry> projectionRegistryGetter
   ) {
-    ForcedProjectionInjection injection = new ForcedProjectionInjection(method.getName(), unitClass, method.getReturnType());
+    var injection = new ProjectionInjectionDefault(method.getName(), unitClass, method.getReturnType(), projectionRegistryGetter);
     injections.add(injection);
     proxyContractBuilder.whenCall(method).then(injection::value);
   }
@@ -151,8 +162,18 @@ class ModuleDefaultAssembler {
         annotation.value().trim().isBlank() ? method.getName() : annotation.value().trim(),
         method.getReturnType(),
         unit,
+        annotation.lazy(),
         method
     );
+  }
+
+  private ProjectionRegistryDefault createProjectionRegistry(List<Unit> units) {
+    List<ProjectionProvider> projectionProviders = new ArrayList<>();
+    units.stream()
+        .map(Unit::projectionProviders)
+        .flatMap(List::stream)
+        .forEach(projectionProviders::add);
+    return new ProjectionRegistryDefault(projectionProviders);
   }
 
   private Optional<Method> findStartupMethod(Class<?> unitClass) {

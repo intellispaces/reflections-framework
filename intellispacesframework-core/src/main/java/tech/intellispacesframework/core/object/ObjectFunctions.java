@@ -52,7 +52,7 @@ public class ObjectFunctions {
     return actualType2 == actualType1 || actualType1.isAssignableFrom(actualType2);
   }
 
-  public static CustomType getDomainClassOfObjectHandle(CustomType objectHandleType) {
+  public static CustomType getDomainTypeOfObjectHandle(CustomType objectHandleType) {
     CustomType domainType = getDomainClassRecursive(objectHandleType, new HashSet<>());
     if (domainType == null) {
       throw UnexpectedViolationException.withMessage("Failed to get domain type of object handle {}", objectHandleType.canonicalName());

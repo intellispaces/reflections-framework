@@ -44,7 +44,9 @@ public class ObjectHandleImplMaker extends TemplateBasedJavaArtifactMaker {
     sketch.canonicalName(annotatedType.canonicalName() + "Impl");
 
     sourceClassCanonicalName = annotatedType.canonicalName();
-    domainSimpleClassName = ObjectFunctions.getDomainClassOfObjectHandle(annotatedType).simpleName();
+
+    CustomType domainType = ObjectFunctions.getDomainTypeOfObjectHandle(annotatedType);
+    domainSimpleClassName = domainType.simpleName();
 
 
     sketch.addImport(Modules.class);
@@ -53,6 +55,7 @@ public class ObjectHandleImplMaker extends TemplateBasedJavaArtifactMaker {
     sketch.addImport(Mover1.class);
     sketch.addImport(TransitionMethod1.class);
     sketch.addImport(TransitionFunctions.class);
+    sketch.addImport(domainType.canonicalName());
 
     return true;
   }

@@ -61,7 +61,7 @@ public class ObjectFunctions {
   }
 
   private static CustomType getDomainClassRecursive(CustomType type, Set<String> history) {
-    if (history.contains(type)) {
+    if (history.contains(type.canonicalName())) {
       return null;
     }
     history.add(type.canonicalName());

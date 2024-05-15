@@ -10,32 +10,49 @@ import tech.intellispacesframework.dynamicproxy.tracker.TrackerFunctions;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.function.BiFunction;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * Transition functions.
  */
 public interface TransitionFunctions {
 
-  static <S, T, Q> String getTransitionId(Class<S> sourceDomain, BiFunction<S, Q, T> transitionMethod, Q qualifierAnyValidValue) {
+  static <S, T> String getTransitionId(Class<S> sourceDomain, Function<S, T> transitionMethod) {
+    return getTransitionIdInternal(sourceDomain, transitionMethod, transitionMethod::apply);
+  }
+
+  static <S, T, Q> String getTransitionId(
+      Class<S> sourceDomain, BiFunction<S, Q, T> transitionMethod, Q qualifierAnyValidValue
+  ) {
+    return getTransitionIdInternal(sourceDomain, transitionMethod,
+        (trackedObject) -> transitionMethod.apply(trackedObject, qualifierAnyValidValue));
+  }
+
+  private static <S> String getTransitionIdInternal(
+      Class<S> sourceDomain, Object transitionMethod, Consumer<S> trackedObjectProcessor
+  ) {
     Tracker tracker = TrackerBuilder.build();
     S trackedObject = TrackerFunctions.createTrackedObject(sourceDomain, tracker);
-    transitionMethod.apply(trackedObject, qualifierAnyValidValue);
+    trackedObjectProcessor.accept(trackedObject);
     List<Method> trackedMethods = tracker.getInvokedMethods();
     return extractTransitionId(trackedMethods, sourceDomain, transitionMethod);
   }
 
-  static String getTransitionIdOfEmbeddedGuide(Class<?> objectHandleClass, Method guideMethod) {
+  static String getTransitionIdOfEmbeddedGuide(Method guideMethod) {
+    Class<?> objectHandleClass = guideMethod.getDeclaringClass();
     Class<?> domainClass = ObjectFunctions.getDomainClassOfObjectHandle(objectHandleClass);
     for (Method method : domainClass.getDeclaredMethods()) {
       if (method.getName().equals(guideMethod.getName())) {
-        Transition ta = method.getAnnotation(Transition.class);
-        return ta.value();
+        Transition transition = method.getAnnotation(Transition.class);
+        return transition.value();
       }
     }
-    throw new RuntimeException();
+    throw UnexpectedViolationException.withMessage("Failed to define transition ID of embedded guide '{}' in {}",
+        guideMethod.getName(), objectHandleClass.getCanonicalName());
   }
 
-  private static String extractTransitionId(List<Method> trackedMethods, Class<?> sourceDomain, BiFunction<?, ?, ?> transitionMethod) {
+  private static String extractTransitionId(List<Method> trackedMethods, Class<?> sourceDomain, Object transitionMethod) {
     if (trackedMethods.isEmpty()) {
       throw UnexpectedViolationException.withMessage("Several methods of the domain class {} were invoked while transition method {} was being testing",
           sourceDomain.getCanonicalName(), transitionMethod);

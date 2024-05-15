@@ -2,7 +2,9 @@ package tech.intellispacesframework.core.system;
 
 import tech.intellispacesframework.commons.action.ActionBuilders;
 import tech.intellispacesframework.commons.action.Getter;
+import tech.intellispacesframework.core.guide.AutoMover0;
 import tech.intellispacesframework.core.guide.AutoMover1;
+import tech.intellispacesframework.core.guide.n0.Mover0;
 import tech.intellispacesframework.core.guide.n1.Mover1;
 import tech.intellispacesframework.core.traverse.DeclarativeTraversePlan;
 import tech.intellispacesframework.core.traverse.TraverseAnalyzer;
@@ -89,6 +91,12 @@ public class ModuleDefault implements Module {
   @Override
   public <T> T projection(String name, Class<T> targetClass) {
     return projectionRegistry.projection(name, targetClass);
+  }
+
+  @Override
+  public <S> Mover0<S> autoMoverThruTransition0(Class<S> sourceClass, String tid) {
+    DeclarativeTraversePlan traversePlan = traverseAnalyzer.buildTraversePlanMoveObjectHandleThruTransition0(sourceClass, tid);
+    return new AutoMover0<>(traversePlan, traverseExecutor);
   }
 
   @Override

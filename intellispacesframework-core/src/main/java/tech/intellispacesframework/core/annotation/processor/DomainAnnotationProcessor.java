@@ -4,7 +4,7 @@ import com.google.auto.service.AutoService;
 import tech.intellispacesframework.annotationprocessor.AnnotatedTypeProcessor;
 import tech.intellispacesframework.annotationprocessor.maker.ArtifactMaker;
 import tech.intellispacesframework.core.annotation.AutoGeneration;
-import tech.intellispacesframework.core.annotation.ObjectHandle;
+import tech.intellispacesframework.core.annotation.Domain;
 import tech.intellispacesframework.javastatements.statement.custom.CustomType;
 
 import javax.annotation.processing.Processor;
@@ -13,20 +13,19 @@ import java.util.List;
 import java.util.Set;
 
 @AutoService(Processor.class)
-public class ObjectHandleAnnotationProcessor extends AnnotatedTypeProcessor {
+public class DomainAnnotationProcessor extends AnnotatedTypeProcessor {
 
-  public ObjectHandleAnnotationProcessor() {
-    super(ObjectHandle.class, Set.of(ElementKind.INTERFACE, ElementKind.CLASS));
+  public DomainAnnotationProcessor() {
+    super(Domain.class, Set.of(ElementKind.INTERFACE));
   }
 
   @Override
   protected boolean isApplicable(CustomType annotatedType) {
-    return annotatedType.isAbstract()
-        && annotatedType.selectAnnotation(AutoGeneration.class).map(AutoGeneration::enabled).orElse(true);
+    return annotatedType.selectAnnotation(AutoGeneration.class).map(AutoGeneration::enabled).orElse(true);
   }
 
   @Override
   protected List<ArtifactMaker> getArtifactMakers(CustomType annotatedType) {
-    return List.of(new ObjectHandleImplementationMaker());
+    return List.of(new ObjectHandleMaker());
   }
 }

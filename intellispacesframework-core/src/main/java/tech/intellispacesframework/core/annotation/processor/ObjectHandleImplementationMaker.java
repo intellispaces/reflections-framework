@@ -10,17 +10,23 @@ import tech.intellispacesframework.core.space.transition.TransitionFunctions;
 import tech.intellispacesframework.core.system.Modules;
 import tech.intellispacesframework.core.transition.TransitionMethod1;
 import tech.intellispacesframework.javastatements.statement.custom.CustomType;
+import tech.intellispacesframework.javastatements.statement.custom.MethodParam;
+import tech.intellispacesframework.javastatements.statement.custom.MethodStatement;
+import tech.intellispacesframework.javastatements.statement.reference.TypeReference;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
-public class ObjectHandleImplMaker extends TemplateBasedJavaArtifactMaker {
+public class ObjectHandleImplementationMaker extends TemplateBasedJavaArtifactMaker {
   private final JavaArtifactSketch sketch = new JavaArtifactSketch();
   private String sourceClassCanonicalName;
   private String domainSimpleClassName;
+  private List<Object> constructors;
 
   @Override
   protected String templateName() {
-    return "/MovableObjectHandle.template";
+    return "/MovableObjectHandleImplementation.template";
   }
 
   protected Map<String, Object> templateVariables() {
@@ -30,7 +36,8 @@ public class ObjectHandleImplMaker extends TemplateBasedJavaArtifactMaker {
         "PACKAGE_NAME", sketch.packageName(),
         "CLASS_SIMPLE_NAME", sketch.simpleName(),
         "DOMAIN_CLASS_SIMPLE_NAME", domainSimpleClassName,
-        "importedClasses", sketch.getImports()
+        "CONSTRUCTORS", constructors,
+        "IMPORTED_CLASSES", sketch.getImports()
     );
   }
 
@@ -48,6 +55,7 @@ public class ObjectHandleImplMaker extends TemplateBasedJavaArtifactMaker {
     CustomType domainType = ObjectFunctions.getDomainTypeOfObjectHandle(annotatedType);
     domainSimpleClassName = domainType.simpleName();
 
+    constructors = makeConstructors(annotatedType);
 
     sketch.addImport(Modules.class);
     sketch.addImport(TraverseException.class);
@@ -58,5 +66,31 @@ public class ObjectHandleImplMaker extends TemplateBasedJavaArtifactMaker {
     sketch.addImport(domainType.canonicalName());
 
     return true;
+  }
+
+  @SuppressWarnings("unchecked, rawtypes")
+  private List<Object> makeConstructors(CustomType annotatedType) {
+    List<MethodStatement> constructors;
+    if (annotatedType.asClass().isPresent()) {
+      constructors = annotatedType.asClass().get().constructors();
+    } else {
+      constructors = List.of();
+    }
+
+    List<Map<String, Object>> constructorDescriptors = new ArrayList<>();
+    for (MethodStatement constructor : constructors) {
+      List<Map<String, String>> paramDescriptors = new ArrayList<>();
+      for (MethodParam param : constructor.params()) {
+        TypeReference type = param.type();
+        paramDescriptors.add(Map.of(
+            "name", param.name(),
+            "type", type.typeBriefDeclaration()
+            )
+        );
+        constructorDescriptors.add(Map.of("params", paramDescriptors));
+        type.asCustomTypeReference().ifPresent(ctr -> sketch.addImport(ctr.targetType().canonicalName()));
+      }
+    }
+    return (List) constructorDescriptors;
   }
 }

@@ -1,5 +1,6 @@
 package tech.intellispacesframework.core.system;
 
+import tech.intellispacesframework.core.guide.n0.Mover0;
 import tech.intellispacesframework.core.guide.n1.Mover1;
 
 import java.util.Collection;
@@ -18,6 +19,8 @@ public interface Module {
    * Returns current loaded projections of module.
    */
   Collection<SystemProjection> projections();
+
+  <S> Mover0<S> autoMoverThruTransition0(Class<S> sourceClass, String tid);
 
   <S, Q> Mover1<S, Q> autoMoverThruTransition1(Class<S> sourceClass, String tid);
 

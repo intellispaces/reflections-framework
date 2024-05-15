@@ -1,7 +1,7 @@
 package {{$PACKAGE_NAME}};
 
-{{for importedClass : $importedClasses}}
-import {{$importedClass}};
+{{for IMPORTED_CLASS : $IMPORTED_CLASSES}}
+import {{$IMPORTED_CLASS}};
 {{end}}
 
 /**
@@ -9,16 +9,22 @@ import {{$importedClass}};
  */
 public class {{$CLASS_SIMPLE_NAME}} extends {{$SOURCE_CLASS_SIMPLE_NAME}} {
 
+{{for CONSTRUCTOR : $CONSTRUCTORS}}
+  public {{$CLASS_SIMPLE_NAME}}({{for PARAM : $CONSTRUCTOR["params"]}}{{$PARAM["type"]}} {{$PARAM["name"]}}{{when $PARAM.isLast().invert()}},{{end}}{{end}}) {
+    super({{for PARAM : $CONSTRUCTOR["params"]}}{{$PARAM["name"]}}{{when $PARAM.isLast().invert()}},{{end}}{{end}});
+  }
+{{end}}
+
   @Override
   public <Q> {{$SOURCE_CLASS_SIMPLE_NAME}} moveThru(String tid, Q qualifier) throws TraverseException {
-    Mover1<SystemConsoleHandle, Q> mover = Modules.activeModule().autoMoverThruTransition1({{$SOURCE_CLASS_SIMPLE_NAME}}.class, tid);
+    Mover1<{{$SOURCE_CLASS_SIMPLE_NAME}}, Q> mover = Modules.activeModule().autoMoverThruTransition1({{$SOURCE_CLASS_SIMPLE_NAME}}.class, tid);
     return mover.move(this, qualifier);
   }
 
   @Override
   public <Q> {{$SOURCE_CLASS_SIMPLE_NAME}} moveThru(TransitionMethod1<{{$DOMAIN_CLASS_SIMPLE_NAME}}, {{$DOMAIN_CLASS_SIMPLE_NAME}}, Q> transitionMethod, Q qualifier) throws TraverseException {
     String tid = TransitionFunctions.getTransitionId({{$DOMAIN_CLASS_SIMPLE_NAME}}.class, transitionMethod, null);
-    Mover1<SystemConsoleHandle, Q> mover = Modules.activeModule().autoMoverThruTransition1({{$SOURCE_CLASS_SIMPLE_NAME}}.class, tid);
+    Mover1<{{$SOURCE_CLASS_SIMPLE_NAME}}, Q> mover = Modules.activeModule().autoMoverThruTransition1({{$SOURCE_CLASS_SIMPLE_NAME}}.class, tid);
     return mover.move(this, qualifier);
   }
 }

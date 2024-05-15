@@ -10,15 +10,14 @@ import java.lang.reflect.Method;
  * Mover guide embedded to object handle.
  *
  * @param <S> mover source object type.
- * @param <Q> mover qualified type.
  */
-public class EmbeddedMover1<S, Q> extends AbstractMover1<S, Q> {
+public class EmbeddedMover0<S> extends AbstractMover0<S> {
   private final Class<S> objectHandleClass;
   private final Method moverMethod;
 
-  public EmbeddedMover1(Class<S> objectHandleClass, Method moverMethod) {
-    if (moverMethod.getParameterCount() != 1) {
-      throw UnexpectedViolationException.withMessage("Embedded guide should have 1 parameter");
+  public EmbeddedMover0(Class<S> objectHandleClass, Method moverMethod) {
+    if (moverMethod.getParameterCount() != 0) {
+      throw UnexpectedViolationException.withMessage("Embedded guide should not have parameters");
     }
     this.objectHandleClass = objectHandleClass;
     this.moverMethod = moverMethod;
@@ -26,9 +25,9 @@ public class EmbeddedMover1<S, Q> extends AbstractMover1<S, Q> {
 
   @Override
   @SuppressWarnings("unchecked")
-  public S move(S source, Q qualifier) throws TraverseException {
+  public S move(S source) throws TraverseException {
     try {
-      return (S) moverMethod.invoke(source, qualifier);
+      return (S) moverMethod.invoke(source);
     } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
       throw TraverseException.withCauseAndMessage(e, "Failed to invoke mover method {} of object handle {}",
           moverMethod.getName(), objectHandleClass.getCanonicalName());

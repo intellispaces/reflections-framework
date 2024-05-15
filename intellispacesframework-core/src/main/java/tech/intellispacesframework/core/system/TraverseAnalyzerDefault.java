@@ -1,32 +1,60 @@
 package tech.intellispacesframework.core.system;
 
+import tech.intellispacesframework.commons.exception.UnexpectedViolationException;
 import tech.intellispacesframework.core.annotation.Mover;
+import tech.intellispacesframework.core.guide.EmbeddedMover0;
 import tech.intellispacesframework.core.guide.EmbeddedMover1;
+import tech.intellispacesframework.core.guide.Guide;
+import tech.intellispacesframework.core.guide.n0.Guide0;
 import tech.intellispacesframework.core.guide.n1.Guide1;
 import tech.intellispacesframework.core.object.ObjectFunctions;
 import tech.intellispacesframework.core.space.transition.TransitionFunctions;
 import tech.intellispacesframework.core.traverse.*;
 
 import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 class TraverseAnalyzerDefault implements TraverseAnalyzer {
 
   @Override
-  public MoveObjectHandleThruTransition1GeneralTraversePlan buildTraversePlanMoveObjectHandleThruTransition1(
+  public MoveObjectHandleThruTransition0TraversePlan buildTraversePlanMoveObjectHandleThruTransition0(
       Class<?> objectHandleClass, String tid
   ) {
-    var traversePlan = new MoveObjectHandleThruTransition1GeneralTraversePlanDefault(objectHandleClass, tid);
+    var traversePlan = new MoveObjectHandleThruTransition0TraversePlanDefault(objectHandleClass, tid);
     Optional<EffectiveTraversePlan> effectiveTaskPlan = buildEffectiveTaskPlanFor(traversePlan, objectHandleClass);
-    effectiveTaskPlan.ifPresent(etp -> traversePlan.setEffectiveTaskPlan(objectHandleClass, etp));
+    effectiveTaskPlan.ifPresent(etp -> traversePlan.addEffectiveTaskPlan(objectHandleClass, etp));
+    return traversePlan;
+  }
+
+  @Override
+  public MoveObjectHandleThruTransition1TraversePlan buildTraversePlanMoveObjectHandleThruTransition1(
+      Class<?> objectHandleClass, String tid
+  ) {
+    var traversePlan = new MoveObjectHandleThruTransition1TraversePlanDefault(objectHandleClass, tid);
+    Optional<EffectiveTraversePlan> effectiveTaskPlan = buildEffectiveTaskPlanFor(traversePlan, objectHandleClass);
+    effectiveTaskPlan.ifPresent(etp -> traversePlan.addEffectiveTaskPlan(objectHandleClass, etp));
     return traversePlan;
   }
 
   @Override
   public Optional<EffectiveTraversePlan> buildEffectiveTaskPlanFor(
-      MoveObjectHandleThruTransition1GeneralTraversePlan traversePlan, Class<?> objectHandleClass
+      MoveObjectHandleThruTransition0TraversePlan traversePlan, Class<?> objectHandleClass
   ) {
-    Guide1<?, ?, ?> guide = findGuide(objectHandleClass, traversePlan.tid());
+    var guide = (Guide0<?, ?>) findGuideByTid(objectHandleClass, traversePlan.tid());
+    CallGuide0TraversePlan delegatedTaskPlan = null;
+    if (guide != null) {
+      delegatedTaskPlan = new CallGuide0TraversePlanDefault(guide);
+    }
+    return Optional.ofNullable(delegatedTaskPlan);
+  }
+
+  @Override
+  public Optional<EffectiveTraversePlan> buildEffectiveTaskPlanFor(
+      MoveObjectHandleThruTransition1TraversePlan traversePlan, Class<?> objectHandleClass
+  ) {
+    var guide = (Guide1<?, ?, ?>) findGuideByTid(objectHandleClass, traversePlan.tid());
     CallGuide1TraversePlan delegatedTaskPlan = null;
     if (guide != null) {
       delegatedTaskPlan = new CallGuide1TraversePlanDefault(guide);
@@ -34,30 +62,61 @@ class TraverseAnalyzerDefault implements TraverseAnalyzer {
     return Optional.ofNullable(delegatedTaskPlan);
   }
 
-  private Guide1<?, ?, ?> findGuide(Class<?> objectHandleClass, String tid) {
-    return findEmbeddedGuide(objectHandleClass, tid);
+  private Guide<?, ?> findGuideByTid(Class<?> objectHandleClass, String tid) {
+    return findEmbeddedGuideByTid(objectHandleClass, tid);
   }
 
-  private Guide1<?, ?, ?> findEmbeddedGuide(Class<?> objectHandleClass, String tid) {
+  private Guide<?, ?> findEmbeddedGuideByTid(Class<?> objectHandleClass, String tid) {
+    ObjectHandleDescription description = objectHandleDescriptions.computeIfAbsent(
+        objectHandleClass, this::getObjectHandleDescription);
+    return description.findEmbeddedGuideByTid(tid);
+  }
+
+  private ObjectHandleDescription getObjectHandleDescription(Class<?> objectHandleClass) {
+    ObjectHandleDescription description = new ObjectHandleDescription();
     Class<?> actualObjectHandleClass = ObjectFunctions.getObjectHandleClass(objectHandleClass);
     if (actualObjectHandleClass == null) {
-      return null;
+      return description;
     }
     for (Method method : actualObjectHandleClass.getDeclaredMethods()) {
-      Mover moverAnnotation = method.getAnnotation(Mover.class);
-      if (moverAnnotation != null) {
-        if (!moverAnnotation.value().isEmpty()) {
-          if (tid.equals(moverAnnotation.value())) {
-            return new EmbeddedMover1<>(actualObjectHandleClass, method);
-          }
-        } else {
-          String guideTid = TransitionFunctions.getTransitionIdOfEmbeddedGuide(actualObjectHandleClass, method);
-          if (tid.equals(guideTid)) {
-            return new EmbeddedMover1<>(actualObjectHandleClass, method);
-          }
-        }
+      Mover mover = method.getAnnotation(Mover.class);
+      if (mover != null) {
+        String tid = getMoverTid(method);
+        Guide<?, ?> guide = makeEmbeddedMover(actualObjectHandleClass, method);
+        description.addEmbeddedGuide(guide, tid);
       }
     }
-    return null;
+    return description;
+  }
+
+  private String getMoverTid(Method moverMethod) {
+    Mover mover = moverMethod.getAnnotation(Mover.class);
+    if (!mover.value().isEmpty()) {
+      return mover.value();
+    }
+    return TransitionFunctions.getTransitionIdOfEmbeddedGuide(moverMethod);
+  }
+
+  private Guide<?, ?> makeEmbeddedMover(Class<?> objectHandleClass, Method guideMethod) {
+    int qualifiersCount = guideMethod.getParameterCount();
+    return switch (qualifiersCount) {
+      case 0 -> new EmbeddedMover0<>(objectHandleClass, guideMethod);
+      case 1 -> new EmbeddedMover1<>(objectHandleClass, guideMethod);
+      default -> throw UnexpectedViolationException.withMessage("Unsupported number of guide qualifiers - {}", qualifiersCount);
+    };
+  }
+
+  private final Map<Class<?>, ObjectHandleDescription> objectHandleDescriptions = new HashMap<>();
+
+  private final class ObjectHandleDescription {
+    private final Map<String, Guide<?, ?>> embeddedGuides = new HashMap<>();
+
+    void addEmbeddedGuide(Guide<?, ?> guide, String tid) {
+      embeddedGuides.put(tid, guide);
+    }
+
+    Guide<?, ?> findEmbeddedGuideByTid(String tid) {
+      return embeddedGuides.get(tid);
+    }
   }
 }

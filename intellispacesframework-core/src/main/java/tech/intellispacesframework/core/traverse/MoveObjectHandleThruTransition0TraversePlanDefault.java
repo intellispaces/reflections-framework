@@ -8,19 +8,19 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MoveObjectHandleThruTransition1GeneralTraversePlanDefault implements MoveObjectHandleThruTransition1GeneralTraversePlan {
+public class MoveObjectHandleThruTransition0TraversePlanDefault implements MoveObjectHandleThruTransition0TraversePlan {
   private final Class<?> objectHandleClass;
   private final String tid;
   private final Map<Class<?>, EffectiveTraversePlan> effectiveTaskPlans = new HashMap<>();
 
-  public MoveObjectHandleThruTransition1GeneralTraversePlanDefault(Class<?> objectHandleClass, String tid) {
+  public MoveObjectHandleThruTransition0TraversePlanDefault(Class<?> objectHandleClass, String tid) {
     this.objectHandleClass = objectHandleClass;
     this.tid = tid;
   }
 
   @Override
   public TraversePlanType type() {
-    return TraversePlanTypes.MoveObjectHandleThruTransition1;
+    return TraversePlanTypes.MoveObjectHandleThruTransition0;
   }
 
   @Override
@@ -39,7 +39,7 @@ public class MoveObjectHandleThruTransition1GeneralTraversePlanDefault implement
   }
 
   @Override
-  public void setEffectiveTaskPlan(Class<?> objectHandleClass, EffectiveTraversePlan traversePlan) {
+  public void addEffectiveTaskPlan(Class<?> objectHandleClass, EffectiveTraversePlan traversePlan) {
     if (this.objectHandleClass != objectHandleClass && !this.objectHandleClass.isAssignableFrom(objectHandleClass)) {
       throw UnexpectedViolationException.withMessage("Expected class {} or its subclasses", this.objectHandleClass.getCanonicalName());
     }
@@ -50,12 +50,12 @@ public class MoveObjectHandleThruTransition1GeneralTraversePlanDefault implement
   }
 
   @Override
-  public Object execute(Object source, TraverseExecutor traverseExecutor) {
-    throw UnexpectedViolationException.withMessage("Expected traverse with one qualifier");
+  public Object execute(Object source, TraverseExecutor traverseExecutor) throws TraverseException {
+    return traverseExecutor.execute(this, source);
   }
 
   @Override
-  public Object execute(Object source, Object qualifier, TraverseExecutor traverseExecutor) throws TraverseException {
-    return traverseExecutor.execute(this, source, qualifier);
+  public Object execute(Object source, Object qualifier, TraverseExecutor traverseExecutor) {
+    throw UnexpectedViolationException.withMessage("Expected traverse with no qualifier");
   }
 }

@@ -1,0 +1,12 @@
+package {{$PACKAGE_NAME}};
+
+{{for IMPORTED_CLASS : $IMPORTED_CLASSES}}
+import {{$IMPORTED_CLASS}};
+{{end}}
+
+/**
+ * This class auto generated from class {@link {{$SOURCE_CLASS_NAME}}}.
+ */
+public interface {{$CLASS_SIMPLE_NAME}} extends ObjectHandle<{{$SOURCE_CLASS_SIMPLE_NAME}}>, {{$SOURCE_CLASS_SIMPLE_NAME}} {
+
+}

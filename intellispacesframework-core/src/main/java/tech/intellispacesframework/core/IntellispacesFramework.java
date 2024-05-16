@@ -1,7 +1,7 @@
 package tech.intellispacesframework.core;
 
-import tech.intellispacesframework.core.system.ModuleLoaders;
 import tech.intellispacesframework.core.system.Module;
+import tech.intellispacesframework.core.system.ModuleLoaders;
 
 public interface IntellispacesFramework {
 

@@ -63,7 +63,7 @@ class ModuleDefaultFactory {
     if (unitClass != Void.class) {
       return List.of(createUnit(unitClass, false, projectionRegistryGetter));
     }
-    throw UnexpectedViolationException.withMessage("Not implemented");
+    throw new UnsupportedOperationException("Not implemented yet");
   }
 
   private UnitDefault createUnit(Class<?> unitClass, boolean main, Getter<ProjectionRegistry> projectionRegistryGetter) {
@@ -91,7 +91,7 @@ class ModuleDefaultFactory {
 
   private <T> T createUnitInstance(Class<T> unitClass, List<Injection> injections, Getter<ProjectionRegistry> projectionRegistryGetter) {
     if (unitClass.isInterface()) {
-      throw UnexpectedViolationException.withMessage("Not implemented");
+      throw new UnsupportedOperationException("Not implemented yet");
     } else if (TypeFunctions.isAbstractClass(unitClass)) {
       return createUnitInstanceWhenAbstractClass(unitClass, injections, projectionRegistryGetter);
     } else {

@@ -11,16 +11,20 @@ public class Modules {
   private static final Logger LOG = LoggerFactory.getLogger(Modules.class);
 
   public static Module activeModule() {
-    Module module = CURRENT.get();
+    Module module = activeModuleSilently();
     if (module == null) {
       throw UnexpectedViolationException.withMessage("Application active module is not defined. It is possible that the module is not loaded yet");
     }
     return module;
   }
 
+  static Module activeModuleSilently() {
+    return CURRENT.get();
+  }
+
   static void setActiveModule(Module module) {
     Module previous = CURRENT.getAndSet(module);
-    if (previous != null) {
+    if (previous != null && module != null) {
       LOG.warn("Application active module has been changed");
     }
   }

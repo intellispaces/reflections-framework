@@ -10,6 +10,11 @@ import java.util.function.Consumer;
 public abstract class AbstractMover0<S> implements Mover0<S> {
 
   @Override
+  public GuideKind kind() {
+    return GuideKinds.Mover0;
+  }
+
+  @Override
   public Consumer<S> asConsumer() {
     return (source) -> {
       try {

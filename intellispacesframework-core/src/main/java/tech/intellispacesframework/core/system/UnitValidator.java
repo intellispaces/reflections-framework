@@ -5,9 +5,9 @@ import tech.intellispacesframework.core.annotation.Projection;
 import tech.intellispacesframework.core.annotation.Shutdown;
 import tech.intellispacesframework.core.annotation.Startup;
 import tech.intellispacesframework.core.annotation.Unit;
-import tech.intellispacesframework.core.space.domain.DomainFunctions;
 import tech.intellispacesframework.core.exception.ConfigurationException;
 import tech.intellispacesframework.core.object.ObjectFunctions;
+import tech.intellispacesframework.core.space.domain.DomainFunctions;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;

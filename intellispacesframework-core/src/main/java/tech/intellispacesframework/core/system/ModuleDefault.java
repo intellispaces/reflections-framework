@@ -1,5 +1,7 @@
 package tech.intellispacesframework.core.system;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import tech.intellispacesframework.commons.action.ActionBuilders;
 import tech.intellispacesframework.commons.action.Getter;
 import tech.intellispacesframework.core.guide.AutoMover0;
@@ -9,8 +11,6 @@ import tech.intellispacesframework.core.guide.n1.Mover1;
 import tech.intellispacesframework.core.traverse.DeclarativeTraversePlan;
 import tech.intellispacesframework.core.traverse.TraverseAnalyzer;
 import tech.intellispacesframework.core.traverse.TraverseExecutor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
 import java.util.List;

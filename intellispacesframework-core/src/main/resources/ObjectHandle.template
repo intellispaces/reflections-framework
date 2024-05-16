@@ -5,8 +5,10 @@ import {{$IMPORTED_CLASS}};
 {{end}}
 
 /**
- * This class auto generated from class {@link {{$SOURCE_CLASS_NAME}}}.
+ * Abstract object handle for objects of domain {@link {{$SOURCE_CLASS_NAME}}}.
+ *
+ * <p>This class was auto generated from class {@link {{$SOURCE_CLASS_NAME}}}.
  */
-public interface {{$CLASS_SIMPLE_NAME}} extends ObjectHandle<{{$SOURCE_CLASS_SIMPLE_NAME}}>, {{$SOURCE_CLASS_SIMPLE_NAME}} {
+public interface {{$CLASS_SIMPLE_NAME}}{{$DOMAIN_TYPE_PARAMS_FULL}} extends ObjectHandle<{{$SOURCE_CLASS_SIMPLE_NAME}}{{$DOMAIN_TYPE_PARAMS_BRIEF}}>, {{$SOURCE_CLASS_SIMPLE_NAME}}{{$DOMAIN_TYPE_PARAMS_BRIEF}} {
 
 }

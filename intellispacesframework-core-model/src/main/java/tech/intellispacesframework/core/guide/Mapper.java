@@ -11,14 +11,4 @@ package tech.intellispacesframework.core.guide;
  * @param <T> target object type.
  */
 public interface Mapper<S, T> extends Guide<S, T> {
-
-  @Override
-  default boolean isMapper() {
-    return true;
-  }
-
-  @Override
-  default boolean isMover() {
-    return false;
-  }
 }

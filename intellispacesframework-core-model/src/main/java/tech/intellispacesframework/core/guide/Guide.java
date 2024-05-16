@@ -16,9 +16,10 @@ import tech.intellispacesframework.core.exception.TraverseException;
  */
 public interface Guide<S, T> {
 
-  boolean isMapper();
-
-  boolean isMover();
+  /**
+   * Guide kind.
+   */
+  GuideKind kind();
 
   /**
    * Synchronous execution of the guide.

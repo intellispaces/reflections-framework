@@ -3,13 +3,7 @@ package tech.intellispacesframework.core.annotation.processor;
 import tech.intellispacesframework.annotationprocessor.artifact.sketch.JavaArtifactSketch;
 import tech.intellispacesframework.annotationprocessor.maker.TemplateBasedJavaArtifactMaker;
 import tech.intellispacesframework.commons.type.TypeFunctions;
-import tech.intellispacesframework.core.exception.TraverseException;
-import tech.intellispacesframework.core.guide.n1.Mover1;
-import tech.intellispacesframework.core.object.ObjectFunctions;
 import tech.intellispacesframework.core.object.ObjectHandle;
-import tech.intellispacesframework.core.space.transition.TransitionFunctions;
-import tech.intellispacesframework.core.system.Modules;
-import tech.intellispacesframework.core.transition.TransitionMethod1;
 import tech.intellispacesframework.javastatements.statement.custom.CustomType;
 
 import java.util.Map;
@@ -17,6 +11,8 @@ import java.util.Map;
 public class ObjectHandleMaker extends TemplateBasedJavaArtifactMaker {
   private final JavaArtifactSketch sketch = new JavaArtifactSketch();
   private String sourceClassCanonicalName;
+  private String domainTypeParamsFull;
+  private String domainTypeParamsBrief;
 
   @Override
   protected String templateName() {
@@ -29,6 +25,8 @@ public class ObjectHandleMaker extends TemplateBasedJavaArtifactMaker {
         "SOURCE_CLASS_SIMPLE_NAME", TypeFunctions.getSimpleName(sourceClassCanonicalName),
         "PACKAGE_NAME", sketch.packageName(),
         "CLASS_SIMPLE_NAME", sketch.simpleName(),
+        "DOMAIN_TYPE_PARAMS_FULL", domainTypeParamsFull,
+        "DOMAIN_TYPE_PARAMS_BRIEF", domainTypeParamsBrief,
         "IMPORTED_CLASSES", sketch.getImports()
     );
   }
@@ -40,9 +38,11 @@ public class ObjectHandleMaker extends TemplateBasedJavaArtifactMaker {
 
   @Override
   protected boolean analyze(CustomType annotatedType) {
+    sourceClassCanonicalName = annotatedType.canonicalName();
     sketch.canonicalName(annotatedType.canonicalName() + "Handle");
 
-    sourceClassCanonicalName = annotatedType.canonicalName();
+    domainTypeParamsFull = annotatedType.typeParametersFullDeclaration();
+    domainTypeParamsBrief = annotatedType.typeParametersBriefDeclaration();
 
     sketch.addImport(ObjectHandle.class);
 

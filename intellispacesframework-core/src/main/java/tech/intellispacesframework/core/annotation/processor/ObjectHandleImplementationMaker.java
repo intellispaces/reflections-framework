@@ -31,13 +31,13 @@ public class ObjectHandleImplementationMaker extends TemplateBasedJavaArtifactMa
 
   protected Map<String, Object> templateVariables() {
     return Map.of(
-        "SOURCE_CLASS_NAME", sourceClassCanonicalName,
-        "SOURCE_CLASS_SIMPLE_NAME", TypeFunctions.getSimpleName(sourceClassCanonicalName),
-        "PACKAGE_NAME", sketch.packageName(),
-        "CLASS_SIMPLE_NAME", sketch.simpleName(),
-        "DOMAIN_CLASS_SIMPLE_NAME", domainSimpleClassName,
-        "CONSTRUCTORS", constructors,
-        "IMPORTED_CLASSES", sketch.getImports()
+        "packageName", sketch.packageName(),
+        "sourceClassName", sourceClassCanonicalName,
+        "sourceClassSimpleName", TypeFunctions.getSimpleName(sourceClassCanonicalName),
+        "classSimpleName", sketch.simpleName(),
+        "domainClassSimpleName", domainSimpleClassName,
+        "constructors", constructors,
+        "importedClasses", sketch.getImports()
     );
   }
 
@@ -47,15 +47,15 @@ public class ObjectHandleImplementationMaker extends TemplateBasedJavaArtifactMa
   }
 
   @Override
-  protected boolean analyze(CustomType annotatedType) {
-    sketch.canonicalName(annotatedType.canonicalName() + "Impl");
+  protected boolean analyze(CustomType objectHandleType) {
+    sketch.canonicalName(objectHandleType.canonicalName() + "Impl");
 
-    sourceClassCanonicalName = annotatedType.canonicalName();
+    sourceClassCanonicalName = objectHandleType.canonicalName();
 
-    CustomType domainType = ObjectFunctions.getDomainTypeOfObjectHandle(annotatedType);
+    CustomType domainType = ObjectFunctions.getDomainTypeOfObjectHandle(objectHandleType);
     domainSimpleClassName = domainType.simpleName();
 
-    constructors = makeConstructors(annotatedType);
+    analyzeConstructors(objectHandleType);
 
     sketch.addImport(Modules.class);
     sketch.addImport(TraverseException.class);
@@ -69,10 +69,10 @@ public class ObjectHandleImplementationMaker extends TemplateBasedJavaArtifactMa
   }
 
   @SuppressWarnings("unchecked, rawtypes")
-  private List<Object> makeConstructors(CustomType annotatedType) {
+  private void analyzeConstructors(CustomType objectHandleType) {
     List<MethodStatement> constructors;
-    if (annotatedType.asClass().isPresent()) {
-      constructors = annotatedType.asClass().get().constructors();
+    if (objectHandleType.asClass().isPresent()) {
+      constructors = objectHandleType.asClass().get().constructors();
     } else {
       constructors = List.of();
     }
@@ -91,6 +91,6 @@ public class ObjectHandleImplementationMaker extends TemplateBasedJavaArtifactMa
         type.asCustomTypeReference().ifPresent(ctr -> sketch.addImport(ctr.targetType().canonicalName()));
       }
     }
-    return (List) constructorDescriptors;
+    this.constructors = (List) constructorDescriptors;
   }
 }

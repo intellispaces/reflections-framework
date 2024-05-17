@@ -27,12 +27,6 @@ public abstract class AbstractMover0<S> implements Mover0<S> {
 
   @Override
   public BiConsumer<S, Void> asBiConsumer() {
-    return (source, qualifier) -> {
-      try {
-        move(source, qualifier);
-      } catch (TraverseException e) {
-        throw CoveredCheckedException.withCause(e);
-      }
-    };
+    return this::move;
   }
 }

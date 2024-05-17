@@ -1,8 +1,8 @@
 package tech.intellispacesframework.core.exception;
 
-import tech.intellispacesframework.commons.exception.PossibleViolationException;
+import tech.intellispacesframework.commons.exception.UnexpectedViolationException;
 
-public class TraverseException extends PossibleViolationException {
+public class TraverseException extends UnexpectedViolationException {
 
   protected TraverseException(String messageTemplate, Object... arguments) {
     super(messageTemplate, arguments);

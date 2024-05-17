@@ -1,14 +1,19 @@
-package {{$PACKAGE_NAME}};
+package {{$packageName}};
 
-{{for IMPORTED_CLASS : $IMPORTED_CLASSES}}
-import {{$IMPORTED_CLASS}};
+{{for importedClass : $importedClasses}}
+import {{$importedClass}};
 {{end}}
 
 /**
- * Abstract object handle for objects of domain {@link {{$SOURCE_CLASS_NAME}}}.
+ * Abstract object handle for objects of domain {@link {{$sourceClassName}}}.
  *
- * <p>This class was auto generated from class {@link {{$SOURCE_CLASS_NAME}}}.
+ * <p>This class was auto generated from class {@link {{$sourceClassName}}} since annotation @Domain is specified.
  */
-public interface {{$CLASS_SIMPLE_NAME}}{{$DOMAIN_TYPE_PARAMS_FULL}} extends ObjectHandle<{{$SOURCE_CLASS_SIMPLE_NAME}}{{$DOMAIN_TYPE_PARAMS_BRIEF}}>, {{$SOURCE_CLASS_SIMPLE_NAME}}{{$DOMAIN_TYPE_PARAMS_BRIEF}} {
+public interface {{$classSimpleName}}{{$domainTypeParamsFull}} extends ObjectHandle<{{$sourceClassSimpleName}}{{$domainTypeParamsBrief}}>, {{$sourceClassSimpleName}}{{$domainTypeParamsBrief}} {
 
+{{for method : $methods}}
+  @Override
+  public {{$method}};
+
+{{end}}
 }

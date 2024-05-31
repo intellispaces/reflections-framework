@@ -1,18 +1,7 @@
 package tech.intellispacesframework.core.system;
 
-public interface ProjectionProvider {
+import java.util.function.Supplier;
 
-  /**
-   * Projection name.
-   */
-  String name();
-
-  /**
-   * Projection type.
-   */
-  Class<?> type();
-
-  boolean isLazy();
-
-  ProjectionProviderType providerType();
+@FunctionalInterface
+public interface ProjectionProvider extends Supplier<Object> {
 }

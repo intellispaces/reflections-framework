@@ -3,28 +3,28 @@ package tech.intellispacesframework.core.system;
 import tech.intellispacesframework.core.guide.n0.Mover0;
 import tech.intellispacesframework.core.guide.n1.Mover1;
 
-import java.util.Collection;
-import java.util.List;
-
 /**
  * System module.
  */
 public interface Module {
 
-  List<Unit> units();
+  default void start() {
+    start(new String[] {});
+  }
 
-  <T> T projection(String name, Class<T> targetClass);
+  void start(String[] args);
 
-  /**
-   * Returns current loaded projections of module.
-   */
-  Collection<SystemProjection> projections();
+  void shutdown();
 
   <S> Mover0<S> autoMoverThruTransition0(Class<S> sourceClass, String tid);
 
   <S, Q> Mover1<S, Q> autoMoverThruTransition1(Class<S> sourceClass, String tid);
 
-  <S, Q> S moveThruTransition1(S source, String tid, Q qualifier);
+  <S, T> T mapThruTransition0(S source, String tid);
 
-  void shutdown();
+  <S, T, Q> T mapThruTransition1(S source, String tid, Q qualifier);
+
+  <S> S moveThruTransition0(S source, String tid);
+
+  <S, Q> S moveThruTransition1(S source, String tid, Q qualifier);
 }

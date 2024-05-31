@@ -5,10 +5,11 @@ import {{$importedClass}};
 {{end}}
 
 /**
- * Abstract object handle for objects of domain {@link {{$sourceClassName}}}.
+ * Abstract object handle for domain {@link {{$sourceClassName}}} objects.
  *
- * <p>This class was auto generated from class {@link {{$sourceClassName}}} since annotation @Domain is specified.
+ * <p>This class was generated automatically. Don't try to change it.
  */
+{{$generatedAnnotation}}
 public interface {{$classSimpleName}}{{$domainTypeParamsFull}} extends ObjectHandle<{{$sourceClassSimpleName}}{{$domainTypeParamsBrief}}>, {{$sourceClassSimpleName}}{{$domainTypeParamsBrief}} {
 
 {{for method : $methods}}

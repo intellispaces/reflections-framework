@@ -9,5 +9,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface AutoGeneration {
 
+  String target() default "";
+
   boolean enabled() default true;
 }

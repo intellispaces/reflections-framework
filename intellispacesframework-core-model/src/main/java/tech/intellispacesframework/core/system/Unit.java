@@ -1,5 +1,7 @@
 package tech.intellispacesframework.core.system;
 
+import tech.intellispacesframework.core.guide.Guide;
+
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Optional;
@@ -17,7 +19,9 @@ public interface Unit {
 
   List<Injection> injections();
 
-  List<UnitProjectionProvider> projectionProviders();
+  List<UnitProjectionDefinition> projectionProviders();
+
+  List<Guide<?, ?>> guides();
 
   Optional<Method> startupMethod();
 

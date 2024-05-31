@@ -24,21 +24,21 @@ public class ObjectFunctions {
   }
 
   public static Class<?> getObjectHandleClass(Class<?> aClass) {
-    return getObjectHandleClassInternal(aClass);
+    return findObjectHandleClass(aClass);
   }
 
-  private static Class<?> getObjectHandleClassInternal(Class<?> aClass) {
+  private static Class<?> findObjectHandleClass(Class<?> aClass) {
     if (aClass.isAnnotationPresent(tech.intellispacesframework.core.annotation.ObjectHandle.class)) {
       return aClass;
     }
     if (aClass.getSuperclass() != null) {
-      Class<?> result = getObjectHandleClassInternal(aClass.getSuperclass());
+      Class<?> result = findObjectHandleClass(aClass.getSuperclass());
       if (result != null) {
         return result;
       }
     }
     for (Class<?> anInterface : aClass.getInterfaces()) {
-      Class<?> result = getObjectHandleClassInternal(anInterface);
+      Class<?> result = findObjectHandleClass(anInterface);
       if (result != null) {
         return result;
       }

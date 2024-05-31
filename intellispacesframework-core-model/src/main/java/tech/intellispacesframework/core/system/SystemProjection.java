@@ -20,5 +20,5 @@ public interface SystemProjection {
   /**
    * Projection provider.
    */
-  ProjectionProvider provider();
+  ProjectionDefinition provider();
 }

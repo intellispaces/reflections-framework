@@ -1,25 +1,20 @@
 package tech.intellispacesframework.core.system;
 
-import tech.intellispacesframework.commons.action.ActionBuilders;
 import tech.intellispacesframework.commons.action.Getter;
-import tech.intellispacesframework.commons.action.ResettableGetter;
 import tech.intellispacesframework.commons.exception.UnexpectedViolationException;
-import tech.intellispacesframework.commons.type.TypeFunctions;
 import tech.intellispacesframework.core.annotation.Module;
 import tech.intellispacesframework.core.annotation.Projection;
 import tech.intellispacesframework.core.annotation.Shutdown;
 import tech.intellispacesframework.core.annotation.Startup;
 import tech.intellispacesframework.core.exception.ConfigurationException;
+import tech.intellispacesframework.core.guide.Guide;
+import tech.intellispacesframework.core.guide.GuideFunctions;
 import tech.intellispacesframework.core.traverse.TraverseAnalyzer;
 import tech.intellispacesframework.core.traverse.TraverseExecutor;
-import tech.intellispacesframework.dynamicproxy.DynamicProxy;
-import tech.intellispacesframework.dynamicproxy.proxy.contract.ProxyContract;
-import tech.intellispacesframework.dynamicproxy.proxy.contract.ProxyContractBuilder;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,138 +25,113 @@ class ModuleDefaultFactory {
   private final UnitValidator unitValidator = new UnitValidator();
   private final ModuleValidator moduleValidator = new ModuleValidator();
 
-  public ModuleDefault createModule(Class<?> moduleClass, String[] args) {
-    ResettableGetter<ProjectionRegistry> projectionRegistryGetter = ActionBuilders.resettableGetter();
-    List<Unit> units = assembleUnits(moduleClass, projectionRegistryGetter);
+  public ModuleDefault createModule(Class<?> moduleClass) {
+    List<Unit> units = createUnits(moduleClass);
+    ProjectionRegistry projectionRegistry = createProjectionRegistry(units);
+    EmbeddedGuideRegistry embeddedGuideRegistry = new EmbeddedGuideRegistryImpl();
+    ModuleGuideRegistry moduleGuideRegistry = createModuleGuideRegistry(units);;
+    TraverseAnalyzer traverseAnalyzer = new TraverseAnalyzerImpl(moduleGuideRegistry, embeddedGuideRegistry);
+    TraverseExecutor traverseExecutor = new TraverseExecutorImpl(traverseAnalyzer);
+    ModuleDefault module = new ModuleDefaultImpl(units, projectionRegistry, traverseAnalyzer, traverseExecutor);
 
-    ProjectionRegistryDefault projectionRegistry = createProjectionRegistry(units);
-    projectionRegistryGetter.set(projectionRegistry);
-
-    TraverseAnalyzer traverseAnalyzer = new TraverseAnalyzerDefault();
-    TraverseExecutor traverseExecutor = new TraverseExecutorDefault(traverseAnalyzer);
-
-    var module = new ModuleDefault(units, projectionRegistry, traverseAnalyzer, traverseExecutor);
     moduleValidator.validateModule(module);
-
     return module;
   }
 
-  private List<Unit> assembleUnits(Class<?> moduleClass, Getter<ProjectionRegistry> projectionRegistryGetter) {
+  private List<Unit> createUnits(Class<?> moduleClass) {
     List<Unit> units = new ArrayList<>();
-    units.add(createUnit(moduleClass, true, projectionRegistryGetter));
-    addIncludedUnits(moduleClass, units, projectionRegistryGetter);
+    units.add(createUnit(moduleClass, true));
+    createIncludedUnits(moduleClass, units);
     return units;
   }
 
-  private void addIncludedUnits(Class<?> moduleClass, List<Unit> units, Getter<ProjectionRegistry> projectionRegistryGetter) {
-    Arrays.stream(moduleClass.getAnnotation(Module.class).include())
-        .map(unit -> processIncludedUnit(unit, projectionRegistryGetter))
-        .forEach(units::addAll);
+  private void createIncludedUnits(Class<?> moduleClass, List<Unit> units) {
+    Arrays.stream(moduleClass.getAnnotation(Module.class).units())
+        .map(this::createIncludedUnit)
+        .forEach(units::add);
   }
 
-  private List<UnitDefault> processIncludedUnit(Class<?> unitClass, Getter<ProjectionRegistry> projectionRegistryGetter) {
+  private Unit createIncludedUnit(Class<?> unitClass) {
     if (unitClass != Void.class) {
-      return List.of(createUnit(unitClass, false, projectionRegistryGetter));
+      return createUnit(unitClass, false);
     }
     throw new UnsupportedOperationException("Not implemented yet");
   }
 
-  private UnitDefault createUnit(Class<?> unitClass, boolean main, Getter<ProjectionRegistry> projectionRegistryGetter) {
+  private Unit createUnit(Class<?> unitClass, boolean main) {
     unitValidator.validateUnitDeclaration(unitClass, main);
 
-    List<Injection> injections = new ArrayList<>();
-    List<UnitProjectionProvider> projectionProviders = new ArrayList<>();
+    List<UnitProjectionDefinition> projectionProviders = new ArrayList<>();
     Optional<Method> startupMethod = findStartupMethod(unitClass);
     Optional<Method> shutdownMethod = findShutdownMethod(unitClass);
 
-    Object unitInstance = createUnitInstance(unitClass, injections, projectionRegistryGetter);
-    var unit = new UnitDefault(
+    Class<?> unitWrapperClass = getUnitWrapperClass(unitClass);
+    UnitWrapper unitInstance = createUnitInstance(unitClass, unitWrapperClass);
+    List<Guide<?, ?>> unitGuides = GuideFunctions.loadUnitGuides(unitClass, unitInstance);
+    Unit unit = new UnitImpl(
         main,
         unitClass,
         unitInstance,
-        injections,
-        Collections.unmodifiableList(projectionProviders),
+        projectionProviders,
+        unitGuides,
         startupMethod.orElse(null),
         shutdownMethod.orElse(null)
     );
 
-    addProjectionProviders(unitClass, unit, projectionProviders);
+    addProjectionProviders(unitWrapperClass, unit, projectionProviders);
     return unit;
   }
 
-  private <T> T createUnitInstance(Class<T> unitClass, List<Injection> injections, Getter<ProjectionRegistry> projectionRegistryGetter) {
-    if (unitClass.isInterface()) {
-      throw new UnsupportedOperationException("Not implemented yet");
-    } else if (TypeFunctions.isAbstractClass(unitClass)) {
-      return createUnitInstanceWhenAbstractClass(unitClass, injections, projectionRegistryGetter);
-    } else {
-      return createUnitInstanceWhenClass(unitClass);
-    }
-  }
-
-  private <T> T createUnitInstanceWhenClass(Class<T> unitClass) {
+  private Class<?> getUnitWrapperClass(Class<?> unitClass) {
     try {
-      return unitClass.getConstructor().newInstance();
+      String wrapperClassName = UnitWrapper.getWrapperClassCanonicalName(unitClass.getName());
+      return Class.forName(wrapperClassName);
     } catch (Exception e) {
-      throw UnexpectedViolationException.withCauseAndMessage(e, "Error creating module unit {}", unitClass.getCanonicalName());
+      throw UnexpectedViolationException.withCauseAndMessage(e, "Failed to get wrapper class of module unit {}",
+          unitClass.getCanonicalName());
     }
   }
 
-  private <T> T createUnitInstanceWhenAbstractClass(Class<T> unitClass, List<Injection> injections, Getter<ProjectionRegistry> projectionRegistryGetter) {
-    ProxyContractBuilder<T> proxyContractBuilder = ProxyContractBuilder.get()
-        .className(unitClass.getCanonicalName() + "Proxy")
-        .type(unitClass);
-
-    List<Method> injectedMethods = findInjectedMethods(unitClass);
-    for (Method injectedMethod : injectedMethods) {
-      createInjection(unitClass, injectedMethod, proxyContractBuilder, injections, projectionRegistryGetter);
-    }
-
-    ProxyContract<T> proxyContract = proxyContractBuilder.build();
-    Class<T> unitProxyClass = DynamicProxy.createProxyClass(proxyContract);
+  private <U> UnitWrapper createUnitInstance(Class<U> unitClass, Class<?> wrapperClass) {
     try {
-      return unitProxyClass.getConstructor().newInstance();
+      return (UnitWrapper) wrapperClass.getConstructor().newInstance();
     } catch (Exception e) {
-      throw UnexpectedViolationException.withCauseAndMessage(e, "Error creating module unit {}", unitClass.getCanonicalName());
+      throw UnexpectedViolationException.withCauseAndMessage(e, "Error creating module unit {}",
+          unitClass.getCanonicalName());
     }
   }
 
-  private <T> void createInjection(
-      Class<?> unitClass, Method method, ProxyContractBuilder<T> proxyContractBuilder, List<Injection> injections, Getter<ProjectionRegistry> projectionRegistryGetter
+  private <T> void createAbstractMethodImplementation(
+      Class<?> unitClass,
+      Method abstractMethod,
+//      ProxyContractBuilder<T> proxyContractBuilder,
+      List<Injection> injections,
+      Getter<ProjectionRegistry> projectionRegistryGetter
   ) {
-    if (method.getParameterCount() == 0) {
-      createProjectionInjection(unitClass, method, proxyContractBuilder, injections, projectionRegistryGetter);
+    if (abstractMethod.getParameterCount() > 0) {
+      throw ConfigurationException.withMessage("Unit abstract method can't have parameters. See method {} in unit {}",
+          abstractMethod.getName(), abstractMethod.getDeclaringClass().getCanonicalName());
+    }
+    if (abstractMethod.isAnnotationPresent(Projection.class)) {
+//      createProjectionImplementation(unitClass, abstractMethod/*, proxyContractBuilder*/);
     } else {
-      throw ConfigurationException.withMessage("Unit projection injection method can't have parameters. See method {} in unit {}",
-          method.getName(), method.getDeclaringClass().getCanonicalName()
-      );
+//      createProjectionInjection(unitClass, abstractMethod, proxyContractBuilder, injections, projectionRegistryGetter);
     }
   }
 
-  private <T> void createProjectionInjection(
-      Class<?> unitClass, Method method, ProxyContractBuilder<T> proxyContractBuilder, List<Injection> injections, Getter<ProjectionRegistry> projectionRegistryGetter
+
+  private void addProjectionProviders(
+      Class<?> unitWrapperClass, Unit unit, List<UnitProjectionDefinition> projectionProviders
   ) {
-    var injection = new ProjectionInjectionDefault(method.getName(), unitClass, method.getReturnType(), projectionRegistryGetter);
-    injections.add(injection);
-    proxyContractBuilder.whenCall(method).then(injection::value);
-  }
-
-  private List<Method> findInjectedMethods(Class<?> unitClass) {
-    return Arrays.stream(unitClass.getDeclaredMethods())
-        .filter(TypeFunctions::isAbstractMethod)
-        .toList();
-  }
-
-  private void addProjectionProviders(Class<?> unitClass, UnitDefault unit, List<UnitProjectionProvider> projectionProviders) {
-    Arrays.stream(unitClass.getDeclaredMethods())
+    Arrays.stream(unitWrapperClass.getDeclaredMethods())
         .filter(m -> m.isAnnotationPresent(Projection.class))
         .map(m -> createProjectionProvider(unit, m))
         .forEach(projectionProviders::add);
   }
 
-  private UnitProjectionProvider createProjectionProvider(Unit unit, Method method) {
+  private UnitProjectionDefinition createProjectionProvider(Unit unit, Method method) {
     Projection annotation = method.getAnnotation(Projection.class);
-    return new UnitProjectionProviderDefault(
+    return new UnitProjectionDefinitionImpl(
         annotation.value().trim().isBlank() ? method.getName() : annotation.value().trim(),
         method.getReturnType(),
         unit,
@@ -170,13 +140,22 @@ class ModuleDefaultFactory {
     );
   }
 
-  private ProjectionRegistryDefault createProjectionRegistry(List<Unit> units) {
-    List<ProjectionProvider> projectionProviders = new ArrayList<>();
+  private ProjectionRegistry createProjectionRegistry(List<Unit> units) {
+    List<ProjectionDefinition> projectionDefinitions = new ArrayList<>();
     units.stream()
         .map(Unit::projectionProviders)
         .flatMap(List::stream)
-        .forEach(projectionProviders::add);
-    return new ProjectionRegistryDefault(projectionProviders);
+        .forEach(projectionDefinitions::add);
+    return new ProjectionRegistryImpl(projectionDefinitions);
+  }
+
+  private ModuleGuideRegistry createModuleGuideRegistry(List<Unit> units) {
+    var registry = new ModuleGuideRegistryImpl();
+    units.stream()
+        .map(Unit::guides)
+        .flatMap(List::stream)
+        .forEach(registry::addGuide);
+    return registry;
   }
 
   private Optional<Method> findStartupMethod(Class<?> unitClass) {

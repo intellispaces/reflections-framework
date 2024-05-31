@@ -1,0 +1,48 @@
+package {{$packageName}};
+
+{{for importedClass : $importedClasses}}
+import {{$importedClass}};
+{{end}}
+
+/**
+ * Wrapper of module unit {@link {{$sourceClassName}}}.
+ *
+ * <p>This class was generated automatically. Don't try to change it.
+ */
+{{$generatedAnnotation}}
+@Wrapper({{$sourceClassSimpleName}}.class)
+public class {{$classSimpleName}} extends {{$sourceClassSimpleName}} implements UnitWrapper {
+{{for projectionDefinition : $projectionDefinitions}}
+  private final {{$projectionDefinition.get("providerType")}} _{{$projectionDefinition.get("name")}}Provider = new {{$projectionDefinition.get("providerType")}}(TypeFunctions.getMethod({{$sourceClassSimpleName}}.class, "{{$projectionDefinition.get("name")}}").orElseThrow());
+{{end}}
+{{for injection : $projectionInjections}}
+  private final ProjectionInjection _{{$injection.get("name")}}Injection;
+{{end}}
+  private final List<Injection> _injections = new ArrayList<>();
+
+  public {{$classSimpleName}}() {
+{{for injection : $projectionInjections}}
+    this._{{$injection.get("name")}}Injection = new ProjectionInjectionImpl("{{$injection.get("name")}}", {{$sourceClassSimpleName}}.class, {{$injection.get("type")}}.class, this::getProjectionRegistry);
+    this._injections.add(this._{{$injection.get("name")}}Injection);
+{{end}}
+  }
+
+{{for method : $methods}}
+  {{$method.get("javadoc")}}
+{{for annotation : $method.get("annotations")}}
+  @{{$annotation}}
+{{end}}
+  public {{$method.get("signature")}} {
+    {{$method.get("body")}}
+  }
+{{end}}
+
+  @Override
+  public List<Injection> getInjections() {
+    return Collections.unmodifiableList(_injections);
+  }
+
+  private ProjectionRegistry getProjectionRegistry() {
+    return Modules.activeModule().projectionRegistry();
+  }
+}

@@ -1,5 +1,7 @@
 package tech.intellispacesframework.core.guide.n1;
 
+import tech.intellispacesframework.commons.function.QuadFunction;
+import tech.intellispacesframework.commons.function.TriFunction;
 import tech.intellispacesframework.core.exception.TraverseException;
 import tech.intellispacesframework.core.guide.Mapper;
 import tech.intellispacesframework.core.guide.n2.Mapper2;
@@ -27,6 +29,16 @@ public interface Mapper1<S, T, Q> extends
   T map(S source, Q qualifier) throws TraverseException;
 
   BiFunction<S, Q, T> asBiFunction();
+
+  @Override
+  default TriFunction<S, Q, Void, T> asTriFunction() {
+    return (source, qualifier1, qualifier2) -> map(source, qualifier1);
+  }
+
+  @Override
+  default QuadFunction<S, Q, Void, Void, T> asQuadFunction() {
+    return (source, qualifier1, qualifier2, qualifier3) -> map(source, qualifier1);
+  }
 
   @Override
   default T map(S source, Q qualifier1, Void qualifier2) throws TraverseException {

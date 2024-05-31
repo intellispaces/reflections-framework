@@ -8,6 +8,7 @@ import tech.intellispacesframework.core.guide.n3.Mapper3;
 import tech.intellispacesframework.core.guide.n4.Mapper4;
 import tech.intellispacesframework.core.guide.n5.Mapper5;
 
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 /**
@@ -28,6 +29,11 @@ public interface Mapper0<S, T> extends
   T map(S source) throws TraverseException;
 
   Function<S, T> asFunction();
+
+  @Override
+  default BiFunction<S, Void, T> asBiFunction() {
+    return (source, qualifier) -> map(source);
+  }
 
   @Override
   default T map(S source, Void qualifier) throws TraverseException {

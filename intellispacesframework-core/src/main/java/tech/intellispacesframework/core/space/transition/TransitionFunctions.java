@@ -19,17 +19,17 @@ import java.util.function.Function;
 public interface TransitionFunctions {
 
   static <S, T> String getTransitionId(Class<S> sourceDomain, Function<S, T> transitionMethod) {
-    return getTransitionIdInternal(sourceDomain, transitionMethod, transitionMethod::apply);
+    return findTransitionId(sourceDomain, transitionMethod, transitionMethod::apply);
   }
 
   static <S, T, Q> String getTransitionId(
       Class<S> sourceDomain, BiFunction<S, Q, T> transitionMethod, Q qualifierAnyValidValue
   ) {
-    return getTransitionIdInternal(sourceDomain, transitionMethod,
+    return findTransitionId(sourceDomain, transitionMethod,
         (trackedObject) -> transitionMethod.apply(trackedObject, qualifierAnyValidValue));
   }
 
-  private static <S> String getTransitionIdInternal(
+  private static <S> String findTransitionId(
       Class<S> sourceDomain, Object transitionMethod, Consumer<S> trackedObjectProcessor
   ) {
     Tracker tracker = TrackerBuilder.build();
@@ -39,7 +39,52 @@ public interface TransitionFunctions {
     return extractTransitionId(trackedMethods, sourceDomain, transitionMethod);
   }
 
-  static String getTransitionIdOfEmbeddedGuide(Method guideMethod) {
+  static String getUnitGuideTid(Method guideMethod) {
+    String tid = findUnitGuideTidRecursive(guideMethod, guideMethod.getDeclaringClass());
+    if (tid == null) {
+      throw UnexpectedViolationException.withMessage("Failed to get unit guide transition ID. Unit {}, guide method {}",
+          guideMethod.getDeclaringClass().getCanonicalName(), guideMethod.getName());
+    }
+    return tid;
+  }
+
+  private static String findUnitGuideTidRecursive(Method guideMethod, Class<?> aClass) {
+    String tid = getUnitGuideTid(guideMethod, aClass);
+    if (tid != null) {
+      return tid;
+    }
+    if (aClass.getSuperclass() != null) {
+      tid = findUnitGuideTidRecursive(guideMethod, aClass.getSuperclass());
+      if (tid != null) {
+        return tid;
+      }
+    }
+    for (Class<?> aInterface : aClass.getInterfaces()) {
+      tid = findUnitGuideTidRecursive(guideMethod, aInterface);
+      if (tid != null) {
+        return tid;
+      }
+    }
+    return null;
+  }
+
+  private static String getUnitGuideTid(Method guideMethod, Class<?> aClass) {
+    Transition transition = aClass.getAnnotation(Transition.class);
+    if (transition == null) {
+      return null;
+    }
+    try {
+      Method method = aClass.getDeclaredMethod(guideMethod.getName(), guideMethod.getParameterTypes());
+      if (method == null) {
+        return null;
+      }
+      return transition.value();
+    } catch (NoSuchMethodException e) {
+      return null;
+    }
+  }
+
+  static String getEmbeddedGuideTid(Method guideMethod) {
     Class<?> objectHandleClass = guideMethod.getDeclaringClass();
     Class<?> domainClass = ObjectFunctions.getDomainClassOfObjectHandle(objectHandleClass);
     for (Method method : domainClass.getDeclaredMethods()) {

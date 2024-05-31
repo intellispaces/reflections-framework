@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
  */
 class ModuleValidator {
 
-  public void validateModule(Module module) {
+  public void validateModule(ModuleDefault module) {
     checkThatOneMainUnit(module);
     checkThatOneStartupMethod(module);
     checkThatOneShutdownMethod(module);
@@ -24,7 +24,7 @@ class ModuleValidator {
     checkInjections(module);
   }
 
-  private void checkThatOneMainUnit(Module module) {
+  private void checkThatOneMainUnit(ModuleDefault module) {
     List<Unit> mainUnits = module.units().stream()
         .filter(Unit::isMain)
         .toList();
@@ -37,7 +37,7 @@ class ModuleValidator {
     }
   }
 
-  private void checkThatOneStartupMethod(Module module) {
+  private void checkThatOneStartupMethod(ModuleDefault module) {
     List<Method> methods = module.units().stream()
         .map(Unit::startupMethod)
         .filter(Optional::isPresent)
@@ -49,7 +49,7 @@ class ModuleValidator {
     }
   }
 
-  private void checkThatOneShutdownMethod(Module module) {
+  private void checkThatOneShutdownMethod(ModuleDefault module) {
     List<Method> methods = module.units().stream()
         .map(Unit::shutdownMethod)
         .filter(Optional::isPresent)
@@ -61,11 +61,11 @@ class ModuleValidator {
     }
   }
 
-  private void checkThatThereAreNoProjectionsWithSameName(Module module) {
+  private void checkThatThereAreNoProjectionsWithSameName(ModuleDefault module) {
     String message = module.units().stream()
         .map(Unit::projectionProviders)
         .flatMap(List::stream)
-        .collect(Collectors.groupingBy(UnitProjectionProvider::name))
+        .collect(Collectors.groupingBy(UnitProjectionDefinition::name))
         .entrySet().stream()
         .filter(e -> e.getValue().size() > 1)
         .map(e -> makeSameProjectionsInfo(e.getKey(), e.getValue()))
@@ -75,18 +75,18 @@ class ModuleValidator {
     }
   }
 
-  private void checkInjections(Module module) {
-    Map<String, UnitProjectionProvider> projectionProviders = module.units().stream()
+  private void checkInjections(ModuleDefault module) {
+    Map<String, UnitProjectionDefinition> projectionProviders = module.units().stream()
         .map(Unit::projectionProviders)
         .flatMap(List::stream)
-        .collect(Collectors.toMap(UnitProjectionProvider::name, Function.identity()));
+        .collect(Collectors.toMap(UnitProjectionDefinition::name, Function.identity()));
 
     checkUnitInjections(module, projectionProviders);
     checkStartupMethodInjections(module, projectionProviders);
     checkShutdownMethodInjections(module, projectionProviders);
   }
 
-  private void checkUnitInjections(Module module, Map<String, UnitProjectionProvider> projectionProviders) {
+  private void checkUnitInjections(ModuleDefault module, Map<String, UnitProjectionDefinition> projectionProviders) {
     List<ProjectionInjection> unitInjections = module.units().stream()
         .map(Unit::injections)
         .flatMap(List::stream)
@@ -94,7 +94,7 @@ class ModuleValidator {
         .map(inj -> (ProjectionInjection) inj)
         .toList();
     for (ProjectionInjection injection : unitInjections) {
-      UnitProjectionProvider provider = projectionProviders.get(injection.name());
+      UnitProjectionDefinition provider = projectionProviders.get(injection.name());
       if (provider == null) {
         throw ConfigurationException.withMessage("Projection injection by name '{}' declared in unit {} was not found",
             injection.name(), injection.unitClass().getCanonicalName());
@@ -107,7 +107,7 @@ class ModuleValidator {
     }
   }
 
-  private void checkStartupMethodInjections(Module module, Map<String, UnitProjectionProvider> projectionProviders) {
+  private void checkStartupMethodInjections(ModuleDefault module, Map<String, UnitProjectionDefinition> projectionProviders) {
     module.units().stream()
         .filter(Unit::isMain)
         .findFirst()
@@ -115,7 +115,7 @@ class ModuleValidator {
         .ifPresent(method -> checkMethodParamInjections(method, projectionProviders));
   }
 
-  private void checkShutdownMethodInjections(Module module, Map<String, UnitProjectionProvider> projectionProviders) {
+  private void checkShutdownMethodInjections(ModuleDefault module, Map<String, UnitProjectionDefinition> projectionProviders) {
     module.units().stream()
         .filter(Unit::isMain)
         .findFirst()
@@ -123,9 +123,9 @@ class ModuleValidator {
         .ifPresent(method -> checkMethodParamInjections(method, projectionProviders));
   }
 
-  private void checkMethodParamInjections(Method method, Map<String, UnitProjectionProvider> projectionProviders) {
+  private void checkMethodParamInjections(Method method, Map<String, UnitProjectionDefinition> projectionProviders) {
     for (Parameter param : method.getParameters()) {
-      UnitProjectionProvider provider = projectionProviders.get(param.getName());
+      UnitProjectionDefinition provider = projectionProviders.get(param.getName());
       if (provider == null) {
         throw ConfigurationException.withMessage("Injection '{}' required in method '{}' declared in unit {} was not found",
                 param.getName(), method.getName(), method.getDeclaringClass().getCanonicalName());
@@ -139,12 +139,12 @@ class ModuleValidator {
     }
   }
 
-  private String makeSameProjectionsInfo(String projectionName, List<UnitProjectionProvider> projectionProviders) {
+  private String makeSameProjectionsInfo(String projectionName, List<UnitProjectionDefinition> projectionProviders) {
     return "Projection name '" + projectionName +
         "', projection providers: " + projectionProviders.stream().map(this::getProjectionProviderName).collect(Collectors.joining(", "));
   }
 
-  private String getProjectionProviderName(UnitProjectionProvider projectionProvider) {
-    return projectionProvider.unit().unitClass().getCanonicalName() + "#" + projectionProvider.providerMethod().getName();
+  private String getProjectionProviderName(UnitProjectionDefinition projectionProvider) {
+    return projectionProvider.unit().unitClass().getCanonicalName() + "#" + projectionProvider.projectionMethod().getName();
   }
 }

@@ -3,11 +3,13 @@ package tech.intellispacesframework.core.system;
 import java.util.Collection;
 
 /**
- * Projections register.
+ * Projection register.
  */
 public interface ProjectionRegistry {
 
-  <T> T projection(String name, Class<T> targetClass);
+  void load();
 
-  Collection<SystemProjection> loadedProjections();
+  <T> T getProjectionTarget(String name, Class<T> targetClass);
+
+  Collection<SystemProjection> projections();
 }

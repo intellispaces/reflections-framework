@@ -9,5 +9,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Module {
 
-  Class<?>[] include() default {};
+  Class<?>[] units() default {};
 }

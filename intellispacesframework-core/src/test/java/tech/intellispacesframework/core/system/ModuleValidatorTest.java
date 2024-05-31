@@ -29,7 +29,7 @@ public class ModuleValidatorTest {
     Unit unit2 = mock(Unit.class);
     when(unit2.isMain()).thenReturn(false);
 
-    Module module = mock(Module.class);
+    ModuleDefault module = mock(ModuleDefault.class);
     when(module.units()).thenReturn(List.of(unit1, unit2));
 
     // Then
@@ -53,7 +53,7 @@ public class ModuleValidatorTest {
     when(unit2.unitClass()).thenReturn(unitClass2);
     when(unit2.isMain()).thenReturn(true);
 
-    Module module = mock(Module.class);
+    ModuleDefault module = mock(ModuleDefault.class);
     when(module.units()).thenReturn(List.of(unit1, unit2));
 
     // Then
@@ -73,7 +73,7 @@ public class ModuleValidatorTest {
     when(unit2.isMain()).thenReturn(false);
     when(unit2.startupMethod()).thenReturn(Optional.of(String.class.getDeclaredMethod("isBlank")));
 
-    Module module = mock(Module.class);
+    ModuleDefault module = mock(ModuleDefault.class);
     when(module.units()).thenReturn(List.of(unit1, unit2));
 
     // Then
@@ -93,7 +93,7 @@ public class ModuleValidatorTest {
     when(unit2.isMain()).thenReturn(false);
     when(unit2.shutdownMethod()).thenReturn(Optional.of(String.class.getDeclaredMethod("isBlank")));
 
-    Module module = mock(Module.class);
+    ModuleDefault module = mock(ModuleDefault.class);
     when(module.units()).thenReturn(List.of(unit1, unit2));
 
     // Then
@@ -114,23 +114,23 @@ public class ModuleValidatorTest {
     when(unit1.isMain()).thenReturn(true);
     when(unit1.unitClass()).thenReturn(unitClass1);
     when(unit1.shutdownMethod()).thenReturn(Optional.empty());
-    UnitProjectionProvider projectionProvider1 = mock(UnitProjectionProvider.class);
+    UnitProjectionDefinition projectionProvider1 = mock(UnitProjectionDefinition.class);
     when(projectionProvider1.name()).thenReturn(projectionName);
     when(projectionProvider1.unit()).thenReturn(unit1);
-    when(projectionProvider1.providerMethod()).thenReturn(String.class.getDeclaredMethod("trim"));
+    when(projectionProvider1.projectionMethod()).thenReturn(String.class.getDeclaredMethod("trim"));
     when(unit1.projectionProviders()).thenReturn(List.of(projectionProvider1));
 
     Unit unit2 = mock(Unit.class);
     when(unit2.isMain()).thenReturn(false);
     when(unit2.unitClass()).thenReturn(unitClass2);
     when(unit2.shutdownMethod()).thenReturn(Optional.empty());
-    UnitProjectionProvider projectionProvider2 = mock(UnitProjectionProvider.class);
+    UnitProjectionDefinition projectionProvider2 = mock(UnitProjectionDefinition.class);
     when(projectionProvider2.unit()).thenReturn(unit2);
-    when(projectionProvider2.providerMethod()).thenReturn(Integer.class.getDeclaredMethod("intValue"));
+    when(projectionProvider2.projectionMethod()).thenReturn(Integer.class.getDeclaredMethod("intValue"));
     when(projectionProvider2.name()).thenReturn(projectionName);
     when(unit2.projectionProviders()).thenReturn(List.of(projectionProvider2));
 
-    Module module = mock(Module.class);
+    ModuleDefault module = mock(ModuleDefault.class);
     when(module.units()).thenReturn(List.of(unit1, unit2));
 
     // Then
@@ -162,7 +162,7 @@ public class ModuleValidatorTest {
     when(unit.injections()).thenReturn(List.of(injection));
     when(unit.projectionProviders()).thenReturn(List.of());
 
-    Module module = mock(Module.class);
+    ModuleDefault module = mock(ModuleDefault.class);
     when(module.units()).thenReturn(List.of(unit));
 
     // Then
@@ -189,7 +189,7 @@ public class ModuleValidatorTest {
     Method providerMethod = mock((Method.class));
     when(providerMethod.getName()).thenReturn(projectionName);
     when(providerMethod.getReturnType()).thenReturn(projectionType);
-    UnitProjectionProvider projectionProvider = mock(UnitProjectionProvider.class);
+    UnitProjectionDefinition projectionProvider = mock(UnitProjectionDefinition.class);
     when(projectionProvider.name()).thenReturn(projectionName);
     when(projectionProvider.type()).thenReturn(projectionType);
 
@@ -201,7 +201,7 @@ public class ModuleValidatorTest {
     when(unit.injections()).thenReturn(List.of(injection));
     when(unit.projectionProviders()).thenReturn(List.of(projectionProvider));
 
-    Module module = mock(Module.class);
+    ModuleDefault module = mock(ModuleDefault.class);
     when(module.units()).thenReturn(List.of(unit));
 
     // Then
@@ -235,7 +235,7 @@ public class ModuleValidatorTest {
     when(unit.injections()).thenReturn(List.of());
     when(unit.projectionProviders()).thenReturn(List.of());
 
-    Module module = mock(Module.class);
+    ModuleDefault module = mock(ModuleDefault.class);
     when(module.units()).thenReturn(List.of(unit));
 
     // Then
@@ -267,7 +267,7 @@ public class ModuleValidatorTest {
     Method providerMethod = mock((Method.class));
     when(providerMethod.getName()).thenReturn(projectionName);
     when(providerMethod.getReturnType()).thenReturn(projectionType);
-    UnitProjectionProvider projectionProvider = mock(UnitProjectionProvider.class);
+    UnitProjectionDefinition projectionProvider = mock(UnitProjectionDefinition.class);
     when(projectionProvider.name()).thenReturn(projectionName);
     when(projectionProvider.type()).thenReturn(projectionType);
 
@@ -279,7 +279,7 @@ public class ModuleValidatorTest {
     when(unit.injections()).thenReturn(List.of());
     when(unit.projectionProviders()).thenReturn(List.of(projectionProvider));
 
-    Module module = mock(Module.class);
+    ModuleDefault module = mock(ModuleDefault.class);
     when(module.units()).thenReturn(List.of(unit));
 
     // Then
@@ -314,7 +314,7 @@ public class ModuleValidatorTest {
     when(unit.injections()).thenReturn(List.of());
     when(unit.projectionProviders()).thenReturn(List.of());
 
-    Module module = mock(Module.class);
+    ModuleDefault module = mock(ModuleDefault.class);
     when(module.units()).thenReturn(List.of(unit));
 
     // Then
@@ -346,7 +346,7 @@ public class ModuleValidatorTest {
     Method providerMethod = mock((Method.class));
     when(providerMethod.getName()).thenReturn(projectionName);
     when(providerMethod.getReturnType()).thenReturn(projectionType);
-    UnitProjectionProvider projectionProvider = mock(UnitProjectionProvider.class);
+    UnitProjectionDefinition projectionProvider = mock(UnitProjectionDefinition.class);
     when(projectionProvider.name()).thenReturn(projectionName);
     when(projectionProvider.type()).thenReturn(projectionType);
 
@@ -358,7 +358,7 @@ public class ModuleValidatorTest {
     when(unit.injections()).thenReturn(List.of());
     when(unit.projectionProviders()).thenReturn(List.of(projectionProvider));
 
-    Module module = mock(Module.class);
+    ModuleDefault module = mock(ModuleDefault.class);
     when(module.units()).thenReturn(List.of(unit));
 
     // Then
@@ -378,23 +378,23 @@ public class ModuleValidatorTest {
     when(unit1.unitClass()).thenReturn((Class) String.class);
     when(unit1.startupMethod()).thenReturn(Optional.of(String.class.getDeclaredMethod("isEmpty")));
     when(unit1.shutdownMethod()).thenReturn(Optional.of(String.class.getDeclaredMethod("isBlank")));
-    UnitProjectionProvider projectionProvider1 = mock(UnitProjectionProvider.class);
+    UnitProjectionDefinition projectionProvider1 = mock(UnitProjectionDefinition.class);
     when(projectionProvider1.name()).thenReturn("projection1");
     when(projectionProvider1.unit()).thenReturn(unit1);
-    when(projectionProvider1.providerMethod()).thenReturn(String.class.getDeclaredMethod("trim"));
+    when(projectionProvider1.projectionMethod()).thenReturn(String.class.getDeclaredMethod("trim"));
     when(unit1.projectionProviders()).thenReturn(List.of(projectionProvider1));
 
     Unit unit2 = mock(Unit.class);
     when(unit2.isMain()).thenReturn(false);
     when(unit2.unitClass()).thenReturn((Class) Integer.class);
     when(unit2.shutdownMethod()).thenReturn(Optional.empty());
-    UnitProjectionProvider projectionProvider2 = mock(UnitProjectionProvider.class);
+    UnitProjectionDefinition projectionProvider2 = mock(UnitProjectionDefinition.class);
     when(projectionProvider2.unit()).thenReturn(unit1);
-    when(projectionProvider2.providerMethod()).thenReturn(Integer.class.getDeclaredMethod("intValue"));
+    when(projectionProvider2.projectionMethod()).thenReturn(Integer.class.getDeclaredMethod("intValue"));
     when(projectionProvider2.name()).thenReturn("projection2");
     when(unit2.projectionProviders()).thenReturn(List.of(projectionProvider2));
 
-    Module module = mock(Module.class);
+    ModuleDefault module = mock(ModuleDefault.class);
     when(module.units()).thenReturn(List.of(unit1, unit2));
 
     // Then

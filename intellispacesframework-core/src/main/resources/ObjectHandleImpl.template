@@ -1,0 +1,18 @@
+package {{$packageName}};
+
+{{for importedClass : $importedClasses}}
+import {{$importedClass}};
+{{end}}
+
+/**
+ * This class was generated automatically. Don't try to change it.
+ */
+{{$generatedAnnotation}}
+public class {{$classSimpleName}}{{$typeParamsFull}} extends {{$sourceClassSimpleName}}{{$typeParamsBrief}} {
+
+{{for constructor : $constructors}}
+  public {{$classSimpleName}}({{for param : $constructor.get("params")}}{{$param.get("type")}} {{$param.get("name")}}{{when $param.isNotLast()}}, {{end}}{{end}}) {
+    super({{for param : $constructor.get("params")}}{{$param.get("name")}}{{when $param.isNotLast()}},{{end}}{{end}});
+  }
+{{end}}
+}

@@ -1,0 +1,35 @@
+package tech.intellispacesframework.core.system.projection;
+
+import tech.intellispacesframework.core.annotation.Properties;
+import tech.intellispacesframework.core.space.SpaceConstants;
+import tech.intellispacesframework.core.system.Module;
+import tech.intellispacesframework.core.system.PropertiesFunctions;
+import tech.intellispacesframework.core.system.Modules;
+
+import java.lang.reflect.Method;
+
+import static tech.intellispacesframework.core.space.SpaceConstants.PROPERTIES_DOMAIN_NAME;
+
+public class ModulePropertiesProvider extends AbstractProjectionProvider {
+
+  public ModulePropertiesProvider(Method projectionMethod) {
+    super(projectionMethod);
+  }
+
+  @Override
+  public Object get() {
+    Module module = Modules.activeModule();
+    Properties annotation = projectionMethod.getAnnotation(Properties.class);
+    String propertiesContent = PropertiesFunctions.readProperties(module, null);
+    Object properties = module.mapThruTransition0(propertiesContent, SpaceConstants.STRING_TO_PROPERTIES_TID);
+
+    Object requestedProperties = module.mapThruTransition1(
+        properties, SpaceConstants.PROPERTIES_TO_PROPERTIES_VALUE_TID, annotation.value());
+    if (PROPERTIES_DOMAIN_NAME.equals(projectionMethod.getReturnType().getCanonicalName())) {
+      return requestedProperties;
+    }
+
+    return module.mapThruTransition1(
+        requestedProperties, SpaceConstants.PROPERTIES_TO_DATA_TID, projectionMethod.getReturnType());
+  }
+}

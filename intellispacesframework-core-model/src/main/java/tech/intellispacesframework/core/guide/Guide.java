@@ -22,6 +22,11 @@ public interface Guide<S, T> {
   GuideKind kind();
 
   /**
+   * Related transition ID.
+   */
+  String tid();
+
+  /**
    * Synchronous execution of the guide.
    *
    * @param source source object.

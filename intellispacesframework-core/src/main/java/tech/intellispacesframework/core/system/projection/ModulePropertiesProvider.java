@@ -9,6 +9,7 @@ import tech.intellispacesframework.core.system.Modules;
 import java.lang.reflect.Method;
 
 import static tech.intellispacesframework.core.space.SpaceConstants.PROPERTIES_DOMAIN_NAME;
+import static tech.intellispacesframework.core.space.SpaceConstants.PROPERTIES_HANDLE_CLASSNAME;
 
 public class ModulePropertiesProvider extends AbstractProjectionProvider {
 
@@ -23,13 +24,14 @@ public class ModulePropertiesProvider extends AbstractProjectionProvider {
     String propertiesContent = PropertiesFunctions.readProperties(module, null);
     Object properties = module.mapThruTransition0(propertiesContent, SpaceConstants.STRING_TO_PROPERTIES_TID);
 
-    Object requestedProperties = module.mapThruTransition1(
+    Object targetProperties = module.mapThruTransition1(
         properties, SpaceConstants.PROPERTIES_TO_PROPERTIES_VALUE_TID, annotation.value());
-    if (PROPERTIES_DOMAIN_NAME.equals(projectionMethod.getReturnType().getCanonicalName())) {
-      return requestedProperties;
+    String returnClassname = projectionMethod.getReturnType().getCanonicalName();
+    if (PROPERTIES_DOMAIN_NAME.equals(returnClassname) || PROPERTIES_HANDLE_CLASSNAME.equals(returnClassname)) {
+      return targetProperties;
     }
 
     return module.mapThruTransition1(
-        requestedProperties, SpaceConstants.PROPERTIES_TO_DATA_TID, projectionMethod.getReturnType());
+        targetProperties, SpaceConstants.PROPERTIES_TO_DATA_TID, projectionMethod.getReturnType());
   }
 }

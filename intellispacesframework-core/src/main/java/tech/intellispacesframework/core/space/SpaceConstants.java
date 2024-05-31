@@ -9,4 +9,6 @@ public interface SpaceConstants {
   String PROPERTIES_TO_PROPERTIES_VALUE_TID = "e033ddc5-7f4d-4bbd-8958-8b9c34fdfc95";
 
   String PROPERTIES_DOMAIN_NAME = "tech.intellispaces.ixora.structures.properties.Properties";
+
+  String PROPERTIES_HANDLE_CLASSNAME = "tech.intellispaces.ixora.structures.properties.PropertiesHandle";
 }

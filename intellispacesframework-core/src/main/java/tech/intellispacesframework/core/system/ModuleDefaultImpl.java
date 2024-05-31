@@ -72,13 +72,13 @@ public class ModuleDefaultImpl implements ModuleDefault {
   }
 
   @Override
-  public void start(String[] args) {
+  public void run(String[] args) {
     ModuleStarterFunctions.startModule(this);
     started.set(true);
   }
 
   @Override
-  public void shutdown() {
+  public void stop() {
     if (started.compareAndSet(true, false)) {
 
     } else {

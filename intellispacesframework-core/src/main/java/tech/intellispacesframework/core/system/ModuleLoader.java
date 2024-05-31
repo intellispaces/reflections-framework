@@ -11,7 +11,7 @@ public class ModuleLoader {
     ModuleDefault activeModule = Modules.activeModuleSilently();
     if (activeModule != null) {
       LOG.warn("Active module has already been loaded into application. Current active module will be reloaded");
-      activeModule.shutdown();
+      activeModule.stop();
       Modules.setActiveModule(null);
     }
 

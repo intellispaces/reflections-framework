@@ -8,17 +8,13 @@ import tech.intellispacesframework.core.guide.n1.Mover1;
  */
 public interface Module {
 
-  default void start() {
-    start(new String[] {});
+  default void run() {
+    run(new String[] {});
   }
 
-  void start(String[] args);
+  void run(String[] args);
 
-  void shutdown();
-
-  <S> Mover0<S> autoMoverThruTransition0(Class<S> sourceClass, String tid);
-
-  <S, Q> Mover1<S, Q> autoMoverThruTransition1(Class<S> sourceClass, String tid);
+  void stop();
 
   <S, T> T mapThruTransition0(S source, String tid);
 
@@ -27,4 +23,8 @@ public interface Module {
   <S> S moveThruTransition0(S source, String tid);
 
   <S, Q> S moveThruTransition1(S source, String tid, Q qualifier);
+
+  <S> Mover0<S> autoMoverThruTransition0(Class<S> sourceClass, String tid);
+
+  <S, Q> Mover1<S, Q> autoMoverThruTransition1(Class<S> sourceClass, String tid);
 }

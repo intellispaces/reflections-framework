@@ -5,9 +5,9 @@ import {{$importedClass}};
 {{end}}
 
 /**
- * Transition.
+ * Transition.<p/>
  *
- * <p>This class was generated automatically. Don't try to change it.
+ * This class was generated automatically. Don't try to change it.
  */
 {{$generatedAnnotation}}
 @FunctionalInterface

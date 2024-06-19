@@ -4,15 +4,20 @@ import tech.intellispaces.framework.annotationprocessor.artifact.JavaArtifactCon
 import tech.intellispaces.framework.annotationprocessor.generator.TemplateBasedJavaArtifactGenerator;
 import tech.intellispaces.framework.commons.action.Action;
 import tech.intellispaces.framework.commons.type.TypeFunctions;
+import tech.intellispaces.framework.core.util.Actions;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
 import tech.intellispaces.framework.javastatements.statement.custom.MethodParam;
 import tech.intellispaces.framework.javastatements.statement.custom.MethodStatement;
+import tech.intellispaces.framework.javastatements.statement.reference.CustomTypeReference;
 import tech.intellispaces.framework.javastatements.statement.reference.NamedTypeReference;
+import tech.intellispaces.framework.javastatements.statement.reference.NonPrimitiveTypeReference;
 import tech.intellispaces.framework.javastatements.statement.reference.TypeReference;
+import tech.intellispaces.framework.javastatements.statement.reference.WildcardTypeReference;
 
 import javax.annotation.processing.Generated;
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import static java.time.format.DateTimeFormatter.ISO_OFFSET_DATE_TIME;
@@ -114,5 +119,46 @@ public abstract class AbstractGenerator extends TemplateBasedJavaArtifactGenerat
       }
     }
     return signature.toString();
+  }
+
+  protected String getHandleTypename(TypeReference type, Consumer<String> imports) {
+    if (type.asPrimitiveTypeReference().isPresent()) {
+      return type.asPrimitiveTypeReference().get().typename();
+    } else if (type.asNamedTypeReference().isPresent()) {
+      return type.asNamedTypeReference().get().name();
+    } else if (type.asCustomTypeReference().isPresent()) {
+      CustomTypeReference customTypeReference = type.asCustomTypeReference().get();
+      CustomType targetType = customTypeReference.targetType();
+      if (targetType.canonicalName().startsWith("java.lang.")) {
+        return targetType.simpleName();
+      } else {
+        var sb = new StringBuilder();
+        String canonicalName = targetType.canonicalName() + "Handle";
+        imports.accept(canonicalName);
+        sb.append(context.simpleNameOf(canonicalName));
+        if (!customTypeReference.typeArguments().isEmpty()) {
+          sb.append("<");
+          Action addCommaAction = Actions.addSeparatorAction(sb, ", ");
+          for (NonPrimitiveTypeReference argType : customTypeReference.typeArguments()) {
+            addCommaAction.execute();
+            sb.append(getHandleTypename(argType, imports));
+          }
+          sb.append(">");
+        }
+        return sb.toString();
+      }
+    } else if (type.asWildcardTypeReference().isPresent()) {
+      WildcardTypeReference wildcardTypeReference = type.asWildcardTypeReference().get();
+      if (wildcardTypeReference.extendedBound().isPresent()) {
+        return getHandleTypename(wildcardTypeReference.extendedBound().get(), imports);
+      } else {
+        throw new UnsupportedOperationException("Not implemented");
+      }
+    } else if (type.asArrayTypeReference().isPresent()) {
+      TypeReference elementType = type.asArrayTypeReference().get().elementType();
+      return getHandleTypename(elementType, imports) + "[]";
+    } else {
+      throw new UnsupportedOperationException("Unsupported type - " + type.actualDeclaration());
+    }
   }
 }

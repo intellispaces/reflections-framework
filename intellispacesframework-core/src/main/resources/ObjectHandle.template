@@ -5,16 +5,16 @@ import {{$importedClass}};
 {{end}}
 
 /**
- * Abstract object handle for domain {@link {{$sourceClassName}}} objects.
+ * Abstract object handle for domain {@link {{$sourceClassName}}} objects.<p/>
  *
- * <p>This class was generated automatically. Don't try to change it.
+ * This class was generated automatically. Don't try to change it.
  */
 {{$generatedAnnotation}}
 public interface {{$classSimpleName}}{{$domainTypeParamsFull}} extends ObjectHandle<{{$sourceClassSimpleName}}{{$domainTypeParamsBrief}}>, {{$sourceClassSimpleName}}{{$domainTypeParamsBrief}} {
 
 {{for method : $methods}}
   @Override
-  public {{$method}};
+  {{$method}};
 
 {{end}}
 }

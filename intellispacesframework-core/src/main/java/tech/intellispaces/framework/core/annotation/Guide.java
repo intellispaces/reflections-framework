@@ -6,14 +6,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Specifies that the method implements mover guide.
+ * Specifies that the class is a guide unit.
  */
-@Target(ElementType.METHOD)
+@Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Mover {
-
-  /**
-   * Guide name.
-   */
-  String value() default "";
+public @interface Guide {
 }

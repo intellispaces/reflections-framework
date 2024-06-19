@@ -1,5 +1,6 @@
 package tech.intellispaces.framework.core.system;
 
+import tech.intellispaces.framework.core.annotation.Guide;
 import tech.intellispaces.framework.core.annotation.Module;
 import tech.intellispaces.framework.core.annotation.Projection;
 import tech.intellispaces.framework.core.annotation.Shutdown;
@@ -29,11 +30,16 @@ class UnitValidator {
   private void validateModuleUnitAnnotations(Class<?> unitClass, boolean mainUnit) {
     if (mainUnit) {
       if (!unitClass.isAnnotationPresent(tech.intellispaces.framework.core.annotation.Module.class)) {
-        throw ConfigurationException.withMessage("Class {} is not marked with annotation {}", unitClass.getCanonicalName(), Module.class.getSimpleName());
+        throw ConfigurationException.withMessage("Class {} is not marked with annotation {}",
+            unitClass.getCanonicalName(), Module.class.getSimpleName());
       }
     } else {
-      if (!unitClass.isAnnotationPresent(tech.intellispaces.framework.core.annotation.Unit.class)) {
-        throw ConfigurationException.withMessage("Class {} is not marked with annotation {}", unitClass.getCanonicalName(), Unit.class.getSimpleName());
+      if (
+          !unitClass.isAnnotationPresent(tech.intellispaces.framework.core.annotation.Unit.class) &&
+          !unitClass.isAnnotationPresent(tech.intellispaces.framework.core.annotation.Guide.class)
+      ) {
+        throw ConfigurationException.withMessage("Class {} is not marked with annotation {} or {}",
+            unitClass.getCanonicalName(), Unit.class.getSimpleName(), Guide.class.getSimpleName());
       }
     }
   }

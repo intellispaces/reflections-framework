@@ -1,7 +1,7 @@
 package tech.intellispaces.framework.core.annotation.processor.objecthandle;
 
 import tech.intellispaces.framework.core.annotation.processor.AbstractGenerator;
-import tech.intellispaces.framework.core.util.Actions;
+import tech.intellispaces.framework.core.common.ActionFunctions;
 import tech.intellispaces.framework.commons.action.Action;
 import tech.intellispaces.framework.core.object.MovableObjectHandle;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
@@ -38,8 +38,8 @@ abstract class AbstractObjectHandleImplGenerator extends AbstractGenerator {
 
     var typeParamsFullBuilder = new StringBuilder();
     var typeParamsBriefBuilder = new StringBuilder();
-    Action addCommaAction = Actions.addSeparatorAction(typeParamsFullBuilder, ", ")
-        .join(Actions.addSeparatorAction(typeParamsBriefBuilder, ", "));
+    Action addCommaAction = ActionFunctions.buildAppendSeparatorAction(typeParamsFullBuilder, ", ")
+        .join(ActionFunctions.buildAppendSeparatorAction(typeParamsBriefBuilder, ", "));
 
     typeParamsFullBuilder.append("<");
     typeParamsBriefBuilder.append("<");

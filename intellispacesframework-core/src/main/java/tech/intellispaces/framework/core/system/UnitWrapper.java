@@ -13,10 +13,6 @@ public interface UnitWrapper {
 
   List<Injection> getInjections();
 
-  static String getWrapperClassCanonicalName(String unitClassName) {
-    return unitClassName.replace('$', '_') + "Wrapper";
-  }
-
   static Method getActualMethod(Method wrapperMethod) {
     try {
       Class<?> wrapperClass = wrapperMethod.getDeclaringClass();

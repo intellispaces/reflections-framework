@@ -1,11 +1,11 @@
-package tech.intellispaces.framework.core.util;
+package tech.intellispaces.framework.core.common;
 
 import tech.intellispaces.framework.commons.action.Action;
 import tech.intellispaces.framework.commons.action.ActionBuilders;
 
-public interface Actions {
+public interface ActionFunctions {
 
-  static Action addSeparatorAction(StringBuilder sb, String separator) {
+  static Action buildAppendSeparatorAction(StringBuilder sb, String separator) {
     return ActionBuilders.action(sb::append, separator).notFirstTimeOnly();
   }
 }

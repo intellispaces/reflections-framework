@@ -1,6 +1,7 @@
 package tech.intellispaces.framework.core.annotation.processor.data;
 
 import tech.intellispaces.framework.core.annotation.processor.AbstractGenerator;
+import tech.intellispaces.framework.core.common.NameFunctions;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
 import tech.intellispaces.framework.javastatements.statement.custom.MethodStatement;
 import tech.intellispaces.framework.javastatements.statement.reference.TypeReference;
@@ -28,7 +29,7 @@ public class DataHandleGenerator extends AbstractGenerator {
         "generatedAnnotation", generatedAnnotation(),
         "packageName", context.packageName(),
         "sourceClassName", sourceClassCanonicalName(),
-        "sourceClassSimpleName", sourceClassSimpleName(),
+        "objectHandleClassName", NameFunctions.getObjectHandleClassCanonicalName(annotatedType.className()),
         "classSimpleName", context.generatedClassSimpleName(),
         "importedClasses", context.getImports(),
         "projections", projectionProperties
@@ -37,7 +38,11 @@ public class DataHandleGenerator extends AbstractGenerator {
 
   @Override
   protected boolean analyzeAnnotatedType() {
-    context.generatedClassCanonicalName(annotatedType.canonicalName() + "DataHandle");
+    context.generatedClassCanonicalName(NameFunctions.getDataClassCanonicalName(annotatedType.className()));
+    if (annotatedType.isNested()) {
+      context.addImport(sourceClassCanonicalName());
+    }
+
     analyzeProjections();
     return true;
   }

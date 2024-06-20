@@ -10,7 +10,7 @@ import {{$importedClass}};
  * This class was generated automatically. Don't try to change it.
  */
 {{$generatedAnnotation}}
-public class {{$classSimpleName}} implements {{$sourceClassSimpleName}}Handle {
+public class {{$classSimpleName}} implements {{$objectHandleClassName}} {
 {{for projection : $projections}}
   private final {{$projection.get("type")}} {{$projection.get("name")}};
 {{end}}

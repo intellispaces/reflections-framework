@@ -1,7 +1,7 @@
 package tech.intellispaces.framework.core.annotation.processor.domain;
 
-import tech.intellispaces.framework.commons.type.TypeFunctions;
 import tech.intellispaces.framework.core.object.MovableObjectHandle;
+import tech.intellispaces.framework.core.common.NameFunctions;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
 
 import java.util.Map;
@@ -33,8 +33,10 @@ public class MovableObjectHandleGenerator extends AbstractObjectHandleGenerator 
 
   @Override
   protected boolean analyzeAnnotatedType() {
-    context.generatedClassCanonicalName(TypeFunctions.addPrefixToClassName(
-        "Movable", annotatedType.canonicalName()) + "Handle");
+    context.generatedClassCanonicalName(NameFunctions.getMovableObjectHandleClassCanonicalName(annotatedType.className()));
+    if (annotatedType.isNested()) {
+      context.addImport(sourceClassCanonicalName());
+    }
 
     domainTypeParamsFull = annotatedType.typeParametersFullDeclaration();
     domainTypeParamsBrief = annotatedType.typeParametersBriefDeclaration();

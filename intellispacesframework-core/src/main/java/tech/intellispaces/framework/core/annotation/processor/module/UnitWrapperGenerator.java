@@ -7,13 +7,14 @@ import tech.intellispaces.framework.core.annotation.processor.AbstractGenerator;
 import tech.intellispaces.framework.core.system.Modules;
 import tech.intellispaces.framework.core.system.ProjectionInjectionImpl;
 import tech.intellispaces.framework.core.system.UnitWrapper;
-import tech.intellispaces.framework.core.util.Actions;
+import tech.intellispaces.framework.core.common.ActionFunctions;
 import tech.intellispaces.framework.commons.action.Action;
 import tech.intellispaces.framework.commons.exception.UnexpectedViolationException;
 import tech.intellispaces.framework.commons.type.TypeFunctions;
 import tech.intellispaces.framework.core.system.Injection;
 import tech.intellispaces.framework.core.system.ProjectionInjection;
 import tech.intellispaces.framework.core.system.ProjectionRegistry;
+import tech.intellispaces.framework.core.common.NameFunctions;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
 import tech.intellispaces.framework.javastatements.statement.custom.MethodParam;
 import tech.intellispaces.framework.javastatements.statement.custom.MethodStatement;
@@ -61,7 +62,7 @@ public class UnitWrapperGenerator extends AbstractGenerator {
 
   @Override
   protected boolean analyzeAnnotatedType() {
-    context.generatedClassCanonicalName(UnitWrapper.getWrapperClassCanonicalName(annotatedType.className()));
+    context.generatedClassCanonicalName(NameFunctions.getUnitWrapperCanonicalName(annotatedType.className()));
     if (annotatedType.isNested()) {
       context.addImport(sourceClassCanonicalName());
     }
@@ -172,7 +173,7 @@ public class UnitWrapperGenerator extends AbstractGenerator {
     signature.append(projectionMethod.name());
     signature.append("(");
 
-    Action addCommaToSignatureAction = Actions.addSeparatorAction(signature, ", ");
+    Action addCommaToSignatureAction = ActionFunctions.buildAppendSeparatorAction(signature, ", ");
     for (MethodParam param : projectionMethod.params()) {
       addCommaToSignatureAction.execute();
 
@@ -239,8 +240,8 @@ public class UnitWrapperGenerator extends AbstractGenerator {
     body.append(method.name());
     body.append("(");
 
-    Action addCommaToSignatureAction = Actions.addSeparatorAction(signature, ", ");
-    Action addCommaToBodyAction = Actions.addSeparatorAction(body, ", ");
+    Action addCommaToSignatureAction = ActionFunctions.buildAppendSeparatorAction(signature, ", ");
+    Action addCommaToBodyAction = ActionFunctions.buildAppendSeparatorAction(body, ", ");
     for (MethodParam param : method.params()) {
       addCommaToSignatureAction.execute();
       addCommaToBodyAction.execute();

@@ -1,7 +1,7 @@
 package tech.intellispaces.framework.core.annotation.processor.domain;
 
 import tech.intellispaces.framework.core.annotation.processor.AbstractGenerator;
-import tech.intellispaces.framework.core.util.Actions;
+import tech.intellispaces.framework.core.common.ActionFunctions;
 import tech.intellispaces.framework.commons.action.Action;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
 import tech.intellispaces.framework.javastatements.statement.custom.MethodParam;
@@ -37,7 +37,7 @@ abstract class AbstractObjectHandleGenerator extends AbstractGenerator {
       signature.append(method.name());
       signature.append("(");
 
-      Action addCommaAction = Actions.addSeparatorAction(signature, ", ");
+      Action addCommaAction = ActionFunctions.buildAppendSeparatorAction(signature, ", ");
       for (MethodParam param : method.params()) {
         addCommaAction.execute();
         signature.append(getHandleTypename(param.type(), context.getImportConsumer()));

@@ -11,6 +11,7 @@ import tech.intellispaces.framework.core.guide.Guide;
 import tech.intellispaces.framework.core.guide.GuideFunctions;
 import tech.intellispaces.framework.core.traverse.TraverseAnalyzer;
 import tech.intellispaces.framework.core.traverse.TraverseExecutor;
+import tech.intellispaces.framework.core.common.NameFunctions;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -84,7 +85,7 @@ class ModuleDefaultFactory {
 
   private Class<?> getUnitWrapperClass(Class<?> unitClass) {
     try {
-      String wrapperClassName = UnitWrapper.getWrapperClassCanonicalName(unitClass.getName());
+      String wrapperClassName = NameFunctions.getUnitWrapperCanonicalName(unitClass.getName());
       return Class.forName(wrapperClassName);
     } catch (Exception e) {
       throw UnexpectedViolationException.withCauseAndMessage(e, "Failed to get wrapper class of module unit {}",

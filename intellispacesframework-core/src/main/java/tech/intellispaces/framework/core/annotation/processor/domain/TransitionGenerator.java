@@ -2,7 +2,7 @@ package tech.intellispaces.framework.core.annotation.processor.domain;
 
 import tech.intellispaces.framework.core.annotation.Transition;
 import tech.intellispaces.framework.core.annotation.processor.AbstractGenerator;
-import tech.intellispaces.framework.core.util.Actions;
+import tech.intellispaces.framework.core.common.ActionFunctions;
 import tech.intellispaces.framework.commons.action.Action;
 import tech.intellispaces.framework.commons.string.StringFunctions;
 import tech.intellispaces.framework.commons.type.TypeFunctions;
@@ -60,7 +60,7 @@ public class TransitionGenerator extends AbstractGenerator {
     sb.append(annotatedType.simpleName());
     if (!annotatedType.typeParameters().isEmpty()) {
       sb.append("<");
-      Action addCommaAction = Actions.addSeparatorAction(sb, ", ");
+      Action addCommaAction = ActionFunctions.buildAppendSeparatorAction(sb, ", ");
       for (NamedTypeReference typeParam : annotatedType.typeParameters()) {
         addCommaAction.execute();
         sb.append(typeParam.formalBriefDeclaration());
@@ -81,7 +81,7 @@ public class TransitionGenerator extends AbstractGenerator {
     }
 
     var sb = new StringBuilder();
-    Action addCommaAction = Actions.addSeparatorAction(sb, ", ");
+    Action addCommaAction = ActionFunctions.buildAppendSeparatorAction(sb, ", ");
     sb.append("<");
     for (NamedTypeReference typeParam : annotatedType.typeParameters()) {
       addCommaAction.execute();

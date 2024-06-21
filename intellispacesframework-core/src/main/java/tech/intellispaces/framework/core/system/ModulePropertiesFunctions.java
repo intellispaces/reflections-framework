@@ -8,9 +8,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.WeakHashMap;
 
-public class PropertiesFunctions {
+public class ModulePropertiesFunctions {
 
-  public static String readProperties(Module module, String filename) {
+  public static String getProperties(Module module, String filename) {
     FileContents fileContents = CACHE.computeIfAbsent(module, k -> new FileContents());
     String fileContent = fileContents.getContent(filename);
     if (fileContent == null) {
@@ -54,5 +54,5 @@ public class PropertiesFunctions {
     }
   }
 
-  private PropertiesFunctions() {}
+  private ModulePropertiesFunctions() {}
 }

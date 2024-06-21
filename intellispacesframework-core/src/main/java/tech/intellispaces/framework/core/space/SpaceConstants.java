@@ -1,14 +1,30 @@
 package tech.intellispaces.framework.core.space;
 
-public interface SpaceConstants {
+import tech.intellispaces.framework.commons.exception.UnexpectedViolationException;
+import tech.intellispaces.framework.commons.type.TypeFunctions;
 
-  String STRING_TO_PROPERTIES_TID = "1830e924-2c78-4f18-b9eb-39f002cbeea6";
+public abstract class SpaceConstants {
 
-  String PROPERTIES_TO_DATA_TID = "cafc0a2e-a1da-44e1-997f-2db62f7e385c";
+  public static final String STRING_TO_PROPERTIES_TID = "1830e924-2c78-4f18-b9eb-39f002cbeea6";
 
-  String PROPERTIES_TO_PROPERTIES_VALUE_TID = "e033ddc5-7f4d-4bbd-8958-8b9c34fdfc95";
+  public static final String PROPERTIES_TO_DATA_TID = "cafc0a2e-a1da-44e1-997f-2db62f7e385c";
 
-  String PROPERTIES_DOMAIN_NAME = "tech.intellispaces.ixora.structures.properties.Properties";
+  public static final String PROPERTIES_TO_VALUE_TID = "ea111b97-c025-4d74-8466-d462c4c87efd";
 
-  String PROPERTIES_HANDLE_CLASSNAME = "tech.intellispaces.ixora.structures.properties.PropertiesHandle";
+  public static final String PROPERTIES_DOMAIN_NAME = "tech.intellispaces.ixora.structures.properties.Properties";
+
+  public static final String PROPERTIES_HANDLE_CLASSNAME = "tech.intellispaces.ixora.structures.properties.PropertiesHandle";
+
+  public static Class<?> propertiesHandleClass() {
+    if (propertiesHandleClass == null) {
+      propertiesHandleClass = TypeFunctions.getClass(PROPERTIES_HANDLE_CLASSNAME).orElseThrow(
+          () -> UnexpectedViolationException.withMessage("Failed to get class {}", PROPERTIES_HANDLE_CLASSNAME)
+      );
+    }
+    return propertiesHandleClass;
+  }
+
+  private SpaceConstants() {}
+
+  private static Class<?> propertiesHandleClass;
 }

@@ -5,7 +5,9 @@ import {{$importedClass}};
 {{end}}
 
 /**
- * Abstract object handle for domain {@link {{$sourceClassName}}} objects.<p/>
+ * Object handle for data object of domain {@link {{$sourceClassName}}}.<p/>
+ *
+ * Data objects are entirely in memory.<p/>
  *
  * This class was generated automatically. Don't try to change it.
  */

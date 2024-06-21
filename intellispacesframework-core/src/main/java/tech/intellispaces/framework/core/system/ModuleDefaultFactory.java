@@ -4,8 +4,6 @@ import tech.intellispaces.framework.core.annotation.Module;
 import tech.intellispaces.framework.core.annotation.Projection;
 import tech.intellispaces.framework.core.annotation.Shutdown;
 import tech.intellispaces.framework.core.annotation.Startup;
-import tech.intellispaces.framework.core.exception.ConfigurationException;
-import tech.intellispaces.framework.commons.action.Getter;
 import tech.intellispaces.framework.commons.exception.UnexpectedViolationException;
 import tech.intellispaces.framework.core.guide.Guide;
 import tech.intellispaces.framework.core.guide.GuideFunctions;
@@ -23,8 +21,6 @@ import java.util.Optional;
  * Default module factory.
  */
 class ModuleDefaultFactory {
-  private final UnitValidator unitValidator = new UnitValidator();
-  private final ModuleValidator moduleValidator = new ModuleValidator();
 
   public ModuleDefault createModule(Class<?> moduleClass) {
     List<Unit> units = createUnits(moduleClass);
@@ -33,10 +29,7 @@ class ModuleDefaultFactory {
     ModuleGuideRegistry moduleGuideRegistry = createModuleGuideRegistry(units);;
     TraverseAnalyzer traverseAnalyzer = new TraverseAnalyzerImpl(moduleGuideRegistry, embeddedGuideRegistry);
     TraverseExecutor traverseExecutor = new TraverseExecutorImpl(traverseAnalyzer);
-    ModuleDefault module = new ModuleDefaultImpl(units, projectionRegistry, traverseAnalyzer, traverseExecutor);
-
-    moduleValidator.validateModule(module);
-    return module;
+    return new ModuleDefaultImpl(units, projectionRegistry, traverseAnalyzer, traverseExecutor);
   }
 
   private List<Unit> createUnits(Class<?> moduleClass) {
@@ -60,8 +53,6 @@ class ModuleDefaultFactory {
   }
 
   private Unit createUnit(Class<?> unitClass, boolean main) {
-    unitValidator.validateUnitDeclaration(unitClass, main);
-
     List<UnitProjectionDefinition> projectionProviders = new ArrayList<>();
     Optional<Method> startupMethod = findStartupMethod(unitClass);
     Optional<Method> shutdownMethod = findShutdownMethod(unitClass);
@@ -101,25 +92,6 @@ class ModuleDefaultFactory {
           unitClass.getCanonicalName());
     }
   }
-
-  private <T> void createAbstractMethodImplementation(
-      Class<?> unitClass,
-      Method abstractMethod,
-//      ProxyContractBuilder<T> proxyContractBuilder,
-      List<Injection> injections,
-      Getter<ProjectionRegistry> projectionRegistryGetter
-  ) {
-    if (abstractMethod.getParameterCount() > 0) {
-      throw ConfigurationException.withMessage("Unit abstract method can't have parameters. See method {} in unit {}",
-          abstractMethod.getName(), abstractMethod.getDeclaringClass().getCanonicalName());
-    }
-    if (abstractMethod.isAnnotationPresent(Projection.class)) {
-//      createProjectionImplementation(unitClass, abstractMethod/*, proxyContractBuilder*/);
-    } else {
-//      createProjectionInjection(unitClass, abstractMethod, proxyContractBuilder, injections, projectionRegistryGetter);
-    }
-  }
-
 
   private void addProjectionProviders(
       Class<?> unitWrapperClass, Unit unit, List<UnitProjectionDefinition> projectionProviders

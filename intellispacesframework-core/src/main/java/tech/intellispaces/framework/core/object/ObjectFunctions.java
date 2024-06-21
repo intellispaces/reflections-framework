@@ -5,6 +5,7 @@ import tech.intellispaces.framework.commons.exception.UnexpectedViolationExcepti
 import tech.intellispaces.framework.commons.type.TypeFunctions;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
 import tech.intellispaces.framework.javastatements.statement.reference.CustomTypeReference;
+import tech.intellispaces.framework.javastatements.statement.reference.TypeReference;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -15,12 +16,25 @@ public class ObjectFunctions {
     return isDefaultObjectHandleClass(aClass) || isCustomObjectHandleClass(aClass);
   }
 
+  public static boolean isObjectHandleType(TypeReference type) {
+    return isDefaultObjectHandleType(type) || isCustomObjectHandleType(type);
+  }
+
   public static boolean isDefaultObjectHandleClass(Class<?> aClass) {
-    return DEFAULT_OBJECT_HANDLE_CLASSES.contains(aClass);
+    return DEFAULT_OBJECT_HANDLE_CLASSES.contains(aClass.getCanonicalName());
+  }
+
+  public static boolean isDefaultObjectHandleType(TypeReference type) {
+    return type.isPrimitive() ||
+        (type.isCustomTypeReference() && DEFAULT_OBJECT_HANDLE_CLASSES.contains(type.asCustomTypeReferenceSurely().targetType().canonicalName()));
   }
 
   public static boolean isCustomObjectHandleClass(Class<?> aClass) {
     return ObjectHandle.class.isAssignableFrom(aClass);
+  }
+
+  public static boolean isCustomObjectHandleType(TypeReference type) {
+    return type.isCustomTypeReference() && type.asCustomTypeReferenceSurely().targetType().hasParent(ObjectHandle.class);
   }
 
   public static Class<?> getObjectHandleClass(Class<?> aClass) {
@@ -117,16 +131,24 @@ public class ObjectFunctions {
     return null;
   }
 
-  private final static Set<Class<?>> DEFAULT_OBJECT_HANDLE_CLASSES = Set.of(
-      boolean.class, Boolean.class,
-      byte.class, Byte.class,
-      short.class, Short.class,
-      int.class, Integer.class,
-      long.class, Long.class,
-      float.class, Float.class,
-      double.class, Double.class,
-      char.class, Character.class,
-      String.class
+  private final static Set<String> DEFAULT_OBJECT_HANDLE_CLASSES = Set.of(
+      boolean.class.getCanonicalName(),
+      byte.class.getCanonicalName(),
+      short.class.getCanonicalName(),
+      int.class.getCanonicalName(),
+      long.class.getCanonicalName(),
+      float.class.getCanonicalName(),
+      double.class.getCanonicalName(),
+      char.class.getCanonicalName(),
+      Boolean.class.getCanonicalName(),
+      Byte.class.getCanonicalName(),
+      Short.class.getCanonicalName(),
+      Integer.class.getCanonicalName(),
+      Long.class.getCanonicalName(),
+      Float.class.getCanonicalName(),
+      Double.class.getCanonicalName(),
+      Character.class.getCanonicalName(),
+      String.class.getCanonicalName()
   );
 
   private ObjectFunctions() {}

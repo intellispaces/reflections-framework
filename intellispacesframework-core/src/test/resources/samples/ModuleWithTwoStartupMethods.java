@@ -1,18 +1,16 @@
-package tech.intellispaces.framework.core.samples.system;
+package samples;
 
 import tech.intellispaces.framework.core.annotation.Module;
 import tech.intellispaces.framework.core.annotation.Startup;
+import tech.intellispaces.framework.core.validate.Sample;
 
+@Sample
 @Module
 public class ModuleWithTwoStartupMethods {
 
   @Startup
-  public void startup1() {
-
-  }
+  public void startup1() {}
 
   @Startup
-  public void startup2() {
-
-  }
+  public void startup2() {}
 }

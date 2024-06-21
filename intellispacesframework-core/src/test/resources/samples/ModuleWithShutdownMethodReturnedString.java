@@ -1,8 +1,10 @@
-package tech.intellispaces.framework.core.samples.system;
+package samples;
 
 import tech.intellispaces.framework.core.annotation.Module;
 import tech.intellispaces.framework.core.annotation.Shutdown;
+import tech.intellispaces.framework.core.validate.Sample;
 
+@Sample
 @Module
 public class ModuleWithShutdownMethodReturnedString {
 

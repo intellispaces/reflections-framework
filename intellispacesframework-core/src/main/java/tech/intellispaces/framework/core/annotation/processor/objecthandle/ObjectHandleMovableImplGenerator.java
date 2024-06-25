@@ -10,9 +10,9 @@ import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
 
 import java.util.Map;
 
-public class MovableObjectHandleImplGenerator extends AbstractObjectHandleImplGenerator {
+public class ObjectHandleMovableImplGenerator extends AbstractObjectHandleImplGenerator {
 
-  public MovableObjectHandleImplGenerator(CustomType objectHandleType) {
+  public ObjectHandleMovableImplGenerator(CustomType objectHandleType) {
     super(objectHandleType);
   }
 

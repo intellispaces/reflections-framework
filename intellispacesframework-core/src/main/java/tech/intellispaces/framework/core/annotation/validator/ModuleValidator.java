@@ -1,38 +1,33 @@
-package tech.intellispaces.framework.core.validate;
+package tech.intellispaces.framework.core.annotation.validator;
 
+import tech.intellispaces.framework.annotationprocessor.AnnotatedTypeValidator;
 import tech.intellispaces.framework.core.annotation.Guide;
 import tech.intellispaces.framework.core.annotation.Module;
 import tech.intellispaces.framework.core.annotation.Projection;
 import tech.intellispaces.framework.core.annotation.ProjectionDefinition;
 import tech.intellispaces.framework.core.annotation.Shutdown;
 import tech.intellispaces.framework.core.annotation.Startup;
-import tech.intellispaces.framework.core.exception.ConfigurationException;
 import tech.intellispaces.framework.core.exception.IntelliSpacesException;
 import tech.intellispaces.framework.core.object.ObjectFunctions;
 import tech.intellispaces.framework.core.space.domain.DomainFunctions;
-import tech.intellispaces.framework.core.system.InjectionTypes;
-import tech.intellispaces.framework.core.system.ModuleDefault;
 import tech.intellispaces.framework.core.system.ModuleFunctions;
-import tech.intellispaces.framework.core.system.ProjectionInjection;
 import tech.intellispaces.framework.core.system.Unit;
-import tech.intellispaces.framework.core.system.UnitProjectionDefinition;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
 import tech.intellispaces.framework.javastatements.statement.custom.MethodParam;
 import tech.intellispaces.framework.javastatements.statement.custom.MethodStatement;
 import tech.intellispaces.framework.javastatements.statement.instance.AnnotationInstance;
 import tech.intellispaces.framework.javastatements.statement.reference.TypeReference;
 
-import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
-public class ModuleValidator {
+/**
+ * Module type validator.
+ */
+public class ModuleValidator implements AnnotatedTypeValidator {
 
-  public void validateModuleType(CustomType moduleType) {
+  @Override
+  public void validate(CustomType moduleType) {
     validateUnitTypeAnnotations(moduleType, true);
     validateStartupMethod(moduleType);
     validateShutdownMethod(moduleType);
@@ -41,12 +36,6 @@ public class ModuleValidator {
 
     Iterable<CustomType> includedUnits = ModuleFunctions.getIncludedUnits(moduleType);
     validateIncludedUnitTypes(includedUnits);
-  }
-
-  public void validateModuleInstance(ModuleDefault module) {
-    checkThatOneMainUnit(module);
-    checkThatThereAreNoProjectionsWithSameName(module);
-    checkInjections(module);
   }
 
   private void validateUnitTypeAnnotations(CustomType unitType, boolean mainUnit) {
@@ -197,106 +186,5 @@ public class ModuleValidator {
               "But method '{}' in unit {} is marked with annotation @{}", method.name(), unitType.canonicalName(),
           Shutdown.class.getSimpleName());
     }
-  }
-
-  private void checkThatOneMainUnit(ModuleDefault module) {
-    List<Unit> mainUnits = module.units().stream()
-        .filter(Unit::isMain)
-        .toList();
-    if (mainUnits.isEmpty()) {
-      throw ConfigurationException.withMessage("Main unit was not found");
-    }
-    if (mainUnits.size() > 1) {
-      throw ConfigurationException.withMessage("Multiple main units found: {}",
-          mainUnits.stream().map(Unit::unitClass).map(Class::getSimpleName).collect(Collectors.joining(", ")));
-    }
-  }
-
-  private void checkThatThereAreNoProjectionsWithSameName(ModuleDefault module) {
-    String message = module.units().stream()
-        .map(Unit::projectionProviders)
-        .flatMap(List::stream)
-        .collect(Collectors.groupingBy(UnitProjectionDefinition::name))
-        .entrySet().stream()
-        .filter(e -> e.getValue().size() > 1)
-        .map(e -> makeSameProjectionsInfo(e.getKey(), e.getValue()))
-        .collect(Collectors.joining("; "));
-    if (!message.isEmpty()) {
-      throw ConfigurationException.withMessage("Found multiple projections with same name: {}", message);
-    }
-  }
-
-  private void checkInjections(ModuleDefault module) {
-    Map<String, UnitProjectionDefinition> projectionProviders = module.units().stream()
-        .map(Unit::projectionProviders)
-        .flatMap(List::stream)
-        .collect(Collectors.toMap(UnitProjectionDefinition::name, Function.identity()));
-
-    checkUnitInjections(module, projectionProviders);
-    checkStartupMethodInjections(module, projectionProviders);
-    checkShutdownMethodInjections(module, projectionProviders);
-  }
-
-  private void checkUnitInjections(ModuleDefault module, Map<String, UnitProjectionDefinition> projectionProviders) {
-    List<ProjectionInjection> unitInjections = module.units().stream()
-        .map(Unit::injections)
-        .flatMap(List::stream)
-        .filter(injection -> InjectionTypes.ProjectionInjection == injection.type())
-        .map(inj -> (ProjectionInjection) inj)
-        .toList();
-    for (ProjectionInjection injection : unitInjections) {
-      UnitProjectionDefinition provider = projectionProviders.get(injection.name());
-      if (provider == null) {
-        throw ConfigurationException.withMessage("Projection injection by name '{}' declared in unit {} was not found",
-            injection.name(), injection.unitClass().getCanonicalName());
-      }
-      if (!ObjectFunctions.isCompatibleObjectType(injection.targetClass(), provider.type())) {
-        throw ConfigurationException.withMessage("Projection injection '{}' declared in unit {} has an incompatible " +
-                "target type. Expected type {}, actual type {}",
-            injection.name(), injection.unitClass().getCanonicalName(),
-            injection.targetClass().getCanonicalName(), provider.type().getCanonicalName());
-      }
-    }
-  }
-
-  private void checkStartupMethodInjections(ModuleDefault module, Map<String, UnitProjectionDefinition> projectionProviders) {
-    module.units().stream()
-        .filter(Unit::isMain)
-        .findFirst()
-        .flatMap(Unit::startupMethod)
-        .ifPresent(method -> checkMethodParamInjections(method, projectionProviders));
-  }
-
-  private void checkShutdownMethodInjections(ModuleDefault module, Map<String, UnitProjectionDefinition> projectionProviders) {
-    module.units().stream()
-        .filter(Unit::isMain)
-        .findFirst()
-        .flatMap(Unit::shutdownMethod)
-        .ifPresent(method -> checkMethodParamInjections(method, projectionProviders));
-  }
-
-  private void checkMethodParamInjections(Method method, Map<String, UnitProjectionDefinition> projectionProviders) {
-    for (Parameter param : method.getParameters()) {
-      UnitProjectionDefinition provider = projectionProviders.get(param.getName());
-      if (provider == null) {
-        throw ConfigurationException.withMessage("Injection '{}' required in method '{}' declared in unit {} was not found",
-            param.getName(), method.getName(), method.getDeclaringClass().getCanonicalName());
-      }
-      if (!ObjectFunctions.isCompatibleObjectType(param.getType(), provider.type())) {
-        throw ConfigurationException.withMessage("Injection '{}' required in method '{}' declared in unit {} has an incompatible target type. " +
-                "Expected type {}, actual type {}",
-            param.getName(), method.getName(), method.getDeclaringClass().getCanonicalName(),
-            param.getType().getCanonicalName(), provider.type().getCanonicalName());
-      }
-    }
-  }
-
-  private String makeSameProjectionsInfo(String projectionName, List<UnitProjectionDefinition> projectionProviders) {
-    return "Projection name '" + projectionName +
-        "', projection providers: " + projectionProviders.stream().map(this::getProjectionProviderName).collect(Collectors.joining(", "));
-  }
-
-  private String getProjectionProviderName(UnitProjectionDefinition projectionProvider) {
-    return projectionProvider.unit().unitClass().getCanonicalName() + "#" + projectionProvider.projectionMethod().getName();
   }
 }

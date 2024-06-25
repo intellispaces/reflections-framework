@@ -1,6 +1,7 @@
-package tech.intellispaces.framework.core.validate;
+package tech.intellispaces.framework.core.annotation.validator;
 
 import tech.intellispaces.framework.annotationprocessor.AnnotatedTypeProcessor;
+import tech.intellispaces.framework.annotationprocessor.AnnotatedTypeValidator;
 import tech.intellispaces.framework.annotationprocessor.generator.ArtifactGenerator;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
 
@@ -23,6 +24,11 @@ public class SampleAnnotatedTypeProcessor extends AnnotatedTypeProcessor {
   protected boolean isApplicable(CustomType annotatedType) {
     this.annotatedType = annotatedType;
     return false;
+  }
+
+  @Override
+  protected AnnotatedTypeValidator getValidator() {
+    return null;
   }
 
   @Override

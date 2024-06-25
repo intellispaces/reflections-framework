@@ -1,6 +1,7 @@
 package tech.intellispaces.framework.core.annotation.processor.ontology;
 
 import com.google.auto.service.AutoService;
+import tech.intellispaces.framework.annotationprocessor.AnnotatedTypeValidator;
 import tech.intellispaces.framework.annotationprocessor.generator.ArtifactGenerator;
 import tech.intellispaces.framework.core.annotation.Ontology;
 import tech.intellispaces.framework.core.annotation.Transition;
@@ -24,6 +25,11 @@ public class OntologyAnnotationProcessor extends AbstractAnnotationProcessor {
   @Override
   protected boolean isApplicable(CustomType ontologyType) {
     return isAutoGenerationEnabled(ontologyType);
+  }
+
+  @Override
+  protected AnnotatedTypeValidator getValidator() {
+    return null;
   }
 
   @Override

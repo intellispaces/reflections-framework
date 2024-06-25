@@ -1,0 +1,20 @@
+package {{$packageName}};
+
+{{for importedClass : $importedClasses}}
+import {{$importedClass}};
+{{end}}
+
+/**
+ * Unmovable object handle for objects of domain {@link {{$sourceClassName}}}.<p/>
+ *
+ * This class was generated automatically. Don't try to change it.
+ */
+{{$generatedAnnotation}}
+public interface {{$classSimpleName}}{{$domainTypeParamsFull}} extends UnmovableObjectHandle<{{$sourceClassSimpleName}}{{$domainTypeParamsBrief}}>, {{$commonHandleSimpleName}}{{$domainTypeParamsBrief}} {
+
+{{for method : $methods}}
+  @Override
+  {{$method}};
+
+{{end}}
+}

@@ -1,8 +1,13 @@
 package tech.intellispaces.framework.core.annotation.processor.domain;
 
+import tech.intellispaces.framework.core.annotation.Transition;
 import tech.intellispaces.framework.core.annotation.processor.AbstractGenerator;
 import tech.intellispaces.framework.core.common.ActionFunctions;
 import tech.intellispaces.framework.commons.action.Action;
+import tech.intellispaces.framework.core.exception.TraverseException;
+import tech.intellispaces.framework.core.object.ObjectHandleTypes;
+import tech.intellispaces.framework.core.space.transition.TransitionFunctions;
+import tech.intellispaces.framework.core.traverse.TraverseTypes;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
 import tech.intellispaces.framework.javastatements.statement.custom.MethodParam;
 import tech.intellispaces.framework.javastatements.statement.custom.MethodStatement;
@@ -20,31 +25,40 @@ abstract class AbstractObjectHandleGenerator extends AbstractGenerator {
     super(domainType);
   }
 
+  abstract protected ObjectHandleTypes getObjectHandleType();
+
   protected void analyzeObjectHandleMethods(CustomType domainType) {
     this.methods = domainType.declaredMethods().stream()
-        .map(this::buildMethodSignature)
+        .map(this::buildMethod)
         .toList();
   }
 
-  private String buildMethodSignature(MethodStatement method) {
-    var signature = new StringBuilder();
+  private String buildMethod(MethodStatement method) {
+    var sb = new StringBuilder();
     if (method.returnType().isEmpty()) {
-      signature.append("void");
+      sb.append("void");
     } else {
-      TypeReference domainReturnType = method.returnType().get();
-      signature.append(getHandleTypename(domainReturnType, context.getImportConsumer()));
-      signature.append(" ");
-      signature.append(method.name());
-      signature.append("(");
+      Transition transition = method.selectAnnotation(Transition.class).orElseThrow();
+      boolean disableMoving = transition.allowedTraverse() != TraverseTypes.Mapping &&
+          ObjectHandleTypes.Unmovable == getObjectHandleType();
+      if (disableMoving) {
+        sb.append("default ");
+      }
 
-      Action addCommaAction = ActionFunctions.buildAppendSeparatorAction(signature, ", ");
+      TypeReference domainReturnType = method.returnType().get();
+      sb.append(getObjectHandleCanonicalName(domainReturnType, getObjectHandleType()));
+      sb.append(" ");
+      sb.append(method.name());
+      sb.append("(");
+
+      Action addCommaAction = ActionFunctions.buildAppendSeparatorAction(sb, ", ");
       for (MethodParam param : method.params()) {
         addCommaAction.execute();
-        signature.append(getHandleTypename(param.type(), context.getImportConsumer()));
-        signature.append(" ");
-        signature.append(param.name());
+        sb.append(getObjectHandleCanonicalName(param.type(), getObjectHandleType()));
+        sb.append(" ");
+        sb.append(param.name());
       }
-      signature.append(")");
+      sb.append(")");
 
       String exceptions = method.exceptions().stream()
           .map(e -> e.asCustomTypeReference().orElseThrow().targetType())
@@ -52,9 +66,17 @@ abstract class AbstractObjectHandleGenerator extends AbstractGenerator {
           .map(e -> context.simpleNameOf(e.canonicalName()))
           .collect(Collectors.joining(", "));
       if (!exceptions.isEmpty()) {
-        signature.append(" throws ").append(exceptions);
+        sb.append(" throws ").append(exceptions);
+      }
+
+      if (disableMoving) {
+        context.addImport(TraverseException.class);
+        String exceptionSimpleName = context.simpleNameOf(TraverseException.class);
+        sb.append(" {\n");
+        sb.append("    throw ").append(exceptionSimpleName).append(".withMessage(\"Unmovable object handle cannot be moved\");\n");
+        sb.append("  }");
       }
     }
-    return signature.toString();
+    return sb.toString();
   }
 }

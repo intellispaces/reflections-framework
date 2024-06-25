@@ -10,4 +10,6 @@ package tech.intellispaces.framework.core.object;
  * @param <D> object domain type.
  */
 public interface ObjectHandle<D> {
+
+  boolean isMovable();
 }

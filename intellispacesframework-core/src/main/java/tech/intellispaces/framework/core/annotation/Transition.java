@@ -1,5 +1,7 @@
 package tech.intellispaces.framework.core.annotation;
 
+import tech.intellispaces.framework.core.traverse.TraverseTypes;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -16,4 +18,9 @@ public @interface Transition {
    * Transition ID.
    */
   String value();
+
+  /**
+   * Allowed traverse type.
+   */
+  TraverseTypes allowedTraverse() default TraverseTypes.Mapping;
 }

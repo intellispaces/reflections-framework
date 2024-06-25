@@ -2,7 +2,6 @@ package tech.intellispaces.framework.core.system;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import tech.intellispaces.framework.core.validate.ModuleValidator;
 
 public class ModuleLoader {
   private static final ModuleDefaultFactory factory = new ModuleDefaultFactory();
@@ -17,7 +16,7 @@ public class ModuleLoader {
     }
 
     ModuleDefault newModule = factory.createModule(moduleClass);
-    moduleValidator.validateModuleInstance(newModule);
+    moduleValidator.validate(newModule);
     if (activeModule != null) {
       activeModule.stop();
       Modules.setActiveModule(null);

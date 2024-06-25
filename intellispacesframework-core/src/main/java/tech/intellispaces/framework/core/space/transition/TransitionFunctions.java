@@ -6,6 +6,8 @@ import tech.intellispaces.framework.core.object.ObjectFunctions;
 import tech.intellispaces.framework.dynamicproxy.tracker.Tracker;
 import tech.intellispaces.framework.dynamicproxy.tracker.TrackerBuilder;
 import tech.intellispaces.framework.dynamicproxy.tracker.TrackerFunctions;
+import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
+import tech.intellispaces.framework.javastatements.statement.custom.MethodStatement;
 
 import java.lang.reflect.Method;
 import java.util.List;
@@ -84,17 +86,32 @@ public interface TransitionFunctions {
     }
   }
 
-  static String getEmbeddedGuideTid(Method guideMethod) {
-    Class<?> objectHandleClass = guideMethod.getDeclaringClass();
-    Class<?> domainClass = ObjectFunctions.getDomainClassOfObjectHandle(objectHandleClass);
-    for (Method method : domainClass.getDeclaredMethods()) {
-      if (method.getName().equals(guideMethod.getName())) {
-        Transition transition = method.getAnnotation(Transition.class);
-        return transition.value();
+  static Transition findTransitionAnnotation(MethodStatement objectHandleMethod) {
+    CustomType objectHandleType = objectHandleMethod.holder();
+    CustomType domainType = ObjectFunctions.getDomainTypeOfObjectHandle(objectHandleType);
+    for (MethodStatement domainMethod : domainType.declaredMethods()) {
+      if (domainMethod.name().equals(objectHandleMethod.name())) {
+        return domainMethod.selectAnnotation(Transition.class).orElseThrow();
       }
     }
-    throw UnexpectedViolationException.withMessage("Failed to define transition ID of embedded guide '{}' in {}",
-        guideMethod.getName(), objectHandleClass.getCanonicalName());
+    throw UnexpectedViolationException.withMessage("Failed to find related transition annotation of method '{}' in {}",
+        objectHandleMethod.name(), objectHandleType.canonicalName());
+  }
+
+  static Transition findTransitionAnnotation(Method objectHandleMethod) {
+    Class<?> objectHandleClass = objectHandleMethod.getDeclaringClass();
+    Class<?> domainClass = ObjectFunctions.getDomainClassOfObjectHandle(objectHandleClass);
+    for (Method domainMethod : domainClass.getDeclaredMethods()) {
+      if (domainMethod.getName().equals(objectHandleMethod.getName())) {
+        return domainMethod.getAnnotation(Transition.class);
+      }
+    }
+    throw UnexpectedViolationException.withMessage("Failed to find related transition annotation of method '{}' in {}",
+        objectHandleMethod.getName(), objectHandleClass.getCanonicalName());
+  }
+
+  static String getEmbeddedGuideTid(Method guideMethod) {
+    return findTransitionAnnotation(guideMethod).value();
   }
 
   private static String extractTransitionId(List<Method> trackedMethods, Class<?> sourceDomain, Object transitionMethod) {

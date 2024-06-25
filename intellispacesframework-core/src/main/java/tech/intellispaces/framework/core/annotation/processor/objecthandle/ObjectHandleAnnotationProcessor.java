@@ -1,6 +1,7 @@
 package tech.intellispaces.framework.core.annotation.processor.objecthandle;
 
 import com.google.auto.service.AutoService;
+import tech.intellispaces.framework.annotationprocessor.AnnotatedTypeValidator;
 import tech.intellispaces.framework.core.annotation.ObjectHandle;
 import tech.intellispaces.framework.annotationprocessor.generator.ArtifactGenerator;
 import tech.intellispaces.framework.core.annotation.processor.AbstractAnnotationProcessor;
@@ -24,7 +25,12 @@ public class ObjectHandleAnnotationProcessor extends AbstractAnnotationProcessor
   }
 
   @Override
+  protected AnnotatedTypeValidator getValidator() {
+    return null;
+  }
+
+  @Override
   protected List<ArtifactGenerator> makeArtifactGenerators(CustomType objectHandleType) {
-    return List.of(new ObjectHandleImplGenerator(objectHandleType), new MovableObjectHandleImplGenerator(objectHandleType));
+    return List.of(new ObjectHandleImplGenerator(objectHandleType), new ObjectHandleMovableImplGenerator(objectHandleType));
   }
 }

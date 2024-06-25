@@ -4,11 +4,18 @@ import tech.intellispaces.framework.core.exception.TraverseException;
 import tech.intellispaces.framework.core.transition.TransitionMethod1;
 
 /**
- * Handle to movable object.
+ * Movable object handle.<p/>
+ *
+ * Movable object handle can move related object.
  *
  * @param <D> object domain type.
  */
 public interface MovableObjectHandle<D> extends ObjectHandle<D> {
+
+  @Override
+  default boolean isMovable() {
+    return true;
+  }
 
   <Q> MovableObjectHandle<D> moveThru(String tid, Q qualifier) throws TraverseException;
 

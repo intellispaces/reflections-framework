@@ -2,6 +2,7 @@ package tech.intellispaces.framework.core.annotation.processor.data;
 
 import tech.intellispaces.framework.core.annotation.processor.AbstractGenerator;
 import tech.intellispaces.framework.core.common.NameFunctions;
+import tech.intellispaces.framework.core.object.ObjectHandleTypes;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
 import tech.intellispaces.framework.javastatements.statement.custom.MethodStatement;
 import tech.intellispaces.framework.javastatements.statement.reference.TypeReference;
@@ -11,16 +12,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DataHandleGenerator extends AbstractGenerator {
+public class UnmovableDataHandleGenerator extends AbstractGenerator {
   private final List<Map<String, String>> projectionProperties = new ArrayList<>();
 
-  public DataHandleGenerator(CustomType dataType) {
+  public UnmovableDataHandleGenerator(CustomType dataType) {
     super(dataType);
   }
 
   @Override
   protected String templateName() {
-    return "/DataHandle.template";
+    return "/UnmovableDataHandle.template";
   }
 
   @Override
@@ -29,7 +30,7 @@ public class DataHandleGenerator extends AbstractGenerator {
         "generatedAnnotation", generatedAnnotation(),
         "packageName", context.packageName(),
         "sourceClassName", sourceClassCanonicalName(),
-        "objectHandleClassName", NameFunctions.getObjectHandleClassCanonicalName(annotatedType.className()),
+        "objectHandleClassName", NameFunctions.getUnmovableObjectHandleClassCanonicalName(annotatedType.className()),
         "classSimpleName", context.generatedClassSimpleName(),
         "importedClasses", context.getImports(),
         "projections", projectionProperties
@@ -50,7 +51,7 @@ public class DataHandleGenerator extends AbstractGenerator {
   private void analyzeProjections() {
     for (MethodStatement method : annotatedType.declaredMethods()) {
       TypeReference type = method.returnType().orElseThrow();
-      String handleType = getHandleTypename(type, context.getImportConsumer());
+      String handleType = getObjectHandleCanonicalName(type, ObjectHandleTypes.Unmovable);
 
       Map<String, String> properties = new HashMap<>();
       properties.put("type", handleType);

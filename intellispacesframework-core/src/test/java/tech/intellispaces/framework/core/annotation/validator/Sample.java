@@ -1,4 +1,4 @@
-package tech.intellispaces.framework.core.validate;
+package tech.intellispaces.framework.core.annotation.validator;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -6,6 +6,8 @@ import tech.intellispaces.framework.core.common.ActionFunctions;
 import tech.intellispaces.framework.commons.action.Action;
 import tech.intellispaces.framework.commons.string.StringFunctions;
 import tech.intellispaces.framework.commons.type.TypeFunctions;
+import tech.intellispaces.framework.core.common.NameFunctions;
+import tech.intellispaces.framework.core.traverse.TraverseTypes;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
 import tech.intellispaces.framework.javastatements.statement.custom.MethodStatement;
 import tech.intellispaces.framework.javastatements.statement.reference.NamedTypeReference;
@@ -47,6 +49,9 @@ public class TransitionGenerator extends AbstractGenerator {
   @Override
   protected boolean analyzeAnnotatedType() {
     context.generatedClassCanonicalName(getGeneratedClassCanonicalName());
+    if (annotatedType.isNested()) {
+      context.addImport(sourceClassCanonicalName());
+    }
     context.addImport(Transition.class);
 
     tid = getTid();
@@ -92,14 +97,31 @@ public class TransitionGenerator extends AbstractGenerator {
   }
 
   private String getTransitionMethodName() {
-    return StringFunctions.lowercaseFirstLetter(annotatedType.simpleName()) + "To" +
-        StringFunctions.capitalizeFirstLetter(method.name());
+    if (isMappingTraverseType()) {
+      return StringFunctions.lowercaseFirstLetter(annotatedType.simpleName()) + "To" +
+          StringFunctions.capitalizeFirstLetter(method.name());
+    } else {
+      return StringFunctions.lowercaseFirstLetter(annotatedType.simpleName()) +
+          StringFunctions.capitalizeFirstLetter(method.name());
+    }
   }
 
   private String getGeneratedClassCanonicalName() {
-    String packageName = TypeFunctions.getPackageName(annotatedType.canonicalName());
-    String simpleName = StringFunctions.capitalizeFirstLetter(annotatedType.simpleName()) + "To" +
-        StringFunctions.capitalizeFirstLetter(method.name()) + "Transition";
+    String className = NameFunctions.transformClassName(annotatedType.className());
+
+    final String simpleName;
+    if (isMappingTraverseType()) {
+      simpleName = StringFunctions.capitalizeFirstLetter(TypeFunctions.getSimpleName(className)) + "To" +
+          StringFunctions.capitalizeFirstLetter(method.name()) + "Transition";
+    } else {
+      simpleName = StringFunctions.capitalizeFirstLetter(TypeFunctions.getSimpleName(className)) +
+          StringFunctions.capitalizeFirstLetter(method.name()) + "Transition";
+    }
+    String packageName = TypeFunctions.getPackageName(className);
     return TypeFunctions.joinPackageAndClassname(packageName, simpleName);
+  }
+
+  private boolean isMappingTraverseType() {
+    return method.selectAnnotation(Transition.class).orElseThrow().allowedTraverse() == TraverseTypes.Mapping;
   }
 }

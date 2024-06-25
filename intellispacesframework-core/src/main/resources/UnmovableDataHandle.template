@@ -5,7 +5,7 @@ import {{$importedClass}};
 {{end}}
 
 /**
- * Object handle for data object of domain {@link {{$sourceClassName}}}.<p/>
+ * Unmovable object handle implementation for data object of domain {@link {{$sourceClassName}}}.<p/>
  *
  * Data objects are entirely in memory.<p/>
  *

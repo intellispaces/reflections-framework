@@ -1,11 +1,12 @@
 package tech.intellispaces.framework.core.annotation.processor.module;
 
 import com.google.auto.service.AutoService;
+import tech.intellispaces.framework.annotationprocessor.AnnotatedTypeValidator;
 import tech.intellispaces.framework.core.annotation.Module;
 import tech.intellispaces.framework.annotationprocessor.generator.ArtifactGenerator;
 import tech.intellispaces.framework.core.annotation.processor.AbstractAnnotationProcessor;
 import tech.intellispaces.framework.core.system.ModuleFunctions;
-import tech.intellispaces.framework.core.validate.ModuleValidator;
+import tech.intellispaces.framework.core.annotation.validator.ModuleValidator;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
 
 import javax.annotation.processing.Processor;
@@ -16,7 +17,6 @@ import java.util.Set;
 
 @AutoService(Processor.class)
 public class ModuleAnnotationProcessor extends AbstractAnnotationProcessor {
-  private final ModuleValidator validator = new ModuleValidator();
 
   public ModuleAnnotationProcessor() {
     super(Module.class, Set.of(ElementKind.CLASS));
@@ -24,8 +24,12 @@ public class ModuleAnnotationProcessor extends AbstractAnnotationProcessor {
 
   @Override
   protected boolean isApplicable(CustomType moduleType) {
-    validator.validateModuleType(moduleType);
     return isAutoGenerationEnabled(moduleType);
+  }
+
+  @Override
+  protected AnnotatedTypeValidator getValidator() {
+    return new ModuleValidator();
   }
 
   @Override

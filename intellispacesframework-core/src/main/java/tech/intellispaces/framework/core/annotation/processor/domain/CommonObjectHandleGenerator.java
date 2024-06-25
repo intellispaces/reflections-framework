@@ -1,27 +1,26 @@
 package tech.intellispaces.framework.core.annotation.processor.domain;
 
-import tech.intellispaces.framework.core.object.MovableObjectHandle;
+import tech.intellispaces.framework.core.object.ObjectHandle;
 import tech.intellispaces.framework.core.common.NameFunctions;
 import tech.intellispaces.framework.core.object.ObjectHandleTypes;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
 
 import java.util.Map;
 
-public class MovableObjectHandleGenerator extends AbstractObjectHandleGenerator {
-  private String commonHandleSimpleName;
+public class CommonObjectHandleGenerator extends AbstractObjectHandleGenerator {
 
-  public MovableObjectHandleGenerator(CustomType domainType) {
+  public CommonObjectHandleGenerator(CustomType domainType) {
     super(domainType);
   }
 
   @Override
   protected ObjectHandleTypes getObjectHandleType() {
-    return ObjectHandleTypes.Movable;
+    return ObjectHandleTypes.Common;
   }
 
   @Override
   protected String templateName() {
-    return "/MovableObjectHandle.template";
+    return "/ObjectHandle.template";
   }
 
   protected Map<String, Object> templateVariables() {
@@ -30,7 +29,6 @@ public class MovableObjectHandleGenerator extends AbstractObjectHandleGenerator 
         "packageName", context.packageName(),
         "sourceClassName", sourceClassCanonicalName(),
         "sourceClassSimpleName", sourceClassSimpleName(),
-        "commonHandleSimpleName", commonHandleSimpleName,
         "classSimpleName", context.generatedClassSimpleName(),
         "domainTypeParamsFull", domainTypeParamsFull,
         "domainTypeParamsBrief", domainTypeParamsBrief,
@@ -41,21 +39,17 @@ public class MovableObjectHandleGenerator extends AbstractObjectHandleGenerator 
 
   @Override
   protected boolean analyzeAnnotatedType() {
-    context.generatedClassCanonicalName(NameFunctions.getMovableObjectHandleClassCanonicalName(annotatedType.className()));
+    context.generatedClassCanonicalName(NameFunctions.getCommonObjectHandleClassCanonicalName(annotatedType.className()));
     if (annotatedType.isNested()) {
       context.addImport(sourceClassCanonicalName());
     }
-
-    commonHandleSimpleName = NameFunctions.getCommonObjectHandleClassCanonicalName(annotatedType.className());
-    context.addImport(commonHandleSimpleName);
-    commonHandleSimpleName = context.simpleNameOf(commonHandleSimpleName);
 
     domainTypeParamsFull = annotatedType.typeParametersFullDeclaration();
     domainTypeParamsBrief = annotatedType.typeParametersBriefDeclaration();
 
     analyzeObjectHandleMethods(annotatedType);
 
-    context.addImport(MovableObjectHandle.class);
+    context.addImport(ObjectHandle.class);
 
     return true;
   }

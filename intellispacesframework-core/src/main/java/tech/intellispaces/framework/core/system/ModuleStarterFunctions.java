@@ -1,7 +1,7 @@
 package tech.intellispaces.framework.core.system;
 
-import tech.intellispaces.framework.core.exception.ConfigurationException;
 import tech.intellispaces.framework.commons.exception.UnexpectedViolationException;
+import tech.intellispaces.framework.core.exception.ConfigurationException;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;

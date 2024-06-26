@@ -1,8 +1,8 @@
 package tech.intellispaces.framework.core.guide.n4;
 
 import tech.intellispaces.framework.core.exception.TraverseException;
-import tech.intellispaces.framework.core.guide.n5.Mover5;
 import tech.intellispaces.framework.core.guide.Mover;
+import tech.intellispaces.framework.core.guide.n5.Mover5;
 
 /**
  * Mover guide with four qualifiers.

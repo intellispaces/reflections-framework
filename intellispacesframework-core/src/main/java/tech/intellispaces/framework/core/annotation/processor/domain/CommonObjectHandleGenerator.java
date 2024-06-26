@@ -1,7 +1,7 @@
 package tech.intellispaces.framework.core.annotation.processor.domain;
 
-import tech.intellispaces.framework.core.object.ObjectHandle;
 import tech.intellispaces.framework.core.common.NameFunctions;
+import tech.intellispaces.framework.core.object.ObjectHandle;
 import tech.intellispaces.framework.core.object.ObjectHandleTypes;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
 

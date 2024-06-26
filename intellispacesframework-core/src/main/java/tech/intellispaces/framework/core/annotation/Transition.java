@@ -22,5 +22,5 @@ public @interface Transition {
   /**
    * Allowed traverse type.
    */
-  TraverseTypes allowedTraverse() default TraverseTypes.Mapping;
+  TraverseTypes type() default TraverseTypes.Mapping;
 }

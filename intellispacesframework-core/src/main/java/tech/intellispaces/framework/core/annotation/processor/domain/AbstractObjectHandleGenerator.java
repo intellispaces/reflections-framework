@@ -1,9 +1,9 @@
 package tech.intellispaces.framework.core.annotation.processor.domain;
 
+import tech.intellispaces.framework.commons.action.Action;
 import tech.intellispaces.framework.core.annotation.Transition;
 import tech.intellispaces.framework.core.annotation.processor.AbstractGenerator;
 import tech.intellispaces.framework.core.common.ActionFunctions;
-import tech.intellispaces.framework.commons.action.Action;
 import tech.intellispaces.framework.core.exception.TraverseException;
 import tech.intellispaces.framework.core.object.ObjectHandleTypes;
 import tech.intellispaces.framework.core.traverse.TraverseTypes;
@@ -37,7 +37,7 @@ abstract class AbstractObjectHandleGenerator extends AbstractGenerator {
     var sb = new StringBuilder();
 
     Transition transition = method.selectAnnotation(Transition.class).orElseThrow();
-    boolean disableMoving = transition.allowedTraverse() != TraverseTypes.Mapping &&
+    boolean disableMoving = transition.type() != TraverseTypes.Mapping &&
         ObjectHandleTypes.Unmovable == getObjectHandleType();
 
     buildMethodNameParameters(method, sb);
@@ -49,7 +49,15 @@ abstract class AbstractObjectHandleGenerator extends AbstractGenerator {
       }
 
       TypeReference domainReturnType = method.returnType().get();
-      sb.append(getObjectHandleCanonicalName(domainReturnType, getObjectHandleType()));
+      final ObjectHandleTypes objectHandleType;
+      if (domainReturnType.isCustomTypeReference() &&
+          !method.holder().className().equals(domainReturnType.asCustomTypeReference().orElseThrow().targetType().className())
+      ) {
+        objectHandleType = ObjectHandleTypes.Common;
+      } else {
+        objectHandleType = getObjectHandleType();
+      }
+      sb.append(getObjectHandleCanonicalName(domainReturnType, objectHandleType));
     }
 
     sb.append(" ");

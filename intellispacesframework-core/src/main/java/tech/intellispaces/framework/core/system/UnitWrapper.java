@@ -1,8 +1,8 @@
 package tech.intellispaces.framework.core.system;
 
+import tech.intellispaces.framework.commons.exception.UnexpectedViolationException;
 import tech.intellispaces.framework.core.annotation.Projection;
 import tech.intellispaces.framework.core.annotation.Wrapper;
-import tech.intellispaces.framework.commons.exception.UnexpectedViolationException;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;

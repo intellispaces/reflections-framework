@@ -2,10 +2,10 @@ package tech.intellispaces.framework.core.annotation.processor.domain;
 
 import com.google.auto.service.AutoService;
 import tech.intellispaces.framework.annotationprocessor.AnnotatedTypeValidator;
+import tech.intellispaces.framework.annotationprocessor.generator.ArtifactGenerator;
 import tech.intellispaces.framework.core.annotation.Domain;
 import tech.intellispaces.framework.core.annotation.Transition;
 import tech.intellispaces.framework.core.annotation.processor.AbstractAnnotationProcessor;
-import tech.intellispaces.framework.annotationprocessor.generator.ArtifactGenerator;
 import tech.intellispaces.framework.core.annotation.validator.DomainValidator;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
 

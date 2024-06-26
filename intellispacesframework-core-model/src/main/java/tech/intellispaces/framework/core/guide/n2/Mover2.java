@@ -1,10 +1,10 @@
 package tech.intellispaces.framework.core.guide.n2;
 
 import tech.intellispaces.framework.core.exception.TraverseException;
+import tech.intellispaces.framework.core.guide.Mover;
 import tech.intellispaces.framework.core.guide.n3.Mover3;
 import tech.intellispaces.framework.core.guide.n4.Mover4;
 import tech.intellispaces.framework.core.guide.n5.Mover5;
-import tech.intellispaces.framework.core.guide.Mover;
 
 /**
  * Mover guide with two qualifiers.

@@ -2,9 +2,9 @@ package samples;
 
 import tech.intellispaces.framework.core.annotation.Module;
 import tech.intellispaces.framework.core.annotation.Projection;
+import tech.intellispaces.framework.core.annotation.validator.Sample;
 import tech.intellispaces.framework.core.samples.domain.DomainEmpty;
 import tech.intellispaces.framework.core.samples.object.ObjectHandleOfDomainEmpty;
-import tech.intellispaces.framework.core.annotation.validator.Sample;
 
 @Sample
 @Module

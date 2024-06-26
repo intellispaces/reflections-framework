@@ -1,8 +1,8 @@
 package tech.intellispaces.framework.core.object;
 
-import tech.intellispaces.framework.core.annotation.Domain;
 import tech.intellispaces.framework.commons.exception.UnexpectedViolationException;
 import tech.intellispaces.framework.commons.type.TypeFunctions;
+import tech.intellispaces.framework.core.annotation.Domain;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
 import tech.intellispaces.framework.javastatements.statement.reference.CustomTypeReference;
 import tech.intellispaces.framework.javastatements.statement.reference.TypeReference;

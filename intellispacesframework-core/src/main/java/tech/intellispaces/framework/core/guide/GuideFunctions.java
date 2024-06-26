@@ -1,9 +1,9 @@
 package tech.intellispaces.framework.core.guide;
 
+import tech.intellispaces.framework.commons.exception.UnexpectedViolationException;
 import tech.intellispaces.framework.core.annotation.Mapper;
 import tech.intellispaces.framework.core.annotation.Mover;
 import tech.intellispaces.framework.core.space.transition.TransitionFunctions;
-import tech.intellispaces.framework.commons.exception.UnexpectedViolationException;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;

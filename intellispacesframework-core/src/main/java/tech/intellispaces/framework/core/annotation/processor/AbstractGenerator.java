@@ -5,7 +5,6 @@ import tech.intellispaces.framework.annotationprocessor.generator.TemplateBasedJ
 import tech.intellispaces.framework.commons.action.Action;
 import tech.intellispaces.framework.commons.type.TypeFunctions;
 import tech.intellispaces.framework.core.common.NameFunctions;
-import tech.intellispaces.framework.core.object.ObjectFunctions;
 import tech.intellispaces.framework.core.object.ObjectHandleTypes;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
 import tech.intellispaces.framework.javastatements.statement.custom.MethodParam;

@@ -1,11 +1,11 @@
 package tech.intellispaces.framework.core.annotation.processor.domain;
 
-import tech.intellispaces.framework.core.annotation.Transition;
-import tech.intellispaces.framework.core.annotation.processor.AbstractGenerator;
-import tech.intellispaces.framework.core.common.ActionFunctions;
 import tech.intellispaces.framework.commons.action.Action;
 import tech.intellispaces.framework.commons.string.StringFunctions;
 import tech.intellispaces.framework.commons.type.TypeFunctions;
+import tech.intellispaces.framework.core.annotation.Transition;
+import tech.intellispaces.framework.core.annotation.processor.AbstractGenerator;
+import tech.intellispaces.framework.core.common.ActionFunctions;
 import tech.intellispaces.framework.core.common.NameFunctions;
 import tech.intellispaces.framework.core.traverse.TraverseTypes;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
@@ -122,6 +122,6 @@ public class TransitionGenerator extends AbstractGenerator {
   }
 
   private boolean isMappingTraverseType() {
-    return method.selectAnnotation(Transition.class).orElseThrow().allowedTraverse() == TraverseTypes.Mapping;
+    return method.selectAnnotation(Transition.class).orElseThrow().type() == TraverseTypes.Mapping;
   }
 }

@@ -1,10 +1,10 @@
 package tech.intellispaces.framework.core.annotation.processor.objecthandle;
 
+import tech.intellispaces.framework.core.exception.TraverseException;
+import tech.intellispaces.framework.core.guide.n1.Mover1;
 import tech.intellispaces.framework.core.object.ObjectFunctions;
 import tech.intellispaces.framework.core.space.transition.TransitionFunctions;
 import tech.intellispaces.framework.core.system.Modules;
-import tech.intellispaces.framework.core.exception.TraverseException;
-import tech.intellispaces.framework.core.guide.n1.Mover1;
 import tech.intellispaces.framework.core.transition.TransitionMethod1;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
 

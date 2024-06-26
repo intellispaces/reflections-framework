@@ -1,17 +1,17 @@
 package tech.intellispaces.framework.core.system;
 
-import tech.intellispaces.framework.core.traverse.MapObjectHandleThruTransition0Plan;
-import tech.intellispaces.framework.core.traverse.MapObjectHandleThruTransition1Plan;
-import tech.intellispaces.framework.core.traverse.MoveObjectHandleThruTransition0Plan;
-import tech.intellispaces.framework.core.traverse.TraverseExecutor;
 import tech.intellispaces.framework.core.exception.TraverseException;
 import tech.intellispaces.framework.core.guide.n0.Guide0;
 import tech.intellispaces.framework.core.guide.n1.Guide1;
 import tech.intellispaces.framework.core.traverse.ActualPlan;
 import tech.intellispaces.framework.core.traverse.CallGuide0Plan;
 import tech.intellispaces.framework.core.traverse.CallGuide1Plan;
+import tech.intellispaces.framework.core.traverse.MapObjectHandleThruTransition0Plan;
+import tech.intellispaces.framework.core.traverse.MapObjectHandleThruTransition1Plan;
+import tech.intellispaces.framework.core.traverse.MoveObjectHandleThruTransition0Plan;
 import tech.intellispaces.framework.core.traverse.MoveObjectHandleThruTransition1Plan;
 import tech.intellispaces.framework.core.traverse.TraverseAnalyzer;
+import tech.intellispaces.framework.core.traverse.TraverseExecutor;
 
 public class TraverseExecutorImpl implements TraverseExecutor {
   private final TraverseAnalyzer traverseAnalyzer;

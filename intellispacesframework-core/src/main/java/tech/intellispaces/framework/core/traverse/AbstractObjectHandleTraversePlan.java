@@ -1,7 +1,7 @@
 package tech.intellispaces.framework.core.traverse;
 
-import tech.intellispaces.framework.core.object.ObjectFunctions;
 import tech.intellispaces.framework.commons.exception.UnexpectedViolationException;
+import tech.intellispaces.framework.core.object.ObjectFunctions;
 
 import java.util.HashMap;
 import java.util.Map;

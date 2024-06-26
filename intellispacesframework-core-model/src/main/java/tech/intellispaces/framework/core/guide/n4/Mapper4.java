@@ -1,8 +1,8 @@
 package tech.intellispaces.framework.core.guide.n4;
 
 import tech.intellispaces.framework.core.exception.TraverseException;
-import tech.intellispaces.framework.core.guide.n5.Mapper5;
 import tech.intellispaces.framework.core.guide.Mapper;
+import tech.intellispaces.framework.core.guide.n5.Mapper5;
 
 /**
  * Mapper guide with four qualifiers.

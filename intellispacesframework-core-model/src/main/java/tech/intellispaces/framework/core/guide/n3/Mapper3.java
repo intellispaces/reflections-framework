@@ -1,10 +1,10 @@
 package tech.intellispaces.framework.core.guide.n3;
 
+import tech.intellispaces.framework.commons.function.QuadFunction;
 import tech.intellispaces.framework.core.exception.TraverseException;
+import tech.intellispaces.framework.core.guide.Mapper;
 import tech.intellispaces.framework.core.guide.n4.Mapper4;
 import tech.intellispaces.framework.core.guide.n5.Mapper5;
-import tech.intellispaces.framework.commons.function.QuadFunction;
-import tech.intellispaces.framework.core.guide.Mapper;
 
 /**
  * Mapper guide with three qualifiers.

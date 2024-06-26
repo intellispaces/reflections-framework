@@ -1,7 +1,7 @@
 package tech.intellispaces.framework.core.system;
 
-import tech.intellispaces.framework.core.exception.ConfigurationException;
 import tech.intellispaces.framework.commons.exception.ExceptionFunctions;
+import tech.intellispaces.framework.core.exception.ConfigurationException;
 import tech.intellispaces.framework.core.exception.CyclicDependencyException;
 import tech.intellispaces.framework.core.object.ObjectFunctions;
 

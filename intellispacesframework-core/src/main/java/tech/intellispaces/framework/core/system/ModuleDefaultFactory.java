@@ -1,15 +1,15 @@
 package tech.intellispaces.framework.core.system;
 
+import tech.intellispaces.framework.commons.exception.UnexpectedViolationException;
 import tech.intellispaces.framework.core.annotation.Module;
 import tech.intellispaces.framework.core.annotation.Projection;
 import tech.intellispaces.framework.core.annotation.Shutdown;
 import tech.intellispaces.framework.core.annotation.Startup;
-import tech.intellispaces.framework.commons.exception.UnexpectedViolationException;
+import tech.intellispaces.framework.core.common.NameFunctions;
 import tech.intellispaces.framework.core.guide.Guide;
 import tech.intellispaces.framework.core.guide.GuideFunctions;
 import tech.intellispaces.framework.core.traverse.TraverseAnalyzer;
 import tech.intellispaces.framework.core.traverse.TraverseExecutor;
-import tech.intellispaces.framework.core.common.NameFunctions;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;

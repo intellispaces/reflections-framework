@@ -2,10 +2,10 @@ package tech.intellispaces.framework.core.system.projection;
 
 import tech.intellispaces.framework.commons.exception.UnexpectedViolationException;
 import tech.intellispaces.framework.core.annotation.Data;
-import tech.intellispaces.framework.core.space.SpaceConstants;
-import tech.intellispaces.framework.core.system.ModulePropertiesFunctions;
 import tech.intellispaces.framework.core.annotation.Properties;
+import tech.intellispaces.framework.core.space.SpaceConstants;
 import tech.intellispaces.framework.core.system.Module;
+import tech.intellispaces.framework.core.system.ModulePropertiesFunctions;
 import tech.intellispaces.framework.core.system.Modules;
 
 import java.lang.reflect.Method;

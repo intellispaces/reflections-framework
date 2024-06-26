@@ -1,7 +1,7 @@
 package tech.intellispaces.framework.core.annotation.processor;
 
-import tech.intellispaces.framework.core.annotation.AutoGeneration;
 import tech.intellispaces.framework.annotationprocessor.AnnotatedTypeProcessor;
+import tech.intellispaces.framework.core.annotation.AutoGeneration;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
 
 import javax.lang.model.element.ElementKind;

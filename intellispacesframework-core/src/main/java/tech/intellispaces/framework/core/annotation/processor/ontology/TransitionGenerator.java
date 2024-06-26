@@ -1,9 +1,9 @@
 package tech.intellispaces.framework.core.annotation.processor.ontology;
 
-import tech.intellispaces.framework.core.annotation.Transition;
-import tech.intellispaces.framework.core.annotation.processor.AbstractGenerator;
 import tech.intellispaces.framework.commons.string.StringFunctions;
 import tech.intellispaces.framework.commons.type.TypeFunctions;
+import tech.intellispaces.framework.core.annotation.Transition;
+import tech.intellispaces.framework.core.annotation.processor.AbstractGenerator;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
 import tech.intellispaces.framework.javastatements.statement.custom.MethodStatement;
 

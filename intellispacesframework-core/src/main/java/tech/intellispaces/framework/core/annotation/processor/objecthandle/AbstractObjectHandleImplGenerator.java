@@ -1,8 +1,8 @@
 package tech.intellispaces.framework.core.annotation.processor.objecthandle;
 
+import tech.intellispaces.framework.commons.action.Action;
 import tech.intellispaces.framework.core.annotation.processor.AbstractGenerator;
 import tech.intellispaces.framework.core.common.ActionFunctions;
-import tech.intellispaces.framework.commons.action.Action;
 import tech.intellispaces.framework.core.object.MovableObjectHandle;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
 import tech.intellispaces.framework.javastatements.statement.custom.MethodParam;

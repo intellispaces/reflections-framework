@@ -2,8 +2,8 @@ package tech.intellispaces.framework.core.annotation.processor.objecthandle;
 
 import com.google.auto.service.AutoService;
 import tech.intellispaces.framework.annotationprocessor.AnnotatedTypeValidator;
-import tech.intellispaces.framework.core.annotation.ObjectHandle;
 import tech.intellispaces.framework.annotationprocessor.generator.ArtifactGenerator;
+import tech.intellispaces.framework.core.annotation.ObjectHandle;
 import tech.intellispaces.framework.core.annotation.processor.AbstractAnnotationProcessor;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
 

@@ -1,7 +1,7 @@
 package tech.intellispaces.framework.core.guide;
 
-import tech.intellispaces.framework.core.exception.TraverseException;
 import tech.intellispaces.framework.commons.exception.UnexpectedViolationException;
+import tech.intellispaces.framework.core.exception.TraverseException;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

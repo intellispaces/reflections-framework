@@ -130,7 +130,20 @@ public abstract class AbstractGenerator extends TemplateBasedJavaArtifactGenerat
     } else if (domainType.asCustomTypeReference().isPresent()) {
       CustomTypeReference customTypeReference = domainType.asCustomTypeReference().get();
       CustomType targetType = customTypeReference.targetType();
-      if (targetType.canonicalName().startsWith("java.lang.")) {
+      if (targetType.canonicalName().equals(Class.class.getCanonicalName())) {
+        var sb = new StringBuilder();
+        sb.append(Class.class.getSimpleName());
+        if (!customTypeReference.typeArguments().isEmpty()) {
+          sb.append("<");
+          Action addCommaAction = buildAppendSeparatorAction(sb, ", ");
+          for (NonPrimitiveTypeReference argType : customTypeReference.typeArguments()) {
+            addCommaAction.execute();
+            sb.append(getObjectHandleCanonicalName(argType, ObjectHandleTypes.Common));
+          }
+          sb.append(">");
+        }
+        return sb.toString();
+      } else if (targetType.canonicalName().startsWith("java.lang.")) {
         return targetType.simpleName();
       } else {
         var sb = new StringBuilder();

@@ -148,7 +148,8 @@ public class ObjectFunctions {
       Float.class.getCanonicalName(),
       Double.class.getCanonicalName(),
       Character.class.getCanonicalName(),
-      String.class.getCanonicalName()
+      String.class.getCanonicalName(),
+      Class.class.getCanonicalName()
   );
 
   private ObjectFunctions() {}

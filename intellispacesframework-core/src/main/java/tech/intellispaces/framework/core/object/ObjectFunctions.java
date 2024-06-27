@@ -37,22 +37,24 @@ public class ObjectFunctions {
     return type.isCustomTypeReference() && type.asCustomTypeReferenceSurely().targetType().hasParent(ObjectHandle.class);
   }
 
-  public static Class<?> getObjectHandleClass(Class<?> aClass) {
-    return findObjectHandleClass(aClass);
+  public static Class<?> seekObjectHandleClass(Class<?> aClass) {
+    return seekObjectHandleClassInternal(aClass);
   }
 
-  private static Class<?> findObjectHandleClass(Class<?> aClass) {
-    if (aClass.isAnnotationPresent(tech.intellispaces.framework.core.annotation.ObjectHandle.class)) {
+  private static Class<?> seekObjectHandleClassInternal(Class<?> aClass) {
+    if (aClass.isAnnotationPresent(tech.intellispaces.framework.core.annotation.ObjectHandle.class) ||
+        isDefaultObjectHandleClass(aClass)
+    ) {
       return aClass;
     }
     if (aClass.getSuperclass() != null) {
-      Class<?> result = findObjectHandleClass(aClass.getSuperclass());
+      Class<?> result = seekObjectHandleClassInternal(aClass.getSuperclass());
       if (result != null) {
         return result;
       }
     }
     for (Class<?> anInterface : aClass.getInterfaces()) {
-      Class<?> result = findObjectHandleClass(anInterface);
+      Class<?> result = seekObjectHandleClassInternal(anInterface);
       if (result != null) {
         return result;
       }

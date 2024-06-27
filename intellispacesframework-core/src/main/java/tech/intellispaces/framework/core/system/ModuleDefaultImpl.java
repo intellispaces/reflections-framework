@@ -8,6 +8,7 @@ import tech.intellispaces.framework.core.guide.AutoMover0;
 import tech.intellispaces.framework.core.guide.AutoMover1;
 import tech.intellispaces.framework.core.guide.n0.Mover0;
 import tech.intellispaces.framework.core.guide.n1.Mover1;
+import tech.intellispaces.framework.core.object.ObjectFunctions;
 import tech.intellispaces.framework.core.traverse.DeclarativePlan;
 import tech.intellispaces.framework.core.traverse.TraverseAnalyzer;
 import tech.intellispaces.framework.core.traverse.TraverseExecutor;
@@ -104,7 +105,7 @@ public class ModuleDefaultImpl implements ModuleDefault {
   @SuppressWarnings("unchecked")
   public <S, T> T mapThruTransition0(S source, String tid) {
     DeclarativePlan traversePlan = traverseAnalyzer.buildTraversePlanMapObjectHandleThruTransition0(
-        source.getClass(), tid);
+        ObjectFunctions.seekObjectHandleClass(source.getClass()), tid);
     return (T) traversePlan.execute(source, traverseExecutor);
   }
 
@@ -112,7 +113,7 @@ public class ModuleDefaultImpl implements ModuleDefault {
   @SuppressWarnings("unchecked")
   public <S, T, Q> T mapThruTransition1(S source, String tid, Q qualifier) {
     DeclarativePlan traversePlan = traverseAnalyzer.buildTraversePlanMapObjectHandleThruTransition1(
-        source.getClass(), tid);
+        ObjectFunctions.seekObjectHandleClass(source.getClass()), tid);
     return (T) traversePlan.execute(source, qualifier, traverseExecutor);
   }
 
@@ -120,7 +121,7 @@ public class ModuleDefaultImpl implements ModuleDefault {
   @SuppressWarnings("unchecked")
   public <S> S moveThruTransition0(S source, String tid) {
     DeclarativePlan traversePlan = traverseAnalyzer.buildTraversePlanMoveObjectHandleThruTransition0(
-        source.getClass(), tid);
+        ObjectFunctions.seekObjectHandleClass(source.getClass()), tid);
     return (S) traversePlan.execute(source, traverseExecutor);
   }
 
@@ -128,7 +129,7 @@ public class ModuleDefaultImpl implements ModuleDefault {
   @SuppressWarnings("unchecked")
   public <S, Q> S moveThruTransition1(S source, String tid, Q qualifier) {
     DeclarativePlan traversePlan = traverseAnalyzer.buildTraversePlanMoveObjectHandleThruTransition1(
-        source.getClass(), tid);
+        ObjectFunctions.seekObjectHandleClass(source.getClass()), tid);
     return (S) traversePlan.execute(source, qualifier, traverseExecutor);
   }
 }

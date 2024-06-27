@@ -1,7 +1,6 @@
 package tech.intellispaces.framework.core.system.projection;
 
 import tech.intellispaces.framework.commons.exception.UnexpectedViolationException;
-import tech.intellispaces.framework.commons.type.TypeFunctions;
 import tech.intellispaces.framework.core.annotation.Data;
 import tech.intellispaces.framework.core.annotation.Properties;
 import tech.intellispaces.framework.core.object.ObjectFunctions;

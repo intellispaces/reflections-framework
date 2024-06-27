@@ -22,7 +22,7 @@ public class EmbeddedGuideRegistryImpl implements EmbeddedGuideRegistry {
 
   private HandleDescription createHandleDescription(Class<?> objectHandleClass) {
     HandleDescription handleDescription = new HandleDescription(objectHandleClass);
-    Class<?> actualObjectHandleClass = ObjectFunctions.getObjectHandleClass(objectHandleClass);
+    Class<?> actualObjectHandleClass = ObjectFunctions.seekObjectHandleClass(objectHandleClass);
     if (actualObjectHandleClass == null) {
       return handleDescription;
     }

@@ -3,6 +3,7 @@ package tech.intellispaces.framework.core.system;
 import tech.intellispaces.framework.core.exception.TraverseException;
 import tech.intellispaces.framework.core.guide.n0.Guide0;
 import tech.intellispaces.framework.core.guide.n1.Guide1;
+import tech.intellispaces.framework.core.object.ObjectFunctions;
 import tech.intellispaces.framework.core.traverse.ActualPlan;
 import tech.intellispaces.framework.core.traverse.CallGuide0Plan;
 import tech.intellispaces.framework.core.traverse.CallGuide1Plan;
@@ -36,10 +37,11 @@ public class TraverseExecutorImpl implements TraverseExecutor {
 
   @Override
   public Object execute(MapObjectHandleThruTransition0Plan plan, Object source) throws TraverseException {
-    ActualPlan actualPlan = traverseAnalyzer.getActualTraversePlan(plan, source.getClass());
+    Class<?> objectHandleClass = ObjectFunctions.seekObjectHandleClass(source.getClass());
+    ActualPlan actualPlan = traverseAnalyzer.getActualTraversePlan(plan, objectHandleClass);
     if (actualPlan == null) {
       throw TraverseException.withMessage("Cannot to build traverse plan to map object handle of class {} through " +
-              "transition {}", source.getClass().getCanonicalName(), plan.tid());
+              "transition {}. Suitable guide has not been found", objectHandleClass.getCanonicalName(), plan.tid());
     }
     return actualPlan.execute(source, this);
   }
@@ -48,20 +50,22 @@ public class TraverseExecutorImpl implements TraverseExecutor {
   public Object execute(
       MapObjectHandleThruTransition1Plan plan, Object source, Object qualifier
   ) throws TraverseException {
-    ActualPlan actualPlan = traverseAnalyzer.getActualTraversePlan(plan, source.getClass());
+    Class<?> objectHandleClass = ObjectFunctions.seekObjectHandleClass(source.getClass());
+    ActualPlan actualPlan = traverseAnalyzer.getActualTraversePlan(plan, objectHandleClass);
     if (actualPlan == null) {
       throw TraverseException.withMessage("Cannot to build traverse plan to map object handle of class {} through " +
-          "transition {}", source.getClass().getCanonicalName(), plan.tid());
+          "transition {}. Suitable guide has not been found", objectHandleClass.getCanonicalName(), plan.tid());
     }
     return actualPlan.execute(source, qualifier, this);
   }
 
   @Override
   public Object execute(MoveObjectHandleThruTransition0Plan plan, Object source) throws TraverseException {
-    ActualPlan actualPlan = traverseAnalyzer.getActualTraversePlan(plan, source.getClass());
+    Class<?> objectHandleClass = ObjectFunctions.seekObjectHandleClass(source.getClass());
+    ActualPlan actualPlan = traverseAnalyzer.getActualTraversePlan(plan, objectHandleClass);
     if (actualPlan == null) {
       throw TraverseException.withMessage("Cannot to build traverse plan to move object handle of class {} through " +
-          "transition {}", source.getClass().getCanonicalName(), plan.tid());
+          "transition {}. Suitable guide has not been found", objectHandleClass.getCanonicalName(), plan.tid());
     }
     return actualPlan.execute(source, this);
   }
@@ -70,10 +74,11 @@ public class TraverseExecutorImpl implements TraverseExecutor {
   public Object execute(
       MoveObjectHandleThruTransition1Plan plan, Object source, Object qualifier
   ) throws TraverseException {
-    ActualPlan actualPlan = traverseAnalyzer.getActualTraversePlan(plan, source.getClass());
+    Class<?> objectHandleClass = ObjectFunctions.seekObjectHandleClass(source.getClass());
+    ActualPlan actualPlan = traverseAnalyzer.getActualTraversePlan(plan, objectHandleClass);
     if (actualPlan == null) {
       throw TraverseException.withMessage("Cannot to build traverse plan to move object handle of class {} through " +
-          "transition {}", source.getClass().getCanonicalName(), plan.tid());
+          "transition {}. Suitable guide has not been found", objectHandleClass.getCanonicalName(), plan.tid());
     }
     return actualPlan.execute(source, qualifier, this);
   }

@@ -97,7 +97,7 @@ public class ModuleValidatorTest {
     // Then
     Assertions.assertThatThrownBy(() -> moduleValidator.validate(moduleType))
         .isExactlyInstanceOf(IntelliSpacesException.class)
-        .hasMessage("Parameter 'value' of method 'startup' in unit samples.ModuleWithStartupMethodAndFileParameter should be object handle or domain class");
+        .hasMessage("Parameter 'value' of method 'startup' in unit samples.ModuleWithStartupMethodAndFileParameter should be object handle class");
   }
 
   @Test
@@ -128,7 +128,7 @@ public class ModuleValidatorTest {
     // Then
     Assertions.assertThatThrownBy(() -> moduleValidator.validate(moduleType))
         .isExactlyInstanceOf(IntelliSpacesException.class)
-        .hasMessage("Parameter 'value' of method 'shutdown' in unit samples.ModuleWithShutdownMethodAndFileParameter should be object handle or domain class");
+        .hasMessage("Parameter 'value' of method 'shutdown' in unit samples.ModuleWithShutdownMethodAndFileParameter should be object handle class");
   }
 
   @Test
@@ -181,7 +181,7 @@ public class ModuleValidatorTest {
     // Then
     Assertions.assertThatThrownBy(() -> moduleValidator.validate(moduleType))
         .isExactlyInstanceOf(IntelliSpacesException.class)
-        .hasMessage("Parameter 'value' of method 'projection' in unit samples.ModuleWithProjectionAndFileParameter should be object handle or domain class");
+        .hasMessage("Parameter 'value' of method 'projection' in unit samples.ModuleWithProjectionAndFileParameter should be object handle class");
   }
 
   @Test

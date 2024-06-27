@@ -9,7 +9,6 @@ import tech.intellispaces.framework.core.annotation.Shutdown;
 import tech.intellispaces.framework.core.annotation.Startup;
 import tech.intellispaces.framework.core.exception.IntelliSpacesException;
 import tech.intellispaces.framework.core.object.ObjectFunctions;
-import tech.intellispaces.framework.core.space.domain.DomainFunctions;
 import tech.intellispaces.framework.core.system.ModuleFunctions;
 import tech.intellispaces.framework.core.system.Unit;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
@@ -82,7 +81,7 @@ public class ModuleValidator implements AnnotatedTypeValidator {
   private void validateAbstractMethods(CustomType unitType) {
     unitType.declaredMethods().stream()
         .filter(MethodStatement::isAbstract)
-        .forEach(this::checkUnitAbstractMethod);
+        .forEach(this::checkInjectedMethod);
   }
 
   private void validateStartupMethod(CustomType moduleType) {
@@ -121,8 +120,8 @@ public class ModuleValidator implements AnnotatedTypeValidator {
       throw IntelliSpacesException.withMessage("Method of the projection '{}' in unit {} should return value",
           method.name(), method.holder().canonicalName());
     }
-    if (!isValidType(returnType.get())) {
-      throw IntelliSpacesException.withMessage("Method of the projection '{}' in unit {} should return object handle or domain class",
+    if (!ObjectFunctions.isObjectHandleType(returnType.get())) {
+      throw IntelliSpacesException.withMessage("Method of the projection '{}' in unit {} should return object handle class",
           method.name(), method.holder().canonicalName());
     }
     if (method.isAbstract()) {
@@ -132,10 +131,14 @@ public class ModuleValidator implements AnnotatedTypeValidator {
     }
   }
 
-  private void checkUnitAbstractMethod(MethodStatement method) {
+  private void checkInjectedMethod(MethodStatement method) {
     Optional<TypeReference> returnType = method.returnType();
     if (returnType.isEmpty()) {
       throw IntelliSpacesException.withMessage("Abstract method '{}' in unit {} should return value",
+          method.name(), method.holder().canonicalName());
+    }
+    if (!ObjectFunctions.isObjectHandleType(returnType.get())) {
+      throw IntelliSpacesException.withMessage("Injection '{}' in unit {} should return object handle class",
           method.name(), method.holder().canonicalName());
     }
     if (!method.params().isEmpty()) {
@@ -161,15 +164,11 @@ public class ModuleValidator implements AnnotatedTypeValidator {
   private void checkMethodParams(MethodStatement method) {
     for (MethodParam param : method.params()) {
       TypeReference paramType = param.type();
-      if (!isValidType(paramType)) {
+      if (!ObjectFunctions.isObjectHandleType(paramType)) {
         throw IntelliSpacesException.withMessage("Parameter '{}' of method '{}' in unit {} should be object handle " +
-                "or domain class", param.name(), method.name(), method.holder().canonicalName());
+                "class", param.name(), method.name(), method.holder().canonicalName());
       }
     }
-  }
-
-  private boolean isValidType(TypeReference type) {
-    return ObjectFunctions.isObjectHandleType(type) || DomainFunctions.isDomainType(type);
   }
 
   private void checkThatIsNotUnitStartupMethod(MethodStatement method, CustomType unitType) {

@@ -2,7 +2,6 @@ package tech.intellispaces.framework.core.samples.system;
 
 import tech.intellispaces.framework.core.annotation.Module;
 import tech.intellispaces.framework.core.annotation.Projection;
-import tech.intellispaces.framework.core.samples.domain.DomainEmpty;
 import tech.intellispaces.framework.core.samples.object.ObjectHandleOfDomainEmpty;
 
 @Module
@@ -90,11 +89,6 @@ public class ModuleWithSimpleProjections {
 
   @Projection
   public ObjectHandleOfDomainEmpty objectHandleProjection() {
-    return null;
-  }
-
-  @Projection
-  public DomainEmpty domainProjection() {
     return null;
   }
 }

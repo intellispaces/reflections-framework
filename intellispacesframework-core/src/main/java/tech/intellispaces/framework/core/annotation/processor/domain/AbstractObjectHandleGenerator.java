@@ -1,6 +1,7 @@
 package tech.intellispaces.framework.core.annotation.processor.domain;
 
 import tech.intellispaces.framework.commons.action.Action;
+import tech.intellispaces.framework.core.annotation.Domain;
 import tech.intellispaces.framework.core.annotation.Transition;
 import tech.intellispaces.framework.core.annotation.processor.AbstractGenerator;
 import tech.intellispaces.framework.core.common.ActionFunctions;
@@ -15,6 +16,7 @@ import tech.intellispaces.framework.javastatements.statement.reference.TypeRefer
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 abstract class AbstractObjectHandleGenerator extends AbstractGenerator {
   protected String domainTypeParamsFull;
@@ -28,9 +30,14 @@ abstract class AbstractObjectHandleGenerator extends AbstractGenerator {
   abstract protected ObjectHandleTypes getObjectHandleType();
 
   protected void analyzeObjectHandleMethods(CustomType domainType) {
-    this.methods = domainType.declaredMethods().stream()
+    this.methods = getDomainMethods(domainType)
         .map(this::buildMethod)
         .toList();
+  }
+
+  private Stream<MethodStatement> getDomainMethods(CustomType domainType) {
+    return domainType.actualMethods().stream()
+        .filter(m -> m.holder().hasAnnotation(Domain.class));
   }
 
   private String buildMethod(MethodStatement method) {

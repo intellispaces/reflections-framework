@@ -1,6 +1,5 @@
 package tech.intellispaces.framework.core.common;
 
-import tech.intellispaces.framework.commons.type.TypeFunctions;
 import tech.intellispaces.framework.core.object.ObjectHandleTypes;
 
 public interface NameFunctions {
@@ -18,11 +17,11 @@ public interface NameFunctions {
   }
 
   static String getMovableObjectHandleClassCanonicalName(String domainClassName) {
-    return TypeFunctions.addPrefixToClassName("Movable", transformClassName(domainClassName) + "Handle");
+    return transformClassName(domainClassName) + "MovableHandle";
   }
 
   static String getUnmovableObjectHandleClassCanonicalName(String domainClassName) {
-    return TypeFunctions.addPrefixToClassName("Unmovable", transformClassName(domainClassName) + "Handle");
+    return transformClassName(domainClassName) + "UnmovableHandle";
   }
 
   static String getUnitWrapperCanonicalName(String unitClassName) {

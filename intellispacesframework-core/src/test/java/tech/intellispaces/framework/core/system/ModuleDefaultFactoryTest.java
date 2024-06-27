@@ -4,7 +4,6 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import tech.intellispaces.framework.core.exception.ConfigurationException;
 import tech.intellispaces.framework.core.exception.CyclicDependencyException;
-import tech.intellispaces.framework.core.samples.domain.DomainEmpty;
 import tech.intellispaces.framework.core.samples.object.ObjectHandleOfDomainEmpty;
 import tech.intellispaces.framework.core.samples.system.EmptyModule;
 import tech.intellispaces.framework.core.samples.system.ModuleWithProjectionProvidersWithSelfCyclicDependency;
@@ -113,9 +112,7 @@ public class ModuleDefaultFactoryTest {
 
     Assertions.assertThat(module.projectionRegistry().getProjectionTarget("objectHandleProjection", ObjectHandleOfDomainEmpty.class)).isNull();
 
-    Assertions.assertThat(module.projectionRegistry().getProjectionTarget("domainProjection", DomainEmpty.class)).isNull();
-
-    assertThat(module.projectionRegistry().projections()).hasSize(18);
+    assertThat(module.projectionRegistry().projections()).hasSize(17);
   }
 
   @Test

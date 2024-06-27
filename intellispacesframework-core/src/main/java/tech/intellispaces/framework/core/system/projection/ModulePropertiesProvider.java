@@ -1,8 +1,10 @@
 package tech.intellispaces.framework.core.system.projection;
 
 import tech.intellispaces.framework.commons.exception.UnexpectedViolationException;
+import tech.intellispaces.framework.commons.type.TypeFunctions;
 import tech.intellispaces.framework.core.annotation.Data;
 import tech.intellispaces.framework.core.annotation.Properties;
+import tech.intellispaces.framework.core.object.ObjectFunctions;
 import tech.intellispaces.framework.core.space.SpaceConstants;
 import tech.intellispaces.framework.core.system.Module;
 import tech.intellispaces.framework.core.system.ModulePropertiesFunctions;
@@ -30,17 +32,18 @@ public class ModulePropertiesProvider extends AbstractProjectionProvider {
     if (target.getClass() == expectedReturnType) {
       return target;
     }
-    if (SpaceConstants.PROPERTIES_DOMAIN_NAME.equals(expectedReturnType.getCanonicalName()) ||
-        SpaceConstants.PROPERTIES_HANDLE_CLASSNAME.equals(expectedReturnType.getCanonicalName())
-    ) {
+    if (SpaceConstants.PROPERTIES_HANDLE_CLASSNAME.equals(expectedReturnType.getCanonicalName())) {
       if (!SpaceConstants.propertiesHandleClass().isAssignableFrom(target.getClass())) {
         throw UnexpectedViolationException.withMessage("Invalid return type of method {} in class {}",
             projectionMethod.getName(), projectionMethod.getDeclaringClass().getCanonicalName());
       }
       return target;
     }
-    if (expectedReturnType.isAnnotationPresent(Data.class)) {
-      return module.mapThruTransition1(target, SpaceConstants.PROPERTIES_TO_DATA_TID, expectedReturnType);
+    if (ObjectFunctions.isCustomObjectHandleClass(expectedReturnType)) {
+      Class<?> domainClass = ObjectFunctions.getDomainClassOfObjectHandle(expectedReturnType);
+      if (domainClass.isAnnotationPresent(Data.class)) {
+        return module.mapThruTransition1(target, SpaceConstants.PROPERTIES_TO_DATA_TID, domainClass);
+      }
     }
     throw UnexpectedViolationException.withMessage("Invalid return type of method {} in class {}",
         projectionMethod.getName(), projectionMethod.getDeclaringClass().getCanonicalName());

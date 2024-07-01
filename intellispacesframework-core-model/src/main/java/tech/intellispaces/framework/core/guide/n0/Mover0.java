@@ -14,52 +14,53 @@ import java.util.function.Consumer;
  * Mover guide without qualifiers.
  *
  * @param <S> source object type.
+ * @param <B> backward object handle type.
  */
-public interface Mover0<S> extends
-    Guide0<S, S>,
-    Mover<S>,
-    Mover1<S, Void>,
-    Mover2<S, Void, Void>,
-    Mover3<S, Void, Void, Void>,
-    Mover4<S, Void, Void, Void, Void>,
-    Mover5<S, Void, Void, Void, Void, Void>
+public interface Mover0<S, B> extends
+    Guide0<S, B>,
+    Mover<S, B>,
+    Mover1<S, B, Void>,
+    Mover2<S, B, Void, Void>,
+    Mover3<S, B, Void, Void, Void>,
+    Mover4<S, B, Void, Void, Void, Void>,
+    Mover5<S, B, Void, Void, Void, Void, Void>
 {
-  S move(S source) throws TraverseException;
+  B move(S source) throws TraverseException;
 
   Consumer<S> asConsumer();
 
   @Override
-  default S move(S source, Void qualifier) throws TraverseException {
+  default B move(S source, Void qualifier) throws TraverseException {
     return move(source);
   }
 
   @Override
-  default S move(S source, Void qualifier1, Void qualifier2) throws TraverseException {
+  default B move(S source, Void qualifier1, Void qualifier2) throws TraverseException {
     return move(source);
   }
 
   @Override
-  default S move(S source, Void qualifier1, Void qualifier2, Void qualifier3) throws TraverseException {
+  default B move(S source, Void qualifier1, Void qualifier2, Void qualifier3) throws TraverseException {
     return move(source);
   }
 
   @Override
-  default S move(S source, Void qualifier1, Void qualifier2, Void qualifier3, Void qualifier4) throws TraverseException {
+  default B move(S source, Void qualifier1, Void qualifier2, Void qualifier3, Void qualifier4) throws TraverseException {
     return move(source);
   }
 
   @Override
-  default S move(S source, Void qualifier1, Void qualifier2, Void qualifier3, Void qualifier4, Void qualifier5) throws TraverseException {
+  default B move(S source, Void qualifier1, Void qualifier2, Void qualifier3, Void qualifier4, Void qualifier5) throws TraverseException {
     return move(source);
   }
 
   @Override
-  default S traverse(S source) throws TraverseException {
+  default B traverse(S source) throws TraverseException {
     return move(source);
   }
 
   @Override
-  default S traverse(S source, Object... qualifiers) throws TraverseException {
+  default B traverse(S source, Object... qualifiers) throws TraverseException {
     return move(source);
   }
 }

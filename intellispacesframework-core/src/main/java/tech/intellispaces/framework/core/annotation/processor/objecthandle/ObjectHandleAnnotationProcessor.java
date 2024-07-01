@@ -31,6 +31,6 @@ public class ObjectHandleAnnotationProcessor extends AbstractAnnotationProcessor
 
   @Override
   protected List<ArtifactGenerator> makeArtifactGenerators(CustomType objectHandleType) {
-    return List.of(new ObjectHandleImplGenerator(objectHandleType), new ObjectHandleMovableImplGenerator(objectHandleType));
+    return List.of(new ObjectHandleImplGenerator(objectHandleType), new MovableObjectHandleImplImplGenerator(objectHandleType));
   }
 }

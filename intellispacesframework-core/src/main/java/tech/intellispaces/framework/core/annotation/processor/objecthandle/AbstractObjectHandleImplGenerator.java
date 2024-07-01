@@ -74,9 +74,10 @@ abstract class AbstractObjectHandleImplGenerator extends AbstractGenerator {
     List<Map<String, String>> paramDescriptors = new ArrayList<>();
     for (MethodParam param : constructor.params()) {
       TypeReference type = param.type();
+      type.dependencyTypenames().forEach(imports);
       paramDescriptors.add(Map.of(
               "name", param.name(),
-              "type", type.actualDeclaration()
+              "type", type.actualDeclaration(context::simpleNameOf)
           )
       );
       type.asCustomTypeReference().ifPresent(t -> imports.accept(t.targetType().canonicalName()));

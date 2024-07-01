@@ -17,4 +17,9 @@ public interface {{$classSimpleName}}{{$domainTypeParamsFull}} extends MovableOb
   {{$method}};
 
 {{end}}
+
+  @Override
+  default {{$classSimpleName}}{{$domainTypeParamsBrief}} asMovableOrElseThrow() {
+    return this;
+  }
 }

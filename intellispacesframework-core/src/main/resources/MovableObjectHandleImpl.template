@@ -17,15 +17,15 @@ public class {{$classSimpleName}}{{$typeParamsFull}} extends {{$sourceClassSimpl
 {{end}}
 
   @Override
-  public <Q> {{$sourceClassSimpleName}} moveThru(String tid, Q qualifier) throws TraverseException {
-    Mover1<{{$sourceClassSimpleName}}, Q> mover = Modules.activeModule().autoMoverThruTransition1({{$sourceClassSimpleName}}.class, tid);
-    return mover.move(this, qualifier);
+  public <B, Q> B moveThru(String tid, Q qualifier) throws TraverseException {
+    Mover1<{{$sourceClassSimpleName}}, B, Q> mover = Modules.activeModule().autoMoverThruTransition1({{$sourceClassSimpleName}}.class, tid);
+    return (B) mover.move(this, qualifier);
   }
 
   @Override
-  public <Q> {{$sourceClassSimpleName}} moveThru(TransitionMethod1<{{$domainClassSimpleName}}, {{$domainClassSimpleName}}, Q> transitionMethod, Q qualifier) throws TraverseException {
+  public <B, Q> B moveThru(TransitionMethod1<{{$domainClassSimpleName}}, {{$domainClassSimpleName}}, Q> transitionMethod, Q qualifier) throws TraverseException {
     String tid = TransitionFunctions.getTransitionId({{$domainClassSimpleName}}.class, transitionMethod, null);
-    Mover1<{{$sourceClassSimpleName}}, Q> mover = Modules.activeModule().autoMoverThruTransition1({{$sourceClassSimpleName}}.class, tid);
-    return mover.move(this, qualifier);
+    Mover1<{{$sourceClassSimpleName}}, B, Q> mover = Modules.activeModule().autoMoverThruTransition1({{$sourceClassSimpleName}}.class, tid);
+    return (B) mover.move(this, qualifier);
   }
 }

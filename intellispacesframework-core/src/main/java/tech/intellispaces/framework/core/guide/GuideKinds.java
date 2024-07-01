@@ -45,7 +45,7 @@ public enum GuideKinds implements GuideKind {
   }
 
   @Override
-  public int parameterCount() {
+  public int qualifierCount() {
     return parameterCount;
   }
 }

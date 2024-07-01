@@ -17,4 +17,7 @@ public interface {{$classSimpleName}}{{$domainTypeParamsFull}} extends ObjectHan
   {{$method}};
 
 {{end}}
+
+  @Override
+  {{$movableClassSimpleName}}{{$domainTypeParamsBrief}} asMovableOrElseThrow();
 }

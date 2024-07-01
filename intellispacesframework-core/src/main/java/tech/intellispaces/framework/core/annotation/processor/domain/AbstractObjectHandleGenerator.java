@@ -1,16 +1,19 @@
 package tech.intellispaces.framework.core.annotation.processor.domain;
 
 import tech.intellispaces.framework.commons.action.Action;
+import tech.intellispaces.framework.commons.type.TypeFunctions;
 import tech.intellispaces.framework.core.annotation.Domain;
 import tech.intellispaces.framework.core.annotation.Transition;
 import tech.intellispaces.framework.core.annotation.processor.AbstractGenerator;
 import tech.intellispaces.framework.core.common.ActionFunctions;
+import tech.intellispaces.framework.core.common.NameFunctions;
 import tech.intellispaces.framework.core.exception.TraverseException;
 import tech.intellispaces.framework.core.object.ObjectHandleTypes;
 import tech.intellispaces.framework.core.traverse.TraverseTypes;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
 import tech.intellispaces.framework.javastatements.statement.custom.MethodParam;
 import tech.intellispaces.framework.javastatements.statement.custom.MethodStatement;
+import tech.intellispaces.framework.javastatements.statement.reference.CustomTypeReference;
 import tech.intellispaces.framework.javastatements.statement.reference.NamedTypeReference;
 import tech.intellispaces.framework.javastatements.statement.reference.TypeReference;
 
@@ -35,6 +38,11 @@ abstract class AbstractObjectHandleGenerator extends AbstractGenerator {
         .toList();
   }
 
+  protected String movableClassSimpleName() {
+    return TypeFunctions.getSimpleName(
+        NameFunctions.getMovableObjectHandleClassCanonicalName(annotatedType.className()));
+  }
+
   private Stream<MethodStatement> getDomainMethods(CustomType domainType) {
     return domainType.actualMethods().stream()
         .filter(m -> m.holder().hasAnnotation(Domain.class));
@@ -56,10 +64,12 @@ abstract class AbstractObjectHandleGenerator extends AbstractGenerator {
       }
 
       TypeReference domainReturnType = method.returnType().get();
+      String domainReturnTypeClassName = domainReturnType.asCustomTypeReference()
+          .map(CustomTypeReference::targetType)
+          .map(CustomType::className)
+          .orElse(null);
       final ObjectHandleTypes objectHandleType;
-      if (domainReturnType.isCustomTypeReference() &&
-          !method.holder().className().equals(domainReturnType.asCustomTypeReference().orElseThrow().targetType().className())
-      ) {
+      if (domainReturnType.isCustomTypeReference() && !method.holder().className().equals(domainReturnTypeClassName)) {
         objectHandleType = ObjectHandleTypes.Common;
       } else {
         objectHandleType = getObjectHandleType();
@@ -78,7 +88,8 @@ abstract class AbstractObjectHandleGenerator extends AbstractGenerator {
       context.addImport(TraverseException.class);
       String exceptionSimpleName = context.simpleNameOf(TraverseException.class);
       sb.append(" {\n");
-      sb.append("    throw ").append(exceptionSimpleName).append(".withMessage(\"Unmovable object handle cannot be moved\");\n");
+      sb.append("    throw ").append(exceptionSimpleName).append(
+          ".withMessage(\"Unmovable object handle cannot be moved\");\n");
       sb.append("  }");
     }
     return sb.toString();

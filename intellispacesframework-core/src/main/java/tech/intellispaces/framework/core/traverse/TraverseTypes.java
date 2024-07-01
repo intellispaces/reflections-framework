@@ -4,7 +4,5 @@ public enum TraverseTypes implements TraverseType {
 
   Mapping,
 
-  Moving,
-
-  MovingAndBacklash
+  Moving
 }

@@ -7,11 +7,12 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
- * Mover guide embedded to object handle.
+ * Embedded mover guide.
  *
- * @param <S> mover source object type.
+ * @param <S> source object handle type.
+ * @param <B> backward object handle type.
  */
-public class EmbeddedMover0<S> extends AbstractMover0<S> {
+public class EmbeddedMover0<S, B> extends AbstractMover0<S, B> {
   private final Class<S> objectHandleClass;
   private final String tid;
   private final Method moverMethod;
@@ -32,10 +33,10 @@ public class EmbeddedMover0<S> extends AbstractMover0<S> {
 
   @Override
   @SuppressWarnings("unchecked")
-  public S move(S source) throws TraverseException {
+  public B move(S source) throws TraverseException {
     try {
       GuideLogger.logCallGuide(moverMethod);
-      return (S) moverMethod.invoke(source);
+      return (B) moverMethod.invoke(source);
     } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
       throw TraverseException.withCauseAndMessage(e, "Failed to invoke mover method {} of object handle {}",
           moverMethod.getName(), objectHandleClass.getCanonicalName());

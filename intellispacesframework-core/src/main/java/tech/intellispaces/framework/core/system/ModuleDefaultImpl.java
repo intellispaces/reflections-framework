@@ -88,14 +88,14 @@ public class ModuleDefaultImpl implements ModuleDefault {
   }
 
   @Override
-  public <S> Mover0<S> autoMoverThruTransition0(Class<S> sourceClass, String tid) {
+  public <S, B> Mover0<S, B> autoMoverThruTransition0(Class<S> sourceClass, String tid) {
     DeclarativePlan traversePlan = traverseAnalyzer.buildTraversePlanMoveObjectHandleThruTransition0(
         sourceClass, tid);
     return new AutoMover0<>(tid, traversePlan, traverseExecutor);
   }
 
   @Override
-  public <S, Q> Mover1<S, Q> autoMoverThruTransition1(Class<S> sourceClass, String tid) {
+  public <S, B, Q> Mover1<S, B, Q> autoMoverThruTransition1(Class<S> sourceClass, String tid) {
     DeclarativePlan traversePlan = traverseAnalyzer.buildTraversePlanMoveObjectHandleThruTransition1(
         sourceClass, tid);
     return new AutoMover1<>(tid, traversePlan, traverseExecutor);
@@ -119,17 +119,17 @@ public class ModuleDefaultImpl implements ModuleDefault {
 
   @Override
   @SuppressWarnings("unchecked")
-  public <S> S moveThruTransition0(S source, String tid) {
+  public <S, B> B moveThruTransition0(S source, String tid) {
     DeclarativePlan traversePlan = traverseAnalyzer.buildTraversePlanMoveObjectHandleThruTransition0(
         ObjectFunctions.seekObjectHandleClass(source.getClass()), tid);
-    return (S) traversePlan.execute(source, traverseExecutor);
+    return (B) traversePlan.execute(source, traverseExecutor);
   }
 
   @Override
   @SuppressWarnings("unchecked")
-  public <S, Q> S moveThruTransition1(S source, String tid, Q qualifier) {
+  public <S, B, Q> B moveThruTransition1(S source, String tid, Q qualifier) {
     DeclarativePlan traversePlan = traverseAnalyzer.buildTraversePlanMoveObjectHandleThruTransition1(
         ObjectFunctions.seekObjectHandleClass(source.getClass()), tid);
-    return (S) traversePlan.execute(source, qualifier, traverseExecutor);
+    return (B) traversePlan.execute(source, qualifier, traverseExecutor);
   }
 }

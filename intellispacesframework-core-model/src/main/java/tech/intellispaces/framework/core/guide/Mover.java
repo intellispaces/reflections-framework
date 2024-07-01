@@ -7,7 +7,8 @@ package tech.intellispaces.framework.core.guide;
  *
  * <p>Mover guide changes the source object.
  *
- * @param <S> source object type.
+ * @param <S> source object handle type.
+ * @param <B> backward object handle type.
  */
-public interface Mover<S> extends Guide<S, S> {
+public interface Mover<S, B> extends Guide<S, B> {
 }

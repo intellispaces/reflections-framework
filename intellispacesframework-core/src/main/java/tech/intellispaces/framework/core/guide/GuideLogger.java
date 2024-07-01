@@ -9,7 +9,10 @@ public final class GuideLogger {
   private static final Logger LOG = LoggerFactory.getLogger(GuideLogger.class);
 
   public static void logCallGuide(Method guideMethod) {
-    LOG.info("Call guide {}#{}", guideMethod.getDeclaringClass().getCanonicalName(), guideMethod.getName());
+    if (LOG.isDebugEnabled()) {
+      LOG.debug("Call guide method '{}' in class {}",
+          guideMethod.getName(), guideMethod.getDeclaringClass().getCanonicalName());
+    }
   }
   private GuideLogger() {}
 }

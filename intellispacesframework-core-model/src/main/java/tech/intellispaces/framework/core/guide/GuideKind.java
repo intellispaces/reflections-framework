@@ -6,5 +6,5 @@ public interface GuideKind {
 
   boolean isMover();
 
-  int parameterCount();
+  int qualifierCount();
 }

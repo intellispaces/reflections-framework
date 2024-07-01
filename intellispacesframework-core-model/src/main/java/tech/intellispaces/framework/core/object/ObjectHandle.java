@@ -12,4 +12,6 @@ package tech.intellispaces.framework.core.object;
 public interface ObjectHandle<D> {
 
   boolean isMovable();
+
+  MovableObjectHandle<D> asMovableOrElseThrow();
 }

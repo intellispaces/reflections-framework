@@ -20,11 +20,11 @@ public interface Module {
 
   <S, T, Q> T mapThruTransition1(S source, String tid, Q qualifier);
 
-  <S> S moveThruTransition0(S source, String tid);
+  <S, B> B moveThruTransition0(S source, String tid);
 
-  <S, Q> S moveThruTransition1(S source, String tid, Q qualifier);
+  <S, B, Q> B moveThruTransition1(S source, String tid, Q qualifier);
 
-  <S> Mover0<S> autoMoverThruTransition0(Class<S> sourceClass, String tid);
+  <S, B> Mover0<S, B> autoMoverThruTransition0(Class<S> sourceClass, String tid);
 
-  <S, Q> Mover1<S, Q> autoMoverThruTransition1(Class<S> sourceClass, String tid);
+  <S, B, Q> Mover1<S, B, Q> autoMoverThruTransition1(Class<S> sourceClass, String tid);
 }

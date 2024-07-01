@@ -30,6 +30,7 @@ public class CommonObjectHandleGenerator extends AbstractObjectHandleGenerator {
         "sourceClassName", sourceClassCanonicalName(),
         "sourceClassSimpleName", sourceClassSimpleName(),
         "classSimpleName", context.generatedClassSimpleName(),
+        "movableClassSimpleName", movableClassSimpleName(),
         "domainTypeParamsFull", domainTypeParamsFull,
         "domainTypeParamsBrief", domainTypeParamsBrief,
         "methods", methods,

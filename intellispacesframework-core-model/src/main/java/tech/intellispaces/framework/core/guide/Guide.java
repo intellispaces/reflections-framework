@@ -3,18 +3,19 @@ package tech.intellispaces.framework.core.guide;
 import tech.intellispaces.framework.core.exception.TraverseException;
 
 /**
- * Guide.
+ * Guide.<p/>
  *
- * <p>Guide is a nano-system designed for processing objects. Guide can map or move objects.
+ * Guide is a small system designed for processing objects. Guide can map or move objects.
+ * Guides splits code into lightweight systems.<p/>
  *
- * <p>Guides splits code into lightweight systems.
+ * Guide can act back on the initiator (other guide) by passing it a backward object.<p/>
  *
  * <p>The guide is object. Guide can be constructed from other guides.
  *
- * @param <S> source object type (domain or object handle).
- * @param <T> target object type (domain or object handle).
+ * @param <S> source object handle type.
+ * @param <B> backward object handle type.
  */
-public interface Guide<S, T> {
+public interface Guide<S, B> {
 
   /**
    * Guide kind.
@@ -31,8 +32,8 @@ public interface Guide<S, T> {
    *
    * @param source source object.
    * @param qualifiers guide qualifiers.
-   * @return target object.
+   * @return backward object.
    * @throws TraverseException throws if guide was started, but can't traverse source object.
    */
-  T traverse(S source, Object... qualifiers) throws TraverseException;
+  B traverse(S source, Object... qualifiers) throws TraverseException;
 }

@@ -4,7 +4,7 @@ import tech.intellispaces.framework.core.guide.n1.Mover1;
 
 import java.util.function.BiConsumer;
 
-public abstract class AbstractMover1<S, Q> implements Mover1<S, Q> {
+public abstract class AbstractMover1<S, B, Q> implements Mover1<S, B, Q> {
 
   @Override
   public GuideKind kind() {

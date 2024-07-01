@@ -10,9 +10,9 @@ import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
 
 import java.util.Map;
 
-public class ObjectHandleMovableImplGenerator extends AbstractObjectHandleImplGenerator {
+public class MovableObjectHandleImplImplGenerator extends AbstractObjectHandleImplGenerator {
 
-  public ObjectHandleMovableImplGenerator(CustomType objectHandleType) {
+  public MovableObjectHandleImplImplGenerator(CustomType objectHandleType) {
     super(objectHandleType);
   }
 
@@ -51,8 +51,8 @@ public class ObjectHandleMovableImplGenerator extends AbstractObjectHandleImplGe
     context.addImport(Mover1.class);
     context.addImport(TransitionMethod1.class);
     context.addImport(TransitionFunctions.class);
-    context.addImport(domainType.canonicalName());
 
+    context.addImport(domainType.canonicalName());
     domainSimpleClassName = context.simpleNameOf(domainType.canonicalName());
 
     analyzeTypeParams(annotatedType);

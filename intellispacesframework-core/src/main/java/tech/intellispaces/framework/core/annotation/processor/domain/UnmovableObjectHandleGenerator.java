@@ -1,10 +1,12 @@
 package tech.intellispaces.framework.core.annotation.processor.domain;
 
+import tech.intellispaces.framework.commons.exception.UnexpectedViolationException;
 import tech.intellispaces.framework.core.common.NameFunctions;
 import tech.intellispaces.framework.core.object.ObjectHandleTypes;
 import tech.intellispaces.framework.core.object.UnmovableObjectHandle;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class UnmovableObjectHandleGenerator extends AbstractObjectHandleGenerator {
@@ -25,26 +27,30 @@ public class UnmovableObjectHandleGenerator extends AbstractObjectHandleGenerato
   }
 
   protected Map<String, Object> templateVariables() {
-    return Map.of(
-        "generatedAnnotation", generatedAnnotation(),
-        "packageName", context.packageName(),
-        "sourceClassName", sourceClassCanonicalName(),
-        "sourceClassSimpleName", sourceClassSimpleName(),
-        "commonHandleSimpleName", commonHandleSimpleName,
-        "classSimpleName", context.generatedClassSimpleName(),
-        "domainTypeParamsFull", domainTypeParamsFull,
-        "domainTypeParamsBrief", domainTypeParamsBrief,
-        "methods", methods,
-        "importedClasses", context.getImports()
-    );
+    Map<String, Object> vars = new HashMap<>();
+    vars.put("generatedAnnotation", generatedAnnotation());
+    vars.put("packageName", context.packageName());
+    vars.put("sourceClassName", sourceClassCanonicalName());
+    vars.put("sourceClassSimpleName", sourceClassSimpleName());
+    vars.put("movableClassSimpleName", movableClassSimpleName());
+    vars.put("commonHandleSimpleName", commonHandleSimpleName);
+    vars.put("classSimpleName", context.generatedClassSimpleName());
+    vars.put("domainTypeParamsFull", domainTypeParamsFull);
+    vars.put("domainTypeParamsBrief", domainTypeParamsBrief);
+    vars.put("methods", methods);
+    vars.put("importedClasses", context.getImports());
+    return vars;
   }
 
   @Override
   protected boolean analyzeAnnotatedType() {
-    context.generatedClassCanonicalName(NameFunctions.getUnmovableObjectHandleClassCanonicalName(annotatedType.className()));
+    context.generatedClassCanonicalName(
+        NameFunctions.getUnmovableObjectHandleClassCanonicalName(annotatedType.className()));
     if (annotatedType.isNested()) {
       context.addImport(sourceClassCanonicalName());
     }
+
+    context.addImport(UnexpectedViolationException.class);
 
     commonHandleSimpleName = NameFunctions.getCommonObjectHandleClassCanonicalName(annotatedType.className());
     context.addImport(commonHandleSimpleName);

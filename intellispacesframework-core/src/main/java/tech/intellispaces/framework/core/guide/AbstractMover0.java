@@ -7,7 +7,7 @@ import tech.intellispaces.framework.core.guide.n0.Mover0;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
-public abstract class AbstractMover0<S> implements Mover0<S> {
+public abstract class AbstractMover0<S, B> implements Mover0<S, B> {
 
   @Override
   public GuideKind kind() {

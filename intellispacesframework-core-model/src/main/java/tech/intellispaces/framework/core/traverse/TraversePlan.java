@@ -19,7 +19,7 @@ public interface TraversePlan {
    *
    * @param source source object handle.
    * @param executor traverse executor.
-   * @return target object handle.
+   * @return backward object handle.
    * @throws TraverseException throws if source object can't be traversed.
    */
   Object execute(Object source, TraverseExecutor executor) throws TraverseException;
@@ -30,7 +30,7 @@ public interface TraversePlan {
    * @param source source object handle.
    * @param qualifier qualifier.
    * @param executor traverse executor.
-   * @return target object handle.
+   * @return backward object handle.
    * @throws TraverseException throws if source object can't be traversed.
    */
   Object execute(Object source, Object qualifier, TraverseExecutor executor) throws TraverseException;

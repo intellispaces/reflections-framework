@@ -1,22 +1,25 @@
-package tech.intellispaces.framework.core.guide;
+package tech.intellispaces.framework.core.guide.n0;
 
 import tech.intellispaces.framework.commons.exception.UnexpectedViolationException;
 import tech.intellispaces.framework.core.exception.TraverseException;
+import tech.intellispaces.framework.core.guide.GuideLogger;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
- * Embedded mapper guide.
+ * Attached to object handle mapper guide.<p/>
+ *
+ * Attached guide can be used exclusively with this object handle only.
  *
  * @param <S> mapper source object type.
  */
-public class EmbeddedMapper0<S, T> extends AbstractMapper0<S, T> {
+public class AttachedMapper0<S, T> implements BasicMapper0<S, T> {
   private final Class<S> objectHandleClass;
   private final String tid;
   private final Method mapperMethod;
 
-  public EmbeddedMapper0(String tid, Class<S> objectHandleClass, Method mapperMethod) {
+  public AttachedMapper0(String tid, Class<S> objectHandleClass, Method mapperMethod) {
     if (mapperMethod.getParameterCount() != 0) {
       throw UnexpectedViolationException.withMessage("Guide should not have parameters");
     }
@@ -37,7 +40,7 @@ public class EmbeddedMapper0<S, T> extends AbstractMapper0<S, T> {
       GuideLogger.logCallGuide(mapperMethod);
       return (T) mapperMethod.invoke(source);
     } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-      throw TraverseException.withCauseAndMessage(e, "Failed to invoke embedded guide method {} of object handle {}",
+      throw TraverseException.withCauseAndMessage(e, "Failed to invoke attached guide method {} of object handle {}",
           mapperMethod.getName(), objectHandleClass.getCanonicalName());
     }
   }

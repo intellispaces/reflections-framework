@@ -20,7 +20,7 @@ public class CommonObjectHandleGenerator extends AbstractObjectHandleGenerator {
 
   @Override
   protected String templateName() {
-    return "/ObjectHandle.template";
+    return "/object_handle.template";
   }
 
   protected Map<String, Object> templateVariables() {
@@ -40,7 +40,7 @@ public class CommonObjectHandleGenerator extends AbstractObjectHandleGenerator {
 
   @Override
   protected boolean analyzeAnnotatedType() {
-    context.generatedClassCanonicalName(NameFunctions.getCommonObjectHandleClassCanonicalName(annotatedType.className()));
+    context.generatedClassCanonicalName(NameFunctions.getCommonObjectHandleTypename(annotatedType.className()));
     if (annotatedType.isNested()) {
       context.addImport(sourceClassCanonicalName());
     }

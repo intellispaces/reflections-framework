@@ -4,9 +4,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tech.intellispaces.framework.commons.action.ActionBuilders;
 import tech.intellispaces.framework.commons.action.Getter;
-import tech.intellispaces.framework.core.guide.AutoMover0;
-import tech.intellispaces.framework.core.guide.AutoMover1;
+import tech.intellispaces.framework.core.guide.n0.AutoMover0;
 import tech.intellispaces.framework.core.guide.n0.Mover0;
+import tech.intellispaces.framework.core.guide.n1.AutoMover1;
 import tech.intellispaces.framework.core.guide.n1.Mover1;
 import tech.intellispaces.framework.core.object.ObjectFunctions;
 import tech.intellispaces.framework.core.traverse.DeclarativePlan;
@@ -73,7 +73,7 @@ public class ModuleDefaultImpl implements ModuleDefault {
   }
 
   @Override
-  public void run(String[] args) {
+  public void start(String[] args) {
     ModuleStarterFunctions.startModule(this);
     started.set(true);
   }

@@ -21,7 +21,7 @@ public class MovableObjectHandleGenerator extends AbstractObjectHandleGenerator 
 
   @Override
   protected String templateName() {
-    return "/MovableObjectHandle.template";
+    return "/movable_object_handle.template";
   }
 
   protected Map<String, Object> templateVariables() {
@@ -41,12 +41,12 @@ public class MovableObjectHandleGenerator extends AbstractObjectHandleGenerator 
 
   @Override
   protected boolean analyzeAnnotatedType() {
-    context.generatedClassCanonicalName(NameFunctions.getMovableObjectHandleClassCanonicalName(annotatedType.className()));
+    context.generatedClassCanonicalName(NameFunctions.getMovableObjectHandleTypename(annotatedType.className()));
     if (annotatedType.isNested()) {
       context.addImport(sourceClassCanonicalName());
     }
 
-    commonHandleSimpleName = NameFunctions.getCommonObjectHandleClassCanonicalName(annotatedType.className());
+    commonHandleSimpleName = NameFunctions.getCommonObjectHandleTypename(annotatedType.className());
     context.addImport(commonHandleSimpleName);
     commonHandleSimpleName = context.simpleNameOf(commonHandleSimpleName);
 

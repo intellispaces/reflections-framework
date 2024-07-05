@@ -4,9 +4,9 @@ import tech.intellispaces.framework.core.guide.Guide;
 import tech.intellispaces.framework.core.guide.GuideKind;
 
 /**
- * Module guide register.
+ * Attached guide register.
  */
-public interface EmbeddedGuideRegistry {
+public interface AttachedGuideRegistry {
 
   Guide<?, ?> getGuide(Class<?> objectHandleClass, GuideKind kind, String tid);
 

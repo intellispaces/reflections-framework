@@ -5,7 +5,7 @@ import tech.intellispaces.framework.annotationprocessor.AnnotatedTypeValidator;
 import tech.intellispaces.framework.annotationprocessor.generator.ArtifactGenerator;
 import tech.intellispaces.framework.core.annotation.Data;
 import tech.intellispaces.framework.core.annotation.processor.AbstractAnnotationProcessor;
-import tech.intellispaces.framework.core.annotation.validator.DataDomainValidator;
+import tech.intellispaces.framework.core.validation.DataValidator;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
 
 import javax.annotation.processing.Processor;
@@ -28,7 +28,7 @@ public class DataAnnotationProcessor extends AbstractAnnotationProcessor {
 
   @Override
   protected AnnotatedTypeValidator getValidator() {
-    return new DataDomainValidator();
+    return new DataValidator();
   }
 
   @Override

@@ -23,7 +23,7 @@ public class UnmovableObjectHandleGenerator extends AbstractObjectHandleGenerato
 
   @Override
   protected String templateName() {
-    return "/UnmovableObjectHandle.template";
+    return "/unmovable_object_handle.template";
   }
 
   protected Map<String, Object> templateVariables() {
@@ -45,14 +45,14 @@ public class UnmovableObjectHandleGenerator extends AbstractObjectHandleGenerato
   @Override
   protected boolean analyzeAnnotatedType() {
     context.generatedClassCanonicalName(
-        NameFunctions.getUnmovableObjectHandleClassCanonicalName(annotatedType.className()));
+        NameFunctions.getUnmovableObjectHandleTypename(annotatedType.className()));
     if (annotatedType.isNested()) {
       context.addImport(sourceClassCanonicalName());
     }
 
     context.addImport(UnexpectedViolationException.class);
 
-    commonHandleSimpleName = NameFunctions.getCommonObjectHandleClassCanonicalName(annotatedType.className());
+    commonHandleSimpleName = NameFunctions.getCommonObjectHandleTypename(annotatedType.className());
     context.addImport(commonHandleSimpleName);
     commonHandleSimpleName = context.simpleNameOf(commonHandleSimpleName);
 

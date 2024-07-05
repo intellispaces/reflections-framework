@@ -1,21 +1,22 @@
-package tech.intellispaces.framework.core.guide;
+package tech.intellispaces.framework.core.guide.n0;
 
 import tech.intellispaces.framework.commons.exception.CoveredCheckedException;
 import tech.intellispaces.framework.core.exception.TraverseException;
-import tech.intellispaces.framework.core.guide.n0.Mover0;
+import tech.intellispaces.framework.core.guide.GuideKind;
+import tech.intellispaces.framework.core.guide.GuideKinds;
 
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
-public abstract class AbstractMover0<S, B> implements Mover0<S, B> {
+public interface BasicMover0<S, B> extends Mover0<S, B> {
 
   @Override
-  public GuideKind kind() {
+  default GuideKind kind() {
     return GuideKinds.Mover0;
   }
 
   @Override
-  public Consumer<S> asConsumer() {
+  default Consumer<S> asConsumer() {
     return (source) -> {
       try {
         move(source);
@@ -26,7 +27,7 @@ public abstract class AbstractMover0<S, B> implements Mover0<S, B> {
   }
 
   @Override
-  public BiConsumer<S, Void> asBiConsumer() {
+  default BiConsumer<S, Void> asBiConsumer() {
     return this::move;
   }
 }

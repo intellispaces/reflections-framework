@@ -8,11 +8,11 @@ import tech.intellispaces.framework.core.guide.n1.Mover1;
  */
 public interface Module {
 
-  default void run() {
-    run(new String[] {});
+  default void start() {
+    start(new String[] {});
   }
 
-  void run(String[] args);
+  void start(String[] args);
 
   void stop();
 

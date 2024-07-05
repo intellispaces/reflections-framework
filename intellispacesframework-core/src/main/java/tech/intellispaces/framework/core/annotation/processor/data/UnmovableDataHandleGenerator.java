@@ -4,7 +4,7 @@ import tech.intellispaces.framework.core.annotation.processor.AbstractGenerator;
 import tech.intellispaces.framework.core.common.NameFunctions;
 import tech.intellispaces.framework.core.object.ObjectHandleTypes;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
-import tech.intellispaces.framework.javastatements.statement.custom.MethodStatement;
+import tech.intellispaces.framework.javastatements.statement.method.MethodStatement;
 import tech.intellispaces.framework.javastatements.statement.reference.TypeReference;
 
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ public class UnmovableDataHandleGenerator extends AbstractGenerator {
 
   @Override
   protected String templateName() {
-    return "/UnmovableDataHandle.template";
+    return "/unmovable_data_handle.template";
   }
 
   @Override
@@ -30,7 +30,7 @@ public class UnmovableDataHandleGenerator extends AbstractGenerator {
         "generatedAnnotation", generatedAnnotation(),
         "packageName", context.packageName(),
         "sourceClassName", sourceClassCanonicalName(),
-        "objectHandleClassName", NameFunctions.getUnmovableObjectHandleClassCanonicalName(annotatedType.className()),
+        "objectHandleClassName", NameFunctions.getUnmovableObjectHandleTypename(annotatedType.className()),
         "classSimpleName", context.generatedClassSimpleName(),
         "importedClasses", context.getImports(),
         "projections", projectionProperties
@@ -39,7 +39,7 @@ public class UnmovableDataHandleGenerator extends AbstractGenerator {
 
   @Override
   protected boolean analyzeAnnotatedType() {
-    context.generatedClassCanonicalName(NameFunctions.getDataClassCanonicalName(annotatedType.className()));
+    context.generatedClassCanonicalName(NameFunctions.getDataClassName(annotatedType.className()));
     if (annotatedType.isNested()) {
       context.addImport(sourceClassCanonicalName());
     }

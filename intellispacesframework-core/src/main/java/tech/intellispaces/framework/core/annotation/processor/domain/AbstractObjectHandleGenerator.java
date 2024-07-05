@@ -9,10 +9,11 @@ import tech.intellispaces.framework.core.common.ActionFunctions;
 import tech.intellispaces.framework.core.common.NameFunctions;
 import tech.intellispaces.framework.core.exception.TraverseException;
 import tech.intellispaces.framework.core.object.ObjectHandleTypes;
+import tech.intellispaces.framework.core.space.transition.TransitionFunctions;
 import tech.intellispaces.framework.core.traverse.TraverseTypes;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
-import tech.intellispaces.framework.javastatements.statement.custom.MethodParam;
-import tech.intellispaces.framework.javastatements.statement.custom.MethodStatement;
+import tech.intellispaces.framework.javastatements.statement.method.MethodParam;
+import tech.intellispaces.framework.javastatements.statement.method.MethodStatement;
 import tech.intellispaces.framework.javastatements.statement.reference.CustomTypeReference;
 import tech.intellispaces.framework.javastatements.statement.reference.NamedTypeReference;
 import tech.intellispaces.framework.javastatements.statement.reference.TypeReference;
@@ -40,29 +41,29 @@ abstract class AbstractObjectHandleGenerator extends AbstractGenerator {
 
   protected String movableClassSimpleName() {
     return TypeFunctions.getSimpleName(
-        NameFunctions.getMovableObjectHandleClassCanonicalName(annotatedType.className()));
+        NameFunctions.getMovableObjectHandleTypename(annotatedType.className()));
   }
 
   private Stream<MethodStatement> getDomainMethods(CustomType domainType) {
     return domainType.actualMethods().stream()
-        .filter(m -> m.holder().hasAnnotation(Domain.class));
+        .filter(m -> m.holder().hasAnnotation(Domain.class))
+        .filter(m -> !m.isDefault());
   }
 
   private String buildMethod(MethodStatement method) {
     var sb = new StringBuilder();
 
-    Transition transition = method.selectAnnotation(Transition.class).orElseThrow();
+    Transition transition = TransitionFunctions.getDomainMainTransitionAnnotation(method);
     boolean disableMoving = transition.type() != TraverseTypes.Mapping &&
         ObjectHandleTypes.Unmovable == getObjectHandleType();
 
     buildMethodNameParameters(method, sb);
+    if (disableMoving) {
+      sb.append("default ");
+    }
     if (method.returnType().isEmpty()) {
       sb.append("void");
     } else {
-      if (disableMoving) {
-        sb.append("default ");
-      }
-
       TypeReference domainReturnType = method.returnType().get();
       String domainReturnTypeClassName = domainReturnType.asCustomTypeReference()
           .map(CustomTypeReference::targetType)

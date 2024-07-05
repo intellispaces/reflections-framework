@@ -23,4 +23,9 @@ public @interface Transition {
    * Allowed traverse type.
    */
   TraverseTypes type() default TraverseTypes.Mapping;
+
+  /**
+   * Assigned transition name.
+   */
+  String name() default "";
 }

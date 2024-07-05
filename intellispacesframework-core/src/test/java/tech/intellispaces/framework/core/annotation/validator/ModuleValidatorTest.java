@@ -7,6 +7,7 @@ import com.google.testing.compile.JavaFileObjects;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import tech.intellispaces.framework.core.exception.IntelliSpacesException;
+import tech.intellispaces.framework.core.validation.ModuleValidator;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
 
 import javax.tools.JavaFileObject;

@@ -23,7 +23,7 @@ public class {{$classSimpleName}}{{$typeParamsFull}} extends {{$sourceClassSimpl
   }
 
   @Override
-  public <B, Q> B moveThru(TransitionMethod1<{{$domainClassSimpleName}}, {{$domainClassSimpleName}}, Q> transitionMethod, Q qualifier) throws TraverseException {
+  public <B, Q> B moveThru(TransitionMethod1<{{$domainClassSimpleName}}, B, Q> transitionMethod, Q qualifier) throws TraverseException {
     String tid = TransitionFunctions.getTransitionId({{$domainClassSimpleName}}.class, transitionMethod, null);
     Mover1<{{$sourceClassSimpleName}}, B, Q> mover = Modules.activeModule().autoMoverThruTransition1({{$sourceClassSimpleName}}.class, tid);
     return (B) mover.move(this, qualifier);

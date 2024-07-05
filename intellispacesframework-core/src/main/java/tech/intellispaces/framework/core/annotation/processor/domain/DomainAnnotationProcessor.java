@@ -6,8 +6,9 @@ import tech.intellispaces.framework.annotationprocessor.generator.ArtifactGenera
 import tech.intellispaces.framework.core.annotation.Domain;
 import tech.intellispaces.framework.core.annotation.Transition;
 import tech.intellispaces.framework.core.annotation.processor.AbstractAnnotationProcessor;
-import tech.intellispaces.framework.core.annotation.validator.DomainValidator;
+import tech.intellispaces.framework.core.validation.DomainValidator;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
+import tech.intellispaces.framework.javastatements.statement.method.MethodStatement;
 
 import javax.annotation.processing.Processor;
 import javax.lang.model.element.ElementKind;
@@ -35,10 +36,16 @@ public class DomainAnnotationProcessor extends AbstractAnnotationProcessor {
   @Override
   protected List<ArtifactGenerator> makeArtifactGenerators(CustomType domainType) {
     List<ArtifactGenerator> generators = new ArrayList<>();
-    domainType.declaredMethods().stream()
-        .filter(m -> m.hasAnnotation(Transition.class))
-        .map(m -> new TransitionGenerator(domainType, m))
-        .forEach(generators::add);
+    for (MethodStatement method : domainType.declaredMethods()) {
+      if (method.hasAnnotation(Transition.class)) {
+        if (isAutoGenerationEnabled(domainType, "Transition")) {
+          generators.add(new DomainTransitionGenerator(domainType, method));
+        }
+        if (isAutoGenerationEnabled(domainType, "Guide")) {
+          generators.add(new DomainGuideGenerator(domainType, method));
+        }
+      }
+    }
     if (isAutoGenerationEnabled(domainType, "ObjectHandle")) {
       generators.add(new CommonObjectHandleGenerator(domainType));
     }

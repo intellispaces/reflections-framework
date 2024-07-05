@@ -1,24 +1,27 @@
-package tech.intellispaces.framework.core.guide;
+package tech.intellispaces.framework.core.guide.n1;
 
 import tech.intellispaces.framework.commons.exception.UnexpectedViolationException;
 import tech.intellispaces.framework.core.exception.TraverseException;
+import tech.intellispaces.framework.core.guide.GuideLogger;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
- * Unit mapper guide.
+ * Unit method mapper with one qualifier.
  *
- * @param <S> mapper source object type.
+ * @param <S> source object handle type.
+ * @param <T> target object handle type.
+ * @param <Q> qualifier object handle type.
  */
-public class UnitMapper1<S, T, Q> extends AbstractMapper1<S, T, Q> {
+public class MethodMapper1<S, T, Q> implements BasicMapper1<S, T, Q> {
   private final String tid;
   private final Object unitInstance;
   private final Method mapperMethod;
 
-  public UnitMapper1(String tid, Object unitInstance, Method mapperMethod) {
+  public MethodMapper1(String tid, Object unitInstance, Method mapperMethod) {
     if (mapperMethod.getParameterCount() != 2) {
-      throw UnexpectedViolationException.withMessage("Guide should have two parameters: source and one qualifier");
+      throw UnexpectedViolationException.withMessage("Guide method should have two parameters: source and qualifier");
     }
     this.tid = tid;
     this.unitInstance = unitInstance;

@@ -1,4 +1,4 @@
-package tech.intellispaces.framework.core.annotation.validator;
+package tech.intellispaces.framework.core.validation;
 
 import tech.intellispaces.framework.annotationprocessor.AnnotatedTypeValidator;
 import tech.intellispaces.framework.core.annotation.Guide;
@@ -12,9 +12,9 @@ import tech.intellispaces.framework.core.object.ObjectFunctions;
 import tech.intellispaces.framework.core.system.ModuleFunctions;
 import tech.intellispaces.framework.core.system.Unit;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
-import tech.intellispaces.framework.javastatements.statement.custom.MethodParam;
-import tech.intellispaces.framework.javastatements.statement.custom.MethodStatement;
 import tech.intellispaces.framework.javastatements.statement.instance.AnnotationInstance;
+import tech.intellispaces.framework.javastatements.statement.method.MethodParam;
+import tech.intellispaces.framework.javastatements.statement.method.MethodStatement;
 import tech.intellispaces.framework.javastatements.statement.reference.TypeReference;
 
 import java.util.List;

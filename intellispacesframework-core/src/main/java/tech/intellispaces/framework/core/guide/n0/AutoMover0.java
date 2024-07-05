@@ -1,4 +1,4 @@
-package tech.intellispaces.framework.core.guide;
+package tech.intellispaces.framework.core.guide.n0;
 
 import tech.intellispaces.framework.core.exception.TraverseException;
 import tech.intellispaces.framework.core.traverse.DeclarativePlan;
@@ -12,7 +12,7 @@ import tech.intellispaces.framework.core.traverse.TraverseExecutor;
  * @param <S> source object handle type.
  * @param <B> backward object handle type.
  */
-public class AutoMover0<S, B> extends AbstractMover0<S, B> {
+public class AutoMover0<S, B> implements BasicMover0<S, B> {
   private final String tid;
   private final TraverseExecutor traverseExecutor;
   private final DeclarativePlan declarativeTaskPlan;

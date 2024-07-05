@@ -25,9 +25,9 @@ class ModuleDefaultFactory {
   public ModuleDefault createModule(Class<?> moduleClass) {
     List<Unit> units = createUnits(moduleClass);
     ProjectionRegistry projectionRegistry = createProjectionRegistry(units);
-    EmbeddedGuideRegistry embeddedGuideRegistry = new EmbeddedGuideRegistryImpl();
+    AttachedGuideRegistry attachedGuideRegistry = new AttachedGuideRegistryImpl();
     ModuleGuideRegistry moduleGuideRegistry = createModuleGuideRegistry(units);;
-    TraverseAnalyzer traverseAnalyzer = new TraverseAnalyzerImpl(moduleGuideRegistry, embeddedGuideRegistry);
+    TraverseAnalyzer traverseAnalyzer = new TraverseAnalyzerImpl(moduleGuideRegistry, attachedGuideRegistry);
     TraverseExecutor traverseExecutor = new TraverseExecutorImpl(traverseAnalyzer);
     return new ModuleDefaultImpl(units, projectionRegistry, traverseAnalyzer, traverseExecutor);
   }
@@ -79,7 +79,7 @@ class ModuleDefaultFactory {
       String wrapperClassName = NameFunctions.getUnitWrapperCanonicalName(unitClass.getName());
       return Class.forName(wrapperClassName);
     } catch (Exception e) {
-      throw UnexpectedViolationException.withCauseAndMessage(e, "Failed to get wrapper class of module unit {}",
+      throw UnexpectedViolationException.withCauseAndMessage(e, "Could not get wrapper class of module unit {}",
           unitClass.getCanonicalName());
     }
   }

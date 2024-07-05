@@ -18,7 +18,7 @@ public class MovableObjectHandleImplImplGenerator extends AbstractObjectHandleIm
 
   @Override
   protected String templateName() {
-    return "/MovableObjectHandleImpl.template";
+    return "/movable_object_handle_impl.template";
   }
 
   protected Map<String, Object> templateVariables() {

@@ -18,7 +18,7 @@ public abstract class SpaceConstants {
   public static Class<?> propertiesHandleClass() {
     if (propertiesHandleClass == null) {
       propertiesHandleClass = TypeFunctions.getClass(PROPERTIES_HANDLE_CLASSNAME).orElseThrow(
-          () -> UnexpectedViolationException.withMessage("Failed to get class {}", PROPERTIES_HANDLE_CLASSNAME)
+          () -> UnexpectedViolationException.withMessage("Could not get class {}", PROPERTIES_HANDLE_CLASSNAME)
       );
     }
     return propertiesHandleClass;

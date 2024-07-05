@@ -1,4 +1,4 @@
-package tech.intellispaces.framework.core.annotation.validator;
+package tech.intellispaces.framework.core.validation;
 
 import tech.intellispaces.framework.annotationprocessor.AnnotatedTypeValidator;
 import tech.intellispaces.framework.core.annotation.Data;
@@ -9,7 +9,7 @@ import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
 /**
  * Data type validator.
  */
-public class DataDomainValidator implements AnnotatedTypeValidator {
+public class DataValidator implements AnnotatedTypeValidator {
 
   @Override
   public void validate(CustomType dataType) {

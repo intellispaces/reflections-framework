@@ -16,11 +16,11 @@ import tech.intellispaces.framework.core.system.ProjectionInjectionImpl;
 import tech.intellispaces.framework.core.system.ProjectionRegistry;
 import tech.intellispaces.framework.core.system.UnitWrapper;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
-import tech.intellispaces.framework.javastatements.statement.custom.MethodParam;
-import tech.intellispaces.framework.javastatements.statement.custom.MethodStatement;
 import tech.intellispaces.framework.javastatements.statement.instance.AnnotationInstance;
 import tech.intellispaces.framework.javastatements.statement.instance.ClassInstance;
 import tech.intellispaces.framework.javastatements.statement.instance.Instance;
+import tech.intellispaces.framework.javastatements.statement.method.MethodParam;
+import tech.intellispaces.framework.javastatements.statement.method.MethodStatement;
 import tech.intellispaces.framework.javastatements.statement.reference.TypeReference;
 
 import java.util.ArrayList;
@@ -42,7 +42,7 @@ public class UnitWrapperGenerator extends AbstractGenerator {
 
   @Override
   protected String templateName() {
-    return "/UnitWrapper.template";
+    return "/unit_wrapper.template";
   }
 
   @Override
@@ -134,7 +134,7 @@ public class UnitWrapperGenerator extends AbstractGenerator {
     projectionProvidersProperties.add(projectionProviderProperties);
 
     Map<String, Object> methodProperties = new HashMap<>();
-    methodProperties.put("signature", getMethodSignature(method, "_" + method.name()));
+    methodProperties.put("signature", buildMethodSignature(method, "_" + method.name()));
     methodProperties.put("body", buildProjectionProviderMethodBody(projectionName, projectionType));
     methodProperties.put("annotations", List.of(copyProjectionAnnotation(method)));
     methodProperties.put("javadoc", "");
@@ -155,7 +155,7 @@ public class UnitWrapperGenerator extends AbstractGenerator {
     projectionInjectionsProperties.add(injectionProperties);
 
     Map<String, Object> methodProperties = new HashMap<>();
-    methodProperties.put("signature", getMethodSignature(method));
+    methodProperties.put("signature", buildMethodSignature(method));
     methodProperties.put("body", buildInjectionMethodBody(injectionName, injectionType));
     methodProperties.put("annotations", List.of(Override.class.getSimpleName()));
     methodProperties.put("javadoc", "");

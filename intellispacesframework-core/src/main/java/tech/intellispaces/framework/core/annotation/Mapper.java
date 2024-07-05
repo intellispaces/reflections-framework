@@ -6,14 +6,14 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Specifies that the method implements mapper guide.
+ * Specifies that the method is a mapper guide.
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Mapper {
 
   /**
-   * Guide name.
+   * Class of the transition implemented by this guide.
    */
-  String value() default "";
+  Class<?> value() default Void.class;
 }

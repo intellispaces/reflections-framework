@@ -7,7 +7,7 @@ import tech.intellispaces.framework.core.annotation.Ontology;
 import tech.intellispaces.framework.core.annotation.Transition;
 import tech.intellispaces.framework.core.annotation.processor.AbstractAnnotationProcessor;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
-import tech.intellispaces.framework.javastatements.statement.custom.MethodStatement;
+import tech.intellispaces.framework.javastatements.statement.method.MethodStatement;
 
 import javax.annotation.processing.Processor;
 import javax.lang.model.element.ElementKind;
@@ -37,7 +37,12 @@ public class OntologyAnnotationProcessor extends AbstractAnnotationProcessor {
     List<ArtifactGenerator> generators = new ArrayList<>();
     for (MethodStatement method : ontologyType.declaredMethods()) {
       if (method.hasAnnotation(Transition.class)) {
-        generators.add(new TransitionGenerator(ontologyType, method));
+        if (isAutoGenerationEnabled(ontologyType, "Transition")) {
+          generators.add(new OntologyTransitionGenerator(ontologyType, method));
+        }
+        if (isAutoGenerationEnabled(ontologyType, "Guide")) {
+          generators.add(new OntologyGuideGenerator(ontologyType, method));
+        }
       }
     }
     return generators;

@@ -5,14 +5,14 @@ import {{$importedClass}};
 {{end}}
 
 /**
- * Transition.<p/>
+ * Space transition '{{$transitionMethodName}}' from domain {@link {{$sourceClassSimpleName}}} to {{$targetClassLink}}.<p/>
  *
  * This class was generated automatically. Don't try to change it.
  */
 {{$generatedAnnotation}}
 @FunctionalInterface
 @Transition("{{$tid}}")
-public interface {{$classSimpleName}}{{$classTypeParams}} {
+public interface {{$classSimpleName}} {
 
   {{$methodSignature}};
 }

@@ -19,5 +19,5 @@ public interface MovableObjectHandle<D> extends ObjectHandle<D> {
 
   <B, Q> B moveThru(String tid, Q qualifier) throws TraverseException;
 
-  <B, Q> B moveThru(TransitionMethod1<D, D, Q> transitionMethod, Q qualifier) throws TraverseException;
+  <B, Q> B moveThru(TransitionMethod1<D, B, Q> transitionMethod, Q qualifier) throws TraverseException;
 }

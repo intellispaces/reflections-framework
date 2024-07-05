@@ -7,8 +7,8 @@ import tech.intellispaces.framework.commons.type.TypeFunctions;
 import tech.intellispaces.framework.core.common.NameFunctions;
 import tech.intellispaces.framework.core.object.ObjectHandleTypes;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
-import tech.intellispaces.framework.javastatements.statement.custom.MethodParam;
-import tech.intellispaces.framework.javastatements.statement.custom.MethodStatement;
+import tech.intellispaces.framework.javastatements.statement.method.MethodParam;
+import tech.intellispaces.framework.javastatements.statement.method.MethodStatement;
 import tech.intellispaces.framework.javastatements.statement.reference.CustomTypeReference;
 import tech.intellispaces.framework.javastatements.statement.reference.NamedTypeReference;
 import tech.intellispaces.framework.javastatements.statement.reference.NonPrimitiveTypeReference;
@@ -64,59 +64,66 @@ public abstract class AbstractGenerator extends TemplateBasedJavaArtifactGenerat
     return generatedAnnotation;
   }
 
-  protected String getMethodSignature(MethodStatement method) {
-    return getMethodSignature(method, method.name(), List.of());
+  protected String buildMethodSignature(MethodStatement method) {
+    return buildMethodSignature(method, method.name(), false, List.of());
   }
 
-  protected String getMethodSignature(MethodStatement method, String methodName) {
-    return getMethodSignature(method, methodName, List.of());
+  protected String buildMethodSignature(MethodStatement method, String methodName) {
+    return buildMethodSignature(method, methodName, false, List.of());
   }
 
-  protected String getMethodSignature(MethodStatement method, String methodName, List<String> additionalParams) {
+  protected String buildMethodSignature(
+      MethodStatement method, boolean includeHolderTypeParams, List<String> additionalParams
+  ) {
+    return buildMethodSignature(method, method.name(), includeHolderTypeParams, additionalParams);
+  }
+
+  protected String buildMethodSignature(
+      MethodStatement method, String methodName, boolean includeHolderTypeParams, List<String> additionalParams
+  ) {
     var signature = new StringBuilder();
-
-    if (!method.typeParameters().isEmpty()) {
+    if (!method.typeParameters().isEmpty() || (includeHolderTypeParams && !method.holder().typeParameters().isEmpty())) {
       Action addCommaAction = buildAppendSeparatorAction(signature, ", ");
       signature.append("<");
       addCommaAction.execute();
       for (NamedTypeReference typeParam : method.typeParameters()) {
         signature.append(typeParam.actualDeclaration());
       }
+      if (includeHolderTypeParams) {
+        for (NamedTypeReference typeParam : method.holder().typeParameters()) {
+          signature.append(typeParam.actualDeclaration());
+        }
+      }
       signature.append("> ");
     }
+    TypeReference returnType = method.returnType().orElseThrow();
+    context.addImports(returnType.dependencyTypenames());
+    signature.append(returnType.actualDeclaration(context::simpleNameOf));
+    signature.append(" ");
+    signature.append(methodName);
+    signature.append("(");
 
-    if (method.returnType().isEmpty()) {
-      signature.append("void");
-    } else {
-      TypeReference returnType = method.returnType().get();
-      context.addImports(returnType.dependencyTypenames());
-      signature.append(returnType.actualDeclaration());
+    Action addCommaAction = buildAppendSeparatorAction(signature, ", ");
+    for (String additionalParam : additionalParams) {
+      addCommaAction.execute();
+      signature.append(additionalParam);
+    }
+    for (MethodParam param : method.params()) {
+      addCommaAction.execute();
+      context.addImports(param.type().dependencyTypenames());
+      signature.append(param.type().actualDeclaration(context::simpleNameOf));
       signature.append(" ");
-      signature.append(methodName);
-      signature.append("(");
+      signature.append(param.name());
+    }
+    signature.append(")");
 
-      Action addCommaAction = buildAppendSeparatorAction(signature, ", ");
-      for (String additionalParam : additionalParams) {
-        addCommaAction.execute();
-        signature.append(additionalParam);
-      }
-      for (MethodParam param : method.params()) {
-        addCommaAction.execute();
-        context.addImports(param.type().dependencyTypenames());
-        signature.append(param.type().actualDeclaration());
-        signature.append(" ");
-        signature.append(param.name());
-      }
-      signature.append(")");
-
-      String exceptions = method.exceptions().stream()
-          .map(e -> e.asCustomTypeReference().orElseThrow().targetType())
-          .peek(e -> context.addImport(e.canonicalName()))
-          .map(e -> context.simpleNameOf(e.canonicalName()))
-          .collect(Collectors.joining(", "));
-      if (!exceptions.isEmpty()) {
-        signature.append(" throws ").append(exceptions);
-      }
+    String exceptions = method.exceptions().stream()
+        .map(e -> e.asCustomTypeReference().orElseThrow().targetType())
+        .peek(e -> context.addImport(e.canonicalName()))
+        .map(e -> context.simpleNameOf(e.canonicalName()))
+        .collect(Collectors.joining(", "));
+    if (!exceptions.isEmpty()) {
+      signature.append(" throws ").append(exceptions);
     }
     return signature.toString();
   }
@@ -137,7 +144,8 @@ public abstract class AbstractGenerator extends TemplateBasedJavaArtifactGenerat
           Action addCommaAction = buildAppendSeparatorAction(sb, ", ");
           for (NonPrimitiveTypeReference argType : customTypeReference.typeArguments()) {
             addCommaAction.execute();
-            sb.append(getObjectHandleCanonicalName(argType, ObjectHandleTypes.Common));
+            sb.append(argType.actualDeclaration());
+//            sb.append(getObjectHandleCanonicalName(argType, ObjectHandleTypes.Common));
           }
           sb.append(">");
         }
@@ -146,7 +154,7 @@ public abstract class AbstractGenerator extends TemplateBasedJavaArtifactGenerat
         return targetType.simpleName();
       } else {
         var sb = new StringBuilder();
-        String canonicalName = NameFunctions.getObjectHandleClassCanonicalName(targetType.className(), handleType);
+        String canonicalName = NameFunctions.getObjectHandleTypename(targetType.className(), handleType);
         context.addImport(canonicalName);
         String simpleName = context.simpleNameOf(canonicalName);
         sb.append(simpleName);
@@ -155,7 +163,7 @@ public abstract class AbstractGenerator extends TemplateBasedJavaArtifactGenerat
           Action addCommaAction = buildAppendSeparatorAction(sb, ", ");
           for (NonPrimitiveTypeReference argType : customTypeReference.typeArguments()) {
             addCommaAction.execute();
-            sb.append(getObjectHandleCanonicalName(argType, ObjectHandleTypes.Common));
+            sb.append(argType.actualDeclaration());
           }
           sb.append(">");
         }

@@ -1,0 +1,25 @@
+package {{$packageName}};
+
+{{for importedClass : $importedClasses}}
+import {{$importedClass}};
+{{end}}
+
+/**
+ * Guide through transition {@link {{$transitionClassSimpleName}}}.<p/>
+ *
+ * This class was generated automatically. Don't try to change it.
+ */
+{{$generatedAnnotation}}
+@FunctionalInterface
+public interface {{$classSimpleName}} extends {{$guideClassSimpleName}}{{$guideTypeParams}} {
+
+  @Override
+  default String tid() {
+    return TransitionFunctions.getTransitionId({{$transitionClassSimpleName}}.class);
+  }
+
+  @Override
+  {{$baseMethod}}
+
+  {{$guideMethod}}
+}

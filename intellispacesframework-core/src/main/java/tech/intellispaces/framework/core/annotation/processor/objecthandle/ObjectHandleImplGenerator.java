@@ -17,7 +17,7 @@ public class ObjectHandleImplGenerator extends AbstractObjectHandleImplGenerator
 
   @Override
   protected String templateName() {
-    return "/ObjectHandleImpl.template";
+    return "/object_handle_impl.template";
   }
 
   protected Map<String, Object> templateVariables() {

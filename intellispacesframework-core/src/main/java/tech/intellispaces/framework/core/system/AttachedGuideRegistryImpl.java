@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
 
-public class EmbeddedGuideRegistryImpl implements EmbeddedGuideRegistry {
+public class AttachedGuideRegistryImpl implements AttachedGuideRegistry {
   private final Map<Class<?>, HandleDescription> handle2DescriptionMap = new WeakHashMap<>();
 
   @Override
@@ -26,15 +26,15 @@ public class EmbeddedGuideRegistryImpl implements EmbeddedGuideRegistry {
     if (actualObjectHandleClass == null) {
       return handleDescription;
     }
-    List<Guide<?, ?>> embeddedGuides = GuideFunctions.loadEmbeddedGuides(actualObjectHandleClass);
-    embeddedGuides.forEach(handleDescription::addGuide);
+    List<Guide<?, ?>> attachedGuides = GuideFunctions.loadAttachedGuides(actualObjectHandleClass);
+    attachedGuides.forEach(handleDescription::addGuide);
     return handleDescription;
   }
 
   private final class HandleDescription {
     private final Class<?> objectHandleClass;
-    private final Map<String, Guide<?, ?>> embeddedMappers = new HashMap<>();
-    private final Map<String, Guide<?, ?>> embeddedMovers = new HashMap<>();
+    private final Map<String, Guide<?, ?>> mappers = new HashMap<>();
+    private final Map<String, Guide<?, ?>> movers = new HashMap<>();
 
     HandleDescription(Class<?> objectHandleClass) {
       this.objectHandleClass = objectHandleClass;
@@ -46,17 +46,17 @@ public class EmbeddedGuideRegistryImpl implements EmbeddedGuideRegistry {
 
     Guide<?, ?> getGuide(GuideKind kind, String tid) {
       if (kind.isMapper()) {
-        return embeddedMappers.get(tid);
+        return mappers.get(tid);
       } else {
-        return embeddedMovers.get(tid);
+        return movers.get(tid);
       }
     }
 
     void addGuide(Guide<?, ?> guide) {
       if (guide.kind().isMapper()) {
-        embeddedMappers.put(guide.tid(), guide);
+        mappers.put(guide.tid(), guide);
       } else {
-        embeddedMovers.put(guide.tid(), guide);
+        movers.put(guide.tid(), guide);
       }
     }
   }

@@ -1,16 +1,21 @@
 package tech.intellispaces.framework.core.space.transition;
 
 import tech.intellispaces.framework.commons.exception.UnexpectedViolationException;
+import tech.intellispaces.framework.core.annotation.Guide;
+import tech.intellispaces.framework.core.annotation.Mapper;
+import tech.intellispaces.framework.core.annotation.Mover;
 import tech.intellispaces.framework.core.annotation.Transition;
+import tech.intellispaces.framework.core.annotation.Unit;
 import tech.intellispaces.framework.core.object.ObjectFunctions;
 import tech.intellispaces.framework.dynamicproxy.tracker.Tracker;
 import tech.intellispaces.framework.dynamicproxy.tracker.TrackerBuilder;
 import tech.intellispaces.framework.dynamicproxy.tracker.TrackerFunctions;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
-import tech.intellispaces.framework.javastatements.statement.custom.MethodStatement;
+import tech.intellispaces.framework.javastatements.statement.method.MethodStatement;
 
 import java.lang.reflect.Method;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -19,6 +24,15 @@ import java.util.function.Function;
  * Transition functions.
  */
 public interface TransitionFunctions {
+
+  static String getTransitionId(Class<?> transitionClass) {
+    Transition transition = transitionClass.getAnnotation(Transition.class);
+    if (transition == null) {
+      throw UnexpectedViolationException.withMessage("Class {} does not contain annotation {}",
+          transitionClass.getCanonicalName(), Transition.class.getSimpleName());
+    }
+    return transition.value();
+  }
 
   static <S, T> String getTransitionId(Class<S> sourceDomain, Function<S, T> transitionMethod) {
     return findTransitionId(sourceDomain, transitionMethod, transitionMethod::apply);
@@ -41,36 +55,70 @@ public interface TransitionFunctions {
     return extractTransitionId(trackedMethods, sourceDomain, transitionMethod);
   }
 
-  static String getUnitGuideTid(Method guideMethod) {
-    String tid = findUnitGuideTidRecursive(guideMethod, guideMethod.getDeclaringClass());
-    if (tid == null) {
-      throw UnexpectedViolationException.withMessage("Failed to get unit guide transition ID. Unit {}, guide method {}",
-          guideMethod.getDeclaringClass().getCanonicalName(), guideMethod.getName());
-    }
-    return tid;
+  static MethodStatement getTransitionMethod(CustomType transitionType) {
+    return transitionType.declaredMethods().stream()
+        .filter(m -> m.isPublic() && !m.isDefault() && !m.isStatic())
+        .findFirst()
+        .orElseThrow(() -> {throw UnexpectedViolationException.withMessage("Could not find transition method in class {}",
+            transitionType.canonicalName());});
   }
 
-  private static String findUnitGuideTidRecursive(Method guideMethod, Class<?> aClass) {
-    String tid = getUnitGuideTid(guideMethod, aClass);
-    if (tid != null) {
-      return tid;
+  static String getUnitGuideTid(Object unitInstance, Method guideMethod) {
+    if (guideMethod.isAnnotationPresent(Mapper.class)) {
+      Class<?> transitionClass = guideMethod.getAnnotation(Mapper.class).value();
+      if (transitionClass != null) {
+        Transition transition = transitionClass.getAnnotation(Transition.class);
+        if (transition != null) {
+          return transition.value();
+        }
+      }
+    } else if (guideMethod.isAnnotationPresent(Mover.class)) {
+      Class<?> transitionClass = guideMethod.getAnnotation(Mover.class).value();
+      if (transitionClass != null) {
+        Transition transition = transitionClass.getAnnotation(Transition.class);
+        if (transition != null) {
+          return transition.value();
+        }
+      }
+    }
+
+    Class<?> declaringClass = guideMethod.getDeclaringClass();
+    if (declaringClass.isAnnotationPresent(Unit.class)) {
+      Transition transition = findOverrideTransitionRecursive(guideMethod, guideMethod.getDeclaringClass());
+      if (transition == null) {
+        throw UnexpectedViolationException.withMessage("Could not get unit guide annotation @Transition. Unit {}, guide method {}",
+            guideMethod.getDeclaringClass().getCanonicalName(), guideMethod.getName());
+      }
+      return transition.value();
+    } else if (declaringClass.isAnnotationPresent(Guide.class)) {
+      var guide = (tech.intellispaces.framework.core.guide.Guide<?, ?>) unitInstance;
+      return guide.tid();
+    } else {
+      throw UnexpectedViolationException.withMessage("Unsupported unit class {}", declaringClass.getCanonicalName());
+    }
+  }
+
+  private static Transition findOverrideTransitionRecursive(Method guideMethod, Class<?> aClass) {
+    Transition t = getUnitGuideTid(guideMethod, aClass);
+    if (t != null) {
+      return t;
     }
     if (aClass.getSuperclass() != null) {
-      tid = findUnitGuideTidRecursive(guideMethod, aClass.getSuperclass());
-      if (tid != null) {
-        return tid;
+      t = findOverrideTransitionRecursive(guideMethod, aClass.getSuperclass());
+      if (t != null) {
+        return t;
       }
     }
     for (Class<?> aInterface : aClass.getInterfaces()) {
-      tid = findUnitGuideTidRecursive(guideMethod, aInterface);
-      if (tid != null) {
-        return tid;
+      t = findOverrideTransitionRecursive(guideMethod, aInterface);
+      if (t != null) {
+        return t;
       }
     }
     return null;
   }
 
-  private static String getUnitGuideTid(Method guideMethod, Class<?> aClass) {
+  private static Transition getUnitGuideTid(Method guideMethod, Class<?> aClass) {
     Transition transition = aClass.getAnnotation(Transition.class);
     if (transition == null) {
       return null;
@@ -80,13 +128,30 @@ public interface TransitionFunctions {
       if (method == null) {
         return null;
       }
-      return transition.value();
+      return transition;
     } catch (NoSuchMethodException e) {
       return null;
     }
   }
 
-  static Transition findTransitionAnnotation(MethodStatement objectHandleMethod) {
+  static Transition getDomainMainTransitionAnnotation(MethodStatement domainMethod) {
+    Optional<Transition> transition = domainMethod.selectAnnotation(Transition.class);
+    if (transition.isPresent()) {
+      return transition.get();
+    }
+    transition = domainMethod.overrideMethods().stream()
+        .map(m -> m.selectAnnotation(Transition.class))
+        .filter(Optional::isPresent)
+        .map(Optional::get)
+        .findAny();
+    if (transition.isEmpty()) {
+      throw UnexpectedViolationException.withMessage("Could not annotation @{} of method '{}' in domain {}",
+        Transition.class.getSimpleName(), domainMethod.name(), domainMethod.holder().canonicalName());
+    }
+    return transition.get();
+  }
+
+  static Transition getObjectHandleMethodTransitionAnnotation(MethodStatement objectHandleMethod) {
     CustomType objectHandleType = objectHandleMethod.holder();
     CustomType domainType = ObjectFunctions.getDomainTypeOfObjectHandle(objectHandleType);
     for (MethodStatement domainMethod : domainType.declaredMethods()) {
@@ -98,7 +163,7 @@ public interface TransitionFunctions {
         objectHandleMethod.name(), objectHandleType.canonicalName());
   }
 
-  static Transition findTransitionAnnotation(Method objectHandleMethod) {
+  static Transition getObjectHandleMethodTransitionAnnotation(Method objectHandleMethod) {
     Class<?> objectHandleClass = objectHandleMethod.getDeclaringClass();
     Class<?> domainClass = ObjectFunctions.getDomainClassOfObjectHandle(objectHandleClass);
     for (Method domainMethod : domainClass.getDeclaredMethods()) {
@@ -110,8 +175,8 @@ public interface TransitionFunctions {
         objectHandleMethod.getName(), objectHandleClass.getCanonicalName());
   }
 
-  static String getEmbeddedGuideTid(Method guideMethod) {
-    return findTransitionAnnotation(guideMethod).value();
+  static Transition getAttachedGuideTransitionAnnotation(Method objectHandleMethod) {
+    return getObjectHandleMethodTransitionAnnotation(objectHandleMethod);
   }
 
   private static String extractTransitionId(List<Method> trackedMethods, Class<?> sourceDomain, Object transitionMethod) {

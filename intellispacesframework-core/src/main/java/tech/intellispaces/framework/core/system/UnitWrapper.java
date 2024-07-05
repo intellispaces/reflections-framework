@@ -28,7 +28,7 @@ public interface UnitWrapper {
         return wrapperMethod;
       }
     } catch (NoSuchMethodException | SecurityException e) {
-      throw UnexpectedViolationException.withCauseAndMessage(e, "Failed to get actual method of unit wrapper method {}",
+      throw UnexpectedViolationException.withCauseAndMessage(e, "Could not get actual method of unit wrapper method {}",
           wrapperMethod);
     }
   }

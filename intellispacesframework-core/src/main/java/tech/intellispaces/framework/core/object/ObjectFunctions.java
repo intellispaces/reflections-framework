@@ -3,6 +3,7 @@ package tech.intellispaces.framework.core.object;
 import tech.intellispaces.framework.commons.exception.UnexpectedViolationException;
 import tech.intellispaces.framework.commons.type.TypeFunctions;
 import tech.intellispaces.framework.core.annotation.Domain;
+import tech.intellispaces.framework.core.common.NameFunctions;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
 import tech.intellispaces.framework.javastatements.statement.reference.CustomTypeReference;
 import tech.intellispaces.framework.javastatements.statement.reference.TypeReference;
@@ -26,7 +27,30 @@ public class ObjectFunctions {
 
   public static boolean isDefaultObjectHandleType(TypeReference type) {
     return type.isPrimitive() ||
-        (type.isCustomTypeReference() && DEFAULT_OBJECT_HANDLE_CLASSES.contains(type.asCustomTypeReferenceSurely().targetType().canonicalName()));
+        (type.isCustomTypeReference() && isDefaultObjectHandleType(type.asCustomTypeReferenceSurely().targetType()));
+  }
+
+  public static boolean isDefaultObjectHandleType(CustomType type) {
+        return DEFAULT_OBJECT_HANDLE_CLASSES.contains(type.canonicalName());
+  }
+
+  public static String getObjectHandleTypename(TypeReference domainType) {
+    if (domainType.isPrimitive()) {
+      return TypeFunctions.getPrimitiveWrapperClass(
+          domainType.asPrimitiveTypeReferenceSurely().typename()).getCanonicalName();
+    } else if (domainType.isNamedTypeReference()) {
+      return domainType.asNamedTypeReferenceSurely().name();
+    } else if (domainType.isWildcardTypeReference()) {
+      return Object.class.getCanonicalName();
+    }
+    return getObjectHandleTypename(domainType.asCustomTypeReferenceSurely().targetType());
+  }
+
+  public static String getObjectHandleTypename(CustomType domainType) {
+    if (isDefaultObjectHandleType(domainType)) {
+      return domainType.className();
+    }
+    return NameFunctions.getCommonObjectHandleTypename(domainType.className());
   }
 
   public static boolean isCustomObjectHandleClass(Class<?> aClass) {
@@ -71,7 +95,7 @@ public class ObjectFunctions {
   public static CustomType getDomainTypeOfObjectHandle(CustomType objectHandleType) {
     CustomType domainType = getDomainClassRecursive(objectHandleType, new HashSet<>());
     if (domainType == null) {
-      throw UnexpectedViolationException.withMessage("Failed to get domain type of object handle {}", objectHandleType.canonicalName());
+      throw UnexpectedViolationException.withMessage("Could not get domain type of object handle {}", objectHandleType.canonicalName());
     }
     return domainType;
   }
@@ -102,7 +126,7 @@ public class ObjectFunctions {
   public static Class<?> getDomainClassOfObjectHandle(Class<?> objectHandleClass) {
     Class<?> domainClass = getDomainClassRecursive(objectHandleClass, new HashSet<>());
     if (domainClass == null) {
-      throw UnexpectedViolationException.withMessage("Failed to get domain type of object handle {}", objectHandleClass.getCanonicalName());
+      throw UnexpectedViolationException.withMessage("Could not get domain type of object handle {}", objectHandleClass.getCanonicalName());
     }
     return domainClass;
   }
@@ -142,6 +166,7 @@ public class ObjectFunctions {
       float.class.getCanonicalName(),
       double.class.getCanonicalName(),
       char.class.getCanonicalName(),
+      Object.class.getCanonicalName(),
       Boolean.class.getCanonicalName(),
       Byte.class.getCanonicalName(),
       Short.class.getCanonicalName(),
@@ -151,7 +176,8 @@ public class ObjectFunctions {
       Double.class.getCanonicalName(),
       Character.class.getCanonicalName(),
       String.class.getCanonicalName(),
-      Class.class.getCanonicalName()
+      Class.class.getCanonicalName(),
+      Void.class.getCanonicalName()
   );
 
   private ObjectFunctions() {}

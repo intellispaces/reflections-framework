@@ -38,10 +38,7 @@ public class MovableObjectHandleImplImplGenerator extends AbstractObjectHandleIm
 
   @Override
   protected boolean analyzeAnnotatedType() {
-    if (!isMovableObjectHandle(annotatedType)) {
-      return false;
-    }
-    context.generatedClassCanonicalName(annotatedType.canonicalName() + "Impl");
+    context.generatedClassCanonicalName(getGeneratedClassCanonicalName());
 
     CustomType domainType = ObjectFunctions.getDomainTypeOfObjectHandle(annotatedType);
 

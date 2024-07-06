@@ -44,7 +44,7 @@ public interface NameFunctions {
   ) {
     String transitionSimpleName = transitionMethod.selectAnnotation(Transition.class).orElseThrow().name();
     if (!transitionSimpleName.isBlank()) {
-      return TypeFunctions.joinPackageAndClassname(spaceName, transitionSimpleName);
+      return TypeFunctions.joinPackageAndSimpleName(spaceName, transitionSimpleName);
     }
     return assumeTransitionClassCanonicalName(spaceName, domainType, transitionMethod);
   }
@@ -58,7 +58,7 @@ public interface NameFunctions {
     } else {
       simpleName = assumeTransitionClassSimpleNameForDomain(domainType, transitionMethod);
     }
-    return TypeFunctions.joinPackageAndClassname(spaceName, simpleName);
+    return TypeFunctions.joinPackageAndSimpleName(spaceName, simpleName);
   }
 
   private static String assumeTransitionClassSimpleNameForDomain(

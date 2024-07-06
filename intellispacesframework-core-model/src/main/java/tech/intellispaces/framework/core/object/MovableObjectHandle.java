@@ -4,9 +4,9 @@ import tech.intellispaces.framework.core.exception.TraverseException;
 import tech.intellispaces.framework.core.transition.TransitionMethod1;
 
 /**
- * Movable object handle.<p/>
+ * The handle of the movable object.<p/>
  *
- * Movable object handle can move related object.
+ * Movable object being moved can move in space.
  *
  * @param <D> object domain type.
  */

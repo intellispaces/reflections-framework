@@ -266,7 +266,6 @@ public abstract class AbstractGuideGenerator extends AbstractGenerator {
         for (NonPrimitiveTypeReference typeArg : type.asCustomTypeReferenceSurely().typeArguments()) {
           appender.execute();
           sb.append(typeArg.actualDeclaration());
-//          sb.append(getObjectHandleRawSimpleName(typeArg, true));
         }
         sb.append(">");
         return sb.toString();

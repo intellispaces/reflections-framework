@@ -20,7 +20,7 @@ public class CommonObjectHandleGenerator extends AbstractObjectHandleGenerator {
 
   @Override
   protected String templateName() {
-    return "/object_handle.template";
+    return "/common_object_handle.template";
   }
 
   protected Map<String, Object> templateVariables() {

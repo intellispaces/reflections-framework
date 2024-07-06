@@ -1,9 +1,10 @@
 package tech.intellispaces.framework.core.annotation.processor.objecthandle;
 
 import tech.intellispaces.framework.commons.action.Action;
+import tech.intellispaces.framework.commons.type.TypeFunctions;
+import tech.intellispaces.framework.core.annotation.ObjectHandle;
 import tech.intellispaces.framework.core.annotation.processor.AbstractGenerator;
 import tech.intellispaces.framework.core.common.ActionFunctions;
-import tech.intellispaces.framework.core.object.MovableObjectHandle;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
 import tech.intellispaces.framework.javastatements.statement.method.MethodParam;
 import tech.intellispaces.framework.javastatements.statement.method.MethodStatement;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 abstract class AbstractObjectHandleImplGenerator extends AbstractGenerator {
@@ -26,8 +28,13 @@ abstract class AbstractObjectHandleImplGenerator extends AbstractGenerator {
     super(objectHandleType);
   }
 
-  protected boolean isMovableObjectHandle(CustomType objectHandleType) {
-    return objectHandleType.hasParent(MovableObjectHandle.class.getCanonicalName());
+  protected String getGeneratedClassCanonicalName() {
+    Optional<ObjectHandle> annotation = annotatedType.selectAnnotation(ObjectHandle.class);
+    if (annotation.isPresent()) {
+      return TypeFunctions.replaceSimpleName(annotatedType.canonicalName(), annotation.get().value());
+    } else {
+      return annotatedType.canonicalName() + "Impl";
+    }
   }
 
   protected void analyzeTypeParams(CustomType objectHandleType) {

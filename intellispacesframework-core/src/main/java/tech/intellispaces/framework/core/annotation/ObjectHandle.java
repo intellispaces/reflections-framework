@@ -8,4 +8,9 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ObjectHandle {
+
+  /**
+   * Object handle class simple name.
+   */
+  String value() default "";
 }

@@ -9,15 +9,15 @@ import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
 
 import java.util.Map;
 
-public class ObjectHandleImplGenerator extends AbstractObjectHandleImplGenerator {
+public class UnmovableObjectHandleImplGenerator extends AbstractObjectHandleImplGenerator {
 
-  public ObjectHandleImplGenerator(CustomType objectHandleType) {
+  public UnmovableObjectHandleImplGenerator(CustomType objectHandleType) {
     super(objectHandleType);
   }
 
   @Override
   protected String templateName() {
-    return "/object_handle_impl.template";
+    return "/unmovable_object_handle_impl.template";
   }
 
   protected Map<String, Object> templateVariables() {
@@ -36,11 +36,7 @@ public class ObjectHandleImplGenerator extends AbstractObjectHandleImplGenerator
 
   @Override
   protected boolean analyzeAnnotatedType() {
-    if (isMovableObjectHandle(annotatedType)) {
-      return false;
-    }
-
-    context.generatedClassCanonicalName(annotatedType.canonicalName() + "Impl");
+    context.generatedClassCanonicalName(getGeneratedClassCanonicalName());
 
     analyzeTypeParams(annotatedType);
     analyzeConstructors(annotatedType);

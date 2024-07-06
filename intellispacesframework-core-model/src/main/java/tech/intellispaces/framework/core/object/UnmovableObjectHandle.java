@@ -1,9 +1,9 @@
 package tech.intellispaces.framework.core.object;
 
 /**
- * Unmovable object handle.<p/>
+ * The handle of the unmovable object.<p/>
  *
- * Unmovable object handle does not allow moving a related object.
+ * The unmovable object being moved cannot move in space.
  *
  * @param <D> object domain type.
  */

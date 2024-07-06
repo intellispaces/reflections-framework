@@ -5,6 +5,7 @@ import tech.intellispaces.framework.annotationprocessor.AnnotatedTypeValidator;
 import tech.intellispaces.framework.annotationprocessor.generator.ArtifactGenerator;
 import tech.intellispaces.framework.core.annotation.ObjectHandle;
 import tech.intellispaces.framework.core.annotation.processor.AbstractAnnotationProcessor;
+import tech.intellispaces.framework.core.object.MovableObjectHandle;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
 
 import javax.annotation.processing.Processor;
@@ -31,6 +32,14 @@ public class ObjectHandleAnnotationProcessor extends AbstractAnnotationProcessor
 
   @Override
   protected List<ArtifactGenerator> makeArtifactGenerators(CustomType objectHandleType) {
-    return List.of(new ObjectHandleImplGenerator(objectHandleType), new MovableObjectHandleImplImplGenerator(objectHandleType));
+    if (isMovableObjectHandle(objectHandleType)) {
+      return List.of(new MovableObjectHandleImplImplGenerator(objectHandleType));
+    } else {
+      return List.of(new UnmovableObjectHandleImplGenerator(objectHandleType));
+    }
+  }
+
+  private boolean isMovableObjectHandle(CustomType objectHandleType) {
+    return objectHandleType.hasParent(MovableObjectHandle.class.getCanonicalName());
   }
 }

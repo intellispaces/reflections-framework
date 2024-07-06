@@ -1,11 +1,11 @@
 package tech.intellispaces.framework.core.object;
 
 /**
- * Object handle.<p/>
+ * Handle of object.<p/>
  *
- * Object handle is the handle that connects system with object.<p/>
+ * The handle implements interaction with the object.<p/>
  *
- * The main purpose of object handle is to provide the access mechanism to object.
+ * The interaction of the system with the object is performed through the object handle.<p/>
  *
  * @param <D> object domain type.
  */

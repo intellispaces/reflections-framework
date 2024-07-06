@@ -1,6 +1,7 @@
 package tech.intellispaces.framework.core.validation;
 
 import tech.intellispaces.framework.annotationprocessor.AnnotatedTypeValidator;
+import tech.intellispaces.framework.core.annotation.Configuration;
 import tech.intellispaces.framework.core.annotation.Guide;
 import tech.intellispaces.framework.core.annotation.Module;
 import tech.intellispaces.framework.core.annotation.Projection;
@@ -45,11 +46,11 @@ public class ModuleValidator implements AnnotatedTypeValidator {
       }
     } else {
       if (
-          !unitType.hasAnnotation(tech.intellispaces.framework.core.annotation.Unit.class) &&
+          !unitType.hasAnnotation(tech.intellispaces.framework.core.annotation.Configuration.class) &&
               !unitType.hasAnnotation(tech.intellispaces.framework.core.annotation.Guide.class)
       ) {
         throw IntelliSpacesException.withMessage("Class {} is not marked with annotation {} or {}",
-            unitType.canonicalName(), Unit.class.getSimpleName(), Guide.class.getSimpleName());
+            unitType.canonicalName(), Configuration.class.getSimpleName(), Guide.class.getSimpleName());
       }
     }
   }

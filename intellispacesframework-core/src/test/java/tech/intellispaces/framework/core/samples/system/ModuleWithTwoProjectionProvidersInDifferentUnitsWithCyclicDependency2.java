@@ -1,8 +1,8 @@
 package tech.intellispaces.framework.core.samples.system;
 
+import tech.intellispaces.framework.core.annotation.Configuration;
 import tech.intellispaces.framework.core.annotation.Module;
 import tech.intellispaces.framework.core.annotation.Projection;
-import tech.intellispaces.framework.core.annotation.Unit;
 
 public class ModuleWithTwoProjectionProvidersInDifferentUnitsWithCyclicDependency2 {
 
@@ -14,7 +14,7 @@ public class ModuleWithTwoProjectionProvidersInDifferentUnitsWithCyclicDependenc
     }
   }
 
-  @Unit
+  @Configuration
   public static class UnitSample {
     @Projection
     public String projection2(String projection2) {

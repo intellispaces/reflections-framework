@@ -5,7 +5,6 @@ import tech.intellispaces.framework.core.annotation.Guide;
 import tech.intellispaces.framework.core.annotation.Mapper;
 import tech.intellispaces.framework.core.annotation.Mover;
 import tech.intellispaces.framework.core.annotation.Transition;
-import tech.intellispaces.framework.core.annotation.Unit;
 import tech.intellispaces.framework.core.object.ObjectFunctions;
 import tech.intellispaces.framework.dynamicproxy.tracker.Tracker;
 import tech.intellispaces.framework.dynamicproxy.tracker.TrackerBuilder;
@@ -83,18 +82,19 @@ public interface TransitionFunctions {
     }
 
     Class<?> declaringClass = guideMethod.getDeclaringClass();
-    if (declaringClass.isAnnotationPresent(Unit.class)) {
+    if (!declaringClass.isAnnotationPresent(Guide.class)) {
+      throw UnexpectedViolationException.withMessage("Expected guide unit class {}", declaringClass.getCanonicalName());
+    }
+    if (unitInstance instanceof tech.intellispaces.framework.core.guide.Guide) {
+      var guide = (tech.intellispaces.framework.core.guide.Guide<?, ?>) unitInstance;
+      return guide.tid();
+    } else {
       Transition transition = findOverrideTransitionRecursive(guideMethod, guideMethod.getDeclaringClass());
       if (transition == null) {
         throw UnexpectedViolationException.withMessage("Could not get unit guide annotation @Transition. Unit {}, guide method {}",
             guideMethod.getDeclaringClass().getCanonicalName(), guideMethod.getName());
       }
       return transition.value();
-    } else if (declaringClass.isAnnotationPresent(Guide.class)) {
-      var guide = (tech.intellispaces.framework.core.guide.Guide<?, ?>) unitInstance;
-      return guide.tid();
-    } else {
-      throw UnexpectedViolationException.withMessage("Unsupported unit class {}", declaringClass.getCanonicalName());
     }
   }
 

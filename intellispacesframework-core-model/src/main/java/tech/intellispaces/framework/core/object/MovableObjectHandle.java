@@ -1,6 +1,7 @@
 package tech.intellispaces.framework.core.object;
 
 import tech.intellispaces.framework.core.exception.TraverseException;
+import tech.intellispaces.framework.core.transition.TransitionMethod0;
 import tech.intellispaces.framework.core.transition.TransitionMethod1;
 
 /**
@@ -19,5 +20,7 @@ public interface MovableObjectHandle<D> extends ObjectHandle<D> {
 
   <B, Q> B moveThru(String tid, Q qualifier) throws TraverseException;
 
-  <B, Q> B moveThru(TransitionMethod1<D, B, Q> transitionMethod, Q qualifier) throws TraverseException;
+  <B> B moveThru(TransitionMethod0<? super D, B> transitionMethod) throws TraverseException;
+
+  <B, Q> B moveThru(TransitionMethod1<? super D, B, Q> transitionMethod, Q qualifier) throws TraverseException;
 }

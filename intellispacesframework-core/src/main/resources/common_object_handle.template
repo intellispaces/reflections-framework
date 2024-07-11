@@ -10,7 +10,7 @@ import {{$importedClass}};
  * This class was generated automatically. Don't try to change it.
  */
 {{$generatedAnnotation}}
-public interface {{$classSimpleName}}{{$domainTypeParamsFull}} extends ObjectHandle<{{$sourceClassSimpleName}}{{$domainTypeParamsBrief}}>, {{$sourceClassSimpleName}}{{$domainTypeParamsBrief}} {
+public interface {{$classSimpleName}}{{$domainTypeParamsFull}} extends {{$objectHandleName}}<{{$sourceClassSimpleName}}{{$domainTypeParamsBrief}}>, {{$sourceClassSimpleName}}{{$domainTypeParamsBrief}} {
 
 {{for method : $methods}}
   @Override

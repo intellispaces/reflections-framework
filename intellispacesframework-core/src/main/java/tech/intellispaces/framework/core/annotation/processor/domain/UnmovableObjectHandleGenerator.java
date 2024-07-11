@@ -39,6 +39,7 @@ public class UnmovableObjectHandleGenerator extends AbstractObjectHandleGenerato
     vars.put("domainTypeParamsBrief", domainTypeParamsBrief);
     vars.put("methods", methods);
     vars.put("importedClasses", context.getImports());
+    vars.put("unmovableObjectHandleName", context.simpleNameOf(UnmovableObjectHandle.class));
     return vars;
   }
 

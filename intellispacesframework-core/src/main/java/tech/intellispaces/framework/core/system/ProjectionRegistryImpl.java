@@ -57,6 +57,10 @@ class ProjectionRegistryImpl implements ProjectionRegistry {
       return null;
     }
     if (!ObjectFunctions.isCompatibleObjectType(targetClass, projection.targetClass())) {
+      T downgradedProjection = ObjectFunctions.tryDowngrade(projection.target(), targetClass);
+      if (downgradedProjection != null) {
+        return downgradedProjection;
+      }
       return null;
     }
     return (T) projection.target();

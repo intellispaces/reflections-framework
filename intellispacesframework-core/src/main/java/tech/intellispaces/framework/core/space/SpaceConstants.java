@@ -11,9 +11,9 @@ public abstract class SpaceConstants {
 
   public static final String PROPERTIES_TO_VALUE_TID = "ea111b97-c025-4d74-8466-d462c4c87efd";
 
-  public static final String PROPERTIES_DOMAIN_NAME = "tech.intellispaces.ixora.structures.properties.Properties";
+  public static final String PROPERTIES_DOMAIN_NAME = "intellispaces.ixora.structures.properties.Properties";
 
-  public static final String PROPERTIES_HANDLE_CLASSNAME = "tech.intellispaces.ixora.structures.properties.PropertiesHandle";
+  public static final String PROPERTIES_HANDLE_CLASSNAME = "intellispaces.ixora.structures.properties.PropertiesHandle";
 
   public static Class<?> propertiesHandleClass() {
     if (propertiesHandleClass == null) {

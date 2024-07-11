@@ -3,7 +3,7 @@ package tech.intellispaces.framework.core.transition;
 import java.util.function.BiFunction;
 
 @FunctionalInterface
-public interface TransitionMethod1<S, T, Q> extends BiFunction<S, Q, T> {
+public interface TransitionMethod1<S, B, Q> extends BiFunction<S, Q, B> {
 
-  T apply(S source, Q qualifier);
+  B apply(S source, Q qualifier);
 }

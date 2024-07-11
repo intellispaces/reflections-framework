@@ -1,10 +1,12 @@
 package tech.intellispaces.framework.core.annotation.processor.objecthandle;
 
 import tech.intellispaces.framework.core.exception.TraverseException;
+import tech.intellispaces.framework.core.guide.n0.Mover0;
 import tech.intellispaces.framework.core.guide.n1.Mover1;
 import tech.intellispaces.framework.core.object.ObjectFunctions;
 import tech.intellispaces.framework.core.space.transition.TransitionFunctions;
 import tech.intellispaces.framework.core.system.Modules;
+import tech.intellispaces.framework.core.transition.TransitionMethod0;
 import tech.intellispaces.framework.core.transition.TransitionMethod1;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
 
@@ -45,7 +47,9 @@ public class MovableObjectHandleImplImplGenerator extends AbstractObjectHandleIm
     context.addImport(Modules.class);
     context.addImport(TraverseException.class);
 
+    context.addImport(Mover0.class);
     context.addImport(Mover1.class);
+    context.addImport(TransitionMethod0.class);
     context.addImport(TransitionMethod1.class);
     context.addImport(TransitionFunctions.class);
 

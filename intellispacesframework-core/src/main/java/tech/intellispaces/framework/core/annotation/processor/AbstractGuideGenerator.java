@@ -352,11 +352,11 @@ public abstract class AbstractGuideGenerator extends AbstractGenerator {
     sb.append("<");
     for (NamedTypeReference typeParam : getDomainType().typeParameters()) {
       addCommaAction.execute();
-      sb.append(typeParam.actualDeclaration());
+      sb.append(typeParam.formalFullDeclaration());
     }
     for (NamedTypeReference typeParam : transitionMethod.typeParameters()) {
       addCommaAction.execute();
-      sb.append(typeParam.actualDeclaration());
+      sb.append(typeParam.formalFullDeclaration());
     }
     sb.append(">");
     return sb.toString();

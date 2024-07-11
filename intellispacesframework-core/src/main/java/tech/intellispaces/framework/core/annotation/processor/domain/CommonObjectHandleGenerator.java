@@ -5,6 +5,7 @@ import tech.intellispaces.framework.core.object.ObjectHandle;
 import tech.intellispaces.framework.core.object.ObjectHandleTypes;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class CommonObjectHandleGenerator extends AbstractObjectHandleGenerator {
@@ -24,18 +25,19 @@ public class CommonObjectHandleGenerator extends AbstractObjectHandleGenerator {
   }
 
   protected Map<String, Object> templateVariables() {
-    return Map.of(
-        "generatedAnnotation", generatedAnnotation(),
-        "packageName", context.packageName(),
-        "sourceClassName", sourceClassCanonicalName(),
-        "sourceClassSimpleName", sourceClassSimpleName(),
-        "classSimpleName", context.generatedClassSimpleName(),
-        "movableClassSimpleName", movableClassSimpleName(),
-        "domainTypeParamsFull", domainTypeParamsFull,
-        "domainTypeParamsBrief", domainTypeParamsBrief,
-        "methods", methods,
-        "importedClasses", context.getImports()
-    );
+    Map<String, Object> vars = new HashMap<>();
+    vars.put("generatedAnnotation", generatedAnnotation());
+    vars.put("packageName", context.packageName());
+    vars.put("sourceClassName", sourceClassCanonicalName());
+    vars.put("sourceClassSimpleName", sourceClassSimpleName());
+    vars.put("classSimpleName", context.generatedClassSimpleName());
+    vars.put("movableClassSimpleName", movableClassSimpleName());
+    vars.put("domainTypeParamsFull", domainTypeParamsFull);
+    vars.put("domainTypeParamsBrief", domainTypeParamsBrief);
+    vars.put("methods", methods);
+    vars.put("importedClasses", context.getImports());
+    vars.put("objectHandleName", context.simpleNameOf(ObjectHandle.class));
+    return vars;
   }
 
   @Override

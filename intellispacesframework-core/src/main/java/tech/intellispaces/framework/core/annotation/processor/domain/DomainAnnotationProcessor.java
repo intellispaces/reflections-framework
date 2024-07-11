@@ -9,6 +9,10 @@ import tech.intellispaces.framework.core.annotation.processor.AbstractAnnotation
 import tech.intellispaces.framework.core.validation.DomainValidator;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
 import tech.intellispaces.framework.javastatements.statement.method.MethodStatement;
+import tech.intellispaces.framework.javastatements.statement.reference.CustomTypeReference;
+import tech.intellispaces.framework.javastatements.statement.reference.NonPrimitiveTypeReference;
+import tech.intellispaces.framework.javastatements.statement.reference.TypeBoundReference;
+import tech.intellispaces.framework.javastatements.statement.reference.TypeReference;
 
 import javax.annotation.processing.Processor;
 import javax.lang.model.element.ElementKind;
@@ -46,6 +50,13 @@ public class DomainAnnotationProcessor extends AbstractAnnotationProcessor {
         }
       }
     }
+    addBasicObjectHandleGenerators(domainType, generators);
+    addUpgradeObjectHandleGenerators(domainType, domainType, generators);
+    addDowngradeObjectHandleGenerators(domainType, generators);
+    return generators;
+  }
+
+  private void addBasicObjectHandleGenerators(CustomType domainType, List<ArtifactGenerator> generators) {
     if (isAutoGenerationEnabled(domainType, "ObjectHandle")) {
       generators.add(new CommonObjectHandleGenerator(domainType));
     }
@@ -55,6 +66,49 @@ public class DomainAnnotationProcessor extends AbstractAnnotationProcessor {
     if (isAutoGenerationEnabled(domainType, "UnmovableObjectHandle")) {
       generators.add(new UnmovableObjectHandleGenerator(domainType));
     }
-    return generators;
+  }
+
+  private void addUpgradeObjectHandleGenerators(
+      CustomType domainType, CustomType curDomainType, List<ArtifactGenerator> generators
+  ) {
+    List<CustomTypeReference> parents = curDomainType.parentTypes();
+    if (parents.size() != 1) {
+      return;
+    }
+    CustomTypeReference baseDomainType = parents.get(0);
+    List<NonPrimitiveTypeReference> baseTypeArguments = baseDomainType.typeArguments();
+    if (baseTypeArguments.isEmpty()) {
+      return;
+    }
+    boolean allTypeArgumentsAreCustomTypes = baseTypeArguments.stream().allMatch(this::isCustomTypeRelated);
+    if (!allTypeArgumentsAreCustomTypes) {
+      return;
+    }
+    generators.add(new UnmovableUpgradeObjectHandleGenerator(domainType, baseDomainType));
+
+    addUpgradeObjectHandleGenerators(domainType, baseDomainType.targetType(), generators);
+  }
+
+  private void addDowngradeObjectHandleGenerators(CustomType domainType, List<ArtifactGenerator> generators) {
+    List<CustomTypeReference> parents = domainType.parentTypes();
+    if (parents.size() != 1) {
+      return;
+    }
+    CustomTypeReference baseDomainType = parents.get(0);
+
+    generators.add(new MovableDowngradeObjectHandleGenerator(domainType, baseDomainType));
+  }
+
+  private boolean isCustomTypeRelated(TypeReference type) {
+    if (type.isCustomTypeReference()) {
+      return true;
+    }
+    if (type.isNamedTypeReference()) {
+      List<TypeBoundReference> extendedBounds = type.asNamedTypeReferenceSurely().extendedBounds();
+      if (extendedBounds.size() == 1 && extendedBounds.get(0).isCustomTypeReference()) {
+        return true;
+      }
+    }
+    return false;
   }
 }

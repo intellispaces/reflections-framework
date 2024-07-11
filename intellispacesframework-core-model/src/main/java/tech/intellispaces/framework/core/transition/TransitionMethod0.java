@@ -3,7 +3,7 @@ package tech.intellispaces.framework.core.transition;
 import java.util.function.Function;
 
 @FunctionalInterface
-public interface TransitionMethod0<S, T> extends Function<S, T> {
+public interface TransitionMethod0<S, B> extends Function<S, B> {
 
-  T apply(S source);
+  B apply(S source);
 }

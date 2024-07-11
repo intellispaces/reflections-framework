@@ -24,11 +24,11 @@ public interface NameFunctions {
   }
 
   static String getMovableObjectHandleTypename(String domainClassName) {
-    return transformClassName(domainClassName) + "MovableHandle";
+    return TypeFunctions.addPrefixToClassName("Movable", transformClassName(domainClassName)) + "Handle";
   }
 
   static String getUnmovableObjectHandleTypename(String domainClassName) {
-    return transformClassName(domainClassName) + "UnmovableHandle";
+    return TypeFunctions.addPrefixToClassName("Unmovable", transformClassName(domainClassName)) + "Handle";
   }
 
   static String getUnitWrapperCanonicalName(String unitClassName) {
@@ -49,6 +49,28 @@ public interface NameFunctions {
     return assumeTransitionClassCanonicalName(spaceName, domainType, transitionMethod);
   }
 
+  static String getUnmovableUpgradeObjectHandleTypename(CustomType domainType, CustomType baseDomainType) {
+    String packageName = TypeFunctions.getPackageName(domainType.canonicalName());
+    String simpleName = domainType.simpleName() + "BasedOn" + StringFunctions.capitalizeFirstLetter(baseDomainType.simpleName());
+    return TypeFunctions.joinPackageAndSimpleName(packageName, simpleName);
+  }
+
+  static String getMovableDowngradeObjectHandleTypename(CustomType domainType, CustomType baseDomainType) {
+    String packageName = TypeFunctions.getPackageName(domainType.canonicalName());
+    String simpleName = "Movable" +
+        StringFunctions.capitalizeFirstLetter(baseDomainType.simpleName()) +
+        "BasedOn" + StringFunctions.capitalizeFirstLetter(domainType.simpleName());
+    return TypeFunctions.joinPackageAndSimpleName(packageName, simpleName);
+  }
+
+  static String getMovableDowngradeObjectHandleTypename(Class<?> domainClass, Class<?> baseDomainClass) {
+    String packageName = TypeFunctions.getPackageName(domainClass.getCanonicalName());
+    String simpleName = "Movable" +
+        StringFunctions.capitalizeFirstLetter(baseDomainClass.getSimpleName()) +
+        "BasedOn" + StringFunctions.capitalizeFirstLetter(domainClass.getSimpleName());
+    return TypeFunctions.joinPackageAndSimpleName(packageName, simpleName);
+  }
+
   private static String assumeTransitionClassCanonicalName(
       String spaceName, CustomType domainType, MethodStatement transitionMethod
   ) {
@@ -66,13 +88,23 @@ public interface NameFunctions {
   ) {
     String simpleName = TypeFunctions.getSimpleName(domainType.canonicalName());
     if (isMappingTraverseType(transitionMethod)) {
-      simpleName = StringFunctions.capitalizeFirstLetter(simpleName) + "To" +
-          StringFunctions.capitalizeFirstLetter(transitionMethod.name()) + "Transition";
+      if (isTransformTransition(transitionMethod)) {
+        simpleName = StringFunctions.capitalizeFirstLetter(simpleName) + "To" +
+            transitionMethod.name().substring(2) + "Transition";
+      } else {
+        simpleName = StringFunctions.capitalizeFirstLetter(simpleName) + "To" +
+            StringFunctions.capitalizeFirstLetter(transitionMethod.name()) + "Transition";
+      }
     } else {
       simpleName = StringFunctions.capitalizeFirstLetter(simpleName) +
           StringFunctions.capitalizeFirstLetter(transitionMethod.name()) + "Transition";
     }
     return simpleName;
+  }
+
+  private static boolean isTransformTransition(MethodStatement transitionMethod) {
+    String name = transitionMethod.name();
+    return (name.length() > 3 && name.startsWith("as") && Character.isUpperCase(name.charAt(2)));
   }
 
   private static String assumeTransitionClassSimpleNameForOntology(MethodStatement transitionMethod) {
@@ -90,7 +122,7 @@ public interface NameFunctions {
     return method.selectAnnotation(Transition.class).orElseThrow().type() == TraverseTypes.Mapping;
   }
 
-  static String transformClassName(String className) {
+  private static String transformClassName(String className) {
     return className.replace("$", "");
   }
 }

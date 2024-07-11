@@ -33,12 +33,12 @@ public interface TransitionFunctions {
     return transition.value();
   }
 
-  static <S, T> String getTransitionId(Class<S> sourceDomain, Function<S, T> transitionMethod) {
+  static <S, B> String getTransitionId(Class<S> sourceDomain, Function<? super S, B> transitionMethod) {
     return findTransitionId(sourceDomain, transitionMethod, transitionMethod::apply);
   }
 
-  static <S, T, Q> String getTransitionId(
-      Class<S> sourceDomain, BiFunction<S, Q, T> transitionMethod, Q qualifierAnyValidValue
+  static <S, B, Q> String getTransitionId(
+      Class<S> sourceDomain, BiFunction<? super S, Q, B> transitionMethod, Q qualifierAnyValidValue
   ) {
     return findTransitionId(sourceDomain, transitionMethod,
         (trackedObject) -> transitionMethod.apply(trackedObject, qualifierAnyValidValue));

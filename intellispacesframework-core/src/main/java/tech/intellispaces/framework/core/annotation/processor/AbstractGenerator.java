@@ -87,11 +87,11 @@ public abstract class AbstractGenerator extends TemplateBasedJavaArtifactGenerat
       signature.append("<");
       addCommaAction.execute();
       for (NamedTypeReference typeParam : method.typeParameters()) {
-        signature.append(typeParam.actualDeclaration());
+        signature.append(typeParam.formalFullDeclaration());
       }
       if (includeHolderTypeParams) {
         for (NamedTypeReference typeParam : method.holder().typeParameters()) {
-          signature.append(typeParam.actualDeclaration());
+          signature.append(typeParam.formalFullDeclaration());
         }
       }
       signature.append("> ");
@@ -145,7 +145,6 @@ public abstract class AbstractGenerator extends TemplateBasedJavaArtifactGenerat
           for (NonPrimitiveTypeReference argType : customTypeReference.typeArguments()) {
             addCommaAction.execute();
             sb.append(argType.actualDeclaration());
-//            sb.append(getObjectHandleCanonicalName(argType, ObjectHandleTypes.Common));
           }
           sb.append(">");
         }

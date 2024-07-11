@@ -44,23 +44,43 @@ abstract class AbstractObjectHandleGenerator extends AbstractGenerator {
         NameFunctions.getMovableObjectHandleTypename(annotatedType.className()));
   }
 
-  private Stream<MethodStatement> getDomainMethods(CustomType domainType) {
+  protected Stream<MethodStatement> getDomainMethods(CustomType domainType) {
     return domainType.actualMethods().stream()
         .filter(m -> m.holder().hasAnnotation(Domain.class))
         .filter(m -> !m.isDefault());
   }
 
-  private String buildMethod(MethodStatement method) {
+  protected String buildMethod(MethodStatement method) {
     var sb = new StringBuilder();
 
     Transition transition = TransitionFunctions.getDomainMainTransitionAnnotation(method);
     boolean disableMoving = transition.type() != TraverseTypes.Mapping &&
         ObjectHandleTypes.Unmovable == getObjectHandleType();
 
-    buildMethodNameParameters(method, sb);
+    addMethodTypeParameters(sb, method);
     if (disableMoving) {
       sb.append("default ");
     }
+    addMethodReturnType(sb, method);
+    sb.append(" ");
+    sb.append(method.name());
+    sb.append("(");
+    addMethodParameters(sb, method);
+    sb.append(")");
+    addMethodExceptions(sb, method);
+
+    if (disableMoving) {
+      context.addImport(TraverseException.class);
+      String exceptionSimpleName = context.simpleNameOf(TraverseException.class);
+      sb.append(" {\n");
+      sb.append("    throw ").append(exceptionSimpleName).append(
+          ".withMessage(\"Unmovable object handle cannot be moved\");\n");
+      sb.append("  }");
+    }
+    return sb.toString();
+  }
+
+  protected void addMethodReturnType(StringBuilder sb, MethodStatement method) {
     if (method.returnType().isEmpty()) {
       sb.append("void");
     } else {
@@ -77,26 +97,9 @@ abstract class AbstractObjectHandleGenerator extends AbstractGenerator {
       }
       sb.append(getObjectHandleCanonicalName(domainReturnType, objectHandleType));
     }
-
-    sb.append(" ");
-    sb.append(method.name());
-    sb.append("(");
-
-    buildMethodParameters(method, sb);
-    buildMethodExceptions(method, sb);
-
-    if (disableMoving) {
-      context.addImport(TraverseException.class);
-      String exceptionSimpleName = context.simpleNameOf(TraverseException.class);
-      sb.append(" {\n");
-      sb.append("    throw ").append(exceptionSimpleName).append(
-          ".withMessage(\"Unmovable object handle cannot be moved\");\n");
-      sb.append("  }");
-    }
-    return sb.toString();
   }
 
-  private static void buildMethodNameParameters(MethodStatement method, StringBuilder sb) {
+  protected void addMethodTypeParameters(StringBuilder sb, MethodStatement method) {
     if (!method.typeParameters().isEmpty()) {
       sb.append("<");
       Action addCommaAction = ActionFunctions.buildAppendSeparatorAction(sb, ", ");
@@ -108,7 +111,7 @@ abstract class AbstractObjectHandleGenerator extends AbstractGenerator {
     }
   }
 
-  private void buildMethodParameters(MethodStatement method, StringBuilder sb) {
+  protected void addMethodParameters(StringBuilder sb, MethodStatement method) {
     Action addCommaAction = ActionFunctions.buildAppendSeparatorAction(sb, ", ");
     for (MethodParam param : method.params()) {
       addCommaAction.execute();
@@ -116,10 +119,9 @@ abstract class AbstractObjectHandleGenerator extends AbstractGenerator {
       sb.append(" ");
       sb.append(param.name());
     }
-    sb.append(")");
   }
 
-  private void buildMethodExceptions(MethodStatement method, StringBuilder sb) {
+  protected void addMethodExceptions(StringBuilder sb, MethodStatement method) {
     String exceptions = method.exceptions().stream()
         .map(e -> e.asCustomTypeReference().orElseThrow().targetType())
         .peek(e -> context.addImport(e.canonicalName()))

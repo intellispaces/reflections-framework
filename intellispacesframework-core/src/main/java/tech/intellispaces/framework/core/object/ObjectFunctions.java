@@ -4,11 +4,14 @@ import tech.intellispaces.framework.commons.exception.UnexpectedViolationExcepti
 import tech.intellispaces.framework.commons.type.TypeFunctions;
 import tech.intellispaces.framework.core.annotation.Domain;
 import tech.intellispaces.framework.core.common.NameFunctions;
+import tech.intellispaces.framework.javastatements.JavaStatements;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
 import tech.intellispaces.framework.javastatements.statement.reference.CustomTypeReference;
 import tech.intellispaces.framework.javastatements.statement.reference.TypeReference;
 
+import java.lang.reflect.Constructor;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 public class ObjectFunctions {
@@ -92,6 +95,17 @@ public class ObjectFunctions {
     return actualType2 == actualType1 || actualType1.isAssignableFrom(actualType2);
   }
 
+  public static CustomType getDomainTypeOfObjectHandle(TypeReference objectHandleType) {
+    if (objectHandleType.isPrimitive()) {
+      Class<?> wrapperClass = TypeFunctions.getPrimitiveWrapperClass(objectHandleType.asPrimitiveTypeReferenceSurely().typename());
+      return JavaStatements.customTypeStatement(wrapperClass);
+    } else if (objectHandleType.isCustomTypeReference()) {
+      return getDomainTypeOfObjectHandle(objectHandleType.asCustomTypeReferenceSurely().targetType());
+    } else {
+      throw UnexpectedViolationException.withMessage("Not implemented");
+    }
+  }
+
   public static CustomType getDomainTypeOfObjectHandle(CustomType objectHandleType) {
     CustomType domainType = getDomainClassRecursive(objectHandleType, new HashSet<>());
     if (domainType == null) {
@@ -153,6 +167,42 @@ public class ObjectFunctions {
     Class<?> superclass = aClass.getSuperclass();
     if (superclass != null) {
       return getDomainClassRecursive(superclass, history);
+    }
+    return null;
+  }
+
+  public static boolean isMovableObjectHandle(Class<?> objectHandleClass) {
+    return MovableObjectHandle.class.isAssignableFrom(objectHandleClass);
+  }
+
+  @SuppressWarnings("unchecked")
+  public static <T> T tryDowngrade(Object sourceObjectHandle, Class<T> targetObjectHandleClass) {
+    Class<?> sourceObjectHandleClass = sourceObjectHandle.getClass();
+    if (isCustomObjectHandleClass(sourceObjectHandleClass) && isCustomObjectHandleClass(targetObjectHandleClass)) {
+      Class<?> sourceObjectHandleDomain = getDomainClassOfObjectHandle(sourceObjectHandleClass);
+      Class<?> targetObjectHandleDomain = getDomainClassOfObjectHandle(targetObjectHandleClass);
+      if (targetObjectHandleDomain.isAssignableFrom(sourceObjectHandleDomain)) {
+        if (isMovableObjectHandle(targetObjectHandleClass)) {
+          return (T) tryCreateDowngradeObjectHandle(sourceObjectHandle, sourceObjectHandleDomain, targetObjectHandleDomain);
+        }
+      }
+    }
+    return null;
+  }
+
+  private static Object tryCreateDowngradeObjectHandle(
+      Object sourceObjectHandle, Class<?> sourceObjectHandleDomain, Class<?> targetObjectHandleDomain
+  ) {
+    String downgradeObjectHandleCanonicalName = NameFunctions.getMovableDowngradeObjectHandleTypename(
+        sourceObjectHandleDomain, targetObjectHandleDomain);
+    Optional<Class<?>> downgradeObjectHandleClass = TypeFunctions.getClass(downgradeObjectHandleCanonicalName);
+    if (downgradeObjectHandleClass.isPresent()) {
+      try {
+        Constructor<?> constructor = downgradeObjectHandleClass.get().getConstructors()[0];
+        return constructor.newInstance(sourceObjectHandle);
+      } catch (Exception e) {
+        throw UnexpectedViolationException.withCauseAndMessage(e, "Could not create downgrade object handle");
+      }
     }
     return null;
   }

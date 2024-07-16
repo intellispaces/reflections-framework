@@ -41,6 +41,10 @@
             <groupId>intellispaces</groupId>
             <artifactId>intellispacesframework-annotationprocessor</artifactId>
         </dependency>
+        <dependency>
+            <groupId>intellispaces</groupId>
+            <artifactId>intellispacesframework-actions</artifactId>
+        </dependency>
 
         <!-- Auto-service library -->
         <dependency>

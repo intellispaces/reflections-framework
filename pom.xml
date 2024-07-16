@@ -35,6 +35,11 @@
             </dependency>
             <dependency>
                 <groupId>intellispaces</groupId>
+                <artifactId>intellispacesframework-actions</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>intellispaces</groupId>
                 <artifactId>intellispacesframework-annotationprocessor</artifactId>
                 <version>0.0.1-SNAPSHOT</version>
             </dependency>

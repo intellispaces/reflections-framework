@@ -20,14 +20,16 @@ public class AttachedMover1<S, B, Q> implements BasicMover1<S, B, Q> {
   private final Class<S> objectHandleClass;
   private final String tid;
   private final Method moverMethod;
+  private final Method actualMoverMethod;
 
-  public AttachedMover1(String tid, Class<S> objectHandleClass, Method moverMethod) {
+  public AttachedMover1(String tid, Class<S> objectHandleClass, Method moverMethod, Method actualMoverMethod) {
     if (moverMethod.getParameterCount() != 1) {
       throw UnexpectedViolationException.withMessage("Attached guide should have 1 parameter");
     }
     this.tid = tid;
     this.objectHandleClass = objectHandleClass;
     this.moverMethod = moverMethod;
+    this.actualMoverMethod = actualMoverMethod;
   }
 
   @Override
@@ -40,10 +42,18 @@ public class AttachedMover1<S, B, Q> implements BasicMover1<S, B, Q> {
   public B move(S source, Q qualifier) throws TraverseException {
     try {
       GuideLogger.logCallGuide(moverMethod);
-      return (B) moverMethod.invoke(source, qualifier);
-    } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-      throw TraverseException.withCauseAndMessage(e, "Failed to invoke mover method {} of object handle {}",
-          moverMethod.getName(), objectHandleClass.getCanonicalName());
+      return (B) actualMoverMethod.invoke(source, qualifier);
+    } catch (InvocationTargetException e) {
+      Throwable t = e.getTargetException();
+      if (t instanceof TraverseException) {
+        throw (TraverseException) t;
+      } else {
+        throw TraverseException.withCauseAndMessage(e, "Failed to invoke attached mover method {} of object handle {}",
+            actualMoverMethod.getName(), objectHandleClass.getCanonicalName());
+      }
+    } catch (IllegalAccessException | IllegalArgumentException e) {
+      throw TraverseException.withCauseAndMessage(e, "Failed to invoke attached mover method {} of object handle {}",
+          actualMoverMethod.getName(), objectHandleClass.getCanonicalName());
     }
   }
 }

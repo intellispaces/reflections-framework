@@ -1,7 +1,9 @@
 package tech.intellispaces.framework.core.guide;
 
 import tech.intellispaces.framework.commons.exception.UnexpectedViolationException;
+import tech.intellispaces.framework.commons.type.TypeFunctions;
 import tech.intellispaces.framework.core.annotation.Transition;
+import tech.intellispaces.framework.core.common.NameFunctions;
 import tech.intellispaces.framework.core.guide.n0.AttachedMapper0;
 import tech.intellispaces.framework.core.guide.n0.AttachedMover0;
 import tech.intellispaces.framework.core.guide.n0.Mapper0;
@@ -28,6 +30,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public final class GuideFunctions {
 
@@ -83,7 +86,7 @@ public final class GuideFunctions {
     return switch (qualifiersCount) {
       case 1 -> new MethodMapper0<>(tid, unitInstance, guideMethod);
       case 2 -> new MethodMapper1<>(tid, unitInstance, guideMethod);
-      default -> throw UnexpectedViolationException.withMessage("Unsupported number of guide qualifiers - {}",
+      default -> throw UnexpectedViolationException.withMessage("Unsupported number of guide qualifiers: {}",
           qualifiersCount);
     };
   }
@@ -95,22 +98,43 @@ public final class GuideFunctions {
 
   private static Guide<?, ?> createAttachedMapper(Class<?> objectHandleClass, String tid, Method guideMethod) {
     int qualifiersCount = guideMethod.getParameterCount();
+    Method actualGuideMethod = getActualGuideMethod(objectHandleClass, guideMethod);
     return switch (qualifiersCount) {
-      case 0 -> new AttachedMapper0<>(tid, objectHandleClass, guideMethod);
-      case 1 -> new AttachedMapper1<>(tid, objectHandleClass, guideMethod);
-      default -> throw UnexpectedViolationException.withMessage("Unsupported number of guide qualifiers - {}",
+      case 0 -> new AttachedMapper0<>(tid, objectHandleClass, guideMethod, actualGuideMethod);
+      case 1 -> new AttachedMapper1<>(tid, objectHandleClass, guideMethod, actualGuideMethod);
+      default -> throw UnexpectedViolationException.withMessage("Unsupported number of guide qualifiers: {}",
           qualifiersCount);
     };
   }
 
   private static Guide<?, ?> createAttachedMover(Class<?> objectHandleClass, String tid, Method guideMethod) {
     int qualifiersCount = guideMethod.getParameterCount();
+    Method actualGuideMethod = getActualGuideMethod(objectHandleClass, guideMethod);
     return switch (qualifiersCount) {
-      case 0 -> new AttachedMover0<>(tid, objectHandleClass, guideMethod);
-      case 1 -> new AttachedMover1<>(tid, objectHandleClass, guideMethod);
-      default -> throw UnexpectedViolationException.withMessage("Unsupported number of guide qualifiers - {}",
+      case 0 -> new AttachedMover0<>(tid, objectHandleClass, guideMethod, actualGuideMethod);
+      case 1 -> new AttachedMover1<>(tid, objectHandleClass, guideMethod, actualGuideMethod);
+      default -> throw UnexpectedViolationException.withMessage("Unsupported number of guide qualifiers: {}",
           qualifiersCount);
     };
+  }
+
+  private static Method getActualGuideMethod(Class<?> objectHandleClass, Method guideMethod) {
+    String implementationClassname = NameFunctions.getObjectHandleImplementationTypename(objectHandleClass);
+    Optional<Class<?>> implementationClass = TypeFunctions.getClass(implementationClassname);
+    if (implementationClass.isEmpty()) {
+      throw UnexpectedViolationException.withMessage("Could not load object handle implementation class {}",
+          implementationClassname);
+    }
+
+    String actualGuideMethodName = "_" + guideMethod.getName();
+    Optional<Method> actualGuideMethod = TypeFunctions.getMethod(
+        implementationClass.get(), actualGuideMethodName, guideMethod.getParameterTypes()
+    );
+    if (actualGuideMethod.isEmpty()) {
+      throw UnexpectedViolationException.withMessage("Could not find actual guide method {} in class {}",
+          actualGuideMethodName, guideMethod.getParameterTypes());
+    }
+    return actualGuideMethod.get();
   }
 
   private GuideFunctions() {}

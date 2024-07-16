@@ -1,15 +1,39 @@
 package tech.intellispaces.framework.core.common;
 
+import tech.intellispaces.framework.commons.exception.UnexpectedViolationException;
 import tech.intellispaces.framework.commons.string.StringFunctions;
 import tech.intellispaces.framework.commons.type.TypeFunctions;
+import tech.intellispaces.framework.core.annotation.Domain;
+import tech.intellispaces.framework.core.annotation.ObjectHandle;
 import tech.intellispaces.framework.core.annotation.Ontology;
 import tech.intellispaces.framework.core.annotation.Transition;
 import tech.intellispaces.framework.core.object.ObjectHandleTypes;
 import tech.intellispaces.framework.core.traverse.TraverseTypes;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
+import tech.intellispaces.framework.javastatements.statement.method.MethodParam;
 import tech.intellispaces.framework.javastatements.statement.method.MethodStatement;
 
+import java.util.Optional;
+
 public interface NameFunctions {
+
+  static String getObjectHandleImplementationTypename(CustomType objectHandleType) {
+    Optional<ObjectHandle> annotation = objectHandleType.selectAnnotation(ObjectHandle.class);
+    if (annotation.isPresent()) {
+      return TypeFunctions.replaceSimpleName(objectHandleType.canonicalName(), annotation.get().value());
+    } else {
+      return objectHandleType.canonicalName() + "Impl";
+    }
+  }
+
+  static String getObjectHandleImplementationTypename(Class<?> objectHandleClass) {
+    ObjectHandle annotation = objectHandleClass.getAnnotation(ObjectHandle.class);
+    if (annotation != null) {
+      return TypeFunctions.replaceSimpleName(objectHandleClass.getCanonicalName(), annotation.value());
+    } else {
+      return objectHandleClass.getCanonicalName() + "Impl";
+    }
+  }
 
   static String getObjectHandleTypename(String domainClassName, ObjectHandleTypes handleType) {
     return switch (handleType) {
@@ -39,6 +63,18 @@ public interface NameFunctions {
     return transformClassName(domainClassName) + "HandleImpl";
   }
 
+  static String getTransitionClassCanonicalName(MethodStatement transitionMethod) {
+    String spaceName = transitionMethod.owner().packageName();
+    CustomType domainType = transitionMethod.owner();
+    if (!domainType.hasAnnotation(Domain.class)) {
+      throw UnexpectedViolationException.withMessage("Transition method {} should be declared in domain class. " +
+          "But actual class {} is not marked with annotation {}",
+          transitionMethod.name(), domainType.canonicalName(), transitionMethod.owner().canonicalName()
+      );
+    }
+    return getTransitionClassCanonicalName(spaceName, domainType, transitionMethod);
+  }
+
   static String getTransitionClassCanonicalName(
       String spaceName, CustomType domainType, MethodStatement transitionMethod
   ) {
@@ -46,7 +82,7 @@ public interface NameFunctions {
     if (!transitionSimpleName.isBlank()) {
       return TypeFunctions.joinPackageAndSimpleName(spaceName, transitionSimpleName);
     }
-    return assumeTransitionClassCanonicalName(spaceName, domainType, transitionMethod);
+    return assignTransitionClassCanonicalName(spaceName, domainType, transitionMethod);
   }
 
   static String getUnmovableUpgradeObjectHandleTypename(CustomType domainType, CustomType baseDomainType) {
@@ -71,19 +107,19 @@ public interface NameFunctions {
     return TypeFunctions.joinPackageAndSimpleName(packageName, simpleName);
   }
 
-  private static String assumeTransitionClassCanonicalName(
+  private static String assignTransitionClassCanonicalName(
       String spaceName, CustomType domainType, MethodStatement transitionMethod
   ) {
     final String simpleName;
-    if (transitionMethod.holder().hasAnnotation(Ontology.class)) {
-      simpleName = assumeTransitionClassSimpleNameForOntology(transitionMethod);
+    if (transitionMethod.owner().hasAnnotation(Ontology.class)) {
+      simpleName = assumeTransitionClassSimpleNameWhenOntologyClass(transitionMethod);
     } else {
-      simpleName = assumeTransitionClassSimpleNameForDomain(domainType, transitionMethod);
+      simpleName = assumeTransitionClassSimpleNameWhenDomainClass(domainType, transitionMethod);
     }
     return TypeFunctions.joinPackageAndSimpleName(spaceName, simpleName);
   }
 
-  private static String assumeTransitionClassSimpleNameForDomain(
+  private static String assumeTransitionClassSimpleNameWhenDomainClass(
       CustomType domainType, MethodStatement transitionMethod
   ) {
     String simpleName = TypeFunctions.getSimpleName(domainType.canonicalName());
@@ -97,9 +133,27 @@ public interface NameFunctions {
       }
     } else {
       simpleName = StringFunctions.capitalizeFirstLetter(simpleName) +
-          StringFunctions.capitalizeFirstLetter(transitionMethod.name()) + "Transition";
+          StringFunctions.capitalizeFirstLetter(joinMethodNameAndParameterTypes(transitionMethod)) + "Transition";
     }
     return simpleName;
+  }
+
+  static String joinMethodNameAndParameterTypes(MethodStatement method) {
+    if (method.params().isEmpty()) {
+      return method.name();
+    }
+    var sb = new StringBuilder();
+    sb.append(method.name());
+    for (MethodParam param : method.params()) {
+      if (param.type().isPrimitive()) {
+        sb.append(StringFunctions.capitalizeFirstLetter(param.type().asPrimitiveTypeReferenceSurely().typename()));
+      } else if (param.type().isCustomTypeReference()) {
+        sb.append(param.type().asCustomTypeReferenceSurely().targetType().simpleName());
+      } else if (param.type().isNamedTypeReference()) {
+        sb.append(param.type().asNamedTypeReferenceSurely().name());
+      }
+    }
+    return sb.toString();
   }
 
   private static boolean isTransformTransition(MethodStatement transitionMethod) {
@@ -107,7 +161,7 @@ public interface NameFunctions {
     return (name.length() > 3 && name.startsWith("as") && Character.isUpperCase(name.charAt(2)));
   }
 
-  private static String assumeTransitionClassSimpleNameForOntology(MethodStatement transitionMethod) {
+  private static String assumeTransitionClassSimpleNameWhenOntologyClass(MethodStatement transitionMethod) {
     return StringFunctions.capitalizeFirstLetter(transitionMethod.name()) + "Transition";
   }
 

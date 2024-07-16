@@ -1,13 +1,13 @@
 package tech.intellispaces.framework.core.annotation.processor.module;
 
-import tech.intellispaces.framework.commons.action.Action;
+import tech.intellispaces.framework.commons.action.Executor;
 import tech.intellispaces.framework.commons.exception.UnexpectedViolationException;
 import tech.intellispaces.framework.commons.type.TypeFunctions;
 import tech.intellispaces.framework.core.annotation.Projection;
 import tech.intellispaces.framework.core.annotation.ProjectionDefinition;
 import tech.intellispaces.framework.core.annotation.Wrapper;
 import tech.intellispaces.framework.core.annotation.processor.AbstractGenerator;
-import tech.intellispaces.framework.core.common.ActionFunctions;
+import tech.intellispaces.framework.core.common.Actions;
 import tech.intellispaces.framework.core.common.NameFunctions;
 import tech.intellispaces.framework.core.system.Injection;
 import tech.intellispaces.framework.core.system.Modules;
@@ -113,7 +113,7 @@ public class UnitWrapperGenerator extends AbstractGenerator {
       }
     }
     throw UnexpectedViolationException.withMessage("Projection definition is not found. See method {} in unit {}",
-        method.name(), method.holder().canonicalName());
+        method.name(), method.owner().canonicalName());
   }
 
   private void addProjectionImplementationMethodWhenProjectionProviderDefined(
@@ -173,10 +173,9 @@ public class UnitWrapperGenerator extends AbstractGenerator {
     signature.append(projectionMethod.name());
     signature.append("(");
 
-    Action addCommaToSignatureAction = ActionFunctions.buildAppendSeparatorAction(signature, ", ");
+    Executor commaAppender = Actions.buildCommaAppender(signature);
     for (MethodParam param : projectionMethod.params()) {
-      addCommaToSignatureAction.execute();
-
+      commaAppender.execute();
       context.addImports(param.type().dependencyTypenames());
       signature.append(param.type().actualDeclaration());
       signature.append(" ");
@@ -240,11 +239,11 @@ public class UnitWrapperGenerator extends AbstractGenerator {
     body.append(method.name());
     body.append("(");
 
-    Action addCommaToSignatureAction = ActionFunctions.buildAppendSeparatorAction(signature, ", ");
-    Action addCommaToBodyAction = ActionFunctions.buildAppendSeparatorAction(body, ", ");
+    Executor signatureCommaAppender = Actions.buildCommaAppender(signature);
+    Executor bodyCommaAppender = Actions.buildCommaAppender(body);
     for (MethodParam param : method.params()) {
-      addCommaToSignatureAction.execute();
-      addCommaToBodyAction.execute();
+      signatureCommaAppender.execute();
+      bodyCommaAppender.execute();
 
       context.addImports(param.type().dependencyTypenames());
       signature.append(param.type().actualDeclaration());

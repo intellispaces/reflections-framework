@@ -5,9 +5,13 @@ import tech.intellispaces.framework.commons.type.TypeFunctions;
 import tech.intellispaces.framework.core.annotation.Domain;
 import tech.intellispaces.framework.javastatements.JavaStatements;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
+import tech.intellispaces.framework.javastatements.statement.reference.CustomTypeReference;
 import tech.intellispaces.framework.javastatements.statement.reference.TypeReference;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
+import java.util.function.Consumer;
 
 /**
  * Domain functions.
@@ -20,6 +24,10 @@ public final class DomainFunctions {
 
   public static boolean isDomainType(TypeReference type) {
     return type.isCustomTypeReference() && type.asCustomTypeReferenceSurely().targetType().hasAnnotation(Domain.class);
+  }
+
+  public static boolean isDomainType(CustomType type) {
+    return type.hasAnnotation(Domain.class);
   }
 
   public static CustomType getDomainType(TypeReference type) {
@@ -35,6 +43,28 @@ public final class DomainFunctions {
       return domainType;
     } else {
       throw UnexpectedViolationException.withMessage("Unexpected type reference: {}", type);
+    }
+  }
+
+  public static List<CustomType> getDomainTypeAndParents(CustomType domainType) {
+    List<CustomType> result = new ArrayList<>();
+    result.add(domainType);
+    getParentDomains(domainType, result::add);
+    return result;
+  }
+
+  public static List<CustomType> getParentDomains(CustomType domainType) {
+    List<CustomType> parents = new ArrayList<>();
+    getParentDomains(domainType, parents::add);
+    return parents;
+  }
+
+  private static void getParentDomains(CustomType domainType, Consumer<CustomType> consumer) {
+    for (CustomTypeReference parent : domainType.parentTypes()) {
+      if (DomainFunctions.isDomainType(domainType)) {
+        consumer.accept(parent.targetType());
+        getParentDomains(parent.targetType(), consumer);
+      }
     }
   }
 

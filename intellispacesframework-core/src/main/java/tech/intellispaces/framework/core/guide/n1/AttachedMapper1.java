@@ -19,14 +19,16 @@ public class AttachedMapper1<S, T, Q> implements BasicMapper1<S, T, Q> {
   private final Class<S> objectHandleClass;
   private final String tid;
   private final Method mapperMethod;
+  private final Method actualMapperMethod;
 
-  public AttachedMapper1(String tid, Class<S> objectHandleClass, Method mapperMethod) {
+  public AttachedMapper1(String tid, Class<S> objectHandleClass, Method mapperMethod, Method actualMapperMethod) {
     if (mapperMethod.getParameterCount() != 1) {
       throw UnexpectedViolationException.withMessage("Guide should have 1 parameter");
     }
     this.tid = tid;
     this.objectHandleClass = objectHandleClass;
     this.mapperMethod = mapperMethod;
+    this.actualMapperMethod = actualMapperMethod;
   }
 
   @Override
@@ -39,10 +41,18 @@ public class AttachedMapper1<S, T, Q> implements BasicMapper1<S, T, Q> {
   public T map(S source, Q qualifier) throws TraverseException {
     try {
       GuideLogger.logCallGuide(mapperMethod);
-      return (T) mapperMethod.invoke(source, qualifier);
-    } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+      return (T) actualMapperMethod.invoke(source, qualifier);
+    } catch (InvocationTargetException e) {
+      Throwable t = e.getTargetException();
+      if (t instanceof TraverseException) {
+        throw (TraverseException) t;
+      } else {
+        throw TraverseException.withCauseAndMessage(e, "Failed to invoke attached mapper method {} of object handle {}",
+            actualMapperMethod.getName(), objectHandleClass.getCanonicalName());
+      }
+    } catch (IllegalAccessException | IllegalArgumentException e) {
       throw TraverseException.withCauseAndMessage(e, "Failed to invoke attached mapper method {} of object handle {}",
-          mapperMethod.getName(), objectHandleClass.getCanonicalName());
+          actualMapperMethod.getName(), objectHandleClass.getCanonicalName());
     }
   }
 }

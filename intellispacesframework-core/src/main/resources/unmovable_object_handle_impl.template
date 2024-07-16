@@ -9,10 +9,23 @@ import {{$importedClass}};
  */
 {{$generatedAnnotation}}
 public class {{$classSimpleName}}{{$typeParamsFull}} extends {{$sourceClassSimpleName}}{{$typeParamsBrief}} {
+{{for guideGetter : $guideGetters}}
+  {{$guideGetter}}
+{{end}}
 
 {{for constructor : $constructors}}
   public {{$classSimpleName}}({{for param : $constructor.get("params")}}{{$param.get("type")}} {{$param.get("name")}}{{when $param.isNotLast()}}, {{end}}{{end}}) {
     super({{for param : $constructor.get("params")}}{{$param.get("name")}}{{when $param.isNotLast()}},{{end}}{{end}});
   }
+{{end}}
+
+{{for method : $methods}}
+  @Override
+  {{$method}}
+
+{{end}}
+{{for method : $guideImplementationMethods}}
+  {{$method}}
+
 {{end}}
 }

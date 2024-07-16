@@ -8,7 +8,7 @@ import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CommonObjectHandleGenerator extends AbstractObjectHandleGenerator {
+public class CommonObjectHandleGenerator extends AbstractDomainObjectHandleGenerator {
 
   public CommonObjectHandleGenerator(CustomType domainType) {
     super(domainType);

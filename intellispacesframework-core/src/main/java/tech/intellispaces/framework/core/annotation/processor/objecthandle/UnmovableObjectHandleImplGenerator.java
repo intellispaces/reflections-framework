@@ -1,12 +1,16 @@
 package tech.intellispaces.framework.core.annotation.processor.objecthandle;
 
 import tech.intellispaces.framework.core.exception.TraverseException;
-import tech.intellispaces.framework.core.guide.n1.Mover1;
+import tech.intellispaces.framework.core.guide.n0.Mapper0;
+import tech.intellispaces.framework.core.guide.n1.Mapper1;
+import tech.intellispaces.framework.core.object.ObjectHandleTypes;
 import tech.intellispaces.framework.core.space.transition.TransitionFunctions;
 import tech.intellispaces.framework.core.system.Modules;
+import tech.intellispaces.framework.core.transition.TransitionMethod0;
 import tech.intellispaces.framework.core.transition.TransitionMethod1;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class UnmovableObjectHandleImplGenerator extends AbstractObjectHandleImplGenerator {
@@ -21,33 +25,45 @@ public class UnmovableObjectHandleImplGenerator extends AbstractObjectHandleImpl
   }
 
   protected Map<String, Object> templateVariables() {
-    return Map.of(
-        "generatedAnnotation", generatedAnnotation(),
-        "packageName", context.packageName(),
-        "sourceClassName", sourceClassCanonicalName(),
-        "sourceClassSimpleName", sourceClassSimpleName(),
-        "classSimpleName", context.generatedClassSimpleName(),
-        "typeParamsFull", typeParamsFull,
-        "typeParamsBrief", typeParamsBrief,
-        "constructors", constructors,
-        "importedClasses", context.getImports()
-    );
+    Map<String, Object> vars = new HashMap<>();
+    vars.put("generatedAnnotation", generatedAnnotation());
+    vars.put("packageName", context.packageName());
+    vars.put("sourceClassName", sourceClassCanonicalName());
+    vars.put("sourceClassSimpleName", sourceClassSimpleName());
+    vars.put("classSimpleName", context.generatedClassSimpleName());
+    vars.put("typeParamsFull", typeParamsFull);
+    vars.put("typeParamsBrief", typeParamsBrief);
+    vars.put("constructors", constructors);
+    vars.put("importedClasses", context.getImports());
+    vars.put("guideGetters", guideGetters);
+    vars.put("guideImplementationMethods", guideImplementationMethods);
+    vars.put("methods", methods);
+    return vars;
+  }
+
+  @Override
+  protected ObjectHandleTypes getObjectHandleType() {
+    return ObjectHandleTypes.Unmovable;
   }
 
   @Override
   protected boolean analyzeAnnotatedType() {
     context.generatedClassCanonicalName(getGeneratedClassCanonicalName());
 
-    analyzeTypeParams(annotatedType);
-    analyzeConstructors(annotatedType);
-
     context.addImport(Modules.class);
     context.addImport(TraverseException.class);
 
-    context.addImport(Mover1.class);
+    context.addImport(Mapper0.class);
+    context.addImport(Mapper1.class);
+    context.addImport(TransitionMethod0.class);
     context.addImport(TransitionMethod1.class);
     context.addImport(TransitionFunctions.class);
 
+    analyzeTypeParams(annotatedType);
+    analyzeConstructors(annotatedType);
+    analyzeGuideGetters(annotatedType);
+    analyzeGuideImplementationMethods(annotatedType);
+    analyzeObjectHandleMethods(annotatedType);
     return true;
   }
 }

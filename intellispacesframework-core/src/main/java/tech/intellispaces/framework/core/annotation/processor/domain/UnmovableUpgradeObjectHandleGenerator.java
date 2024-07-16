@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class UnmovableUpgradeObjectHandleGenerator extends AbstractObjectHandleGenerator {
+public class UnmovableUpgradeObjectHandleGenerator extends AbstractDomainObjectHandleGenerator {
   private final CustomTypeReference baseDomainType;
   private String classTypeParams;
   private String unmovableObjectHandleName;
@@ -82,17 +82,17 @@ public class UnmovableUpgradeObjectHandleGenerator extends AbstractObjectHandleG
   private String buildConvertMethod(MethodStatement method) {
     var sb = new StringBuilder();
     sb.append("public ");
-    addMethodTypeParameters(sb, method);
-    addMethodReturnType(sb, method);
+    appendMethodTypeParameters(sb, method);
+    appendMethodReturnType(sb, method);
     sb.append(" ");
     sb.append(method.name());
     sb.append("(");
-    addMethodParameters(sb, method);
+    appendMethodParameters(sb, method);
     sb.append(")");
-    addMethodExceptions(sb, method);
+    appendMethodExceptions(sb, method);
     sb.append(" {\n");
     sb.append("  return (");
-    addMethodReturnType(sb, method);
+    appendMethodReturnType(sb, method);
     sb.append(")  this.").append(baseField).append(";\n");
     sb.append("}\n");
     return sb.toString();
@@ -101,17 +101,17 @@ public class UnmovableUpgradeObjectHandleGenerator extends AbstractObjectHandleG
   private String buildNormalMethod(MethodStatement method) {
     var sb = new StringBuilder();
     sb.append("public ");
-    addMethodTypeParameters(sb, method);
-    addMethodReturnType(sb, method);
+    appendMethodTypeParameters(sb, method);
+    appendMethodReturnType(sb, method);
     sb.append(" ");
     sb.append(method.name());
     sb.append("(");
-    addMethodParameters(sb, method);
+    appendMethodParameters(sb, method);
     sb.append(")");
-    addMethodExceptions(sb, method);
+    appendMethodExceptions(sb, method);
     sb.append(" {\n");
     sb.append("  return (");
-    addMethodReturnType(sb, method);
+    appendMethodReturnType(sb, method);
     sb.append(") this.").append(baseField).append(".");
     sb.append(method.name());
     sb.append("(");

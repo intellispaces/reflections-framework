@@ -9,7 +9,7 @@ import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
 import java.util.HashMap;
 import java.util.Map;
 
-public class UnmovableObjectHandleGenerator extends AbstractObjectHandleGenerator {
+public class UnmovableObjectHandleGenerator extends AbstractDomainObjectHandleGenerator {
   private String commonHandleSimpleName;
 
   public UnmovableObjectHandleGenerator(CustomType domainType) {

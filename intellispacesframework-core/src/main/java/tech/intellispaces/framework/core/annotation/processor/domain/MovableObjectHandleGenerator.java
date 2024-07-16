@@ -8,7 +8,7 @@ import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MovableObjectHandleGenerator extends AbstractObjectHandleGenerator {
+public class MovableObjectHandleGenerator extends AbstractDomainObjectHandleGenerator {
   private String commonHandleSimpleName;
 
   public MovableObjectHandleGenerator(CustomType domainType) {

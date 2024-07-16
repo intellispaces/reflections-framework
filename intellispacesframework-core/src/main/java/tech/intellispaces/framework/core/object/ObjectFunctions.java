@@ -140,7 +140,8 @@ public class ObjectFunctions {
   public static Class<?> getDomainClassOfObjectHandle(Class<?> objectHandleClass) {
     Class<?> domainClass = getDomainClassRecursive(objectHandleClass, new HashSet<>());
     if (domainClass == null) {
-      throw UnexpectedViolationException.withMessage("Could not get domain type of object handle {}", objectHandleClass.getCanonicalName());
+      throw UnexpectedViolationException.withMessage("Could not get domain type of object handle {}",
+          objectHandleClass.getCanonicalName());
     }
     return domainClass;
   }

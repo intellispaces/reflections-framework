@@ -1,13 +1,16 @@
 package tech.intellispaces.framework.core.annotation.processor.domain;
 
-import tech.intellispaces.framework.commons.action.Action;
+import tech.intellispaces.framework.commons.action.Executor;
 import tech.intellispaces.framework.commons.string.StringFunctions;
 import tech.intellispaces.framework.core.annotation.processor.AbstractTransitionGenerator;
-import tech.intellispaces.framework.core.common.ActionFunctions;
+import tech.intellispaces.framework.core.common.Actions;
 import tech.intellispaces.framework.core.common.NameFunctions;
+import tech.intellispaces.framework.javastatements.statement.Statement;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
+import tech.intellispaces.framework.javastatements.statement.method.MethodParam;
 import tech.intellispaces.framework.javastatements.statement.method.MethodStatement;
 import tech.intellispaces.framework.javastatements.statement.reference.NamedTypeReference;
+import tech.intellispaces.framework.javastatements.statement.reference.TypeReference;
 
 import java.util.List;
 
@@ -23,8 +26,42 @@ public class DomainTransitionGenerator extends AbstractTransitionGenerator {
   }
 
   @Override
+  protected String getTransitionClassTypeParams() {
+    if (annotatedType.typeParameters().isEmpty() && transitionMethod.typeParameters().isEmpty()) {
+      return "";
+    } else if (!annotatedType.typeParameters().isEmpty() && transitionMethod.typeParameters().isEmpty()) {
+      return annotatedType.typeParametersFullDeclaration();
+    } else if (annotatedType.typeParameters().isEmpty() && !transitionMethod.typeParameters().isEmpty()) {
+      return getTransitionMethodTypeParametersDeclaration();
+    } else {
+      String domainTypeParams = annotatedType.typeParametersFullDeclaration();
+      String transitionTypeParams = getTransitionMethodTypeParametersDeclaration();
+      return domainTypeParams.substring(0, domainTypeParams.length() - 1) +
+          ", " +
+          transitionTypeParams.substring(1);
+    }
+  }
+
+  private String getTransitionMethodTypeParametersDeclaration() {
+    var sb = new StringBuilder();
+    sb.append("<");
+
+    boolean first = true;
+    for (NamedTypeReference typeParam : transitionMethod.typeParameters()) {
+      if (!first) {
+        sb.append(", ");
+      }
+      sb.append(typeParam.actualDeclaration());
+      first = false;
+    }
+
+    sb.append(">");
+    return sb.toString();
+  }
+
+  @Override
   protected String getTransitionMethodSignature() {
-    return buildMethodSignature(transitionMethod, true, List.of(getSourceParamDeclaration()));
+    return buildMethodSignature(transitionMethod, false, List.of(getSourceParamDeclaration()));
   }
 
   private String getSourceParamDeclaration() {
@@ -32,14 +69,31 @@ public class DomainTransitionGenerator extends AbstractTransitionGenerator {
     sb.append(annotatedType.simpleName());
     if (!annotatedType.typeParameters().isEmpty()) {
       sb.append("<");
-      Action addCommaAction = ActionFunctions.buildAppendSeparatorAction(sb, ", ");
+      Executor commaAppender = Actions.buildCommaAppender(sb);
       for (NamedTypeReference typeParam : annotatedType.typeParameters()) {
-        addCommaAction.execute();
+        commaAppender.execute();
         sb.append(typeParam.formalBriefDeclaration());
       }
       sb.append(">");
     }
     sb.append(" ").append(StringFunctions.lowercaseFirstLetter(annotatedType.simpleName()));
     return sb.toString();
+  }
+
+  @Override
+  protected Statement getSourceType() {
+    return annotatedType;
+  }
+
+  @Override
+  protected TypeReference getTargetType() {
+    return transitionMethod.returnType().orElseThrow();
+  }
+
+  @Override
+  protected List<TypeReference> getQualifierTypes() {
+    return transitionMethod.params().stream()
+        .map(MethodParam::type)
+        .toList();
   }
 }

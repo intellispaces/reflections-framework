@@ -9,8 +9,10 @@ import tech.intellispaces.framework.core.traverse.CallGuide0Plan;
 import tech.intellispaces.framework.core.traverse.CallGuide1Plan;
 import tech.intellispaces.framework.core.traverse.MapObjectHandleThruTransition0Plan;
 import tech.intellispaces.framework.core.traverse.MapObjectHandleThruTransition1Plan;
+import tech.intellispaces.framework.core.traverse.MapObjectHandleThruTransition2Plan;
 import tech.intellispaces.framework.core.traverse.MoveObjectHandleThruTransition0Plan;
 import tech.intellispaces.framework.core.traverse.MoveObjectHandleThruTransition1Plan;
+import tech.intellispaces.framework.core.traverse.MoveObjectHandleThruTransition2Plan;
 import tech.intellispaces.framework.core.traverse.TraverseAnalyzer;
 import tech.intellispaces.framework.core.traverse.TraverseExecutor;
 
@@ -60,6 +62,13 @@ public class TraverseExecutorImpl implements TraverseExecutor {
   }
 
   @Override
+  public Object execute(
+      MapObjectHandleThruTransition2Plan plan, Object source, Object qualifier1, Object qualifier2
+  ) throws TraverseException {
+    throw new RuntimeException("Not implemented");
+  }
+
+  @Override
   public Object execute(MoveObjectHandleThruTransition0Plan plan, Object source) throws TraverseException {
     Class<?> objectHandleClass = ObjectFunctions.seekObjectHandleClass(source.getClass());
     ActualPlan actualPlan = traverseAnalyzer.getActualTraversePlan(plan, objectHandleClass);
@@ -81,5 +90,12 @@ public class TraverseExecutorImpl implements TraverseExecutor {
           "transition {}. Suitable guide has not been found", objectHandleClass.getCanonicalName(), plan.tid());
     }
     return actualPlan.execute(source, qualifier, this);
+  }
+
+  @Override
+  public Object execute(
+      MoveObjectHandleThruTransition2Plan plan, Object source, Object qualifier1, Object qualifier2
+  ) throws TraverseException {
+    throw new RuntimeException("Not implemented");
   }
 }

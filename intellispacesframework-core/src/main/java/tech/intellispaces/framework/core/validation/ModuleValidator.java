@@ -118,11 +118,11 @@ public class ModuleValidator implements AnnotatedTypeValidator {
     Optional<TypeReference> returnType = method.returnType();
     if (returnType.isEmpty()) {
       throw IntelliSpacesException.withMessage("Method of the projection '{}' in unit {} should return value",
-          method.name(), method.holder().canonicalName());
+          method.name(), method.owner().canonicalName());
     }
     if (!ObjectFunctions.isObjectHandleType(returnType.get())) {
       throw IntelliSpacesException.withMessage("Method of the projection '{}' in unit {} should return object handle class",
-          method.name(), method.holder().canonicalName());
+          method.name(), method.owner().canonicalName());
     }
     if (method.isAbstract()) {
       checkAbstractProjectionProviderAnnotation(method);
@@ -135,15 +135,15 @@ public class ModuleValidator implements AnnotatedTypeValidator {
     Optional<TypeReference> returnType = method.returnType();
     if (returnType.isEmpty()) {
       throw IntelliSpacesException.withMessage("Abstract method '{}' in unit {} should return value",
-          method.name(), method.holder().canonicalName());
+          method.name(), method.owner().canonicalName());
     }
     if (!ObjectFunctions.isObjectHandleType(returnType.get())) {
       throw IntelliSpacesException.withMessage("Injection '{}' in unit {} should return object handle class",
-          method.name(), method.holder().canonicalName());
+          method.name(), method.owner().canonicalName());
     }
     if (!method.params().isEmpty()) {
       throw IntelliSpacesException.withMessage("Abstract method '{}' in unit {} should have no parameters",
-          method.name(), method.holder().canonicalName());
+          method.name(), method.owner().canonicalName());
     }
   }
 
@@ -153,11 +153,11 @@ public class ModuleValidator implements AnnotatedTypeValidator {
         .toList();
     if (projectionDefinitionAnnotations.isEmpty()) {
       throw IntelliSpacesException.withMessage("Abstract projection method '{}' in unit {} should have a Projection " +
-              "Definition annotation", method.name(), method.holder().canonicalName());
+              "Definition annotation", method.name(), method.owner().canonicalName());
     }
     if (projectionDefinitionAnnotations.size() > 1) {
       throw IntelliSpacesException.withMessage("Abstract projection method '{}' in unit {} should have single Projection " +
-          "Definition annotation", method.name(), method.holder().canonicalName());
+          "Definition annotation", method.name(), method.owner().canonicalName());
     }
   }
 
@@ -166,7 +166,7 @@ public class ModuleValidator implements AnnotatedTypeValidator {
       TypeReference paramType = param.type();
       if (!ObjectFunctions.isObjectHandleType(paramType)) {
         throw IntelliSpacesException.withMessage("Parameter '{}' of method '{}' in unit {} should be object handle " +
-                "class", param.name(), method.name(), method.holder().canonicalName());
+                "class", param.name(), method.name(), method.owner().canonicalName());
       }
     }
   }

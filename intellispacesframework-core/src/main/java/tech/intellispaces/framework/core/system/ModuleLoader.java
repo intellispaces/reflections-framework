@@ -9,13 +9,13 @@ public class ModuleLoader {
 
   private static final Logger LOG = LoggerFactory.getLogger(ModuleLoader.class);
 
-  public static ModuleDefault loadDefaultModule(Class<?> moduleClass) {
+  public static ModuleDefault loadDefaultModule(Class<?>... classes) {
     ModuleDefault activeModule = Modules.activeModuleSilently();
     if (activeModule != null) {
       LOG.warn("Active module has already been loaded into application. Current active module will be reloaded");
     }
 
-    ModuleDefault newModule = factory.createModule(moduleClass);
+    ModuleDefault newModule = factory.createModule(classes);
     moduleValidator.validate(newModule);
     if (activeModule != null) {
       activeModule.stop();

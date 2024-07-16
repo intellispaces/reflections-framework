@@ -1,11 +1,11 @@
 package tech.intellispaces.framework.core.annotation.processor;
 
-import tech.intellispaces.framework.commons.action.Action;
+import tech.intellispaces.framework.commons.action.Executor;
 import tech.intellispaces.framework.commons.exception.UnexpectedViolationException;
 import tech.intellispaces.framework.commons.string.StringFunctions;
 import tech.intellispaces.framework.commons.type.TypeFunctions;
 import tech.intellispaces.framework.core.annotation.Transition;
-import tech.intellispaces.framework.core.common.ActionFunctions;
+import tech.intellispaces.framework.core.common.Actions;
 import tech.intellispaces.framework.core.common.NameFunctions;
 import tech.intellispaces.framework.core.guide.GuideFunctions;
 import tech.intellispaces.framework.core.guide.GuideKind;
@@ -68,7 +68,7 @@ public abstract class AbstractGuideGenerator extends AbstractGenerator {
     vars.put("classSimpleName", context.generatedClassSimpleName());
     vars.put("transitionClassSimpleName", transitionClassSimpleName());
     vars.put("guideClassSimpleName", guideClassSimpleName);
-    vars.put("guideTypeParams", makeGuideTypeParams());
+    vars.put("guideTypeParams", buildGuideTypeParams());
     vars.put("guideMethod", guideMethod);
     vars.put("baseMethod", baseMethod);
     vars.put("importedClasses", context.getImports());
@@ -91,8 +91,8 @@ public abstract class AbstractGuideGenerator extends AbstractGenerator {
     Class<?> guideClass = getGuideClass();
     String abstractGuideCanonicalName = TypeFunctions.addPrefixToClassName("Basic", guideClass.getCanonicalName());
     guideClassSimpleName = context.addToImportAndGetSimpleName(abstractGuideCanonicalName);
-    guideMethod = makeGuideMethod();
-    baseMethod = makeBaseMethod(guideClass);
+    guideMethod = buildGuideMethod();
+    baseMethod = buildBaseMethod(guideClass);
   }
 
   private Class<?> getGuideClass() {
@@ -106,7 +106,8 @@ public abstract class AbstractGuideGenerator extends AbstractGenerator {
         case 3 -> Mapper3.class;
         case 4 -> Mapper4.class;
         case 5 -> Mapper5.class;
-        default -> throw UnexpectedViolationException.withMessage("Unsupported number of mapper guide qualifies: " + qualifierCount);
+        default -> throw UnexpectedViolationException.withMessage("Unsupported number of mapper guide qualifies: {}",
+            qualifierCount);
       };
     } else {
       return switch (qualifierCount) {
@@ -116,12 +117,13 @@ public abstract class AbstractGuideGenerator extends AbstractGenerator {
         case 3 -> Mover3.class;
         case 4 -> Mover4.class;
         case 5 -> Mover5.class;
-        default -> throw UnexpectedViolationException.withMessage("Unsupported number of mapper guide qualifies: " + qualifierCount);
+        default -> throw UnexpectedViolationException.withMessage("Unsupported number of mapper guide qualifies: {}",
+            qualifierCount);
       };
     }
   }
 
-  private String makeGuideTypeParams() {
+  private String buildGuideTypeParams() {
     var sb = new StringBuilder();
     sb.append("<");
     sb.append(getSourceObjectHandleRawSimpleName());
@@ -135,7 +137,7 @@ public abstract class AbstractGuideGenerator extends AbstractGenerator {
     return sb.toString();
   }
 
-  private String makeGuideMethod() {
+  private String buildGuideMethod() {
     var sb = new StringBuilder();
     String typeParams = getGuideMethodTypeParams();
     if (!typeParams.isEmpty()) {
@@ -162,7 +164,7 @@ public abstract class AbstractGuideGenerator extends AbstractGenerator {
     return sb.toString();
   }
 
-  private String makeBaseMethod(Class<?> guideClass) {
+  private String buildBaseMethod(Class<?> guideClass) {
     GuideKind guideKind = GuideFunctions.getGuideKind(guideClass);
     String sourceParamName = StringFunctions.lowercaseFirstLetter(getDomainType().simpleName());
 
@@ -238,9 +240,9 @@ public abstract class AbstractGuideGenerator extends AbstractGenerator {
         var sb = new StringBuilder();
         sb.append(simpleName);
         sb.append("<");
-        Action appender = ActionFunctions.buildAppendSeparatorAction(sb, ", ");
+        Executor commaAppender = Actions.buildCommaAppender(sb);
         for (NonPrimitiveTypeReference typeArg : type.asCustomTypeReferenceSurely().typeArguments()) {
-          appender.execute();
+          commaAppender.execute();
           sb.append(getRawType(typeArg));
         }
         sb.append(">");
@@ -262,9 +264,9 @@ public abstract class AbstractGuideGenerator extends AbstractGenerator {
         var sb = new StringBuilder();
         sb.append(simpleName);
         sb.append("<");
-        Action appender = ActionFunctions.buildAppendSeparatorAction(sb, ", ");
+        Executor commaAppender = Actions.buildCommaAppender(sb);
         for (NonPrimitiveTypeReference typeArg : type.asCustomTypeReferenceSurely().typeArguments()) {
-          appender.execute();
+          commaAppender.execute();
           sb.append(typeArg.actualDeclaration());
         }
         sb.append(">");
@@ -288,9 +290,9 @@ public abstract class AbstractGuideGenerator extends AbstractGenerator {
       var sb = new StringBuilder();
       sb.append(simpleName);
       sb.append("<");
-      Action appender = ActionFunctions.buildAppendSeparatorAction(sb, ", ");
+      Executor commaAppender = Actions.buildCommaAppender(sb);
       for (NonPrimitiveTypeReference typeArg : type.asCustomTypeReferenceSurely().typeArguments()) {
-        appender.execute();
+        commaAppender.execute();
         sb.append(getRawType(typeArg));
       }
       sb.append(">");
@@ -307,9 +309,9 @@ public abstract class AbstractGuideGenerator extends AbstractGenerator {
       var sb = new StringBuilder();
       sb.append(simpleName);
       sb.append("<");
-      Action appender = ActionFunctions.buildAppendSeparatorAction(sb, ", ");
+      Executor commaAppender = Actions.buildCommaAppender(sb);
       for (NonPrimitiveTypeReference typeParam : type.typeParameters()) {
-        appender.execute();
+        commaAppender.execute();
         sb.append(getObjectHandleRawSimpleName(typeParam, true));
       }
       sb.append(">");
@@ -348,14 +350,14 @@ public abstract class AbstractGuideGenerator extends AbstractGenerator {
       return "";
     }
     var sb = new StringBuilder();
-    Action addCommaAction = ActionFunctions.buildAppendSeparatorAction(sb, ", ");
+    Executor commaAppender = Actions.buildCommaAppender(sb);
     sb.append("<");
     for (NamedTypeReference typeParam : getDomainType().typeParameters()) {
-      addCommaAction.execute();
+      commaAppender.execute();
       sb.append(typeParam.formalFullDeclaration());
     }
     for (NamedTypeReference typeParam : transitionMethod.typeParameters()) {
-      addCommaAction.execute();
+      commaAppender.execute();
       sb.append(typeParam.formalFullDeclaration());
     }
     sb.append(">");

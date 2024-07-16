@@ -1,6 +1,7 @@
 package tech.intellispaces.framework.core.system;
 
 import tech.intellispaces.framework.commons.exception.UnexpectedViolationException;
+import tech.intellispaces.framework.core.annotation.Configuration;
 import tech.intellispaces.framework.core.annotation.Module;
 import tech.intellispaces.framework.core.annotation.Projection;
 import tech.intellispaces.framework.core.annotation.Shutdown;
@@ -8,6 +9,8 @@ import tech.intellispaces.framework.core.annotation.Startup;
 import tech.intellispaces.framework.core.common.NameFunctions;
 import tech.intellispaces.framework.core.guide.Guide;
 import tech.intellispaces.framework.core.guide.GuideFunctions;
+import tech.intellispaces.framework.core.system.empty.EmptyModule;
+import tech.intellispaces.framework.core.system.empty.EmptyModuleWrapper;
 import tech.intellispaces.framework.core.traverse.TraverseAnalyzer;
 import tech.intellispaces.framework.core.traverse.TraverseExecutor;
 
@@ -22,8 +25,8 @@ import java.util.Optional;
  */
 class ModuleDefaultFactory {
 
-  public ModuleDefault createModule(Class<?> moduleClass) {
-    List<Unit> units = createUnits(moduleClass);
+  public ModuleDefault createModule(Class<?>... classes) {
+    List<Unit> units = createUnits(classes);
     ProjectionRegistry projectionRegistry = createProjectionRegistry(units);
     AttachedGuideRegistry attachedGuideRegistry = new AttachedGuideRegistryImpl();
     ModuleGuideRegistry moduleGuideRegistry = createModuleGuideRegistry(units);;
@@ -32,11 +35,46 @@ class ModuleDefaultFactory {
     return new ModuleDefaultImpl(units, projectionRegistry, traverseAnalyzer, traverseExecutor);
   }
 
-  private List<Unit> createUnits(Class<?> moduleClass) {
-    List<Unit> units = new ArrayList<>();
-    units.add(createUnit(moduleClass, true));
-    createIncludedUnits(moduleClass, units);
-    return units;
+  private List<Unit> createUnits(Class<?>... classes) {
+    if (classes == null || classes.length == 0) {
+      return List.of(createEmptyMainUnit());
+    } else if (classes.length == 1) {
+      Class<?> aclass = classes[0];
+      if (aclass.isAnnotationPresent(Module.class)) {
+        List<Unit> units = new ArrayList<>();
+        units.add(createUnit(aclass, true));
+        createIncludedUnits(aclass, units);
+        return units;
+      } else if (aclass.isAnnotationPresent(Configuration.class) ||
+          aclass.isAnnotationPresent(tech.intellispaces.framework.core.annotation.Guide.class)
+      ) {
+        Unit mainUnit = createEmptyMainUnit();
+        Unit includedUnit = createIncludedUnit(aclass);
+        return List.of(mainUnit, includedUnit);
+      } else {
+        throw UnexpectedViolationException.withMessage("Expected module, configuration or guide class");
+      }
+    } else {
+      List<Unit> units = new ArrayList<>();
+      units.add(createEmptyMainUnit());
+      Arrays.stream(classes)
+          .map(this::createIncludedUnit)
+          .forEach(units::add);
+      return units;
+    }
+  }
+
+  private Unit createEmptyMainUnit() {
+    UnitWrapper unitInstance = createUnitInstance(EmptyModule.class, EmptyModuleWrapper.class);
+    return new UnitImpl(
+        true,
+        EmptyModule.class,
+        unitInstance,
+        List.of(),
+        List.of(),
+        null,
+        null
+    );
   }
 
   private void createIncludedUnits(Class<?> moduleClass, List<Unit> units) {

@@ -2,8 +2,9 @@ package tech.intellispaces.framework.core.annotation.processor;
 
 import tech.intellispaces.framework.annotationprocessor.artifact.JavaArtifactContext;
 import tech.intellispaces.framework.annotationprocessor.generator.TemplateBasedJavaArtifactGenerator;
-import tech.intellispaces.framework.commons.action.Action;
+import tech.intellispaces.framework.commons.action.Executor;
 import tech.intellispaces.framework.commons.type.TypeFunctions;
+import tech.intellispaces.framework.core.common.Actions;
 import tech.intellispaces.framework.core.common.NameFunctions;
 import tech.intellispaces.framework.core.object.ObjectHandleTypes;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
@@ -21,7 +22,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static java.time.format.DateTimeFormatter.ISO_OFFSET_DATE_TIME;
-import static tech.intellispaces.framework.core.common.ActionFunctions.buildAppendSeparatorAction;
 
 public abstract class AbstractGenerator extends TemplateBasedJavaArtifactGenerator {
   protected String generatedAnnotation;
@@ -65,32 +65,38 @@ public abstract class AbstractGenerator extends TemplateBasedJavaArtifactGenerat
   }
 
   protected String buildMethodSignature(MethodStatement method) {
-    return buildMethodSignature(method, method.name(), false, List.of());
+    return buildMethodSignature(method, method.name(), true, false, List.of());
   }
 
   protected String buildMethodSignature(MethodStatement method, String methodName) {
-    return buildMethodSignature(method, methodName, false, List.of());
+    return buildMethodSignature(method, methodName, true, false, List.of());
   }
 
   protected String buildMethodSignature(
       MethodStatement method, boolean includeHolderTypeParams, List<String> additionalParams
   ) {
-    return buildMethodSignature(method, method.name(), includeHolderTypeParams, additionalParams);
+    return buildMethodSignature(method, method.name(), true, includeHolderTypeParams, additionalParams);
   }
 
   protected String buildMethodSignature(
-      MethodStatement method, String methodName, boolean includeHolderTypeParams, List<String> additionalParams
+      MethodStatement method,
+      String methodName,
+      boolean includeMethodTypeParams,
+      boolean includeHolderTypeParams,
+      List<String> additionalParams
   ) {
     var signature = new StringBuilder();
-    if (!method.typeParameters().isEmpty() || (includeHolderTypeParams && !method.holder().typeParameters().isEmpty())) {
-      Action addCommaAction = buildAppendSeparatorAction(signature, ", ");
+    if ((includeMethodTypeParams && !method.typeParameters().isEmpty())
+        || (includeHolderTypeParams && !method.owner().typeParameters().isEmpty())
+    ) {
+      Executor commaAppender = Actions.buildCommaAppender(signature);
       signature.append("<");
-      addCommaAction.execute();
+      commaAppender.execute();
       for (NamedTypeReference typeParam : method.typeParameters()) {
         signature.append(typeParam.formalFullDeclaration());
       }
       if (includeHolderTypeParams) {
-        for (NamedTypeReference typeParam : method.holder().typeParameters()) {
+        for (NamedTypeReference typeParam : method.owner().typeParameters()) {
           signature.append(typeParam.formalFullDeclaration());
         }
       }
@@ -103,13 +109,13 @@ public abstract class AbstractGenerator extends TemplateBasedJavaArtifactGenerat
     signature.append(methodName);
     signature.append("(");
 
-    Action addCommaAction = buildAppendSeparatorAction(signature, ", ");
+    Executor commaAppender = Actions.buildCommaAppender(signature);
     for (String additionalParam : additionalParams) {
-      addCommaAction.execute();
+      commaAppender.execute();
       signature.append(additionalParam);
     }
     for (MethodParam param : method.params()) {
-      addCommaAction.execute();
+      commaAppender.execute();
       context.addImports(param.type().dependencyTypenames());
       signature.append(param.type().actualDeclaration(context::simpleNameOf));
       signature.append(" ");
@@ -141,9 +147,9 @@ public abstract class AbstractGenerator extends TemplateBasedJavaArtifactGenerat
         sb.append(Class.class.getSimpleName());
         if (!customTypeReference.typeArguments().isEmpty()) {
           sb.append("<");
-          Action addCommaAction = buildAppendSeparatorAction(sb, ", ");
+          Executor commaAppender = Actions.buildCommaAppender(sb);
           for (NonPrimitiveTypeReference argType : customTypeReference.typeArguments()) {
-            addCommaAction.execute();
+            commaAppender.execute();
             sb.append(argType.actualDeclaration());
           }
           sb.append(">");
@@ -159,9 +165,9 @@ public abstract class AbstractGenerator extends TemplateBasedJavaArtifactGenerat
         sb.append(simpleName);
         if (!customTypeReference.typeArguments().isEmpty()) {
           sb.append("<");
-          Action addCommaAction = buildAppendSeparatorAction(sb, ", ");
+          Executor commaAppender = Actions.buildCommaAppender(sb);
           for (NonPrimitiveTypeReference argType : customTypeReference.typeArguments()) {
-            addCommaAction.execute();
+            commaAppender.execute();
             sb.append(argType.actualDeclaration());
           }
           sb.append(">");

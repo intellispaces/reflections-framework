@@ -14,10 +14,14 @@ import tech.intellispaces.framework.core.traverse.MapObjectHandleThruTransition0
 import tech.intellispaces.framework.core.traverse.MapObjectHandleThruTransition0PlanImpl;
 import tech.intellispaces.framework.core.traverse.MapObjectHandleThruTransition1Plan;
 import tech.intellispaces.framework.core.traverse.MapObjectHandleThruTransition1PlanImpl;
+import tech.intellispaces.framework.core.traverse.MapObjectHandleThruTransition2Plan;
+import tech.intellispaces.framework.core.traverse.MapObjectHandleThruTransition2PlanImpl;
 import tech.intellispaces.framework.core.traverse.MoveObjectHandleThruTransition0Plan;
 import tech.intellispaces.framework.core.traverse.MoveObjectHandleThruTransition0PlanImpl;
 import tech.intellispaces.framework.core.traverse.MoveObjectHandleThruTransition1Plan;
 import tech.intellispaces.framework.core.traverse.MoveObjectHandleThruTransition1PlanImpl;
+import tech.intellispaces.framework.core.traverse.MoveObjectHandleThruTransition2Plan;
+import tech.intellispaces.framework.core.traverse.MoveObjectHandleThruTransition2PlanImpl;
 import tech.intellispaces.framework.core.traverse.ObjectHandleTraversePlan;
 import tech.intellispaces.framework.core.traverse.TraverseAnalyzer;
 import tech.intellispaces.framework.core.traverse.TraversePlanTypes;
@@ -55,6 +59,16 @@ public class TraverseAnalyzerImpl implements TraverseAnalyzer {
   }
 
   @Override
+  public MapObjectHandleThruTransition2Plan buildTraversePlanMapObjectHandleThruTransition2(
+      Class<?> objectHandleClass, String tid
+  ) {
+    MapObjectHandleThruTransition2Plan declarativePlan = new MapObjectHandleThruTransition2PlanImpl(
+        objectHandleClass, tid);
+    setActualPlan(declarativePlan, objectHandleClass);
+    return declarativePlan;
+  }
+
+  @Override
   public MoveObjectHandleThruTransition0Plan buildTraversePlanMoveObjectHandleThruTransition0(
       Class<?> objectHandleClass, String tid
   ) {
@@ -69,6 +83,16 @@ public class TraverseAnalyzerImpl implements TraverseAnalyzer {
       Class<?> objectHandleClass, String tid
   ) {
     MoveObjectHandleThruTransition1Plan declarativePlan = new MoveObjectHandleThruTransition1PlanImpl(
+        objectHandleClass, tid);
+    setActualPlan(declarativePlan, objectHandleClass);
+    return declarativePlan;
+  }
+
+  @Override
+  public MoveObjectHandleThruTransition2Plan buildTraversePlanMoveObjectHandleThruTransition2(
+      Class<?> objectHandleClass, String tid
+  ) {
+    MoveObjectHandleThruTransition2Plan declarativePlan = new MoveObjectHandleThruTransition2PlanImpl(
         objectHandleClass, tid);
     setActualPlan(declarativePlan, objectHandleClass);
     return declarativePlan;

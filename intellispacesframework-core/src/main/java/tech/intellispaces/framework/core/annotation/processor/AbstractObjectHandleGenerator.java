@@ -1,11 +1,9 @@
-package tech.intellispaces.framework.core.annotation.processor.domain;
+package tech.intellispaces.framework.core.annotation.processor;
 
-import tech.intellispaces.framework.commons.action.Action;
+import tech.intellispaces.framework.commons.action.Executor;
 import tech.intellispaces.framework.commons.type.TypeFunctions;
-import tech.intellispaces.framework.core.annotation.Domain;
 import tech.intellispaces.framework.core.annotation.Transition;
-import tech.intellispaces.framework.core.annotation.processor.AbstractGenerator;
-import tech.intellispaces.framework.core.common.ActionFunctions;
+import tech.intellispaces.framework.core.common.Actions;
 import tech.intellispaces.framework.core.common.NameFunctions;
 import tech.intellispaces.framework.core.exception.TraverseException;
 import tech.intellispaces.framework.core.object.ObjectHandleTypes;
@@ -14,7 +12,6 @@ import tech.intellispaces.framework.core.traverse.TraverseTypes;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
 import tech.intellispaces.framework.javastatements.statement.method.MethodParam;
 import tech.intellispaces.framework.javastatements.statement.method.MethodStatement;
-import tech.intellispaces.framework.javastatements.statement.reference.CustomTypeReference;
 import tech.intellispaces.framework.javastatements.statement.reference.NamedTypeReference;
 import tech.intellispaces.framework.javastatements.statement.reference.TypeReference;
 
@@ -22,20 +19,23 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-abstract class AbstractObjectHandleGenerator extends AbstractGenerator {
+public abstract class AbstractObjectHandleGenerator extends AbstractGenerator {
   protected String domainTypeParamsFull;
   protected String domainTypeParamsBrief;
   protected List<String> methods;
 
-  AbstractObjectHandleGenerator(CustomType domainType) {
-    super(domainType);
+  public AbstractObjectHandleGenerator(CustomType customType) {
+    super(customType);
   }
 
   abstract protected ObjectHandleTypes getObjectHandleType();
 
-  protected void analyzeObjectHandleMethods(CustomType domainType) {
-    this.methods = getDomainMethods(domainType)
+  abstract protected Stream<MethodStatement> getDomainMethods(CustomType customType);
+
+  protected void analyzeObjectHandleMethods(CustomType customType) {
+    this.methods = getDomainMethods(customType)
         .map(this::buildMethod)
+        .filter(m -> !m.isEmpty())
         .toList();
   }
 
@@ -44,30 +44,20 @@ abstract class AbstractObjectHandleGenerator extends AbstractGenerator {
         NameFunctions.getMovableObjectHandleTypename(annotatedType.className()));
   }
 
-  protected Stream<MethodStatement> getDomainMethods(CustomType domainType) {
-    return domainType.actualMethods().stream()
-        .filter(m -> m.holder().hasAnnotation(Domain.class))
-        .filter(m -> !m.isDefault());
-  }
-
   protected String buildMethod(MethodStatement method) {
     var sb = new StringBuilder();
-
-    Transition transition = TransitionFunctions.getDomainMainTransitionAnnotation(method);
-    boolean disableMoving = transition.type() != TraverseTypes.Mapping &&
-        ObjectHandleTypes.Unmovable == getObjectHandleType();
-
-    addMethodTypeParameters(sb, method);
+    appendMethodTypeParameters(sb, method);
+    boolean disableMoving = isDisableMoving(method);
     if (disableMoving) {
       sb.append("default ");
     }
-    addMethodReturnType(sb, method);
+    appendMethodReturnType(sb, method);
     sb.append(" ");
     sb.append(method.name());
     sb.append("(");
-    addMethodParameters(sb, method);
+    appendMethodParameters(sb, method);
     sb.append(")");
-    addMethodExceptions(sb, method);
+    appendMethodExceptions(sb, method);
 
     if (disableMoving) {
       context.addImport(TraverseException.class);
@@ -80,48 +70,39 @@ abstract class AbstractObjectHandleGenerator extends AbstractGenerator {
     return sb.toString();
   }
 
-  protected void addMethodReturnType(StringBuilder sb, MethodStatement method) {
-    if (method.returnType().isEmpty()) {
-      sb.append("void");
-    } else {
-      TypeReference domainReturnType = method.returnType().get();
-      String domainReturnTypeClassName = domainReturnType.asCustomTypeReference()
-          .map(CustomTypeReference::targetType)
-          .map(CustomType::className)
-          .orElse(null);
-      final ObjectHandleTypes objectHandleType;
-      if (domainReturnType.isCustomTypeReference() && !method.holder().className().equals(domainReturnTypeClassName)) {
-        objectHandleType = ObjectHandleTypes.Common;
-      } else {
-        objectHandleType = getObjectHandleType();
-      }
-      sb.append(getObjectHandleCanonicalName(domainReturnType, objectHandleType));
-    }
+  protected boolean isDisableMoving(MethodStatement method) {
+    Transition transition = TransitionFunctions.getDomainMainTransitionAnnotation(method);
+    return transition.type() == TraverseTypes.Moving && getObjectHandleType() == ObjectHandleTypes.Unmovable;
   }
 
-  protected void addMethodTypeParameters(StringBuilder sb, MethodStatement method) {
+  protected void appendMethodReturnType(StringBuilder sb, MethodStatement method) {
+    TypeReference domainReturnType = method.returnType().orElseThrow();
+    sb.append(getObjectHandleCanonicalName(domainReturnType, ObjectHandleTypes.Common));
+  }
+
+  protected void appendMethodTypeParameters(StringBuilder sb, MethodStatement method) {
     if (!method.typeParameters().isEmpty()) {
       sb.append("<");
-      Action addCommaAction = ActionFunctions.buildAppendSeparatorAction(sb, ", ");
+      Executor commaAppender = Actions.buildCommaAppender(sb);
       for (NamedTypeReference namedTypeReference : method.typeParameters()) {
-        addCommaAction.execute();
+        commaAppender.execute();
         sb.append(namedTypeReference.actualDeclaration());
       }
       sb.append("> ");
     }
   }
 
-  protected void addMethodParameters(StringBuilder sb, MethodStatement method) {
-    Action addCommaAction = ActionFunctions.buildAppendSeparatorAction(sb, ", ");
+  protected void appendMethodParameters(StringBuilder sb, MethodStatement method) {
+    Executor commaAppender = Actions.buildCommaAppender(sb);
     for (MethodParam param : method.params()) {
-      addCommaAction.execute();
+      commaAppender.execute();
       sb.append(param.type().actualDeclaration());
       sb.append(" ");
       sb.append(param.name());
     }
   }
 
-  protected void addMethodExceptions(StringBuilder sb, MethodStatement method) {
+  protected void appendMethodExceptions(StringBuilder sb, MethodStatement method) {
     String exceptions = method.exceptions().stream()
         .map(e -> e.asCustomTypeReference().orElseThrow().targetType())
         .peek(e -> context.addImport(e.canonicalName()))

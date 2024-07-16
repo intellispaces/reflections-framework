@@ -5,14 +5,14 @@ import tech.intellispaces.framework.core.exception.TraverseException;
 /**
  * Guide.<p/>
  *
- * Guide is a small system designed for processing objects. Guide can map or move objects.
+ * Guide is a micro system designed for processing objects. Guide can map or move objects.
  * Guides splits code into lightweight systems.<p/>
  *
  * Guide can act back on the initiator (other guide) by passing it a backward object.<p/>
  *
- * <p>The guide is object. Guide can be constructed from other guides.
+ * The guide is object. Guide can be constructed from other guides.<p/>
  *
- * @param <S> source object handle type.
+ * @param <S> source object handle type. This type defines guide applicability.
  * @param <B> backward object handle type.
  */
 public interface Guide<S, B> {
@@ -23,7 +23,9 @@ public interface Guide<S, B> {
   GuideKind kind();
 
   /**
-   * Related transition ID.
+   * Related transition ID.<p/>
+   *
+   * Related transition defined guide capability.
    */
   String tid();
 

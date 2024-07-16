@@ -6,10 +6,12 @@ import tech.intellispaces.framework.core.annotation.Mapper;
 import tech.intellispaces.framework.core.annotation.Mover;
 import tech.intellispaces.framework.core.annotation.Transition;
 import tech.intellispaces.framework.core.object.ObjectFunctions;
+import tech.intellispaces.framework.core.space.domain.DomainFunctions;
 import tech.intellispaces.framework.dynamicproxy.tracker.Tracker;
 import tech.intellispaces.framework.dynamicproxy.tracker.TrackerBuilder;
 import tech.intellispaces.framework.dynamicproxy.tracker.TrackerFunctions;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
+import tech.intellispaces.framework.javastatements.statement.method.MethodFunctions;
 import tech.intellispaces.framework.javastatements.statement.method.MethodStatement;
 
 import java.lang.reflect.Method;
@@ -146,13 +148,13 @@ public interface TransitionFunctions {
         .findAny();
     if (transition.isEmpty()) {
       throw UnexpectedViolationException.withMessage("Could not annotation @{} of method '{}' in domain {}",
-        Transition.class.getSimpleName(), domainMethod.name(), domainMethod.holder().canonicalName());
+        Transition.class.getSimpleName(), domainMethod.name(), domainMethod.owner().canonicalName());
     }
     return transition.get();
   }
 
   static Transition getObjectHandleMethodTransitionAnnotation(MethodStatement objectHandleMethod) {
-    CustomType objectHandleType = objectHandleMethod.holder();
+    CustomType objectHandleType = objectHandleMethod.owner();
     CustomType domainType = ObjectFunctions.getDomainTypeOfObjectHandle(objectHandleType);
     for (MethodStatement domainMethod : domainType.declaredMethods()) {
       if (domainMethod.name().equals(objectHandleMethod.name())) {
@@ -166,13 +168,29 @@ public interface TransitionFunctions {
   static Transition getObjectHandleMethodTransitionAnnotation(Method objectHandleMethod) {
     Class<?> objectHandleClass = objectHandleMethod.getDeclaringClass();
     Class<?> domainClass = ObjectFunctions.getDomainClassOfObjectHandle(objectHandleClass);
+    Transition transition = getObjectHandleMethodTransitionAnnotation(domainClass, objectHandleMethod);
+    if (transition == null) {
+      throw UnexpectedViolationException.withMessage("Failed to find related transition annotation of method '{}' in {}",
+          objectHandleMethod.getName(), objectHandleClass.getCanonicalName());
+    }
+    return transition;
+  }
+
+  private static Transition getObjectHandleMethodTransitionAnnotation(Class<?> domainClass, Method objectHandleMethod) {
     for (Method domainMethod : domainClass.getDeclaredMethods()) {
-      if (domainMethod.getName().equals(objectHandleMethod.getName())) {
+      if (MethodFunctions.isEquivalentMethods(domainMethod, objectHandleMethod)) {
         return domainMethod.getAnnotation(Transition.class);
       }
     }
-    throw UnexpectedViolationException.withMessage("Failed to find related transition annotation of method '{}' in {}",
-        objectHandleMethod.getName(), objectHandleClass.getCanonicalName());
+    for (Class<?> parent : domainClass.getInterfaces()) {
+      if (DomainFunctions.isDomainClass(parent)) {
+        Transition transition = getObjectHandleMethodTransitionAnnotation(parent, objectHandleMethod);
+        if (transition != null) {
+          return transition;
+        }
+      }
+    }
+    return null;
   }
 
   static Transition getAttachedGuideTransitionAnnotation(Method objectHandleMethod) {
@@ -194,5 +212,14 @@ public interface TransitionFunctions {
           transitionMethod, sourceDomain.getCanonicalName(), Transition.class.getCanonicalName());
     }
     return ta.value();
+  }
+
+  static Class<?> getTransitionClass(int qualifierCount) {
+    return switch (qualifierCount) {
+      case 0 -> Transition0.class;
+      case 1 -> Transition1.class;
+      case 2 -> Transition2.class;
+      default -> throw UnexpectedViolationException.withMessage("Not implemented");
+    };
   }
 }

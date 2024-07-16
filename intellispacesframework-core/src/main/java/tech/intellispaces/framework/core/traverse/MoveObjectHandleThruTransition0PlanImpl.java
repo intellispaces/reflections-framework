@@ -24,4 +24,11 @@ public class MoveObjectHandleThruTransition0PlanImpl extends AbstractObjectHandl
   public Object execute(Object source, Object qualifier, TraverseExecutor traverseExecutor) {
     throw UnexpectedViolationException.withMessage("Expected traverse with no qualifier");
   }
+
+  @Override
+  public Object execute(
+      Object source, Object qualifier1, Object qualifier2, TraverseExecutor executor
+  ) throws TraverseException {
+    throw UnexpectedViolationException.withMessage("Expected traverse with no qualifier");
+  }
 }

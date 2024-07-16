@@ -24,4 +24,11 @@ public class MapObjectHandleThruTransition1PlanImpl extends AbstractObjectHandle
   public Object execute(Object source, Object qualifier, TraverseExecutor traverseExecutor) throws TraverseException {
     return traverseExecutor.execute(this, source, qualifier);
   }
+
+  @Override
+  public Object execute(
+      Object source, Object qualifier1, Object qualifier2, TraverseExecutor executor
+  ) throws TraverseException {
+    throw UnexpectedViolationException.withMessage("Expected traverse with one qualifier");
+  }
 }

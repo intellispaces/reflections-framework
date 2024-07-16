@@ -12,7 +12,11 @@ public interface TraverseExecutor {
 
   Object execute(MapObjectHandleThruTransition1Plan plan, Object source, Object qualifier) throws TraverseException;
 
+  Object execute(MapObjectHandleThruTransition2Plan plan, Object source, Object qualifier1, Object qualifier2) throws TraverseException;
+
   Object execute(MoveObjectHandleThruTransition0Plan plan, Object source) throws TraverseException;
 
   Object execute(MoveObjectHandleThruTransition1Plan plan, Object source, Object qualifier) throws TraverseException;
+
+  Object execute(MoveObjectHandleThruTransition2Plan plan, Object source, Object qualifier1, Object qualifier2) throws TraverseException;
 }

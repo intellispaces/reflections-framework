@@ -7,9 +7,11 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface AutoGeneration {
+public @interface Preprocessing {
 
-  String target() default "";
+  Class<?>[] value() default {};
 
-  boolean enabled() default true;
+  boolean enable() default true;
+
+  String[] excludedArtefacts() default {};
 }

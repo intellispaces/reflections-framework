@@ -34,10 +34,10 @@ public class ModuleAnnotationProcessor extends AbstractAnnotationProcessor {
 
   @Override
   protected List<ArtifactGenerator> makeArtifactGenerators(CustomType moduleType) {
-    List<ArtifactGenerator> makers = new ArrayList<>();
-    makers.add(new UnitWrapperGenerator(moduleType));
+    List<ArtifactGenerator> generators = new ArrayList<>();
+    generators.add(new UnitWrapperGenerator(moduleType));
     Iterable<CustomType> includedUnits = ModuleFunctions.getIncludedUnits(moduleType);
-    includedUnits.forEach(u -> makers.add(new UnitWrapperGenerator(u)));
-    return makers;
+    includedUnits.forEach(u -> generators.add(new UnitWrapperGenerator(u)));
+    return generators;
   }
 }

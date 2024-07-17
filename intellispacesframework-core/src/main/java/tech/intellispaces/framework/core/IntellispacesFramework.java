@@ -8,10 +8,10 @@ public interface IntellispacesFramework {
   /**
    * Loads system module to current application.
    *
-   * @param classes the module class.
+   * @param unitClasses unit classes.
    * @return system module.
    */
-  static Module loadModule(Class<?>... classes) {
-    return ModuleLoader.loadDefaultModule(classes);
+  static Module loadModule(Class<?>... unitClasses) {
+    return ModuleLoader.loadDefaultModule(unitClasses);
   }
 }

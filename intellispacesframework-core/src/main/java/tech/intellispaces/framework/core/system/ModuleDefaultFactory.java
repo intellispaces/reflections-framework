@@ -25,8 +25,8 @@ import java.util.Optional;
  */
 class ModuleDefaultFactory {
 
-  public ModuleDefault createModule(Class<?>... classes) {
-    List<Unit> units = createUnits(classes);
+  public ModuleDefault createModule(Class<?>... unitClasses) {
+    List<Unit> units = createUnits(unitClasses);
     ProjectionRegistry projectionRegistry = createProjectionRegistry(units);
     AttachedGuideRegistry attachedGuideRegistry = new AttachedGuideRegistryImpl();
     ModuleGuideRegistry moduleGuideRegistry = createModuleGuideRegistry(units);;
@@ -35,33 +35,39 @@ class ModuleDefaultFactory {
     return new ModuleDefaultImpl(units, projectionRegistry, traverseAnalyzer, traverseExecutor);
   }
 
-  private List<Unit> createUnits(Class<?>... classes) {
-    if (classes == null || classes.length == 0) {
+  private List<Unit> createUnits(Class<?>... unitClasses) {
+    if (unitClasses == null || unitClasses.length == 0) {
       return List.of(createEmptyMainUnit());
-    } else if (classes.length == 1) {
-      Class<?> aclass = classes[0];
-      if (aclass.isAnnotationPresent(Module.class)) {
-        List<Unit> units = new ArrayList<>();
-        units.add(createUnit(aclass, true));
-        createIncludedUnits(aclass, units);
-        return units;
-      } else if (aclass.isAnnotationPresent(Configuration.class) ||
-          aclass.isAnnotationPresent(tech.intellispaces.framework.core.annotation.Guide.class)
+    } else if (unitClasses.length == 1) {
+      Class<?> unitclass = unitClasses[0];
+      if (unitclass.isAnnotationPresent(Module.class)) {
+        return createModuleUnits(unitclass);
+      } else if (unitclass.isAnnotationPresent(Configuration.class) ||
+          unitclass.isAnnotationPresent(tech.intellispaces.framework.core.annotation.Guide.class)
       ) {
-        Unit mainUnit = createEmptyMainUnit();
-        Unit includedUnit = createIncludedUnit(aclass);
-        return List.of(mainUnit, includedUnit);
+        return createEmptyMainUnitAndIncludedUnits(unitclass);
       } else {
         throw UnexpectedViolationException.withMessage("Expected module, configuration or guide class");
       }
     } else {
-      List<Unit> units = new ArrayList<>();
-      units.add(createEmptyMainUnit());
-      Arrays.stream(classes)
-          .map(this::createIncludedUnit)
-          .forEach(units::add);
-      return units;
+      return createEmptyMainUnitAndIncludedUnits(unitClasses);
     }
+  }
+
+  private List<Unit> createModuleUnits(Class<?> moduleclass) {
+    List<Unit> units = new ArrayList<>();
+    units.add(createUnit(moduleclass, true));
+    createIncludedUnits(moduleclass, units);
+    return units;
+  }
+
+  private List<Unit> createEmptyMainUnitAndIncludedUnits(Class<?>... unitClasses) {
+    List<Unit> units = new ArrayList<>();
+    units.add(createEmptyMainUnit());
+    Arrays.stream(unitClasses)
+        .map(this::createIncludedUnit)
+        .forEach(units::add);
+    return units;
   }
 
   private Unit createEmptyMainUnit() {

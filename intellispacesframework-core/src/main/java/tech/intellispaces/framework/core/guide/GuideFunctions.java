@@ -14,6 +14,8 @@ import tech.intellispaces.framework.core.guide.n1.AttachedMover1;
 import tech.intellispaces.framework.core.guide.n1.Mapper1;
 import tech.intellispaces.framework.core.guide.n1.MethodMapper1;
 import tech.intellispaces.framework.core.guide.n1.Mover1;
+import tech.intellispaces.framework.core.guide.n2.AttachedMapper2;
+import tech.intellispaces.framework.core.guide.n2.AttachedMover2;
 import tech.intellispaces.framework.core.guide.n2.Mapper2;
 import tech.intellispaces.framework.core.guide.n2.Mover2;
 import tech.intellispaces.framework.core.guide.n3.Mapper3;
@@ -102,6 +104,7 @@ public final class GuideFunctions {
     return switch (qualifiersCount) {
       case 0 -> new AttachedMapper0<>(tid, objectHandleClass, guideMethod, actualGuideMethod);
       case 1 -> new AttachedMapper1<>(tid, objectHandleClass, guideMethod, actualGuideMethod);
+      case 2 -> new AttachedMapper2<>(tid, objectHandleClass, guideMethod, actualGuideMethod);
       default -> throw UnexpectedViolationException.withMessage("Unsupported number of guide qualifiers: {}",
           qualifiersCount);
     };
@@ -113,6 +116,7 @@ public final class GuideFunctions {
     return switch (qualifiersCount) {
       case 0 -> new AttachedMover0<>(tid, objectHandleClass, guideMethod, actualGuideMethod);
       case 1 -> new AttachedMover1<>(tid, objectHandleClass, guideMethod, actualGuideMethod);
+      case 2 -> new AttachedMover2<>(tid, objectHandleClass, guideMethod, actualGuideMethod);
       default -> throw UnexpectedViolationException.withMessage("Unsupported number of guide qualifiers: {}",
           qualifiersCount);
     };

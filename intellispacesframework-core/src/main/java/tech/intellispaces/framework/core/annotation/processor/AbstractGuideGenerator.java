@@ -1,11 +1,11 @@
 package tech.intellispaces.framework.core.annotation.processor;
 
 import tech.intellispaces.framework.commons.action.Executor;
+import tech.intellispaces.framework.commons.action.string.StringActions;
 import tech.intellispaces.framework.commons.exception.UnexpectedViolationException;
 import tech.intellispaces.framework.commons.string.StringFunctions;
 import tech.intellispaces.framework.commons.type.TypeFunctions;
 import tech.intellispaces.framework.core.annotation.Transition;
-import tech.intellispaces.framework.core.common.Actions;
 import tech.intellispaces.framework.core.common.NameFunctions;
 import tech.intellispaces.framework.core.guide.GuideFunctions;
 import tech.intellispaces.framework.core.guide.GuideKind;
@@ -240,7 +240,7 @@ public abstract class AbstractGuideGenerator extends AbstractGenerator {
         var sb = new StringBuilder();
         sb.append(simpleName);
         sb.append("<");
-        Executor commaAppender = Actions.buildCommaAppender(sb);
+        Executor commaAppender = StringActions.commaAppender(sb);
         for (NonPrimitiveTypeReference typeArg : type.asCustomTypeReferenceSurely().typeArguments()) {
           commaAppender.execute();
           sb.append(getRawType(typeArg));
@@ -264,7 +264,7 @@ public abstract class AbstractGuideGenerator extends AbstractGenerator {
         var sb = new StringBuilder();
         sb.append(simpleName);
         sb.append("<");
-        Executor commaAppender = Actions.buildCommaAppender(sb);
+        Executor commaAppender = StringActions.commaAppender(sb);
         for (NonPrimitiveTypeReference typeArg : type.asCustomTypeReferenceSurely().typeArguments()) {
           commaAppender.execute();
           sb.append(typeArg.actualDeclaration());
@@ -290,7 +290,7 @@ public abstract class AbstractGuideGenerator extends AbstractGenerator {
       var sb = new StringBuilder();
       sb.append(simpleName);
       sb.append("<");
-      Executor commaAppender = Actions.buildCommaAppender(sb);
+      Executor commaAppender = StringActions.commaAppender(sb);
       for (NonPrimitiveTypeReference typeArg : type.asCustomTypeReferenceSurely().typeArguments()) {
         commaAppender.execute();
         sb.append(getRawType(typeArg));
@@ -309,7 +309,7 @@ public abstract class AbstractGuideGenerator extends AbstractGenerator {
       var sb = new StringBuilder();
       sb.append(simpleName);
       sb.append("<");
-      Executor commaAppender = Actions.buildCommaAppender(sb);
+      Executor commaAppender = StringActions.commaAppender(sb);
       for (NonPrimitiveTypeReference typeParam : type.typeParameters()) {
         commaAppender.execute();
         sb.append(getObjectHandleRawSimpleName(typeParam, true));
@@ -350,7 +350,7 @@ public abstract class AbstractGuideGenerator extends AbstractGenerator {
       return "";
     }
     var sb = new StringBuilder();
-    Executor commaAppender = Actions.buildCommaAppender(sb);
+    Executor commaAppender = StringActions.commaAppender(sb);
     sb.append("<");
     for (NamedTypeReference typeParam : getDomainType().typeParameters()) {
       commaAppender.execute();

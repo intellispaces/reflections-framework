@@ -1,13 +1,13 @@
 package tech.intellispaces.framework.core.annotation.processor.module;
 
 import tech.intellispaces.framework.commons.action.Executor;
+import tech.intellispaces.framework.commons.action.string.StringActions;
 import tech.intellispaces.framework.commons.exception.UnexpectedViolationException;
 import tech.intellispaces.framework.commons.type.TypeFunctions;
 import tech.intellispaces.framework.core.annotation.Projection;
 import tech.intellispaces.framework.core.annotation.ProjectionDefinition;
 import tech.intellispaces.framework.core.annotation.Wrapper;
 import tech.intellispaces.framework.core.annotation.processor.AbstractGenerator;
-import tech.intellispaces.framework.core.common.Actions;
 import tech.intellispaces.framework.core.common.NameFunctions;
 import tech.intellispaces.framework.core.system.Injection;
 import tech.intellispaces.framework.core.system.Modules;
@@ -173,7 +173,7 @@ public class UnitWrapperGenerator extends AbstractGenerator {
     signature.append(projectionMethod.name());
     signature.append("(");
 
-    Executor commaAppender = Actions.buildCommaAppender(signature);
+    Executor commaAppender = StringActions.commaAppender(signature);
     for (MethodParam param : projectionMethod.params()) {
       commaAppender.execute();
       context.addImports(param.type().dependencyTypenames());
@@ -232,18 +232,17 @@ public class UnitWrapperGenerator extends AbstractGenerator {
     context.addImports(returnType.dependencyTypenames());
     signature.append(returnType.actualDeclaration());
     signature.append(" ");
-    signature.append("_" + method.name());
+    signature.append("_").append(method.name());
     signature.append("(");
 
     body.append("return super.");
     body.append(method.name());
     body.append("(");
 
-    Executor signatureCommaAppender = Actions.buildCommaAppender(signature);
-    Executor bodyCommaAppender = Actions.buildCommaAppender(body);
+    Executor commaAppender = StringActions.commaAppender(signature)
+        .then(StringActions.commaAppender(body));
     for (MethodParam param : method.params()) {
-      signatureCommaAppender.execute();
-      bodyCommaAppender.execute();
+      commaAppender.execute();
 
       context.addImports(param.type().dependencyTypenames());
       signature.append(param.type().actualDeclaration());

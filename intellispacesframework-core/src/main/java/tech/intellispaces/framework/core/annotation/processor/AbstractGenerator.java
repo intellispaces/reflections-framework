@@ -3,15 +3,14 @@ package tech.intellispaces.framework.core.annotation.processor;
 import tech.intellispaces.framework.annotationprocessor.artifact.JavaArtifactContext;
 import tech.intellispaces.framework.annotationprocessor.generator.TemplateBasedJavaArtifactGenerator;
 import tech.intellispaces.framework.commons.action.Executor;
+import tech.intellispaces.framework.commons.action.string.StringActions;
 import tech.intellispaces.framework.commons.type.TypeFunctions;
-import tech.intellispaces.framework.core.common.Actions;
 import tech.intellispaces.framework.core.common.NameFunctions;
 import tech.intellispaces.framework.core.object.ObjectHandleTypes;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
-import tech.intellispaces.framework.javastatements.statement.method.MethodParam;
+import tech.intellispaces.framework.javastatements.statement.method.MethodSignatureDeclarations;
 import tech.intellispaces.framework.javastatements.statement.method.MethodStatement;
 import tech.intellispaces.framework.javastatements.statement.reference.CustomTypeReference;
-import tech.intellispaces.framework.javastatements.statement.reference.NamedTypeReference;
 import tech.intellispaces.framework.javastatements.statement.reference.NonPrimitiveTypeReference;
 import tech.intellispaces.framework.javastatements.statement.reference.TypeReference;
 import tech.intellispaces.framework.javastatements.statement.reference.WildcardTypeReference;
@@ -19,7 +18,6 @@ import tech.intellispaces.framework.javastatements.statement.reference.WildcardT
 import javax.annotation.processing.Generated;
 import java.time.ZonedDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static java.time.format.DateTimeFormatter.ISO_OFFSET_DATE_TIME;
 
@@ -72,66 +70,23 @@ public abstract class AbstractGenerator extends TemplateBasedJavaArtifactGenerat
     return buildMethodSignature(method, methodName, true, false, List.of());
   }
 
-  protected String buildMethodSignature(
-      MethodStatement method, boolean includeHolderTypeParams, List<String> additionalParams
-  ) {
-    return buildMethodSignature(method, method.name(), true, includeHolderTypeParams, additionalParams);
+  protected String buildMethodSignature(MethodStatement method, List<String> additionalParams) {
+    return buildMethodSignature(method, method.name(), true, false, additionalParams);
   }
 
   protected String buildMethodSignature(
       MethodStatement method,
       String methodName,
       boolean includeMethodTypeParams,
-      boolean includeHolderTypeParams,
+      boolean includeOwnerTypeParams,
       List<String> additionalParams
   ) {
-    var signature = new StringBuilder();
-    if ((includeMethodTypeParams && !method.typeParameters().isEmpty())
-        || (includeHolderTypeParams && !method.owner().typeParameters().isEmpty())
-    ) {
-      Executor commaAppender = Actions.buildCommaAppender(signature);
-      signature.append("<");
-      commaAppender.execute();
-      for (NamedTypeReference typeParam : method.typeParameters()) {
-        signature.append(typeParam.formalFullDeclaration());
-      }
-      if (includeHolderTypeParams) {
-        for (NamedTypeReference typeParam : method.owner().typeParameters()) {
-          signature.append(typeParam.formalFullDeclaration());
-        }
-      }
-      signature.append("> ");
-    }
-    TypeReference returnType = method.returnType().orElseThrow();
-    context.addImports(returnType.dependencyTypenames());
-    signature.append(returnType.actualDeclaration(context::simpleNameOf));
-    signature.append(" ");
-    signature.append(methodName);
-    signature.append("(");
-
-    Executor commaAppender = Actions.buildCommaAppender(signature);
-    for (String additionalParam : additionalParams) {
-      commaAppender.execute();
-      signature.append(additionalParam);
-    }
-    for (MethodParam param : method.params()) {
-      commaAppender.execute();
-      context.addImports(param.type().dependencyTypenames());
-      signature.append(param.type().actualDeclaration(context::simpleNameOf));
-      signature.append(" ");
-      signature.append(param.name());
-    }
-    signature.append(")");
-
-    String exceptions = method.exceptions().stream()
-        .map(e -> e.asCustomTypeReference().orElseThrow().targetType())
-        .peek(e -> context.addImport(e.canonicalName()))
-        .map(e -> context.simpleNameOf(e.canonicalName()))
-        .collect(Collectors.joining(", "));
-    if (!exceptions.isEmpty()) {
-      signature.append(" throws ").append(exceptions);
-    }
-    return signature.toString();
+    return MethodSignatureDeclarations.build(method)
+        .methodName(methodName)
+        .includeMethodTypeParams(includeMethodTypeParams)
+        .includeOwnerTypeParams(includeOwnerTypeParams)
+        .addAdditionalParams(additionalParams)
+        .get(context::addImport, context::simpleNameOf);
   }
 
   protected String getObjectHandleCanonicalName(TypeReference domainType, ObjectHandleTypes handleType) {
@@ -147,7 +102,7 @@ public abstract class AbstractGenerator extends TemplateBasedJavaArtifactGenerat
         sb.append(Class.class.getSimpleName());
         if (!customTypeReference.typeArguments().isEmpty()) {
           sb.append("<");
-          Executor commaAppender = Actions.buildCommaAppender(sb);
+          Executor commaAppender = StringActions.commaAppender(sb);
           for (NonPrimitiveTypeReference argType : customTypeReference.typeArguments()) {
             commaAppender.execute();
             sb.append(argType.actualDeclaration());
@@ -165,7 +120,7 @@ public abstract class AbstractGenerator extends TemplateBasedJavaArtifactGenerat
         sb.append(simpleName);
         if (!customTypeReference.typeArguments().isEmpty()) {
           sb.append("<");
-          Executor commaAppender = Actions.buildCommaAppender(sb);
+          Executor commaAppender = StringActions.commaAppender(sb);
           for (NonPrimitiveTypeReference argType : customTypeReference.typeArguments()) {
             commaAppender.execute();
             sb.append(argType.actualDeclaration());

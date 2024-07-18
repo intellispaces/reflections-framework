@@ -1,9 +1,9 @@
 package tech.intellispaces.framework.core.annotation.processor;
 
 import tech.intellispaces.framework.commons.action.Executor;
+import tech.intellispaces.framework.commons.action.string.StringActions;
 import tech.intellispaces.framework.commons.type.TypeFunctions;
 import tech.intellispaces.framework.core.annotation.Transition;
-import tech.intellispaces.framework.core.common.Actions;
 import tech.intellispaces.framework.core.common.NameFunctions;
 import tech.intellispaces.framework.core.exception.TraverseException;
 import tech.intellispaces.framework.core.object.ObjectHandleTypes;
@@ -83,7 +83,7 @@ public abstract class AbstractObjectHandleGenerator extends AbstractGenerator {
   protected void appendMethodTypeParameters(StringBuilder sb, MethodStatement method) {
     if (!method.typeParameters().isEmpty()) {
       sb.append("<");
-      Executor commaAppender = Actions.buildCommaAppender(sb);
+      Executor commaAppender = StringActions.commaAppender(sb);
       for (NamedTypeReference namedTypeReference : method.typeParameters()) {
         commaAppender.execute();
         sb.append(namedTypeReference.actualDeclaration());
@@ -93,7 +93,7 @@ public abstract class AbstractObjectHandleGenerator extends AbstractGenerator {
   }
 
   protected void appendMethodParameters(StringBuilder sb, MethodStatement method) {
-    Executor commaAppender = Actions.buildCommaAppender(sb);
+    Executor commaAppender = StringActions.commaAppender(sb);
     for (MethodParam param : method.params()) {
       commaAppender.execute();
       sb.append(param.type().actualDeclaration());

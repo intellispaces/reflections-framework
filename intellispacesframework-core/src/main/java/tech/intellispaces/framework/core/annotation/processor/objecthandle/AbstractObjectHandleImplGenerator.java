@@ -1,14 +1,14 @@
 package tech.intellispaces.framework.core.annotation.processor.objecthandle;
 
-import tech.intellispaces.framework.commons.action.ActionBuilders;
+import tech.intellispaces.framework.commons.action.Actions;
 import tech.intellispaces.framework.commons.action.Executor;
 import tech.intellispaces.framework.commons.action.Getter;
+import tech.intellispaces.framework.commons.action.string.StringActions;
 import tech.intellispaces.framework.commons.exception.UnexpectedViolationException;
 import tech.intellispaces.framework.commons.type.Type;
-import tech.intellispaces.framework.commons.type.TypeFunctions;
+import tech.intellispaces.framework.commons.type.Types;
 import tech.intellispaces.framework.core.annotation.Transition;
 import tech.intellispaces.framework.core.annotation.processor.AbstractObjectHandleGenerator;
-import tech.intellispaces.framework.core.common.Actions;
 import tech.intellispaces.framework.core.common.NameFunctions;
 import tech.intellispaces.framework.core.guide.n0.Mapper0;
 import tech.intellispaces.framework.core.guide.n0.Mover0;
@@ -78,7 +78,7 @@ abstract class AbstractObjectHandleImplGenerator extends AbstractObjectHandleGen
     sb.append("  return super.");
     sb.append(domainMethod.name());
     sb.append("(");
-    Executor commaAppender = Actions.buildCommaAppender(sb);
+    Executor commaAppender = StringActions.commaAppender(sb);
     for (MethodParam param : domainMethod.params()) {
       commaAppender.execute();
       sb.append(param.name());
@@ -96,7 +96,7 @@ abstract class AbstractObjectHandleImplGenerator extends AbstractObjectHandleGen
     sb.append("> ");
     sb.append(buildGuideGetterName(domainMethod));
     sb.append(" = ");
-    sb.append(context.addToImportAndGetSimpleName(ActionBuilders.class));
+    sb.append(context.addToImportAndGetSimpleName(Actions.class));
     sb.append(".cachedLazyGetter(() -> {\n  ");
     sb.append(buildGuideGetterSupplier(domainMethod));
     sb.append("\n});");
@@ -146,7 +146,7 @@ abstract class AbstractObjectHandleImplGenerator extends AbstractObjectHandleGen
     sb.append("<");
     sb.append(annotatedType.simpleName());
     sb.append(annotatedType.typeParametersFullDeclaration());
-    sb.append("> sourceType = ").append(context.addToImportAndGetSimpleName(TypeFunctions.class)).append(".typeOf(");
+    sb.append("> sourceType = ").append(context.addToImportAndGetSimpleName(Types.class)).append(".of(");
     sb.append(annotatedType.simpleName());
     sb.append(".class);\n");
     sb.append("  return ");
@@ -205,8 +205,8 @@ abstract class AbstractObjectHandleImplGenerator extends AbstractObjectHandleGen
 
     var typeParamsFullBuilder = new StringBuilder();
     var typeParamsBriefBuilder = new StringBuilder();
-    Executor commaAppender = Actions.buildCommaAppender(typeParamsFullBuilder)
-        .then(Actions.buildCommaAppender(typeParamsBriefBuilder));
+    Executor commaAppender = StringActions.commaAppender(typeParamsFullBuilder)
+        .then(StringActions.commaAppender(typeParamsBriefBuilder));
 
     typeParamsFullBuilder.append("<");
     typeParamsBriefBuilder.append("<");

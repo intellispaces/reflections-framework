@@ -30,7 +30,7 @@ public class {{$classSimpleName}}{{$typeParamsFull}} extends {{$sourceClassSimpl
 {{end}}
   @Override
   public <B, Q> B moveThru(String tid, Q qualifier) throws TraverseException {
-    Type<{{$sourceClassSimpleName}}{{$typeParamsBrief}}> sourceType = TypeFunctions.typeOf({{$sourceClassSimpleName}}.class);
+    Type<{{$sourceClassSimpleName}}{{$typeParamsBrief}}> sourceType = Types.of({{$sourceClassSimpleName}}.class);
     Mover1<{{$sourceClassSimpleName}}, B, Q> mover = Modules.activeModule().autoMoverThruTransition1(sourceType, tid);
     return (B) mover.move(this, qualifier);
   }
@@ -38,7 +38,7 @@ public class {{$classSimpleName}}{{$typeParamsFull}} extends {{$sourceClassSimpl
   @Override
   public <B> B moveThru(TransitionMethod0<? super {{$domainClassSimpleName}}, B> transitionMethod) throws TraverseException {
     String tid = TransitionFunctions.getTransitionId({{$domainClassSimpleName}}.class, transitionMethod);
-    Type<{{$sourceClassSimpleName}}{{$typeParamsBrief}}> sourceType = TypeFunctions.typeOf({{$sourceClassSimpleName}}.class);
+    Type<{{$sourceClassSimpleName}}{{$typeParamsBrief}}> sourceType = Types.of({{$sourceClassSimpleName}}.class);
     Mover0<{{$sourceClassSimpleName}}, B> mover = Modules.activeModule().autoMoverThruTransition0(sourceType, tid);
     return (B) mover.move(this);
   }
@@ -46,7 +46,7 @@ public class {{$classSimpleName}}{{$typeParamsFull}} extends {{$sourceClassSimpl
   @Override
   public <B, Q> B moveThru(TransitionMethod1<? super {{$domainClassSimpleName}}, B, Q> transitionMethod, Q qualifier) throws TraverseException {
     String tid = TransitionFunctions.getTransitionId({{$domainClassSimpleName}}.class, transitionMethod, null);
-    Type<{{$sourceClassSimpleName}}{{$typeParamsBrief}}> sourceType = TypeFunctions.typeOf({{$sourceClassSimpleName}}.class);
+    Type<{{$sourceClassSimpleName}}{{$typeParamsBrief}}> sourceType = Types.of({{$sourceClassSimpleName}}.class);
     Mover1<{{$sourceClassSimpleName}}, B, Q> mover = Modules.activeModule().autoMoverThruTransition1(sourceType, tid);
     return (B) mover.move(this, qualifier);
   }

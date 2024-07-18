@@ -2,7 +2,7 @@ package tech.intellispaces.framework.core.system;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import tech.intellispaces.framework.commons.action.ActionBuilders;
+import tech.intellispaces.framework.commons.action.Actions;
 import tech.intellispaces.framework.commons.action.Getter;
 import tech.intellispaces.framework.commons.type.Type;
 import tech.intellispaces.framework.core.guide.n0.AutoMapper0;
@@ -39,7 +39,7 @@ public class ModuleDefaultImpl implements ModuleDefault {
   private final TraverseExecutor traverseExecutor;
 
   private final AtomicBoolean started = new AtomicBoolean(false);
-  private final Getter<Unit> mainUnitGetter = ActionBuilders.cachedLazyGetter(this::mainUnitSupplier);
+  private final Getter<Unit> mainUnitGetter = Actions.cachedLazyGetter(this::mainUnitSupplier);
 
   private static final Logger LOG = LoggerFactory.getLogger(ModuleDefaultImpl.class);
 

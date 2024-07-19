@@ -94,7 +94,7 @@ class ProjectionRegistryImpl implements ProjectionRegistry {
       Object[] projectionArguments = getProjectionArguments(definition, dependencyPath);
       target = projectionMethod.invoke(definition.unit().instance(), projectionArguments);
     } catch (Exception e) {
-      throw ExceptionFunctions.coverException(e);
+      throw ExceptionFunctions.coverIfChecked(e);
     }
     SystemProjection projection = new SystemProjectionImpl(definition.name(), definition.type(), definition, target);
     projections.put(projection.name(), projection);

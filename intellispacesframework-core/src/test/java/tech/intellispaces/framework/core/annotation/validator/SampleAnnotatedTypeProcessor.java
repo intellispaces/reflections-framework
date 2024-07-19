@@ -1,8 +1,8 @@
 package tech.intellispaces.framework.core.annotation.validator;
 
 import tech.intellispaces.framework.annotationprocessor.AnnotatedTypeProcessor;
-import tech.intellispaces.framework.annotationprocessor.AnnotatedTypeValidator;
 import tech.intellispaces.framework.annotationprocessor.generator.ArtifactGenerator;
+import tech.intellispaces.framework.annotationprocessor.validator.AnnotatedTypeValidator;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
 
 import javax.lang.model.element.ElementKind;

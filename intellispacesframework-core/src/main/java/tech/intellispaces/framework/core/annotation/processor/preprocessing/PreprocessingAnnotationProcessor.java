@@ -1,15 +1,14 @@
 package tech.intellispaces.framework.core.annotation.processor.preprocessing;
 
 import com.google.auto.service.AutoService;
-import tech.intellispaces.framework.annotationprocessor.AnnotatedTypeValidator;
 import tech.intellispaces.framework.annotationprocessor.generator.ArtifactGenerator;
-import tech.intellispaces.framework.core.annotation.Configuration;
-import tech.intellispaces.framework.core.annotation.Guide;
+import tech.intellispaces.framework.annotationprocessor.validator.AnnotatedTypeValidator;
 import tech.intellispaces.framework.core.annotation.Module;
 import tech.intellispaces.framework.core.annotation.Preprocessing;
 import tech.intellispaces.framework.core.annotation.processor.AbstractAnnotationProcessor;
 import tech.intellispaces.framework.core.annotation.processor.module.UnitWrapperGenerator;
 import tech.intellispaces.framework.core.system.ModuleFunctions;
+import tech.intellispaces.framework.core.system.UnitFunctions;
 import tech.intellispaces.framework.javastatements.JavaStatements;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
 
@@ -50,9 +49,7 @@ public class PreprocessingAnnotationProcessor extends AbstractAnnotationProcesso
         generators.add(new UnitWrapperGenerator(moduleCustomType));
         Iterable<CustomType> includedUnits = ModuleFunctions.getIncludedUnits(moduleCustomType);
         includedUnits.forEach(u -> generators.add(new UnitWrapperGenerator(u)));
-      } else if (
-          preprocessingClass.isAnnotationPresent(Configuration.class) || preprocessingClass.isAnnotationPresent(Guide.class)
-      ) {
+      } else if (UnitFunctions.isUnitClass(preprocessingClass)) {
         CustomType unitCustomType = JavaStatements.customTypeStatement(preprocessingClass);
         generators.add(new UnitWrapperGenerator(unitCustomType));
       }

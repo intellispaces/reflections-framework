@@ -1,6 +1,6 @@
 package tech.intellispaces.framework.core.validation;
 
-import tech.intellispaces.framework.annotationprocessor.AnnotatedTypeValidator;
+import tech.intellispaces.framework.annotationprocessor.validator.AnnotatedTypeValidator;
 import tech.intellispaces.framework.core.annotation.Transition;
 import tech.intellispaces.framework.core.exception.IntelliSpacesException;
 import tech.intellispaces.framework.core.object.ObjectFunctions;

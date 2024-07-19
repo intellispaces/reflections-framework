@@ -1,8 +1,8 @@
 package tech.intellispaces.framework.core.annotation.processor.module;
 
 import com.google.auto.service.AutoService;
-import tech.intellispaces.framework.annotationprocessor.AnnotatedTypeValidator;
 import tech.intellispaces.framework.annotationprocessor.generator.ArtifactGenerator;
+import tech.intellispaces.framework.annotationprocessor.validator.AnnotatedTypeValidator;
 import tech.intellispaces.framework.core.annotation.Module;
 import tech.intellispaces.framework.core.annotation.processor.AbstractAnnotationProcessor;
 import tech.intellispaces.framework.core.system.ModuleFunctions;

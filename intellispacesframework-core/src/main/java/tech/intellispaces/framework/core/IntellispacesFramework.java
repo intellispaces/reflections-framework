@@ -24,9 +24,9 @@ public interface IntellispacesFramework {
   }
 
   /**
-   * Shutdown current module.
+   * Unload current module.
    */
-  static void shutdownModule() {
-    ModuleLoader.shutdownModule();
+  static void unloadModule() {
+    ModuleLoader.unloadModule();
   }
 }

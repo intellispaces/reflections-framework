@@ -37,7 +37,7 @@ public class ModuleLoader {
     newModule.start(args);
   }
 
-  public static void shutdownModule() {
+  public static void unloadModule() {
     Module activeModule = Modules.activeModuleSilently();
     if (activeModule != null) {
       activeModule.stop();

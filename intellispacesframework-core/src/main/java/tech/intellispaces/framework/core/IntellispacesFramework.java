@@ -1,6 +1,5 @@
 package tech.intellispaces.framework.core;
 
-import tech.intellispaces.framework.core.system.Module;
 import tech.intellispaces.framework.core.system.ModuleLoader;
 
 public interface IntellispacesFramework {
@@ -8,10 +7,26 @@ public interface IntellispacesFramework {
   /**
    * Loads system module to current application.
    *
-   * @param unitClasses unit classes.
-   * @return system module.
+   * @param moduleClass module class.
+   * @param args command line arguments.
    */
-  static Module loadModule(Class<?>... unitClasses) {
-    return ModuleLoader.loadDefaultModule(unitClasses);
+  static void loadModule(Class<?> moduleClass, String[] args) {
+    ModuleLoader.loadModule(moduleClass, args);
+  }
+
+  /**
+   * Loads system module to current application.
+   *
+   * @param unitClasses unit classes.
+   */
+  static void loadModule(Class<?>... unitClasses) {
+    ModuleLoader.loadModule(unitClasses);
+  }
+
+  /**
+   * Shutdown current module.
+   */
+  static void shutdownModule() {
+    ModuleLoader.shutdownModule();
   }
 }

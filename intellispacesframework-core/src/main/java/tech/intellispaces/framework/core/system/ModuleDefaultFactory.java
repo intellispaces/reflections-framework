@@ -25,7 +25,11 @@ import java.util.Optional;
  */
 class ModuleDefaultFactory {
 
-  public ModuleDefault createModule(Class<?>... unitClasses) {
+  public ModuleDefault createModule(Class<?> unitClass) {
+    return createModule(List.of(unitClass));
+  }
+
+  public ModuleDefault createModule(List<Class<?>> unitClasses) {
     List<Unit> units = createUnits(unitClasses);
     ProjectionRegistry projectionRegistry = createProjectionRegistry(units);
     AttachedGuideRegistry attachedGuideRegistry = new AttachedGuideRegistryImpl();
@@ -35,17 +39,17 @@ class ModuleDefaultFactory {
     return new ModuleDefaultImpl(units, projectionRegistry, traverseAnalyzer, traverseExecutor);
   }
 
-  private List<Unit> createUnits(Class<?>... unitClasses) {
-    if (unitClasses == null || unitClasses.length == 0) {
+  private List<Unit> createUnits(List<Class<?>> unitClasses) {
+    if (unitClasses == null || unitClasses.isEmpty()) {
       return List.of(createEmptyMainUnit());
-    } else if (unitClasses.length == 1) {
-      Class<?> unitclass = unitClasses[0];
+    } else if (unitClasses.size() == 1) {
+      Class<?> unitclass = unitClasses.get(0);
       if (unitclass.isAnnotationPresent(Module.class)) {
         return createModuleUnits(unitclass);
       } else if (unitclass.isAnnotationPresent(Configuration.class) ||
           unitclass.isAnnotationPresent(tech.intellispaces.framework.core.annotation.Guide.class)
       ) {
-        return createEmptyMainUnitAndIncludedUnits(unitclass);
+        return createEmptyMainUnitAndIncludedUnits(List.of(unitclass));
       } else {
         throw UnexpectedViolationException.withMessage("Expected module, configuration or guide class");
       }
@@ -61,10 +65,10 @@ class ModuleDefaultFactory {
     return units;
   }
 
-  private List<Unit> createEmptyMainUnitAndIncludedUnits(Class<?>... unitClasses) {
+  private List<Unit> createEmptyMainUnitAndIncludedUnits(List<Class<?>> unitClasses) {
     List<Unit> units = new ArrayList<>();
     units.add(createEmptyMainUnit());
-    Arrays.stream(unitClasses)
+    unitClasses.stream()
         .map(this::createIncludedUnit)
         .forEach(units::add);
     return units;

@@ -96,7 +96,7 @@ public class ModuleDefaultImpl implements ModuleDefault {
     if (started.compareAndSet(true, false)) {
 
     } else {
-      LOG.warn("Module is already shutdown");
+      LOG.warn("Module is already stopped");
     }
   }
 

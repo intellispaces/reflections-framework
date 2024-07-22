@@ -13,7 +13,8 @@ public class Modules {
   public static ModuleDefault activeModule() {
     ModuleDefault module = activeModuleSilently();
     if (module == null) {
-      throw UnexpectedViolationException.withMessage("Application active module is not defined. It is possible that the module is not loaded yet");
+      throw UnexpectedViolationException.withMessage("Application active module is not defined. " +
+          "It is possible that the module is not loaded yet");
     }
     return module;
   }

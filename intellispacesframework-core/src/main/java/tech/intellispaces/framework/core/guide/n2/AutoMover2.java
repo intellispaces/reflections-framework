@@ -14,7 +14,7 @@ import tech.intellispaces.framework.core.traverse.TraverseExecutor;
  * @param <Q1> first qualifier handle type.
  * @param <Q2> second qualifier handle type.
  */
-public class AutoMover2<S, B, Q1, Q2> implements BasicMover2<S, B, Q1, Q2> {
+public class AutoMover2<S, B, Q1, Q2> implements AbstractMover2<S, B, Q1, Q2> {
   private final String tid;
   private final TraverseExecutor traverseExecutor;
   private final DeclarativePlan declarativeTaskPlan;

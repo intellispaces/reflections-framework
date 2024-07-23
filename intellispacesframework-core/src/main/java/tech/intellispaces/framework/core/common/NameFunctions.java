@@ -8,6 +8,7 @@ import tech.intellispaces.framework.core.annotation.ObjectHandle;
 import tech.intellispaces.framework.core.annotation.Ontology;
 import tech.intellispaces.framework.core.annotation.Transition;
 import tech.intellispaces.framework.core.object.ObjectHandleTypes;
+import tech.intellispaces.framework.core.traverse.TraverseType;
 import tech.intellispaces.framework.core.traverse.TraverseTypes;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
 import tech.intellispaces.framework.javastatements.statement.method.MethodParam;
@@ -166,14 +167,19 @@ public interface NameFunctions {
   }
 
   static String getGuideClassCanonicalName(
-      String spaceName, CustomType domainType, MethodStatement transitionMethod
+      TraverseType traverseType, String spaceName, CustomType domainType, MethodStatement transitionMethod
   ) {
     String transitionCanonicalName = getTransitionClassCanonicalName(spaceName, domainType, transitionMethod);
-    return StringFunctions.replaceLast(transitionCanonicalName, "Transition", "Guide");
+    String suffix = traverseType == TraverseTypes.Mapping ? "Mapper" : "Mover";
+    return StringFunctions.replaceLast(transitionCanonicalName, "Transition", suffix + "Guide");
   }
 
   private static boolean isMappingTraverseType(MethodStatement method) {
-    return method.selectAnnotation(Transition.class).orElseThrow().type() == TraverseTypes.Mapping;
+    Transition transition = method.selectAnnotation(Transition.class).orElseThrow();
+    if (transition.allowedTraverseTypes().length > 1) {
+      return transition.defaultTraverseType() == TraverseTypes.Mapping;
+    }
+    return transition.allowedTraverseTypes()[0] == TraverseTypes.Mapping;
   }
 
   private static String transformClassName(String className) {

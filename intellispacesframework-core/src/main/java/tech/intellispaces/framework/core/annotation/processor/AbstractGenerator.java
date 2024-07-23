@@ -50,13 +50,15 @@ public abstract class AbstractGenerator extends TemplateBasedJavaArtifactGenerat
     if (generatedAnnotation == null) {
       generatedAnnotation = """
         @Generated(
-          value = "%s",
+          value = "Source artifact %s",
           date = "%s",
-          comments = "Generated with library %s"
+          comments = "Generated with library %s." +
+                     "Generator %s"
         )""".formatted(
-          this.getClass().getCanonicalName(),
+          annotatedType.canonicalName(),
           ZonedDateTime.now().format(ISO_OFFSET_DATE_TIME),
-          TypeFunctions.getJavaLibraryName(this.getClass())
+          TypeFunctions.getJavaLibraryName(this.getClass()),
+          this.getClass().getCanonicalName()
       );
     }
     return generatedAnnotation;

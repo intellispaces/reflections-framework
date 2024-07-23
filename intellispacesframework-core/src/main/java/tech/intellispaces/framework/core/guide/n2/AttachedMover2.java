@@ -17,7 +17,7 @@ import java.lang.reflect.Method;
  * @param <Q1> first qualifier type.
  * @param <Q2> second qualifier type.
  */
-public class AttachedMover2<S, B, Q1, Q2> implements BasicMover2<S, B, Q1, Q2> {
+public class AttachedMover2<S, B, Q1, Q2> implements AbstractMover2<S, B, Q1, Q2> {
   private final Class<S> objectHandleClass;
   private final String tid;
   private final Method moverMethod;

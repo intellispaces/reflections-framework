@@ -52,7 +52,7 @@ public final class GuideFunctions {
               method.isAnnotationPresent(tech.intellispaces.framework.core.annotation.Mover.class)
       ) {
         Transition transition = getAttachedGuideTransitionAnnotation(method);
-        if (TraverseTypes.Mapping == transition.type()) {
+        if (TraverseTypes.Mapping == transition.defaultTraverseType()) {
           guides.add(createAttachedMapper(objectHandleClass, transition.value(), method));
         } else {
           guides.add(createAttachedMover(objectHandleClass, transition.value(), method));

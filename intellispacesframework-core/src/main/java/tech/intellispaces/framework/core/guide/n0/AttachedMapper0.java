@@ -14,7 +14,7 @@ import java.lang.reflect.Method;
  *
  * @param <S> mapper source object type.
  */
-public class AttachedMapper0<S, T> implements BasicMapper0<S, T> {
+public class AttachedMapper0<S, T> implements AbstractMapper0<S, T> {
   private final Class<S> objectHandleClass;
   private final String tid;
   private final Method mapperMethod;

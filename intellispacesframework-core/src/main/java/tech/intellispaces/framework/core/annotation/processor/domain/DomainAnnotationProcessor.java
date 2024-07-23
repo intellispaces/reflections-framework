@@ -3,9 +3,11 @@ package tech.intellispaces.framework.core.annotation.processor.domain;
 import com.google.auto.service.AutoService;
 import tech.intellispaces.framework.annotationprocessor.generator.ArtifactGenerator;
 import tech.intellispaces.framework.annotationprocessor.validator.AnnotatedTypeValidator;
+import tech.intellispaces.framework.commons.collection.ArraysFunctions;
 import tech.intellispaces.framework.core.annotation.Domain;
 import tech.intellispaces.framework.core.annotation.Transition;
 import tech.intellispaces.framework.core.annotation.processor.AbstractAnnotationProcessor;
+import tech.intellispaces.framework.core.traverse.TraverseTypes;
 import tech.intellispaces.framework.core.validation.DomainValidator;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
 import tech.intellispaces.framework.javastatements.statement.method.MethodStatement;
@@ -45,8 +47,11 @@ public class DomainAnnotationProcessor extends AbstractAnnotationProcessor {
         if (isAutoGenerationEnabled(domainType, "Transition")) {
           generators.add(new DomainTransitionGenerator(domainType, method));
         }
-        if (isAutoGenerationEnabled(domainType, "Guide")) {
-          generators.add(new DomainGuideGenerator(domainType, method));
+        if (isEnableMapperGuideGeneration(domainType, method)) {
+          generators.add(new DomainGuideGenerator(TraverseTypes.Mapping, domainType, method));
+        }
+        if (isEnableMoverGuideGeneration(domainType, method)) {
+          generators.add(new DomainGuideGenerator(TraverseTypes.Moving, domainType, method));
         }
       }
     }
@@ -54,6 +59,20 @@ public class DomainAnnotationProcessor extends AbstractAnnotationProcessor {
     addUpgradeObjectHandleGenerators(domainType, domainType, generators);
     addDowngradeObjectHandleGenerators(domainType, generators);
     return generators;
+  }
+
+  private boolean isEnableMapperGuideGeneration(CustomType domainType, MethodStatement method) {
+    return isAutoGenerationEnabled(domainType, "Mapper") &&
+        ArraysFunctions.contains(
+            method.selectAnnotation(Transition.class).orElseThrow().allowedTraverseTypes(),
+            TraverseTypes.Mapping);
+  }
+
+  private boolean isEnableMoverGuideGeneration(CustomType domainType, MethodStatement method) {
+    return isAutoGenerationEnabled(domainType, "Mover") &&
+        ArraysFunctions.contains(
+            method.selectAnnotation(Transition.class).orElseThrow().allowedTraverseTypes(),
+            TraverseTypes.Moving);
   }
 
   private void addBasicObjectHandleGenerators(CustomType domainType, List<ArtifactGenerator> generators) {

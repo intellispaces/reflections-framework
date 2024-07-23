@@ -14,7 +14,7 @@ import tech.intellispaces.framework.core.traverse.TraverseExecutor;
  * @param <Q1> first qualifier handle type.
  * @param <Q2> second qualifier handle type.
  */
-public class AutoMapper2<S, T, Q1, Q2> implements BasicMapper2<S, T, Q1, Q2> {
+public class AutoMapper2<S, T, Q1, Q2> implements AbstractMapper2<S, T, Q1, Q2> {
   private final String tid;
   private final TraverseExecutor traverseExecutor;
   private final DeclarativePlan declarativeTaskPlan;

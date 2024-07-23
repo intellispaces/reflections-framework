@@ -15,7 +15,7 @@ import java.lang.reflect.Method;
  * @param <S> source object handle type.
  * @param <B> backward object handle type.
  */
-public class AttachedMover0<S, B> implements BasicMover0<S, B> {
+public class AttachedMover0<S, B> implements AbstractMover0<S, B> {
   private final Class<S> objectHandleClass;
   private final String tid;
   private final Method moverMethod;

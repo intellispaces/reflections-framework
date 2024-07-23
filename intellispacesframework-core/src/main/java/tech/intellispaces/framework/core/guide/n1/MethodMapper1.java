@@ -14,7 +14,7 @@ import java.lang.reflect.Method;
  * @param <T> target object handle type.
  * @param <Q> qualifier object handle type.
  */
-public class MethodMapper1<S, T, Q> implements BasicMapper1<S, T, Q> {
+public class MethodMapper1<S, T, Q> implements AbstractMapper1<S, T, Q> {
   private final String tid;
   private final Object unitInstance;
   private final Method mapperMethod;

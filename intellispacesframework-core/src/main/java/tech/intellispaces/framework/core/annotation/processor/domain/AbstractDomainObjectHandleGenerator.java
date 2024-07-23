@@ -13,7 +13,7 @@ abstract class AbstractDomainObjectHandleGenerator extends AbstractObjectHandleG
     super(domainType);
   }
 
-  protected Stream<MethodStatement> getDomainMethods(CustomType customType) {
+  protected Stream<MethodStatement> getObjectHandleMethods(CustomType customType) {
     return customType.actualMethods().stream()
         .filter(m -> m.owner().hasAnnotation(Domain.class))
         .filter(m -> !m.isDefault());

@@ -52,20 +52,20 @@ abstract class AbstractObjectHandleImplGenerator extends AbstractObjectHandleGen
   }
 
   @Override
-  protected Stream<MethodStatement> getDomainMethods(CustomType objectHandleType) {
+  protected Stream<MethodStatement> getObjectHandleMethods(CustomType objectHandleType) {
     CustomType domainType = ObjectFunctions.getDomainTypeOfObjectHandle(objectHandleType);
     return domainType.actualMethods().stream()
         .filter(m -> !m.isDefault());
   }
 
   protected void analyzeGuideGetters(CustomType objectHandleType) {
-    this.guideGetters = getDomainMethods(objectHandleType)
+    this.guideGetters = getObjectHandleMethods(objectHandleType)
         .map(this::buildGuideGetter)
         .toList();
   }
 
   protected void analyzeGuideImplementationMethods(CustomType objectHandleType) {
-    this.guideImplementationMethods = getDomainMethods(objectHandleType)
+    this.guideImplementationMethods = getObjectHandleMethods(objectHandleType)
         .map(this::buildGuideMethod)
         .toList();
   }
@@ -190,7 +190,7 @@ abstract class AbstractObjectHandleImplGenerator extends AbstractObjectHandleGen
   }
 
   private static TraverseTypes getTraverseType(MethodStatement domainMethod) {
-    return domainMethod.selectAnnotation(Transition.class).orElseThrow().type();
+    return domainMethod.selectAnnotation(Transition.class).orElseThrow().defaultTraverseType();
   }
 
   protected String getGeneratedClassCanonicalName() {

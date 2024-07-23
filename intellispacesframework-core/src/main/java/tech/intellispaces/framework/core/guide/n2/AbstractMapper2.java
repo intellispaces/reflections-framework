@@ -5,7 +5,7 @@ import tech.intellispaces.framework.commons.function.TriFunction;
 import tech.intellispaces.framework.core.guide.GuideKind;
 import tech.intellispaces.framework.core.guide.GuideKinds;
 
-public interface BasicMapper2<S, T, Q1, Q2> extends Mapper2<S, T, Q1, Q2> {
+public interface AbstractMapper2<S, T, Q1, Q2> extends Mapper2<S, T, Q1, Q2> {
 
   @Override
   default GuideKind kind() {

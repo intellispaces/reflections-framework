@@ -5,7 +5,7 @@ import tech.intellispaces.framework.core.guide.GuideKinds;
 
 import java.util.function.Function;
 
-public interface BasicMapper0<S, T> extends Mapper0<S, T> {
+public interface AbstractMapper0<S, T> extends Mapper0<S, T> {
 
   @Override
   default GuideKind kind() {

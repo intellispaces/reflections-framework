@@ -2,6 +2,7 @@ package tech.intellispaces.framework.core.annotation.processor.domain;
 
 import tech.intellispaces.framework.core.annotation.processor.AbstractGuideGenerator;
 import tech.intellispaces.framework.core.common.NameFunctions;
+import tech.intellispaces.framework.core.traverse.TraverseType;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
 import tech.intellispaces.framework.javastatements.statement.method.MethodParam;
 import tech.intellispaces.framework.javastatements.statement.method.MethodStatement;
@@ -9,11 +10,9 @@ import tech.intellispaces.framework.javastatements.statement.method.MethodStatem
 import java.util.List;
 
 public class DomainGuideGenerator extends AbstractGuideGenerator {
-  private final MethodStatement transitionMethod;
 
-  public DomainGuideGenerator(CustomType domainType, MethodStatement transitionMethod) {
-    super(domainType, transitionMethod);
-    this.transitionMethod = transitionMethod;
+  public DomainGuideGenerator(TraverseType traverseType, CustomType domainType, MethodStatement transitionMethod) {
+    super(traverseType, domainType, transitionMethod);
   }
 
   @Override
@@ -28,6 +27,8 @@ public class DomainGuideGenerator extends AbstractGuideGenerator {
 
   @Override
   protected String getGuideClassCanonicalName() {
-    return NameFunctions.getGuideClassCanonicalName(annotatedType.packageName(), annotatedType, transitionMethod);
+    return NameFunctions.getGuideClassCanonicalName(
+        traverseType, annotatedType.packageName(), annotatedType, transitionMethod
+    );
   }
 }

@@ -13,7 +13,7 @@ import tech.intellispaces.framework.core.traverse.TraverseExecutor;
  * @param <B> backward object handle type.
  * @param <Q> qualifier handle type.
  */
-public class AutoMover1<S, B, Q> implements BasicMover1<S, B, Q> {
+public class AutoMover1<S, B, Q> implements AbstractMover1<S, B, Q> {
   private final String tid;
   private final TraverseExecutor traverseExecutor;
   private final DeclarativePlan declarativeTaskPlan;

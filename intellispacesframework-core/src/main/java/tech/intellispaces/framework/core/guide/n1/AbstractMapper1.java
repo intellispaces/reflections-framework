@@ -3,17 +3,17 @@ package tech.intellispaces.framework.core.guide.n1;
 import tech.intellispaces.framework.core.guide.GuideKind;
 import tech.intellispaces.framework.core.guide.GuideKinds;
 
-import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 
-public interface BasicMover1<S, B, Q> extends Mover1<S, B, Q> {
+public interface AbstractMapper1<S, T, Q> extends Mapper1<S, T, Q> {
 
   @Override
   default GuideKind kind() {
-    return GuideKinds.Mover1;
+    return GuideKinds.Mapper1;
   }
 
   @Override
-  default BiConsumer<S, Q> asBiConsumer() {
-    return this::move;
+  default BiFunction<S, Q, T> asBiFunction() {
+    return this::map;
   }
 }

@@ -16,7 +16,7 @@ import java.lang.reflect.Method;
  * @param <Q1> first qualifier type.
  * @param <Q2> second qualifier type.
  */
-public class AttachedMapper2<S, T, Q1, Q2> implements BasicMapper2<S, T, Q1, Q2> {
+public class AttachedMapper2<S, T, Q1, Q2> implements AbstractMapper2<S, T, Q1, Q2> {
   private final Class<S> objectHandleClass;
   private final String tid;
   private final Method mapperMethod;

@@ -12,7 +12,7 @@ import java.lang.reflect.Method;
  *
  * @param <S> source object handle type.
  */
-public class MethodMapper0<S, T> implements BasicMapper0<S, T> {
+public class MethodMapper0<S, T> implements AbstractMapper0<S, T> {
   private final String tid;
   private final Object unitInstance;
   private final Method mapperMethod;

@@ -19,10 +19,14 @@ public @interface Transition {
    */
   String value();
 
+  TraverseTypes[] allowedTraverseTypes() default { TraverseTypes.Mapping };
+
   /**
-   * Allowed traverse type.
+   * Default traverse type.<p/
+   *
+   * This parameter is used only if parameter allowedTraverseTypes has multiple values.
    */
-  TraverseTypes type() default TraverseTypes.Mapping;
+  TraverseTypes defaultTraverseType() default TraverseTypes.Mapping;
 
   /**
    * Assigned transition name.

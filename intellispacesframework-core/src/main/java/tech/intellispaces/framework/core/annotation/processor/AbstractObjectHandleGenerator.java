@@ -30,10 +30,10 @@ public abstract class AbstractObjectHandleGenerator extends AbstractGenerator {
 
   abstract protected ObjectHandleTypes getObjectHandleType();
 
-  abstract protected Stream<MethodStatement> getDomainMethods(CustomType customType);
+  abstract protected Stream<MethodStatement> getObjectHandleMethods(CustomType customType);
 
   protected void analyzeObjectHandleMethods(CustomType customType) {
-    this.methods = getDomainMethods(customType)
+    this.methods = getObjectHandleMethods(customType)
         .map(this::buildMethod)
         .filter(m -> !m.isEmpty())
         .toList();
@@ -72,7 +72,7 @@ public abstract class AbstractObjectHandleGenerator extends AbstractGenerator {
 
   protected boolean isDisableMoving(MethodStatement method) {
     Transition transition = TransitionFunctions.getDomainMainTransitionAnnotation(method);
-    return transition.type() == TraverseTypes.Moving && getObjectHandleType() == ObjectHandleTypes.Unmovable;
+    return transition.defaultTraverseType() == TraverseTypes.Moving && getObjectHandleType() == ObjectHandleTypes.Unmovable;
   }
 
   protected void appendMethodReturnType(StringBuilder sb, MethodStatement method) {

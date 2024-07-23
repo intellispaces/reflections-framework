@@ -5,7 +5,6 @@ import tech.intellispaces.framework.commons.action.string.StringActions;
 import tech.intellispaces.framework.commons.exception.UnexpectedViolationException;
 import tech.intellispaces.framework.commons.string.StringFunctions;
 import tech.intellispaces.framework.commons.type.TypeFunctions;
-import tech.intellispaces.framework.core.annotation.Transition;
 import tech.intellispaces.framework.core.common.NameFunctions;
 import tech.intellispaces.framework.core.guide.GuideFunctions;
 import tech.intellispaces.framework.core.guide.GuideKind;
@@ -23,6 +22,7 @@ import tech.intellispaces.framework.core.guide.n5.Mapper5;
 import tech.intellispaces.framework.core.guide.n5.Mover5;
 import tech.intellispaces.framework.core.object.ObjectFunctions;
 import tech.intellispaces.framework.core.space.transition.TransitionFunctions;
+import tech.intellispaces.framework.core.traverse.TraverseType;
 import tech.intellispaces.framework.core.traverse.TraverseTypes;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
 import tech.intellispaces.framework.javastatements.statement.method.MethodParam;
@@ -37,13 +37,17 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class AbstractGuideGenerator extends AbstractGenerator {
-  private final MethodStatement transitionMethod;
+  protected final TraverseType traverseType;
+  protected final MethodStatement transitionMethod;
   private String guideClassSimpleName;
   private String guideMethod;
   private String baseMethod;
 
-  public AbstractGuideGenerator(CustomType annotatedType, MethodStatement transitionMethod) {
+  public AbstractGuideGenerator(
+      TraverseType traverseType, CustomType annotatedType, MethodStatement transitionMethod
+  ) {
     super(annotatedType);
+    this.traverseType = traverseType;
     this.transitionMethod = transitionMethod;
   }
 
@@ -89,14 +93,13 @@ public abstract class AbstractGuideGenerator extends AbstractGenerator {
 
   private void analyzeGuideType() {
     Class<?> guideClass = getGuideClass();
-    String abstractGuideCanonicalName = TypeFunctions.addPrefixToClassName("Basic", guideClass.getCanonicalName());
+    String abstractGuideCanonicalName = TypeFunctions.addPrefixToClassName("Abstract", guideClass.getCanonicalName());
     guideClassSimpleName = context.addToImportAndGetSimpleName(abstractGuideCanonicalName);
     guideMethod = buildGuideMethod();
     baseMethod = buildBaseMethod(guideClass);
   }
 
   private Class<?> getGuideClass() {
-    TraverseTypes traverseType = getTraverseType();
     int qualifierCount = getQualifierMethodParams().size();
     if (TraverseTypes.Mapping == traverseType) {
       return switch (qualifierCount) {
@@ -332,10 +335,6 @@ public abstract class AbstractGuideGenerator extends AbstractGenerator {
 
   private String getAssociatedTypesDeclaration(CustomType type) {
     return type.typeParametersBriefDeclaration();
-  }
-
-  private TraverseTypes getTraverseType() {
-    return transitionMethod.selectAnnotation(Transition.class).orElseThrow().type();
   }
 
   private String transitionClassSimpleName() {

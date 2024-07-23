@@ -3,9 +3,11 @@ package tech.intellispaces.framework.core.annotation.processor.ontology;
 import com.google.auto.service.AutoService;
 import tech.intellispaces.framework.annotationprocessor.generator.ArtifactGenerator;
 import tech.intellispaces.framework.annotationprocessor.validator.AnnotatedTypeValidator;
+import tech.intellispaces.framework.commons.collection.ArraysFunctions;
 import tech.intellispaces.framework.core.annotation.Ontology;
 import tech.intellispaces.framework.core.annotation.Transition;
 import tech.intellispaces.framework.core.annotation.processor.AbstractAnnotationProcessor;
+import tech.intellispaces.framework.core.traverse.TraverseTypes;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
 import tech.intellispaces.framework.javastatements.statement.method.MethodStatement;
 
@@ -40,11 +42,28 @@ public class OntologyAnnotationProcessor extends AbstractAnnotationProcessor {
         if (isAutoGenerationEnabled(ontologyType, "Transition")) {
           generators.add(new OntologyTransitionGenerator(ontologyType, method));
         }
-        if (isAutoGenerationEnabled(ontologyType, "Guide")) {
-          generators.add(new OntologyGuideGenerator(ontologyType, method));
+        if (isEnableMapperGuideGeneration(ontologyType, method)) {
+          generators.add(new OntologyGuideGenerator(TraverseTypes.Mapping, ontologyType, method));
+        }
+        if (isEnableMoverGuideGeneration(ontologyType, method)) {
+          generators.add(new OntologyGuideGenerator(TraverseTypes.Moving, ontologyType, method));
         }
       }
     }
     return generators;
+  }
+
+  private boolean isEnableMapperGuideGeneration(CustomType domainType, MethodStatement method) {
+    return isAutoGenerationEnabled(domainType, "Mapper") &&
+        ArraysFunctions.contains(
+            method.selectAnnotation(Transition.class).orElseThrow().allowedTraverseTypes(),
+            TraverseTypes.Mapping);
+  }
+
+  private boolean isEnableMoverGuideGeneration(CustomType domainType, MethodStatement method) {
+    return isAutoGenerationEnabled(domainType, "Mover") &&
+        ArraysFunctions.contains(
+            method.selectAnnotation(Transition.class).orElseThrow().allowedTraverseTypes(),
+            TraverseTypes.Moving);
   }
 }

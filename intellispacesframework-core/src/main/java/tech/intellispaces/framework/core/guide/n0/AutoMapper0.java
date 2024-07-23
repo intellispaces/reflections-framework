@@ -12,7 +12,7 @@ import tech.intellispaces.framework.core.traverse.TraverseExecutor;
  * @param <S> source object handle type.
  * @param <T> target object handle type.
  */
-public class AutoMapper0<S, T> implements BasicMapper0<S, T> {
+public class AutoMapper0<S, T> implements AbstractMapper0<S, T> {
   private final String tid;
   private final TraverseExecutor traverseExecutor;
   private final DeclarativePlan declarativeTaskPlan;

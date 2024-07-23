@@ -26,7 +26,9 @@ public class MovableDowngradeObjectHandleGenerator extends AbstractDomainObjectH
   private String childField;
   private String domainClassSimpleName;
 
-  public MovableDowngradeObjectHandleGenerator(CustomType annotatedType, CustomTypeReference baseDomainType) {
+  public MovableDowngradeObjectHandleGenerator(
+      CustomType annotatedType, CustomTypeReference baseDomainType
+  ) {
     super(annotatedType);
     this.baseDomainType = baseDomainType;
   }

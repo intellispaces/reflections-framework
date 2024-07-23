@@ -4,6 +4,7 @@ import tech.intellispaces.framework.commons.exception.UnexpectedViolationExcepti
 import tech.intellispaces.framework.commons.type.TypeFunctions;
 import tech.intellispaces.framework.core.annotation.processor.AbstractGuideGenerator;
 import tech.intellispaces.framework.core.common.NameFunctions;
+import tech.intellispaces.framework.core.traverse.TraverseType;
 import tech.intellispaces.framework.javastatements.JavaStatements;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
 import tech.intellispaces.framework.javastatements.statement.method.MethodParam;
@@ -14,12 +15,12 @@ import java.util.List;
 
 public class OntologyGuideGenerator extends AbstractGuideGenerator {
   private final CustomType domainType;
-  private final MethodStatement transitionMethod;
   private final List<MethodParam> qualifierMethodParams;
 
-  public OntologyGuideGenerator(CustomType ontologyType, MethodStatement transitionMethod) {
-    super(ontologyType, transitionMethod);
-    this.transitionMethod = transitionMethod;
+  public OntologyGuideGenerator(
+      TraverseType traverseType, CustomType ontologyType, MethodStatement transitionMethod
+  ) {
+    super(traverseType, ontologyType, transitionMethod);
     this.domainType = getDomainTypeInternal();
     this.qualifierMethodParams = getQualifierMethodParamsInternal();
   }
@@ -36,7 +37,9 @@ public class OntologyGuideGenerator extends AbstractGuideGenerator {
 
   @Override
   protected String getGuideClassCanonicalName() {
-    return NameFunctions.getGuideClassCanonicalName(annotatedType.packageName(), annotatedType, transitionMethod);
+    return NameFunctions.getGuideClassCanonicalName(
+        traverseType, annotatedType.packageName(), annotatedType, transitionMethod
+    );
   }
 
   private CustomType getDomainTypeInternal() {

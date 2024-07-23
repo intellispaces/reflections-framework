@@ -15,7 +15,7 @@ import java.lang.reflect.Method;
  * @param <S> mapper source object type.
  * @param <Q> mapper qualified type.
  */
-public class AttachedMapper1<S, T, Q> implements BasicMapper1<S, T, Q> {
+public class AttachedMapper1<S, T, Q> implements AbstractMapper1<S, T, Q> {
   private final Class<S> objectHandleClass;
   private final String tid;
   private final Method mapperMethod;

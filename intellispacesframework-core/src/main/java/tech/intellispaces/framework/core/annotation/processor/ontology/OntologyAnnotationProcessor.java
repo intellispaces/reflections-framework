@@ -1,24 +1,21 @@
 package tech.intellispaces.framework.core.annotation.processor.ontology;
 
 import com.google.auto.service.AutoService;
+import tech.intellispaces.framework.annotationprocessor.AnnotatedTypeProcessor;
 import tech.intellispaces.framework.annotationprocessor.generator.ArtifactGenerator;
 import tech.intellispaces.framework.annotationprocessor.validator.AnnotatedTypeValidator;
-import tech.intellispaces.framework.commons.collection.ArraysFunctions;
 import tech.intellispaces.framework.core.annotation.Ontology;
-import tech.intellispaces.framework.core.annotation.Transition;
-import tech.intellispaces.framework.core.annotation.processor.AbstractAnnotationProcessor;
-import tech.intellispaces.framework.core.traverse.TraverseTypes;
+import tech.intellispaces.framework.core.annotation.processor.AnnotationProcessorFunctions;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
-import tech.intellispaces.framework.javastatements.statement.method.MethodStatement;
 
 import javax.annotation.processing.Processor;
+import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.ElementKind;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 @AutoService(Processor.class)
-public class OntologyAnnotationProcessor extends AbstractAnnotationProcessor {
+public class OntologyAnnotationProcessor extends AnnotatedTypeProcessor {
 
   public OntologyAnnotationProcessor() {
     super(Ontology.class, Set.of(ElementKind.INTERFACE));
@@ -26,7 +23,7 @@ public class OntologyAnnotationProcessor extends AbstractAnnotationProcessor {
 
   @Override
   protected boolean isApplicable(CustomType ontologyType) {
-    return isAutoGenerationEnabled(ontologyType);
+    return AnnotationProcessorFunctions.isAutoGenerationEnabled(ontologyType);
   }
 
   @Override
@@ -35,35 +32,9 @@ public class OntologyAnnotationProcessor extends AbstractAnnotationProcessor {
   }
 
   @Override
-  protected List<ArtifactGenerator> makeArtifactGenerators(CustomType ontologyType) {
-    List<ArtifactGenerator> generators = new ArrayList<>();
-    for (MethodStatement method : ontologyType.declaredMethods()) {
-      if (method.hasAnnotation(Transition.class)) {
-        if (isAutoGenerationEnabled(ontologyType, "Transition")) {
-          generators.add(new OntologyTransitionGenerator(ontologyType, method));
-        }
-        if (isEnableMapperGuideGeneration(ontologyType, method)) {
-          generators.add(new OntologyGuideGenerator(TraverseTypes.Mapping, ontologyType, method));
-        }
-        if (isEnableMoverGuideGeneration(ontologyType, method)) {
-          generators.add(new OntologyGuideGenerator(TraverseTypes.Moving, ontologyType, method));
-        }
-      }
-    }
-    return generators;
-  }
-
-  private boolean isEnableMapperGuideGeneration(CustomType domainType, MethodStatement method) {
-    return isAutoGenerationEnabled(domainType, "Mapper") &&
-        ArraysFunctions.contains(
-            method.selectAnnotation(Transition.class).orElseThrow().allowedTraverseTypes(),
-            TraverseTypes.Mapping);
-  }
-
-  private boolean isEnableMoverGuideGeneration(CustomType domainType, MethodStatement method) {
-    return isAutoGenerationEnabled(domainType, "Mover") &&
-        ArraysFunctions.contains(
-            method.selectAnnotation(Transition.class).orElseThrow().allowedTraverseTypes(),
-            TraverseTypes.Moving);
+  protected List<ArtifactGenerator> makeArtifactGenerators(
+      CustomType ontologyType, RoundEnvironment roundEnv
+  ) {
+    return AnnotationProcessorFunctions.makeOntologyArtifactGenerators(ontologyType, roundEnv);
   }
 }

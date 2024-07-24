@@ -5,6 +5,7 @@ import tech.intellispaces.framework.core.object.ObjectHandle;
 import tech.intellispaces.framework.core.object.ObjectHandleTypes;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
 
+import javax.annotation.processing.RoundEnvironment;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,6 +13,11 @@ public class CommonObjectHandleGenerator extends AbstractDomainObjectHandleGener
 
   public CommonObjectHandleGenerator(CustomType domainType) {
     super(domainType);
+  }
+
+  @Override
+  public String getArtifactName() {
+    return NameFunctions.getCommonObjectHandleTypename(annotatedType.className());
   }
 
   @Override
@@ -41,8 +47,8 @@ public class CommonObjectHandleGenerator extends AbstractDomainObjectHandleGener
   }
 
   @Override
-  protected boolean analyzeAnnotatedType() {
-    context.generatedClassCanonicalName(NameFunctions.getCommonObjectHandleTypename(annotatedType.className()));
+  protected boolean analyzeAnnotatedType(RoundEnvironment roundEnv) {
+    context.generatedClassCanonicalName(getArtifactName());
     if (annotatedType.isNested()) {
       context.addImport(sourceClassCanonicalName());
     }

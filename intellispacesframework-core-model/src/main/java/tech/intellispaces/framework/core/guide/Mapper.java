@@ -1,11 +1,13 @@
 package tech.intellispaces.framework.core.guide;
 
 /**
- * Mapper guide.
+ * Mapper guide.<p/>
  *
- * <p>Mapper guide maps source object to another related object.
+ * Mapper guide maps source object to another related object.<p/>
  *
- * <p>Mapper guide does not change the source object.
+ * Mapper guides does not change the source object.<p/>
+ *
+ * Mapper guides does not create new objects. Mappers return projections to existing objects.<p/>
  *
  * @param <S> source object handle type.
  * @param <T> target object handle type.

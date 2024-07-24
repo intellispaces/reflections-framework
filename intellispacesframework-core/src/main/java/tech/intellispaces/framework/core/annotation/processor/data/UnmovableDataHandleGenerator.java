@@ -7,6 +7,7 @@ import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
 import tech.intellispaces.framework.javastatements.statement.method.MethodStatement;
 import tech.intellispaces.framework.javastatements.statement.reference.TypeReference;
 
+import javax.annotation.processing.RoundEnvironment;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,6 +18,11 @@ public class UnmovableDataHandleGenerator extends AbstractGenerator {
 
   public UnmovableDataHandleGenerator(CustomType dataType) {
     super(dataType);
+  }
+
+  @Override
+  public String getArtifactName() {
+    return NameFunctions.getDataClassName(annotatedType.className());
   }
 
   @Override
@@ -38,8 +44,8 @@ public class UnmovableDataHandleGenerator extends AbstractGenerator {
   }
 
   @Override
-  protected boolean analyzeAnnotatedType() {
-    context.generatedClassCanonicalName(NameFunctions.getDataClassName(annotatedType.className()));
+  protected boolean analyzeAnnotatedType(RoundEnvironment roundEnv) {
+    context.generatedClassCanonicalName(getArtifactName());
     if (annotatedType.isNested()) {
       context.addImport(sourceClassCanonicalName());
     }

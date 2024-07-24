@@ -13,5 +13,7 @@ public @interface Preprocessing {
 
   boolean enable() default true;
 
-  String[] excludedArtefacts() default {};
+  String artifact() default "";
+
+  Class<?> extendWith() default Void.class;
 }

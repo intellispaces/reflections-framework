@@ -12,6 +12,7 @@ import tech.intellispaces.framework.javastatements.statement.method.MethodParam;
 import tech.intellispaces.framework.javastatements.statement.method.MethodStatement;
 import tech.intellispaces.framework.javastatements.statement.reference.CustomTypeReference;
 
+import javax.annotation.processing.RoundEnvironment;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -31,6 +32,11 @@ public class MovableDowngradeObjectHandleGenerator extends AbstractDomainObjectH
   ) {
     super(annotatedType);
     this.baseDomainType = baseDomainType;
+  }
+
+  @Override
+  public String getArtifactName() {
+    return NameFunctions.getMovableDowngradeObjectHandleTypename(annotatedType, baseDomainType.targetType());
   }
 
   @Override
@@ -64,9 +70,8 @@ public class MovableDowngradeObjectHandleGenerator extends AbstractDomainObjectH
   }
 
   @Override
-  protected boolean analyzeAnnotatedType() {
-    context.generatedClassCanonicalName(
-        NameFunctions.getMovableDowngradeObjectHandleTypename(annotatedType, baseDomainType.targetType()));
+  protected boolean analyzeAnnotatedType(RoundEnvironment roundEnv) {
+    context.generatedClassCanonicalName(getArtifactName());
 
     context.addImport(ObjectHandle.class);
     context.addImport(TraverseException.class);

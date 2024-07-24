@@ -23,6 +23,7 @@ import tech.intellispaces.framework.javastatements.statement.method.MethodParam;
 import tech.intellispaces.framework.javastatements.statement.method.MethodStatement;
 import tech.intellispaces.framework.javastatements.statement.reference.TypeReference;
 
+import javax.annotation.processing.RoundEnvironment;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -38,6 +39,11 @@ public class UnitWrapperGenerator extends AbstractGenerator {
 
   public UnitWrapperGenerator(CustomType annotatedType) {
     super(annotatedType);
+  }
+
+  @Override
+  public String getArtifactName() {
+    return NameFunctions.getUnitWrapperCanonicalName(annotatedType.className());
   }
 
   @Override
@@ -61,8 +67,8 @@ public class UnitWrapperGenerator extends AbstractGenerator {
   }
 
   @Override
-  protected boolean analyzeAnnotatedType() {
-    context.generatedClassCanonicalName(NameFunctions.getUnitWrapperCanonicalName(annotatedType.className()));
+  protected boolean analyzeAnnotatedType(RoundEnvironment roundEnv) {
+    context.generatedClassCanonicalName(getArtifactName());
     if (annotatedType.isNested()) {
       context.addImport(sourceClassCanonicalName());
     }

@@ -5,6 +5,7 @@ import tech.intellispaces.framework.core.object.MovableObjectHandle;
 import tech.intellispaces.framework.core.object.ObjectHandleTypes;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
 
+import javax.annotation.processing.RoundEnvironment;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,6 +14,11 @@ public class MovableObjectHandleGenerator extends AbstractDomainObjectHandleGene
 
   public MovableObjectHandleGenerator(CustomType domainType) {
     super(domainType);
+  }
+
+  @Override
+  public String getArtifactName() {
+    return NameFunctions.getMovableObjectHandleTypename(annotatedType.className());
   }
 
   @Override
@@ -42,8 +48,8 @@ public class MovableObjectHandleGenerator extends AbstractDomainObjectHandleGene
   }
 
   @Override
-  protected boolean analyzeAnnotatedType() {
-    context.generatedClassCanonicalName(NameFunctions.getMovableObjectHandleTypename(annotatedType.className()));
+  protected boolean analyzeAnnotatedType(RoundEnvironment roundEnv) {
+    context.generatedClassCanonicalName(getArtifactName());
     if (annotatedType.isNested()) {
       context.addImport(sourceClassCanonicalName());
     }

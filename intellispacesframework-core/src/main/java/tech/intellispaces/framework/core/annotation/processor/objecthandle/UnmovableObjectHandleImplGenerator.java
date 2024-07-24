@@ -10,6 +10,7 @@ import tech.intellispaces.framework.core.transition.TransitionMethod0;
 import tech.intellispaces.framework.core.transition.TransitionMethod1;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
 
+import javax.annotation.processing.RoundEnvironment;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,6 +18,11 @@ public class UnmovableObjectHandleImplGenerator extends AbstractObjectHandleImpl
 
   public UnmovableObjectHandleImplGenerator(CustomType objectHandleType) {
     super(objectHandleType);
+  }
+
+  @Override
+  public String getArtifactName() {
+    return getGeneratedClassCanonicalName();
   }
 
   @Override
@@ -47,7 +53,7 @@ public class UnmovableObjectHandleImplGenerator extends AbstractObjectHandleImpl
   }
 
   @Override
-  protected boolean analyzeAnnotatedType() {
+  protected boolean analyzeAnnotatedType(RoundEnvironment roundEnv) {
     context.generatedClassCanonicalName(getGeneratedClassCanonicalName());
 
     context.addImport(Modules.class);

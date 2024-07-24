@@ -11,6 +11,7 @@ import tech.intellispaces.framework.core.transition.TransitionMethod0;
 import tech.intellispaces.framework.core.transition.TransitionMethod1;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
 
+import javax.annotation.processing.RoundEnvironment;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,6 +19,11 @@ public class MovableObjectHandleImplImplGenerator extends AbstractObjectHandleIm
 
   public MovableObjectHandleImplImplGenerator(CustomType objectHandleType) {
     super(objectHandleType);
+  }
+
+  @Override
+  public String getArtifactName() {
+    return getGeneratedClassCanonicalName();
   }
 
   @Override
@@ -49,7 +55,7 @@ public class MovableObjectHandleImplImplGenerator extends AbstractObjectHandleIm
   }
 
   @Override
-  protected boolean analyzeAnnotatedType() {
+  protected boolean analyzeAnnotatedType(RoundEnvironment roundEnv) {
     context.generatedClassCanonicalName(getGeneratedClassCanonicalName());
 
     CustomType domainType = ObjectFunctions.getDomainTypeOfObjectHandle(annotatedType);

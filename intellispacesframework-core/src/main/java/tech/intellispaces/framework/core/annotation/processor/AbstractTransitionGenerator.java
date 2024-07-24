@@ -10,6 +10,7 @@ import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
 import tech.intellispaces.framework.javastatements.statement.method.MethodStatement;
 import tech.intellispaces.framework.javastatements.statement.reference.TypeReference;
 
+import javax.annotation.processing.RoundEnvironment;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +40,11 @@ public abstract class AbstractTransitionGenerator extends AbstractGenerator {
   protected abstract List<TypeReference> getQualifierTypes();
 
   @Override
+  public String getArtifactName() {
+    return getTransitionClassCanonicalName();
+  }
+
+  @Override
   protected String templateName() {
     return "/transition.template";
   }
@@ -50,7 +56,7 @@ public abstract class AbstractTransitionGenerator extends AbstractGenerator {
     vars.put("packageName", context.packageName());
     vars.put("sourceClassName", sourceClassCanonicalName());
     vars.put("sourceClassSimpleName", sourceClassSimpleName());
-    vars.put("targetClassLink", ProcessorFunctions.getDomainClassLink(transitionMethod.returnType().orElseThrow()));
+    vars.put("targetClassLink", AnnotationProcessorFunctions.getDomainClassLink(transitionMethod.returnType().orElseThrow()));
     vars.put("classSimpleName", context.generatedClassSimpleName());
     vars.put("importedClasses", context.getImports());
     vars.put("transitionMethod", transitionMethodSignature);
@@ -63,7 +69,7 @@ public abstract class AbstractTransitionGenerator extends AbstractGenerator {
   }
 
   @Override
-  protected boolean analyzeAnnotatedType() {
+  protected boolean analyzeAnnotatedType(RoundEnvironment roundEnv) {
     context.generatedClassCanonicalName(getTransitionClassCanonicalName());
     if (annotatedType.isNested()) {
       context.addImport(sourceClassCanonicalName());

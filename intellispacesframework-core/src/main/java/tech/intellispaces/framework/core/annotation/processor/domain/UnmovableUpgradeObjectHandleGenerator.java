@@ -9,6 +9,7 @@ import tech.intellispaces.framework.javastatements.statement.method.MethodParam;
 import tech.intellispaces.framework.javastatements.statement.method.MethodStatement;
 import tech.intellispaces.framework.javastatements.statement.reference.CustomTypeReference;
 
+import javax.annotation.processing.RoundEnvironment;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -23,6 +24,11 @@ public class UnmovableUpgradeObjectHandleGenerator extends AbstractDomainObjectH
   public UnmovableUpgradeObjectHandleGenerator(CustomType annotatedType, CustomTypeReference baseDomainType) {
     super(annotatedType);
     this.baseDomainType = baseDomainType;
+  }
+
+  @Override
+  public String getArtifactName() {
+    return NameFunctions.getUnmovableUpgradeObjectHandleTypename(annotatedType, baseDomainType.targetType());
   }
 
   @Override
@@ -53,9 +59,8 @@ public class UnmovableUpgradeObjectHandleGenerator extends AbstractDomainObjectH
   }
 
   @Override
-  protected boolean analyzeAnnotatedType() {
-    context.generatedClassCanonicalName(
-        NameFunctions.getUnmovableUpgradeObjectHandleTypename(annotatedType, baseDomainType.targetType()));
+  protected boolean analyzeAnnotatedType(RoundEnvironment roundEnv) {
+    context.generatedClassCanonicalName(getArtifactName());
 
     context.addImport(ObjectHandle.class);
 

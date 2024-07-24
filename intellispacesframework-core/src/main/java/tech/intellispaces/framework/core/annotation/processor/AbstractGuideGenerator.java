@@ -32,6 +32,7 @@ import tech.intellispaces.framework.javastatements.statement.reference.NamedType
 import tech.intellispaces.framework.javastatements.statement.reference.NonPrimitiveTypeReference;
 import tech.intellispaces.framework.javastatements.statement.reference.TypeReference;
 
+import javax.annotation.processing.RoundEnvironment;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,6 +59,11 @@ public abstract class AbstractGuideGenerator extends AbstractGenerator {
   protected abstract String getGuideClassCanonicalName();
 
   @Override
+  public String getArtifactName() {
+    return getGuideClassCanonicalName();
+  }
+
+  @Override
   protected String templateName() {
     return "/guide.template";
   }
@@ -80,7 +86,7 @@ public abstract class AbstractGuideGenerator extends AbstractGenerator {
   }
 
   @Override
-  protected boolean analyzeAnnotatedType() {
+  protected boolean analyzeAnnotatedType(RoundEnvironment roundEnv) {
     context.generatedClassCanonicalName(getGuideClassCanonicalName());
     if (annotatedType.isNested()) {
       context.addImport(annotatedType.canonicalName());
@@ -147,7 +153,7 @@ public abstract class AbstractGuideGenerator extends AbstractGenerator {
       sb.append(typeParams);
       sb.append(" ");
     }
-    if (ProcessorFunctions.isVoidType(transitionMethod.returnType().orElseThrow())) {
+    if (AnnotationProcessorFunctions.isVoidType(transitionMethod.returnType().orElseThrow())) {
       sb.append("void");
     } else {
       sb.append(getTargetObjectHandleDeclaration());
@@ -184,7 +190,7 @@ public abstract class AbstractGuideGenerator extends AbstractGenerator {
       sb.append(param.name());
     }
     sb.append(") {\n  ");
-    if (!ProcessorFunctions.isVoidType(transitionMethod.returnType().orElseThrow())) {
+    if (!AnnotationProcessorFunctions.isVoidType(transitionMethod.returnType().orElseThrow())) {
       sb.append("return ");
     }
     sb.append(transitionMethod.name());
@@ -194,7 +200,7 @@ public abstract class AbstractGuideGenerator extends AbstractGenerator {
       sb.append(param.name());
     }
     sb.append(");\n");
-    if (ProcessorFunctions.isVoidType(transitionMethod.returnType().orElseThrow())) {
+    if (AnnotationProcessorFunctions.isVoidType(transitionMethod.returnType().orElseThrow())) {
       sb.append("  return null;\n");
     }
     sb.append("}");

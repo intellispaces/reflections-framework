@@ -1,20 +1,21 @@
 package tech.intellispaces.framework.core.annotation.processor.objecthandle;
 
 import com.google.auto.service.AutoService;
+import tech.intellispaces.framework.annotationprocessor.AnnotatedTypeProcessor;
 import tech.intellispaces.framework.annotationprocessor.generator.ArtifactGenerator;
 import tech.intellispaces.framework.annotationprocessor.validator.AnnotatedTypeValidator;
 import tech.intellispaces.framework.core.annotation.ObjectHandle;
-import tech.intellispaces.framework.core.annotation.processor.AbstractAnnotationProcessor;
-import tech.intellispaces.framework.core.object.MovableObjectHandle;
+import tech.intellispaces.framework.core.annotation.processor.AnnotationProcessorFunctions;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
 
 import javax.annotation.processing.Processor;
+import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.ElementKind;
 import java.util.List;
 import java.util.Set;
 
 @AutoService(Processor.class)
-public class ObjectHandleAnnotationProcessor extends AbstractAnnotationProcessor {
+public class ObjectHandleAnnotationProcessor extends AnnotatedTypeProcessor {
 
   public ObjectHandleAnnotationProcessor() {
     super(ObjectHandle.class, Set.of(ElementKind.INTERFACE, ElementKind.CLASS));
@@ -22,7 +23,7 @@ public class ObjectHandleAnnotationProcessor extends AbstractAnnotationProcessor
 
   @Override
   protected boolean isApplicable(CustomType objectHandleType) {
-    return objectHandleType.isAbstract() && isAutoGenerationEnabled(objectHandleType);
+    return objectHandleType.isAbstract() && AnnotationProcessorFunctions.isAutoGenerationEnabled(objectHandleType);
   }
 
   @Override
@@ -31,15 +32,7 @@ public class ObjectHandleAnnotationProcessor extends AbstractAnnotationProcessor
   }
 
   @Override
-  protected List<ArtifactGenerator> makeArtifactGenerators(CustomType objectHandleType) {
-    if (isMovableObjectHandle(objectHandleType)) {
-      return List.of(new MovableObjectHandleImplImplGenerator(objectHandleType));
-    } else {
-      return List.of(new UnmovableObjectHandleImplGenerator(objectHandleType));
-    }
-  }
-
-  private boolean isMovableObjectHandle(CustomType objectHandleType) {
-    return objectHandleType.hasParent(MovableObjectHandle.class.getCanonicalName());
+  protected List<ArtifactGenerator> makeArtifactGenerators(CustomType objectHandleType, RoundEnvironment roundEnv) {
+    return AnnotationProcessorFunctions.makeObjectHandleArtifactGenerators(objectHandleType);
   }
 }

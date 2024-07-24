@@ -37,6 +37,10 @@ public class ObjectFunctions {
         return DEFAULT_OBJECT_HANDLE_CLASSES.contains(type.canonicalName());
   }
 
+  public static boolean isMovableObjectHandle(CustomType objectHandleType) {
+    return objectHandleType.hasParent(MovableObjectHandle.class.getCanonicalName());
+  }
+
   public static String getObjectHandleTypename(TypeReference domainType) {
     if (domainType.isPrimitive()) {
       return TypeFunctions.getPrimitiveWrapperClass(

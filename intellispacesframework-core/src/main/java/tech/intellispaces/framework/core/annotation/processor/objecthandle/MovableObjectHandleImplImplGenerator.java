@@ -33,7 +33,7 @@ public class MovableObjectHandleImplImplGenerator extends AbstractObjectHandleIm
 
   protected Map<String, Object> templateVariables() {
     Map<String, Object> vars = new HashMap<>();
-    vars.put("generatedAnnotation", generatedAnnotation());
+    vars.put("generatedAnnotation", makeGeneratedAnnotation());
     vars.put("packageName", context.packageName());
     vars.put("sourceClassName", sourceClassCanonicalName());
     vars.put("sourceClassSimpleName", sourceClassSimpleName());
@@ -74,9 +74,9 @@ public class MovableObjectHandleImplImplGenerator extends AbstractObjectHandleIm
 
     analyzeTypeParams(annotatedType);
     analyzeConstructors(annotatedType);
-    analyzeGuideGetters(annotatedType);
-    analyzeGuideImplementationMethods(annotatedType);
-    analyzeObjectHandleMethods(annotatedType);
+    analyzeGuideGetters(annotatedType, roundEnv);
+    analyzeGuideImplementationMethods(annotatedType, roundEnv);
+    analyzeObjectHandleMethods(annotatedType, roundEnv);
     return true;
   }
 }

@@ -2,7 +2,7 @@ package tech.intellispaces.framework.core.annotation.processor.domain;
 
 import tech.intellispaces.framework.commons.string.StringFunctions;
 import tech.intellispaces.framework.core.annotation.ObjectHandle;
-import tech.intellispaces.framework.core.common.NameFunctions;
+import tech.intellispaces.framework.core.common.NameConventionFunctions;
 import tech.intellispaces.framework.core.object.ObjectHandleTypes;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
 import tech.intellispaces.framework.javastatements.statement.method.MethodParam;
@@ -28,7 +28,7 @@ public class UnmovableUpgradeObjectHandleGenerator extends AbstractDomainObjectH
 
   @Override
   public String getArtifactName() {
-    return NameFunctions.getUnmovableUpgradeObjectHandleTypename(annotatedType, baseDomainType.targetType());
+    return NameConventionFunctions.getUnmovableUpgradeObjectHandleTypename(annotatedType, baseDomainType.targetType());
   }
 
   @Override
@@ -44,7 +44,7 @@ public class UnmovableUpgradeObjectHandleGenerator extends AbstractDomainObjectH
   @Override
   protected Map<String, Object> templateVariables() {
     Map<String, Object> vars = new HashMap<>();
-    vars.put("generatedAnnotation", generatedAnnotation());
+    vars.put("generatedAnnotation", makeGeneratedAnnotation());
     vars.put("packageName", context.packageName());
     vars.put("sourceClassName", sourceClassCanonicalName());
     vars.put("sourceClassSimpleName", sourceClassSimpleName());
@@ -65,18 +65,18 @@ public class UnmovableUpgradeObjectHandleGenerator extends AbstractDomainObjectH
     context.addImport(ObjectHandle.class);
 
     unmovableObjectHandleName = context.addToImportAndGetSimpleName(
-        NameFunctions.getUnmovableObjectHandleTypename(annotatedType.className()));
+        NameConventionFunctions.getUnmovableObjectHandleTypename(annotatedType.className()));
 
     classTypeParams = annotatedType.typeParametersFullDeclaration();
     baseField = StringFunctions.lowercaseFirstLetter(baseDomainType.targetType().simpleName());
     baseObjectHandleType = getBaseObjectHandleType();
 
-    analyzeObjectHandleMethods(annotatedType);
+    analyzeObjectHandleMethods(annotatedType, roundEnv);
     return true;
   }
 
   @Override
-  protected String buildMethod(MethodStatement method) {
+  protected Map<String, String> buildMethod(MethodStatement method) {
     if (method.name().equals("as" + baseDomainType.targetType().simpleName())) {
       return buildConvertMethod(method);
     } else {
@@ -84,11 +84,11 @@ public class UnmovableUpgradeObjectHandleGenerator extends AbstractDomainObjectH
     }
   }
 
-  private String buildConvertMethod(MethodStatement method) {
+  private Map<String, String> buildConvertMethod(MethodStatement method) {
     var sb = new StringBuilder();
     sb.append("public ");
     appendMethodTypeParameters(sb, method);
-    appendMethodReturnType(sb, method);
+    appendMethodReturnHandleType(sb, method);
     sb.append(" ");
     sb.append(method.name());
     sb.append("(");
@@ -97,17 +97,17 @@ public class UnmovableUpgradeObjectHandleGenerator extends AbstractDomainObjectH
     appendMethodExceptions(sb, method);
     sb.append(" {\n");
     sb.append("  return (");
-    appendMethodReturnType(sb, method);
+    appendMethodReturnHandleType(sb, method);
     sb.append(")  this.").append(baseField).append(";\n");
     sb.append("}\n");
-    return sb.toString();
+    return Map.of("declaration", sb.toString());
   }
 
-  private String buildNormalMethod(MethodStatement method) {
+  private Map<String, String> buildNormalMethod(MethodStatement method) {
     var sb = new StringBuilder();
     sb.append("public ");
     appendMethodTypeParameters(sb, method);
-    appendMethodReturnType(sb, method);
+    appendMethodReturnHandleType(sb, method);
     sb.append(" ");
     sb.append(method.name());
     sb.append("(");
@@ -116,7 +116,7 @@ public class UnmovableUpgradeObjectHandleGenerator extends AbstractDomainObjectH
     appendMethodExceptions(sb, method);
     sb.append(" {\n");
     sb.append("  return (");
-    appendMethodReturnType(sb, method);
+    appendMethodReturnHandleType(sb, method);
     sb.append(") this.").append(baseField).append(".");
     sb.append(method.name());
     sb.append("(");
@@ -125,12 +125,12 @@ public class UnmovableUpgradeObjectHandleGenerator extends AbstractDomainObjectH
         .collect(Collectors.joining(", ")));
     sb.append(");\n");
     sb.append("}\n");
-    return sb.toString();
+    return Map.of("declaration", sb.toString());
   }
 
   private String getBaseObjectHandleType() {
     return context.addToImportAndGetSimpleName(
-        NameFunctions.getUnmovableObjectHandleTypename(baseDomainType.targetType().className())
+        NameConventionFunctions.getUnmovableObjectHandleTypename(baseDomainType.targetType().className())
     ) + annotatedType.parentTypes().get(0).typeArgumentsDeclaration(context::addToImportAndGetSimpleName);
   }
 }

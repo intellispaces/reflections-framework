@@ -9,7 +9,7 @@ import tech.intellispaces.framework.commons.type.Type;
 import tech.intellispaces.framework.commons.type.Types;
 import tech.intellispaces.framework.core.annotation.Transition;
 import tech.intellispaces.framework.core.annotation.processor.AbstractObjectHandleGenerator;
-import tech.intellispaces.framework.core.common.NameFunctions;
+import tech.intellispaces.framework.core.common.NameConventionFunctions;
 import tech.intellispaces.framework.core.guide.n0.Mapper0;
 import tech.intellispaces.framework.core.guide.n0.Mover0;
 import tech.intellispaces.framework.core.guide.n1.Mapper1;
@@ -32,6 +32,7 @@ import tech.intellispaces.framework.javastatements.statement.method.MethodStatem
 import tech.intellispaces.framework.javastatements.statement.reference.NamedTypeReference;
 import tech.intellispaces.framework.javastatements.statement.reference.TypeReference;
 
+import javax.annotation.processing.RoundEnvironment;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -52,20 +53,26 @@ abstract class AbstractObjectHandleImplGenerator extends AbstractObjectHandleGen
   }
 
   @Override
-  protected Stream<MethodStatement> getObjectHandleMethods(CustomType objectHandleType) {
+  protected Stream<MethodStatement> getObjectHandleMethods(
+      CustomType objectHandleType, RoundEnvironment roundEnv
+  ) {
     CustomType domainType = ObjectFunctions.getDomainTypeOfObjectHandle(objectHandleType);
     return domainType.actualMethods().stream()
         .filter(m -> !m.isDefault());
   }
 
-  protected void analyzeGuideGetters(CustomType objectHandleType) {
-    this.guideGetters = getObjectHandleMethods(objectHandleType)
+  protected void analyzeGuideGetters(
+      CustomType objectHandleType, RoundEnvironment roundEnv
+  ) {
+    this.guideGetters = getObjectHandleMethods(objectHandleType, roundEnv)
         .map(this::buildGuideGetter)
         .toList();
   }
 
-  protected void analyzeGuideImplementationMethods(CustomType objectHandleType) {
-    this.guideImplementationMethods = getObjectHandleMethods(objectHandleType)
+  protected void analyzeGuideImplementationMethods(
+      CustomType objectHandleType, RoundEnvironment roundEnv
+  ) {
+    this.guideImplementationMethods = getObjectHandleMethods(objectHandleType, roundEnv)
         .map(this::buildGuideMethod)
         .toList();
   }
@@ -106,7 +113,7 @@ abstract class AbstractObjectHandleImplGenerator extends AbstractObjectHandleGen
   private String buildGuideGetterName(MethodStatement domainMethod) {
     var sb = new StringBuilder();
     sb.append("_");
-    sb.append(NameFunctions.joinMethodNameAndParameterTypes(domainMethod));
+    sb.append(NameConventionFunctions.joinMethodNameAndParameterTypes(domainMethod));
     sb.append("GuideGetter");
     return sb.toString();
   }
@@ -157,7 +164,7 @@ abstract class AbstractObjectHandleImplGenerator extends AbstractObjectHandleGen
     sb.append(domainMethod.params().size());
     sb.append("(");
     sb.append("sourceType, ");
-    sb.append(context.addToImportAndGetSimpleName(NameFunctions.getTransitionClassCanonicalName(domainMethod)));
+    sb.append(context.addToImportAndGetSimpleName(NameConventionFunctions.getTransitionClassCanonicalName(domainMethod)));
     sb.append(".class);");
     return sb.toString();
   }
@@ -194,7 +201,7 @@ abstract class AbstractObjectHandleImplGenerator extends AbstractObjectHandleGen
   }
 
   protected String getGeneratedClassCanonicalName() {
-    return NameFunctions.getObjectHandleImplementationTypename(annotatedType);
+    return NameConventionFunctions.getObjectHandleImplementationTypename(annotatedType);
   }
 
   protected void analyzeTypeParams(CustomType objectHandleType) {
@@ -254,15 +261,15 @@ abstract class AbstractObjectHandleImplGenerator extends AbstractObjectHandleGen
   }
 
   @Override
-  protected String buildMethod(MethodStatement domainMethod) {
+  protected Map<String, String> buildMethod(MethodStatement domainMethod) {
     if (isDisableMoving(domainMethod)) {
-      return "";
+      return Map.of();
     }
 
     var sb = new StringBuilder();
     sb.append("public ");
     appendMethodTypeParameters(sb, domainMethod);
-    appendMethodReturnType(sb, domainMethod);
+    appendMethodReturnHandleType(sb, domainMethod);
     sb.append(" ");
     sb.append(domainMethod.name());
     sb.append("(");
@@ -279,7 +286,7 @@ abstract class AbstractObjectHandleImplGenerator extends AbstractObjectHandleGen
       sb.append(param.name());
     }
     sb.append(");\n}");
-    return sb.toString();
+    return Map.of("declaration", sb.toString());
   }
 
   private String buildCastDeclaration(TypeReference type) {

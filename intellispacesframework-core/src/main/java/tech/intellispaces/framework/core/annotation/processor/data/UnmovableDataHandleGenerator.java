@@ -1,7 +1,7 @@
 package tech.intellispaces.framework.core.annotation.processor.data;
 
 import tech.intellispaces.framework.core.annotation.processor.AbstractGenerator;
-import tech.intellispaces.framework.core.common.NameFunctions;
+import tech.intellispaces.framework.core.common.NameConventionFunctions;
 import tech.intellispaces.framework.core.object.ObjectHandleTypes;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
 import tech.intellispaces.framework.javastatements.statement.method.MethodStatement;
@@ -22,7 +22,7 @@ public class UnmovableDataHandleGenerator extends AbstractGenerator {
 
   @Override
   public String getArtifactName() {
-    return NameFunctions.getDataClassName(annotatedType.className());
+    return NameConventionFunctions.getDataClassName(annotatedType.className());
   }
 
   @Override
@@ -33,10 +33,10 @@ public class UnmovableDataHandleGenerator extends AbstractGenerator {
   @Override
   protected Map<String, Object> templateVariables() {
     return Map.of(
-        "generatedAnnotation", generatedAnnotation(),
+        "generatedAnnotation", makeGeneratedAnnotation(),
         "packageName", context.packageName(),
         "sourceClassName", sourceClassCanonicalName(),
-        "objectHandleClassName", NameFunctions.getUnmovableObjectHandleTypename(annotatedType.className()),
+        "objectHandleClassName", NameConventionFunctions.getUnmovableObjectHandleTypename(annotatedType.className()),
         "classSimpleName", context.generatedClassSimpleName(),
         "importedClasses", context.getImports(),
         "projections", projectionProperties
@@ -57,7 +57,7 @@ public class UnmovableDataHandleGenerator extends AbstractGenerator {
   private void analyzeProjections() {
     for (MethodStatement method : annotatedType.declaredMethods()) {
       TypeReference type = method.returnType().orElseThrow();
-      String handleType = getObjectHandleCanonicalName(type, ObjectHandleTypes.Unmovable);
+      String handleType = getObjectHandleDeclaration(type, ObjectHandleTypes.Unmovable);
 
       Map<String, String> properties = new HashMap<>();
       properties.put("type", handleType);

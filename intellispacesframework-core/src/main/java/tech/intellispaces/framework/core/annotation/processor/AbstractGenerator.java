@@ -5,7 +5,7 @@ import tech.intellispaces.framework.annotationprocessor.generator.TemplateBasedJ
 import tech.intellispaces.framework.commons.action.Executor;
 import tech.intellispaces.framework.commons.action.string.StringActions;
 import tech.intellispaces.framework.commons.type.TypeFunctions;
-import tech.intellispaces.framework.core.common.NameFunctions;
+import tech.intellispaces.framework.core.common.NameConventionFunctions;
 import tech.intellispaces.framework.core.object.ObjectHandleTypes;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
 import tech.intellispaces.framework.javastatements.statement.method.MethodSignatureDeclarations;
@@ -46,7 +46,7 @@ public abstract class AbstractGenerator extends TemplateBasedJavaArtifactGenerat
     return annotatedType.simpleName();
   }
 
-  protected String generatedAnnotation() {
+  protected String makeGeneratedAnnotation() {
     if (generatedAnnotation == null) {
       generatedAnnotation = """
         @Generated(
@@ -62,6 +62,15 @@ public abstract class AbstractGenerator extends TemplateBasedJavaArtifactGenerat
       );
     }
     return generatedAnnotation;
+  }
+
+  protected String buildGeneratedMethodJavadoc(String sourceClassCanonicalName, String methodName) {
+    return """
+      /**
+       * This method was generated on base of method '%s'
+       * of the class {@link %s}
+       */
+        """.formatted(methodName, sourceClassCanonicalName);
   }
 
   protected String buildMethodSignature(MethodStatement method) {
@@ -91,7 +100,7 @@ public abstract class AbstractGenerator extends TemplateBasedJavaArtifactGenerat
         .get(context::addImport, context::simpleNameOf);
   }
 
-  protected String getObjectHandleCanonicalName(TypeReference domainType, ObjectHandleTypes handleType) {
+  protected String getObjectHandleDeclaration(TypeReference domainType, ObjectHandleTypes handleType) {
     if (domainType.asPrimitiveTypeReference().isPresent()) {
       return domainType.asPrimitiveTypeReference().get().typename();
     } else if (domainType.asNamedTypeReference().isPresent()) {
@@ -116,7 +125,7 @@ public abstract class AbstractGenerator extends TemplateBasedJavaArtifactGenerat
         return targetType.simpleName();
       } else {
         var sb = new StringBuilder();
-        String canonicalName = NameFunctions.getObjectHandleTypename(targetType.className(), handleType);
+        String canonicalName = NameConventionFunctions.getObjectHandleTypename(targetType.className(), handleType);
         context.addImport(canonicalName);
         String simpleName = context.simpleNameOf(canonicalName);
         sb.append(simpleName);
@@ -134,13 +143,13 @@ public abstract class AbstractGenerator extends TemplateBasedJavaArtifactGenerat
     } else if (domainType.asWildcardTypeReference().isPresent()) {
       WildcardTypeReference wildcardTypeReference = domainType.asWildcardTypeReference().get();
       if (wildcardTypeReference.extendedBound().isPresent()) {
-        return getObjectHandleCanonicalName(wildcardTypeReference.extendedBound().get(), handleType);
+        return getObjectHandleDeclaration(wildcardTypeReference.extendedBound().get(), handleType);
       } else {
         throw new UnsupportedOperationException("Not implemented");
       }
     } else if (domainType.asArrayTypeReference().isPresent()) {
       TypeReference elementType = domainType.asArrayTypeReference().get().elementType();
-      return getObjectHandleCanonicalName(elementType, handleType) + "[]";
+      return getObjectHandleDeclaration(elementType, handleType) + "[]";
     } else {
       throw new UnsupportedOperationException("Unsupported type - " + domainType.actualDeclaration());
     }

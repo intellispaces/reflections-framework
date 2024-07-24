@@ -1,8 +1,8 @@
 package tech.intellispaces.framework.core.annotation.processor.ontology;
 
-import tech.intellispaces.framework.commons.string.StringFunctions;
 import tech.intellispaces.framework.commons.type.TypeFunctions;
 import tech.intellispaces.framework.core.annotation.processor.AbstractTransitionGenerator;
+import tech.intellispaces.framework.core.common.NameConventionFunctions;
 import tech.intellispaces.framework.javastatements.statement.Statement;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
 import tech.intellispaces.framework.javastatements.statement.method.MethodParam;
@@ -42,7 +42,7 @@ public class OntologyTransitionGenerator extends AbstractTransitionGenerator {
   @Override
   protected String getTransitionClassCanonicalName() {
     String packageName = TypeFunctions.getPackageName(annotatedType.canonicalName());
-    String simpleName = StringFunctions.capitalizeFirstLetter(transitionMethod.name()) + "Transition";
+    String simpleName = NameConventionFunctions.getDefaultTransitionClassSimpleName(transitionMethod);
     return TypeFunctions.joinPackageAndSimpleName(packageName, simpleName);
   }
 

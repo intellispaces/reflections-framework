@@ -52,7 +52,7 @@ public abstract class AbstractTransitionGenerator extends AbstractGenerator {
   @Override
   protected Map<String, Object> templateVariables() {
     Map<String, Object> vars = new HashMap<>();
-    vars.put("generatedAnnotation", generatedAnnotation());
+    vars.put("generatedAnnotation", makeGeneratedAnnotation());
     vars.put("packageName", context.packageName());
     vars.put("sourceClassName", sourceClassCanonicalName());
     vars.put("sourceClassSimpleName", sourceClassSimpleName());

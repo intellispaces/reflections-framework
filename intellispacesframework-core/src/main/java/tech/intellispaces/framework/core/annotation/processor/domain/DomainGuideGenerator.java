@@ -1,7 +1,7 @@
 package tech.intellispaces.framework.core.annotation.processor.domain;
 
 import tech.intellispaces.framework.core.annotation.processor.AbstractGuideGenerator;
-import tech.intellispaces.framework.core.common.NameFunctions;
+import tech.intellispaces.framework.core.common.NameConventionFunctions;
 import tech.intellispaces.framework.core.traverse.TraverseType;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
 import tech.intellispaces.framework.javastatements.statement.method.MethodParam;
@@ -27,7 +27,7 @@ public class DomainGuideGenerator extends AbstractGuideGenerator {
 
   @Override
   protected String getGuideClassCanonicalName() {
-    return NameFunctions.getGuideClassCanonicalName(
+    return NameConventionFunctions.getGuideClassCanonicalName(
         traverseType, annotatedType.packageName(), annotatedType, transitionMethod
     );
   }

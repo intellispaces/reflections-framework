@@ -21,7 +21,7 @@ public class {{$classSimpleName}}{{$typeParamsFull}} extends {{$sourceClassSimpl
 
 {{for method : $methods}}
   @Override
-  {{$method}}
+  {{$method.get("declaration")}};
 
 {{end}}
 {{for method : $guideImplementationMethods}}

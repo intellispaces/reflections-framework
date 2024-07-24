@@ -4,7 +4,7 @@ import tech.intellispaces.framework.commons.action.Executor;
 import tech.intellispaces.framework.commons.action.string.StringActions;
 import tech.intellispaces.framework.commons.type.TypeFunctions;
 import tech.intellispaces.framework.core.annotation.Transition;
-import tech.intellispaces.framework.core.common.NameFunctions;
+import tech.intellispaces.framework.core.common.NameConventionFunctions;
 import tech.intellispaces.framework.core.exception.TraverseException;
 import tech.intellispaces.framework.core.object.ObjectHandleTypes;
 import tech.intellispaces.framework.core.space.transition.TransitionFunctions;
@@ -15,14 +15,16 @@ import tech.intellispaces.framework.javastatements.statement.method.MethodStatem
 import tech.intellispaces.framework.javastatements.statement.reference.NamedTypeReference;
 import tech.intellispaces.framework.javastatements.statement.reference.TypeReference;
 
+import javax.annotation.processing.RoundEnvironment;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public abstract class AbstractObjectHandleGenerator extends AbstractGenerator {
   protected String domainTypeParamsFull;
   protected String domainTypeParamsBrief;
-  protected List<String> methods;
+  protected List<Map<String, String>> methods;
 
   public AbstractObjectHandleGenerator(CustomType customType) {
     super(customType);
@@ -30,10 +32,12 @@ public abstract class AbstractObjectHandleGenerator extends AbstractGenerator {
 
   abstract protected ObjectHandleTypes getObjectHandleType();
 
-  abstract protected Stream<MethodStatement> getObjectHandleMethods(CustomType customType);
+  abstract protected Stream<MethodStatement> getObjectHandleMethods(
+      CustomType customType, RoundEnvironment roundEnv
+  );
 
-  protected void analyzeObjectHandleMethods(CustomType customType) {
-    this.methods = getObjectHandleMethods(customType)
+  protected void analyzeObjectHandleMethods(CustomType customType, RoundEnvironment roundEnv) {
+    this.methods = getObjectHandleMethods(customType, roundEnv)
         .map(this::buildMethod)
         .filter(m -> !m.isEmpty())
         .toList();
@@ -41,17 +45,17 @@ public abstract class AbstractObjectHandleGenerator extends AbstractGenerator {
 
   protected String movableClassSimpleName() {
     return TypeFunctions.getSimpleName(
-        NameFunctions.getMovableObjectHandleTypename(annotatedType.className()));
+        NameConventionFunctions.getMovableObjectHandleTypename(annotatedType.className()));
   }
 
-  protected String buildMethod(MethodStatement method) {
+  protected Map<String, String> buildMethod(MethodStatement method) {
     var sb = new StringBuilder();
     appendMethodTypeParameters(sb, method);
     boolean disableMoving = isDisableMoving(method);
     if (disableMoving) {
       sb.append("default ");
     }
-    appendMethodReturnType(sb, method);
+    appendMethodReturnHandleType(sb, method);
     sb.append(" ");
     sb.append(method.name());
     sb.append("(");
@@ -67,7 +71,10 @@ public abstract class AbstractObjectHandleGenerator extends AbstractGenerator {
           ".withMessage(\"Unmovable object handle cannot be moved\");\n");
       sb.append("  }");
     }
-    return sb.toString();
+    return Map.of(
+        "javadoc", buildGeneratedMethodJavadoc(method.owner().canonicalName(), method.name()),
+        "declaration", sb.toString()
+    );
   }
 
   protected boolean isDisableMoving(MethodStatement method) {
@@ -76,8 +83,16 @@ public abstract class AbstractObjectHandleGenerator extends AbstractGenerator {
   }
 
   protected void appendMethodReturnType(StringBuilder sb, MethodStatement method) {
+    if (method.returnType().isEmpty()) {
+      sb.append("void");
+    }
+    TypeReference returnType = method.returnType().orElseThrow();
+    sb.append(returnType.actualDeclaration(context::addToImportAndGetSimpleName));
+  }
+
+  protected void appendMethodReturnHandleType(StringBuilder sb, MethodStatement method) {
     TypeReference domainReturnType = method.returnType().orElseThrow();
-    sb.append(getObjectHandleCanonicalName(domainReturnType, ObjectHandleTypes.Common));
+    sb.append(getObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.Common));
   }
 
   protected void appendMethodTypeParameters(StringBuilder sb, MethodStatement method) {

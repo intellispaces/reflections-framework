@@ -7,7 +7,7 @@ package tech.intellispaces.framework.core.guide;
  *
  * Mapper guides does not change the source object.<p/>
  *
- * Mapper guides does not create new objects. Mappers return projections to existing objects.<p/>
+ * Mapper guides always return a handle to an existing object. Mapper guides does not create new objects.<p/>
  *
  * @param <S> source object handle type.
  * @param <T> target object handle type.

@@ -5,6 +5,7 @@ import tech.intellispaces.framework.core.annotation.processor.AbstractObjectHand
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
 import tech.intellispaces.framework.javastatements.statement.method.MethodStatement;
 
+import javax.annotation.processing.RoundEnvironment;
 import java.util.stream.Stream;
 
 abstract class AbstractDomainObjectHandleGenerator extends AbstractObjectHandleGenerator {
@@ -13,7 +14,9 @@ abstract class AbstractDomainObjectHandleGenerator extends AbstractObjectHandleG
     super(domainType);
   }
 
-  protected Stream<MethodStatement> getObjectHandleMethods(CustomType customType) {
+  protected Stream<MethodStatement> getObjectHandleMethods(
+      CustomType customType, RoundEnvironment roundEnv
+  ) {
     return customType.actualMethods().stream()
         .filter(m -> m.owner().hasAnnotation(Domain.class))
         .filter(m -> !m.isDefault());

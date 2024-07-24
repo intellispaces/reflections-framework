@@ -4,7 +4,7 @@ import tech.intellispaces.framework.commons.action.Executor;
 import tech.intellispaces.framework.commons.action.string.StringActions;
 import tech.intellispaces.framework.commons.string.StringFunctions;
 import tech.intellispaces.framework.core.annotation.processor.AbstractTransitionGenerator;
-import tech.intellispaces.framework.core.common.NameFunctions;
+import tech.intellispaces.framework.core.common.NameConventionFunctions;
 import tech.intellispaces.framework.javastatements.statement.Statement;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
 import tech.intellispaces.framework.javastatements.statement.method.MethodParam;
@@ -22,7 +22,7 @@ public class DomainTransitionGenerator extends AbstractTransitionGenerator {
 
   @Override
   protected String getTransitionClassCanonicalName() {
-    return NameFunctions.getTransitionClassCanonicalName(annotatedType.packageName(), annotatedType, transitionMethod);
+    return NameConventionFunctions.getTransitionClassCanonicalName(annotatedType.packageName(), annotatedType, transitionMethod);
   }
 
   @Override

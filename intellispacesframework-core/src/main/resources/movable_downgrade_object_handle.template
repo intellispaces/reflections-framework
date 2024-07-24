@@ -18,12 +18,18 @@ public class {{$classSimpleName}}{{$classTypeParams}} implements {{$movableObjec
     this.{{$childField}} = {{$childField}};
   }
 
-{{for method : $methods}}
+{{for method : $additionalMethods}}
+  {{$method.get("javadoc")}}
   @Override
-  {{$method}}
+  {{$method.get("declaration")}};
 
 {{end}}
+{{for method : $methods}}
+  {{$method.get("javadoc")}}
+  @Override
+  {{$method.get("declaration")}};
 
+{{end}}
   @Override
   public <B, Q> B moveThru(String tid, Q qualifier) throws TraverseException {
     return (B) {{$childField}}.moveThru(tid, qualifier);

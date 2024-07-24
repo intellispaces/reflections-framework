@@ -14,7 +14,7 @@ public interface {{$classSimpleName}}{{$domainTypeParamsFull}} extends {{$movabl
 
 {{for method : $methods}}
   @Override
-  {{$method}};
+  {{$method.get("declaration")}};
 
 {{end}}
 

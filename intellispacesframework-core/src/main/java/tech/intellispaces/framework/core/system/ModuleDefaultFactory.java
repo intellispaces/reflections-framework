@@ -6,7 +6,7 @@ import tech.intellispaces.framework.core.annotation.Module;
 import tech.intellispaces.framework.core.annotation.Projection;
 import tech.intellispaces.framework.core.annotation.Shutdown;
 import tech.intellispaces.framework.core.annotation.Startup;
-import tech.intellispaces.framework.core.common.NameFunctions;
+import tech.intellispaces.framework.core.common.NameConventionFunctions;
 import tech.intellispaces.framework.core.guide.Guide;
 import tech.intellispaces.framework.core.guide.GuideFunctions;
 import tech.intellispaces.framework.core.system.empty.EmptyModule;
@@ -124,7 +124,7 @@ class ModuleDefaultFactory {
 
   private Class<?> getUnitWrapperClass(Class<?> unitClass) {
     try {
-      String wrapperClassName = NameFunctions.getUnitWrapperCanonicalName(unitClass.getName());
+      String wrapperClassName = NameConventionFunctions.getUnitWrapperCanonicalName(unitClass.getName());
       return Class.forName(wrapperClassName);
     } catch (Exception e) {
       throw UnexpectedViolationException.withCauseAndMessage(e, "Could not get wrapper class of module unit {}",

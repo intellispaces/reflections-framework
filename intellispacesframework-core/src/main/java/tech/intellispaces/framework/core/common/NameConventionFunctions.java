@@ -16,7 +16,7 @@ import tech.intellispaces.framework.javastatements.statement.method.MethodStatem
 
 import java.util.Optional;
 
-public interface NameFunctions {
+public interface NameConventionFunctions {
 
   static String getObjectHandleImplementationTypename(CustomType objectHandleType) {
     Optional<ObjectHandle> annotation = objectHandleType.selectAnnotation(ObjectHandle.class);
@@ -108,12 +108,16 @@ public interface NameFunctions {
     return TypeFunctions.joinPackageAndSimpleName(packageName, simpleName);
   }
 
+  static String getConversionMethodName(CustomType targetType) {
+    return "as" + StringFunctions.capitalizeFirstLetter(targetType.simpleName());
+  }
+
   private static String assignTransitionClassCanonicalName(
       String spaceName, CustomType domainType, MethodStatement transitionMethod
   ) {
     final String simpleName;
     if (transitionMethod.owner().hasAnnotation(Ontology.class)) {
-      simpleName = assumeTransitionClassSimpleNameWhenOntologyClass(transitionMethod);
+      simpleName = getDefaultTransitionClassSimpleName(transitionMethod);
     } else {
       simpleName = assumeTransitionClassSimpleNameWhenDomainClass(domainType, transitionMethod);
     }
@@ -162,7 +166,7 @@ public interface NameFunctions {
     return (name.length() > 3 && name.startsWith("as") && Character.isUpperCase(name.charAt(2)));
   }
 
-  private static String assumeTransitionClassSimpleNameWhenOntologyClass(MethodStatement transitionMethod) {
+  static String getDefaultTransitionClassSimpleName(MethodStatement transitionMethod) {
     return StringFunctions.capitalizeFirstLetter(transitionMethod.name()) + "Transition";
   }
 
@@ -171,7 +175,7 @@ public interface NameFunctions {
   ) {
     String transitionCanonicalName = getTransitionClassCanonicalName(spaceName, domainType, transitionMethod);
     String suffix = traverseType == TraverseTypes.Mapping ? "Mapper" : "Mover";
-    return StringFunctions.replaceLast(transitionCanonicalName, "Transition", suffix + "Guide");
+    return StringFunctions.replaceLast(transitionCanonicalName, "Transition", suffix);
   }
 
   private static boolean isMappingTraverseType(MethodStatement method) {

@@ -5,7 +5,7 @@ import tech.intellispaces.framework.commons.action.string.StringActions;
 import tech.intellispaces.framework.commons.exception.UnexpectedViolationException;
 import tech.intellispaces.framework.commons.string.StringFunctions;
 import tech.intellispaces.framework.commons.type.TypeFunctions;
-import tech.intellispaces.framework.core.common.NameFunctions;
+import tech.intellispaces.framework.core.common.NameConventionFunctions;
 import tech.intellispaces.framework.core.guide.GuideFunctions;
 import tech.intellispaces.framework.core.guide.GuideKind;
 import tech.intellispaces.framework.core.guide.n0.Mapper0;
@@ -71,7 +71,7 @@ public abstract class AbstractGuideGenerator extends AbstractGenerator {
   @Override
   protected Map<String, Object> templateVariables() {
     Map<String, Object> vars = new HashMap<>();
-    vars.put("generatedAnnotation", generatedAnnotation());
+    vars.put("generatedAnnotation", makeGeneratedAnnotation());
     vars.put("packageName", context.packageName());
     vars.put("sourceClassName", sourceClassCanonicalName());
     vars.put("sourceClassSimpleName", sourceClassSimpleName());
@@ -344,7 +344,7 @@ public abstract class AbstractGuideGenerator extends AbstractGenerator {
   }
 
   private String transitionClassSimpleName() {
-    String canonicalName = NameFunctions.getTransitionClassCanonicalName(
+    String canonicalName = NameConventionFunctions.getTransitionClassCanonicalName(
         annotatedType.packageName(), getDomainType(), transitionMethod
     );
     return context.addToImportAndGetSimpleName(canonicalName);

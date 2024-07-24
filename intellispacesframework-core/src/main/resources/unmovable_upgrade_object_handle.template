@@ -20,7 +20,7 @@ public class {{$classSimpleName}}{{$classTypeParams}} implements {{$unmovableObj
 
 {{for method : $methods}}
   @Override
-  {{$method}}
+  {{$method.get("declaration")}};
 
 {{end}}
 }

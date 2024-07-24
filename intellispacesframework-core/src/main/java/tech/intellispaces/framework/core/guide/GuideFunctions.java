@@ -3,7 +3,7 @@ package tech.intellispaces.framework.core.guide;
 import tech.intellispaces.framework.commons.exception.UnexpectedViolationException;
 import tech.intellispaces.framework.commons.type.TypeFunctions;
 import tech.intellispaces.framework.core.annotation.Transition;
-import tech.intellispaces.framework.core.common.NameFunctions;
+import tech.intellispaces.framework.core.common.NameConventionFunctions;
 import tech.intellispaces.framework.core.guide.n0.AttachedMapper0;
 import tech.intellispaces.framework.core.guide.n0.AttachedMover0;
 import tech.intellispaces.framework.core.guide.n0.Mapper0;
@@ -123,7 +123,7 @@ public final class GuideFunctions {
   }
 
   private static Method getActualGuideMethod(Class<?> objectHandleClass, Method guideMethod) {
-    String implementationClassname = NameFunctions.getObjectHandleImplementationTypename(objectHandleClass);
+    String implementationClassname = NameConventionFunctions.getObjectHandleImplementationTypename(objectHandleClass);
     Optional<Class<?>> implementationClass = TypeFunctions.getClass(implementationClassname);
     if (implementationClass.isEmpty()) {
       throw UnexpectedViolationException.withMessage("Could not load object handle implementation class {}",

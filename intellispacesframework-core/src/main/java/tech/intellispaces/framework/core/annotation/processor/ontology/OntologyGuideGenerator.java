@@ -3,7 +3,7 @@ package tech.intellispaces.framework.core.annotation.processor.ontology;
 import tech.intellispaces.framework.commons.exception.UnexpectedViolationException;
 import tech.intellispaces.framework.commons.type.TypeFunctions;
 import tech.intellispaces.framework.core.annotation.processor.AbstractGuideGenerator;
-import tech.intellispaces.framework.core.common.NameFunctions;
+import tech.intellispaces.framework.core.common.NameConventionFunctions;
 import tech.intellispaces.framework.core.traverse.TraverseType;
 import tech.intellispaces.framework.javastatements.JavaStatements;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
@@ -37,7 +37,7 @@ public class OntologyGuideGenerator extends AbstractGuideGenerator {
 
   @Override
   protected String getGuideClassCanonicalName() {
-    return NameFunctions.getGuideClassCanonicalName(
+    return NameConventionFunctions.getGuideClassCanonicalName(
         traverseType, annotatedType.packageName(), annotatedType, transitionMethod
     );
   }

@@ -12,12 +12,17 @@ import {{$importedClass}};
 {{$generatedAnnotation}}
 public interface {{$classSimpleName}}{{$domainTypeParamsFull}} extends {{$objectHandleName}}<{{$sourceClassSimpleName}}{{$domainTypeParamsBrief}}>, {{$sourceClassSimpleName}}{{$domainTypeParamsBrief}} {
 
-{{for method : $methods}}
-  @Override
-  {{$method}};
+{{for method : $additionalMethods}}
+  {{$method.get("javadoc")}}
+  {{$method.get("declaration")}};
 
 {{end}}
+{{for method : $methods}}
+  {{$method.get("javadoc")}}
+  @Override
+  {{$method.get("declaration")}};
 
+{{end}}
   @Override
   {{$movableClassSimpleName}}{{$domainTypeParamsBrief}} asMovableOrElseThrow();
 }

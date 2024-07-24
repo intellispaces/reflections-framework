@@ -3,7 +3,7 @@ package tech.intellispaces.framework.core.object;
 import tech.intellispaces.framework.commons.exception.UnexpectedViolationException;
 import tech.intellispaces.framework.commons.type.TypeFunctions;
 import tech.intellispaces.framework.core.annotation.Domain;
-import tech.intellispaces.framework.core.common.NameFunctions;
+import tech.intellispaces.framework.core.common.NameConventionFunctions;
 import tech.intellispaces.framework.javastatements.JavaStatements;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
 import tech.intellispaces.framework.javastatements.statement.reference.CustomTypeReference;
@@ -57,7 +57,7 @@ public class ObjectFunctions {
     if (isDefaultObjectHandleType(domainType)) {
       return domainType.className();
     }
-    return NameFunctions.getCommonObjectHandleTypename(domainType.className());
+    return NameConventionFunctions.getCommonObjectHandleTypename(domainType.className());
   }
 
   public static boolean isCustomObjectHandleClass(Class<?> aClass) {
@@ -198,7 +198,7 @@ public class ObjectFunctions {
   private static Object tryCreateDowngradeObjectHandle(
       Object sourceObjectHandle, Class<?> sourceObjectHandleDomain, Class<?> targetObjectHandleDomain
   ) {
-    String downgradeObjectHandleCanonicalName = NameFunctions.getMovableDowngradeObjectHandleTypename(
+    String downgradeObjectHandleCanonicalName = NameConventionFunctions.getMovableDowngradeObjectHandleTypename(
         sourceObjectHandleDomain, targetObjectHandleDomain);
     Optional<Class<?>> downgradeObjectHandleClass = TypeFunctions.getClass(downgradeObjectHandleCanonicalName);
     if (downgradeObjectHandleClass.isPresent()) {

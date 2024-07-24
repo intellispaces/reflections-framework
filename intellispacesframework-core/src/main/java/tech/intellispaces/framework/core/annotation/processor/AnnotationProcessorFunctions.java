@@ -31,8 +31,6 @@ import tech.intellispaces.framework.javastatements.JavaStatements;
 import tech.intellispaces.framework.javastatements.statement.AnnotatedStatement;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
 import tech.intellispaces.framework.javastatements.statement.instance.AnnotationInstance;
-import tech.intellispaces.framework.javastatements.statement.instance.ClassInstance;
-import tech.intellispaces.framework.javastatements.statement.instance.Instance;
 import tech.intellispaces.framework.javastatements.statement.method.MethodStatement;
 import tech.intellispaces.framework.javastatements.statement.reference.CustomTypeReference;
 import tech.intellispaces.framework.javastatements.statement.reference.NonPrimitiveTypeReference;
@@ -58,7 +56,7 @@ public interface AnnotationProcessorFunctions {
     List<ArtifactGenerator> generators = new ArrayList<>();
     for (MethodStatement method : domainType.declaredMethods()) {
       if (method.hasAnnotation(Transition.class)) {
-        if (isAutoGenerationEnabled(domainType, "Transition", roundEnv)) {
+        if (isAutoGenerationEnabled(domainType, ArtifactTypes.Transition, roundEnv)) {
           generators.add(new DomainTransitionGenerator(domainType, method));
         }
         if (isEnableMapperGuideGeneration(domainType, method, roundEnv)) {
@@ -78,13 +76,13 @@ public interface AnnotationProcessorFunctions {
   private static void addBasicObjectHandleGenerators(
       CustomType domainType, List<ArtifactGenerator> generators, RoundEnvironment roundEnv
   ) {
-    if (isAutoGenerationEnabled(domainType, "ObjectHandle", roundEnv)) {
+    if (isAutoGenerationEnabled(domainType, ArtifactTypes.ObjectHandle, roundEnv)) {
       generators.add(new CommonObjectHandleGenerator(domainType));
     }
-    if (isAutoGenerationEnabled(domainType, "MovableObjectHandle", roundEnv)) {
+    if (isAutoGenerationEnabled(domainType, ArtifactTypes.MovableObjectHandle, roundEnv)) {
       generators.add(new MovableObjectHandleGenerator(domainType));
     }
-    if (isAutoGenerationEnabled(domainType, "UnmovableObjectHandle", roundEnv)) {
+    if (isAutoGenerationEnabled(domainType, ArtifactTypes.UnmovableObjectHandle, roundEnv)) {
       generators.add(new UnmovableObjectHandleGenerator(domainType));
     }
   }
@@ -142,7 +140,7 @@ public interface AnnotationProcessorFunctions {
     List<ArtifactGenerator> generators = new ArrayList<>();
     for (MethodStatement method : ontologyType.declaredMethods()) {
       if (method.hasAnnotation(Transition.class)) {
-        if (isAutoGenerationEnabled(ontologyType, "Transition", roundEnv)) {
+        if (isAutoGenerationEnabled(ontologyType, ArtifactTypes.Transition, roundEnv)) {
           generators.add(new OntologyTransitionGenerator(ontologyType, method));
         }
         if (isEnableMapperGuideGeneration(ontologyType, method, roundEnv)) {
@@ -177,7 +175,7 @@ public interface AnnotationProcessorFunctions {
   ) {
     AnnotationInstance preprocessingAnnotation = customType.selectAnnotation(
         Preprocessing.class.getCanonicalName()).orElseThrow();
-    List<CustomType> preprocessingClasses = getPreprocessingClasses(preprocessingAnnotation);
+    List<CustomType> preprocessingClasses = PreprocessingAnnotationFunctions.getPreprocessingClasses(preprocessingAnnotation);
     if (preprocessingClasses.isEmpty()) {
       return List.of();
     }
@@ -201,39 +199,10 @@ public interface AnnotationProcessorFunctions {
     return generators;
   }
 
-  static boolean isPreprocessingEnabled(
-      AnnotationInstance preprocessingAnnotation, String canonicalClassName
-  ) {
-    List<CustomType> preprocessingClasses = getPreprocessingClasses(preprocessingAnnotation);
-    for (CustomType aClass : preprocessingClasses) {
-      if (canonicalClassName.equals(aClass.canonicalName())) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  static boolean isPreprocessingEnabled(AnnotationInstance preprocessingAnnotation) {
-    Object enabled = preprocessingAnnotation.elementValue("enable").orElseThrow()
-        .asPrimitive().orElseThrow()
-        .value();
-    return Boolean.TRUE == enabled;
-  }
-
-  static List<CustomType> getPreprocessingClasses(AnnotationInstance preprocessingAnnotation) {
-    return preprocessingAnnotation.elementValue("value").orElseThrow()
-        .asArray().orElseThrow()
-        .elements().stream()
-        .map(Instance::asClass)
-        .map(Optional::orElseThrow)
-        .map(ClassInstance::type)
-        .toList();
-  }
-
   static boolean isEnableMapperGuideGeneration(
       CustomType domainType, MethodStatement method, RoundEnvironment roundEnv
   ) {
-    return isAutoGenerationEnabled(domainType, "Mapper", roundEnv) &&
+    return isAutoGenerationEnabled(domainType, ArtifactTypes.Mapper, roundEnv) &&
         ArraysFunctions.contains(
             method.selectAnnotation(Transition.class).orElseThrow().allowedTraverseTypes(),
             TraverseTypes.Mapping);
@@ -242,7 +211,7 @@ public interface AnnotationProcessorFunctions {
   static boolean isEnableMoverGuideGeneration(
       CustomType domainType, MethodStatement method, RoundEnvironment roundEnv
   ) {
-    return isAutoGenerationEnabled(domainType, "Mover", roundEnv) &&
+    return isAutoGenerationEnabled(domainType, ArtifactTypes.Mover, roundEnv) &&
         ArraysFunctions.contains(
             method.selectAnnotation(Transition.class).orElseThrow().allowedTraverseTypes(),
             TraverseTypes.Moving);
@@ -255,19 +224,19 @@ public interface AnnotationProcessorFunctions {
   }
 
   static boolean isAutoGenerationEnabled(
-      CustomType annotatedType, String artifact, RoundEnvironment roundEnv
+      CustomType annotatedType, ArtifactTypes artifact, RoundEnvironment roundEnv
   ) {
     List<AnnotationInstance> preprocessingAnnotations = roundEnv.getElementsAnnotatedWith(Preprocessing.class).stream()
         .map(JavaStatements::statement)
         .map(stm -> (AnnotatedStatement) stm)
         .map(stm -> stm.selectAnnotation(Preprocessing.class.getCanonicalName()))
         .map(Optional::orElseThrow)
-        .filter(ann -> isPreprocessingEnabled(ann, annotatedType.canonicalName()))
+        .filter(ann -> PreprocessingAnnotationFunctions.isPreprocessingAnnotationOf(ann, annotatedType.canonicalName()))
         .toList();
     if (preprocessingAnnotations.isEmpty()) {
       return true;
     }
-    return preprocessingAnnotations.stream().allMatch(AnnotationProcessorFunctions::isPreprocessingEnabled);
+    return preprocessingAnnotations.stream().allMatch(PreprocessingAnnotationFunctions::isPreprocessingEnabled);
   }
 
   static String getDomainClassLink(TypeReference type) {

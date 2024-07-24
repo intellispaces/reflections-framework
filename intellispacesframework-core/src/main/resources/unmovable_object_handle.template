@@ -14,10 +14,9 @@ public interface {{$classSimpleName}}{{$domainTypeParamsFull}} extends {{$unmova
 
 {{for method : $methods}}
   @Override
-  {{$method}};
+  {{$method.get("declaration")}};
 
 {{end}}
-
   @Override
   default {{$movableClassSimpleName}}{{$domainTypeParamsBrief}} asMovableOrElseThrow() {
     throw UnexpectedViolationException.withMessage("Unmovable object handle");

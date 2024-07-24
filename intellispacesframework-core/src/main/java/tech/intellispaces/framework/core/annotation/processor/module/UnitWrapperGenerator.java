@@ -8,7 +8,7 @@ import tech.intellispaces.framework.core.annotation.Projection;
 import tech.intellispaces.framework.core.annotation.ProjectionDefinition;
 import tech.intellispaces.framework.core.annotation.Wrapper;
 import tech.intellispaces.framework.core.annotation.processor.AbstractGenerator;
-import tech.intellispaces.framework.core.common.NameFunctions;
+import tech.intellispaces.framework.core.common.NameConventionFunctions;
 import tech.intellispaces.framework.core.system.Injection;
 import tech.intellispaces.framework.core.system.Modules;
 import tech.intellispaces.framework.core.system.ProjectionInjection;
@@ -43,7 +43,7 @@ public class UnitWrapperGenerator extends AbstractGenerator {
 
   @Override
   public String getArtifactName() {
-    return NameFunctions.getUnitWrapperCanonicalName(annotatedType.className());
+    return NameConventionFunctions.getUnitWrapperCanonicalName(annotatedType.className());
   }
 
   @Override
@@ -54,7 +54,7 @@ public class UnitWrapperGenerator extends AbstractGenerator {
   @Override
   protected Map<String, Object> templateVariables() {
     return Map.of(
-        "generatedAnnotation", generatedAnnotation(),
+        "generatedAnnotation", makeGeneratedAnnotation(),
         "packageName", context.packageName(),
         "sourceClassName", sourceClassCanonicalName(),
         "sourceClassSimpleName", sourceClassSimpleName(),

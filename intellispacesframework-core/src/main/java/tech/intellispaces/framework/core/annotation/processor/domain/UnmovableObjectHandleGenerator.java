@@ -1,7 +1,7 @@
 package tech.intellispaces.framework.core.annotation.processor.domain;
 
 import tech.intellispaces.framework.commons.exception.UnexpectedViolationException;
-import tech.intellispaces.framework.core.common.NameFunctions;
+import tech.intellispaces.framework.core.common.NameConventionFunctions;
 import tech.intellispaces.framework.core.object.ObjectHandleTypes;
 import tech.intellispaces.framework.core.object.UnmovableObjectHandle;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
@@ -19,7 +19,7 @@ public class UnmovableObjectHandleGenerator extends AbstractDomainObjectHandleGe
 
   @Override
   public String getArtifactName() {
-    return NameFunctions.getUnmovableObjectHandleTypename(annotatedType.className());
+    return NameConventionFunctions.getUnmovableObjectHandleTypename(annotatedType.className());
   }
 
   @Override
@@ -34,7 +34,7 @@ public class UnmovableObjectHandleGenerator extends AbstractDomainObjectHandleGe
 
   protected Map<String, Object> templateVariables() {
     Map<String, Object> vars = new HashMap<>();
-    vars.put("generatedAnnotation", generatedAnnotation());
+    vars.put("generatedAnnotation", makeGeneratedAnnotation());
     vars.put("packageName", context.packageName());
     vars.put("sourceClassName", sourceClassCanonicalName());
     vars.put("sourceClassSimpleName", sourceClassSimpleName());
@@ -58,14 +58,14 @@ public class UnmovableObjectHandleGenerator extends AbstractDomainObjectHandleGe
 
     context.addImport(UnexpectedViolationException.class);
 
-    commonHandleSimpleName = NameFunctions.getCommonObjectHandleTypename(annotatedType.className());
+    commonHandleSimpleName = NameConventionFunctions.getCommonObjectHandleTypename(annotatedType.className());
     context.addImport(commonHandleSimpleName);
     commonHandleSimpleName = context.simpleNameOf(commonHandleSimpleName);
 
     domainTypeParamsFull = annotatedType.typeParametersFullDeclaration();
     domainTypeParamsBrief = annotatedType.typeParametersBriefDeclaration();
 
-    analyzeObjectHandleMethods(annotatedType);
+    analyzeObjectHandleMethods(annotatedType, roundEnv);
 
     context.addImport(UnmovableObjectHandle.class);
 

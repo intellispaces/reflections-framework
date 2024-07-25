@@ -11,7 +11,8 @@ import tech.intellispaces.framework.core.annotation.Ontology;
 import tech.intellispaces.framework.core.annotation.Preprocessing;
 import tech.intellispaces.framework.core.annotation.Transition;
 import tech.intellispaces.framework.core.annotation.processor.data.UnmovableDataHandleGenerator;
-import tech.intellispaces.framework.core.annotation.processor.domain.CommonObjectHandleGenerator;
+import tech.intellispaces.framework.core.annotation.processor.domain.BaseDowngradeObjectHandleGenerator;
+import tech.intellispaces.framework.core.annotation.processor.domain.BaseObjectHandleGenerator;
 import tech.intellispaces.framework.core.annotation.processor.domain.DomainGuideGenerator;
 import tech.intellispaces.framework.core.annotation.processor.domain.DomainTransitionGenerator;
 import tech.intellispaces.framework.core.annotation.processor.domain.MovableDowngradeObjectHandleGenerator;
@@ -77,7 +78,7 @@ public interface AnnotationProcessorFunctions {
       CustomType domainType, List<ArtifactGenerator> generators, RoundEnvironment roundEnv
   ) {
     if (isAutoGenerationEnabled(domainType, ArtifactTypes.ObjectHandle, roundEnv)) {
-      generators.add(new CommonObjectHandleGenerator(domainType));
+      generators.add(new BaseObjectHandleGenerator(domainType));
     }
     if (isAutoGenerationEnabled(domainType, ArtifactTypes.MovableObjectHandle, roundEnv)) {
       generators.add(new MovableObjectHandleGenerator(domainType));
@@ -116,9 +117,9 @@ public interface AnnotationProcessorFunctions {
     if (parents.size() != 1) {
       return;
     }
-    CustomTypeReference baseDomainType = parents.get(0);
-
-    generators.add(new MovableDowngradeObjectHandleGenerator(domainType, baseDomainType));
+    CustomTypeReference parentDomainType = parents.get(0);
+    generators.add(new BaseDowngradeObjectHandleGenerator(domainType, parentDomainType));
+    generators.add(new MovableDowngradeObjectHandleGenerator(domainType, parentDomainType));
   }
 
   private static boolean isCustomTypeRelated(TypeReference type) {

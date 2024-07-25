@@ -39,7 +39,7 @@ public class TraverseExecutorImpl implements TraverseExecutor {
 
   @Override
   public Object execute(MapObjectHandleThruTransition0Plan plan, Object source) throws TraverseException {
-    Class<?> objectHandleClass = ObjectFunctions.seekObjectHandleClass(source.getClass());
+    Class<?> objectHandleClass = ObjectFunctions.defineObjectHandleClass(source.getClass());
     ActualPlan actualPlan = traverseAnalyzer.getActualTraversePlan(plan, objectHandleClass);
     if (actualPlan == null) {
       throw TraverseException.withMessage("Cannot to build traverse plan to map object handle of class {} through " +
@@ -52,7 +52,7 @@ public class TraverseExecutorImpl implements TraverseExecutor {
   public Object execute(
       MapObjectHandleThruTransition1Plan plan, Object source, Object qualifier
   ) throws TraverseException {
-    Class<?> objectHandleClass = ObjectFunctions.seekObjectHandleClass(source.getClass());
+    Class<?> objectHandleClass = ObjectFunctions.defineObjectHandleClass(source.getClass());
     ActualPlan actualPlan = traverseAnalyzer.getActualTraversePlan(plan, objectHandleClass);
     if (actualPlan == null) {
       throw TraverseException.withMessage("Cannot to build traverse plan to map object handle of class {} through " +
@@ -70,7 +70,7 @@ public class TraverseExecutorImpl implements TraverseExecutor {
 
   @Override
   public Object execute(MoveObjectHandleThruTransition0Plan plan, Object source) throws TraverseException {
-    Class<?> objectHandleClass = ObjectFunctions.seekObjectHandleClass(source.getClass());
+    Class<?> objectHandleClass = ObjectFunctions.defineObjectHandleClass(source.getClass());
     ActualPlan actualPlan = traverseAnalyzer.getActualTraversePlan(plan, objectHandleClass);
     if (actualPlan == null) {
       throw TraverseException.withMessage("Cannot to build traverse plan to move object handle of class {} through " +
@@ -83,7 +83,7 @@ public class TraverseExecutorImpl implements TraverseExecutor {
   public Object execute(
       MoveObjectHandleThruTransition1Plan plan, Object source, Object qualifier
   ) throws TraverseException {
-    Class<?> objectHandleClass = ObjectFunctions.seekObjectHandleClass(source.getClass());
+    Class<?> objectHandleClass = ObjectFunctions.defineObjectHandleClass(source.getClass());
     ActualPlan actualPlan = traverseAnalyzer.getActualTraversePlan(plan, objectHandleClass);
     if (actualPlan == null) {
       throw TraverseException.withMessage("Cannot to build traverse plan to move object handle of class {} through " +

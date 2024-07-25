@@ -7,7 +7,6 @@ import tech.intellispaces.framework.commons.action.string.StringActions;
 import tech.intellispaces.framework.commons.exception.UnexpectedViolationException;
 import tech.intellispaces.framework.commons.type.Type;
 import tech.intellispaces.framework.commons.type.Types;
-import tech.intellispaces.framework.core.annotation.Transition;
 import tech.intellispaces.framework.core.annotation.processor.AbstractObjectHandleGenerator;
 import tech.intellispaces.framework.core.common.NameConventionFunctions;
 import tech.intellispaces.framework.core.guide.n0.Mapper0;
@@ -23,6 +22,7 @@ import tech.intellispaces.framework.core.guide.n4.Mover4;
 import tech.intellispaces.framework.core.guide.n5.Mapper5;
 import tech.intellispaces.framework.core.guide.n5.Mover5;
 import tech.intellispaces.framework.core.object.ObjectFunctions;
+import tech.intellispaces.framework.core.space.transition.TransitionFunctions;
 import tech.intellispaces.framework.core.system.Modules;
 import tech.intellispaces.framework.core.traverse.TraverseTypes;
 import tech.intellispaces.framework.javastatements.statement.StatementTypes;
@@ -197,7 +197,7 @@ abstract class AbstractObjectHandleImplGenerator extends AbstractObjectHandleGen
   }
 
   private static TraverseTypes getTraverseType(MethodStatement domainMethod) {
-    return domainMethod.selectAnnotation(Transition.class).orElseThrow().defaultTraverseType();
+    return TransitionFunctions.getTraverseType(domainMethod);
   }
 
   protected String getGeneratedClassCanonicalName() {

@@ -128,6 +128,6 @@ public abstract class AbstractTransitionGenerator extends AbstractGenerator {
   }
 
   private TraverseTypes getTransitionType() {
-    return transitionMethod.selectAnnotation(Transition.class).orElseThrow().defaultTraverseType();
+    return TransitionFunctions.getTraverseType(transitionMethod);
   }
 }

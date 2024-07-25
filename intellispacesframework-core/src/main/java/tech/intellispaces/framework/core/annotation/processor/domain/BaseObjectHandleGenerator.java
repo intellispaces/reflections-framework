@@ -16,26 +16,26 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class CommonObjectHandleGenerator extends AbstractDomainObjectHandleGenerator {
+public class BaseObjectHandleGenerator extends AbstractDomainObjectHandleGenerator {
   private List<Map<String, String>> additionalMethods;
 
-  public CommonObjectHandleGenerator(CustomType domainType) {
+  public BaseObjectHandleGenerator(CustomType domainType) {
     super(domainType);
   }
 
   @Override
   public String getArtifactName() {
-    return NameConventionFunctions.getCommonObjectHandleTypename(annotatedType.className());
+    return NameConventionFunctions.getBaseObjectHandleTypename(annotatedType.className());
   }
 
   @Override
   protected ObjectHandleTypes getObjectHandleType() {
-    return ObjectHandleTypes.Common;
+    return ObjectHandleTypes.Base;
   }
 
   @Override
   protected String templateName() {
-    return "/common_object_handle.template";
+    return "/base_object_handle.template";
   }
 
   protected Map<String, Object> templateVariables() {

@@ -22,32 +22,32 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class MovableDowngradeObjectHandleGenerator extends AbstractConversionDomainObjectHandleGenerator {
+public class BaseDowngradeObjectHandleGenerator extends AbstractConversionDomainObjectHandleGenerator {
   private List<Map<String, String>> additionalMethods;
   private String classTypeParams;
   private String classTypeParamsBrief;
+  private String baseObjectHandleName;
   private String movableObjectHandleName;
-  private String childDomainClassSimpleName;
   private String childObjectHandleType;
-  private String domainClassSimpleName;
+  private String movableDowngradeObjectHandleName;
 
-  public MovableDowngradeObjectHandleGenerator(CustomType annotatedType, CustomTypeReference parentDomainType) {
+  public BaseDowngradeObjectHandleGenerator(CustomType annotatedType, CustomTypeReference parentDomainType) {
     super(annotatedType, parentDomainType);
   }
 
   @Override
   public String getArtifactName() {
-    return NameConventionFunctions.getMovableDowngradeObjectHandleTypename(annotatedType, parentDomainType.targetType());
+    return NameConventionFunctions.getBaseDowngradeObjectHandleTypename(annotatedType, parentDomainType.targetType());
   }
 
   @Override
   protected ObjectHandleTypes getObjectHandleType() {
-    return ObjectHandleTypes.Movable;
+    return ObjectHandleTypes.Base;
   }
 
   @Override
   protected String templateName() {
-    return "/movable_downgrade_object_handle.template";
+    return "/base_downgrade_object_handle.template";
   }
 
   @Override
@@ -60,14 +60,14 @@ public class MovableDowngradeObjectHandleGenerator extends AbstractConversionDom
     vars.put("classSimpleName", context.generatedClassSimpleName());
     vars.put("classTypeParams", classTypeParams);
     vars.put("classTypeParamsBrief", classTypeParamsBrief);
-    vars.put("childDomainClassSimpleName", childDomainClassSimpleName);
     vars.put("childObjectHandleType", childObjectHandleType);
     vars.put("childField", childFieldName);
     vars.put("methods", methods);
     vars.put("additionalMethods", additionalMethods);
     vars.put("importedClasses", context.getImports());
+    vars.put("baseObjectHandleName", baseObjectHandleName);
     vars.put("movableObjectHandleName", movableObjectHandleName);
-    vars.put("domainClassSimpleName", domainClassSimpleName);
+    vars.put("movableDowngradeObjectHandleName", movableDowngradeObjectHandleName);
     return vars;
   }
 
@@ -80,15 +80,19 @@ public class MovableDowngradeObjectHandleGenerator extends AbstractConversionDom
     context.addImport(TransitionMethod0.class);
     context.addImport(TransitionMethod1.class);
 
+    baseObjectHandleName = context.addToImportAndGetSimpleName(
+        NameConventionFunctions.getBaseObjectHandleTypename(parentDomainType.targetType().canonicalName()));
     movableObjectHandleName = context.addToImportAndGetSimpleName(
-        NameConventionFunctions.getMovableObjectHandleTypename(parentDomainType.targetType().className()));
-    domainClassSimpleName = context.addToImportAndGetSimpleName(parentDomainType.targetType().canonicalName());
+        NameConventionFunctions.getMovableObjectHandleTypename(parentDomainType.targetType().canonicalName()));
 
     classTypeParams = annotatedType.typeParametersFullDeclaration();
     classTypeParamsBrief = parentDomainType.typeArgumentsDeclaration(context::addToImportAndGetSimpleName);
     childFieldName = StringFunctions.lowercaseFirstLetter(annotatedType.simpleName());
     childObjectHandleType = getChildObjectHandleType();
-    childDomainClassSimpleName = annotatedType.simpleName();
+
+    movableDowngradeObjectHandleName = NameConventionFunctions.getMovableDowngradeObjectHandleTypename(
+        annotatedType, parentDomainType.targetType()
+    );
 
     analyzeObjectHandleMethods(parentDomainType.effectiveTargetType(), roundEnv);
     analyzeAdditionalMethods(roundEnv);
@@ -162,7 +166,7 @@ public class MovableDowngradeObjectHandleGenerator extends AbstractConversionDom
 
   private String getChildObjectHandleType() {
     return context.addToImportAndGetSimpleName(
-        NameConventionFunctions.getMovableObjectHandleTypename(annotatedType.className())
+        NameConventionFunctions.getBaseObjectHandleTypename(annotatedType.className())
     );
   }
 }

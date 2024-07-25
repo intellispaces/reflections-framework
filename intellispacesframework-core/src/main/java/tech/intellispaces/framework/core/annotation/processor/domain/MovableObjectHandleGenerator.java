@@ -54,7 +54,7 @@ public class MovableObjectHandleGenerator extends AbstractDomainObjectHandleGene
       context.addImport(sourceClassCanonicalName());
     }
 
-    commonHandleSimpleName = NameConventionFunctions.getCommonObjectHandleTypename(annotatedType.className());
+    commonHandleSimpleName = NameConventionFunctions.getBaseObjectHandleTypename(annotatedType.className());
     context.addImport(commonHandleSimpleName);
     commonHandleSimpleName = context.simpleNameOf(commonHandleSimpleName);
 

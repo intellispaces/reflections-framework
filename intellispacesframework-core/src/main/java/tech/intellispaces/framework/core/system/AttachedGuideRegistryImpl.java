@@ -22,7 +22,7 @@ public class AttachedGuideRegistryImpl implements AttachedGuideRegistry {
 
   private HandleDescription createHandleDescription(Class<?> objectHandleClass) {
     HandleDescription handleDescription = new HandleDescription(objectHandleClass);
-    Class<?> actualObjectHandleClass = ObjectFunctions.seekObjectHandleClass(objectHandleClass);
+    Class<?> actualObjectHandleClass = ObjectFunctions.defineObjectHandleClass(objectHandleClass);
     if (actualObjectHandleClass == null) {
       return handleDescription;
     }

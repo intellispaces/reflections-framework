@@ -58,7 +58,7 @@ public class UnmovableObjectHandleGenerator extends AbstractDomainObjectHandleGe
 
     context.addImport(UnexpectedViolationException.class);
 
-    commonHandleSimpleName = NameConventionFunctions.getCommonObjectHandleTypename(annotatedType.className());
+    commonHandleSimpleName = NameConventionFunctions.getBaseObjectHandleTypename(annotatedType.className());
     context.addImport(commonHandleSimpleName);
     commonHandleSimpleName = context.simpleNameOf(commonHandleSimpleName);
 

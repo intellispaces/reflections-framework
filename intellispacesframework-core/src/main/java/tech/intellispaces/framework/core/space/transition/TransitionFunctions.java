@@ -7,6 +7,7 @@ import tech.intellispaces.framework.core.annotation.Mover;
 import tech.intellispaces.framework.core.annotation.Transition;
 import tech.intellispaces.framework.core.object.ObjectFunctions;
 import tech.intellispaces.framework.core.space.domain.DomainFunctions;
+import tech.intellispaces.framework.core.traverse.TraverseTypes;
 import tech.intellispaces.framework.dynamicproxy.tracker.Tracker;
 import tech.intellispaces.framework.dynamicproxy.tracker.TrackerBuilder;
 import tech.intellispaces.framework.dynamicproxy.tracker.TrackerFunctions;
@@ -221,5 +222,17 @@ public interface TransitionFunctions {
       case 2 -> Transition2.class;
       default -> throw UnexpectedViolationException.withMessage("Not implemented");
     };
+  }
+
+  static TraverseTypes getTraverseType(Transition transition) {
+    if (transition.allowedTraverseTypes().length > 1) {
+      return transition.defaultTraverseType();
+    }
+    return transition.allowedTraverseTypes()[0];
+  }
+
+  static TraverseTypes getTraverseType(MethodStatement method) {
+    Transition transition = method.selectAnnotation(Transition.class).orElseThrow();
+    return getTraverseType(transition);
   }
 }

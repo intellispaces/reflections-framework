@@ -22,7 +22,7 @@ public @interface Transition {
   TraverseTypes[] allowedTraverseTypes() default { TraverseTypes.Mapping };
 
   /**
-   * Default traverse type.<p/
+   * Default traverse type.<p/>
    *
    * This parameter is used only if parameter allowedTraverseTypes has multiple values.
    */
@@ -32,4 +32,11 @@ public @interface Transition {
    * Assigned transition name.
    */
   String name() default "";
+
+  /**
+   * Indicates that this transition corresponds to factory.<p/>
+   *
+   * Relevant only for moving transitions.
+   */
+  boolean isFactory() default false;
 }

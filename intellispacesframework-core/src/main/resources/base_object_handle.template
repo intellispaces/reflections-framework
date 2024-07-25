@@ -5,7 +5,7 @@ import {{$importedClass}};
 {{end}}
 
 /**
- * Abstract object handle for domain {@link {{$sourceClassName}}} objects.<p/>
+ * Base interface of the object handle for domain {@link {{$sourceClassName}}} objects.<p/>
  *
  * This class was generated automatically. Don't try to change it.
  */

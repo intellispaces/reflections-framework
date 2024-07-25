@@ -8,6 +8,7 @@ import tech.intellispaces.framework.core.annotation.ObjectHandle;
 import tech.intellispaces.framework.core.annotation.Ontology;
 import tech.intellispaces.framework.core.annotation.Transition;
 import tech.intellispaces.framework.core.object.ObjectHandleTypes;
+import tech.intellispaces.framework.core.space.transition.TransitionFunctions;
 import tech.intellispaces.framework.core.traverse.TraverseType;
 import tech.intellispaces.framework.core.traverse.TraverseTypes;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
@@ -38,13 +39,13 @@ public interface NameConventionFunctions {
 
   static String getObjectHandleTypename(String domainClassName, ObjectHandleTypes handleType) {
     return switch (handleType) {
-      case Common -> getCommonObjectHandleTypename(domainClassName);
+      case Base -> getBaseObjectHandleTypename(domainClassName);
       case Movable -> getMovableObjectHandleTypename(domainClassName);
       case Unmovable -> getUnmovableObjectHandleTypename(domainClassName);
     };
   }
 
-  static String getCommonObjectHandleTypename(String domainClassName) {
+  static String getBaseObjectHandleTypename(String domainClassName) {
     return transformClassName(domainClassName) + "Handle";
   }
 
@@ -92,9 +93,34 @@ public interface NameConventionFunctions {
     return TypeFunctions.joinPackageAndSimpleName(packageName, simpleName);
   }
 
+  static String getDowngradeObjectHandleTypename(
+      CustomType domainType, CustomType baseDomainType, ObjectHandleTypes handleType
+  ) {
+    return switch (handleType) {
+      case Base -> getBaseDowngradeObjectHandleTypename(domainType, baseDomainType);
+      case Movable -> getMovableDowngradeObjectHandleTypename(domainType, baseDomainType);
+      case Unmovable -> getUnmovableDowngradeObjectHandleTypename(domainType, baseDomainType);
+    };
+  }
+
+  static String getBaseDowngradeObjectHandleTypename(CustomType domainType, CustomType baseDomainType) {
+    String packageName = TypeFunctions.getPackageName(domainType.canonicalName());
+    String simpleName = StringFunctions.capitalizeFirstLetter(baseDomainType.simpleName()) +
+        "BasedOn" + StringFunctions.capitalizeFirstLetter(domainType.simpleName());
+    return TypeFunctions.joinPackageAndSimpleName(packageName, simpleName);
+  }
+
   static String getMovableDowngradeObjectHandleTypename(CustomType domainType, CustomType baseDomainType) {
     String packageName = TypeFunctions.getPackageName(domainType.canonicalName());
     String simpleName = "Movable" +
+        StringFunctions.capitalizeFirstLetter(baseDomainType.simpleName()) +
+        "BasedOn" + StringFunctions.capitalizeFirstLetter(domainType.simpleName());
+    return TypeFunctions.joinPackageAndSimpleName(packageName, simpleName);
+  }
+
+  static String getUnmovableDowngradeObjectHandleTypename(CustomType domainType, CustomType baseDomainType) {
+    String packageName = TypeFunctions.getPackageName(domainType.canonicalName());
+    String simpleName = "Unmovable" +
         StringFunctions.capitalizeFirstLetter(baseDomainType.simpleName()) +
         "BasedOn" + StringFunctions.capitalizeFirstLetter(domainType.simpleName());
     return TypeFunctions.joinPackageAndSimpleName(packageName, simpleName);
@@ -179,11 +205,7 @@ public interface NameConventionFunctions {
   }
 
   private static boolean isMappingTraverseType(MethodStatement method) {
-    Transition transition = method.selectAnnotation(Transition.class).orElseThrow();
-    if (transition.allowedTraverseTypes().length > 1) {
-      return transition.defaultTraverseType() == TraverseTypes.Mapping;
-    }
-    return transition.allowedTraverseTypes()[0] == TraverseTypes.Mapping;
+    return TransitionFunctions.getTraverseType(method) == TraverseTypes.Mapping;
   }
 
   private static String transformClassName(String className) {

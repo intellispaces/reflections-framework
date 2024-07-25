@@ -79,7 +79,8 @@ public abstract class AbstractObjectHandleGenerator extends AbstractGenerator {
 
   protected boolean isDisableMoving(MethodStatement method) {
     Transition transition = TransitionFunctions.getDomainMainTransitionAnnotation(method);
-    return transition.defaultTraverseType() == TraverseTypes.Moving && getObjectHandleType() == ObjectHandleTypes.Unmovable;
+    return TransitionFunctions.getTraverseType(transition) == TraverseTypes.Moving &&
+        getObjectHandleType() == ObjectHandleTypes.Unmovable;
   }
 
   protected void appendMethodReturnType(StringBuilder sb, MethodStatement method) {
@@ -92,7 +93,7 @@ public abstract class AbstractObjectHandleGenerator extends AbstractGenerator {
 
   protected void appendMethodReturnHandleType(StringBuilder sb, MethodStatement method) {
     TypeReference domainReturnType = method.returnType().orElseThrow();
-    sb.append(getObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.Common));
+    sb.append(getObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.Base));
   }
 
   protected void appendMethodTypeParameters(StringBuilder sb, MethodStatement method) {

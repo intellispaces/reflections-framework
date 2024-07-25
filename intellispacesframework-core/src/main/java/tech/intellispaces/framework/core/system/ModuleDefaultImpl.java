@@ -194,7 +194,7 @@ public class ModuleDefaultImpl implements ModuleDefault {
   @SuppressWarnings("unchecked")
   public <S, T> T mapThruTransition0(S source, String tid) {
     DeclarativePlan traversePlan = traverseAnalyzer.buildTraversePlanMapObjectHandleThruTransition0(
-        ObjectFunctions.seekObjectHandleClass(source.getClass()), tid);
+        ObjectFunctions.defineObjectHandleClass(source.getClass()), tid);
     return (T) traversePlan.execute(source, traverseExecutor);
   }
 
@@ -202,7 +202,7 @@ public class ModuleDefaultImpl implements ModuleDefault {
   @SuppressWarnings("unchecked")
   public <S, T, Q> T mapThruTransition1(S source, String tid, Q qualifier) {
     DeclarativePlan traversePlan = traverseAnalyzer.buildTraversePlanMapObjectHandleThruTransition1(
-        ObjectFunctions.seekObjectHandleClass(source.getClass()), tid);
+        ObjectFunctions.defineObjectHandleClass(source.getClass()), tid);
     return (T) traversePlan.execute(source, qualifier, traverseExecutor);
   }
 
@@ -210,7 +210,7 @@ public class ModuleDefaultImpl implements ModuleDefault {
   @SuppressWarnings("unchecked")
   public <S, B> B moveThruTransition0(S source, String tid) {
     DeclarativePlan traversePlan = traverseAnalyzer.buildTraversePlanMoveObjectHandleThruTransition0(
-        ObjectFunctions.seekObjectHandleClass(source.getClass()), tid);
+        ObjectFunctions.defineObjectHandleClass(source.getClass()), tid);
     return (B) traversePlan.execute(source, traverseExecutor);
   }
 
@@ -218,7 +218,7 @@ public class ModuleDefaultImpl implements ModuleDefault {
   @SuppressWarnings("unchecked")
   public <S, B, Q> B moveThruTransition1(S source, String tid, Q qualifier) {
     DeclarativePlan traversePlan = traverseAnalyzer.buildTraversePlanMoveObjectHandleThruTransition1(
-        ObjectFunctions.seekObjectHandleClass(source.getClass()), tid);
+        ObjectFunctions.defineObjectHandleClass(source.getClass()), tid);
     return (B) traversePlan.execute(source, qualifier, traverseExecutor);
   }
 }

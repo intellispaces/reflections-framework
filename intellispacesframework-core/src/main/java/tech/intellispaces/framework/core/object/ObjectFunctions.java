@@ -57,7 +57,7 @@ public class ObjectFunctions {
     if (isDefaultObjectHandleType(domainType)) {
       return domainType.className();
     }
-    return NameConventionFunctions.getCommonObjectHandleTypename(domainType.className());
+    return NameConventionFunctions.getBaseObjectHandleTypename(domainType.className());
   }
 
   public static boolean isCustomObjectHandleClass(Class<?> aClass) {
@@ -68,24 +68,24 @@ public class ObjectFunctions {
     return type.isCustomTypeReference() && type.asCustomTypeReferenceSurely().targetType().hasParent(ObjectHandle.class);
   }
 
-  public static Class<?> seekObjectHandleClass(Class<?> aClass) {
-    return seekObjectHandleClassInternal(aClass);
+  public static Class<?> defineObjectHandleClass(Class<?> aClass) {
+    return defineObjectHandleClassInternal(aClass);
   }
 
-  private static Class<?> seekObjectHandleClassInternal(Class<?> aClass) {
+  private static Class<?> defineObjectHandleClassInternal(Class<?> aClass) {
     if (aClass.isAnnotationPresent(tech.intellispaces.framework.core.annotation.ObjectHandle.class) ||
         isDefaultObjectHandleClass(aClass)
     ) {
       return aClass;
     }
     if (aClass.getSuperclass() != null) {
-      Class<?> result = seekObjectHandleClassInternal(aClass.getSuperclass());
+      Class<?> result = defineObjectHandleClassInternal(aClass.getSuperclass());
       if (result != null) {
         return result;
       }
     }
     for (Class<?> anInterface : aClass.getInterfaces()) {
-      Class<?> result = seekObjectHandleClassInternal(anInterface);
+      Class<?> result = defineObjectHandleClassInternal(anInterface);
       if (result != null) {
         return result;
       }

@@ -14,21 +14,21 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class UnmovableUpgradeObjectHandleGenerator extends AbstractDomainObjectHandleGenerator {
+public class UnmovableUpwardObjectHandleGenerator extends AbstractDomainObjectHandleGenerator {
   private final CustomTypeReference baseDomainType;
   private String classTypeParams;
   private String unmovableObjectHandleName;
   private String baseObjectHandleType;
   private String baseField;
 
-  public UnmovableUpgradeObjectHandleGenerator(CustomType annotatedType, CustomTypeReference baseDomainType) {
+  public UnmovableUpwardObjectHandleGenerator(CustomType annotatedType, CustomTypeReference baseDomainType) {
     super(annotatedType);
     this.baseDomainType = baseDomainType;
   }
 
   @Override
   public String getArtifactName() {
-    return NameConventionFunctions.getUnmovableUpgradeObjectHandleTypename(annotatedType, baseDomainType.targetType());
+    return NameConventionFunctions.getUnmovableUpwardObjectHandleTypename(annotatedType, baseDomainType.targetType());
   }
 
   @Override
@@ -38,7 +38,7 @@ public class UnmovableUpgradeObjectHandleGenerator extends AbstractDomainObjectH
 
   @Override
   protected String templateName() {
-    return "/unmovable_upgrade_object_handle.template";
+    return "/unmovable_upward_object_handle.template";
   }
 
   @Override
@@ -69,7 +69,7 @@ public class UnmovableUpgradeObjectHandleGenerator extends AbstractDomainObjectH
 
     classTypeParams = annotatedType.typeParametersFullDeclaration();
     baseField = StringFunctions.lowercaseFirstLetter(baseDomainType.targetType().simpleName());
-    baseObjectHandleType = getBaseObjectHandleType();
+    baseObjectHandleType = getParentObjectHandleType();
 
     analyzeObjectHandleMethods(annotatedType, roundEnv);
     return true;
@@ -128,7 +128,7 @@ public class UnmovableUpgradeObjectHandleGenerator extends AbstractDomainObjectH
     return Map.of("declaration", sb.toString());
   }
 
-  private String getBaseObjectHandleType() {
+  private String getParentObjectHandleType() {
     return context.addToImportAndGetSimpleName(
         NameConventionFunctions.getUnmovableObjectHandleTypename(baseDomainType.targetType().className())
     ) + annotatedType.parentTypes().get(0).typeArgumentsDeclaration(context::addToImportAndGetSimpleName);

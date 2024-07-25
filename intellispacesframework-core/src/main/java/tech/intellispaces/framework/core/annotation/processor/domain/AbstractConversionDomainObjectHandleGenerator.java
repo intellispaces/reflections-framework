@@ -74,7 +74,7 @@ abstract class AbstractConversionDomainObjectHandleGenerator extends AbstractDom
       StringBuilder sb, MethodStatement method, CustomType actualReturnType, CustomType expectedReturnType
   ) {
     sb.append("new ");
-    sb.append(context.addToImportAndGetSimpleName(NameConventionFunctions.getBaseDowngradeObjectHandleTypename(
+    sb.append(context.addToImportAndGetSimpleName(NameConventionFunctions.getBaseDownwardObjectHandleTypename(
         actualReturnType, expectedReturnType))
     );
     sb.append("(this.");

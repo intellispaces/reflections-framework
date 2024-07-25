@@ -22,22 +22,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class BaseDowngradeObjectHandleGenerator extends AbstractConversionDomainObjectHandleGenerator {
+public class BaseDownwardObjectHandleGenerator extends AbstractConversionDomainObjectHandleGenerator {
   private List<Map<String, String>> additionalMethods;
   private String classTypeParams;
   private String classTypeParamsBrief;
   private String baseObjectHandleName;
   private String movableObjectHandleName;
   private String childObjectHandleType;
-  private String movableDowngradeObjectHandleName;
+  private String movableDownwardObjectHandleName;
 
-  public BaseDowngradeObjectHandleGenerator(CustomType annotatedType, CustomTypeReference parentDomainType) {
+  public BaseDownwardObjectHandleGenerator(CustomType annotatedType, CustomTypeReference parentDomainType) {
     super(annotatedType, parentDomainType);
   }
 
   @Override
   public String getArtifactName() {
-    return NameConventionFunctions.getBaseDowngradeObjectHandleTypename(annotatedType, parentDomainType.targetType());
+    return NameConventionFunctions.getBaseDownwardObjectHandleTypename(annotatedType, parentDomainType.targetType());
   }
 
   @Override
@@ -47,7 +47,7 @@ public class BaseDowngradeObjectHandleGenerator extends AbstractConversionDomain
 
   @Override
   protected String templateName() {
-    return "/base_downgrade_object_handle.template";
+    return "/base_downward_object_handle.template";
   }
 
   @Override
@@ -67,7 +67,7 @@ public class BaseDowngradeObjectHandleGenerator extends AbstractConversionDomain
     vars.put("importedClasses", context.getImports());
     vars.put("baseObjectHandleName", baseObjectHandleName);
     vars.put("movableObjectHandleName", movableObjectHandleName);
-    vars.put("movableDowngradeObjectHandleName", movableDowngradeObjectHandleName);
+    vars.put("movableDowngradeObjectHandleName", movableDownwardObjectHandleName);
     return vars;
   }
 
@@ -90,7 +90,7 @@ public class BaseDowngradeObjectHandleGenerator extends AbstractConversionDomain
     childFieldName = StringFunctions.lowercaseFirstLetter(annotatedType.simpleName());
     childObjectHandleType = getChildObjectHandleType();
 
-    movableDowngradeObjectHandleName = NameConventionFunctions.getMovableDowngradeObjectHandleTypename(
+    movableDownwardObjectHandleName = NameConventionFunctions.getMovableDownwardObjectHandleTypename(
         annotatedType, parentDomainType.targetType()
     );
 
@@ -133,7 +133,7 @@ public class BaseDowngradeObjectHandleGenerator extends AbstractConversionDomain
     buildReturnStatement(sb, method);
     sb.append("\n}\n");
     return Map.of(
-        "javadoc", buildGeneratedMethodJavadoc(method.owner().canonicalName(), method.name()),
+        "javadoc", buildGeneratedMethodJavadoc(method.owner().canonicalName(), method),
         "declaration", sb.toString()
     );
   }
@@ -159,7 +159,7 @@ public class BaseDowngradeObjectHandleGenerator extends AbstractConversionDomain
         .append("();\n");
     sb.append("}");
     return Map.of(
-        "javadoc", buildGeneratedMethodJavadoc(method.owner().canonicalName(), method.name()),
+        "javadoc", buildGeneratedMethodJavadoc(method.owner().canonicalName(), method),
         "declaration", sb.toString()
       );
   }

@@ -8,6 +8,7 @@ import tech.intellispaces.framework.commons.type.TypeFunctions;
 import tech.intellispaces.framework.core.common.NameConventionFunctions;
 import tech.intellispaces.framework.core.object.ObjectHandleTypes;
 import tech.intellispaces.framework.javastatements.statement.custom.CustomType;
+import tech.intellispaces.framework.javastatements.statement.method.MethodParam;
 import tech.intellispaces.framework.javastatements.statement.method.MethodSignatureDeclarations;
 import tech.intellispaces.framework.javastatements.statement.method.MethodStatement;
 import tech.intellispaces.framework.javastatements.statement.reference.CustomTypeReference;
@@ -18,6 +19,7 @@ import tech.intellispaces.framework.javastatements.statement.reference.WildcardT
 import javax.annotation.processing.Generated;
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.time.format.DateTimeFormatter.ISO_OFFSET_DATE_TIME;
 
@@ -51,9 +53,9 @@ public abstract class AbstractGenerator extends TemplateBasedJavaArtifactGenerat
       generatedAnnotation = """
         @Generated(
           value = "Source artifact %s",
-          date = "%s",
           comments = "Generated with library %s." +
-                     "Generator %s"
+                     "Generator %s",
+          date = "%s"
         )""".formatted(
           annotatedType.canonicalName(),
           ZonedDateTime.now().format(ISO_OFFSET_DATE_TIME),
@@ -64,13 +66,19 @@ public abstract class AbstractGenerator extends TemplateBasedJavaArtifactGenerat
     return generatedAnnotation;
   }
 
-  protected String buildGeneratedMethodJavadoc(String sourceClassCanonicalName, String methodName) {
+  protected String buildGeneratedMethodJavadoc(String sourceClassCanonicalName, MethodStatement method) {
     return """
       /**
-       * This method was generated on base of method '%s'
-       * of the class {@link %s}
+       * This method was generated on base of method {@link %s#%s(%s)}
        */
-        """.formatted(methodName, sourceClassCanonicalName);
+        """.formatted(
+          sourceClassCanonicalName,
+          method.name(),
+          method.params().stream()
+              .map(MethodParam::type)
+              .map(type -> type.actualDeclaration(context::addToImportAndGetSimpleName))
+              .collect(Collectors.joining(", "))
+    );
   }
 
   protected String buildMethodSignature(MethodStatement method) {

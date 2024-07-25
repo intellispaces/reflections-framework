@@ -104,7 +104,7 @@ public class BaseObjectHandleGenerator extends AbstractDomainObjectHandleGenerat
     sb.append(")");
     appendMethodExceptions(sb, method);
     return Map.of(
-        "javadoc", buildGeneratedMethodJavadoc(method.owner().canonicalName(), method.name()),
+        "javadoc", buildGeneratedMethodJavadoc(method.owner().canonicalName(), method),
         "declaration", sb.toString()
     );
   }

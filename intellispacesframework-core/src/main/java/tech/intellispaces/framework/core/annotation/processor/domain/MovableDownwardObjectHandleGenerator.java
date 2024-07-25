@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class MovableDowngradeObjectHandleGenerator extends AbstractConversionDomainObjectHandleGenerator {
+public class MovableDownwardObjectHandleGenerator extends AbstractConversionDomainObjectHandleGenerator {
   private List<Map<String, String>> additionalMethods;
   private String classTypeParams;
   private String classTypeParamsBrief;
@@ -31,13 +31,13 @@ public class MovableDowngradeObjectHandleGenerator extends AbstractConversionDom
   private String childObjectHandleType;
   private String domainClassSimpleName;
 
-  public MovableDowngradeObjectHandleGenerator(CustomType annotatedType, CustomTypeReference parentDomainType) {
+  public MovableDownwardObjectHandleGenerator(CustomType annotatedType, CustomTypeReference parentDomainType) {
     super(annotatedType, parentDomainType);
   }
 
   @Override
   public String getArtifactName() {
-    return NameConventionFunctions.getMovableDowngradeObjectHandleTypename(annotatedType, parentDomainType.targetType());
+    return NameConventionFunctions.getMovableDownwardObjectHandleTypename(annotatedType, parentDomainType.targetType());
   }
 
   @Override
@@ -47,7 +47,7 @@ public class MovableDowngradeObjectHandleGenerator extends AbstractConversionDom
 
   @Override
   protected String templateName() {
-    return "/movable_downgrade_object_handle.template";
+    return "/movable_downward_object_handle.template";
   }
 
   @Override
@@ -129,7 +129,7 @@ public class MovableDowngradeObjectHandleGenerator extends AbstractConversionDom
     buildReturnStatement(sb, method);
     sb.append("\n}\n");
     return Map.of(
-        "javadoc", buildGeneratedMethodJavadoc(method.owner().canonicalName(), method.name()),
+        "javadoc", buildGeneratedMethodJavadoc(method.owner().canonicalName(), method),
         "declaration", sb.toString()
     );
   }
@@ -155,7 +155,7 @@ public class MovableDowngradeObjectHandleGenerator extends AbstractConversionDom
         .append("();\n");
     sb.append("}");
     return Map.of(
-        "javadoc", buildGeneratedMethodJavadoc(method.owner().canonicalName(), method.name()),
+        "javadoc", buildGeneratedMethodJavadoc(method.owner().canonicalName(), method),
         "declaration", sb.toString()
       );
   }

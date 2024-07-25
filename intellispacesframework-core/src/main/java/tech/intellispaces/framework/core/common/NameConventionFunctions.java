@@ -87,30 +87,30 @@ public interface NameConventionFunctions {
     return assignTransitionClassCanonicalName(spaceName, domainType, transitionMethod);
   }
 
-  static String getUnmovableUpgradeObjectHandleTypename(CustomType domainType, CustomType baseDomainType) {
+  static String getUnmovableUpwardObjectHandleTypename(CustomType domainType, CustomType baseDomainType) {
     String packageName = TypeFunctions.getPackageName(domainType.canonicalName());
     String simpleName = domainType.simpleName() + "BasedOn" + StringFunctions.capitalizeFirstLetter(baseDomainType.simpleName());
     return TypeFunctions.joinPackageAndSimpleName(packageName, simpleName);
   }
 
-  static String getDowngradeObjectHandleTypename(
+  static String getDownwardObjectHandleTypename(
       CustomType domainType, CustomType baseDomainType, ObjectHandleTypes handleType
   ) {
     return switch (handleType) {
-      case Base -> getBaseDowngradeObjectHandleTypename(domainType, baseDomainType);
-      case Movable -> getMovableDowngradeObjectHandleTypename(domainType, baseDomainType);
-      case Unmovable -> getUnmovableDowngradeObjectHandleTypename(domainType, baseDomainType);
+      case Base -> getBaseDownwardObjectHandleTypename(domainType, baseDomainType);
+      case Movable -> getMovableDownwardObjectHandleTypename(domainType, baseDomainType);
+      case Unmovable -> getUnmovableDownwardObjectHandleTypename(domainType, baseDomainType);
     };
   }
 
-  static String getBaseDowngradeObjectHandleTypename(CustomType domainType, CustomType baseDomainType) {
+  static String getBaseDownwardObjectHandleTypename(CustomType domainType, CustomType baseDomainType) {
     String packageName = TypeFunctions.getPackageName(domainType.canonicalName());
     String simpleName = StringFunctions.capitalizeFirstLetter(baseDomainType.simpleName()) +
         "BasedOn" + StringFunctions.capitalizeFirstLetter(domainType.simpleName());
     return TypeFunctions.joinPackageAndSimpleName(packageName, simpleName);
   }
 
-  static String getMovableDowngradeObjectHandleTypename(CustomType domainType, CustomType baseDomainType) {
+  static String getMovableDownwardObjectHandleTypename(CustomType domainType, CustomType baseDomainType) {
     String packageName = TypeFunctions.getPackageName(domainType.canonicalName());
     String simpleName = "Movable" +
         StringFunctions.capitalizeFirstLetter(baseDomainType.simpleName()) +
@@ -118,7 +118,7 @@ public interface NameConventionFunctions {
     return TypeFunctions.joinPackageAndSimpleName(packageName, simpleName);
   }
 
-  static String getUnmovableDowngradeObjectHandleTypename(CustomType domainType, CustomType baseDomainType) {
+  static String getUnmovableDownwardObjectHandleTypename(CustomType domainType, CustomType baseDomainType) {
     String packageName = TypeFunctions.getPackageName(domainType.canonicalName());
     String simpleName = "Unmovable" +
         StringFunctions.capitalizeFirstLetter(baseDomainType.simpleName()) +
@@ -126,7 +126,7 @@ public interface NameConventionFunctions {
     return TypeFunctions.joinPackageAndSimpleName(packageName, simpleName);
   }
 
-  static String getMovableDowngradeObjectHandleTypename(Class<?> domainClass, Class<?> baseDomainClass) {
+  static String getMovableDownwardObjectHandleTypename(Class<?> domainClass, Class<?> baseDomainClass) {
     String packageName = TypeFunctions.getPackageName(domainClass.getCanonicalName());
     String simpleName = "Movable" +
         StringFunctions.capitalizeFirstLetter(baseDomainClass.getSimpleName()) +

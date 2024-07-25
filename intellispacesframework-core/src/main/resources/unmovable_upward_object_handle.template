@@ -5,7 +5,7 @@ import {{$importedClass}};
 {{end}}
 
 /**
- * Unmovable upgrade object handle for objects of domain {@link {{$sourceClassName}}}.<p/>
+ * Unmovable upward object handle for objects of domain {@link {{$sourceClassName}}}.<p/>
  *
  * This class was generated automatically. Don't try to change it.
  */

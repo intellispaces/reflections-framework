@@ -55,7 +55,7 @@ public class UnmovableDataHandleGenerator extends AbstractGenerator {
   }
 
   private void analyzeProjections() {
-    for (MethodStatement method : annotatedType.declaredMethods()) {
+    for (MethodStatement method : annotatedType.actualMethods()) {
       TypeReference type = method.returnType().orElseThrow();
       String handleType = getObjectHandleDeclaration(type, ObjectHandleTypes.Unmovable);
 

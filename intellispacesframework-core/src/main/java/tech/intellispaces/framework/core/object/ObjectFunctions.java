@@ -198,7 +198,7 @@ public class ObjectFunctions {
   private static Object tryCreateDowngradeObjectHandle(
       Object sourceObjectHandle, Class<?> sourceObjectHandleDomain, Class<?> targetObjectHandleDomain
   ) {
-    String downgradeObjectHandleCanonicalName = NameConventionFunctions.getMovableDowngradeObjectHandleTypename(
+    String downgradeObjectHandleCanonicalName = NameConventionFunctions.getMovableDownwardObjectHandleTypename(
         sourceObjectHandleDomain, targetObjectHandleDomain);
     Optional<Class<?>> downgradeObjectHandleClass = TypeFunctions.getClass(downgradeObjectHandleCanonicalName);
     if (downgradeObjectHandleClass.isPresent()) {

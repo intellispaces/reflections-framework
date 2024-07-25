@@ -11,14 +11,14 @@ import tech.intellispaces.framework.core.annotation.Ontology;
 import tech.intellispaces.framework.core.annotation.Preprocessing;
 import tech.intellispaces.framework.core.annotation.Transition;
 import tech.intellispaces.framework.core.annotation.processor.data.UnmovableDataHandleGenerator;
-import tech.intellispaces.framework.core.annotation.processor.domain.BaseDowngradeObjectHandleGenerator;
+import tech.intellispaces.framework.core.annotation.processor.domain.BaseDownwardObjectHandleGenerator;
 import tech.intellispaces.framework.core.annotation.processor.domain.BaseObjectHandleGenerator;
 import tech.intellispaces.framework.core.annotation.processor.domain.DomainGuideGenerator;
 import tech.intellispaces.framework.core.annotation.processor.domain.DomainTransitionGenerator;
-import tech.intellispaces.framework.core.annotation.processor.domain.MovableDowngradeObjectHandleGenerator;
+import tech.intellispaces.framework.core.annotation.processor.domain.MovableDownwardObjectHandleGenerator;
 import tech.intellispaces.framework.core.annotation.processor.domain.MovableObjectHandleGenerator;
 import tech.intellispaces.framework.core.annotation.processor.domain.UnmovableObjectHandleGenerator;
-import tech.intellispaces.framework.core.annotation.processor.domain.UnmovableUpgradeObjectHandleGenerator;
+import tech.intellispaces.framework.core.annotation.processor.domain.UnmovableUpwardObjectHandleGenerator;
 import tech.intellispaces.framework.core.annotation.processor.module.UnitWrapperGenerator;
 import tech.intellispaces.framework.core.annotation.processor.objecthandle.MovableObjectHandleImplImplGenerator;
 import tech.intellispaces.framework.core.annotation.processor.objecthandle.UnmovableObjectHandleImplGenerator;
@@ -105,7 +105,7 @@ public interface AnnotationProcessorFunctions {
     if (!allTypeArgumentsAreCustomTypes) {
       return;
     }
-    generators.add(new UnmovableUpgradeObjectHandleGenerator(domainType, baseDomainType));
+    generators.add(new UnmovableUpwardObjectHandleGenerator(domainType, baseDomainType));
 
     addUpgradeObjectHandleGenerators(domainType, baseDomainType.targetType(), generators);
   }
@@ -118,8 +118,8 @@ public interface AnnotationProcessorFunctions {
       return;
     }
     CustomTypeReference parentDomainType = parents.get(0);
-    generators.add(new BaseDowngradeObjectHandleGenerator(domainType, parentDomainType));
-    generators.add(new MovableDowngradeObjectHandleGenerator(domainType, parentDomainType));
+    generators.add(new BaseDownwardObjectHandleGenerator(domainType, parentDomainType));
+    generators.add(new MovableDownwardObjectHandleGenerator(domainType, parentDomainType));
   }
 
   private static boolean isCustomTypeRelated(TypeReference type) {

@@ -5,7 +5,7 @@ import {{$importedClass}};
 {{end}}
 
 /**
- * Movable downgrade object handle for objects of domain {@link {{$sourceClassName}}}.<p/>
+ * Movable downward object handle for objects of domain {@link {{$sourceClassName}}}.<p/>
  *
  * This class was generated automatically. Don't try to change it.
  */

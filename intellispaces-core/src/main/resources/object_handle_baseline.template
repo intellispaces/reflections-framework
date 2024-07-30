@@ -1,0 +1,21 @@
+package {{$packageName}};
+
+{{for importedClass : $importedClasses}}
+import {{$importedClass}};
+{{end}}
+
+/**
+ * Object handle branch of the domain {@link {{$sourceClassName}}}.<p/>
+ *
+ * This class was generated automatically. Don't try to change it.
+ */
+{{$generatedAnnotation}}
+@ObjectHandleBaseline({{$sourceClassSimpleName}}.class)
+public interface {{$classSimpleName}}{{$domainTypeParamsFull}} {{$extendDeclaration}} {
+
+{{for method : $domainMethods}}
+  {{$method.get("javadoc")}}
+  {{$method.get("declaration")}};
+
+{{end}}
+}

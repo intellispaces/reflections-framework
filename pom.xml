@@ -3,49 +3,54 @@
 
     <parent>
         <groupId>intellispaces</groupId>
-        <artifactId>intellispacesframework-parent-pom</artifactId>
+        <artifactId>intellispaces-parent-pom</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>intellispacesframework-core-parent</artifactId>
+    <artifactId>intellispaces-core-parent</artifactId>
     <packaging>pom</packaging>
 
     <modules>
-        <module>intellispacesframework-core-model</module>
-        <module>intellispacesframework-core</module>
+        <module>intellispaces-core-model</module>
+        <module>intellispaces-core</module>
     </modules>
 
     <dependencyManagement>
         <dependencies>
-            <!-- Intellispaces framework-->
+            <!-- Intellispaces-->
             <dependency>
                 <groupId>intellispaces</groupId>
-                <artifactId>intellispacesframework-core-model</artifactId>
+                <artifactId>intellispaces-commons</artifactId>
                 <version>0.0.1-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>intellispaces</groupId>
-                <artifactId>intellispacesframework-templateengine-model</artifactId>
+                <artifactId>intellispaces-core-model</artifactId>
                 <version>0.0.1-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>intellispaces</groupId>
-                <artifactId>intellispacesframework-commons</artifactId>
+                <artifactId>intellispaces-templates-model</artifactId>
                 <version>0.0.1-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>intellispaces</groupId>
-                <artifactId>intellispacesframework-actions</artifactId>
+                <artifactId>intellispaces-javastatements-model</artifactId>
                 <version>0.0.1-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>intellispaces</groupId>
-                <artifactId>intellispacesframework-annotationprocessor</artifactId>
+                <artifactId>intellispaces-actions</artifactId>
                 <version>0.0.1-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>intellispaces</groupId>
-                <artifactId>intellispacesframework-dynamicproxy</artifactId>
+                <artifactId>intellispaces-annotations</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>intellispaces</groupId>
+                <artifactId>intellispaces-proxies</artifactId>
                 <version>0.0.1-SNAPSHOT</version>
             </dependency>
         </dependencies>

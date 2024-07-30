@@ -1,0 +1,37 @@
+package {{$packageName}};
+
+{{for importedClass : $importedClasses}}
+import {{$importedClass}};
+{{end}}
+
+/**
+ * Handle of the object of domain {@link {{$sourceClassName}}}.<p/>
+ *
+ * This class was generated automatically. Don't try to change it.
+ */
+{{$generatedAnnotation}}
+public interface {{$classSimpleName}}{{$domainTypeParamsFull}} extends {{$objectHandleBranch}}{{$domainTypeParamsBrief}}, ObjectHandle<{{$sourceClassSimpleName}}{{$domainTypeParamsBrief}}> {
+
+{{when $hasPointParent}}
+  /**
+   * Based on the method {@link intellispaces.ixora.core.Point#baseDomain()}
+   */
+  @Override
+  default Class<{{$sourceClassSimpleName}}> baseDomain() {
+    return {{$sourceClassSimpleName}}.class;
+  }
+{{end}}
+
+  @Override
+  default Type<{{$sourceClassSimpleName}}{{$domainTypeParamsBrief}}> domain() {
+    return Types.of({{$sourceClassSimpleName}}.class);
+  }
+
+{{for method : $additionalMethods}}
+  {{$method.get("javadoc")}}
+  {{$method.get("declaration")}};
+
+{{end}}
+  @Override
+  {{$movableClassSimpleName}}{{$domainTypeParamsBrief}} asMovableOrElseThrow();
+}

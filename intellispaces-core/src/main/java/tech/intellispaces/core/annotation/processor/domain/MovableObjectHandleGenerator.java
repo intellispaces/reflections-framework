@@ -58,7 +58,7 @@ public class MovableObjectHandleGenerator extends AbstractDomainObjectHandleGene
     domainTypeParamsFull = annotatedType.typeParametersFullDeclaration();
     domainTypeParamsBrief = annotatedType.typeParametersBriefDeclaration();
     baseObjectHandle = context.addToImportAndGetSimpleName(
-        NameConventionFunctions.getBaseObjectHandleTypename(annotatedType.className())
+        NameConventionFunctions.getCommonObjectHandleTypename(annotatedType.className())
     );
     analyzeObjectHandleMethods(annotatedType, roundEnv);
     return true;

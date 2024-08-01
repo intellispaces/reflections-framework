@@ -2,7 +2,6 @@ package tech.intellispaces.core.annotation.processor.domain;
 
 import tech.intellispaces.actions.Executor;
 import tech.intellispaces.actions.string.StringActions;
-import tech.intellispaces.commons.string.StringFunctions;
 import tech.intellispaces.core.annotation.processor.AbstractTransitionGenerator;
 import tech.intellispaces.core.common.NameConventionFunctions;
 import tech.intellispaces.javastatements.Statement;
@@ -76,7 +75,7 @@ public class DomainTransitionGenerator extends AbstractTransitionGenerator {
       }
       sb.append(">");
     }
-    sb.append(" ").append(StringFunctions.lowercaseFirstLetter(annotatedType.simpleName()));
+    sb.append(" source");
     return sb.toString();
   }
 

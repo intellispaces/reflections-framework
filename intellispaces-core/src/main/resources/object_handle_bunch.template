@@ -10,7 +10,7 @@ import {{$importedClass}};
  * This class was generated automatically. Don't try to change it.
  */
 {{$generatedAnnotation}}
-@ObjectHandleBaseline({{$sourceClassSimpleName}}.class)
+@ObjectHandleBunch({{$sourceClassSimpleName}}.class)
 public interface {{$classSimpleName}}{{$domainTypeParamsFull}} {{$extendDeclaration}} {
 
 {{for method : $domainMethods}}

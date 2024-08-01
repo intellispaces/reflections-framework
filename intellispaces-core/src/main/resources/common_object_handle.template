@@ -5,29 +5,29 @@ import {{$importedClass}};
 {{end}}
 
 /**
- * Handle of the object of domain {@link {{$sourceClassName}}}.<p/>
+ * Common handle of the object of domain {@link {{$sourceClassName}}}.<p/>
  *
  * This class was generated automatically. Don't try to change it.
  */
 {{$generatedAnnotation}}
-public interface {{$classSimpleName}}{{$domainTypeParamsFull}} extends {{$objectHandleBranch}}{{$domainTypeParamsBrief}}, ObjectHandle<{{$sourceClassSimpleName}}{{$domainTypeParamsBrief}}> {
+public interface {{$classSimpleName}}{{$domainTypeParamsFull}} extends {{$objectHandleBunch}}{{$domainTypeParamsBrief}}, ObjectHandle<{{$sourceClassSimpleName}}{{$domainTypeParamsBrief}}> {
 
-{{when $hasPointParent}}
-  /**
-   * Based on the method {@link intellispaces.ixora.core.Point#baseDomain()}
-   */
   @Override
-  default Class<{{$sourceClassSimpleName}}> baseDomain() {
-    return {{$sourceClassSimpleName}}.class;
+  default Class<{{$sourceClassSimpleName}}{{$domainTypeParamsBrief}}> domainClass() {
+    return (Class) {{$sourceClassSimpleName}}.class;
   }
-{{end}}
 
+{{when $domainTypeParamsBrief.isEmpty()}}
   @Override
-  default Type<{{$sourceClassSimpleName}}{{$domainTypeParamsBrief}}> domain() {
+  default Type<{{$sourceClassSimpleName}}> domain() {
     return Types.of({{$sourceClassSimpleName}}.class);
   }
+{{else}}
+  @Override
+  Type<{{$sourceClassSimpleName}}{{$domainTypeParamsBrief}}> domain();
+{{end}}
 
-{{for method : $additionalMethods}}
+{{for method : $domainMethods}}
   {{$method.get("javadoc")}}
   {{$method.get("declaration")}};
 

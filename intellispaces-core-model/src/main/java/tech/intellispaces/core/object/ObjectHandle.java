@@ -15,6 +15,8 @@ public interface ObjectHandle<D> {
 
   Type<D> domain();
 
+  Class<D> domainClass();
+
   boolean isMovable();
 
   MovableObjectHandle<D> asMovableOrElseThrow();

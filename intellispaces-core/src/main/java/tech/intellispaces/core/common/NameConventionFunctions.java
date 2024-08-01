@@ -4,9 +4,11 @@ import tech.intellispaces.commons.exception.UnexpectedViolationException;
 import tech.intellispaces.commons.string.StringFunctions;
 import tech.intellispaces.commons.type.TypeFunctions;
 import tech.intellispaces.core.annotation.Domain;
-import tech.intellispaces.core.annotation.ObjectHandle;
+import tech.intellispaces.core.annotation.MovableObjectHandle;
 import tech.intellispaces.core.annotation.Ontology;
 import tech.intellispaces.core.annotation.Transition;
+import tech.intellispaces.core.annotation.UnmovableObjectHandle;
+import tech.intellispaces.core.object.ObjectFunctions;
 import tech.intellispaces.core.object.ObjectHandleTypes;
 import tech.intellispaces.core.space.transition.TransitionFunctions;
 import tech.intellispaces.core.traverse.TraverseType;
@@ -20,36 +22,52 @@ import java.util.Optional;
 public interface NameConventionFunctions {
 
   static String getObjectHandleImplementationTypename(CustomType objectHandleType) {
-    Optional<ObjectHandle> annotation = objectHandleType.selectAnnotation(ObjectHandle.class);
+    Optional<MovableObjectHandle> annotation = objectHandleType.selectAnnotation(MovableObjectHandle.class);
     if (annotation.isPresent()) {
       return TypeFunctions.replaceSimpleName(objectHandleType.canonicalName(), annotation.get().value());
     } else {
-      return objectHandleType.canonicalName() + "Impl";
+      Optional<UnmovableObjectHandle> unmovableObjectAnnotation = objectHandleType.selectAnnotation(
+          UnmovableObjectHandle.class
+      );
+      if (unmovableObjectAnnotation.isPresent()) {
+        return TypeFunctions.replaceSimpleName(objectHandleType.canonicalName(), unmovableObjectAnnotation.get().value());
+      } else {
+        return objectHandleType.canonicalName() + "Impl";
+      }
     }
   }
 
   static String getObjectHandleImplementationTypename(Class<?> objectHandleClass) {
-    ObjectHandle annotation = objectHandleClass.getAnnotation(ObjectHandle.class);
-    if (annotation != null) {
-      return TypeFunctions.replaceSimpleName(objectHandleClass.getCanonicalName(), annotation.value());
+    MovableObjectHandle movableObjectAnnotation = objectHandleClass.getAnnotation(MovableObjectHandle.class);
+    if (movableObjectAnnotation != null) {
+      return TypeFunctions.replaceSimpleName(objectHandleClass.getCanonicalName(), movableObjectAnnotation.value());
     } else {
-      return objectHandleClass.getCanonicalName() + "Impl";
+      UnmovableObjectHandle unmovableObjectAnnotation = objectHandleClass.getAnnotation(UnmovableObjectHandle.class);
+      if (unmovableObjectAnnotation != null) {
+        return TypeFunctions.replaceSimpleName(objectHandleClass.getCanonicalName(), unmovableObjectAnnotation.value());
+      } else {
+        return objectHandleClass.getCanonicalName() + "Impl";
+      }
     }
-  }
-
-  static String getObjectHandleBaselineTypename(String domainClassName) {
-    return transformClassName(domainClassName) + "HandleBaseline";
   }
 
   static String getObjectHandleTypename(String domainClassName, ObjectHandleTypes handleType) {
     return switch (handleType) {
-      case Common -> getBaseObjectHandleTypename(domainClassName);
+      case Bunch -> getBunchObjectHandleTypename(domainClassName);
+      case Common -> getCommonObjectHandleTypename(domainClassName);
       case Movable -> getMovableObjectHandleTypename(domainClassName);
       case Unmovable -> getUnmovableObjectHandleTypename(domainClassName);
     };
   }
 
-  static String getBaseObjectHandleTypename(String domainClassName) {
+  static String getBunchObjectHandleTypename(String domainClassName) {
+    if (ObjectFunctions.isDefaultObjectHandleType(domainClassName)) {
+      return domainClassName;
+    }
+    return transformClassName(domainClassName) + "HandleBunch";
+  }
+
+  static String getCommonObjectHandleTypename(String domainClassName) {
     return transformClassName(domainClassName) + "Handle";
   }
 
@@ -101,6 +119,7 @@ public interface NameConventionFunctions {
       CustomType domainType, CustomType baseDomainType, ObjectHandleTypes handleType
   ) {
     return switch (handleType) {
+      case Bunch -> throw new RuntimeException();
       case Common -> getBaseDownwardObjectHandleTypename(domainType, baseDomainType);
       case Movable -> getMovableDownwardObjectHandleTypename(domainType, baseDomainType);
       case Unmovable -> getUnmovableDownwardObjectHandleTypename(domainType, baseDomainType);

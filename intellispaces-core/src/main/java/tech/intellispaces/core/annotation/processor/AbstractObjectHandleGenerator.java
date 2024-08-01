@@ -6,6 +6,7 @@ import tech.intellispaces.core.annotation.Transition;
 import tech.intellispaces.core.common.NameConventionFunctions;
 import tech.intellispaces.core.exception.TraverseException;
 import tech.intellispaces.core.object.ObjectHandleTypes;
+import tech.intellispaces.core.space.SpaceConstants;
 import tech.intellispaces.core.space.transition.TransitionFunctions;
 import tech.intellispaces.core.traverse.TraverseTypes;
 import tech.intellispaces.javastatements.customtype.CustomType;
@@ -34,6 +35,11 @@ public abstract class AbstractObjectHandleGenerator extends AbstractGenerator {
   abstract protected Stream<MethodStatement> getObjectHandleMethods(
       CustomType customType, RoundEnvironment roundEnv
   );
+
+  protected boolean isNotGetDomainMethod(MethodStatement method) {
+    return !method.name().equals("domainClass") &&
+        !method.name().equals(SpaceConstants.POINT_TO_DOMAIN_TRANSITION_SIMPLE_NAME);
+  }
 
   protected void analyzeObjectHandleMethods(CustomType customType, RoundEnvironment roundEnv) {
     this.methods = getObjectHandleMethods(customType, roundEnv)
@@ -68,7 +74,7 @@ public abstract class AbstractObjectHandleGenerator extends AbstractGenerator {
       String exceptionSimpleName = context.simpleNameOf(TraverseException.class);
       sb.append(" {\n");
       sb.append("    throw ").append(exceptionSimpleName).append(
-          ".withMessage(\"Unmovable object handle cannot be moved\");\n");
+          ".withMessage(\"Unmovable object cannot be moved\");\n");
       sb.append("  }");
     }
     return Map.of(
@@ -112,7 +118,7 @@ public abstract class AbstractObjectHandleGenerator extends AbstractGenerator {
     Executor commaAppender = StringActions.commaAppender(sb);
     for (MethodParam param : method.params()) {
       commaAppender.execute();
-      sb.append(param.type().actualDeclaration());
+      sb.append(getObjectHandleDeclaration(param.type(), ObjectHandleTypes.Common));
       sb.append(" ");
       sb.append(param.name());
     }

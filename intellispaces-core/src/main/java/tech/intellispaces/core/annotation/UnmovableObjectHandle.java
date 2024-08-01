@@ -7,10 +7,10 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ObjectHandleBaseline {
+public @interface UnmovableObjectHandle {
 
   /**
-   * Object handle domain class.
+   * Object handle class simple name.
    */
-  Class<?> value();
+  String value() default "";
 }

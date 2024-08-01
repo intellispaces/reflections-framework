@@ -4,6 +4,7 @@ import tech.intellispaces.commons.exception.UnexpectedViolationException;
 import tech.intellispaces.core.annotation.Data;
 import tech.intellispaces.core.annotation.Properties;
 import tech.intellispaces.core.object.ObjectFunctions;
+import tech.intellispaces.core.object.ObjectHandleConstants;
 import tech.intellispaces.core.space.SpaceConstants;
 import tech.intellispaces.core.system.Module;
 import tech.intellispaces.core.system.ModulePropertiesFunctions;
@@ -31,8 +32,8 @@ public class ModulePropertiesProvider extends AbstractProjectionProvider {
     if (target.getClass() == expectedReturnType) {
       return target;
     }
-    if (SpaceConstants.PROPERTIES_HANDLE_CLASSNAME.equals(expectedReturnType.getCanonicalName())) {
-      if (!SpaceConstants.propertiesHandleClass().isAssignableFrom(target.getClass())) {
+    if (ObjectHandleConstants.PROPERTIES_HANDLE_CLASSNAME.equals(expectedReturnType.getCanonicalName())) {
+      if (!ObjectFunctions.propertiesHandleClass().isAssignableFrom(target.getClass())) {
         throw UnexpectedViolationException.withMessage("Invalid return type of method '{}' in class {}",
             projectionMethod.getName(), projectionMethod.getDeclaringClass().getCanonicalName());
       }

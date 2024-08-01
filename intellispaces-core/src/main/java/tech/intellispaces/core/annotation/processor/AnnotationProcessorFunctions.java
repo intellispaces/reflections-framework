@@ -6,16 +6,17 @@ import tech.intellispaces.commons.type.TypeFunctions;
 import tech.intellispaces.core.annotation.Data;
 import tech.intellispaces.core.annotation.Domain;
 import tech.intellispaces.core.annotation.Module;
-import tech.intellispaces.core.annotation.ObjectHandle;
+import tech.intellispaces.core.annotation.MovableObjectHandle;
 import tech.intellispaces.core.annotation.Ontology;
 import tech.intellispaces.core.annotation.Preprocessing;
 import tech.intellispaces.core.annotation.Transition;
+import tech.intellispaces.core.annotation.UnmovableObjectHandle;
 import tech.intellispaces.core.annotation.processor.data.UnmovableDataHandleGenerator;
 import tech.intellispaces.core.annotation.processor.domain.CommonObjectHandleGenerator;
-import tech.intellispaces.core.annotation.processor.domain.ObjectHandleBaselineGenerator;
 import tech.intellispaces.core.annotation.processor.domain.DomainGuideGenerator;
 import tech.intellispaces.core.annotation.processor.domain.DomainTransitionGenerator;
 import tech.intellispaces.core.annotation.processor.domain.MovableObjectHandleGenerator;
+import tech.intellispaces.core.annotation.processor.domain.ObjectHandleBunchGenerator;
 import tech.intellispaces.core.annotation.processor.domain.UnmovableObjectHandleGenerator;
 import tech.intellispaces.core.annotation.processor.domain.UnmovableUpwardObjectHandleGenerator;
 import tech.intellispaces.core.annotation.processor.module.UnitWrapperGenerator;
@@ -23,7 +24,6 @@ import tech.intellispaces.core.annotation.processor.objecthandle.MovableObjectHa
 import tech.intellispaces.core.annotation.processor.objecthandle.UnmovableObjectHandleImplGenerator;
 import tech.intellispaces.core.annotation.processor.ontology.OntologyGuideGenerator;
 import tech.intellispaces.core.annotation.processor.ontology.OntologyTransitionGenerator;
-import tech.intellispaces.core.object.ObjectFunctions;
 import tech.intellispaces.core.system.ModuleFunctions;
 import tech.intellispaces.core.system.UnitFunctions;
 import tech.intellispaces.core.traverse.TraverseTypes;
@@ -67,17 +67,17 @@ public interface AnnotationProcessorFunctions {
         }
       }
     }
-    addObjectHandleBaselineGenerator(domainType, generators, roundEnv);
+    addObjectHandleBunchGenerator(domainType, generators, roundEnv);
     addBasicObjectHandleGenerators(domainType, generators, roundEnv);
     addUpgradeObjectHandleGenerators(domainType, domainType, generators);
     return generators;
   }
 
-  private static void addObjectHandleBaselineGenerator(
+  private static void addObjectHandleBunchGenerator(
       CustomType domainType, List<ArtifactGenerator> generators, RoundEnvironment roundEnv
   ) {
     if (isAutoGenerationEnabled(domainType, ArtifactTypes.ObjectHandleBranch, roundEnv)) {
-      generators.add(new ObjectHandleBaselineGenerator(domainType));
+      generators.add(new ObjectHandleBunchGenerator(domainType));
     }
   }
 
@@ -150,12 +150,12 @@ public interface AnnotationProcessorFunctions {
     return generators;
   }
 
-  static List<ArtifactGenerator> makeObjectHandleArtifactGenerators(CustomType objectHandleType) {
-    if (ObjectFunctions.isMovableObjectHandle(objectHandleType)) {
+  static List<ArtifactGenerator> makeMovableObjectHandleArtifactGenerators(CustomType objectHandleType) {
       return List.of(new MovableObjectHandleImplImplGenerator(objectHandleType));
-    } else {
-      return List.of(new UnmovableObjectHandleImplGenerator(objectHandleType));
-    }
+  }
+
+  static List<ArtifactGenerator> makeUnmovableObjectHandleArtifactGenerators(CustomType objectHandleType) {
+    return List.of(new UnmovableObjectHandleImplGenerator(objectHandleType));
   }
 
   static List<ArtifactGenerator> makeModuleArtifactGenerators(CustomType moduleType) {
@@ -171,7 +171,7 @@ public interface AnnotationProcessorFunctions {
   ) {
     AnnotationInstance preprocessingAnnotation = customType.selectAnnotation(
         Preprocessing.class.getCanonicalName()).orElseThrow();
-    List<CustomType> preprocessingClasses = PreprocessingAnnotationFunctions.getPreprocessingClasses(preprocessingAnnotation);
+    List<CustomType> preprocessingClasses = AnnotationFunctions.getPreprocessingClasses(preprocessingAnnotation);
     if (preprocessingClasses.isEmpty()) {
       return List.of();
     }
@@ -186,8 +186,10 @@ public interface AnnotationProcessorFunctions {
         generators.addAll(makeModuleArtifactGenerators(preprocessingClass));
       } else if (UnitFunctions.isUnitType(preprocessingClass)) {
         generators.add(new UnitWrapperGenerator(preprocessingClass));
-      } else if (preprocessingClass.hasAnnotation(ObjectHandle.class)) {
-        generators.addAll(makeObjectHandleArtifactGenerators(preprocessingClass));
+      } else if (preprocessingClass.hasAnnotation(MovableObjectHandle.class)) {
+        generators.addAll(makeMovableObjectHandleArtifactGenerators(preprocessingClass));
+      } else if (preprocessingClass.hasAnnotation(UnmovableObjectHandle.class)) {
+        generators.addAll(makeUnmovableObjectHandleArtifactGenerators(preprocessingClass));
       } else if (preprocessingClass.hasAnnotation(Ontology.class)) {
         generators.addAll(makeOntologyArtifactGenerators(preprocessingClass, roundEnv));
       }
@@ -227,12 +229,12 @@ public interface AnnotationProcessorFunctions {
         .map(stm -> (AnnotatedStatement) stm)
         .map(stm -> stm.selectAnnotation(Preprocessing.class.getCanonicalName()))
         .map(Optional::orElseThrow)
-        .filter(ann -> PreprocessingAnnotationFunctions.isPreprocessingAnnotationOf(ann, annotatedType.canonicalName()))
+        .filter(ann -> AnnotationFunctions.isPreprocessingAnnotationOf(ann, annotatedType.canonicalName()))
         .toList();
     if (preprocessingAnnotations.isEmpty()) {
       return true;
     }
-    return preprocessingAnnotations.stream().allMatch(PreprocessingAnnotationFunctions::isPreprocessingEnabled);
+    return preprocessingAnnotations.stream().allMatch(AnnotationFunctions::isPreprocessingEnabled);
   }
 
   static String getDomainClassLink(TypeReference type) {

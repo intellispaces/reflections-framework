@@ -3,7 +3,6 @@ package tech.intellispaces.core.annotation.processor;
 import tech.intellispaces.actions.Executor;
 import tech.intellispaces.actions.string.StringActions;
 import tech.intellispaces.commons.exception.UnexpectedViolationException;
-import tech.intellispaces.commons.string.StringFunctions;
 import tech.intellispaces.commons.type.TypeFunctions;
 import tech.intellispaces.core.common.NameConventionFunctions;
 import tech.intellispaces.core.guide.GuideFunctions;
@@ -162,7 +161,7 @@ public abstract class AbstractGuideGenerator extends AbstractGenerator {
     sb.append(transitionMethod.name());
     sb.append("(");
     sb.append(getSourceObjectHandleDeclaration());
-    sb.append(" ").append(StringFunctions.lowercaseFirstLetter(getDomainType().simpleName()));
+    sb.append(" source");
     for (MethodParam param : getQualifierMethodParams()) {
       sb.append(", ");
       sb.append(getObjectHandleSimpleName(param.type())).append(getAssociatedTypesDeclaration(param.type()));
@@ -175,14 +174,13 @@ public abstract class AbstractGuideGenerator extends AbstractGenerator {
 
   private String buildBaseMethod(Class<?> guideClass) {
     GuideKind guideKind = GuideFunctions.getGuideKind(guideClass);
-    String sourceParamName = StringFunctions.lowercaseFirstLetter(getDomainType().simpleName());
 
     var sb = new StringBuilder();
     sb.append("default ");
     sb.append(getTargetObjectHandleRawSimpleName());
     sb.append(guideKind.isMapper() ? " map(" : " move(");
     sb.append(getSourceObjectHandleRawSimpleName());
-    sb.append(" ").append(sourceParamName);
+    sb.append(" ").append("source");
     for (MethodParam param : getQualifierMethodParams()) {
       sb.append(", ");
       sb.append(getObjectHandleRawSimpleName(param.type()));
@@ -194,7 +192,7 @@ public abstract class AbstractGuideGenerator extends AbstractGenerator {
       sb.append("return ");
     }
     sb.append(transitionMethod.name());
-    sb.append("(").append(sourceParamName);
+    sb.append("(").append("source");
     for (MethodParam param : getQualifierMethodParams()) {
       sb.append(", ");
       sb.append(param.name());

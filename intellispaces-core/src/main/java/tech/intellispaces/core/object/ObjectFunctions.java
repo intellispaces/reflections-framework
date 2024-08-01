@@ -2,9 +2,10 @@ package tech.intellispaces.core.object;
 
 import tech.intellispaces.commons.exception.UnexpectedViolationException;
 import tech.intellispaces.commons.type.TypeFunctions;
-import tech.intellispaces.core.annotation.ObjectHandleBaseline;
+import tech.intellispaces.core.annotation.ObjectHandleBunch;
 import tech.intellispaces.core.common.CoreFunctions;
 import tech.intellispaces.core.common.NameConventionFunctions;
+import tech.intellispaces.core.space.domain.DomainFunctions;
 import tech.intellispaces.javastatements.JavaStatements;
 import tech.intellispaces.javastatements.customtype.CustomType;
 import tech.intellispaces.javastatements.reference.TypeReference;
@@ -17,11 +18,14 @@ import java.util.Set;
 
 public class ObjectFunctions {
 
+  private ObjectFunctions() {}
+
   public static Class<?> getObjectHandleClass(ObjectHandleTypes objectHandleType) {
     return switch (objectHandleType) {
       case Common -> ObjectHandle.class;
       case Movable -> MovableObjectHandle.class;
       case Unmovable -> UnmovableObjectHandle.class;
+      case Bunch -> throw UnexpectedViolationException.withMessage("Bunch object handle class is not defined");
     };
   }
 
@@ -70,14 +74,24 @@ public class ObjectFunctions {
     if (isDefaultObjectHandleType(domainType)) {
       return domainType.className();
     }
-    return NameConventionFunctions.getBaseObjectHandleTypename(domainType.className());
+    return NameConventionFunctions.getCommonObjectHandleTypename(domainType.className());
   }
 
-  public static String getObjectHandleTypename(String domainCanonicalName, ObjectHandleTypes type) {
-    if (isDefaultObjectHandleType(domainCanonicalName)) {
-      return domainCanonicalName;
+  public static String getObjectHandleTypename(CustomType customType, ObjectHandleTypes type) {
+    if (isDefaultObjectHandleType(customType)) {
+      return customType.canonicalName();
     }
-    return NameConventionFunctions.getObjectHandleTypename(domainCanonicalName, type);
+    if (!DomainFunctions.isDomainType(customType)) {
+      return customType.canonicalName();
+    }
+    return NameConventionFunctions.getObjectHandleTypename(customType.className(), type);
+  }
+
+  public static String getObjectHandleTypename(String canonicalName, ObjectHandleTypes type) {
+    if (isDefaultObjectHandleType(canonicalName)) {
+      return canonicalName;
+    }
+    return NameConventionFunctions.getObjectHandleTypename(canonicalName, type);
   }
 
   public static boolean isCustomObjectHandleClass(Class<?> aClass) {
@@ -93,7 +107,8 @@ public class ObjectFunctions {
   }
 
   private static Class<?> defineObjectHandleClassInternal(Class<?> aClass) {
-    if (aClass.isAnnotationPresent(tech.intellispaces.core.annotation.ObjectHandle.class) ||
+    if (aClass.isAnnotationPresent(tech.intellispaces.core.annotation.MovableObjectHandle.class) ||
+        aClass.isAnnotationPresent(tech.intellispaces.core.annotation.UnmovableObjectHandle.class) ||
         isDefaultObjectHandleClass(aClass)
     ) {
       return aClass;
@@ -132,7 +147,7 @@ public class ObjectFunctions {
 
   public static CustomType getDomainTypeOfObjectHandle(CustomType objectHandleType) {
     List<CustomType> objectHandleTypes = CoreFunctions.findTopAnnotatedTypes(
-        objectHandleType, ObjectHandleBaseline.class.getCanonicalName()
+        objectHandleType, ObjectHandleBunch.class.getCanonicalName()
     );
     if (objectHandleTypes.isEmpty()) {
       throw UnexpectedViolationException.withMessage("Could not find object handle type of class {}",
@@ -141,7 +156,7 @@ public class ObjectFunctions {
       throw UnexpectedViolationException.withMessage("More than one object handle type of class {} found",
           objectHandleType.canonicalName());
     }
-    return objectHandleTypes.get(0).selectAnnotation(ObjectHandleBaseline.class.getCanonicalName()).orElseThrow()
+    return objectHandleTypes.get(0).selectAnnotation(ObjectHandleBunch.class.getCanonicalName()).orElseThrow()
         .elementValue("value").orElseThrow()
         .asClass().orElseThrow()
         .type();
@@ -149,7 +164,7 @@ public class ObjectFunctions {
 
   public static Class<?> getDomainClassOfObjectHandle(Class<?> objectHandleClass) {
     List<Class<?>> objectHandleTypes = CoreFunctions.findTopAnnotatedClasses(
-        objectHandleClass, ObjectHandleBaseline.class
+        objectHandleClass, ObjectHandleBunch.class
     );
     if (objectHandleTypes.isEmpty()) {
       throw UnexpectedViolationException.withMessage("Could not find object handle type of class {}",
@@ -158,7 +173,7 @@ public class ObjectFunctions {
       throw UnexpectedViolationException.withMessage("More than one object handle type of class {} found",
           objectHandleClass.getCanonicalName());
     }
-    return objectHandleTypes.get(0).getAnnotation(ObjectHandleBaseline.class).value();
+    return objectHandleTypes.get(0).getAnnotation(ObjectHandleBunch.class).value();
   }
 
   public static boolean isMovableObjectHandle(Class<?> objectHandleClass) {
@@ -221,5 +236,14 @@ public class ObjectFunctions {
       Void.class.getCanonicalName()
   );
 
-  private ObjectFunctions() {}
+  public static Class<?> propertiesHandleClass() {
+    if (propertiesHandleClass == null) {
+      propertiesHandleClass = TypeFunctions.getClass(ObjectHandleConstants.PROPERTIES_HANDLE_CLASSNAME).orElseThrow(
+          () -> UnexpectedViolationException.withMessage("Could not get class {}", ObjectHandleConstants.PROPERTIES_HANDLE_CLASSNAME)
+      );
+    }
+    return propertiesHandleClass;
+  }
+
+  private static Class<?> propertiesHandleClass;
 }

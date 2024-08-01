@@ -20,12 +20,14 @@ import tech.intellispaces.core.guide.n4.Mover4;
 import tech.intellispaces.core.guide.n5.Mapper5;
 import tech.intellispaces.core.guide.n5.Mover5;
 import tech.intellispaces.core.object.ObjectFunctions;
+import tech.intellispaces.core.object.ObjectHandleTypes;
 import tech.intellispaces.core.space.transition.TransitionFunctions;
 import tech.intellispaces.core.system.Modules;
 import tech.intellispaces.core.traverse.TraverseTypes;
 import tech.intellispaces.javastatements.StatementTypes;
 import tech.intellispaces.javastatements.customtype.CustomType;
 import tech.intellispaces.javastatements.method.MethodParam;
+import tech.intellispaces.javastatements.method.MethodSignatureDeclarations;
 import tech.intellispaces.javastatements.method.MethodStatement;
 import tech.intellispaces.javastatements.reference.NamedReference;
 import tech.intellispaces.javastatements.reference.TypeReference;
@@ -58,7 +60,8 @@ abstract class AbstractObjectHandleImplGenerator extends AbstractObjectHandleGen
   ) {
     CustomType domainType = ObjectFunctions.getDomainTypeOfObjectHandle(objectHandleType);
     return domainType.actualMethods().stream()
-        .filter(m -> !m.isDefault());
+        .filter(m -> !m.isDefault())
+        .filter(this::isNotGetDomainMethod);
   }
 
   protected void analyzeGuideGetters(
@@ -80,7 +83,7 @@ abstract class AbstractObjectHandleImplGenerator extends AbstractObjectHandleGen
   private String buildGuideMethod(MethodStatement domainMethod) {
     var sb = new StringBuilder();
     sb.append("public ");
-    sb.append(buildMethodSignature(domainMethod, "_" + domainMethod.name()));
+    sb.append(buildGuideMethodSignature(domainMethod));
     sb.append(" {\n");
     sb.append("  return super.");
     sb.append(domainMethod.name());
@@ -92,6 +95,15 @@ abstract class AbstractObjectHandleImplGenerator extends AbstractObjectHandleGen
     }
     sb.append(");\n}");
     return sb.toString();
+  }
+
+  private String buildGuideMethodSignature(MethodStatement domainMethod) {
+    return MethodSignatureDeclarations.build(domainMethod)
+        .methodName("_" + domainMethod.name())
+        .returnType(getObjectHandleDeclaration(domainMethod.returnType().orElseThrow(), ObjectHandleTypes.Common))
+        .includeMethodTypeParams(true)
+        .includeOwnerTypeParams(false)
+        .get(context::addImport, context::simpleNameOf);
   }
 
   private String buildGuideGetter(MethodStatement domainMethod) {
@@ -162,8 +174,7 @@ abstract class AbstractObjectHandleImplGenerator extends AbstractObjectHandleGen
     sb.append(getTraverseType(domainMethod) == TraverseTypes.Mapping ? "Mapper" : "Mover");
     sb.append("ThruTransition");
     sb.append(domainMethod.params().size());
-    sb.append("Raw(");
-    sb.append("sourceType, ");
+    sb.append("(sourceType, ");
     sb.append(context.addToImportAndGetSimpleName(NameConventionFunctions.getTransitionClassCanonicalName(domainMethod)));
     sb.append(".class);");
     return sb.toString();

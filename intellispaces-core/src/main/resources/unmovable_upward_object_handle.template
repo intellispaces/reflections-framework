@@ -9,9 +9,9 @@ import {{$importedClass}};
  *
  * This class was generated automatically. Don't try to change it.
  */
-@ObjectHandle
+@UnmovableObjectHandle
 {{$generatedAnnotation}}
-public class {{$classSimpleName}}{{$classTypeParams}} implements {{$unmovableObjectHandleName}} {
+public class {{$classSimpleName}}{{$classTypeParams}} implements {{$unmovableObjectHandleName}}{{$classTypeParamsBrief}} {
   private final {{$baseObjectHandleType}} {{$baseField}};
 
   public {{$classSimpleName}}({{$baseObjectHandleType}} {{$baseField}}) {
@@ -22,5 +22,11 @@ public class {{$classSimpleName}}{{$classTypeParams}} implements {{$unmovableObj
   @Override
   {{$method.get("declaration")}};
 
+{{end}}
+{{when $classTypeParamsBrief.isNotEmpty()}}
+  @Override
+  public Type<{{$sourceClassSimpleName}}{{$classTypeParamsBrief}}> domain() {
+    return (Type) this.{{$baseField}}.domain();
+  }
 {{end}}
 }

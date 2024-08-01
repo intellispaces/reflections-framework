@@ -182,42 +182,47 @@ public class ModuleDefaultImpl implements ModuleDefault {
 
   @Override
   public <S, T> Mapper0<S, T> autoMapperThruTransition0(
-      Type<S> sourceType, Class<? extends Transition0<?, ?>> transitionClass
+      Type<S> sourceType, Class<? extends Transition0> transitionClass
   ) {
     return autoMapperThruTransition0(sourceType, TransitionFunctions.getTransitionId(transitionClass));
   }
 
   @Override
+  @SuppressWarnings("rawtypes")
   public <S, T, Q> Mapper1<S, T, Q> autoMapperThruTransition1(
-      Type<S> sourceType, Class<? extends Transition1<?, ?, ?>> transitionClass
+      Type<S> sourceType, Class<? extends Transition1> transitionClass
   ) {
     return autoMapperThruTransition1(sourceType, TransitionFunctions.getTransitionId(transitionClass));
   }
 
   @Override
+  @SuppressWarnings("rawtypes")
   public <S, T, Q1, Q2> Mapper2<S, T, Q1, Q2> autoMapperThruTransition2(
-      Type<S> sourceType, Class<? extends Transition2<?, ?, ?, ?>> transitionClass
+      Type<S> sourceType, Class<? extends Transition2> transitionClass
   ) {
     return autoMapperThruTransition2(sourceType, TransitionFunctions.getTransitionId(transitionClass));
   }
 
   @Override
+  @SuppressWarnings("rawtypes")
   public <S, B> Mover0<S, B> autoMoverThruTransition0(
-      Type<S> sourceType, Class<? extends Transition0<?, ?>> transitionClass
+      Type<S> sourceType, Class<? extends Transition0> transitionClass
   ) {
     return autoMoverThruTransition0(sourceType, TransitionFunctions.getTransitionId(transitionClass));
   }
 
   @Override
+  @SuppressWarnings("rawtypes")
   public <S, B, Q> Mover1<S, B, Q> autoMoverThruTransition1(
-      Type<S> sourceType, Class<? extends Transition1<?, ?, ?>> transitionClass
+      Type<S> sourceType, Class<? extends Transition1> transitionClass
   ) {
     return autoMoverThruTransition1(sourceType, TransitionFunctions.getTransitionId(transitionClass));
   }
 
   @Override
+  @SuppressWarnings("rawtypes")
   public <S, B, Q1, Q2> Mover2<S, B, Q1, Q2> autoMoverThruTransition2(
-      Type<S> sourceType, Class<? extends Transition2<?, ?, ?, ?>> transitionClass
+      Type<S> sourceType, Class<? extends Transition2> transitionClass
   ) {
     return autoMoverThruTransition2(sourceType, TransitionFunctions.getTransitionId(transitionClass));
   }

@@ -133,7 +133,7 @@ public abstract class AbstractGenerator extends TemplateBasedJavaArtifactGenerat
         return targetType.simpleName();
       } else {
         var sb = new StringBuilder();
-        String canonicalName = ObjectFunctions.getObjectHandleTypename(targetType.className(), handleType);
+        String canonicalName = ObjectFunctions.getObjectHandleTypename(targetType, handleType);
         context.addImport(canonicalName);
         String simpleName = context.simpleNameOf(canonicalName);
         sb.append(simpleName);

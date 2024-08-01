@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ObjectHandle {
+public @interface MovableObjectHandle {
 
   /**
    * Object handle class simple name.

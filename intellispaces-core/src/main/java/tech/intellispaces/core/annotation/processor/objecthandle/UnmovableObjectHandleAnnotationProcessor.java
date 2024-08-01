@@ -4,7 +4,7 @@ import com.google.auto.service.AutoService;
 import tech.intellispaces.annotations.AnnotatedTypeProcessor;
 import tech.intellispaces.annotations.generator.ArtifactGenerator;
 import tech.intellispaces.annotations.validator.AnnotatedTypeValidator;
-import tech.intellispaces.core.annotation.ObjectHandle;
+import tech.intellispaces.core.annotation.UnmovableObjectHandle;
 import tech.intellispaces.core.annotation.processor.AnnotationProcessorFunctions;
 import tech.intellispaces.javastatements.customtype.CustomType;
 
@@ -15,10 +15,10 @@ import java.util.List;
 import java.util.Set;
 
 @AutoService(Processor.class)
-public class ObjectHandleAnnotationProcessor extends AnnotatedTypeProcessor {
+public class UnmovableObjectHandleAnnotationProcessor extends AnnotatedTypeProcessor {
 
-  public ObjectHandleAnnotationProcessor() {
-    super(ObjectHandle.class, Set.of(ElementKind.INTERFACE, ElementKind.CLASS));
+  public UnmovableObjectHandleAnnotationProcessor() {
+    super(UnmovableObjectHandle.class, Set.of(ElementKind.INTERFACE, ElementKind.CLASS));
   }
 
   @Override
@@ -33,6 +33,6 @@ public class ObjectHandleAnnotationProcessor extends AnnotatedTypeProcessor {
 
   @Override
   protected List<ArtifactGenerator> makeArtifactGenerators(CustomType objectHandleType, RoundEnvironment roundEnv) {
-    return AnnotationProcessorFunctions.makeObjectHandleArtifactGenerators(objectHandleType);
+    return AnnotationProcessorFunctions.makeUnmovableObjectHandleArtifactGenerators(objectHandleType);
   }
 }

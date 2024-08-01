@@ -1,22 +1,25 @@
 package tech.intellispaces.core.annotation.processor.domain;
 
 import tech.intellispaces.commons.string.StringFunctions;
-import tech.intellispaces.core.annotation.ObjectHandle;
+import tech.intellispaces.core.annotation.UnmovableObjectHandle;
 import tech.intellispaces.core.common.NameConventionFunctions;
 import tech.intellispaces.core.object.ObjectHandleTypes;
 import tech.intellispaces.javastatements.customtype.CustomType;
 import tech.intellispaces.javastatements.method.MethodParam;
 import tech.intellispaces.javastatements.method.MethodStatement;
 import tech.intellispaces.javastatements.reference.CustomTypeReference;
+import tech.intellispaces.javastatements.type.Type;
 
 import javax.annotation.processing.RoundEnvironment;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class UnmovableUpwardObjectHandleGenerator extends AbstractDomainObjectHandleGenerator {
   private final CustomTypeReference baseDomainType;
   private String classTypeParams;
+  private String classTypeParamsBrief;
   private String unmovableObjectHandleName;
   private String baseObjectHandleType;
   private String baseField;
@@ -50,6 +53,7 @@ public class UnmovableUpwardObjectHandleGenerator extends AbstractDomainObjectHa
     vars.put("sourceClassSimpleName", sourceClassSimpleName());
     vars.put("classSimpleName", context.generatedClassSimpleName());
     vars.put("classTypeParams", classTypeParams);
+    vars.put("classTypeParamsBrief", classTypeParamsBrief);
     vars.put("baseObjectHandleType", baseObjectHandleType);
     vars.put("baseField", baseField);
     vars.put("methods", methods);
@@ -61,18 +65,27 @@ public class UnmovableUpwardObjectHandleGenerator extends AbstractDomainObjectHa
   @Override
   protected boolean analyzeAnnotatedType(RoundEnvironment roundEnv) {
     context.generatedClassCanonicalName(getArtifactName());
-
-    context.addImport(ObjectHandle.class);
-
+    context.addImport(Type.class);
+    context.addImport(UnmovableObjectHandle.class);
     unmovableObjectHandleName = context.addToImportAndGetSimpleName(
         NameConventionFunctions.getUnmovableObjectHandleTypename(annotatedType.className()));
 
     classTypeParams = annotatedType.typeParametersFullDeclaration();
+    classTypeParamsBrief = annotatedType.typeParametersBriefDeclaration();
     baseField = StringFunctions.lowercaseFirstLetter(baseDomainType.targetType().simpleName());
     baseObjectHandleType = getParentObjectHandleType();
 
     analyzeObjectHandleMethods(annotatedType, roundEnv);
     return true;
+  }
+
+  @Override
+  protected Stream<MethodStatement> getObjectHandleMethods(
+      CustomType customType, RoundEnvironment roundEnv
+  ) {
+    return buildActualDomain(customType, roundEnv)
+        .actualMethods().stream()
+        .filter(this::isNotGetDomainMethod);
   }
 
   @Override

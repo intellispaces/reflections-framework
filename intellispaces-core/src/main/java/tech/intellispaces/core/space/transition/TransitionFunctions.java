@@ -148,7 +148,7 @@ public interface TransitionFunctions {
         .map(Optional::get)
         .findAny();
     if (transition.isEmpty()) {
-      throw UnexpectedViolationException.withMessage("Could not annotation @{} of method '{}' in domain {}",
+      throw UnexpectedViolationException.withMessage("Could not find annotation @{} of method '{}' in domain {}",
         Transition.class.getSimpleName(), domainMethod.name(), domainMethod.owner().canonicalName());
     }
     return transition.get();

@@ -145,7 +145,7 @@ public interface AnnotationProcessorFunctions {
   ) {
     AnnotationInstance preprocessingAnnotation = customType.selectAnnotation(
         Preprocessing.class.getCanonicalName()).orElseThrow();
-    List<CustomType> preprocessingClasses = AnnotationFunctions.getPreprocessingClasses(preprocessingAnnotation);
+    List<CustomType> preprocessingClasses = AnnotationFunctions.getPreprocessingTargets(preprocessingAnnotation);
     if (preprocessingClasses.isEmpty()) {
       return List.of();
     }
@@ -203,7 +203,7 @@ public interface AnnotationProcessorFunctions {
         .map(stm -> (AnnotatedStatement) stm)
         .map(stm -> stm.selectAnnotation(Preprocessing.class.getCanonicalName()))
         .map(Optional::orElseThrow)
-        .filter(ann -> AnnotationFunctions.isPreprocessingAnnotationOf(ann, annotatedType.canonicalName()))
+        .filter(ann -> AnnotationFunctions.isPreprocessingAnnotationFor(ann, annotatedType.canonicalName()))
         .toList();
     if (preprocessingAnnotations.isEmpty()) {
       return true;

@@ -1,7 +1,6 @@
 package tech.intellispaces.core.annotation.processor;
 
 import tech.intellispaces.core.annotation.Preprocessing;
-import tech.intellispaces.javastatements.AnnotatedStatement;
 import tech.intellispaces.javastatements.JavaStatements;
 import tech.intellispaces.javastatements.customtype.CustomType;
 import tech.intellispaces.javastatements.instance.AnnotationInstance;
@@ -14,25 +13,59 @@ import java.util.Optional;
 
 public interface AnnotationFunctions {
 
-  static List<AnnotationInstance> findPreprocessingAnnotations(
-      CustomType customType, ArtifactTypes artifact, RoundEnvironment roundEnv
+  static List<CustomType> findArtifactAnnexes(
+      CustomType customType, ArtifactTypes artifactType, RoundEnvironment roundEnv
   ) {
-    return findPreprocessingAnnotations(customType.canonicalName(), artifact, roundEnv);
+    return findArtifactAnnexes(customType.canonicalName(), artifactType, roundEnv);
   }
 
-  static List<AnnotationInstance> findPreprocessingAnnotations(
-      String canonicalName, ArtifactTypes artifact, RoundEnvironment roundEnv
+  static List<CustomType> findArtifactAnnexes(
+      String canonicalName, ArtifactTypes artifactType, RoundEnvironment roundEnv
   ) {
     return roundEnv.getElementsAnnotatedWith(Preprocessing.class).stream()
         .map(JavaStatements::statement)
-        .map(stm -> (AnnotatedStatement) stm)
-        .map(stm -> stm.selectAnnotation(Preprocessing.class.getCanonicalName()))
-        .map(Optional::orElseThrow)
-        .filter(ann -> isPreprocessingAnnotationOf(ann, canonicalName, artifact))
+        .map(stm -> (CustomType) stm)
+        .filter(stm -> isArtifactAnnexFor(stm, canonicalName, artifactType))
         .toList();
   }
 
-  static List<CustomType> getPreprocessingClasses(AnnotationInstance preprocessingAnnotation) {
+  private static boolean isArtifactAnnexFor(
+      CustomType customType, String canonicalName, ArtifactTypes artifactType
+  ) {
+    return isPreprocessingAnnotationFor(
+        customType.selectAnnotation(Preprocessing.class.getCanonicalName()).orElseThrow(),
+        canonicalName,
+        artifactType
+    );
+  }
+
+  static boolean isPreprocessingAnnotationFor(
+      AnnotationInstance preprocessingAnnotation, String canonicalClassName
+  ) {
+    List<CustomType> preprocessingTargets = getPreprocessingAnnexTargets(preprocessingAnnotation);
+    for (CustomType target : preprocessingTargets) {
+      if (canonicalClassName.equals(target.canonicalName())) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  static boolean isPreprocessingAnnotationFor(
+      AnnotationInstance preprocessingAnnotation, String canonicalClassName, ArtifactTypes artifact
+  ) {
+    List<CustomType> preprocessingTargets = getPreprocessingAnnexTargets(preprocessingAnnotation);
+    for (CustomType target : preprocessingTargets) {
+      if (canonicalClassName.equals(target.canonicalName())) {
+        if (artifact.name().equals(getPreprocessingArtifactName(preprocessingAnnotation))) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  static List<CustomType> getPreprocessingTargets(AnnotationInstance preprocessingAnnotation) {
     return preprocessingAnnotation.elementValue("value").orElseThrow()
         .asArray().orElseThrow()
         .elements().stream()
@@ -42,30 +75,14 @@ public interface AnnotationFunctions {
         .toList();
   }
 
-  static boolean isPreprocessingAnnotationOf(
-      AnnotationInstance preprocessingAnnotation, String canonicalClassName
-  ) {
-    List<CustomType> preprocessingClasses = getPreprocessingClasses(preprocessingAnnotation);
-    for (CustomType aClass : preprocessingClasses) {
-      if (canonicalClassName.equals(aClass.canonicalName())) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  static boolean isPreprocessingAnnotationOf(
-      AnnotationInstance preprocessingAnnotation, String canonicalClassName, ArtifactTypes artifact
-  ) {
-    List<CustomType> preprocessingClasses = getPreprocessingClasses(preprocessingAnnotation);
-    for (CustomType aClass : preprocessingClasses) {
-      if (canonicalClassName.equals(aClass.canonicalName())) {
-        if (artifact.name().equals(getPreprocessingArtifact(preprocessingAnnotation))) {
-          return true;
-        }
-      }
-    }
-    return false;
+  static List<CustomType> getPreprocessingAnnexTargets(AnnotationInstance preprocessingAnnotation) {
+    return preprocessingAnnotation.elementValue("annexFor").orElseThrow()
+        .asArray().orElseThrow()
+        .elements().stream()
+        .map(Instance::asClass)
+        .map(Optional::orElseThrow)
+        .map(ClassInstance::type)
+        .toList();
   }
 
   static boolean isPreprocessingEnabled(AnnotationInstance preprocessingAnnotation) {
@@ -75,16 +92,9 @@ public interface AnnotationFunctions {
     return Boolean.TRUE == enabled;
   }
 
-  static String getPreprocessingArtifact(AnnotationInstance preprocessingAnnotation) {
+  static String getPreprocessingArtifactName(AnnotationInstance preprocessingAnnotation) {
     return preprocessingAnnotation.elementValue("artifact").orElseThrow()
         .asString().orElseThrow()
         .value();
-  }
-
-  static Optional<CustomType> getPreprocessingExtendWith(AnnotationInstance preprocessingAnnotation) {
-    return preprocessingAnnotation.elementValue("extendWith").orElseThrow()
-        .asClass()
-        .map(ClassInstance::type)
-        .filter(c -> !Void.class.getCanonicalName().equals(c.canonicalName()));
   }
 }

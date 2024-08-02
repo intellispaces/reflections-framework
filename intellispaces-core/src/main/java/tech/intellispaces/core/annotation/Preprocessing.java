@@ -15,5 +15,5 @@ public @interface Preprocessing {
 
   String artifact() default "";
 
-  Class<?> extendWith() default Void.class;
+  Class<?>[] annexFor() default {};
 }

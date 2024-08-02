@@ -8,7 +8,6 @@ import tech.intellispaces.core.space.domain.DomainFunctions;
 import tech.intellispaces.javastatements.customtype.CustomType;
 import tech.intellispaces.javastatements.customtype.InterfaceType;
 import tech.intellispaces.javastatements.customtype.Interfaces;
-import tech.intellispaces.javastatements.instance.AnnotationInstance;
 import tech.intellispaces.javastatements.method.MethodStatement;
 import tech.intellispaces.javastatements.reference.CustomTypeReference;
 import tech.intellispaces.javastatements.reference.CustomTypeReferences;
@@ -16,7 +15,6 @@ import tech.intellispaces.javastatements.reference.CustomTypeReferences;
 import javax.annotation.processing.RoundEnvironment;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Stream;
 
 abstract class AbstractDomainObjectHandleGenerator extends AbstractObjectHandleGenerator {
@@ -39,16 +37,11 @@ abstract class AbstractDomainObjectHandleGenerator extends AbstractObjectHandleG
 
   protected List<MethodStatement> getAdditionalOMethods(CustomType customType, RoundEnvironment roundEnv) {
     List<MethodStatement> methods = new ArrayList<>();
-    List<AnnotationInstance> preprocessingAnnotations = AnnotationFunctions.findPreprocessingAnnotations(
+    List<CustomType> artifactAnnexes = AnnotationFunctions.findArtifactAnnexes(
         customType, ArtifactTypes.ObjectHandle, roundEnv
     );
-    for (AnnotationInstance preprocessingAnnotation : preprocessingAnnotations) {
-      Optional<CustomType> extensionType = AnnotationFunctions.getPreprocessingExtendWith(
-          preprocessingAnnotation
-      );
-      if (extensionType.isPresent()) {
-        methods.addAll(extensionType.orElseThrow().declaredMethods());
-      }
+    for (CustomType artifactAnnex : artifactAnnexes) {
+      methods.addAll(artifactAnnex.declaredMethods());
     }
     return methods;
   }

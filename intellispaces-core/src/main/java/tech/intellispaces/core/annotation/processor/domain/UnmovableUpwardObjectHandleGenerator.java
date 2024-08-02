@@ -83,7 +83,7 @@ public class UnmovableUpwardObjectHandleGenerator extends AbstractDomainObjectHa
   protected Stream<MethodStatement> getObjectHandleMethods(
       CustomType customType, RoundEnvironment roundEnv
   ) {
-    return buildActualDomain(customType, roundEnv)
+    return buildActualType(customType, roundEnv)
         .actualMethods().stream()
         .filter(this::isNotGetDomainMethod);
   }

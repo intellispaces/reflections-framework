@@ -1,21 +1,28 @@
 package tech.intellispaces.core.annotation.processor.domain;
 
+import tech.intellispaces.core.annotation.ObjectHandle;
 import tech.intellispaces.core.common.NameConventionFunctions;
 import tech.intellispaces.core.object.ObjectFunctions;
-import tech.intellispaces.core.object.ObjectHandle;
 import tech.intellispaces.core.object.ObjectHandleTypes;
+import tech.intellispaces.core.space.domain.DomainFunctions;
 import tech.intellispaces.javastatements.customtype.CustomType;
 import tech.intellispaces.javastatements.method.MethodStatement;
+import tech.intellispaces.javastatements.reference.CustomTypeReference;
 import tech.intellispaces.javastatements.type.Type;
 import tech.intellispaces.javastatements.type.Types;
 
 import javax.annotation.processing.RoundEnvironment;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 public class CommonObjectHandleGenerator extends AbstractDomainObjectHandleGenerator {
   private String objectHandleBunch;
+  private boolean isAlias;
+  private String primaryObjectHandle;
+  private String mainPrimaryDomainSimpleName;
+  private String primaryDomainTypeArguments;
 
   public CommonObjectHandleGenerator(CustomType domainType) {
     super(domainType);
@@ -39,6 +46,7 @@ public class CommonObjectHandleGenerator extends AbstractDomainObjectHandleGener
   protected Map<String, Object> templateVariables() {
     Map<String, Object> vars = new HashMap<>();
     vars.put("generatedAnnotation", makeGeneratedAnnotation());
+    vars.put("importedClasses", context.getImports());
     vars.put("packageName", context.packageName());
     vars.put("sourceClassName", sourceClassCanonicalName());
     vars.put("sourceClassSimpleName", sourceClassSimpleName());
@@ -48,7 +56,10 @@ public class CommonObjectHandleGenerator extends AbstractDomainObjectHandleGener
     vars.put("domainTypeParamsBrief", domainTypeParamsBrief);
     vars.put("objectHandleBunch", objectHandleBunch);
     vars.put("domainMethods", methods);
-    vars.put("importedClasses", context.getImports());
+    vars.put("isAlias", isAlias);
+    vars.put("primaryObjectHandle", primaryObjectHandle);
+    vars.put("primaryDomainTypeArguments", primaryDomainTypeArguments);
+    vars.put("mainPrimaryDomainSimpleName", mainPrimaryDomainSimpleName);
     return vars;
   }
 
@@ -66,6 +77,15 @@ public class CommonObjectHandleGenerator extends AbstractDomainObjectHandleGener
         NameConventionFunctions.getBunchObjectHandleTypename(annotatedType.className())
     );
     analyzeObjectHandleMethods(annotatedType, roundEnv);
+
+    Optional<CustomTypeReference> primaryDomain = DomainFunctions.getPrimaryDomainForAliasDomain(annotatedType);
+    isAlias = primaryDomain.isPresent();
+    if (isAlias) {
+      primaryObjectHandle = getObjectHandleDeclaration(primaryDomain.get(), ObjectHandleTypes.Common);
+      primaryDomainTypeArguments = primaryDomain.get().typeArgumentsDeclaration(context::addToImportAndGetSimpleName);
+      Optional<CustomTypeReference> mainPrimaryDomain = DomainFunctions.getMainPrimaryDomainForAliasDomain(annotatedType);
+      mainPrimaryDomainSimpleName = mainPrimaryDomain.orElseThrow().targetType().simpleName();
+    }
     return true;
   }
 

@@ -10,7 +10,11 @@ import {{$importedClass}};
  * This class was generated automatically. Don't try to change it.
  */
 {{$generatedAnnotation}}
+{{when $isAlias}}
+public interface {{$classSimpleName}}{{$domainTypeParamsFull}} extends {{$baseObjectHandle}}{{$domainTypeParamsBrief}}, {{$primaryObjectHandle}} {
+{{else}}
 public interface {{$classSimpleName}}{{$domainTypeParamsFull}} extends {{$baseObjectHandle}}{{$domainTypeParamsBrief}}, UnmovableObjectHandle<{{$sourceClassSimpleName}}{{$domainTypeParamsBrief}}> {
+{{end}}
 
   @Override
   default {{$movableClassSimpleName}}{{$domainTypeParamsBrief}} asMovableOrElseThrow() {

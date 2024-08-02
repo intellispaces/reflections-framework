@@ -3,14 +3,19 @@ package tech.intellispaces.core.annotation.processor.domain;
 import tech.intellispaces.core.common.NameConventionFunctions;
 import tech.intellispaces.core.object.MovableObjectHandle;
 import tech.intellispaces.core.object.ObjectHandleTypes;
+import tech.intellispaces.core.space.domain.DomainFunctions;
 import tech.intellispaces.javastatements.customtype.CustomType;
+import tech.intellispaces.javastatements.reference.CustomTypeReference;
 
 import javax.annotation.processing.RoundEnvironment;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public class MovableObjectHandleGenerator extends AbstractDomainObjectHandleGenerator {
   private String baseObjectHandle;
+  private boolean isAlias;
+  private String primaryObjectHandle;
 
   public MovableObjectHandleGenerator(CustomType domainType) {
     super(domainType);
@@ -35,6 +40,7 @@ public class MovableObjectHandleGenerator extends AbstractDomainObjectHandleGene
     Map<String, Object> vars = new HashMap<>();
     vars.put("generatedAnnotation", makeGeneratedAnnotation());
     vars.put("packageName", context.packageName());
+    vars.put("importedClasses", context.getImports());
     vars.put("sourceClassName", sourceClassCanonicalName());
     vars.put("sourceClassSimpleName", sourceClassSimpleName());
     vars.put("classSimpleName", context.generatedClassSimpleName());
@@ -42,8 +48,9 @@ public class MovableObjectHandleGenerator extends AbstractDomainObjectHandleGene
     vars.put("domainTypeParamsBrief", domainTypeParamsBrief);
     vars.put("baseObjectHandle", baseObjectHandle);
     vars.put("domainMethods", methods);
-    vars.put("importedClasses", context.getImports());
     vars.put("movableObjectHandleName", context.addToImportAndGetSimpleName(MovableObjectHandle.class));
+    vars.put("isAlias", isAlias);
+    vars.put("primaryObjectHandle", primaryObjectHandle);
     return vars;
   }
 
@@ -61,6 +68,12 @@ public class MovableObjectHandleGenerator extends AbstractDomainObjectHandleGene
         NameConventionFunctions.getCommonObjectHandleTypename(annotatedType.className())
     );
     analyzeObjectHandleMethods(annotatedType, roundEnv);
+
+    Optional<CustomTypeReference> primaryDomain = DomainFunctions.getPrimaryDomainForAliasDomain(annotatedType);
+    isAlias = primaryDomain.isPresent();
+    if (isAlias) {
+      primaryObjectHandle = getObjectHandleDeclaration(primaryDomain.get(), ObjectHandleTypes.Movable);
+    }
     return true;
   }
 }

@@ -24,6 +24,7 @@ import tech.intellispaces.core.annotation.processor.objecthandle.MovableObjectHa
 import tech.intellispaces.core.annotation.processor.objecthandle.UnmovableObjectHandleImplGenerator;
 import tech.intellispaces.core.annotation.processor.ontology.OntologyGuideGenerator;
 import tech.intellispaces.core.annotation.processor.ontology.OntologyTransitionGenerator;
+import tech.intellispaces.core.space.domain.DomainFunctions;
 import tech.intellispaces.core.system.ModuleFunctions;
 import tech.intellispaces.core.system.UnitFunctions;
 import tech.intellispaces.core.traverse.TraverseTypes;
@@ -33,8 +34,6 @@ import tech.intellispaces.javastatements.customtype.CustomType;
 import tech.intellispaces.javastatements.instance.AnnotationInstance;
 import tech.intellispaces.javastatements.method.MethodStatement;
 import tech.intellispaces.javastatements.reference.CustomTypeReference;
-import tech.intellispaces.javastatements.reference.NotPrimitiveReference;
-import tech.intellispaces.javastatements.reference.ReferenceBound;
 import tech.intellispaces.javastatements.reference.TypeReference;
 
 import javax.annotation.processing.RoundEnvironment;
@@ -98,36 +97,11 @@ public interface AnnotationProcessorFunctions {
   private static void addUpgradeObjectHandleGenerators(
       CustomType domainType, CustomType curDomainType, List<ArtifactGenerator> generators
   ) {
-    List<CustomTypeReference> parents = curDomainType.parentTypes();
-    if (parents.size() != 1) {
-      return;
+    Optional<CustomTypeReference> primaryDomain = DomainFunctions.getPrimaryDomainForAliasDomain(curDomainType);
+    if (primaryDomain.isPresent()) {
+      generators.add(new UnmovableUpwardObjectHandleGenerator(domainType, primaryDomain.get()));
+      addUpgradeObjectHandleGenerators(domainType, primaryDomain.get().targetType(), generators);
     }
-    CustomTypeReference baseDomainType = parents.get(0);
-    List<NotPrimitiveReference> baseTypeArguments = baseDomainType.typeArguments();
-    if (baseTypeArguments.isEmpty()) {
-      return;
-    }
-    boolean allTypeArgumentsAreCustomTypes = baseTypeArguments.stream()
-        .allMatch(AnnotationProcessorFunctions::isCustomTypeRelated);
-    if (!allTypeArgumentsAreCustomTypes) {
-      return;
-    }
-    generators.add(new UnmovableUpwardObjectHandleGenerator(domainType, baseDomainType));
-
-    addUpgradeObjectHandleGenerators(domainType, baseDomainType.targetType(), generators);
-  }
-
-  private static boolean isCustomTypeRelated(TypeReference type) {
-    if (type.isCustomTypeReference()) {
-      return true;
-    }
-    if (type.isNamedReference()) {
-      List<ReferenceBound> extendedBounds = type.asNamedReferenceOrElseThrow().extendedBounds();
-      if (extendedBounds.size() == 1 && extendedBounds.get(0).isCustomTypeReference()) {
-        return true;
-      }
-    }
-    return false;
   }
 
   static List<ArtifactGenerator> makeOntologyArtifactGenerators(

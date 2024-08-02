@@ -9,13 +9,22 @@ import {{$importedClass}};
  *
  * This class was generated automatically. Don't try to change it.
  */
+@ObjectHandle({{$sourceClassSimpleName}}.class)
 {{$generatedAnnotation}}
-public interface {{$classSimpleName}}{{$domainTypeParamsFull}} extends {{$objectHandleBunch}}{{$domainTypeParamsBrief}}, ObjectHandle<{{$sourceClassSimpleName}}{{$domainTypeParamsBrief}}> {
+{{when $isAlias}}
+public interface {{$classSimpleName}}{{$domainTypeParamsFull}} extends {{$primaryObjectHandle}}, {{$objectHandleBunch}}{{$domainTypeParamsBrief}} {
 
   @Override
-  default Class<{{$sourceClassSimpleName}}{{$domainTypeParamsBrief}}> domainClass() {
-    return (Class) {{$sourceClassSimpleName}}.class;
+  default Type<{{$mainPrimaryDomainSimpleName}}{{$primaryDomainTypeArguments}}> domain() {
+    return Types.of({{$mainPrimaryDomainSimpleName}}.class);
   }
+
+  @Override
+  default Class<{{$mainPrimaryDomainSimpleName}}{{$primaryDomainTypeArguments}}> domainClass() {
+    return (Class) {{$mainPrimaryDomainSimpleName}}.class;
+  }
+{{else}}
+public interface {{$classSimpleName}}{{$domainTypeParamsFull}} extends tech.intellispaces.core.object.ObjectHandle<{{$sourceClassSimpleName}}{{$domainTypeParamsBrief}}>, {{$objectHandleBunch}}{{$domainTypeParamsBrief}} {
 
 {{when $domainTypeParamsBrief.isEmpty()}}
   @Override
@@ -25,6 +34,12 @@ public interface {{$classSimpleName}}{{$domainTypeParamsFull}} extends {{$object
 {{else}}
   @Override
   Type<{{$sourceClassSimpleName}}{{$domainTypeParamsBrief}}> domain();
+{{end}}
+
+  @Override
+  default Class<{{$sourceClassSimpleName}}{{$domainTypeParamsBrief}}> domainClass() {
+    return (Class) {{$sourceClassSimpleName}}.class;
+  }
 {{end}}
 
 {{for method : $domainMethods}}

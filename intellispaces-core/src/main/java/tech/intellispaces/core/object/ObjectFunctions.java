@@ -2,6 +2,7 @@ package tech.intellispaces.core.object;
 
 import tech.intellispaces.commons.exception.UnexpectedViolationException;
 import tech.intellispaces.commons.type.TypeFunctions;
+import tech.intellispaces.core.annotation.Data;
 import tech.intellispaces.core.annotation.ObjectHandleBunch;
 import tech.intellispaces.core.common.CoreFunctions;
 import tech.intellispaces.core.common.NameConventionFunctions;
@@ -19,6 +20,10 @@ import java.util.Set;
 public class ObjectFunctions {
 
   private ObjectFunctions() {}
+
+  public static boolean isDataObjectHandle(Class<?> objectHandleClass) {
+    return getDomainClassOfObjectHandle(objectHandleClass).isAnnotationPresent(Data.class);
+  }
 
   public static Class<?> getObjectHandleClass(ObjectHandleTypes objectHandleType) {
     return switch (objectHandleType) {

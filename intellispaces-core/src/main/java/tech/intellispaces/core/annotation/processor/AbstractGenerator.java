@@ -142,7 +142,7 @@ public abstract class AbstractGenerator extends TemplateBasedJavaArtifactGenerat
           Executor commaAppender = StringActions.commaAppender(sb);
           for (NotPrimitiveReference argType : customTypeReference.typeArguments()) {
             commaAppender.execute();
-            sb.append(argType.actualDeclaration());
+            sb.append(getObjectHandleDeclaration(argType, ObjectHandleTypes.Common));
           }
           sb.append(">");
         }
@@ -153,7 +153,7 @@ public abstract class AbstractGenerator extends TemplateBasedJavaArtifactGenerat
       if (wildcardTypeReference.extendedBound().isPresent()) {
         return getObjectHandleDeclaration(wildcardTypeReference.extendedBound().get(), handleType);
       } else {
-        throw new UnsupportedOperationException("Not implemented");
+        return Object.class.getCanonicalName();
       }
     } else if (domainType.asArrayReference().isPresent()) {
       TypeReference elementType = domainType.asArrayReference().get().elementType();

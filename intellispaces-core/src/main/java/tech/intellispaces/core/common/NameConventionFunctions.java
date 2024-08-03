@@ -16,6 +16,7 @@ import tech.intellispaces.core.traverse.TraverseTypes;
 import tech.intellispaces.javastatements.customtype.CustomType;
 import tech.intellispaces.javastatements.method.MethodParam;
 import tech.intellispaces.javastatements.method.MethodStatement;
+import tech.intellispaces.javastatements.reference.CustomTypeReference;
 
 import java.util.Optional;
 
@@ -155,6 +156,10 @@ public interface NameConventionFunctions {
         StringFunctions.capitalizeFirstLetter(baseDomainClass.getSimpleName()) +
         "BasedOn" + StringFunctions.capitalizeFirstLetter(domainClass.getSimpleName());
     return TypeFunctions.joinPackageAndSimpleName(packageName, simpleName);
+  }
+
+  static String getConversionMethodName(CustomTypeReference reference) {
+    return getConversionMethodName(reference.targetType());
   }
 
   static String getConversionMethodName(CustomType targetType) {

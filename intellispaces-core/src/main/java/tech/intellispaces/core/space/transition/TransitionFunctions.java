@@ -9,7 +9,6 @@ import tech.intellispaces.core.object.ObjectFunctions;
 import tech.intellispaces.core.space.domain.DomainFunctions;
 import tech.intellispaces.core.traverse.TraverseTypes;
 import tech.intellispaces.javastatements.customtype.CustomType;
-import tech.intellispaces.javastatements.method.MethodFunctions;
 import tech.intellispaces.javastatements.method.MethodStatement;
 import tech.intellispaces.proxies.tracker.Tracker;
 import tech.intellispaces.proxies.tracker.TrackerBuilder;
@@ -177,9 +176,11 @@ public interface TransitionFunctions {
     return transition;
   }
 
-  private static Transition getObjectHandleMethodTransitionAnnotation(Class<?> domainClass, Method objectHandleMethod) {
+  private static Transition getObjectHandleMethodTransitionAnnotation(
+      Class<?> domainClass, Method objectHandleMethod
+  ) {
     for (Method domainMethod : domainClass.getDeclaredMethods()) {
-      if (MethodFunctions.isEquivalentMethods(domainMethod, objectHandleMethod)) {
+      if (isEquivalentMethods(domainMethod, objectHandleMethod)) {
         return domainMethod.getAnnotation(Transition.class);
       }
     }
@@ -192,6 +193,24 @@ public interface TransitionFunctions {
       }
     }
     return null;
+  }
+
+  private static boolean isEquivalentMethods(Method domainMethod, Method objectHandleMethod) {
+    if (!domainMethod.getName().equals(objectHandleMethod.getName())) {
+      return false;
+    } else if (domainMethod.getParameterCount() != objectHandleMethod.getParameterCount()) {
+      return false;
+    } else {
+      for (int i = 0; i < domainMethod.getParameterCount(); ++i) {
+        Class<?> domainParamType1 = domainMethod.getParameters()[i].getType();
+        Class<?> objectHandleParamType = objectHandleMethod.getParameters()[i].getType();
+        Class<?> domainParamType2 = ObjectFunctions.getDomainClassOfObjectHandle(objectHandleParamType);
+        if (domainParamType1 != domainParamType2) {
+          return false;
+        }
+      }
+      return true;
+    }
   }
 
   static Transition getAttachedGuideTransitionAnnotation(Method objectHandleMethod) {

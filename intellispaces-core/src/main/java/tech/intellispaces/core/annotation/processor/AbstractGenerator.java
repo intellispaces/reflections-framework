@@ -1,7 +1,5 @@
 package tech.intellispaces.core.annotation.processor;
 
-import tech.intellispaces.actions.Executor;
-import tech.intellispaces.actions.string.StringActions;
 import tech.intellispaces.annotations.artifact.JavaArtifactContext;
 import tech.intellispaces.annotations.generator.TemplateBasedJavaArtifactGenerator;
 import tech.intellispaces.commons.type.TypeFunctions;
@@ -11,10 +9,7 @@ import tech.intellispaces.javastatements.customtype.CustomType;
 import tech.intellispaces.javastatements.method.MethodParam;
 import tech.intellispaces.javastatements.method.MethodSignatureDeclarations;
 import tech.intellispaces.javastatements.method.MethodStatement;
-import tech.intellispaces.javastatements.reference.CustomTypeReference;
-import tech.intellispaces.javastatements.reference.NotPrimitiveReference;
 import tech.intellispaces.javastatements.reference.TypeReference;
-import tech.intellispaces.javastatements.reference.WildcardReference;
 
 import javax.annotation.processing.Generated;
 import java.time.ZonedDateTime;
@@ -109,57 +104,8 @@ public abstract class AbstractGenerator extends TemplateBasedJavaArtifactGenerat
   }
 
   protected String getObjectHandleDeclaration(TypeReference domainType, ObjectHandleTypes handleType) {
-    if (domainType.asPrimitiveReference().isPresent()) {
-      return domainType.asPrimitiveReference().get().typename();
-    } else if (domainType.asNamedReference().isPresent()) {
-      return domainType.asNamedReference().get().name();
-    } else if (domainType.asCustomTypeReference().isPresent()) {
-      CustomTypeReference customTypeReference = domainType.asCustomTypeReference().get();
-      CustomType targetType = customTypeReference.targetType();
-      if (targetType.canonicalName().equals(Class.class.getCanonicalName())) {
-        var sb = new StringBuilder();
-        sb.append(Class.class.getSimpleName());
-        if (!customTypeReference.typeArguments().isEmpty()) {
-          sb.append("<");
-          Executor commaAppender = StringActions.commaAppender(sb);
-          for (NotPrimitiveReference argType : customTypeReference.typeArguments()) {
-            commaAppender.execute();
-            sb.append(argType.actualDeclaration());
-          }
-          sb.append(">");
-        }
-        return sb.toString();
-      } else if (targetType.canonicalName().startsWith("java.lang.")) {
-        return targetType.simpleName();
-      } else {
-        var sb = new StringBuilder();
-        String canonicalName = ObjectFunctions.getObjectHandleTypename(targetType, handleType);
-        context.addImport(canonicalName);
-        String simpleName = context.simpleNameOf(canonicalName);
-        sb.append(simpleName);
-        if (!customTypeReference.typeArguments().isEmpty()) {
-          sb.append("<");
-          Executor commaAppender = StringActions.commaAppender(sb);
-          for (NotPrimitiveReference argType : customTypeReference.typeArguments()) {
-            commaAppender.execute();
-            sb.append(getObjectHandleDeclaration(argType, ObjectHandleTypes.Common));
-          }
-          sb.append(">");
-        }
-        return sb.toString();
-      }
-    } else if (domainType.asWildcard().isPresent()) {
-      WildcardReference wildcardTypeReference = domainType.asWildcard().get();
-      if (wildcardTypeReference.extendedBound().isPresent()) {
-        return getObjectHandleDeclaration(wildcardTypeReference.extendedBound().get(), handleType);
-      } else {
-        return Object.class.getCanonicalName();
-      }
-    } else if (domainType.asArrayReference().isPresent()) {
-      TypeReference elementType = domainType.asArrayReference().get().elementType();
-      return getObjectHandleDeclaration(elementType, handleType) + "[]";
-    } else {
-      throw new UnsupportedOperationException("Unsupported type - " + domainType.actualDeclaration());
-    }
+    return ObjectFunctions.getObjectHandleDeclaration(
+        domainType, handleType, context::addToImportAndGetSimpleName
+    );
   }
 }

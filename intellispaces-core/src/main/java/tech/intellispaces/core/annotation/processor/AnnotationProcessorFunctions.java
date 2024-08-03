@@ -15,6 +15,7 @@ import tech.intellispaces.core.annotation.processor.data.UnmovableDataHandleGene
 import tech.intellispaces.core.annotation.processor.domain.CommonObjectHandleGenerator;
 import tech.intellispaces.core.annotation.processor.domain.DomainGuideGenerator;
 import tech.intellispaces.core.annotation.processor.domain.DomainTransitionGenerator;
+import tech.intellispaces.core.annotation.processor.domain.MovableDownwardObjectHandleGenerator;
 import tech.intellispaces.core.annotation.processor.domain.MovableObjectHandleGenerator;
 import tech.intellispaces.core.annotation.processor.domain.ObjectHandleBunchGenerator;
 import tech.intellispaces.core.annotation.processor.domain.UnmovableObjectHandleGenerator;
@@ -68,7 +69,8 @@ public interface AnnotationProcessorFunctions {
     }
     addObjectHandleBunchGenerator(domainType, generators, roundEnv);
     addBasicObjectHandleGenerators(domainType, generators, roundEnv);
-    addUpgradeObjectHandleGenerators(domainType, domainType, generators);
+    addDownwardObjectHandleGenerators(domainType, generators);
+    addUpwardObjectHandleGenerators(domainType, domainType, generators);
     return generators;
   }
 
@@ -94,13 +96,34 @@ public interface AnnotationProcessorFunctions {
     }
   }
 
-  private static void addUpgradeObjectHandleGenerators(
+  private static void addDownwardObjectHandleGenerators(
+      CustomType domainType, List<ArtifactGenerator> generators
+  ) {
+    List<CustomTypeReference> parents = domainType.parentTypes();
+    if (parents.size() != 1) {
+      return;
+    }
+    CustomTypeReference parentDomainType = parents.get(0);
+    generators.add(new MovableDownwardObjectHandleGenerator(domainType, parentDomainType));
+  }
+
+  private static void addUpwardObjectHandleGenerators(
       CustomType domainType, CustomType curDomainType, List<ArtifactGenerator> generators
+  ) {
+    addUpwardObjectHandleGenerators2(domainType, curDomainType, new ArrayList<>(), generators);
+  }
+
+  private static void addUpwardObjectHandleGenerators2(
+      CustomType domainType,
+      CustomType curDomainType,
+      List<CustomTypeReference> allPrimaryDomains,
+      List<ArtifactGenerator> generators
   ) {
     Optional<CustomTypeReference> primaryDomain = DomainFunctions.getPrimaryDomainForAliasDomain(curDomainType);
     if (primaryDomain.isPresent()) {
-      generators.add(new UnmovableUpwardObjectHandleGenerator(domainType, primaryDomain.get()));
-      addUpgradeObjectHandleGenerators(domainType, primaryDomain.get().targetType(), generators);
+      allPrimaryDomains.add(primaryDomain.get());
+      generators.add(new UnmovableUpwardObjectHandleGenerator(domainType, primaryDomain.get(), List.copyOf(allPrimaryDomains)));
+      addUpwardObjectHandleGenerators2(domainType, primaryDomain.get().targetType(), allPrimaryDomains, generators);
     }
   }
 

@@ -12,26 +12,39 @@ import tech.intellispaces.javastatements.type.Type;
 
 import javax.annotation.processing.RoundEnvironment;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class UnmovableUpwardObjectHandleGenerator extends AbstractDomainObjectHandleGenerator {
   private final CustomTypeReference baseDomainType;
+  private final List<CustomTypeReference> allPrimaryDomains;
+  private final Set<String> allUpwardMethodNames;
   private String classTypeParams;
   private String classTypeParamsBrief;
   private String unmovableObjectHandleName;
   private String baseObjectHandleType;
   private String baseField;
 
-  public UnmovableUpwardObjectHandleGenerator(CustomType annotatedType, CustomTypeReference baseDomainType) {
+  public UnmovableUpwardObjectHandleGenerator(
+      CustomType annotatedType,
+      CustomTypeReference baseDomainType,
+      List<CustomTypeReference> allPrimaryDomains
+  ) {
     super(annotatedType);
     this.baseDomainType = baseDomainType;
+    this.allPrimaryDomains = allPrimaryDomains;
+    this.allUpwardMethodNames = allPrimaryDomains.stream()
+        .map(NameConventionFunctions::getConversionMethodName)
+        .collect(Collectors.toSet());
   }
 
   @Override
   public String getArtifactName() {
-    return NameConventionFunctions.getUnmovableUpwardObjectHandleTypename(annotatedType, baseDomainType.targetType());
+    return NameConventionFunctions.getUnmovableUpwardObjectHandleTypename(
+        annotatedType, baseDomainType.targetType());
   }
 
   @Override
@@ -90,7 +103,7 @@ public class UnmovableUpwardObjectHandleGenerator extends AbstractDomainObjectHa
 
   @Override
   protected Map<String, String> buildMethod(MethodStatement method) {
-    if (method.name().equals("as" + baseDomainType.targetType().simpleName())) {
+    if (allUpwardMethodNames.contains(method.name())) {
       return buildConvertMethod(method);
     } else {
       return buildNormalMethod(method);

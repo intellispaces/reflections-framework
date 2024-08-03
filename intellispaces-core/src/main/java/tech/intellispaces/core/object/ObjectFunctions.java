@@ -1,5 +1,7 @@
 package tech.intellispaces.core.object;
 
+import tech.intellispaces.actions.Executor;
+import tech.intellispaces.actions.string.StringActions;
 import tech.intellispaces.commons.exception.UnexpectedViolationException;
 import tech.intellispaces.commons.type.TypeFunctions;
 import tech.intellispaces.core.annotation.Data;
@@ -9,13 +11,17 @@ import tech.intellispaces.core.common.NameConventionFunctions;
 import tech.intellispaces.core.space.domain.DomainFunctions;
 import tech.intellispaces.javastatements.JavaStatements;
 import tech.intellispaces.javastatements.customtype.CustomType;
+import tech.intellispaces.javastatements.reference.CustomTypeReference;
+import tech.intellispaces.javastatements.reference.NotPrimitiveReference;
 import tech.intellispaces.javastatements.reference.TypeReference;
+import tech.intellispaces.javastatements.reference.WildcardReference;
 import tech.intellispaces.javastatements.type.Type;
 
 import java.lang.reflect.Constructor;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 
 public class ObjectFunctions {
 
@@ -57,6 +63,14 @@ public class ObjectFunctions {
 
   public static boolean isDefaultObjectHandleType(String canonicalName) {
     return DEFAULT_OBJECT_HANDLE_CLASSES.contains(canonicalName);
+  }
+
+  public static boolean isMovableObjectHandle(Object objectHandle) {
+    return isMovableObjectHandle(objectHandle.getClass());
+  }
+
+  public static boolean isMovableObjectHandle(Class<?> objectHandleClass) {
+    return MovableObjectHandle.class.isAssignableFrom(objectHandleClass);
   }
 
   public static boolean isMovableObjectHandle(CustomType objectHandleType) {
@@ -168,6 +182,9 @@ public class ObjectFunctions {
   }
 
   public static Class<?> getDomainClassOfObjectHandle(Class<?> objectHandleClass) {
+    if (isDefaultObjectHandleClass(objectHandleClass)) {
+      return objectHandleClass;
+    }
     List<Class<?>> objectHandleTypes = CoreFunctions.findTopAnnotatedClasses(
         objectHandleClass, ObjectHandleBunch.class
     );
@@ -179,10 +196,6 @@ public class ObjectFunctions {
           objectHandleClass.getCanonicalName());
     }
     return objectHandleTypes.get(0).getAnnotation(ObjectHandleBunch.class).value();
-  }
-
-  public static boolean isMovableObjectHandle(Class<?> objectHandleClass) {
-    return MovableObjectHandle.class.isAssignableFrom(objectHandleClass);
   }
 
   @SuppressWarnings("unchecked")
@@ -217,6 +230,71 @@ public class ObjectFunctions {
     return null;
   }
 
+  public static String getObjectHandleDeclaration(
+      TypeReference domainType, ObjectHandleTypes handleType, Function<String, String> simpleNameMapping
+  ) {
+    if (domainType.isPrimitiveReference()) {
+      return domainType.asPrimitiveReferenceOrElseThrow().typename();
+    } else if (domainType.asNamedReference().isPresent()) {
+      return domainType.asNamedReference().get().name();
+    } else if (domainType.isCustomTypeReference()) {
+      CustomTypeReference customTypeReference = domainType.asCustomTypeReferenceOrElseThrow();
+      CustomType targetType = customTypeReference.targetType();
+      if (targetType.canonicalName().equals(Class.class.getCanonicalName())) {
+        var sb = new StringBuilder();
+        sb.append(Class.class.getSimpleName());
+        if (!customTypeReference.typeArguments().isEmpty()) {
+          sb.append("<");
+          Executor commaAppender = StringActions.commaAppender(sb);
+          for (NotPrimitiveReference argType : customTypeReference.typeArguments()) {
+            commaAppender.execute();
+            sb.append(argType.actualDeclaration());
+          }
+          sb.append(">");
+        }
+        return sb.toString();
+      } else if (targetType.canonicalName().startsWith("java.lang.")) {
+        return targetType.simpleName();
+      } else {
+        var sb = new StringBuilder();
+        String canonicalName = ObjectFunctions.getObjectHandleTypename(targetType, handleType);
+        String simpleName = simpleNameMapping.apply(canonicalName);
+        sb.append(simpleName);
+        if (!customTypeReference.typeArguments().isEmpty()) {
+          sb.append("<");
+          Executor commaAppender = StringActions.commaAppender(sb);
+          for (NotPrimitiveReference argType : customTypeReference.typeArguments()) {
+            commaAppender.execute();
+            sb.append(getObjectHandleDeclaration(argType, ObjectHandleTypes.Common, simpleNameMapping));
+          }
+          sb.append(">");
+        }
+        return sb.toString();
+      }
+    } else if (domainType.isWildcard()) {
+      WildcardReference wildcardTypeReference = domainType.asWildcardOrElseThrow();
+      if (wildcardTypeReference.extendedBound().isPresent()) {
+        return getObjectHandleDeclaration(wildcardTypeReference.extendedBound().get(), handleType, simpleNameMapping);
+      } else {
+        return Object.class.getCanonicalName();
+      }
+    } else if (domainType.isArrayReference()) {
+      TypeReference elementType = domainType.asArrayReferenceOrElseThrow().elementType();
+      return getObjectHandleDeclaration(elementType, handleType, simpleNameMapping) + "[]";
+    } else {
+      throw new UnsupportedOperationException("Unsupported type - " + domainType.actualDeclaration());
+    }
+  }
+
+  public static Class<?> propertiesHandleClass() {
+    if (propertiesHandleClass == null) {
+      propertiesHandleClass = TypeFunctions.getClass(ObjectHandleConstants.PROPERTIES_HANDLE_CLASSNAME).orElseThrow(
+          () -> UnexpectedViolationException.withMessage("Could not get class {}", ObjectHandleConstants.PROPERTIES_HANDLE_CLASSNAME)
+      );
+    }
+    return propertiesHandleClass;
+  }
+
   private final static Set<String> DEFAULT_OBJECT_HANDLE_CLASSES = Set.of(
       boolean.class.getCanonicalName(),
       byte.class.getCanonicalName(),
@@ -240,15 +318,6 @@ public class ObjectFunctions {
       Type.class.getCanonicalName(),
       Void.class.getCanonicalName()
   );
-
-  public static Class<?> propertiesHandleClass() {
-    if (propertiesHandleClass == null) {
-      propertiesHandleClass = TypeFunctions.getClass(ObjectHandleConstants.PROPERTIES_HANDLE_CLASSNAME).orElseThrow(
-          () -> UnexpectedViolationException.withMessage("Could not get class {}", ObjectHandleConstants.PROPERTIES_HANDLE_CLASSNAME)
-      );
-    }
-    return propertiesHandleClass;
-  }
 
   private static Class<?> propertiesHandleClass;
 }

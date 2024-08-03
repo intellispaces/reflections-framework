@@ -57,7 +57,7 @@ abstract class AbstractDomainObjectHandleGenerator extends AbstractObjectHandleG
           CustomTypeReferences.get(buildActualType(parent.targetType(), roundEnv), parent.typeArguments())
       );
     }
-    builder.setExtendedInterfaces(parentInterfaces);
+    builder.extendedInterfaces(parentInterfaces);
     return builder.get();
   }
 }

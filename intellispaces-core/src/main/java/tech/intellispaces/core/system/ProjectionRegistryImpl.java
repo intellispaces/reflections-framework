@@ -111,6 +111,9 @@ class ProjectionRegistryImpl implements ProjectionRegistry {
       }
       Object target = getProjection(param.getName(), param.getType(), dependencyPath);
       if (target == null) {
+        getProjection(param.getName(), param.getType(), dependencyPath);
+
+
         Method actualMethod = UnitWrapper.getActualMethod(method);
         throw ConfigurationException.withMessage("Cannot to resolve parameter '{}' in method '{}' of unit {}",
             param.getName(), actualMethod.getName(), actualMethod.getDeclaringClass().getCanonicalName());

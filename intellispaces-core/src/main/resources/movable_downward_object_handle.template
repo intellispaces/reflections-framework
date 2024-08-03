@@ -1,0 +1,82 @@
+package {{$packageName}};
+
+{{for importedClass : $importedClasses}}
+import {{$importedClass}};
+{{end}}
+
+/**
+ * Movable downward object handle for objects of domain {@link {{$sourceClassName}}}.<p/>
+ *
+ * This class was generated automatically. Don't try to change it.
+ */
+@MovableObjectHandle
+{{$generatedAnnotation}}
+public class {{$classSimpleName}}{{$classTypeParams}} implements {{$movableObjectHandleName}}{{$classTypeParamsBrief}} {
+  private final {{$childObjectHandleType}} {{$childField}};
+
+  public {{$classSimpleName}}({{$childObjectHandleType}} {{$childField}}) {
+    this.{{$childField}} = {{$childField}};
+  }
+
+{{when $isAlias}}
+  @Override
+  public Type<{{$mainPrimaryDomainSimpleName}}{{$primaryDomainTypeArguments}}> domain() {
+    return Types.of({{$mainPrimaryDomainSimpleName}}.class);
+  }
+
+  @Override
+  public Class<{{$mainPrimaryDomainSimpleName}}{{$primaryDomainTypeArguments}}> domainClass() {
+    return (Class) {{$mainPrimaryDomainSimpleName}}.class;
+  }
+{{else}}
+{{when $domainTypeParamsBrief.isEmpty()}}
+  @Override
+  public Type<{{$parentDomainClassSimpleName}}> domain() {
+    return Types.of({{$parentDomainClassSimpleName}}.class);
+  }
+{{else}}
+  @Override
+  public Type<{{$parentDomainClassSimpleName}}{{$domainTypeParamsBrief}}> domain() {
+    return null;
+  }
+
+ @Override
+  public Class<{{$parentDomainClassSimpleName}}{{$domainTypeParamsBrief}}> domainClass() {
+    return null;
+  }
+{{end}}
+{{end}}
+{{end}}
+{{for method : $methods}}
+  {{$method.get("javadoc")}}
+  @Override
+  {{$method.get("declaration")}};
+
+{{end}}
+  @Override
+  public <B, Q> B moveThru(String tid, Q qualifier) throws TraverseException {
+    return (B) {{$childField}}.moveThru(tid, qualifier);
+  }
+
+{{when $isAlias}}
+  @Override
+  public <B> B moveThru(TransitionMethod0<? super {{$mainPrimaryDomainSimpleName}}{{$classTypeParamsBrief}}, B> transitionMethod) throws TraverseException {
+    return (B) {{$childField}}.moveThru((TransitionMethod0<? super {{$mainPrimaryDomainSimpleName}}, B>) transitionMethod);
+  }
+
+  @Override
+  public <B, Q> B moveThru(TransitionMethod1<? super {{$mainPrimaryDomainSimpleName}}{{$classTypeParamsBrief}}, B, Q> transitionMethod, Q qualifier) throws TraverseException {
+    return (B) {{$childField}}.moveThru((TransitionMethod1<? super {{$mainPrimaryDomainSimpleName}}, B, Q>) transitionMethod, qualifier);
+  }
+{{else}}
+  @Override
+  public <B> B moveThru(TransitionMethod0<? super {{$domainClassSimpleName}}{{$classTypeParamsBrief}}, B> transitionMethod) throws TraverseException {
+    return (B) {{$childField}}.moveThru((TransitionMethod0<? super {{$childDomainClassSimpleName}}, B>) transitionMethod);
+  }
+
+  @Override
+  public <B, Q> B moveThru(TransitionMethod1<? super {{$domainClassSimpleName}}{{$classTypeParamsBrief}}, B, Q> transitionMethod, Q qualifier) throws TraverseException {
+    return (B) {{$childField}}.moveThru((TransitionMethod1<? super {{$childDomainClassSimpleName}}, B, Q>) transitionMethod, qualifier);
+  }
+{{end}}
+}

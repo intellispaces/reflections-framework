@@ -100,9 +100,10 @@ abstract class AbstractObjectHandleImplGenerator extends AbstractObjectHandleGen
   private String buildGuideMethodSignature(MethodStatement domainMethod) {
     return MethodSignatureDeclarations.build(domainMethod)
         .methodName("_" + domainMethod.name())
-        .returnType(getObjectHandleDeclaration(domainMethod.returnType().orElseThrow(), ObjectHandleTypes.Common))
         .includeMethodTypeParams(true)
         .includeOwnerTypeParams(false)
+        .returnType(getObjectHandleDeclaration(domainMethod.returnType().orElseThrow(), ObjectHandleTypes.Common))
+        .paramDeclarationMapper(type -> getObjectHandleDeclaration(type, ObjectHandleTypes.Common))
         .get(context::addImport, context::simpleNameOf);
   }
 

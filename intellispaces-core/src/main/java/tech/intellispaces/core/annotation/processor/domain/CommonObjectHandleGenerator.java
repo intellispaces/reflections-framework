@@ -84,7 +84,9 @@ public class CommonObjectHandleGenerator extends AbstractDomainObjectHandleGener
       primaryObjectHandle = getObjectHandleDeclaration(primaryDomain.get(), ObjectHandleTypes.Common);
       primaryDomainTypeArguments = primaryDomain.get().typeArgumentsDeclaration(context::addToImportAndGetSimpleName);
       Optional<CustomTypeReference> mainPrimaryDomain = DomainFunctions.getMainPrimaryDomainForAliasDomain(annotatedType);
-      mainPrimaryDomainSimpleName = mainPrimaryDomain.orElseThrow().targetType().simpleName();
+      mainPrimaryDomainSimpleName = context.addToImportAndGetSimpleName(
+          mainPrimaryDomain.orElseThrow().targetType().canonicalName()
+      );
     }
     return true;
   }

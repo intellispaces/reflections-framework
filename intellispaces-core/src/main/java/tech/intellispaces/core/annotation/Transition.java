@@ -32,4 +32,6 @@ public @interface Transition {
    * Assigned transition name.
    */
   String name() default "";
+
+  boolean factory() default false;
 }

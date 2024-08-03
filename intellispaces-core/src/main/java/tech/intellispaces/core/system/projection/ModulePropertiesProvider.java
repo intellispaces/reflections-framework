@@ -1,7 +1,6 @@
 package tech.intellispaces.core.system.projection;
 
 import tech.intellispaces.commons.exception.UnexpectedViolationException;
-import tech.intellispaces.core.annotation.Data;
 import tech.intellispaces.core.annotation.Properties;
 import tech.intellispaces.core.object.ObjectFunctions;
 import tech.intellispaces.core.object.ObjectHandleConstants;
@@ -40,9 +39,8 @@ public class ModulePropertiesProvider extends AbstractProjectionProvider {
       return target;
     }
     if (ObjectFunctions.isCustomObjectHandleClass(expectedReturnType)) {
-      Class<?> domainClass = ObjectFunctions.getDomainClassOfObjectHandle(expectedReturnType);
-      if (domainClass.isAnnotationPresent(Data.class)) {
-        return module.mapThruTransition1(target, SpaceConstants.PROPERTIES_TO_DATA_TID, domainClass);
+      if (ObjectFunctions.isDataObjectHandle(expectedReturnType)) {
+        return module.mapThruTransition1(target, SpaceConstants.PROPERTIES_TO_DATA_TID, expectedReturnType);
       }
     }
     throw UnexpectedViolationException.withMessage("Invalid return type of method '{}' in class {}",

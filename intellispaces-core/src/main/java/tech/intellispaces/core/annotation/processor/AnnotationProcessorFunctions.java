@@ -21,7 +21,7 @@ import tech.intellispaces.core.annotation.processor.domain.ObjectHandleBunchGene
 import tech.intellispaces.core.annotation.processor.domain.UnmovableObjectHandleGenerator;
 import tech.intellispaces.core.annotation.processor.domain.UnmovableUpwardObjectHandleGenerator;
 import tech.intellispaces.core.annotation.processor.module.UnitWrapperGenerator;
-import tech.intellispaces.core.annotation.processor.objecthandle.MovableObjectHandleImplImplGenerator;
+import tech.intellispaces.core.annotation.processor.objecthandle.MovableObjectHandleImplGenerator;
 import tech.intellispaces.core.annotation.processor.objecthandle.UnmovableObjectHandleImplGenerator;
 import tech.intellispaces.core.annotation.processor.ontology.OntologyGuideGenerator;
 import tech.intellispaces.core.annotation.processor.ontology.OntologyTransitionGenerator;
@@ -148,7 +148,7 @@ public interface AnnotationProcessorFunctions {
   }
 
   static List<ArtifactGenerator> makeMovableObjectHandleArtifactGenerators(CustomType objectHandleType) {
-      return List.of(new MovableObjectHandleImplImplGenerator(objectHandleType));
+      return List.of(new MovableObjectHandleImplGenerator(objectHandleType));
   }
 
   static List<ArtifactGenerator> makeUnmovableObjectHandleArtifactGenerators(CustomType objectHandleType) {

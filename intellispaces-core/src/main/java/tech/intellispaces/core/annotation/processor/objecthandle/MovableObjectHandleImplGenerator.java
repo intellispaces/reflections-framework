@@ -5,6 +5,8 @@ import tech.intellispaces.core.guide.n0.Mover0;
 import tech.intellispaces.core.guide.n1.Mover1;
 import tech.intellispaces.core.object.ObjectFunctions;
 import tech.intellispaces.core.object.ObjectHandleTypes;
+import tech.intellispaces.core.space.transition.Transition0;
+import tech.intellispaces.core.space.transition.Transition1;
 import tech.intellispaces.core.space.transition.TransitionFunctions;
 import tech.intellispaces.core.system.Modules;
 import tech.intellispaces.core.transition.TransitionMethod0;
@@ -15,9 +17,9 @@ import javax.annotation.processing.RoundEnvironment;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MovableObjectHandleImplImplGenerator extends AbstractObjectHandleImplGenerator {
+public class MovableObjectHandleImplGenerator extends AbstractObjectHandleImplGenerator {
 
-  public MovableObjectHandleImplImplGenerator(CustomType objectHandleType) {
+  public MovableObjectHandleImplGenerator(CustomType objectHandleType) {
     super(objectHandleType);
   }
 
@@ -65,6 +67,8 @@ public class MovableObjectHandleImplImplGenerator extends AbstractObjectHandleIm
 
     context.addImport(Mover0.class);
     context.addImport(Mover1.class);
+    context.addImport(Transition0.class);
+    context.addImport(Transition1.class);
     context.addImport(TransitionMethod0.class);
     context.addImport(TransitionMethod1.class);
     context.addImport(TransitionFunctions.class);

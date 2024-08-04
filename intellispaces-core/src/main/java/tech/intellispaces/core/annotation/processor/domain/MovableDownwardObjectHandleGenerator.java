@@ -8,6 +8,8 @@ import tech.intellispaces.core.exception.TraverseException;
 import tech.intellispaces.core.object.ObjectFunctions;
 import tech.intellispaces.core.object.ObjectHandleTypes;
 import tech.intellispaces.core.space.domain.DomainFunctions;
+import tech.intellispaces.core.space.transition.Transition0;
+import tech.intellispaces.core.space.transition.Transition1;
 import tech.intellispaces.core.transition.TransitionMethod0;
 import tech.intellispaces.core.transition.TransitionMethod1;
 import tech.intellispaces.javastatements.customtype.CustomType;
@@ -87,6 +89,8 @@ public class MovableDownwardObjectHandleGenerator extends AbstractConversionDoma
     context.addImport(MovableObjectHandle.class);
     context.addImport(ObjectFunctions.class);
     context.addImport(TraverseException.class);
+    context.addImport(Transition0.class);
+    context.addImport(Transition1.class);
     context.addImport(TransitionMethod0.class);
     context.addImport(TransitionMethod1.class);
 

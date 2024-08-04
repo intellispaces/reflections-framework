@@ -79,4 +79,14 @@ public class {{$classSimpleName}}{{$classTypeParams}} implements {{$movableObjec
     return (B) {{$childField}}.moveThru((TransitionMethod1<? super {{$childDomainClassSimpleName}}, B, Q>) transitionMethod, qualifier);
   }
 {{end}}
+
+  @Override
+  public <B> B moveThru(Class<? extends Transition0> transitionClass) throws TraverseException {
+    return (B) {{$childField}}.moveThru(transitionClass);
+  }
+
+  @Override
+  public <B, Q> B moveThru(Class<? extends Transition1> transitionClass, Q qualifier) throws TraverseException {
+    return (B) {{$childField}}.moveThru(transitionClass, qualifier);
+  }
 }

@@ -3,7 +3,7 @@ package tech.intellispaces.core.system;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tech.intellispaces.actions.Actions;
-import tech.intellispaces.actions.Getter;
+import tech.intellispaces.actions.getter.Getter;
 import tech.intellispaces.core.guide.n0.AutoMapper0;
 import tech.intellispaces.core.guide.n0.AutoMover0;
 import tech.intellispaces.core.guide.n0.Mapper0;

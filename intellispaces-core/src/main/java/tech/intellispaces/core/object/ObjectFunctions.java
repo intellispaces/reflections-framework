@@ -1,6 +1,6 @@
 package tech.intellispaces.core.object;
 
-import tech.intellispaces.actions.Executor;
+import tech.intellispaces.actions.executor.Executor;
 import tech.intellispaces.actions.string.StringActions;
 import tech.intellispaces.commons.exception.UnexpectedViolationException;
 import tech.intellispaces.commons.type.TypeFunctions;

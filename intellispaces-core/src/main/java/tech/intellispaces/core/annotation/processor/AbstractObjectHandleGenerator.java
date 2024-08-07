@@ -1,6 +1,6 @@
 package tech.intellispaces.core.annotation.processor;
 
-import tech.intellispaces.actions.Executor;
+import tech.intellispaces.actions.executor.Executor;
 import tech.intellispaces.actions.string.StringActions;
 import tech.intellispaces.core.annotation.Transition;
 import tech.intellispaces.core.common.NameConventionFunctions;

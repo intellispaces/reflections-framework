@@ -1,8 +1,8 @@
 package tech.intellispaces.core.annotation.processor.objecthandle;
 
 import tech.intellispaces.actions.Actions;
-import tech.intellispaces.actions.Executor;
-import tech.intellispaces.actions.Getter;
+import tech.intellispaces.actions.executor.Executor;
+import tech.intellispaces.actions.getter.Getter;
 import tech.intellispaces.actions.string.StringActions;
 import tech.intellispaces.commons.exception.UnexpectedViolationException;
 import tech.intellispaces.core.annotation.processor.AbstractObjectHandleGenerator;

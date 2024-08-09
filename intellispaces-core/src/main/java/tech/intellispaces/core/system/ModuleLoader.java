@@ -21,7 +21,7 @@ public class ModuleLoader {
   }
 
   public static void loadModule(List<Class<?>> unitClasses, String[] args) {
-    ModuleDefault currentModule = Modules.currentModuleSilently();
+    ModuleDefault currentModule = Modules.currentSilently();
     if (currentModule != null) {
       LOG.warn("Current module has already been loaded into application. Current active module will be reloaded");
     }
@@ -38,7 +38,7 @@ public class ModuleLoader {
   }
 
   public static void unloadModule() {
-    Module currentModule = Modules.currentModuleSilently();
+    Module currentModule = Modules.currentSilently();
     if (currentModule != null) {
       currentModule.stop();
     }

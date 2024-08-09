@@ -12,8 +12,8 @@ public class Modules {
 
   private Modules() {}
 
-  public static ModuleDefault currentModule() {
-    ModuleDefault module = currentModuleSilently();
+  public static ModuleDefault current() {
+    ModuleDefault module = currentSilently();
     if (module == null) {
       throw UnexpectedViolationException.withMessage("Current module is not defined. " +
           "It is possible that the module is not loaded yet");
@@ -21,7 +21,7 @@ public class Modules {
     return module;
   }
 
-  static ModuleDefault currentModuleSilently() {
+  static ModuleDefault currentSilently() {
     return ACTIVE.get();
   }
 

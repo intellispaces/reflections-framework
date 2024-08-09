@@ -36,6 +36,15 @@ class ProjectionRegistryImpl implements ProjectionRegistry {
   }
 
   @Override
+  @SuppressWarnings("unchecked")
+  public <T> List<T> getProjectionTargets(Class<T> targetClass) {
+    return projections().stream()
+        .filter(p -> p.targetClass() == targetClass || targetClass.isAssignableFrom(p.targetClass()))
+        .map(p -> (T) p.target())
+        .toList();
+  }
+
+  @Override
   public Collection<SystemProjection> projections() {
     return Collections.unmodifiableCollection(projections.values());
   }

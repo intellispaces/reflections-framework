@@ -43,6 +43,6 @@ public class {{$classSimpleName}} extends {{$sourceClassSimpleName}} implements 
   }
 
   private ProjectionRegistry getProjectionRegistry() {
-    return Modules.currentModule().projectionRegistry();
+    return Modules.current().projectionRegistry();
   }
 }

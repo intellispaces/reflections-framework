@@ -192,7 +192,7 @@ abstract class AbstractObjectHandleImplGenerator extends AbstractObjectHandleGen
     sb.append(".class);\n");
     sb.append("  return ");
     sb.append(context.addToImportAndGetSimpleName(Modules.class));
-    sb.append(".currentModule().auto");
+    sb.append(".current().auto");
     sb.append(getTraverseType(domainMethod) == TraverseTypes.Mapping ? "Mapper" : "Mover");
     sb.append("ThruTransition");
     sb.append(domainMethod.params().size());

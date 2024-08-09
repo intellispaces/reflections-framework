@@ -1,8 +1,14 @@
 package tech.intellispaces.core.annotation.processor.objecthandle;
 
+import tech.intellispaces.actions.Action;
+import tech.intellispaces.actions.Actions;
+import tech.intellispaces.actions.getter.ResettableGetter;
+import tech.intellispaces.core.annotation.Order;
 import tech.intellispaces.core.exception.TraverseException;
 import tech.intellispaces.core.guide.n0.Mapper0;
 import tech.intellispaces.core.guide.n1.Mapper1;
+import tech.intellispaces.core.object.ObjectHandleWrapper;
+import tech.intellispaces.core.object.ObjectFunctions;
 import tech.intellispaces.core.object.ObjectHandleTypes;
 import tech.intellispaces.core.space.transition.TransitionFunctions;
 import tech.intellispaces.core.system.Modules;
@@ -39,10 +45,12 @@ public class UnmovableObjectHandleImplGenerator extends AbstractObjectHandleImpl
     vars.put("classSimpleName", context.generatedClassSimpleName());
     vars.put("typeParamsFull", typeParamsFull);
     vars.put("typeParamsBrief", typeParamsBrief);
+    vars.put("domainClassSimpleName", domainSimpleClassName);
     vars.put("constructors", constructors);
     vars.put("importedClasses", context.getImports());
     vars.put("guideGetters", guideGetters);
-    vars.put("guideImplementationMethods", guideImplementationMethods);
+    vars.put("actionGetters", actionGetters);
+    vars.put("actionGetterSuppliers", actionGetterSuppliers);
     vars.put("methods", methods);
     return vars;
   }
@@ -58,6 +66,11 @@ public class UnmovableObjectHandleImplGenerator extends AbstractObjectHandleImpl
 
     context.addImport(Modules.class);
     context.addImport(TraverseException.class);
+    context.addImport(ResettableGetter.class);
+    context.addImport(Action.class);
+    context.addImport(Actions.class);
+    context.addImport(Order.class);
+    context.addImport(ObjectHandleWrapper.class);
 
     context.addImport(Mapper0.class);
     context.addImport(Mapper1.class);
@@ -65,10 +78,15 @@ public class UnmovableObjectHandleImplGenerator extends AbstractObjectHandleImpl
     context.addImport(TransitionMethod1.class);
     context.addImport(TransitionFunctions.class);
 
+    CustomType domainType = ObjectFunctions.getDomainTypeOfObjectHandle(annotatedType);
+    context.addImport(domainType.canonicalName());
+
+    domainSimpleClassName = context.simpleNameOf(domainType.canonicalName());
+
     analyzeTypeParams(annotatedType);
     analyzeConstructors(annotatedType);
     analyzeGuideGetters(annotatedType, roundEnv);
-    analyzeGuideImplementationMethods(annotatedType, roundEnv);
+    analyzeActionGetters(annotatedType, roundEnv);
     analyzeObjectHandleMethods(annotatedType, roundEnv);
     return true;
   }

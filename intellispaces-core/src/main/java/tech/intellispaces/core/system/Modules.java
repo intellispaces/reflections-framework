@@ -10,25 +10,25 @@ public class Modules {
   private static final AtomicReference<ModuleDefault> ACTIVE = new AtomicReference<>();
   private static final Logger LOG = LoggerFactory.getLogger(Modules.class);
 
-  public static ModuleDefault activeModule() {
-    ModuleDefault module = activeModuleSilently();
+  private Modules() {}
+
+  public static ModuleDefault currentModule() {
+    ModuleDefault module = currentModuleSilently();
     if (module == null) {
-      throw UnexpectedViolationException.withMessage("Application active module is not defined. " +
+      throw UnexpectedViolationException.withMessage("Current module is not defined. " +
           "It is possible that the module is not loaded yet");
     }
     return module;
   }
 
-  static ModuleDefault activeModuleSilently() {
+  static ModuleDefault currentModuleSilently() {
     return ACTIVE.get();
   }
 
-  static void setActiveModule(ModuleDefault module) {
+  static void setCurrentModule(ModuleDefault module) {
     Module previous = ACTIVE.getAndSet(module);
     if (previous != null && module != null) {
-      LOG.warn("Application active module has been changed");
+      LOG.warn("Current module has been changed");
     }
   }
-
-  private Modules() {}
 }

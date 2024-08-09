@@ -1,12 +1,13 @@
 package tech.intellispaces.core.annotation.processor.objecthandle;
 
 import tech.intellispaces.actions.Actions;
+import tech.intellispaces.actions.common.string.StringActions;
 import tech.intellispaces.actions.executor.Executor;
 import tech.intellispaces.actions.getter.Getter;
-import tech.intellispaces.actions.string.StringActions;
 import tech.intellispaces.commons.exception.UnexpectedViolationException;
 import tech.intellispaces.core.annotation.processor.AbstractObjectHandleGenerator;
 import tech.intellispaces.core.common.NameConventionFunctions;
+import tech.intellispaces.core.guide.GuideFunctions;
 import tech.intellispaces.core.guide.n0.Mapper0;
 import tech.intellispaces.core.guide.n0.Mover0;
 import tech.intellispaces.core.guide.n1.Mapper1;
@@ -20,14 +21,12 @@ import tech.intellispaces.core.guide.n4.Mover4;
 import tech.intellispaces.core.guide.n5.Mapper5;
 import tech.intellispaces.core.guide.n5.Mover5;
 import tech.intellispaces.core.object.ObjectFunctions;
-import tech.intellispaces.core.object.ObjectHandleTypes;
 import tech.intellispaces.core.space.transition.TransitionFunctions;
 import tech.intellispaces.core.system.Modules;
 import tech.intellispaces.core.traverse.TraverseTypes;
 import tech.intellispaces.javastatements.StatementTypes;
 import tech.intellispaces.javastatements.customtype.CustomType;
 import tech.intellispaces.javastatements.method.MethodParam;
-import tech.intellispaces.javastatements.method.MethodSignatureDeclarations;
 import tech.intellispaces.javastatements.method.MethodStatement;
 import tech.intellispaces.javastatements.reference.NamedReference;
 import tech.intellispaces.javastatements.reference.TypeReference;
@@ -48,7 +47,8 @@ abstract class AbstractObjectHandleImplGenerator extends AbstractObjectHandleGen
   protected String typeParamsBrief;
   protected List<Object> constructors;
   protected List<String> guideGetters;
-  protected List<String> guideImplementationMethods;
+  protected List<Map<String, String>> actionGetters;
+  protected List<String> actionGetterSuppliers;
 
   AbstractObjectHandleImplGenerator(CustomType objectHandleType) {
     super(objectHandleType);
@@ -64,47 +64,50 @@ abstract class AbstractObjectHandleImplGenerator extends AbstractObjectHandleGen
         .filter(this::isNotGetDomainMethod);
   }
 
+  protected void analyzeActionGetters(CustomType objectHandleType, RoundEnvironment roundEnv) {
+    List<MethodStatement> methods = getObjectHandleMethods(objectHandleType, roundEnv).toList();
+    this.actionGetters = methods.stream().map(this::buildGuideActionGetter).toList();
+    this.actionGetterSuppliers = methods.stream().map(this::buildActionGetterSupplier).toList();
+  }
+
+  private Map<String, String> buildGuideActionGetter(MethodStatement domainMethod) {
+    String actionGetterMame = buildActionGetterName(domainMethod);
+
+    var declaration = new StringBuilder();
+    declaration.append("private final ResettableGetter<Action> ");
+    declaration.append(actionGetterMame);
+    declaration.append(" = Actions.resettableGetter(\n");
+    declaration.append("  Actions.get(super::").append(domainMethod.name());
+    declaration.append(", ");
+    declaration.append(buildGuideActionTypeParameter(domainMethod.returnType().orElseThrow())).append(".class");
+    for (MethodParam param : domainMethod.params()) {
+      declaration.append(", ");
+      declaration.append(buildGuideActionTypeParameter(param.type())).append(".class");
+    }
+    declaration.append(")\n");
+    declaration.append(");");
+    return Map.of(
+        "name", actionGetterMame,
+        "declaration", declaration.toString()
+    );
+  }
+
+  private String buildActionGetterSupplier(MethodStatement domainMethod) {
+    var sb = new StringBuilder();
+    sb.append("public ResettableGetter<Action> ");
+    sb.append(GuideFunctions.getActionGetterSupplierName(domainMethod));
+    sb.append("() {\n");
+    sb.append("  return this.").append(buildActionGetterName(domainMethod)).append(";");
+    sb.append("\n}");
+    return sb.toString();
+  }
+
   protected void analyzeGuideGetters(
       CustomType objectHandleType, RoundEnvironment roundEnv
   ) {
     this.guideGetters = getObjectHandleMethods(objectHandleType, roundEnv)
         .map(this::buildGuideGetter)
         .toList();
-  }
-
-  protected void analyzeGuideImplementationMethods(
-      CustomType objectHandleType, RoundEnvironment roundEnv
-  ) {
-    this.guideImplementationMethods = getObjectHandleMethods(objectHandleType, roundEnv)
-        .map(this::buildGuideMethod)
-        .toList();
-  }
-
-  private String buildGuideMethod(MethodStatement domainMethod) {
-    var sb = new StringBuilder();
-    sb.append("public ");
-    sb.append(buildGuideMethodSignature(domainMethod));
-    sb.append(" {\n");
-    sb.append("  return super.");
-    sb.append(domainMethod.name());
-    sb.append("(");
-    Executor commaAppender = StringActions.commaAppender(sb);
-    for (MethodParam param : domainMethod.params()) {
-      commaAppender.execute();
-      sb.append(param.name());
-    }
-    sb.append(");\n}");
-    return sb.toString();
-  }
-
-  private String buildGuideMethodSignature(MethodStatement domainMethod) {
-    return MethodSignatureDeclarations.build(domainMethod)
-        .methodName("_" + domainMethod.name())
-        .includeMethodTypeParams(true)
-        .includeOwnerTypeParams(false)
-        .returnType(getObjectHandleDeclaration(domainMethod.returnType().orElseThrow(), ObjectHandleTypes.Common))
-        .paramDeclarationMapper(type -> getObjectHandleDeclaration(type, ObjectHandleTypes.Common))
-        .get(context::addImport, context::simpleNameOf);
   }
 
   private String buildGuideGetter(MethodStatement domainMethod) {
@@ -128,6 +131,14 @@ abstract class AbstractObjectHandleImplGenerator extends AbstractObjectHandleGen
     sb.append("_");
     sb.append(NameConventionFunctions.joinMethodNameAndParameterTypes(domainMethod));
     sb.append("GuideGetter");
+    return sb.toString();
+  }
+
+  private String buildActionGetterName(MethodStatement domainMethod) {
+    var sb = new StringBuilder();
+    sb.append("_");
+    sb.append(NameConventionFunctions.joinMethodNameAndParameterTypes(domainMethod));
+    sb.append("ActionGetter");
     return sb.toString();
   }
 
@@ -160,6 +171,16 @@ abstract class AbstractObjectHandleImplGenerator extends AbstractObjectHandleGen
     return ObjectFunctions.getBaseObjectHandleTypename(type);
   }
 
+  private String buildGuideActionTypeParameter(TypeReference type) {
+    if (type.isNamedReference()) {
+      NamedReference namedType = type.asNamedReferenceOrElseThrow();
+      if (namedType.extendedBounds().isEmpty()) {
+        return "Object";
+      }
+    }
+    return ObjectFunctions.getBaseObjectHandleTypename(type);
+  }
+
   private String buildGuideGetterSupplier(MethodStatement domainMethod) {
     var sb = new StringBuilder();
     sb.append(context.addToImportAndGetSimpleName(Type.class));
@@ -171,7 +192,7 @@ abstract class AbstractObjectHandleImplGenerator extends AbstractObjectHandleGen
     sb.append(".class);\n");
     sb.append("  return ");
     sb.append(context.addToImportAndGetSimpleName(Modules.class));
-    sb.append(".activeModule().auto");
+    sb.append(".currentModule().auto");
     sb.append(getTraverseType(domainMethod) == TraverseTypes.Mapping ? "Mapper" : "Mover");
     sb.append("ThruTransition");
     sb.append(domainMethod.params().size());
@@ -213,7 +234,7 @@ abstract class AbstractObjectHandleImplGenerator extends AbstractObjectHandleGen
   }
 
   protected String getGeneratedClassCanonicalName() {
-    return NameConventionFunctions.getObjectHandleImplementationTypename(annotatedType);
+    return NameConventionFunctions.getObjectHandleImplementationCanonicalName(annotatedType);
   }
 
   protected void analyzeTypeParams(CustomType objectHandleType) {

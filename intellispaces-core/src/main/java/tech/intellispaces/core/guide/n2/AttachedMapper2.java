@@ -2,9 +2,8 @@ package tech.intellispaces.core.guide.n2;
 
 import tech.intellispaces.commons.exception.UnexpectedViolationException;
 import tech.intellispaces.core.exception.TraverseException;
-import tech.intellispaces.core.guide.GuideLogger;
+import tech.intellispaces.core.object.ObjectHandleWrapper;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
@@ -16,20 +15,25 @@ import java.lang.reflect.Method;
  * @param <Q1> first qualifier type.
  * @param <Q2> second qualifier type.
  */
-public class AttachedMapper2<S, T, Q1, Q2> implements AbstractMapper2<S, T, Q1, Q2> {
+public class AttachedMapper2<S extends ObjectHandleWrapper<S>, T, Q1, Q2> implements AbstractMapper2<S, T, Q1, Q2> {
   private final Class<S> objectHandleClass;
   private final String tid;
-  private final Method mapperMethod;
-  private final Method actualMapperMethod;
+  private final Method guideMethod;
+  private final int guideActionIndex;
 
-  public AttachedMapper2(String tid, Class<S> objectHandleClass, Method mapperMethod, Method actualMapperMethod) {
-    if (mapperMethod.getParameterCount() != 2) {
+  public AttachedMapper2(
+      String tid,
+      Class<S> objectHandleClass,
+      Method guideMethod,
+      int guideActionIndex
+  ) {
+    if (guideMethod.getParameterCount() != 2) {
       throw UnexpectedViolationException.withMessage("Guide should have 2 qualifiers");
     }
     this.tid = tid;
     this.objectHandleClass = objectHandleClass;
-    this.mapperMethod = mapperMethod;
-    this.actualMapperMethod = actualMapperMethod;
+    this.guideMethod = guideMethod;
+    this.guideActionIndex = guideActionIndex;
   }
 
   @Override
@@ -41,19 +45,12 @@ public class AttachedMapper2<S, T, Q1, Q2> implements AbstractMapper2<S, T, Q1, 
   @SuppressWarnings("unchecked")
   public T map(S source, Q1 qualifier1, Q2 qualifier2) throws TraverseException {
     try {
-      GuideLogger.logCallGuide(mapperMethod);
-      return (T) actualMapperMethod.invoke(source, qualifier1, qualifier2);
-    } catch (InvocationTargetException e) {
-      Throwable t = e.getTargetException();
-      if (t instanceof TraverseException) {
-        throw (TraverseException) t;
-      } else {
-        throw TraverseException.withCauseAndMessage(e, "Failed to invoke attached mapper method {} of object handle {}",
-            actualMapperMethod.getName(), objectHandleClass.getCanonicalName());
-      }
-    } catch (IllegalAccessException | IllegalArgumentException e) {
-      throw TraverseException.withCauseAndMessage(e, "Failed to invoke attached mapper method {} of object handle {}",
-          actualMapperMethod.getName(), objectHandleClass.getCanonicalName());
+      return (T) source.getAttachedGuideAction(guideActionIndex).asAction2().execute(qualifier1, qualifier2);
+    } catch (TraverseException e) {
+      throw e;
+    } catch (Exception e) {
+      throw TraverseException.withCauseAndMessage(e, "Failed to invoke attached guide method {} of object handle {}",
+          guideMethod.getName(), objectHandleClass.getCanonicalName());
     }
   }
 }

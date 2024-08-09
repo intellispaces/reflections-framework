@@ -1,7 +1,6 @@
 package tech.intellispaces.core.annotation.processor.domain;
 
 import tech.intellispaces.core.common.NameConventionFunctions;
-import tech.intellispaces.core.object.ObjectFunctions;
 import tech.intellispaces.javastatements.customtype.CustomType;
 import tech.intellispaces.javastatements.method.MethodParam;
 import tech.intellispaces.javastatements.method.MethodStatement;

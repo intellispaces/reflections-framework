@@ -1,12 +1,12 @@
 package tech.intellispaces.core.object;
 
+import tech.intellispaces.actions.common.string.StringActions;
 import tech.intellispaces.actions.executor.Executor;
-import tech.intellispaces.actions.string.StringActions;
 import tech.intellispaces.commons.exception.UnexpectedViolationException;
 import tech.intellispaces.commons.type.TypeFunctions;
 import tech.intellispaces.core.annotation.Data;
 import tech.intellispaces.core.annotation.ObjectHandleBunch;
-import tech.intellispaces.core.common.CoreFunctions;
+import tech.intellispaces.core.common.AnnotationFunctions;
 import tech.intellispaces.core.common.NameConventionFunctions;
 import tech.intellispaces.core.space.domain.DomainFunctions;
 import tech.intellispaces.javastatements.JavaStatements;
@@ -165,7 +165,7 @@ public class ObjectFunctions {
   }
 
   public static CustomType getDomainTypeOfObjectHandle(CustomType objectHandleType) {
-    List<CustomType> objectHandleTypes = CoreFunctions.findTopAnnotatedTypes(
+    List<CustomType> objectHandleTypes = AnnotationFunctions.findTopAnnotatedTypes(
         objectHandleType, ObjectHandleBunch.class.getCanonicalName()
     );
     if (objectHandleTypes.isEmpty()) {
@@ -185,7 +185,7 @@ public class ObjectFunctions {
     if (isDefaultObjectHandleClass(objectHandleClass)) {
       return objectHandleClass;
     }
-    List<Class<?>> objectHandleTypes = CoreFunctions.findTopAnnotatedClasses(
+    List<Class<?>> objectHandleTypes = AnnotationFunctions.findTopAnnotatedClasses(
         objectHandleClass, ObjectHandleBunch.class
     );
     if (objectHandleTypes.isEmpty()) {

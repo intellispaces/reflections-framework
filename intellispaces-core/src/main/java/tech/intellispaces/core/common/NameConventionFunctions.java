@@ -22,7 +22,7 @@ import java.util.Optional;
 
 public interface NameConventionFunctions {
 
-  static String getObjectHandleImplementationTypename(CustomType objectHandleType) {
+  static String getObjectHandleImplementationCanonicalName(CustomType objectHandleType) {
     Optional<MovableObjectHandle> annotation = objectHandleType.selectAnnotation(MovableObjectHandle.class);
     if (annotation.isPresent()) {
       return TypeFunctions.replaceSimpleName(objectHandleType.canonicalName(), annotation.get().value());
@@ -38,7 +38,7 @@ public interface NameConventionFunctions {
     }
   }
 
-  static String getObjectHandleImplementationTypename(Class<?> objectHandleClass) {
+  static String getObjectHandleImplementationCanonicalName(Class<?> objectHandleClass) {
     MovableObjectHandle movableObjectAnnotation = objectHandleClass.getAnnotation(MovableObjectHandle.class);
     if (movableObjectAnnotation != null) {
       return TypeFunctions.replaceSimpleName(objectHandleClass.getCanonicalName(), movableObjectAnnotation.value());

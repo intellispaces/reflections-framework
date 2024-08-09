@@ -21,27 +21,27 @@ public class ModuleLoader {
   }
 
   public static void loadModule(List<Class<?>> unitClasses, String[] args) {
-    ModuleDefault activeModule = Modules.activeModuleSilently();
-    if (activeModule != null) {
-      LOG.warn("Active module has already been loaded into application. Current active module will be reloaded");
+    ModuleDefault currentModule = Modules.currentModuleSilently();
+    if (currentModule != null) {
+      LOG.warn("Current module has already been loaded into application. Current active module will be reloaded");
     }
 
     ModuleDefault newModule = factory.createModule(unitClasses);
     moduleValidator.validate(newModule);
-    if (activeModule != null) {
-      activeModule.stop();
-      Modules.setActiveModule(null);
+    if (currentModule != null) {
+      currentModule.stop();
+      Modules.setCurrentModule(null);
     }
-    Modules.setActiveModule(newModule);
+    Modules.setCurrentModule(newModule);
 
     newModule.start(args);
   }
 
   public static void unloadModule() {
-    Module activeModule = Modules.activeModuleSilently();
-    if (activeModule != null) {
-      activeModule.stop();
+    Module currentModule = Modules.currentModuleSilently();
+    if (currentModule != null) {
+      currentModule.stop();
     }
-    Modules.setActiveModule(null);
+    Modules.setCurrentModule(null);
   }
 }

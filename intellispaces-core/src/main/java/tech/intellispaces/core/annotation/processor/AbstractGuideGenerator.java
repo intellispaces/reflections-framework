@@ -1,7 +1,7 @@
 package tech.intellispaces.core.annotation.processor;
 
+import tech.intellispaces.actions.common.string.StringActions;
 import tech.intellispaces.actions.executor.Executor;
-import tech.intellispaces.actions.string.StringActions;
 import tech.intellispaces.commons.exception.UnexpectedViolationException;
 import tech.intellispaces.commons.type.TypeFunctions;
 import tech.intellispaces.core.common.NameConventionFunctions;

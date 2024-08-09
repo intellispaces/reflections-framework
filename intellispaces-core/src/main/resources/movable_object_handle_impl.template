@@ -8,10 +8,19 @@ import {{$importedClass}};
  * This class was generated automatically. Don't try to change it.
  */
 {{$generatedAnnotation}}
-public class {{$classSimpleName}}{{$typeParamsFull}} extends {{$sourceClassSimpleName}}{{$typeParamsBrief}} {
+public class {{$classSimpleName}}{{$typeParamsFull}} extends {{$sourceClassSimpleName}}{{$typeParamsBrief}} implements ObjectHandleWrapper<{{$domainClassSimpleName}}{{$typeParamsBrief}}> {
 {{for guideGetter : $guideGetters}}
   {{$guideGetter}}
 {{end}}
+
+{{for actionGetter : $actionGetters}}
+  {{$actionGetter.get("declaration")}}
+{{end}}
+  private final ResettableGetter<Action>[] _actionGetters = new ResettableGetter[] {
+{{for actionGetter : $actionGetters}}
+    {{$actionGetter.get("name")}}{{when $actionGetter.isNotLast()}},{{end}}
+{{end}}
+  };
 
 {{for constructor : $constructors}}
   public {{$classSimpleName}}({{for param : $constructor.get("params")}}{{$param.get("type")}} {{$param.get("name")}}{{when $param.isNotLast()}}, {{end}}{{end}}) {
@@ -20,18 +29,16 @@ public class {{$classSimpleName}}{{$typeParamsFull}} extends {{$sourceClassSimpl
 {{end}}
 
 {{for method : $methods}}
+  @Order({{$method.index()}})
   @Override
   {{$method.get("declaration")}};
 
 {{end}}
-{{for method : $guideImplementationMethods}}
-  {{$method}}
 
-{{end}}
   @Override
   public <B, Q> B moveThru(String tid, Q qualifier) throws TraverseException {
     Type<{{$sourceClassSimpleName}}{{$typeParamsBrief}}> sourceType = Types.of({{$sourceClassSimpleName}}.class);
-    Mover1<{{$sourceClassSimpleName}}, B, Q> mover = Modules.activeModule().autoMoverThruTransition1(sourceType, tid);
+    Mover1<{{$sourceClassSimpleName}}, B, Q> mover = Modules.currentModule().autoMoverThruTransition1(sourceType, tid);
     return (B) mover.move(this, qualifier);
   }
 
@@ -39,7 +46,7 @@ public class {{$classSimpleName}}{{$typeParamsFull}} extends {{$sourceClassSimpl
   public <B> B moveThru(TransitionMethod0<? super {{$domainClassSimpleName}}, B> transitionMethod) throws TraverseException {
     String tid = TransitionFunctions.getTransitionId({{$domainClassSimpleName}}.class, transitionMethod);
     Type<{{$sourceClassSimpleName}}{{$typeParamsBrief}}> sourceType = Types.of({{$sourceClassSimpleName}}.class);
-    Mover0<{{$sourceClassSimpleName}}, B> mover = Modules.activeModule().autoMoverThruTransition0(sourceType, tid);
+    Mover0<{{$sourceClassSimpleName}}, B> mover = Modules.currentModule().autoMoverThruTransition0(sourceType, tid);
     return (B) mover.move(this);
   }
 
@@ -47,7 +54,7 @@ public class {{$classSimpleName}}{{$typeParamsFull}} extends {{$sourceClassSimpl
   public <B, Q> B moveThru(TransitionMethod1<? super {{$domainClassSimpleName}}, B, Q> transitionMethod, Q qualifier) throws TraverseException {
     String tid = TransitionFunctions.getTransitionId({{$domainClassSimpleName}}.class, transitionMethod, null);
     Type<{{$sourceClassSimpleName}}{{$typeParamsBrief}}> sourceType = Types.of({{$sourceClassSimpleName}}.class);
-    Mover1<{{$sourceClassSimpleName}}, B, Q> mover = Modules.activeModule().autoMoverThruTransition1(sourceType, tid);
+    Mover1<{{$sourceClassSimpleName}}, B, Q> mover = Modules.currentModule().autoMoverThruTransition1(sourceType, tid);
     return (B) mover.move(this, qualifier);
   }
 
@@ -55,7 +62,7 @@ public class {{$classSimpleName}}{{$typeParamsFull}} extends {{$sourceClassSimpl
   public <B> B moveThru(Class<? extends Transition0> transitionClass) throws TraverseException {
     String tid = TransitionFunctions.getTransitionId(transitionClass);
     Type<{{$sourceClassSimpleName}}{{$typeParamsBrief}}> sourceType = Types.of({{$sourceClassSimpleName}}.class);
-    Mover0<{{$sourceClassSimpleName}}, B> mover = Modules.activeModule().autoMoverThruTransition0(sourceType, tid);
+    Mover0<{{$sourceClassSimpleName}}, B> mover = Modules.currentModule().autoMoverThruTransition0(sourceType, tid);
     return (B) mover.move(this);
   }
 
@@ -63,7 +70,22 @@ public class {{$classSimpleName}}{{$typeParamsFull}} extends {{$sourceClassSimpl
   public <B, Q> B moveThru(Class<? extends Transition1> transitionClass, Q qualifier) throws TraverseException {
     String tid = TransitionFunctions.getTransitionId(transitionClass);
     Type<{{$sourceClassSimpleName}}{{$typeParamsBrief}}> sourceType = Types.of({{$sourceClassSimpleName}}.class);
-    Mover1<{{$sourceClassSimpleName}}, B, Q> mover = Modules.activeModule().autoMoverThruTransition1(sourceType, tid);
+    Mover1<{{$sourceClassSimpleName}}, B, Q> mover = Modules.currentModule().autoMoverThruTransition1(sourceType, tid);
     return (B) mover.move(this, qualifier);
   }
+
+  @Override
+  public int numberAttachedGuides() {
+    return {{$methods.asList().size()}};
+  }
+
+  @Override
+  public Action getAttachedGuideAction(int index) {
+    return _actionGetters[index].get();
+  }
+
+{{for actionGetterSupplier : $actionGetterSuppliers}}
+  {{$actionGetterSupplier}}
+
+{{end}}
 }

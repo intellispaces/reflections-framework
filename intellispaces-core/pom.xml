@@ -45,6 +45,10 @@
             <groupId>intellispaces</groupId>
             <artifactId>intellispaces-actions</artifactId>
         </dependency>
+        <dependency>
+            <groupId>intellispaces</groupId>
+            <artifactId>intellispaces-actions-common</artifactId>
+        </dependency>
 
         <!-- Auto-service library -->
         <dependency>

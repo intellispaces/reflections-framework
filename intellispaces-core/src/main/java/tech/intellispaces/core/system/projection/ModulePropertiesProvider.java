@@ -19,7 +19,7 @@ public class ModulePropertiesProvider extends AbstractProjectionProvider {
 
   @Override
   public Object get() {
-    Module module = Modules.activeModule();
+    Module module = Modules.currentModule();
     Properties annotation = projectionMethod.getAnnotation(Properties.class);
     String rawProperties = ModulePropertiesFunctions.getProperties(module, null);
     Object parsedProperties = module.mapThruTransition0(rawProperties, SpaceConstants.STRING_TO_PROPERTIES_TID);

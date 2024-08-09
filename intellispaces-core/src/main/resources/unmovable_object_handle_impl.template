@@ -8,10 +8,19 @@ import {{$importedClass}};
  * This class was generated automatically. Don't try to change it.
  */
 {{$generatedAnnotation}}
-public class {{$classSimpleName}}{{$typeParamsFull}} extends {{$sourceClassSimpleName}}{{$typeParamsBrief}} {
+public class {{$classSimpleName}}{{$typeParamsFull}} extends {{$sourceClassSimpleName}}{{$typeParamsBrief}} implements ObjectHandleWrapper<{{$domainClassSimpleName}}{{$typeParamsBrief}}> {
 {{for guideGetter : $guideGetters}}
   {{$guideGetter}}
 {{end}}
+
+{{for actionGetter : $actionGetters}}
+  {{$actionGetter.get("declaration")}}
+{{end}}
+  private final ResettableGetter<Action>[] _actionGetters = new ResettableGetter[] {
+{{for actionGetter : $actionGetters}}
+    {{$actionGetter.get("name")}}{{when $actionGetter.isNotLast()}},{{end}}
+{{end}}
+  };
 
 {{for constructor : $constructors}}
   public {{$classSimpleName}}({{for param : $constructor.get("params")}}{{$param.get("type")}} {{$param.get("name")}}{{when $param.isNotLast()}}, {{end}}{{end}}) {
@@ -20,12 +29,23 @@ public class {{$classSimpleName}}{{$typeParamsFull}} extends {{$sourceClassSimpl
 {{end}}
 
 {{for method : $methods}}
+  @Order({{$method.index()}})
   @Override
   {{$method.get("declaration")}};
 
 {{end}}
-{{for method : $guideImplementationMethods}}
-  {{$method}}
+  @Override
+  public int numberAttachedGuides() {
+    return {{$methods.asList().size()}};
+  }
+
+  @Override
+  public Action getAttachedGuideAction(int index) {
+    return _actionGetters[index].get();
+  }
+
+{{for actionGetterSupplier : $actionGetterSuppliers}}
+  {{$actionGetterSupplier}}
 
 {{end}}
 }

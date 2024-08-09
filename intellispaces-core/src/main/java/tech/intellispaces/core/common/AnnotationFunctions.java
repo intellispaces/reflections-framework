@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
 
-public interface CoreFunctions {
+public interface AnnotationFunctions {
 
   static List<CustomType> findTopAnnotatedTypes(CustomType type, String annotationCanonicalName) {
     var result = new ArrayList<CustomType>();

@@ -1,9 +1,11 @@
 package tech.intellispaces.core.guide;
 
 import tech.intellispaces.commons.exception.UnexpectedViolationException;
+import tech.intellispaces.commons.string.StringFunctions;
 import tech.intellispaces.commons.type.TypeFunctions;
 import tech.intellispaces.core.annotation.Mapper;
 import tech.intellispaces.core.annotation.Mover;
+import tech.intellispaces.core.annotation.Order;
 import tech.intellispaces.core.annotation.Transition;
 import tech.intellispaces.core.common.NameConventionFunctions;
 import tech.intellispaces.core.guide.n0.AttachedMapper0;
@@ -28,6 +30,10 @@ import tech.intellispaces.core.guide.n5.Mapper5;
 import tech.intellispaces.core.guide.n5.Mover5;
 import tech.intellispaces.core.space.transition.TransitionFunctions;
 import tech.intellispaces.core.traverse.TraverseTypes;
+import tech.intellispaces.javastatements.customtype.CustomTypes;
+import tech.intellispaces.javastatements.method.MethodFunctions;
+import tech.intellispaces.javastatements.method.MethodStatement;
+import tech.intellispaces.javastatements.method.Methods;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -37,6 +43,8 @@ import java.util.Map;
 import java.util.Optional;
 
 public final class GuideFunctions {
+
+  private GuideFunctions() {}
 
   public static Transition getAttachedGuideTransitionAnnotation(Method objectHandleMethod) {
     return TransitionFunctions.getAttachedGuideTransitionAnnotation(objectHandleMethod);
@@ -49,10 +57,7 @@ public final class GuideFunctions {
   public static List<Guide<?, ?>> loadAttachedGuides(Class<?> objectHandleClass) {
     List<Guide<?, ?>> guides = new ArrayList<>();
     for (Method method : objectHandleClass.getDeclaredMethods()) {
-      if (
-          method.isAnnotationPresent(Mapper.class) ||
-              method.isAnnotationPresent(Mover.class)
-      ) {
+      if (method.isAnnotationPresent(Mapper.class) || method.isAnnotationPresent(Mover.class)) {
         Transition transition = getAttachedGuideTransitionAnnotation(method);
         if (TraverseTypes.Mapping == TransitionFunctions.getTraverseType(transition)) {
           guides.add(createAttachedMapper(objectHandleClass, transition.value(), method));
@@ -100,50 +105,71 @@ public final class GuideFunctions {
     throw new UnsupportedOperationException("Not implemented");
   }
 
-  private static Guide<?, ?> createAttachedMapper(Class<?> objectHandleClass, String tid, Method guideMethod) {
+  @SuppressWarnings("unchecked, rawtypes")
+  private static <S, T> Guide<S, T> createAttachedMapper(
+      Class<S> objectHandleClass, String tid, Method guideMethod
+  ) {
+    int guideIndex = getAttachedGuideIndex(objectHandleClass, guideMethod);
     int qualifiersCount = guideMethod.getParameterCount();
-    Method actualGuideMethod = getActualGuideMethod(objectHandleClass, guideMethod);
     return switch (qualifiersCount) {
-      case 0 -> new AttachedMapper0<>(tid, objectHandleClass, guideMethod, actualGuideMethod);
-      case 1 -> new AttachedMapper1<>(tid, objectHandleClass, guideMethod, actualGuideMethod);
-      case 2 -> new AttachedMapper2<>(tid, objectHandleClass, guideMethod, actualGuideMethod);
+      case 0 -> new AttachedMapper0<>(tid, (Class) objectHandleClass, guideMethod, guideIndex);
+      case 1 -> new AttachedMapper1<>(tid, (Class) objectHandleClass, guideMethod, guideIndex);
+      case 2 -> new AttachedMapper2<>(tid, (Class) objectHandleClass, guideMethod, guideIndex);
       default -> throw UnexpectedViolationException.withMessage("Unsupported number of guide qualifiers: {}",
           qualifiersCount);
     };
   }
 
-  private static Guide<?, ?> createAttachedMover(Class<?> objectHandleClass, String tid, Method guideMethod) {
+  @SuppressWarnings("unchecked, rawtypes")
+  private static <S, T> Guide<S, T> createAttachedMover(
+      Class<S> objectHandleClass, String tid, Method guideMethod
+  ) {
+    int guideIndex = getAttachedGuideIndex(objectHandleClass, guideMethod);
     int qualifiersCount = guideMethod.getParameterCount();
-    Method actualGuideMethod = getActualGuideMethod(objectHandleClass, guideMethod);
     return switch (qualifiersCount) {
-      case 0 -> new AttachedMover0<>(tid, objectHandleClass, guideMethod, actualGuideMethod);
-      case 1 -> new AttachedMover1<>(tid, objectHandleClass, guideMethod, actualGuideMethod);
-      case 2 -> new AttachedMover2<>(tid, objectHandleClass, guideMethod, actualGuideMethod);
+      case 0 -> new AttachedMover0<>(tid, (Class) objectHandleClass, guideMethod, guideIndex);
+      case 1 -> new AttachedMover1<>(tid, (Class) objectHandleClass, guideMethod, guideIndex);
+      case 2 -> new AttachedMover2<>(tid, (Class) objectHandleClass, guideMethod, guideIndex);
       default -> throw UnexpectedViolationException.withMessage("Unsupported number of guide qualifiers: {}",
           qualifiersCount);
     };
   }
 
-  private static Method getActualGuideMethod(Class<?> objectHandleClass, Method guideMethod) {
-    String implementationClassname = NameConventionFunctions.getObjectHandleImplementationTypename(objectHandleClass);
-    Optional<Class<?>> implementationClass = TypeFunctions.getClass(implementationClassname);
-    if (implementationClass.isEmpty()) {
-      throw UnexpectedViolationException.withMessage("Could not load object handle implementation class {}",
-          implementationClassname);
-    }
-
-    String actualGuideMethodName = "_" + guideMethod.getName();
-    Optional<Method> actualGuideMethod = TypeFunctions.getMethod(
-        implementationClass.get(), actualGuideMethodName, guideMethod.getParameterTypes()
+  private static int getAttachedGuideIndex(Class<?> objectHandleClass, Method guideMethod) {
+    String implClassCanonicalName = NameConventionFunctions.getObjectHandleImplementationCanonicalName(
+        objectHandleClass
     );
-    if (actualGuideMethod.isEmpty()) {
-      throw UnexpectedViolationException.withMessage("Could not find actual guide method {} in class {}",
-          actualGuideMethodName, guideMethod.getParameterTypes());
+    Optional<Class<?>> objectHandleImplClass = TypeFunctions.getClass(implClassCanonicalName);
+    if (objectHandleImplClass.isEmpty()) {
+      throw UnexpectedViolationException.withMessage("Could not get object handle implementation class {}",
+          implClassCanonicalName);
     }
-    return actualGuideMethod.get();
+
+    Optional<MethodStatement> objectHandleImplGuideMethod = MethodFunctions.getOverrideMethod(
+        CustomTypes.of(objectHandleImplClass.get()),
+        Methods.of(guideMethod)
+    );
+    if (objectHandleImplGuideMethod.isEmpty()) {
+      throw UnexpectedViolationException.withMessage("Could not find override method in object handle implementation " +
+          "class {}. Method {}", objectHandleImplClass.get(), guideMethod.getName());
+    }
+    Optional<Order> indexAnnotation = objectHandleImplGuideMethod.get().selectAnnotation(Order.class);
+    if (indexAnnotation.isEmpty()) {
+      throw UnexpectedViolationException.withMessage("Method {} does not contain annotation {}",
+          guideMethod.getName(), Order.class.getCanonicalName());
+    }
+    return indexAnnotation.get().value();
   }
 
-  private GuideFunctions() {}
+  public static String getActionGetterSupplierName(MethodStatement domainMethod) {
+    var sb = new StringBuilder();
+    sb.append("_get");
+    sb.append(StringFunctions.capitalizeFirstLetter(
+        NameConventionFunctions.joinMethodNameAndParameterTypes(domainMethod))
+    );
+    sb.append("ActionGetter");
+    return sb.toString();
+  }
 
   private static final Map<Class<?>, GuideKind> GUIDE_CLASS_TO_KIND = new HashMap<>();
   static {

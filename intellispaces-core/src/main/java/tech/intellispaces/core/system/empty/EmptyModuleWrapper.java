@@ -20,6 +20,6 @@ public class EmptyModuleWrapper extends EmptyModule implements UnitWrapper {
   }
 
   private ProjectionRegistry getProjectionRegistry() {
-    return Modules.activeModule().projectionRegistry();
+    return Modules.currentModule().projectionRegistry();
   }
 }

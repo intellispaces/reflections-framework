@@ -31,10 +31,11 @@ class ModuleDefaultFactory {
 
   public ModuleDefault createModule(List<Class<?>> unitClasses) {
     List<Unit> units = createUnits(unitClasses);
+
     ProjectionRegistry projectionRegistry = createProjectionRegistry(units);
-    AttachedGuideRegistry attachedGuideRegistry = new AttachedGuideRegistryImpl();
-    ModuleGuideRegistry moduleGuideRegistry = createModuleGuideRegistry(units);;
-    TraverseAnalyzer traverseAnalyzer = new TraverseAnalyzerImpl(moduleGuideRegistry, attachedGuideRegistry);
+    ObjectGuideRegistry objectGuideRegistry = new ObjectGuideRegistryImpl();
+    UnitGuideRegistry unitGuideRegistry = createUnitGuideRegistry(units);
+    TraverseAnalyzer traverseAnalyzer = new TraverseAnalyzerImpl(unitGuideRegistry, objectGuideRegistry);
     TraverseExecutor traverseExecutor = new TraverseExecutorImpl(traverseAnalyzer);
     return new ModuleDefaultImpl(units, projectionRegistry, traverseAnalyzer, traverseExecutor);
   }
@@ -114,8 +115,8 @@ class ModuleDefaultFactory {
         unitInstance,
         projectionProviders,
         unitGuides,
-        startupMethod.orElse(null),
-        shutdownMethod.orElse(null)
+        startupMethod.map(m -> new StartupShutdownActionImpl(unitInstance, m)).orElse(null),
+        shutdownMethod.map(m -> new StartupShutdownActionImpl(unitInstance, m)).orElse(null)
     );
 
     addProjectionProviders(unitWrapperClass, unit, projectionProviders);
@@ -170,8 +171,8 @@ class ModuleDefaultFactory {
     return new ProjectionRegistryDefault(projectionDefinitions);
   }
 
-  private ModuleGuideRegistry createModuleGuideRegistry(List<Unit> units) {
-    var registry = new ModuleGuideRegistryImpl();
+  private UnitGuideRegistry createUnitGuideRegistry(List<Unit> units) {
+    var registry = new UnitGuideRegistryImpl();
     units.stream()
         .map(Unit::guides)
         .flatMap(List::stream)

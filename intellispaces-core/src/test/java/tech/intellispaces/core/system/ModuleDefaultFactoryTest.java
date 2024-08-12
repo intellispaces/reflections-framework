@@ -31,8 +31,8 @@ public class ModuleDefaultFactoryTest {
     // Then
     assertThat(module.units()).hasSize(1);
     assertThat(module.units().get(0).unitClass()).isSameAs(EmptyModule.class);
-    assertThat(module.units().get(0).startupMethod()).isEmpty();
-    assertThat(module.units().get(0).shutdownMethod()).isEmpty();
+    assertThat(module.units().get(0).startupAction()).isEmpty();
+    assertThat(module.units().get(0).shutdownAction()).isEmpty();
     assertThat(module.projectionRegistry().allProjections()).isEmpty();
   }
 
@@ -44,10 +44,10 @@ public class ModuleDefaultFactoryTest {
     // Then
     assertThat(module.units()).hasSize(1);
     assertThat(module.units().get(0).unitClass()).isSameAs(ModuleWithStartupAndShutdownMethods.class);
-    assertThat(module.units().get(0).startupMethod()).isPresent();
-    assertThat(module.units().get(0).startupMethod().orElseThrow().getName()).isEqualTo("startup");
-    assertThat(module.units().get(0).shutdownMethod()).isPresent();
-    assertThat(module.units().get(0).shutdownMethod().orElseThrow().getName()).isEqualTo("shutdown");
+    assertThat(module.units().get(0).startupAction()).isPresent();
+    assertThat(module.units().get(0).startupAction().orElseThrow().method().getName()).isEqualTo("startup");
+    assertThat(module.units().get(0).shutdownAction()).isPresent();
+    assertThat(module.units().get(0).shutdownAction().orElseThrow().method().getName()).isEqualTo("shutdown");
     assertThat(module.projectionRegistry().allProjections()).isEmpty();
   }
 
@@ -59,8 +59,8 @@ public class ModuleDefaultFactoryTest {
     // Then
     assertThat(module.units()).hasSize(1);
     assertThat(module.units().get(0).unitClass()).isSameAs(ModuleWithSimpleProjections.class);
-    assertThat(module.units().get(0).startupMethod()).isEmpty();
-    assertThat(module.units().get(0).shutdownMethod()).isEmpty();
+    assertThat(module.units().get(0).startupAction()).isEmpty();
+    assertThat(module.units().get(0).shutdownAction()).isEmpty();
     assertThat(module.projectionRegistry().allProjections()).isEmpty();
 
     assertThat(module.projectionRegistry().getProjection("booleanProjection1", boolean.class)).isEqualTo(true);

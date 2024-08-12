@@ -1,8 +1,9 @@
 package tech.intellispaces.core.system;
 
 import tech.intellispaces.core.guide.Guide;
+import tech.intellispaces.core.system.action.ShutdownAction;
+import tech.intellispaces.core.system.action.StartupAction;
 
-import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -13,8 +14,8 @@ class UnitImpl implements Unit {
   private final UnitWrapper instance;
   private final List<UnitProjectionDefinition> projectionProviders;
   private final List<Guide<?, ?>> guides;
-  private final Method startupMethod;
-  private final Method shutdownMethod;
+  private final StartupAction startupAction;
+  private final ShutdownAction shutdownAction;
 
   public UnitImpl(
       boolean main,
@@ -22,16 +23,16 @@ class UnitImpl implements Unit {
       UnitWrapper instance,
       List<UnitProjectionDefinition> projectionProviders,
       List<Guide<?, ?>> guides,
-      Method startupMethod,
-      Method shutdownMethod
+      StartupAction startupAction,
+      ShutdownAction shutdownAction
   ) {
     this.main = main;
     this.unitClass = unitClass;
     this.instance = instance;
     this.projectionProviders = Collections.unmodifiableList(projectionProviders);
     this.guides = Collections.unmodifiableList(guides);
-    this.startupMethod = startupMethod;
-    this.shutdownMethod = shutdownMethod;
+    this.startupAction = startupAction;
+    this.shutdownAction = shutdownAction;
   }
 
   @Override
@@ -65,12 +66,12 @@ class UnitImpl implements Unit {
   }
 
   @Override
-  public Optional<Method> startupMethod() {
-    return Optional.ofNullable(startupMethod);
+  public Optional<StartupAction> startupAction() {
+    return Optional.ofNullable(startupAction);
   }
 
   @Override
-  public Optional<Method> shutdownMethod() {
-    return Optional.ofNullable(shutdownMethod);
+  public Optional<ShutdownAction> shutdownAction() {
+    return Optional.ofNullable(shutdownAction);
   }
 }

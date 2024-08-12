@@ -4,10 +4,9 @@ import tech.intellispaces.core.guide.Guide;
 import tech.intellispaces.core.guide.GuideKind;
 
 /**
- * Attached guide register.
+ * Attached to object handle guide register.
  */
-public interface AttachedGuideRegistry {
+public interface ObjectGuideRegistry {
 
   Guide<?, ?> getGuide(Class<?> objectHandleClass, GuideKind kind, String tid);
-
 }

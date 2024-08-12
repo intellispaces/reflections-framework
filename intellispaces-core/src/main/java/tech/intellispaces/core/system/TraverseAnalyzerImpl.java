@@ -30,12 +30,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TraverseAnalyzerImpl implements TraverseAnalyzer {
-  private final ModuleGuideRegistry moduleGuideRegistry;
-  private final AttachedGuideRegistry attachedGuideRegistry;
+  private final UnitGuideRegistry unitGuideRegistry;
+  private final ObjectGuideRegistry objectGuideRegistry;
 
-  public TraverseAnalyzerImpl(ModuleGuideRegistry moduleGuideRegistry, AttachedGuideRegistry attachedGuideRegistry) {
-    this.moduleGuideRegistry = moduleGuideRegistry;
-    this.attachedGuideRegistry = attachedGuideRegistry;
+  public TraverseAnalyzerImpl(UnitGuideRegistry unitGuideRegistry, ObjectGuideRegistry objectGuideRegistry) {
+    this.unitGuideRegistry = unitGuideRegistry;
+    this.objectGuideRegistry = objectGuideRegistry;
   }
 
   @Override
@@ -152,11 +152,11 @@ public class TraverseAnalyzerImpl implements TraverseAnalyzer {
 
   private List<Guide<?, ?>> findGuides(Class<?> objectHandleClass, GuideKind kind, String tid) {
     var guides = new ArrayList<Guide<?, ?>>();
-    Guide<?, ?> attachedGuide = attachedGuideRegistry.getGuide(objectHandleClass, kind, tid);
+    Guide<?, ?> attachedGuide = objectGuideRegistry.getGuide(objectHandleClass, kind, tid);
     if (attachedGuide != null) {
       guides.add(attachedGuide);
     }
-    guides.addAll(moduleGuideRegistry.findGuides(kind, tid));
+    guides.addAll(unitGuideRegistry.findGuides(kind, tid));
     return guides;
   }
 

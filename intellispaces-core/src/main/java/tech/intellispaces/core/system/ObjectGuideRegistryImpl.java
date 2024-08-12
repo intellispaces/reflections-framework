@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
 
-public class AttachedGuideRegistryImpl implements AttachedGuideRegistry {
+public class ObjectGuideRegistryImpl implements ObjectGuideRegistry {
   private final Map<Class<?>, HandleDescription> handle2DescriptionMap = new WeakHashMap<>();
 
   @Override

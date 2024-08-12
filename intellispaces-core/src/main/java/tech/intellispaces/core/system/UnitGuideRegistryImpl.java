@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ModuleGuideRegistryImpl implements ModuleGuideRegistry {
+public class UnitGuideRegistryImpl implements UnitGuideRegistry {
   private final Map<String, List<Guide<?, ?>>> mappers = new HashMap<>();
   private final Map<String, List<Guide<?, ?>>> movers = new HashMap<>();
 

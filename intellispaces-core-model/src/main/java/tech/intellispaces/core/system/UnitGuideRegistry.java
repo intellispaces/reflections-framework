@@ -6,10 +6,9 @@ import tech.intellispaces.core.guide.GuideKind;
 import java.util.List;
 
 /**
- * Module guide register.
+ * Unit guide register.
  */
-public interface ModuleGuideRegistry {
+public interface UnitGuideRegistry {
 
   List<Guide<?, ?>> findGuides(GuideKind kind, String tid);
-
 }

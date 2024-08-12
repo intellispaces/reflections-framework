@@ -81,20 +81,24 @@ public class ModuleValidator {
     }
   }
 
-  private void checkStartupMethodInjections(ModuleDefault module, Map<String, UnitProjectionDefinition> projectionProviders) {
+  private void checkStartupMethodInjections(
+      ModuleDefault module, Map<String, UnitProjectionDefinition> projectionProviders
+  ) {
     module.units().stream()
         .filter(Unit::isMain)
         .findFirst()
-        .flatMap(Unit::startupMethod)
-        .ifPresent(method -> checkMethodParamInjections(method, projectionProviders));
+        .flatMap(Unit::startupAction)
+        .ifPresent(action -> checkMethodParamInjections(action.method(), projectionProviders));
   }
 
-  private void checkShutdownMethodInjections(ModuleDefault module, Map<String, UnitProjectionDefinition> projectionProviders) {
+  private void checkShutdownMethodInjections(
+      ModuleDefault module, Map<String, UnitProjectionDefinition> projectionProviders
+  ) {
     module.units().stream()
         .filter(Unit::isMain)
         .findFirst()
-        .flatMap(Unit::shutdownMethod)
-        .ifPresent(method -> checkMethodParamInjections(method, projectionProviders));
+        .flatMap(Unit::shutdownAction)
+        .ifPresent(action -> checkMethodParamInjections(action.method(), projectionProviders));
   }
 
   private void checkMethodParamInjections(Method method, Map<String, UnitProjectionDefinition> projectionProviders) {

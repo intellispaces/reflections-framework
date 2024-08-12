@@ -26,7 +26,7 @@ public class AttachedGuideRegistryImpl implements AttachedGuideRegistry {
     if (actualObjectHandleClass == null) {
       return handleDescription;
     }
-    List<Guide<?, ?>> attachedGuides = GuideFunctions.loadAttachedGuides(actualObjectHandleClass);
+    List<Guide<?, ?>> attachedGuides = GuideFunctions.loadObjectGuides(actualObjectHandleClass);
     attachedGuides.forEach(handleDescription::addGuide);
     return handleDescription;
   }

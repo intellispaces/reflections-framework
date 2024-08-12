@@ -68,7 +68,7 @@ public class UnmovableObjectHandleGenerator extends AbstractDomainObjectHandleGe
     domainTypeParamsFull = annotatedType.typeParametersFullDeclaration();
     domainTypeParamsBrief = annotatedType.typeParametersBriefDeclaration();
     baseObjectHandle = context.addToImportAndGetSimpleName(
-        NameConventionFunctions.getCommonObjectHandleTypename(annotatedType.className())
+        NameConventionFunctions.getBaseObjectHandleTypename(annotatedType.className())
     );
     analyzeObjectHandleMethods(annotatedType, roundEnv);
 

@@ -93,7 +93,7 @@ public class ObjectFunctions {
     if (isDefaultObjectHandleType(domainType)) {
       return domainType.className();
     }
-    return NameConventionFunctions.getCommonObjectHandleTypename(domainType.className());
+    return NameConventionFunctions.getBaseObjectHandleTypename(domainType.className());
   }
 
   public static String getObjectHandleTypename(CustomType customType, ObjectHandleTypes type) {

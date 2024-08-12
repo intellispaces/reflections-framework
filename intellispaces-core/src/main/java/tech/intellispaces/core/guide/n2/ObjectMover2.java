@@ -1,7 +1,8 @@
-package tech.intellispaces.core.guide.n0;
+package tech.intellispaces.core.guide.n2;
 
 import tech.intellispaces.commons.exception.UnexpectedViolationException;
 import tech.intellispaces.core.exception.TraverseException;
+import tech.intellispaces.core.guide.GuideLogger;
 import tech.intellispaces.core.object.ObjectHandleWrapper;
 
 import java.lang.reflect.Method;
@@ -11,23 +12,25 @@ import java.lang.reflect.Method;
  *
  * Attached guide can be used exclusively with this object handle only.
  *
- * @param <S> source object handle type.
- * @param <B> backward object handle type.
+ * @param <S> source type.
+ * @param <B> backward object type.
+ * @param <Q1> first qualifier type.
+ * @param <Q2> second qualifier type.
  */
-public class AttachedMover0<S extends ObjectHandleWrapper<S>, B> implements AbstractMover0<S, B> {
+public class ObjectMover2<S extends ObjectHandleWrapper<S>, B, Q1, Q2> implements AbstractMover2<S, B, Q1, Q2> {
   private final Class<S> objectHandleClass;
   private final String tid;
   private final Method guideMethod;
   private final int guideActionIndex;
 
-  public AttachedMover0(
+  public ObjectMover2(
       String tid,
       Class<S> objectHandleClass,
       Method guideMethod,
       int guideActionIndex
   ) {
-    if (guideMethod.getParameterCount() != 0) {
-      throw UnexpectedViolationException.withMessage("Attached guide should not have parameters");
+    if (guideMethod.getParameterCount() != 2) {
+      throw UnexpectedViolationException.withMessage("Attached guide should have 2 qualifiers");
     }
     this.tid = tid;
     this.objectHandleClass = objectHandleClass;
@@ -42,13 +45,14 @@ public class AttachedMover0<S extends ObjectHandleWrapper<S>, B> implements Abst
 
   @Override
   @SuppressWarnings("unchecked")
-  public B move(S source) throws TraverseException {
+  public B move(S source, Q1 qualifier1, Q2 qualifier2) throws TraverseException {
     try {
-      return (B) source.getAttachedGuideAction(guideActionIndex).asAction0().execute();
+      GuideLogger.logCallGuide(guideMethod);
+      return (B) source.getGuideAction(guideActionIndex).asAction2().execute(qualifier1, qualifier2);
     } catch (TraverseException e) {
       throw e;
     } catch (Exception e) {
-      throw TraverseException.withCauseAndMessage(e, "Failed to invoke attached guide method {} of object handle {}",
+      throw TraverseException.withCauseAndMessage(e, "Failed to invoke guide method {} of object handle {}",
           guideMethod.getName(), objectHandleClass.getCanonicalName());
     }
   }

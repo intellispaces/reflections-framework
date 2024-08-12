@@ -27,6 +27,15 @@ public class {{$classSimpleName}} extends {{$sourceClassSimpleName}} implements 
 {{end}}
   }
 
+{{for actionGetter : $actionGetters}}
+  {{$actionGetter.get("declaration")}}
+{{end}}
+  private final ResettableGetter<Action>[] _actionGetters = new ResettableGetter[] {
+{{for actionGetter : $actionGetters}}
+    {{$actionGetter.get("name")}}{{when $actionGetter.isNotLast()}},{{end}}
+{{end}}
+  };
+
 {{for method : $methods}}
   {{$method.get("javadoc")}}
 {{for annotation : $method.get("annotations")}}
@@ -36,13 +45,29 @@ public class {{$classSimpleName}} extends {{$sourceClassSimpleName}} implements 
     {{$method.get("body")}}
   }
 {{end}}
+{{for method : $guideMethods}}
+  @Order({{$method.index()}})
+  @Override
+  {{$method.get("declaration")}}
 
+{{end}}
   @Override
   public List<Injection> getInjections() {
     return Collections.unmodifiableList(_injections);
   }
-
+{{when $projectionInjections.isNotEmpty()}}
   private Object getProjectionTarget(String name, Class<?> targetClass) {
     return Modules.current().getProjection(name, targetClass);
+  }
+{{end}}
+
+  @Override
+  public int numberGuides() {
+    return {{$guideMethods.size()}};
+  }
+
+  @Override
+  public Action getGuideAction(int index) {
+    return _actionGetters[index].get();
   }
 }

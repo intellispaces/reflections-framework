@@ -7,9 +7,9 @@ import tech.intellispaces.core.annotation.Order;
 import tech.intellispaces.core.exception.TraverseException;
 import tech.intellispaces.core.guide.n0.Mapper0;
 import tech.intellispaces.core.guide.n1.Mapper1;
-import tech.intellispaces.core.object.ObjectHandleWrapper;
 import tech.intellispaces.core.object.ObjectFunctions;
 import tech.intellispaces.core.object.ObjectHandleTypes;
+import tech.intellispaces.core.object.ObjectHandleWrapper;
 import tech.intellispaces.core.space.transition.TransitionFunctions;
 import tech.intellispaces.core.system.Modules;
 import tech.intellispaces.core.transition.TransitionMethod0;
@@ -50,8 +50,7 @@ public class UnmovableObjectHandleImplGenerator extends AbstractObjectHandleImpl
     vars.put("importedClasses", context.getImports());
     vars.put("guideGetters", guideGetters);
     vars.put("actionGetters", actionGetters);
-    vars.put("actionGetterSuppliers", actionGetterSuppliers);
-    vars.put("methods", methods);
+    vars.put("domainMethods", methods);
     return vars;
   }
 

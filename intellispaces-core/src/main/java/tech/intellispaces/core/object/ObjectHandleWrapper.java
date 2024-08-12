@@ -4,7 +4,7 @@ import tech.intellispaces.actions.Action;
 
 public interface ObjectHandleWrapper<D> extends ObjectHandle<D> {
 
-  int numberAttachedGuides();
+  int numberGuides();
 
-  Action getAttachedGuideAction(int index);
+  Action getGuideAction(int index);
 }

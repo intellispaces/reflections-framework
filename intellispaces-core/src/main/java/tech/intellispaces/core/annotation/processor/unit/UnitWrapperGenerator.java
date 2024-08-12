@@ -1,15 +1,19 @@
 package tech.intellispaces.core.annotation.processor.unit;
 
+import tech.intellispaces.actions.Action;
 import tech.intellispaces.actions.Actions;
 import tech.intellispaces.actions.common.string.StringActions;
 import tech.intellispaces.actions.executor.Executor;
+import tech.intellispaces.actions.getter.ResettableGetter;
 import tech.intellispaces.commons.exception.UnexpectedViolationException;
 import tech.intellispaces.commons.type.TypeFunctions;
+import tech.intellispaces.core.annotation.Order;
 import tech.intellispaces.core.annotation.Projection;
 import tech.intellispaces.core.annotation.ProjectionDefinition;
 import tech.intellispaces.core.annotation.Wrapper;
 import tech.intellispaces.core.annotation.processor.AbstractGenerator;
 import tech.intellispaces.core.common.NameConventionFunctions;
+import tech.intellispaces.core.guide.GuideFunctions;
 import tech.intellispaces.core.system.Injection;
 import tech.intellispaces.core.system.Modules;
 import tech.intellispaces.core.system.ProjectionInjection;
@@ -22,6 +26,7 @@ import tech.intellispaces.javastatements.instance.ClassInstance;
 import tech.intellispaces.javastatements.instance.Instance;
 import tech.intellispaces.javastatements.method.MethodParam;
 import tech.intellispaces.javastatements.method.MethodStatement;
+import tech.intellispaces.javastatements.reference.NamedReference;
 import tech.intellispaces.javastatements.reference.TypeReference;
 
 import javax.annotation.processing.RoundEnvironment;
@@ -35,8 +40,10 @@ import java.util.stream.Collectors;
 
 public class UnitWrapperGenerator extends AbstractGenerator {
   private final List<Map<String, Object>> methodsProperties = new ArrayList<>();
+  private List<Map<String, Object>> guideMethods;
   private final List<Map<String, String>> projectionProvidersProperties = new ArrayList<>();
   private final List<Map<String, String>> projectionInjectionsProperties = new ArrayList<>();
+  private List<Map<String, String>> actionGetters;
 
   public UnitWrapperGenerator(CustomType annotatedType) {
     super(annotatedType);
@@ -54,17 +61,19 @@ public class UnitWrapperGenerator extends AbstractGenerator {
 
   @Override
   protected Map<String, Object> templateVariables() {
-    return Map.of(
-        "generatedAnnotation", makeGeneratedAnnotation(),
-        "packageName", context.packageName(),
-        "sourceClassName", sourceClassCanonicalName(),
-        "sourceClassSimpleName", sourceClassSimpleName(),
-        "classSimpleName", context.generatedClassSimpleName(),
-        "importedClasses", context.getImports(),
-        "projectionDefinitions", projectionProvidersProperties,
-        "projectionInjections", projectionInjectionsProperties,
-        "methods", methodsProperties
-    );
+    Map<String, Object> vars = new HashMap<>();
+    vars.put("generatedAnnotation", makeGeneratedAnnotation());
+    vars.put("packageName", context.packageName());
+    vars.put("sourceClassName", sourceClassCanonicalName());
+    vars.put("sourceClassSimpleName", sourceClassSimpleName());
+    vars.put("classSimpleName", context.generatedClassSimpleName());
+    vars.put("importedClasses", context.getImports());
+    vars.put("projectionDefinitions", projectionProvidersProperties);
+    vars.put("projectionInjections", projectionInjectionsProperties);
+    vars.put("actionGetters", actionGetters);
+    vars.put("methods", methodsProperties);
+    vars.put("guideMethods", guideMethods);
+    return vars;
   }
 
   @Override
@@ -77,16 +86,94 @@ public class UnitWrapperGenerator extends AbstractGenerator {
     context.addImport(List.class);
     context.addImport(Collections.class);
     context.addImport(ArrayList.class);
+    context.addImport(Action.class);
     context.addImport(Actions.class);
+    context.addImport(ResettableGetter.class);
     context.addImport(Wrapper.class);
+    context.addImport(Order.class);
     context.addImport(Modules.class);
     context.addImport(Injection.class);
     context.addImport(ProjectionRegistry.class);
     context.addImport(TypeFunctions.class);
     context.addImport(UnitWrapper.class);
 
+    analyzeGuideMethods();
+    analyzeActionGetters();
     analyzeMethods();
     return true;
+  }
+
+  private void analyzeGuideMethods() {
+    this.guideMethods = annotatedType.declaredMethods().stream()
+        .filter(GuideFunctions::isGuideMethod)
+        .map(this::buildGuideMethod)
+        .toList();
+  }
+
+  private Map<String, Object> buildGuideMethod(MethodStatement guideMethod) {
+    var sb = new StringBuilder();
+    sb.append("public ");
+    sb.append(buildMethodSignature(guideMethod));
+    sb.append(" {\n");
+    sb.append("  return super.");
+    sb.append(guideMethod.name());
+    sb.append("(");
+    Executor commaAppender = StringActions.commaAppender(sb);
+    for (MethodParam param : guideMethod.params()) {
+      commaAppender.execute();
+      sb.append(param.name());
+    }
+    sb.append(");\n}");
+    return Map.of("declaration", sb.toString());
+  }
+
+  private void analyzeActionGetters() {
+    this.actionGetters = annotatedType.declaredMethods().stream()
+        .filter(GuideFunctions::isGuideMethod)
+        .map(this::buildGuideActionGetter)
+        .toList();
+  }
+
+  private Map<String, String> buildGuideActionGetter(MethodStatement guideMethod) {
+    String actionGetterMame = buildActionGetterName(guideMethod);
+
+    var declaration = new StringBuilder();
+    declaration.append("private final ResettableGetter<Action> ");
+    declaration.append(actionGetterMame);
+    declaration.append(" = Actions.resettableGetter(\n");
+    declaration.append("  Actions.get(super::").append(guideMethod.name());
+    declaration.append(", ");
+    declaration.append(buildGuideActionTypeParameter(guideMethod.returnType().orElseThrow())).append(".class");
+    for (MethodParam param : guideMethod.params()) {
+      declaration.append(", ");
+      declaration.append(buildGuideActionTypeParameter(param.type())).append(".class");
+    }
+    declaration.append(")\n");
+    declaration.append(");");
+    return Map.of(
+        "name", actionGetterMame,
+        "declaration", declaration.toString()
+    );
+  }
+
+  private String buildGuideActionTypeParameter(TypeReference type) {
+    if (type.isNamedReference()) {
+      NamedReference namedType = type.asNamedReferenceOrElseThrow();
+      if (namedType.extendedBounds().isEmpty()) {
+        return "Object";
+      }
+    }
+    return context.addToImportAndGetSimpleName(
+        type.asCustomTypeReferenceOrElseThrow().targetType().canonicalName()
+    );
+  }
+
+  private String buildActionGetterName(MethodStatement guideMethod) {
+    var sb = new StringBuilder();
+    sb.append("_");
+    sb.append(NameConventionFunctions.joinMethodNameAndParameterTypes(guideMethod));
+    sb.append("ActionGetter");
+    return sb.toString();
   }
 
   private void analyzeMethods() {

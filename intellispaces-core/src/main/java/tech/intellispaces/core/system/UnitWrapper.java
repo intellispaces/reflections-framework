@@ -1,5 +1,6 @@
 package tech.intellispaces.core.system;
 
+import tech.intellispaces.actions.Action;
 import tech.intellispaces.commons.exception.UnexpectedViolationException;
 import tech.intellispaces.core.annotation.Projection;
 import tech.intellispaces.core.annotation.Wrapper;
@@ -12,6 +13,10 @@ import java.util.List;
 public interface UnitWrapper {
 
   List<Injection> getInjections();
+
+  int numberGuides();
+
+  Action getGuideAction(int index);
 
   static Method getActualMethod(Method wrapperMethod) {
     try {

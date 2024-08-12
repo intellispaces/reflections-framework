@@ -28,24 +28,19 @@ public class {{$classSimpleName}}{{$typeParamsFull}} extends {{$sourceClassSimpl
   }
 {{end}}
 
-{{for method : $methods}}
+{{for method : $domainMethods}}
   @Order({{$method.index()}})
   @Override
   {{$method.get("declaration")}};
 
 {{end}}
   @Override
-  public int numberAttachedGuides() {
-    return {{$methods.asList().size()}};
+  public int numberGuides() {
+    return {{$domainMethods.size()}};
   }
 
   @Override
-  public Action getAttachedGuideAction(int index) {
+  public Action getGuideAction(int index) {
     return _actionGetters[index].get();
   }
-
-{{for actionGetterSupplier : $actionGetterSuppliers}}
-  {{$actionGetterSupplier}}
-
-{{end}}
 }

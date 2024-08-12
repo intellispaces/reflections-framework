@@ -55,7 +55,7 @@ public interface NameConventionFunctions {
   static String getObjectHandleTypename(String domainClassName, ObjectHandleTypes handleType) {
     return switch (handleType) {
       case Bunch -> getBunchObjectHandleTypename(domainClassName);
-      case Common -> getCommonObjectHandleTypename(domainClassName);
+      case Common -> getBaseObjectHandleTypename(domainClassName);
       case Movable -> getMovableObjectHandleTypename(domainClassName);
       case Unmovable -> getUnmovableObjectHandleTypename(domainClassName);
     };
@@ -68,7 +68,7 @@ public interface NameConventionFunctions {
     return transformClassName(domainClassName) + "HandleBunch";
   }
 
-  static String getCommonObjectHandleTypename(String domainClassName) {
+  static String getBaseObjectHandleTypename(String domainClassName) {
     return transformClassName(domainClassName) + "Handle";
   }
 

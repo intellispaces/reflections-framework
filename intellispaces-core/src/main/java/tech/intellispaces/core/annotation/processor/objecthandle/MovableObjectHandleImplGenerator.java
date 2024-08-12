@@ -7,9 +7,9 @@ import tech.intellispaces.core.annotation.Order;
 import tech.intellispaces.core.exception.TraverseException;
 import tech.intellispaces.core.guide.n0.Mover0;
 import tech.intellispaces.core.guide.n1.Mover1;
-import tech.intellispaces.core.object.ObjectHandleWrapper;
 import tech.intellispaces.core.object.ObjectFunctions;
 import tech.intellispaces.core.object.ObjectHandleTypes;
+import tech.intellispaces.core.object.ObjectHandleWrapper;
 import tech.intellispaces.core.space.transition.Transition0;
 import tech.intellispaces.core.space.transition.Transition1;
 import tech.intellispaces.core.space.transition.TransitionFunctions;
@@ -52,8 +52,7 @@ public class MovableObjectHandleImplGenerator extends AbstractObjectHandleImplGe
     vars.put("importedClasses", context.getImports());
     vars.put("guideGetters", guideGetters);
     vars.put("actionGetters", actionGetters);
-    vars.put("actionGetterSuppliers", actionGetterSuppliers);
-    vars.put("methods", methods);
+    vars.put("domainMethods", methods);
     return vars;
   }
 

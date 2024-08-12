@@ -7,7 +7,6 @@ import tech.intellispaces.actions.getter.Getter;
 import tech.intellispaces.commons.exception.UnexpectedViolationException;
 import tech.intellispaces.core.annotation.processor.AbstractObjectHandleGenerator;
 import tech.intellispaces.core.common.NameConventionFunctions;
-import tech.intellispaces.core.guide.GuideFunctions;
 import tech.intellispaces.core.guide.n0.Mapper0;
 import tech.intellispaces.core.guide.n0.Mover0;
 import tech.intellispaces.core.guide.n1.Mapper1;
@@ -48,7 +47,6 @@ abstract class AbstractObjectHandleImplGenerator extends AbstractObjectHandleGen
   protected List<Object> constructors;
   protected List<String> guideGetters;
   protected List<Map<String, String>> actionGetters;
-  protected List<String> actionGetterSuppliers;
 
   AbstractObjectHandleImplGenerator(CustomType objectHandleType) {
     super(objectHandleType);
@@ -67,7 +65,6 @@ abstract class AbstractObjectHandleImplGenerator extends AbstractObjectHandleGen
   protected void analyzeActionGetters(CustomType objectHandleType, RoundEnvironment roundEnv) {
     List<MethodStatement> methods = getObjectHandleMethods(objectHandleType, roundEnv).toList();
     this.actionGetters = methods.stream().map(this::buildGuideActionGetter).toList();
-    this.actionGetterSuppliers = methods.stream().map(this::buildActionGetterSupplier).toList();
   }
 
   private Map<String, String> buildGuideActionGetter(MethodStatement domainMethod) {
@@ -90,16 +87,6 @@ abstract class AbstractObjectHandleImplGenerator extends AbstractObjectHandleGen
         "name", actionGetterMame,
         "declaration", declaration.toString()
     );
-  }
-
-  private String buildActionGetterSupplier(MethodStatement domainMethod) {
-    var sb = new StringBuilder();
-    sb.append("public ResettableGetter<Action> ");
-    sb.append(GuideFunctions.getActionGetterSupplierName(domainMethod));
-    sb.append("() {\n");
-    sb.append("  return this.").append(buildActionGetterName(domainMethod)).append(";");
-    sb.append("\n}");
-    return sb.toString();
   }
 
   protected void analyzeGuideGetters(

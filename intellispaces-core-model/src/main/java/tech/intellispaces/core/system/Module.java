@@ -11,6 +11,9 @@ import tech.intellispaces.core.space.transition.Transition1;
 import tech.intellispaces.core.space.transition.Transition2;
 import tech.intellispaces.javastatements.type.Type;
 
+import java.util.Collection;
+import java.util.List;
+
 /**
  * System module.
  */
@@ -23,6 +26,12 @@ public interface Module {
   void start(String[] args);
 
   void stop();
+
+  <T> T getProjection(String name, Class<T> targetClass);
+
+  <T> List<T> getProjections(Class<T> targetClass);
+
+  Collection<ModuleProjection> allProjections();
 
   <S, T> T mapThruTransition0(S source, String tid);
 

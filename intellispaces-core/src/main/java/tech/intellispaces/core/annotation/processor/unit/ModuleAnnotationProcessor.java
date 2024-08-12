@@ -1,4 +1,4 @@
-package tech.intellispaces.core.annotation.processor.module;
+package tech.intellispaces.core.annotation.processor.unit;
 
 import com.google.auto.service.AutoService;
 import tech.intellispaces.annotations.AnnotatedTypeProcessor;

@@ -167,7 +167,7 @@ class ModuleDefaultFactory {
         .map(Unit::projectionProviders)
         .flatMap(List::stream)
         .forEach(projectionDefinitions::add);
-    return new ProjectionRegistryImpl(projectionDefinitions);
+    return new ProjectionRegistryDefault(projectionDefinitions);
   }
 
   private ModuleGuideRegistry createModuleGuideRegistry(List<Unit> units) {

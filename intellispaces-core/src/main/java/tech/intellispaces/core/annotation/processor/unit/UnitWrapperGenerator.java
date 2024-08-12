@@ -1,5 +1,6 @@
-package tech.intellispaces.core.annotation.processor.module;
+package tech.intellispaces.core.annotation.processor.unit;
 
+import tech.intellispaces.actions.Actions;
 import tech.intellispaces.actions.common.string.StringActions;
 import tech.intellispaces.actions.executor.Executor;
 import tech.intellispaces.commons.exception.UnexpectedViolationException;
@@ -76,6 +77,7 @@ public class UnitWrapperGenerator extends AbstractGenerator {
     context.addImport(List.class);
     context.addImport(Collections.class);
     context.addImport(ArrayList.class);
+    context.addImport(Actions.class);
     context.addImport(Wrapper.class);
     context.addImport(Modules.class);
     context.addImport(Injection.class);

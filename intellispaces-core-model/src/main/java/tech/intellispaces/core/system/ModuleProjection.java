@@ -1,6 +1,6 @@
 package tech.intellispaces.core.system;
 
-public interface SystemProjection {
+public interface ModuleProjection {
 
   /**
    * Projection name.
@@ -18,7 +18,7 @@ public interface SystemProjection {
   Object target();
 
   /**
-   * Projection provider.
+   * Projection definition.
    */
-  ProjectionDefinition provider();
+  ProjectionDefinition definition();
 }

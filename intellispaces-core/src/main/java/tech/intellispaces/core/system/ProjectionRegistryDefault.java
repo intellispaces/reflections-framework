@@ -19,33 +19,33 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
- * Implementation of the {@link ProjectionRegistry}.
+ * Default implementation of the {@link ProjectionRegistry}.
  */
-class ProjectionRegistryImpl implements ProjectionRegistry {
+class ProjectionRegistryDefault implements ProjectionRegistry {
   private final Map<String, ProjectionDefinition> projectionDefinitions;
-  private final Map<String, SystemProjection> projections = new HashMap<>();
+  private final Map<String, ModuleProjection> projections = new HashMap<>();
 
-  ProjectionRegistryImpl(List<ProjectionDefinition> projectionDefinitions) {
+  ProjectionRegistryDefault(List<ProjectionDefinition> projectionDefinitions) {
     this.projectionDefinitions = projectionDefinitions.stream().collect(
         Collectors.toMap(ProjectionDefinition::name, Function.identity()));
   }
 
   @Override
-  public <T> T getProjectionTarget(String name, Class<T> targetClass) {
+  public <T> T getProjection(String name, Class<T> targetClass) {
     return getProjection(name, targetClass, new LinkedHashSet<>());
   }
 
   @Override
   @SuppressWarnings("unchecked")
-  public <T> List<T> getProjectionTargets(Class<T> targetClass) {
-    return projections().stream()
+  public <T> List<T> getProjections(Class<T> targetClass) {
+    return allProjections().stream()
         .filter(p -> p.targetClass() == targetClass || targetClass.isAssignableFrom(p.targetClass()))
         .map(p -> (T) p.target())
         .toList();
   }
 
   @Override
-  public Collection<SystemProjection> projections() {
+  public Collection<ModuleProjection> allProjections() {
     return Collections.unmodifiableCollection(projections.values());
   }
 
@@ -58,7 +58,7 @@ class ProjectionRegistryImpl implements ProjectionRegistry {
 
   @SuppressWarnings("unchecked")
   private <T> T getProjection(String name, Class<T> targetClass, Set<String> dependencyPath) {
-    SystemProjection projection = findProjectionByName(name);
+    ModuleProjection projection = findProjectionByName(name);
     if (projection == null) {
       projection = defineProjection(name, dependencyPath);
     }
@@ -75,11 +75,11 @@ class ProjectionRegistryImpl implements ProjectionRegistry {
     return (T) projection.target();
   }
 
-  private SystemProjection findProjectionByName(String name) {
+  private ModuleProjection findProjectionByName(String name) {
     return projections.get(name);
   }
 
-  private SystemProjection defineProjection(String name, Set<String> dependencyPath) {
+  private ModuleProjection defineProjection(String name, Set<String> dependencyPath) {
     ProjectionDefinition definition = projectionDefinitions.get(name);
     if (definition == null) {
       return null;
@@ -87,7 +87,7 @@ class ProjectionRegistryImpl implements ProjectionRegistry {
     return createProjection(definition, dependencyPath);
   }
 
-  private SystemProjection createProjection(ProjectionDefinition definition, Set<String> dependencyPath) {
+  private ModuleProjection createProjection(ProjectionDefinition definition, Set<String> dependencyPath) {
     dependencyPath.add(definition.name());
     if (ProjectionDefinitionTypes.UnitMethod == definition.kind()) {
       return createUnitProjection((UnitProjectionDefinition) definition, dependencyPath);
@@ -96,7 +96,7 @@ class ProjectionRegistryImpl implements ProjectionRegistry {
     }
   }
 
-  private SystemProjection createUnitProjection(UnitProjectionDefinition definition, Set<String> dependencyPath) {
+  private ModuleProjection createUnitProjection(UnitProjectionDefinition definition, Set<String> dependencyPath) {
     final Object target;
     try {
       Method projectionMethod = definition.projectionMethod();
@@ -105,7 +105,7 @@ class ProjectionRegistryImpl implements ProjectionRegistry {
     } catch (Exception e) {
       throw ExceptionFunctions.coverIfChecked(e);
     }
-    SystemProjection projection = new SystemProjectionImpl(definition.name(), definition.type(), definition, target);
+    ModuleProjection projection = new ModuleProjectionImpl(definition.name(), definition.type(), definition, target);
     projections.put(projection.name(), projection);
     return projection;
   }

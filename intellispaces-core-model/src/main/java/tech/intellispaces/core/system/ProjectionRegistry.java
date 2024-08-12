@@ -10,9 +10,9 @@ public interface ProjectionRegistry {
 
   void load();
 
-  <T> T getProjectionTarget(String name, Class<T> targetClass);
+  <T> T getProjection(String name, Class<T> targetClass);
 
-  <T> List<T> getProjectionTargets(Class<T> targetClass);
+  <T> List<T> getProjections(Class<T> targetClass);
 
-  Collection<SystemProjection> projections();
+  Collection<ModuleProjection> allProjections();
 }

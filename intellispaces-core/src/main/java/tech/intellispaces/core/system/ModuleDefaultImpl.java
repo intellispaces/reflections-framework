@@ -26,6 +26,7 @@ import tech.intellispaces.core.traverse.TraverseAnalyzer;
 import tech.intellispaces.core.traverse.TraverseExecutor;
 import tech.intellispaces.javastatements.type.Type;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -225,5 +226,20 @@ public class ModuleDefaultImpl implements ModuleDefault {
       Type<S> sourceType, Class<? extends Transition2> transitionClass
   ) {
     return autoMoverThruTransition2(sourceType, TransitionFunctions.getTransitionId(transitionClass));
+  }
+
+  @Override
+  public <T> T getProjection(String name, Class<T> targetClass) {
+    return projectionRegistry.getProjection(name, targetClass);
+  }
+
+  @Override
+  public <T> List<T> getProjections(Class<T> targetClass) {
+    return projectionRegistry.getProjections(targetClass);
+  }
+
+  @Override
+  public Collection<ModuleProjection> allProjections() {
+    return projectionRegistry.allProjections();
   }
 }

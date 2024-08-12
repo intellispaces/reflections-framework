@@ -1,12 +1,12 @@
 package tech.intellispaces.core.system;
 
-class SystemProjectionImpl implements SystemProjection {
+class ModuleProjectionImpl implements ModuleProjection {
   private final String name;
   private final Class<?> targetClass;
   private final Object target;
   private final ProjectionDefinition provider;
 
-  public SystemProjectionImpl(String name, Class<?> targetClass, ProjectionDefinition provider, Object target) {
+  public ModuleProjectionImpl(String name, Class<?> targetClass, ProjectionDefinition provider, Object target) {
     this.name = name;
     this.targetClass = targetClass;
     this.provider = provider;
@@ -24,7 +24,7 @@ class SystemProjectionImpl implements SystemProjection {
   }
 
   @Override
-  public ProjectionDefinition provider() {
+  public ProjectionDefinition definition() {
     return provider;
   }
 

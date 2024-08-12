@@ -22,7 +22,7 @@ public class {{$classSimpleName}} extends {{$sourceClassSimpleName}} implements 
 
   public {{$classSimpleName}}() {
 {{for injection : $projectionInjections}}
-    this._{{$injection.get("name")}}Injection = new ProjectionInjectionImpl("{{$injection.get("name")}}", {{$sourceClassSimpleName}}.class, {{$injection.get("type")}}.class, this::getProjectionRegistry);
+    this._{{$injection.get("name")}}Injection = new ProjectionInjectionImpl("{{$injection.get("name")}}", {{$sourceClassSimpleName}}.class, {{$injection.get("type")}}.class, Actions.get(this::getProjectionTarget));
     this._injections.add(this._{{$injection.get("name")}}Injection);
 {{end}}
   }
@@ -42,7 +42,7 @@ public class {{$classSimpleName}} extends {{$sourceClassSimpleName}} implements 
     return Collections.unmodifiableList(_injections);
   }
 
-  private ProjectionRegistry getProjectionRegistry() {
-    return Modules.current().projectionRegistry();
+  private Object getProjectionTarget(String name, Class<?> targetClass) {
+    return Modules.current().getProjection(name, targetClass);
   }
 }

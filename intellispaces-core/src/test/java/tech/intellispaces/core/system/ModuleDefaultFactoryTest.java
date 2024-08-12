@@ -33,7 +33,7 @@ public class ModuleDefaultFactoryTest {
     assertThat(module.units().get(0).unitClass()).isSameAs(EmptyModule.class);
     assertThat(module.units().get(0).startupMethod()).isEmpty();
     assertThat(module.units().get(0).shutdownMethod()).isEmpty();
-    assertThat(module.projectionRegistry().projections()).isEmpty();
+    assertThat(module.projectionRegistry().allProjections()).isEmpty();
   }
 
   @Test
@@ -48,7 +48,7 @@ public class ModuleDefaultFactoryTest {
     assertThat(module.units().get(0).startupMethod().orElseThrow().getName()).isEqualTo("startup");
     assertThat(module.units().get(0).shutdownMethod()).isPresent();
     assertThat(module.units().get(0).shutdownMethod().orElseThrow().getName()).isEqualTo("shutdown");
-    assertThat(module.projectionRegistry().projections()).isEmpty();
+    assertThat(module.projectionRegistry().allProjections()).isEmpty();
   }
 
   @Test
@@ -61,58 +61,58 @@ public class ModuleDefaultFactoryTest {
     assertThat(module.units().get(0).unitClass()).isSameAs(ModuleWithSimpleProjections.class);
     assertThat(module.units().get(0).startupMethod()).isEmpty();
     assertThat(module.units().get(0).shutdownMethod()).isEmpty();
-    assertThat(module.projectionRegistry().projections()).isEmpty();
+    assertThat(module.projectionRegistry().allProjections()).isEmpty();
 
-    assertThat(module.projectionRegistry().getProjectionTarget("booleanProjection1", boolean.class)).isEqualTo(true);
-    assertThat(module.projectionRegistry().getProjectionTarget("booleanProjection1", Boolean.class)).isEqualTo(true);
+    assertThat(module.projectionRegistry().getProjection("booleanProjection1", boolean.class)).isEqualTo(true);
+    assertThat(module.projectionRegistry().getProjection("booleanProjection1", Boolean.class)).isEqualTo(true);
 
-    assertThat(module.projectionRegistry().getProjectionTarget("byteProjection1", byte.class)).isEqualTo((byte) 1);
-    assertThat(module.projectionRegistry().getProjectionTarget("byteProjection1", Byte.class)).isEqualTo((byte) 1);
+    assertThat(module.projectionRegistry().getProjection("byteProjection1", byte.class)).isEqualTo((byte) 1);
+    assertThat(module.projectionRegistry().getProjection("byteProjection1", Byte.class)).isEqualTo((byte) 1);
 
-    assertThat(module.projectionRegistry().getProjectionTarget("byteProjection2", byte.class)).isEqualTo((byte) 2);
-    assertThat(module.projectionRegistry().getProjectionTarget("byteProjection2", Byte.class)).isEqualTo((byte) 2);
+    assertThat(module.projectionRegistry().getProjection("byteProjection2", byte.class)).isEqualTo((byte) 2);
+    assertThat(module.projectionRegistry().getProjection("byteProjection2", Byte.class)).isEqualTo((byte) 2);
 
-    assertThat(module.projectionRegistry().getProjectionTarget("shortProjection1", short.class)).isEqualTo((short) 3);
-    assertThat(module.projectionRegistry().getProjectionTarget("shortProjection1", Short.class)).isEqualTo((short) 3);
+    assertThat(module.projectionRegistry().getProjection("shortProjection1", short.class)).isEqualTo((short) 3);
+    assertThat(module.projectionRegistry().getProjection("shortProjection1", Short.class)).isEqualTo((short) 3);
 
-    assertThat(module.projectionRegistry().getProjectionTarget("shortProjection2", short.class)).isEqualTo((short) 4);
-    assertThat(module.projectionRegistry().getProjectionTarget("shortProjection2", Short.class)).isEqualTo((short) 4);
+    assertThat(module.projectionRegistry().getProjection("shortProjection2", short.class)).isEqualTo((short) 4);
+    assertThat(module.projectionRegistry().getProjection("shortProjection2", Short.class)).isEqualTo((short) 4);
 
-    assertThat(module.projectionRegistry().getProjectionTarget("intProjection1", int.class)).isEqualTo(5);
-    assertThat(module.projectionRegistry().getProjectionTarget("intProjection1", Integer.class)).isEqualTo(5);
+    assertThat(module.projectionRegistry().getProjection("intProjection1", int.class)).isEqualTo(5);
+    assertThat(module.projectionRegistry().getProjection("intProjection1", Integer.class)).isEqualTo(5);
 
-    assertThat(module.projectionRegistry().getProjectionTarget("intProjection2", int.class)).isEqualTo(6);
-    assertThat(module.projectionRegistry().getProjectionTarget("intProjection2", Integer.class)).isEqualTo(6);
+    assertThat(module.projectionRegistry().getProjection("intProjection2", int.class)).isEqualTo(6);
+    assertThat(module.projectionRegistry().getProjection("intProjection2", Integer.class)).isEqualTo(6);
 
-    assertThat(module.projectionRegistry().getProjectionTarget("longProjection1", long.class)).isEqualTo(7);
-    assertThat(module.projectionRegistry().getProjectionTarget("longProjection1", Long.class)).isEqualTo(7);
+    assertThat(module.projectionRegistry().getProjection("longProjection1", long.class)).isEqualTo(7);
+    assertThat(module.projectionRegistry().getProjection("longProjection1", Long.class)).isEqualTo(7);
 
-    assertThat(module.projectionRegistry().getProjectionTarget("longProjection2", long.class)).isEqualTo(8);
-    assertThat(module.projectionRegistry().getProjectionTarget("longProjection2", Long.class)).isEqualTo(8);
+    assertThat(module.projectionRegistry().getProjection("longProjection2", long.class)).isEqualTo(8);
+    assertThat(module.projectionRegistry().getProjection("longProjection2", Long.class)).isEqualTo(8);
 
-    assertThat(module.projectionRegistry().getProjectionTarget("floatProjection1", float.class)).isEqualTo(9.9f);
-    assertThat(module.projectionRegistry().getProjectionTarget("floatProjection1", Float.class)).isEqualTo(9.9f);
+    assertThat(module.projectionRegistry().getProjection("floatProjection1", float.class)).isEqualTo(9.9f);
+    assertThat(module.projectionRegistry().getProjection("floatProjection1", Float.class)).isEqualTo(9.9f);
 
-    assertThat(module.projectionRegistry().getProjectionTarget("floatProjection2", float.class)).isEqualTo(10.1f);
-    assertThat(module.projectionRegistry().getProjectionTarget("floatProjection2", Float.class)).isEqualTo(10.1f);
+    assertThat(module.projectionRegistry().getProjection("floatProjection2", float.class)).isEqualTo(10.1f);
+    assertThat(module.projectionRegistry().getProjection("floatProjection2", Float.class)).isEqualTo(10.1f);
 
-    assertThat(module.projectionRegistry().getProjectionTarget("doubleProjection1", double.class)).isEqualTo(11.11);
-    assertThat(module.projectionRegistry().getProjectionTarget("doubleProjection1", Double.class)).isEqualTo(11.11);
+    assertThat(module.projectionRegistry().getProjection("doubleProjection1", double.class)).isEqualTo(11.11);
+    assertThat(module.projectionRegistry().getProjection("doubleProjection1", Double.class)).isEqualTo(11.11);
 
-    assertThat(module.projectionRegistry().getProjectionTarget("doubleProjection2", double.class)).isEqualTo(12.12);
-    assertThat(module.projectionRegistry().getProjectionTarget("doubleProjection2", Double.class)).isEqualTo(12.12);
+    assertThat(module.projectionRegistry().getProjection("doubleProjection2", double.class)).isEqualTo(12.12);
+    assertThat(module.projectionRegistry().getProjection("doubleProjection2", Double.class)).isEqualTo(12.12);
 
-    assertThat(module.projectionRegistry().getProjectionTarget("charProjection1", char.class)).isEqualTo('a');
-    assertThat(module.projectionRegistry().getProjectionTarget("charProjection1", Character.class)).isEqualTo('a');
+    assertThat(module.projectionRegistry().getProjection("charProjection1", char.class)).isEqualTo('a');
+    assertThat(module.projectionRegistry().getProjection("charProjection1", Character.class)).isEqualTo('a');
 
-    assertThat(module.projectionRegistry().getProjectionTarget("charProjection2", char.class)).isEqualTo('b');
-    assertThat(module.projectionRegistry().getProjectionTarget("charProjection2", Character.class)).isEqualTo('b');
+    assertThat(module.projectionRegistry().getProjection("charProjection2", char.class)).isEqualTo('b');
+    assertThat(module.projectionRegistry().getProjection("charProjection2", Character.class)).isEqualTo('b');
 
-    assertThat(module.projectionRegistry().getProjectionTarget("stringProjection", String.class)).isEqualTo("string");
+    assertThat(module.projectionRegistry().getProjection("stringProjection", String.class)).isEqualTo("string");
 
-    Assertions.assertThat(module.projectionRegistry().getProjectionTarget("objectHandleProjection", ObjectHandleOfDomainEmpty.class)).isNull();
+    Assertions.assertThat(module.projectionRegistry().getProjection("objectHandleProjection", ObjectHandleOfDomainEmpty.class)).isNull();
 
-    assertThat(module.projectionRegistry().projections()).hasSize(17);
+    assertThat(module.projectionRegistry().allProjections()).hasSize(17);
   }
 
   @Test

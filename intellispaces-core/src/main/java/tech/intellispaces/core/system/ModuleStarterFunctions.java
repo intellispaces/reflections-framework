@@ -37,7 +37,7 @@ public interface ModuleStarterFunctions {
   private static Object[] makeMethodArguments(Method method, ModuleDefault module) {
     var arguments = new ArrayList<>();
     for (Parameter param : method.getParameters()) {
-      Object projection = module.projectionRegistry().getProjectionTarget(param.getName(), param.getType());
+      Object projection = module.projectionRegistry().getProjection(param.getName(), param.getType());
       if (projection == null) {
         throw ConfigurationException.withMessage("Cannot to resolve parameter '{}' in method '{}' in unit {}",
             param.getName(), method.getName(), method.getDeclaringClass().getCanonicalName());

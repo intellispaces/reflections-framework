@@ -1,5 +1,6 @@
 package tech.intellispaces.core.system;
 
+import tech.intellispaces.actions.Action;
 import tech.intellispaces.commons.exception.UnexpectedViolationException;
 import tech.intellispaces.core.annotation.Configuration;
 import tech.intellispaces.core.annotation.Guide;
@@ -7,8 +8,10 @@ import tech.intellispaces.core.annotation.Module;
 import tech.intellispaces.core.annotation.Projection;
 import tech.intellispaces.core.annotation.Shutdown;
 import tech.intellispaces.core.annotation.Startup;
+import tech.intellispaces.core.aop.AopFunctions;
 import tech.intellispaces.core.common.NameConventionFunctions;
 import tech.intellispaces.core.guide.GuideFunctions;
+import tech.intellispaces.core.system.action.InvokeUnitMethodAction;
 import tech.intellispaces.core.system.empty.EmptyModule;
 import tech.intellispaces.core.system.empty.EmptyModuleWrapper;
 import tech.intellispaces.core.traverse.TraverseAnalyzer;
@@ -31,7 +34,7 @@ class ModuleDefaultFactory {
 
   public ModuleDefault createModule(List<Class<?>> unitClasses) {
     List<Unit> units = createUnits(unitClasses);
-
+    applyAdvises(units);
     ProjectionRegistry projectionRegistry = createProjectionRegistry(units);
     ObjectGuideRegistry objectGuideRegistry = new ObjectGuideRegistryImpl();
     UnitGuideRegistry unitGuideRegistry = createUnitGuideRegistry(units);
@@ -115,8 +118,8 @@ class ModuleDefaultFactory {
         unitInstance,
         projectionProviders,
         unitGuides,
-        startupMethod.map(m -> new StartupShutdownActionImpl(unitInstance, m)).orElse(null),
-        shutdownMethod.map(m -> new StartupShutdownActionImpl(unitInstance, m)).orElse(null)
+        startupMethod.map(m -> new InvokeUnitMethodAction<Void>(unitInstance, m)).orElse(null),
+        shutdownMethod.map(m -> new InvokeUnitMethodAction<Void>(unitInstance, m)).orElse(null)
     );
 
     addProjectionProviders(unitWrapperClass, unit, projectionProviders);
@@ -190,5 +193,26 @@ class ModuleDefaultFactory {
     return Arrays.stream(unitClass.getDeclaredMethods())
         .filter(m -> m.isAnnotationPresent(Shutdown.class))
         .findAny();
+  }
+
+  private void applyAdvises(List<Unit> units) {
+    units.forEach(this::applyAdvises);
+  }
+
+  private void applyAdvises(Unit unit) {
+    applyStartupActionAdvises(unit);
+  }
+
+  @SuppressWarnings("unchecked")
+  private void applyStartupActionAdvises(Unit unit) {
+    if (unit.startupAction().isEmpty()) {
+      return;
+    }
+    var startupAction = (InvokeUnitMethodAction<Void>) unit.startupAction().get();
+    Method startupMethod = startupAction.getUnitMethod();
+    Action chainAction = AopFunctions.buildChainAction(startupMethod, startupAction);
+    if (chainAction != startupAction) {
+      unit.setStartupAction(chainAction);
+    }
   }
 }

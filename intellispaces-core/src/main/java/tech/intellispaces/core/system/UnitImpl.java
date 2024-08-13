@@ -1,9 +1,10 @@
 package tech.intellispaces.core.system;
 
+import tech.intellispaces.actions.Action;
 import tech.intellispaces.core.guide.Guide;
-import tech.intellispaces.core.system.action.ShutdownAction;
-import tech.intellispaces.core.system.action.StartupAction;
+import tech.intellispaces.core.system.action.InvokeUnitMethodAction;
 
+import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -14,8 +15,10 @@ class UnitImpl implements Unit {
   private final UnitWrapper instance;
   private final List<UnitProjectionDefinition> projectionProviders;
   private final List<Guide<?, ?>> guides;
-  private final StartupAction startupAction;
-  private final ShutdownAction shutdownAction;
+  private Method startupMethod;
+  private Method shutdownMethod;
+  private Action startupAction;
+  private Action shutdownAction;
 
   public UnitImpl(
       boolean main,
@@ -23,8 +26,8 @@ class UnitImpl implements Unit {
       UnitWrapper instance,
       List<UnitProjectionDefinition> projectionProviders,
       List<Guide<?, ?>> guides,
-      StartupAction startupAction,
-      ShutdownAction shutdownAction
+      InvokeUnitMethodAction<Void> startupAction,
+      InvokeUnitMethodAction<Void> shutdownAction
   ) {
     this.main = main;
     this.unitClass = unitClass;
@@ -33,6 +36,12 @@ class UnitImpl implements Unit {
     this.guides = Collections.unmodifiableList(guides);
     this.startupAction = startupAction;
     this.shutdownAction = shutdownAction;
+    if (startupAction != null) {
+      this.startupMethod = startupAction.getUnitMethod();
+    }
+    if (shutdownAction != null) {
+      this.shutdownMethod = shutdownAction.getUnitMethod();
+    }
   }
 
   @Override
@@ -66,12 +75,32 @@ class UnitImpl implements Unit {
   }
 
   @Override
-  public Optional<StartupAction> startupAction() {
+  public Optional<Method> startupMethod() {
+    return Optional.ofNullable(startupMethod);
+  }
+
+  @Override
+  public Optional<Method> shutdownMethod() {
+    return Optional.ofNullable(shutdownMethod);
+  }
+
+  @Override
+  public Optional<Action> startupAction() {
     return Optional.ofNullable(startupAction);
   }
 
   @Override
-  public Optional<ShutdownAction> shutdownAction() {
+  public Optional<Action> shutdownAction() {
     return Optional.ofNullable(shutdownAction);
+  }
+
+  @Override
+  public void setStartupAction(Action action) {
+    this.startupAction = action;
+  }
+
+  @Override
+  public void setShutdownAction(Action action) {
+    this.shutdownAction = action;
   }
 }

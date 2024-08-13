@@ -9,8 +9,8 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -23,7 +23,8 @@ import java.util.stream.Collectors;
  */
 class ProjectionRegistryDefault implements ProjectionRegistry {
   private final Map<String, ProjectionDefinition> projectionDefinitions;
-  private final Map<String, ModuleProjection> projections = new HashMap<>();
+  private final Map<String, ModuleProjection> projectionsByName = new HashMap<>();
+  private final Map<Class<?>, List<ModuleProjection>> projectionsByClass = new HashMap<>();
 
   ProjectionRegistryDefault(List<ProjectionDefinition> projectionDefinitions) {
     this.projectionDefinitions = projectionDefinitions.stream().collect(
@@ -38,15 +39,25 @@ class ProjectionRegistryDefault implements ProjectionRegistry {
   @Override
   @SuppressWarnings("unchecked")
   public <T> List<T> getProjections(Class<T> targetClass) {
-    return allProjections().stream()
-        .filter(p -> p.targetClass() == targetClass || targetClass.isAssignableFrom(p.targetClass()))
-        .map(p -> (T) p.target())
-        .toList();
+    List<T> projections = new ArrayList<>();
+    for (ProjectionDefinition projectionDefinition : projectionDefinitions.values()) {
+      if (projectionDefinition.type() == targetClass || targetClass.isAssignableFrom(projectionDefinition.type())) {
+        T projection = (T) getProjection(projectionDefinition.name(), projectionDefinition.type());
+        projections.add(projection);
+      }
+    }
+    return projections;
   }
 
   @Override
   public Collection<ModuleProjection> allProjections() {
-    return Collections.unmodifiableCollection(projections.values());
+    List<ModuleProjection> projections = new ArrayList<>();
+    Set<String> dependencyPath = new HashSet<>();
+    for (ProjectionDefinition projectionDefinition : projectionDefinitions.values()) {
+      ModuleProjection projection = getProjection(projectionDefinition.name(), dependencyPath);
+      projections.add(projection);
+    }
+    return projections;
   }
 
   @Override
@@ -58,10 +69,7 @@ class ProjectionRegistryDefault implements ProjectionRegistry {
 
   @SuppressWarnings("unchecked")
   private <T> T getProjection(String name, Class<T> targetClass, Set<String> dependencyPath) {
-    ModuleProjection projection = findProjectionByName(name);
-    if (projection == null) {
-      projection = defineProjection(name, dependencyPath);
-    }
+    ModuleProjection projection = getProjection(name, dependencyPath);
     if (projection == null) {
       return null;
     }
@@ -75,8 +83,15 @@ class ProjectionRegistryDefault implements ProjectionRegistry {
     return (T) projection.target();
   }
 
-  private ModuleProjection findProjectionByName(String name) {
-    return projections.get(name);
+  private <T> ModuleProjection getProjection(String name, Set<String> dependencyPath) {
+    ModuleProjection projection = projectionsByName.get(name);
+    if (projection == null) {
+      projection = defineProjection(name, dependencyPath);
+    }
+    if (projection == null) {
+      return null;
+    }
+    return projection;
   }
 
   private ModuleProjection defineProjection(String name, Set<String> dependencyPath) {
@@ -96,7 +111,9 @@ class ProjectionRegistryDefault implements ProjectionRegistry {
     }
   }
 
-  private ModuleProjection createUnitProjection(UnitProjectionDefinition definition, Set<String> dependencyPath) {
+  private ModuleProjection createUnitProjection(
+      UnitProjectionDefinition definition, Set<String> dependencyPath
+  ) {
     final Object target;
     try {
       Method projectionMethod = definition.projectionMethod();
@@ -106,11 +123,14 @@ class ProjectionRegistryDefault implements ProjectionRegistry {
       throw ExceptionFunctions.coverIfChecked(e);
     }
     ModuleProjection projection = new ModuleProjectionImpl(definition.name(), definition.type(), definition, target);
-    projections.put(projection.name(), projection);
+    projectionsByName.put(projection.name(), projection);
+    projectionsByClass.computeIfAbsent(projection.targetClass(), k -> new ArrayList<>()).add(projection);
     return projection;
   }
 
-  private Object[] getProjectionArguments(UnitProjectionDefinition definition, Set<String> dependencyPath) {
+  private Object[] getProjectionArguments(
+      UnitProjectionDefinition definition, Set<String> dependencyPath
+  ) {
     Method method = definition.projectionMethod();
     Object[] arguments = new Object[method.getParameterCount()];
     int ind = 0;

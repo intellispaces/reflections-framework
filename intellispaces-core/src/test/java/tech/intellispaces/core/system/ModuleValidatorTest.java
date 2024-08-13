@@ -5,8 +5,6 @@ import org.junit.jupiter.api.Test;
 import tech.intellispaces.core.exception.ConfigurationException;
 import tech.intellispaces.core.samples.system.EmptyModule;
 import tech.intellispaces.core.samples.system.EmptyUnit;
-import tech.intellispaces.core.system.action.ShutdownAction;
-import tech.intellispaces.core.system.action.StartupAction;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -119,8 +117,8 @@ public class ModuleValidatorTest {
     Unit unit = mock(Unit.class);
     when(unit.isMain()).thenReturn(true);
     when(unit.unitClass()).thenReturn(unitClass);
-    when(unit.startupAction()).thenReturn(Optional.empty());
-    when(unit.shutdownAction()).thenReturn(Optional.empty());
+    when(unit.startupMethod()).thenReturn(Optional.empty());
+    when(unit.shutdownMethod()).thenReturn(Optional.empty());
     when(unit.injections()).thenReturn(List.of(injection));
     when(unit.projectionProviders()).thenReturn(List.of());
 
@@ -159,8 +157,8 @@ public class ModuleValidatorTest {
     Unit unit = mock(Unit.class);
     when(unit.isMain()).thenReturn(true);
     when(unit.unitClass()).thenReturn(unitClass);
-    when(unit.startupAction()).thenReturn(Optional.empty());
-    when(unit.shutdownAction()).thenReturn(Optional.empty());
+    when(unit.startupMethod()).thenReturn(Optional.empty());
+    when(unit.shutdownMethod()).thenReturn(Optional.empty());
     when(unit.injections()).thenReturn(List.of(injection));
     when(unit.projectionProviders()).thenReturn(List.of(projectionProvider));
 
@@ -190,14 +188,11 @@ public class ModuleValidatorTest {
     when(startupMethod.getDeclaringClass()).thenReturn(unitClass);
     when(startupMethod.getParameters()).thenReturn(new Parameter[] { param });
 
-    var startupAction = mock(StartupAction.class);
-    when(startupAction.method()).thenReturn(startupMethod);
-
     Unit unit = mock(Unit.class);
     when(unit.isMain()).thenReturn(true);
     when(unit.unitClass()).thenReturn(unitClass);
-    when(unit.startupAction()).thenReturn(Optional.of(startupAction));
-    when(unit.shutdownAction()).thenReturn(Optional.empty());
+    when(unit.startupMethod()).thenReturn(Optional.of(startupMethod));
+    when(unit.shutdownMethod()).thenReturn(Optional.empty());
     when(unit.injections()).thenReturn(List.of());
     when(unit.projectionProviders()).thenReturn(List.of());
 
@@ -230,9 +225,6 @@ public class ModuleValidatorTest {
     when(startupMethod.getDeclaringClass()).thenReturn(unitClass);
     when(startupMethod.getParameters()).thenReturn(new Parameter[] { param });
 
-    var startupAction = mock(StartupAction.class);
-    when(startupAction.method()).thenReturn(startupMethod);
-
     Method providerMethod = mock((Method.class));
     when(providerMethod.getName()).thenReturn(projectionName);
     when(providerMethod.getReturnType()).thenReturn(projectionType);
@@ -243,8 +235,8 @@ public class ModuleValidatorTest {
     Unit unit = mock(Unit.class);
     when(unit.isMain()).thenReturn(true);
     when(unit.unitClass()).thenReturn(unitClass);
-    when(unit.startupAction()).thenReturn(Optional.of(startupAction));
-    when(unit.shutdownAction()).thenReturn(Optional.empty());
+    when(unit.startupMethod()).thenReturn(Optional.of(startupMethod));
+    when(unit.shutdownMethod()).thenReturn(Optional.empty());
     when(unit.injections()).thenReturn(List.of());
     when(unit.projectionProviders()).thenReturn(List.of(projectionProvider));
 
@@ -276,14 +268,11 @@ public class ModuleValidatorTest {
     when(shutdownMethod.getDeclaringClass()).thenReturn(unitClass);
     when(shutdownMethod.getParameters()).thenReturn(new Parameter[] { param });
 
-    var shutdownAction = mock(ShutdownAction.class);
-    when(shutdownAction.method()).thenReturn(shutdownMethod);
-
     Unit unit = mock(Unit.class);
     when(unit.isMain()).thenReturn(true);
     when(unit.unitClass()).thenReturn(unitClass);
-    when(unit.startupAction()).thenReturn(Optional.empty());
-    when(unit.shutdownAction()).thenReturn(Optional.of(shutdownAction));
+    when(unit.startupMethod()).thenReturn(Optional.empty());
+    when(unit.shutdownMethod()).thenReturn(Optional.of(shutdownMethod));
     when(unit.injections()).thenReturn(List.of());
     when(unit.projectionProviders()).thenReturn(List.of());
 
@@ -316,9 +305,6 @@ public class ModuleValidatorTest {
     when(shutdownMethod.getDeclaringClass()).thenReturn(unitClass);
     when(shutdownMethod.getParameters()).thenReturn(new Parameter[] { param });
 
-    var shutdownAction = mock(ShutdownAction.class);
-    when(shutdownAction.method()).thenReturn(shutdownMethod);
-
     Method providerMethod = mock((Method.class));
     when(providerMethod.getName()).thenReturn(projectionName);
     when(providerMethod.getReturnType()).thenReturn(projectionType);
@@ -329,8 +315,8 @@ public class ModuleValidatorTest {
     Unit unit = mock(Unit.class);
     when(unit.isMain()).thenReturn(true);
     when(unit.unitClass()).thenReturn(unitClass);
-    when(unit.startupAction()).thenReturn(Optional.empty());
-    when(unit.shutdownAction()).thenReturn(Optional.of(shutdownAction));
+    when(unit.startupMethod()).thenReturn(Optional.empty());
+    when(unit.shutdownMethod()).thenReturn(Optional.of(shutdownMethod));
     when(unit.injections()).thenReturn(List.of());
     when(unit.projectionProviders()).thenReturn(List.of(projectionProvider));
 
@@ -354,14 +340,8 @@ public class ModuleValidatorTest {
     when(unit1.isMain()).thenReturn(true);
     when(unit1.unitClass()).thenReturn((Class) String.class);
 
-    var startupAction = mock(StartupAction.class);
-    when(startupAction.method()).thenReturn(String.class.getDeclaredMethod("isEmpty"));
-
-    var shutdownAction = mock(ShutdownAction.class);
-    when(shutdownAction.method()).thenReturn(String.class.getDeclaredMethod("isBlank"));
-
-    when(unit1.startupAction()).thenReturn(Optional.of(startupAction));
-    when(unit1.shutdownAction()).thenReturn(Optional.of(shutdownAction));
+    when(unit1.startupMethod()).thenReturn(Optional.of(String.class.getDeclaredMethod("isEmpty")));
+    when(unit1.shutdownMethod()).thenReturn(Optional.of(String.class.getDeclaredMethod("isBlank")));
     UnitProjectionDefinition projectionProvider1 = mock(UnitProjectionDefinition.class);
     when(projectionProvider1.name()).thenReturn("projection1");
     when(projectionProvider1.unit()).thenReturn(unit1);

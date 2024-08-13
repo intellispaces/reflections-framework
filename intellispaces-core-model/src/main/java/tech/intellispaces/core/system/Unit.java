@@ -1,9 +1,9 @@
 package tech.intellispaces.core.system;
 
+import tech.intellispaces.actions.Action;
 import tech.intellispaces.core.guide.Guide;
-import tech.intellispaces.core.system.action.ShutdownAction;
-import tech.intellispaces.core.system.action.StartupAction;
 
+import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,7 +24,15 @@ public interface Unit {
 
   List<Guide<?, ?>> guides();
 
-  Optional<StartupAction> startupAction();
+  Optional<Method> startupMethod();
 
-  Optional<ShutdownAction> shutdownAction();
+  Optional<Method> shutdownMethod();
+
+  Optional<Action> startupAction();
+
+  Optional<Action> shutdownAction();
+
+  void setStartupAction(Action action);
+
+  void setShutdownAction(Action action);
 }

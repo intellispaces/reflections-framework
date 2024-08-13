@@ -30,18 +30,18 @@ public class ModuleLoader {
     moduleValidator.validate(newModule);
     if (currentModule != null) {
       currentModule.stop();
-      Modules.setCurrentModule(null);
+      DefaultModules.setCurrentModule(null);
     }
-    Modules.setCurrentModule(newModule);
+    DefaultModules.setCurrentModule(newModule);
 
     newModule.start(args);
   }
 
   public static void unloadModule() {
-    Module currentModule = Modules.currentSilently();
+    Module currentModule = DefaultModules.currentSilently();
     if (currentModule != null) {
       currentModule.stop();
     }
-    Modules.setCurrentModule(null);
+    DefaultModules.setCurrentModule(null);
   }
 }

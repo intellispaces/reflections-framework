@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.IdentityHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -24,11 +25,20 @@ import java.util.stream.Collectors;
 class ProjectionRegistryDefault implements ProjectionRegistry {
   private final Map<String, ProjectionDefinition> projectionDefinitions;
   private final Map<String, ModuleProjection> projectionsByName = new HashMap<>();
-  private final Map<Class<?>, List<ModuleProjection>> projectionsByClass = new HashMap<>();
+
+  private final ThreadLocal<Map<ModuleProjection, Object>> contextProjections = new ThreadLocal<>();
+  private final ThreadLocal<Map<String, ModuleProjection>> contextProjectionsByName = new ThreadLocal<>();
 
   ProjectionRegistryDefault(List<ProjectionDefinition> projectionDefinitions) {
     this.projectionDefinitions = projectionDefinitions.stream().collect(
         Collectors.toMap(ProjectionDefinition::name, Function.identity()));
+  }
+
+  @Override
+  public void load() {
+    projectionDefinitions.values().stream()
+        .filter(definition -> !definition.isLazy())
+        .forEach(definition -> createProjection(definition, new LinkedHashSet<>()));
   }
 
   @Override
@@ -46,6 +56,15 @@ class ProjectionRegistryDefault implements ProjectionRegistry {
         projections.add(projection);
       }
     }
+
+    Map<ModuleProjection, Object> contextProjections = this.contextProjections.get();
+    if (contextProjections != null) {
+      for (ModuleProjection projection : contextProjections.keySet()) {
+        if (projection.type() == targetClass || targetClass.isAssignableFrom(projection.type())) {
+          projections.add((T) projection.target());
+        }
+      }
+    }
     return projections;
   }
 
@@ -57,14 +76,45 @@ class ProjectionRegistryDefault implements ProjectionRegistry {
       ModuleProjection projection = getProjection(projectionDefinition.name(), dependencyPath);
       projections.add(projection);
     }
+
+    Map<ModuleProjection, Object> contextProjections = this.contextProjections.get();
+    if (contextProjections != null) {
+      projections.addAll(contextProjections.keySet());
+    }
     return projections;
   }
 
   @Override
-  public void load() {
-    projectionDefinitions.values().stream()
-        .filter(definition -> !definition.isLazy())
-        .forEach(definition -> createProjection(definition, new LinkedHashSet<>()));
+  public <T> void addContextProjection(String name, Class<T> type, T target) {
+    ModuleProjection projection = new ModuleProjectionImpl(name, type, null, target);
+
+    Map<String, ModuleProjection> mapByName = contextProjectionsByName.get();
+    if (mapByName == null) {
+      mapByName = new HashMap<>();
+      contextProjectionsByName.set(mapByName);
+    }
+    mapByName.put(name, projection);
+
+    Map<ModuleProjection, Object> allContextProjections = contextProjections.get();
+    if (allContextProjections == null) {
+      allContextProjections = new IdentityHashMap<>();
+      contextProjections.set(allContextProjections);
+    }
+    allContextProjections.put(projection, Boolean.TRUE);
+  }
+
+  @Override
+  public void removeContextProjection(String name) {
+    Map<String, ModuleProjection> mapByName = contextProjectionsByName.get();
+    if (mapByName != null) {
+      ModuleProjection projection = mapByName.remove(name);
+      if (projection != null) {
+        Map<ModuleProjection, Object> allContextProjections = contextProjections.get();
+        if (allContextProjections != null) {
+          allContextProjections.remove(projection);
+        }
+      }
+    }
   }
 
   @SuppressWarnings("unchecked")
@@ -73,7 +123,7 @@ class ProjectionRegistryDefault implements ProjectionRegistry {
     if (projection == null) {
       return null;
     }
-    if (!ObjectFunctions.isCompatibleObjectType(targetClass, projection.targetClass())) {
+    if (!ObjectFunctions.isCompatibleObjectType(targetClass, projection.type())) {
       T downgradedProjection = ObjectFunctions.tryDowngrade(projection.target(), targetClass);
       if (downgradedProjection != null) {
         return downgradedProjection;
@@ -86,12 +136,23 @@ class ProjectionRegistryDefault implements ProjectionRegistry {
   private <T> ModuleProjection getProjection(String name, Set<String> dependencyPath) {
     ModuleProjection projection = projectionsByName.get(name);
     if (projection == null) {
+      projection = getContextProjection(name);
+    }
+    if (projection == null) {
       projection = defineProjection(name, dependencyPath);
     }
     if (projection == null) {
       return null;
     }
     return projection;
+  }
+
+  private ModuleProjection getContextProjection(String name) {
+    Map<String, ModuleProjection> contextProjections = contextProjectionsByName.get();
+    if (contextProjections == null) {
+      return null;
+    }
+    return contextProjections.get(name);
   }
 
   private ModuleProjection defineProjection(String name, Set<String> dependencyPath) {
@@ -124,7 +185,6 @@ class ProjectionRegistryDefault implements ProjectionRegistry {
     }
     ModuleProjection projection = new ModuleProjectionImpl(definition.name(), definition.type(), definition, target);
     projectionsByName.put(projection.name(), projection);
-    projectionsByClass.computeIfAbsent(projection.targetClass(), k -> new ArrayList<>()).add(projection);
     return projection;
   }
 

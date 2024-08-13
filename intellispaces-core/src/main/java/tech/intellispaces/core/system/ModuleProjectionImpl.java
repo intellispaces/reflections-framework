@@ -2,14 +2,14 @@ package tech.intellispaces.core.system;
 
 class ModuleProjectionImpl implements ModuleProjection {
   private final String name;
-  private final Class<?> targetClass;
+  private final Class<?> type;
   private final Object target;
   private final ProjectionDefinition provider;
 
-  public ModuleProjectionImpl(String name, Class<?> targetClass, ProjectionDefinition provider, Object target) {
+  public ModuleProjectionImpl(String name, Class<?> type, ProjectionDefinition definition, Object target) {
     this.name = name;
-    this.targetClass = targetClass;
-    this.provider = provider;
+    this.type = type;
+    this.provider = definition;
     this.target = target;
   }
 
@@ -19,8 +19,8 @@ class ModuleProjectionImpl implements ModuleProjection {
   }
 
   @Override
-  public Class<?> targetClass() {
-    return targetClass;
+  public Class<?> type() {
+    return type;
   }
 
   @Override

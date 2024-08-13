@@ -15,4 +15,8 @@ public interface ProjectionRegistry {
   <T> List<T> getProjections(Class<T> targetClass);
 
   Collection<ModuleProjection> allProjections();
+
+  <T> void addContextProjection(String name, Class<T> type, T target);
+
+  void removeContextProjection(String name);
 }

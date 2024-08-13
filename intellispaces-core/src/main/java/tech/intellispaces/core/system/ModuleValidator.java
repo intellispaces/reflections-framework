@@ -3,8 +3,6 @@ package tech.intellispaces.core.system;
 import tech.intellispaces.core.exception.ConfigurationException;
 import tech.intellispaces.core.object.ObjectFunctions;
 
-import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -55,8 +53,6 @@ public class ModuleValidator {
         .collect(Collectors.toMap(UnitProjectionDefinition::name, Function.identity()));
 
     checkUnitInjections(module, projectionProviders);
-    checkStartupMethodInjections(module, projectionProviders);
-    checkShutdownMethodInjections(module, projectionProviders);
   }
 
   private void checkUnitInjections(ModuleDefault module, Map<String, UnitProjectionDefinition> projectionProviders) {
@@ -77,44 +73,6 @@ public class ModuleValidator {
                 "target type. Expected type {}, actual type {}",
             injection.name(), injection.unitClass().getCanonicalName(),
             injection.targetClass().getCanonicalName(), provider.type().getCanonicalName());
-      }
-    }
-  }
-
-  private void checkStartupMethodInjections(
-      ModuleDefault module, Map<String, UnitProjectionDefinition> projectionProviders
-  ) {
-    module.units().stream()
-        .filter(Unit::isMain)
-        .findFirst()
-        .flatMap(Unit::startupMethod)
-        .ifPresent(method -> checkMethodParamInjections(method, projectionProviders));
-  }
-
-  private void checkShutdownMethodInjections(
-      ModuleDefault module, Map<String, UnitProjectionDefinition> projectionProviders
-  ) {
-    module.units().stream()
-        .filter(Unit::isMain)
-        .findFirst()
-        .flatMap(Unit::shutdownMethod)
-        .ifPresent(method -> checkMethodParamInjections(method, projectionProviders));
-  }
-
-  private void checkMethodParamInjections(
-      Method method, Map<String, UnitProjectionDefinition> projectionProviders
-  ) {
-    for (Parameter param : method.getParameters()) {
-      UnitProjectionDefinition provider = projectionProviders.get(param.getName());
-      if (provider == null) {
-        throw ConfigurationException.withMessage("Method '{}' in unit {} requires injection '{}' that is not found",
-            method.getName(), method.getDeclaringClass().getCanonicalName(), param.getName());
-      }
-      if (!ObjectFunctions.isCompatibleObjectType(param.getType(), provider.type())) {
-        throw ConfigurationException.withMessage("Method '{}' in unit {} requires injection '{}' of type {}, " +
-                "but actual injection has type {}",
-            method.getName(), method.getDeclaringClass().getCanonicalName(), param.getName(),
-            param.getType().getCanonicalName(), provider.type().getCanonicalName());
       }
     }
   }

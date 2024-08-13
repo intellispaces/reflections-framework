@@ -8,9 +8,9 @@ public interface ModuleProjection {
   String name();
 
   /**
-   * Projection target class.
+   * Projection type.
    */
-  Class<?> targetClass();
+  Class<?> type();
 
   /**
    * Projection target.

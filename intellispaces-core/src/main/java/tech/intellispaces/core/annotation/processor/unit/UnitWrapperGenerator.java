@@ -3,11 +3,11 @@ package tech.intellispaces.core.annotation.processor.unit;
 import tech.intellispaces.actions.Action;
 import tech.intellispaces.actions.Actions;
 import tech.intellispaces.actions.common.string.StringActions;
-import tech.intellispaces.actions.executor.Executor;
 import tech.intellispaces.actions.getter.ResettableGetter;
+import tech.intellispaces.actions.runner.Runner;
 import tech.intellispaces.commons.exception.UnexpectedViolationException;
 import tech.intellispaces.commons.type.TypeFunctions;
-import tech.intellispaces.core.annotation.Order;
+import tech.intellispaces.core.annotation.Ordinal;
 import tech.intellispaces.core.annotation.Projection;
 import tech.intellispaces.core.annotation.ProjectionDefinition;
 import tech.intellispaces.core.annotation.Wrapper;
@@ -17,9 +17,10 @@ import tech.intellispaces.core.guide.GuideFunctions;
 import tech.intellispaces.core.system.Injection;
 import tech.intellispaces.core.system.Modules;
 import tech.intellispaces.core.system.ProjectionInjection;
-import tech.intellispaces.core.system.ProjectionInjectionImpl;
 import tech.intellispaces.core.system.ProjectionRegistry;
 import tech.intellispaces.core.system.UnitWrapper;
+import tech.intellispaces.core.system.shadow.ProjectionInjectionImpl;
+import tech.intellispaces.core.system.shadow.ShadowUnit;
 import tech.intellispaces.javastatements.customtype.CustomType;
 import tech.intellispaces.javastatements.instance.AnnotationInstance;
 import tech.intellispaces.javastatements.instance.ClassInstance;
@@ -32,6 +33,7 @@ import tech.intellispaces.javastatements.reference.TypeReference;
 import javax.annotation.processing.RoundEnvironment;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,7 +45,7 @@ public class UnitWrapperGenerator extends AbstractGenerator {
   private List<Map<String, Object>> guideMethods;
   private final List<Map<String, String>> projectionProvidersProperties = new ArrayList<>();
   private final List<Map<String, String>> projectionInjectionsProperties = new ArrayList<>();
-  private List<Map<String, String>> actionGetters;
+  private List<String> actionGetters;
 
   public UnitWrapperGenerator(CustomType annotatedType) {
     super(annotatedType);
@@ -89,8 +91,9 @@ public class UnitWrapperGenerator extends AbstractGenerator {
     context.addImport(Action.class);
     context.addImport(Actions.class);
     context.addImport(ResettableGetter.class);
+    context.addImport(ShadowUnit.class);
     context.addImport(Wrapper.class);
-    context.addImport(Order.class);
+    context.addImport(Ordinal.class);
     context.addImport(Modules.class);
     context.addImport(Injection.class);
     context.addImport(ProjectionRegistry.class);
@@ -118,9 +121,9 @@ public class UnitWrapperGenerator extends AbstractGenerator {
     sb.append("  return super.");
     sb.append(guideMethod.name());
     sb.append("(");
-    Executor commaAppender = StringActions.commaAppender(sb);
+    Runner commaAppender = StringActions.skippingFirstTimeCommaAppender(sb);
     for (MethodParam param : guideMethod.params()) {
-      commaAppender.execute();
+      commaAppender.run();
       sb.append(param.name());
     }
     sb.append(");\n}");
@@ -130,30 +133,24 @@ public class UnitWrapperGenerator extends AbstractGenerator {
   private void analyzeActionGetters() {
     this.actionGetters = annotatedType.declaredMethods().stream()
         .filter(GuideFunctions::isGuideMethod)
+        .sorted(Comparator.comparingInt(m -> m.selectAnnotation(Ordinal.class).orElseThrow().value()))
         .map(this::buildGuideActionGetter)
         .toList();
   }
 
-  private Map<String, String> buildGuideActionGetter(MethodStatement guideMethod) {
+  private String buildGuideActionGetter(MethodStatement guideMethod) {
     String actionGetterMame = buildActionGetterName(guideMethod);
 
-    var declaration = new StringBuilder();
-    declaration.append("private final ResettableGetter<Action> ");
-    declaration.append(actionGetterMame);
-    declaration.append(" = Actions.resettableGetter(\n");
-    declaration.append("  Actions.get(super::").append(guideMethod.name());
-    declaration.append(", ");
-    declaration.append(buildGuideActionTypeParameter(guideMethod.returnType().orElseThrow())).append(".class");
+    var sb = new StringBuilder();
+    sb.append("Actions.get(super::").append(guideMethod.name());
+    sb.append(", ");
+    sb.append(buildGuideActionTypeParameter(guideMethod.returnType().orElseThrow())).append(".class");
     for (MethodParam param : guideMethod.params()) {
-      declaration.append(", ");
-      declaration.append(buildGuideActionTypeParameter(param.type())).append(".class");
+      sb.append(", ");
+      sb.append(buildGuideActionTypeParameter(param.type())).append(".class");
     }
-    declaration.append(")\n");
-    declaration.append(");");
-    return Map.of(
-        "name", actionGetterMame,
-        "declaration", declaration.toString()
-    );
+    sb.append(")");
+    return sb.toString();
   }
 
   private String buildGuideActionTypeParameter(TypeReference type) {
@@ -268,9 +265,9 @@ public class UnitWrapperGenerator extends AbstractGenerator {
     signature.append(projectionMethod.name());
     signature.append("(");
 
-    Executor commaAppender = StringActions.commaAppender(signature);
+    Runner commaAppender = StringActions.skippingFirstTimeCommaAppender(signature);
     for (MethodParam param : projectionMethod.params()) {
-      commaAppender.execute();
+      commaAppender.run();
       context.addImports(param.type().dependencyTypenames());
       signature.append(param.type().actualDeclaration());
       signature.append(" ");
@@ -334,10 +331,9 @@ public class UnitWrapperGenerator extends AbstractGenerator {
     body.append(method.name());
     body.append("(");
 
-    Executor commaAppender = StringActions.commaAppender(signature)
-        .then(StringActions.commaAppender(body));
+    Runner commaAppender = StringActions.skippingFirstTimeCommaAppender(signature, body);
     for (MethodParam param : method.params()) {
-      commaAppender.execute();
+      commaAppender.run();
 
       context.addImports(param.type().dependencyTypenames());
       signature.append(param.type().actualDeclaration());

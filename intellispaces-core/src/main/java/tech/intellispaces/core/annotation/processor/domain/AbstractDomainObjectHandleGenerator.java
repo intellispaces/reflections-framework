@@ -47,12 +47,13 @@ abstract class AbstractDomainObjectHandleGenerator extends AbstractObjectHandleG
   }
 
   protected CustomType buildActualType(CustomType domain, RoundEnvironment roundEnv) {
-    InterfaceType anInterface = domain.asInterfaceOrElseThrow();
-    var builder = Interfaces.build(anInterface);
-    getAdditionalOMethods(anInterface, roundEnv).forEach(builder::addDeclaredMethod);
+    InterfaceType domainInterface = domain.asInterfaceOrElseThrow();
+
+    var builder = Interfaces.build(domainInterface);
+    getAdditionalOMethods(domainInterface, roundEnv).forEach(builder::addDeclaredMethod);
 
     var parentInterfaces = new ArrayList<CustomTypeReference>();
-    for (CustomTypeReference parent : anInterface.extendedInterfaces()) {
+    for (CustomTypeReference parent : domainInterface.extendedInterfaces()) {
       parentInterfaces.add(
           CustomTypeReferences.get(buildActualType(parent.targetType(), roundEnv), parent.typeArguments())
       );

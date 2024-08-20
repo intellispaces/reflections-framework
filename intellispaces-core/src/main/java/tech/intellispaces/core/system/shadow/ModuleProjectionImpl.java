@@ -1,4 +1,7 @@
-package tech.intellispaces.core.system;
+package tech.intellispaces.core.system.shadow;
+
+import tech.intellispaces.core.system.ModuleProjection;
+import tech.intellispaces.core.system.ProjectionDefinition;
 
 class ModuleProjectionImpl implements ModuleProjection {
   private final String name;

@@ -1,9 +1,9 @@
 package tech.intellispaces.core.system;
 
-import tech.intellispaces.actions.Action;
 import tech.intellispaces.commons.exception.UnexpectedViolationException;
 import tech.intellispaces.core.annotation.Projection;
 import tech.intellispaces.core.annotation.Wrapper;
+import tech.intellispaces.core.system.shadow.ShadowUnit;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -12,11 +12,13 @@ import java.util.List;
 
 public interface UnitWrapper {
 
+  void $init(ShadowUnit shadowUnit);
+
+  ShadowUnit $shadowUnit();
+
+
+
   List<Injection> getInjections();
-
-  int numberGuides();
-
-  Action getGuideAction(int index);
 
   static Method getActualMethod(Method wrapperMethod) {
     try {

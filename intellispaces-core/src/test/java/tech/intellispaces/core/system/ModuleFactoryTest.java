@@ -14,19 +14,21 @@ import tech.intellispaces.core.samples.system.ModuleWithTwoProjectionProvidersIn
 import tech.intellispaces.core.samples.system.ModuleWithTwoProjectionProvidersInDifferentUnitsWithCyclicDependency2;
 import tech.intellispaces.core.samples.system.ModuleWithTwoProjectionProvidersInDifferentUnitsWithCyclicDependency3;
 import tech.intellispaces.core.samples.system.ModuleWithTwoProjectionProvidersWithCyclicDependency;
+import tech.intellispaces.core.system.shadow.ShadowModule;
+import tech.intellispaces.core.system.shadow.ModuleFactory;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * Tests for {@link ModuleDefaultFactory} class.
+ * Tests for {@link ModuleFactory} class.
  */
-public class ModuleDefaultFactoryTest {
-  private final ModuleDefaultFactory factory = new ModuleDefaultFactory();
+public class ModuleFactoryTest {
+  private final ModuleFactory factory = new ModuleFactory();
 
   @Test
   public void testCreateModule_whenOneEmptyUnit() {
     // When
-    ModuleDefault module = factory.createModule(EmptyModule.class);
+    ShadowModule module = factory.createModule(EmptyModule.class);
 
     // Then
     assertThat(module.units()).hasSize(1);
@@ -39,7 +41,7 @@ public class ModuleDefaultFactoryTest {
   @Test
   public void testCreateModule_whenOneUnit_andStartup_andShutdownMethods() {
     // When
-    ModuleDefault module = factory.createModule(ModuleWithStartupAndShutdownMethods.class);
+    ShadowModule module = factory.createModule(ModuleWithStartupAndShutdownMethods.class);
 
     // Then
     assertThat(module.units()).hasSize(1);
@@ -54,7 +56,7 @@ public class ModuleDefaultFactoryTest {
   @Test
   public void testCreateModule_whenOneUnit_andSimpleProjections() {
     // When
-    ModuleDefault module = factory.createModule(ModuleWithSimpleProjections.class);
+    ShadowModule module = factory.createModule(ModuleWithSimpleProjections.class);
 
     // Then
     assertThat(module.units()).hasSize(1);

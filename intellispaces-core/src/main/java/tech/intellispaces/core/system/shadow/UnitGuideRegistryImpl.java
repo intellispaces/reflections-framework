@@ -1,7 +1,8 @@
-package tech.intellispaces.core.system;
+package tech.intellispaces.core.system.shadow;
 
 import tech.intellispaces.core.guide.Guide;
 import tech.intellispaces.core.guide.GuideKind;
+import tech.intellispaces.core.system.UnitGuideRegistry;
 
 import java.util.ArrayList;
 import java.util.Collections;

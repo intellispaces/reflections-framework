@@ -9,38 +9,42 @@ import {{$importedClass}};
  */
 {{$generatedAnnotation}}
 public class {{$classSimpleName}}{{$typeParamsFull}} extends {{$sourceClassSimpleName}}{{$typeParamsBrief}} implements ObjectHandleWrapper<{{$domainClassSimpleName}}{{$typeParamsBrief}}> {
-{{for guideGetter : $guideGetters}}
-  {{$guideGetter}}
-{{end}}
-
-{{for actionGetter : $actionGetters}}
-  {{$actionGetter.get("declaration")}}
-{{end}}
-  private final ResettableGetter<Action>[] _actionGetters = new ResettableGetter[] {
-{{for actionGetter : $actionGetters}}
-    {{$actionGetter.get("name")}}{{when $actionGetter.isNotLast()}},{{end}}
-{{end}}
-  };
+  private ShadowObjectHandle $shadowHandle;
 
 {{for constructor : $constructors}}
   public {{$classSimpleName}}({{for param : $constructor.get("params")}}{{$param.get("type")}} {{$param.get("name")}}{{when $param.isNotLast()}}, {{end}}{{end}}) {
     super({{for param : $constructor.get("params")}}{{$param.get("name")}}{{when $param.isNotLast()}},{{end}}{{end}});
+    ShadowModules.current().objectRegistry().add(this);
   }
 {{end}}
 
+  @Override
+  public void $init(ShadowObjectHandle shadowHandle) {
+    this.$shadowHandle = shadowHandle;
+{{when $transitionActions.isNotEmpty()}}
+    this.$shadowHandle.setTransitionActions(
+{{for transitionAction : $transitionActions}}
+      {{$transitionAction}}{{when $transitionAction.isNotLast()}},{{end}}
+{{end}}
+    );
+{{end}}
+{{when $guideActions.isNotEmpty()}}
+    this.$shadowHandle.setGuideActions(
+{{for guideAction : $guideActions}}
+      {{$guideAction}}{{when $guideAction.isNotLast()}},{{end}}
+{{end}}
+    );
+{{end}}
+  }
+
+  @Override
+  public ShadowObjectHandle $shadowHandle() {
+    return this.$shadowHandle;
+  }
+
 {{for method : $domainMethods}}
-  @Order({{$method.index()}})
   @Override
   {{$method.get("declaration")}};
 
 {{end}}
-  @Override
-  public int numberGuides() {
-    return {{$domainMethods.size()}};
-  }
-
-  @Override
-  public Action getGuideAction(int index) {
-    return _actionGetters[index].get();
-  }
 }

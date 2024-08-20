@@ -1,7 +1,7 @@
 package tech.intellispaces.core.object;
 
 import tech.intellispaces.actions.common.string.StringActions;
-import tech.intellispaces.actions.executor.Executor;
+import tech.intellispaces.actions.runner.Runner;
 import tech.intellispaces.commons.exception.UnexpectedViolationException;
 import tech.intellispaces.commons.type.TypeFunctions;
 import tech.intellispaces.core.annotation.Data;
@@ -245,9 +245,9 @@ public class ObjectFunctions {
         sb.append(Class.class.getSimpleName());
         if (!customTypeReference.typeArguments().isEmpty()) {
           sb.append("<");
-          Executor commaAppender = StringActions.commaAppender(sb);
+          Runner commaAppender = StringActions.skippingFirstTimeCommaAppender(sb);
           for (NotPrimitiveReference argType : customTypeReference.typeArguments()) {
-            commaAppender.execute();
+            commaAppender.run();
             sb.append(argType.actualDeclaration());
           }
           sb.append(">");
@@ -262,9 +262,9 @@ public class ObjectFunctions {
         sb.append(simpleName);
         if (!customTypeReference.typeArguments().isEmpty()) {
           sb.append("<");
-          Executor commaAppender = StringActions.commaAppender(sb);
+          Runner commaAppender = StringActions.skippingFirstTimeCommaAppender(sb);
           for (NotPrimitiveReference argType : customTypeReference.typeArguments()) {
-            commaAppender.execute();
+            commaAppender.run();
             sb.append(getObjectHandleDeclaration(argType, ObjectHandleTypes.Common, simpleNameMapping));
           }
           sb.append(">");

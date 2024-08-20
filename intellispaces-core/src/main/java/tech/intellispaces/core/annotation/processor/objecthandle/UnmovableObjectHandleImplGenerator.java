@@ -1,17 +1,18 @@
 package tech.intellispaces.core.annotation.processor.objecthandle;
 
-import tech.intellispaces.actions.Action;
 import tech.intellispaces.actions.Actions;
 import tech.intellispaces.actions.getter.ResettableGetter;
-import tech.intellispaces.core.annotation.Order;
+import tech.intellispaces.core.annotation.Ordinal;
 import tech.intellispaces.core.exception.TraverseException;
 import tech.intellispaces.core.guide.n0.Mapper0;
 import tech.intellispaces.core.guide.n1.Mapper1;
 import tech.intellispaces.core.object.ObjectFunctions;
 import tech.intellispaces.core.object.ObjectHandleTypes;
-import tech.intellispaces.core.object.ObjectHandleWrapper;
 import tech.intellispaces.core.space.transition.TransitionFunctions;
 import tech.intellispaces.core.system.Modules;
+import tech.intellispaces.core.system.ObjectHandleWrapper;
+import tech.intellispaces.core.system.shadow.ShadowModules;
+import tech.intellispaces.core.system.shadow.ShadowObjectHandle;
 import tech.intellispaces.core.transition.TransitionMethod0;
 import tech.intellispaces.core.transition.TransitionMethod1;
 import tech.intellispaces.javastatements.customtype.CustomType;
@@ -48,8 +49,8 @@ public class UnmovableObjectHandleImplGenerator extends AbstractObjectHandleImpl
     vars.put("domainClassSimpleName", domainSimpleClassName);
     vars.put("constructors", constructors);
     vars.put("importedClasses", context.getImports());
-    vars.put("guideGetters", guideGetters);
-    vars.put("actionGetters", actionGetters);
+    vars.put("transitionActions", transitionActions);
+    vars.put("guideActions", guideActions);
     vars.put("domainMethods", methods);
     return vars;
   }
@@ -64,12 +65,13 @@ public class UnmovableObjectHandleImplGenerator extends AbstractObjectHandleImpl
     context.generatedClassCanonicalName(getGeneratedClassCanonicalName());
 
     context.addImport(Modules.class);
+    context.addImport(ShadowModules.class);
     context.addImport(TraverseException.class);
     context.addImport(ResettableGetter.class);
-    context.addImport(Action.class);
     context.addImport(Actions.class);
-    context.addImport(Order.class);
+    context.addImport(Ordinal.class);
     context.addImport(ObjectHandleWrapper.class);
+    context.addImport(ShadowObjectHandle.class);
 
     context.addImport(Mapper0.class);
     context.addImport(Mapper1.class);
@@ -84,8 +86,8 @@ public class UnmovableObjectHandleImplGenerator extends AbstractObjectHandleImpl
 
     analyzeTypeParams(annotatedType);
     analyzeConstructors(annotatedType);
-    analyzeGuideGetters(annotatedType, roundEnv);
-    analyzeActionGetters(annotatedType, roundEnv);
+    analyzeGuideActions(annotatedType);
+    analyzeTransitionActions();
     analyzeObjectHandleMethods(annotatedType, roundEnv);
     return true;
   }

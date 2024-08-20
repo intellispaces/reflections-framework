@@ -1,7 +1,7 @@
 package tech.intellispaces.core.annotation.processor.domain;
 
 import tech.intellispaces.actions.common.string.StringActions;
-import tech.intellispaces.actions.executor.Executor;
+import tech.intellispaces.actions.runner.Runner;
 import tech.intellispaces.core.annotation.ObjectHandleBunch;
 import tech.intellispaces.core.annotation.Transition;
 import tech.intellispaces.core.common.NameConventionFunctions;
@@ -88,9 +88,9 @@ public class ObjectHandleBunchGenerator extends AbstractDomainObjectHandleGenera
 
     var sb = new StringBuilder();
     sb.append("extends ");
-    Executor commaAppender = StringActions.commaAppender(sb);
+    Runner commaAppender = StringActions.skippingFirstTimeCommaAppender(sb);
     for (CustomTypeReference parent : parents) {
-      commaAppender.execute();
+      commaAppender.run();
       sb.append(context.addToImportAndGetSimpleName(
           NameConventionFunctions.getBunchObjectHandleTypename(parent.targetType().className()))
       );

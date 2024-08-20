@@ -3,7 +3,7 @@ package tech.intellispaces.core.guide.n2;
 import tech.intellispaces.commons.exception.UnexpectedViolationException;
 import tech.intellispaces.core.exception.TraverseException;
 import tech.intellispaces.core.guide.GuideLogger;
-import tech.intellispaces.core.object.ObjectHandleWrapper;
+import tech.intellispaces.core.system.ObjectHandleWrapper;
 
 import java.lang.reflect.Method;
 
@@ -21,13 +21,13 @@ public class ObjectMover2<S extends ObjectHandleWrapper<S>, B, Q1, Q2> implement
   private final Class<S> objectHandleClass;
   private final String tid;
   private final Method guideMethod;
-  private final int guideActionIndex;
+  private final int transitionIndex;
 
   public ObjectMover2(
       String tid,
       Class<S> objectHandleClass,
       Method guideMethod,
-      int guideActionIndex
+      int transitionIndex
   ) {
     if (guideMethod.getParameterCount() != 2) {
       throw UnexpectedViolationException.withMessage("Attached guide should have 2 qualifiers");
@@ -35,7 +35,7 @@ public class ObjectMover2<S extends ObjectHandleWrapper<S>, B, Q1, Q2> implement
     this.tid = tid;
     this.objectHandleClass = objectHandleClass;
     this.guideMethod = guideMethod;
-    this.guideActionIndex = guideActionIndex;
+    this.transitionIndex = transitionIndex;
   }
 
   @Override
@@ -48,7 +48,7 @@ public class ObjectMover2<S extends ObjectHandleWrapper<S>, B, Q1, Q2> implement
   public B move(S source, Q1 qualifier1, Q2 qualifier2) throws TraverseException {
     try {
       GuideLogger.logCallGuide(guideMethod);
-      return (B) source.getGuideAction(guideActionIndex).asAction2().execute(qualifier1, qualifier2);
+      return (B) source.$shadowHandle().getGuideAction(transitionIndex).asAction2().execute(qualifier1, qualifier2);
     } catch (TraverseException e) {
       throw e;
     } catch (Exception e) {

@@ -40,7 +40,7 @@ public class UnitMapper1<S, T, Q> implements AbstractMapper1<S, T, Q> {
   public T map(S source, Q qualifier) throws TraverseException {
     try {
       GuideLogger.logCallGuide(guideMethod);
-      return (T) unitInstance.getGuideAction(guideActionIndex).asAction2().execute(source, qualifier);
+      return (T) unitInstance.$shadowUnit().getGuideAction(guideActionIndex).asAction2().execute(source, qualifier);
     } catch (TraverseException e) {
       throw e;
     } catch (Exception e) {

@@ -1,4 +1,4 @@
-package tech.intellispaces.core.system;
+package tech.intellispaces.core.system.shadow;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +21,10 @@ import tech.intellispaces.core.space.transition.Transition0;
 import tech.intellispaces.core.space.transition.Transition1;
 import tech.intellispaces.core.space.transition.Transition2;
 import tech.intellispaces.core.space.transition.TransitionFunctions;
+import tech.intellispaces.core.system.ModuleProjection;
+import tech.intellispaces.core.system.ObjectRegistry;
+import tech.intellispaces.core.system.ProjectionRegistry;
+import tech.intellispaces.core.system.Unit;
 import tech.intellispaces.core.traverse.DeclarativePlan;
 import tech.intellispaces.core.traverse.TraverseAnalyzer;
 import tech.intellispaces.core.traverse.TraverseExecutor;
@@ -31,29 +35,37 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * Implementation of the {@link ModuleDefault}.
+ * Implementation of the {@link ShadowModule}.
  */
-public class ModuleDefaultImpl implements ModuleDefault {
-  private final List<Unit> units;
+class ModuleImpl implements ShadowModule {
+  private final List<ShadowUnit> units;
+  private final ObjectRegistry objectRegistry;
   private final ProjectionRegistry projectionRegistry;
   private final TraverseAnalyzer traverseAnalyzer;
   private final TraverseExecutor traverseExecutor;
 
   private final AtomicBoolean started = new AtomicBoolean(false);
-  private final Getter<Unit> mainUnitGetter = Actions.cachedLazyGetter(this::mainUnitSupplier);
+  private final Getter<ShadowUnit> mainUnitGetter = Actions.cachedLazyGetter(this::mainUnitSupplier);
 
-  private static final Logger LOG = LoggerFactory.getLogger(ModuleDefaultImpl.class);
+  private static final Logger LOG = LoggerFactory.getLogger(ModuleImpl.class);
 
-  public ModuleDefaultImpl(
-      List<Unit> units,
+  ModuleImpl(
+      List<ShadowUnit> units,
+      ObjectRegistry objectRegistry,
       ProjectionRegistry projectionRegistry,
       TraverseAnalyzer traverseAnalyzer,
       TraverseExecutor traverseExecutor
   ) {
     this.units = List.copyOf(units);
+    this.objectRegistry = objectRegistry;
     this.projectionRegistry = projectionRegistry;
     this.traverseAnalyzer = traverseAnalyzer;
     this.traverseExecutor = traverseExecutor;
+  }
+
+  @Override
+  public ObjectRegistry objectRegistry() {
+    return objectRegistry;
   }
 
   @Override
@@ -70,11 +82,11 @@ public class ModuleDefaultImpl implements ModuleDefault {
   }
 
   @Override
-  public Unit mainUnit() {
+  public ShadowUnit mainUnit() {
     return mainUnitGetter.get();
   }
 
-  private Unit mainUnitSupplier() {
+  private ShadowUnit mainUnitSupplier() {
     return units.stream()
         .filter(Unit::isMain)
         .findFirst()
@@ -82,7 +94,7 @@ public class ModuleDefaultImpl implements ModuleDefault {
   }
 
   @Override
-  public List<Unit> units() {
+  public List<ShadowUnit> units() {
     return units;
   }
 

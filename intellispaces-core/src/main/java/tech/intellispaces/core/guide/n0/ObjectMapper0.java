@@ -3,7 +3,7 @@ package tech.intellispaces.core.guide.n0;
 import tech.intellispaces.commons.exception.UnexpectedViolationException;
 import tech.intellispaces.core.exception.TraverseException;
 import tech.intellispaces.core.guide.GuideLogger;
-import tech.intellispaces.core.object.ObjectHandleWrapper;
+import tech.intellispaces.core.system.ObjectHandleWrapper;
 
 import java.lang.reflect.Method;
 
@@ -18,13 +18,13 @@ public class ObjectMapper0<S extends ObjectHandleWrapper<S>, T> implements Abstr
   private final Class<S> objectHandleClass;
   private final String tid;
   private final Method guideMethod;
-  private final int guideActionIndex;
+  private final int transitionIndex;
 
   public ObjectMapper0(
       String tid,
       Class<S> objectHandleClass,
       Method guideMethod,
-      int guideActionIndex
+      int transitionIndex
   ) {
     if (guideMethod.getParameterCount() != 0) {
       throw UnexpectedViolationException.withMessage("Guide should not have parameters");
@@ -32,7 +32,7 @@ public class ObjectMapper0<S extends ObjectHandleWrapper<S>, T> implements Abstr
     this.tid = tid;
     this.objectHandleClass = objectHandleClass;
     this.guideMethod = guideMethod;
-    this.guideActionIndex = guideActionIndex;
+    this.transitionIndex = transitionIndex;
   }
 
   @Override
@@ -45,7 +45,7 @@ public class ObjectMapper0<S extends ObjectHandleWrapper<S>, T> implements Abstr
   public T map(S source) throws TraverseException {
     try {
       GuideLogger.logCallGuide(guideMethod);
-      return (T) source.getGuideAction(guideActionIndex).asAction0().execute();
+      return (T) source.$shadowHandle().getGuideAction(transitionIndex).asAction0().execute();
     } catch (TraverseException e) {
       throw e;
     } catch (Exception e) {

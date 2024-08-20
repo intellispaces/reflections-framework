@@ -4,7 +4,7 @@ import tech.intellispaces.commons.exception.UnexpectedViolationException;
 import tech.intellispaces.commons.type.TypeFunctions;
 import tech.intellispaces.core.annotation.Mapper;
 import tech.intellispaces.core.annotation.Mover;
-import tech.intellispaces.core.annotation.Order;
+import tech.intellispaces.core.annotation.Ordinal;
 import tech.intellispaces.core.annotation.Transition;
 import tech.intellispaces.core.common.NameConventionFunctions;
 import tech.intellispaces.core.guide.n0.Mapper0;
@@ -114,12 +114,12 @@ public final class GuideFunctions {
   private static <S, T> Guide<S, T> createObjectMapper(
       Class<S> objectHandleClass, String tid, Method guideMethod
   ) {
-    int guideIndex = getObjectGuideIndex(objectHandleClass, guideMethod);
+    int transitionIndex = getTransitionIndex(objectHandleClass, guideMethod);
     int qualifiersCount = guideMethod.getParameterCount();
     return switch (qualifiersCount) {
-      case 0 -> new ObjectMapper0<>(tid, (Class) objectHandleClass, guideMethod, guideIndex);
-      case 1 -> new ObjectMapper1<>(tid, (Class) objectHandleClass, guideMethod, guideIndex);
-      case 2 -> new ObjectMapper2<>(tid, (Class) objectHandleClass, guideMethod, guideIndex);
+      case 0 -> new ObjectMapper0<>(tid, (Class) objectHandleClass, guideMethod, transitionIndex);
+      case 1 -> new ObjectMapper1<>(tid, (Class) objectHandleClass, guideMethod, transitionIndex);
+      case 2 -> new ObjectMapper2<>(tid, (Class) objectHandleClass, guideMethod, transitionIndex);
       default -> throw UnexpectedViolationException.withMessage("Unsupported number of guide qualifiers: {}",
           qualifiersCount);
     };
@@ -129,18 +129,18 @@ public final class GuideFunctions {
   private static <S, T> Guide<S, T> createObjectMover(
       Class<S> objectHandleClass, String tid, Method guideMethod
   ) {
-    int guideIndex = getObjectGuideIndex(objectHandleClass, guideMethod);
+    int transitionIndex = getTransitionIndex(objectHandleClass, guideMethod);
     int qualifiersCount = guideMethod.getParameterCount();
     return switch (qualifiersCount) {
-      case 0 -> new ObjectMover0<>(tid, (Class) objectHandleClass, guideMethod, guideIndex);
-      case 1 -> new ObjectMover1<>(tid, (Class) objectHandleClass, guideMethod, guideIndex);
-      case 2 -> new ObjectMover2<>(tid, (Class) objectHandleClass, guideMethod, guideIndex);
+      case 0 -> new ObjectMover0<>(tid, (Class) objectHandleClass, guideMethod, transitionIndex);
+      case 1 -> new ObjectMover1<>(tid, (Class) objectHandleClass, guideMethod, transitionIndex);
+      case 2 -> new ObjectMover2<>(tid, (Class) objectHandleClass, guideMethod, transitionIndex);
       default -> throw UnexpectedViolationException.withMessage("Unsupported number of guide qualifiers: {}",
           qualifiersCount);
     };
   }
 
-  private static int getObjectGuideIndex(Class<?> objectHandleClass, Method guideMethod) {
+  public static int getTransitionIndex(Class<?> objectHandleClass, Method guideMethod) {
     String implClassCanonicalName = NameConventionFunctions.getObjectHandleImplementationCanonicalName(
         objectHandleClass
     );
@@ -158,10 +158,10 @@ public final class GuideFunctions {
       throw UnexpectedViolationException.withMessage("Could not find override method in object handle implementation " +
           "class {}. Method {}", objectHandleImplClass.get(), guideMethod.getName());
     }
-    Optional<Order> indexAnnotation = objectHandleImplGuideMethod.get().selectAnnotation(Order.class);
+    Optional<Ordinal> indexAnnotation = objectHandleImplGuideMethod.get().selectAnnotation(Ordinal.class);
     if (indexAnnotation.isEmpty()) {
       throw UnexpectedViolationException.withMessage("Method {} does not contain annotation {}",
-          guideMethod.getName(), Order.class.getCanonicalName());
+          guideMethod.getName(), Ordinal.class.getCanonicalName());
     }
     return indexAnnotation.get().value();
   }
@@ -176,10 +176,10 @@ public final class GuideFunctions {
       throw UnexpectedViolationException.withMessage("Could not find override method in unit wrapper " +
           "class {}. Method {}", unitWrapperClass, guideMethod.getName());
     }
-    Optional<Order> indexAnnotation = overrideGuideMethod.get().selectAnnotation(Order.class);
+    Optional<Ordinal> indexAnnotation = overrideGuideMethod.get().selectAnnotation(Ordinal.class);
     if (indexAnnotation.isEmpty()) {
       throw UnexpectedViolationException.withMessage("Method {} does not contain annotation {}",
-          guideMethod.getName(), Order.class.getCanonicalName());
+          guideMethod.getName(), Ordinal.class.getCanonicalName());
     }
     return indexAnnotation.get().value();
   }

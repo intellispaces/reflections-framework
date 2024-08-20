@@ -1,9 +1,10 @@
-package tech.intellispaces.core.system;
+package tech.intellispaces.core.system.shadow;
 
 import tech.intellispaces.core.guide.Guide;
 import tech.intellispaces.core.guide.GuideFunctions;
 import tech.intellispaces.core.guide.GuideKind;
 import tech.intellispaces.core.object.ObjectFunctions;
+import tech.intellispaces.core.system.ObjectGuideRegistry;
 
 import java.util.HashMap;
 import java.util.List;

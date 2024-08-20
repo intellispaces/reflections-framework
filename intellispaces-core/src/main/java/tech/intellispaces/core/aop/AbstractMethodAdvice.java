@@ -1,22 +1,29 @@
 package tech.intellispaces.core.aop;
 
 import tech.intellispaces.actions.Action;
-import tech.intellispaces.actions.interceptor.AbstractInterceptor;
+import tech.intellispaces.actions.wrapper.AbstractWrapper;
 import tech.intellispaces.javastatements.method.MethodStatement;
 
-public abstract class AbstractMethodAdvice extends AbstractInterceptor implements Advice {
-  protected final MethodStatement joinPoint;
+public abstract class AbstractMethodAdvice extends AbstractWrapper implements MethodAdvice {
+  protected final MethodStatement joinMethod;
 
-  public AbstractMethodAdvice(MethodStatement joinPoint, Action nextAction) {
-    super(nextAction);
-    this.joinPoint = joinPoint;
+  /**
+   * The constructor.<p/>
+   *
+   * Join method and join action represents advice join point.
+   */
+  public AbstractMethodAdvice(MethodStatement joinMethod, Action joinAction) {
+    super(joinAction);
+    this.joinMethod = joinMethod;
   }
 
-  public MethodStatement joinPoint() {
-    return joinPoint;
+  @Override
+  public MethodStatement joinMethod() {
+    return joinMethod;
   }
 
-  public Action nextAction() {
-    return interceptedAction();
+  @Override
+  public Action joinAction() {
+    return wrappedAction();
   }
 }

@@ -1,13 +1,15 @@
-package tech.intellispaces.core.system;
+package tech.intellispaces.core.system.shadow;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import tech.intellispaces.core.system.Module;
+import tech.intellispaces.core.system.Modules;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class ModuleLoader {
-  private static final ModuleDefaultFactory factory = new ModuleDefaultFactory();
+  private static final ModuleFactory factory = new ModuleFactory();
   private static final ModuleValidator moduleValidator = new ModuleValidator();
 
   private static final Logger LOG = LoggerFactory.getLogger(ModuleLoader.class);
@@ -26,22 +28,22 @@ public class ModuleLoader {
       LOG.warn("Current module has already been loaded into application. Current active module will be reloaded");
     }
 
-    ModuleDefault newModule = factory.createModule(unitClasses);
+    ShadowModule newModule = factory.createModule(unitClasses);
     moduleValidator.validate(newModule);
     if (currentModule != null) {
       currentModule.stop();
-      DefaultModules.setCurrentModule(null);
+      ShadowModules.setCurrentModule(null);
     }
-    DefaultModules.setCurrentModule(newModule);
+    ShadowModules.setCurrentModule(newModule);
 
     newModule.start(args);
   }
 
   public static void unloadModule() {
-    Module currentModule = DefaultModules.currentSilently();
+    Module currentModule = ShadowModules.currentSilently();
     if (currentModule != null) {
       currentModule.stop();
     }
-    DefaultModules.setCurrentModule(null);
+    ShadowModules.setCurrentModule(null);
   }
 }

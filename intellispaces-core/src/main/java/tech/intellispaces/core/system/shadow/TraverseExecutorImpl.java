@@ -1,4 +1,4 @@
-package tech.intellispaces.core.system;
+package tech.intellispaces.core.system.shadow;
 
 import tech.intellispaces.core.exception.TraverseException;
 import tech.intellispaces.core.guide.n0.Guide0;

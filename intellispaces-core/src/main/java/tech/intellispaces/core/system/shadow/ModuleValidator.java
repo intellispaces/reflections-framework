@@ -1,7 +1,11 @@
-package tech.intellispaces.core.system;
+package tech.intellispaces.core.system.shadow;
 
 import tech.intellispaces.core.exception.ConfigurationException;
 import tech.intellispaces.core.object.ObjectFunctions;
+import tech.intellispaces.core.system.InjectionTypes;
+import tech.intellispaces.core.system.ProjectionInjection;
+import tech.intellispaces.core.system.Unit;
+import tech.intellispaces.core.system.UnitProjectionDefinition;
 
 import java.util.List;
 import java.util.Map;
@@ -13,14 +17,14 @@ import java.util.stream.Collectors;
  */
 public class ModuleValidator {
 
-  public void validate(ModuleDefault module) {
+  public void validate(ShadowModule module) {
     checkThatOneMainUnit(module);
     checkThatThereAreNoProjectionsWithSameName(module);
     checkInjections(module);
   }
 
-  private void checkThatOneMainUnit(ModuleDefault module) {
-    List<Unit> mainUnits = module.units().stream()
+  private void checkThatOneMainUnit(ShadowModule module) {
+    List<ShadowUnit> mainUnits = module.units().stream()
         .filter(Unit::isMain)
         .toList();
     if (mainUnits.isEmpty()) {
@@ -32,9 +36,9 @@ public class ModuleValidator {
     }
   }
 
-  private void checkThatThereAreNoProjectionsWithSameName(ModuleDefault module) {
+  private void checkThatThereAreNoProjectionsWithSameName(ShadowModule module) {
     String message = module.units().stream()
-        .map(Unit::projectionProviders)
+        .map(Unit::projectionDefinitions)
         .flatMap(List::stream)
         .collect(Collectors.groupingBy(UnitProjectionDefinition::name))
         .entrySet().stream()
@@ -46,16 +50,16 @@ public class ModuleValidator {
     }
   }
 
-  private void checkInjections(ModuleDefault module) {
+  private void checkInjections(ShadowModule module) {
     Map<String, UnitProjectionDefinition> projectionProviders = module.units().stream()
-        .map(Unit::projectionProviders)
+        .map(Unit::projectionDefinitions)
         .flatMap(List::stream)
         .collect(Collectors.toMap(UnitProjectionDefinition::name, Function.identity()));
 
     checkUnitInjections(module, projectionProviders);
   }
 
-  private void checkUnitInjections(ModuleDefault module, Map<String, UnitProjectionDefinition> projectionProviders) {
+  private void checkUnitInjections(ShadowModule module, Map<String, UnitProjectionDefinition> projectionProviders) {
     List<ProjectionInjection> unitInjections = module.units().stream()
         .map(Unit::injections)
         .flatMap(List::stream)

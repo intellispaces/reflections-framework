@@ -1,7 +1,7 @@
 package tech.intellispaces.core.annotation.processor;
 
 import tech.intellispaces.actions.common.string.StringActions;
-import tech.intellispaces.actions.executor.Executor;
+import tech.intellispaces.actions.runner.Runner;
 import tech.intellispaces.commons.exception.UnexpectedViolationException;
 import tech.intellispaces.commons.type.TypeFunctions;
 import tech.intellispaces.core.common.NameConventionFunctions;
@@ -247,9 +247,9 @@ public abstract class AbstractGuideGenerator extends AbstractGenerator {
         var sb = new StringBuilder();
         sb.append(simpleName);
         sb.append("<");
-        Executor commaAppender = StringActions.commaAppender(sb);
+        Runner commaAppender = StringActions.skippingFirstTimeCommaAppender(sb);
         for (NotPrimitiveReference typeArg : type.asCustomTypeReferenceOrElseThrow().typeArguments()) {
-          commaAppender.execute();
+          commaAppender.run();
           sb.append(getRawType(typeArg));
         }
         sb.append(">");
@@ -271,9 +271,9 @@ public abstract class AbstractGuideGenerator extends AbstractGenerator {
         var sb = new StringBuilder();
         sb.append(simpleName);
         sb.append("<");
-        Executor commaAppender = StringActions.commaAppender(sb);
+        Runner commaAppender = StringActions.skippingFirstTimeCommaAppender(sb);
         for (NotPrimitiveReference typeArg : type.asCustomTypeReferenceOrElseThrow().typeArguments()) {
-          commaAppender.execute();
+          commaAppender.run();
           sb.append(typeArg.actualDeclaration());
         }
         sb.append(">");
@@ -297,9 +297,9 @@ public abstract class AbstractGuideGenerator extends AbstractGenerator {
       var sb = new StringBuilder();
       sb.append(simpleName);
       sb.append("<");
-      Executor commaAppender = StringActions.commaAppender(sb);
+      Runner commaAppender = StringActions.skippingFirstTimeCommaAppender(sb);
       for (NotPrimitiveReference typeArg : type.asCustomTypeReferenceOrElseThrow().typeArguments()) {
-        commaAppender.execute();
+        commaAppender.run();
         sb.append(getRawType(typeArg));
       }
       sb.append(">");
@@ -316,9 +316,9 @@ public abstract class AbstractGuideGenerator extends AbstractGenerator {
       var sb = new StringBuilder();
       sb.append(simpleName);
       sb.append("<");
-      Executor commaAppender = StringActions.commaAppender(sb);
+      Runner commaAppender = StringActions.skippingFirstTimeCommaAppender(sb);
       for (NotPrimitiveReference typeParam : type.typeParameters()) {
-        commaAppender.execute();
+        commaAppender.run();
         sb.append(getObjectHandleRawSimpleName(typeParam, true));
       }
       sb.append(">");
@@ -353,14 +353,14 @@ public abstract class AbstractGuideGenerator extends AbstractGenerator {
       return "";
     }
     var sb = new StringBuilder();
-    Executor commaAppender = StringActions.commaAppender(sb);
+    Runner commaAppender = StringActions.skippingFirstTimeCommaAppender(sb);
     sb.append("<");
     for (NamedReference typeParam : getDomainType().typeParameters()) {
-      commaAppender.execute();
+      commaAppender.run();
       sb.append(typeParam.formalFullDeclaration());
     }
     for (NamedReference typeParam : transitionMethod.typeParameters()) {
-      commaAppender.execute();
+      commaAppender.run();
       sb.append(typeParam.formalFullDeclaration());
     }
     sb.append(">");

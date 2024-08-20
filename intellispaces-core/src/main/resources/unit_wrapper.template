@@ -12,6 +12,8 @@ import {{$importedClass}};
 {{$generatedAnnotation}}
 @Wrapper({{$sourceClassSimpleName}}.class)
 public class {{$classSimpleName}} extends {{$sourceClassSimpleName}} implements UnitWrapper {
+  private ShadowUnit $shadowUnit;
+
 {{for projectionDefinition : $projectionDefinitions}}
   private final {{$projectionDefinition.get("providerType")}} _{{$projectionDefinition.get("name")}}Provider = new {{$projectionDefinition.get("providerType")}}(TypeFunctions.getMethod({{$sourceClassSimpleName}}.class, "{{$projectionDefinition.get("name")}}").orElseThrow());
 {{end}}
@@ -27,14 +29,22 @@ public class {{$classSimpleName}} extends {{$sourceClassSimpleName}} implements 
 {{end}}
   }
 
+  @Override
+  public void $init(ShadowUnit shadowUnit) {
+    this.$shadowUnit = shadowUnit;
+{{when $actionGetters.isNotEmpty()}}
+    this.$shadowUnit.setGuideActions(
 {{for actionGetter : $actionGetters}}
-  {{$actionGetter.get("declaration")}}
+      {{$actionGetter}}{{when $actionGetter.isNotLast()}},{{end}}
 {{end}}
-  private final ResettableGetter<Action>[] _actionGetters = new ResettableGetter[] {
-{{for actionGetter : $actionGetters}}
-    {{$actionGetter.get("name")}}{{when $actionGetter.isNotLast()}},{{end}}
+    );
 {{end}}
-  };
+  }
+
+  @Override
+  public ShadowUnit $shadowUnit() {
+    return this.$shadowUnit;
+  }
 
 {{for method : $methods}}
   {{$method.get("javadoc")}}
@@ -46,7 +56,7 @@ public class {{$classSimpleName}} extends {{$sourceClassSimpleName}} implements 
   }
 {{end}}
 {{for method : $guideMethods}}
-  @Order({{$method.index()}})
+  @Ordinal({{$method.index()}})
   @Override
   {{$method.get("declaration")}}
 
@@ -60,14 +70,4 @@ public class {{$classSimpleName}} extends {{$sourceClassSimpleName}} implements 
     return Modules.current().getProjection(name, targetClass);
   }
 {{end}}
-
-  @Override
-  public int numberGuides() {
-    return {{$guideMethods.size()}};
-  }
-
-  @Override
-  public Action getGuideAction(int index) {
-    return _actionGetters[index].get();
-  }
 }

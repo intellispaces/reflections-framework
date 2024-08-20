@@ -1,4 +1,9 @@
-package tech.intellispaces.core.system;
+package tech.intellispaces.core.system.shadow;
+
+import tech.intellispaces.core.system.ProjectionDefinitionKind;
+import tech.intellispaces.core.system.ProjectionDefinitionTypes;
+import tech.intellispaces.core.system.Unit;
+import tech.intellispaces.core.system.UnitProjectionDefinition;
 
 import java.lang.reflect.Method;
 

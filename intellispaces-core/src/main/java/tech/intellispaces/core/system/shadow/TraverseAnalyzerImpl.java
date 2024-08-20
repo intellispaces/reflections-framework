@@ -1,4 +1,4 @@
-package tech.intellispaces.core.system;
+package tech.intellispaces.core.system.shadow;
 
 import tech.intellispaces.commons.exception.UnexpectedViolationException;
 import tech.intellispaces.core.guide.Guide;
@@ -7,6 +7,8 @@ import tech.intellispaces.core.guide.GuideKinds;
 import tech.intellispaces.core.guide.n0.Guide0;
 import tech.intellispaces.core.guide.n1.Guide1;
 import tech.intellispaces.core.object.ObjectFunctions;
+import tech.intellispaces.core.system.ObjectGuideRegistry;
+import tech.intellispaces.core.system.UnitGuideRegistry;
 import tech.intellispaces.core.traverse.ActualPlan;
 import tech.intellispaces.core.traverse.CallGuide0PlanImpl;
 import tech.intellispaces.core.traverse.CallGuide1PlanImpl;

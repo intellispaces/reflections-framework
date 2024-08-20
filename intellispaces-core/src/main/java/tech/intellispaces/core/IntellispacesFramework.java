@@ -1,6 +1,6 @@
 package tech.intellispaces.core;
 
-import tech.intellispaces.core.system.ModuleLoader;
+import tech.intellispaces.core.system.shadow.ModuleLoader;
 
 public interface IntellispacesFramework {
 

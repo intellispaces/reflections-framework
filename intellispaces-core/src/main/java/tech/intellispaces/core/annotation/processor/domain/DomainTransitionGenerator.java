@@ -1,7 +1,7 @@
 package tech.intellispaces.core.annotation.processor.domain;
 
 import tech.intellispaces.actions.common.string.StringActions;
-import tech.intellispaces.actions.executor.Executor;
+import tech.intellispaces.actions.runner.Runner;
 import tech.intellispaces.core.annotation.processor.AbstractTransitionGenerator;
 import tech.intellispaces.core.common.NameConventionFunctions;
 import tech.intellispaces.javastatements.Statement;
@@ -68,9 +68,9 @@ public class DomainTransitionGenerator extends AbstractTransitionGenerator {
     sb.append(annotatedType.simpleName());
     if (!annotatedType.typeParameters().isEmpty()) {
       sb.append("<");
-      Executor commaAppender = StringActions.commaAppender(sb);
+      Runner commaAppender = StringActions.skippingFirstTimeCommaAppender(sb);
       for (NamedReference typeParam : annotatedType.typeParameters()) {
-        commaAppender.execute();
+        commaAppender.run();
         sb.append(typeParam.formalBriefDeclaration());
       }
       sb.append(">");

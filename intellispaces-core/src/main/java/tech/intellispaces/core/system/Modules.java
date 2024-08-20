@@ -1,6 +1,7 @@
 package tech.intellispaces.core.system;
 
 import tech.intellispaces.commons.exception.UnexpectedViolationException;
+import tech.intellispaces.core.system.shadow.ShadowModules;
 
 public interface Modules {
 
@@ -14,6 +15,6 @@ public interface Modules {
   }
 
   static Module currentSilently() {
-    return DefaultModules.currentSilently();
+    return ShadowModules.currentSilently();
   }
 }

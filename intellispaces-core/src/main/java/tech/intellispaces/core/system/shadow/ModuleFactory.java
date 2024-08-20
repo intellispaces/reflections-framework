@@ -1,4 +1,4 @@
-package tech.intellispaces.core.system;
+package tech.intellispaces.core.system.shadow;
 
 import tech.intellispaces.actions.Action;
 import tech.intellispaces.commons.exception.UnexpectedViolationException;
@@ -11,6 +11,14 @@ import tech.intellispaces.core.annotation.Startup;
 import tech.intellispaces.core.aop.AopFunctions;
 import tech.intellispaces.core.common.NameConventionFunctions;
 import tech.intellispaces.core.guide.GuideFunctions;
+import tech.intellispaces.core.system.ObjectGuideRegistry;
+import tech.intellispaces.core.system.ObjectRegistry;
+import tech.intellispaces.core.system.ProjectionDefinition;
+import tech.intellispaces.core.system.ProjectionRegistry;
+import tech.intellispaces.core.system.Unit;
+import tech.intellispaces.core.system.UnitGuideRegistry;
+import tech.intellispaces.core.system.UnitProjectionDefinition;
+import tech.intellispaces.core.system.UnitWrapper;
 import tech.intellispaces.core.system.action.InvokeUnitMethodAction;
 import tech.intellispaces.core.system.empty.EmptyModule;
 import tech.intellispaces.core.system.empty.EmptyModuleWrapper;
@@ -20,30 +28,32 @@ import tech.intellispaces.core.traverse.TraverseExecutor;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 /**
- * Default module factory.
+ * Internal module factory.
  */
-class ModuleDefaultFactory {
+public class ModuleFactory {
 
-  public ModuleDefault createModule(Class<?> unitClass) {
+  public ShadowModule createModule(Class<?> unitClass) {
     return createModule(List.of(unitClass));
   }
 
-  public ModuleDefault createModule(List<Class<?>> unitClasses) {
-    List<Unit> units = createUnits(unitClasses);
+  public ShadowModule createModule(List<Class<?>> unitClasses) {
+    List<ShadowUnit> units = createUnits(unitClasses);
     applyAdvises(units);
+    ObjectRegistry objectRegistry = new ObjectRegistryImpl();
     ProjectionRegistry projectionRegistry = createProjectionRegistry(units);
     ObjectGuideRegistry objectGuideRegistry = new ObjectGuideRegistryImpl();
     UnitGuideRegistry unitGuideRegistry = createUnitGuideRegistry(units);
     TraverseAnalyzer traverseAnalyzer = new TraverseAnalyzerImpl(unitGuideRegistry, objectGuideRegistry);
     TraverseExecutor traverseExecutor = new TraverseExecutorImpl(traverseAnalyzer);
-    return new ModuleDefaultImpl(units, projectionRegistry, traverseAnalyzer, traverseExecutor);
+    return new ModuleImpl(units, objectRegistry, projectionRegistry, traverseAnalyzer, traverseExecutor);
   }
 
-  private List<Unit> createUnits(List<Class<?>> unitClasses) {
+  private List<ShadowUnit> createUnits(List<Class<?>> unitClasses) {
     if (unitClasses == null || unitClasses.isEmpty()) {
       return List.of(createEmptyMainUnit());
     } else if (unitClasses.size() == 1) {
@@ -62,15 +72,15 @@ class ModuleDefaultFactory {
     }
   }
 
-  private List<Unit> createModuleUnits(Class<?> moduleclass) {
-    List<Unit> units = new ArrayList<>();
+  private List<ShadowUnit> createModuleUnits(Class<?> moduleclass) {
+    List<ShadowUnit> units = new ArrayList<>();
     units.add(createUnit(moduleclass, true));
     createIncludedUnits(moduleclass, units);
     return units;
   }
 
-  private List<Unit> createEmptyMainUnitAndIncludedUnits(List<Class<?>> unitClasses) {
-    List<Unit> units = new ArrayList<>();
+  private List<ShadowUnit> createEmptyMainUnitAndIncludedUnits(List<Class<?>> unitClasses) {
+    List<ShadowUnit> units = new ArrayList<>();
     units.add(createEmptyMainUnit());
     unitClasses.stream()
         .map(this::createIncludedUnit)
@@ -78,51 +88,50 @@ class ModuleDefaultFactory {
     return units;
   }
 
-  private Unit createEmptyMainUnit() {
+  private ShadowUnit createEmptyMainUnit() {
+    var unit = new ShadowUnitImpl(true, EmptyModule.class);
+    unit.setProjectionDefinitions(List.of());
+    unit.setGuides(List.of());
+
     UnitWrapper unitInstance = createUnitInstance(EmptyModule.class, EmptyModuleWrapper.class);
-    return new UnitImpl(
-        true,
-        EmptyModule.class,
-        unitInstance,
-        List.of(),
-        List.of(),
-        null,
-        null
-    );
+    unitInstance.$init(unit);
+    unit.setInstance(unitInstance);
+    return unit;
   }
 
-  private void createIncludedUnits(Class<?> moduleClass, List<Unit> units) {
+  private void createIncludedUnits(Class<?> moduleClass, List<ShadowUnit> units) {
     Arrays.stream(moduleClass.getAnnotation(Module.class).units())
         .map(this::createIncludedUnit)
         .forEach(units::add);
   }
 
-  private Unit createIncludedUnit(Class<?> unitClass) {
+  private ShadowUnit createIncludedUnit(Class<?> unitClass) {
     if (unitClass != Void.class) {
       return createUnit(unitClass, false);
     }
     throw new UnsupportedOperationException("Not implemented yet");
   }
 
-  private Unit createUnit(Class<?> unitClass, boolean main) {
-    List<UnitProjectionDefinition> projectionProviders = new ArrayList<>();
+  private ShadowUnit createUnit(Class<?> unitClass, boolean main) {
+    List<UnitProjectionDefinition> projectionDefinitions = new ArrayList<>();
     Optional<Method> startupMethod = findStartupMethod(unitClass);
     Optional<Method> shutdownMethod = findShutdownMethod(unitClass);
 
+    var unit = new ShadowUnitImpl(main, unitClass);
+    unit.setProjectionDefinitions(Collections.unmodifiableList(projectionDefinitions));
+
     Class<?> unitWrapperClass = getUnitWrapperClass(unitClass);
     UnitWrapper unitInstance = createUnitInstance(unitClass, unitWrapperClass);
-    List<tech.intellispaces.core.guide.Guide<?, ?>> unitGuides = GuideFunctions.loadUnitGuides(unitClass, unitInstance);
-    Unit unit = new UnitImpl(
-        main,
-        unitClass,
-        unitInstance,
-        projectionProviders,
-        unitGuides,
-        startupMethod.map(m -> new InvokeUnitMethodAction<Void>(unitInstance, m)).orElse(null),
-        shutdownMethod.map(m -> new InvokeUnitMethodAction<Void>(unitInstance, m)).orElse(null)
-    );
+    unitInstance.$init(unit);
+    unit.setInstance(unitInstance);
 
-    addProjectionProviders(unitWrapperClass, unit, projectionProviders);
+    unit.setStartupAction(startupMethod.map(m -> new InvokeUnitMethodAction<Void>(unitInstance, m)).orElse(null));
+    unit.setShutdownAction(shutdownMethod.map(m -> new InvokeUnitMethodAction<Void>(unitInstance, m)).orElse(null));
+
+    List<tech.intellispaces.core.guide.Guide<?, ?>> unitGuides = GuideFunctions.loadUnitGuides(unitClass, unitInstance);
+    unit.setGuides(Collections.unmodifiableList(unitGuides));
+
+    addProjectionProviders(unitWrapperClass, unit, projectionDefinitions);
     return unit;
   }
 
@@ -165,16 +174,16 @@ class ModuleDefaultFactory {
     );
   }
 
-  private ProjectionRegistry createProjectionRegistry(List<Unit> units) {
+  private ProjectionRegistry createProjectionRegistry(List<ShadowUnit> units) {
     List<ProjectionDefinition> projectionDefinitions = new ArrayList<>();
     units.stream()
-        .map(Unit::projectionProviders)
+        .map(Unit::projectionDefinitions)
         .flatMap(List::stream)
         .forEach(projectionDefinitions::add);
     return new ProjectionRegistryDefault(projectionDefinitions);
   }
 
-  private UnitGuideRegistry createUnitGuideRegistry(List<Unit> units) {
+  private UnitGuideRegistry createUnitGuideRegistry(List<ShadowUnit> units) {
     var registry = new UnitGuideRegistryImpl();
     units.stream()
         .map(Unit::guides)
@@ -195,16 +204,16 @@ class ModuleDefaultFactory {
         .findAny();
   }
 
-  private void applyAdvises(List<Unit> units) {
+  private void applyAdvises(List<ShadowUnit> units) {
     units.forEach(this::applyAdvises);
   }
 
-  private void applyAdvises(Unit unit) {
+  private void applyAdvises(ShadowUnit unit) {
     applyStartupActionAdvises(unit);
   }
 
   @SuppressWarnings("unchecked")
-  private void applyStartupActionAdvises(Unit unit) {
+  private void applyStartupActionAdvises(ShadowUnit unit) {
     if (unit.startupAction().isEmpty()) {
       return;
     }

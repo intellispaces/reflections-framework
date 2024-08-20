@@ -5,6 +5,9 @@ import org.junit.jupiter.api.Test;
 import tech.intellispaces.core.exception.ConfigurationException;
 import tech.intellispaces.core.samples.system.EmptyModule;
 import tech.intellispaces.core.samples.system.EmptyUnit;
+import tech.intellispaces.core.system.shadow.ModuleValidator;
+import tech.intellispaces.core.system.shadow.ShadowModule;
+import tech.intellispaces.core.system.shadow.ShadowUnit;
 
 import java.lang.reflect.Method;
 import java.util.List;
@@ -22,13 +25,13 @@ public class ModuleValidatorTest {
   @Test
   public void testValidate_whenNoMainUnit() {
     // Given
-    Unit unit1 = mock(Unit.class);
+    ShadowUnit unit1 = mock(ShadowUnit.class);
     when(unit1.isMain()).thenReturn(false);
 
-    Unit unit2 = mock(Unit.class);
+    ShadowUnit unit2 = mock(ShadowUnit.class);
     when(unit2.isMain()).thenReturn(false);
 
-    ModuleDefault module = mock(ModuleDefault.class);
+    ShadowModule module = mock(ShadowModule.class);
     when(module.units()).thenReturn(List.of(unit1, unit2));
 
     // Then
@@ -44,15 +47,15 @@ public class ModuleValidatorTest {
     Class unitClass1 = EmptyModule.class;
     Class unitClass2 = EmptyUnit.class;
 
-    Unit unit1 = mock(Unit.class);
+    ShadowUnit unit1 = mock(ShadowUnit.class);
     when(unit1.unitClass()).thenReturn(unitClass1);
     when(unit1.isMain()).thenReturn(true);
 
-    Unit unit2 = mock(Unit.class);
+    ShadowUnit unit2 = mock(ShadowUnit.class);
     when(unit2.unitClass()).thenReturn(unitClass2);
     when(unit2.isMain()).thenReturn(true);
 
-    ModuleDefault module = mock(ModuleDefault.class);
+    ShadowModule module = mock(ShadowModule.class);
     when(module.units()).thenReturn(List.of(unit1, unit2));
 
     // Then
@@ -69,7 +72,7 @@ public class ModuleValidatorTest {
     Class unitClass2 = EmptyUnit.class;
     String projectionName = "projection";
 
-    Unit unit1 = mock(Unit.class);
+    ShadowUnit unit1 = mock(ShadowUnit.class);
     when(unit1.isMain()).thenReturn(true);
     when(unit1.unitClass()).thenReturn(unitClass1);
     when(unit1.shutdownAction()).thenReturn(Optional.empty());
@@ -77,9 +80,9 @@ public class ModuleValidatorTest {
     when(projectionProvider1.name()).thenReturn(projectionName);
     when(projectionProvider1.unit()).thenReturn(unit1);
     when(projectionProvider1.projectionMethod()).thenReturn(String.class.getDeclaredMethod("trim"));
-    when(unit1.projectionProviders()).thenReturn(List.of(projectionProvider1));
+    when(unit1.projectionDefinitions()).thenReturn(List.of(projectionProvider1));
 
-    Unit unit2 = mock(Unit.class);
+    ShadowUnit unit2 = mock(ShadowUnit.class);
     when(unit2.isMain()).thenReturn(false);
     when(unit2.unitClass()).thenReturn(unitClass2);
     when(unit2.shutdownAction()).thenReturn(Optional.empty());
@@ -87,9 +90,9 @@ public class ModuleValidatorTest {
     when(projectionProvider2.unit()).thenReturn(unit2);
     when(projectionProvider2.projectionMethod()).thenReturn(Integer.class.getDeclaredMethod("intValue"));
     when(projectionProvider2.name()).thenReturn(projectionName);
-    when(unit2.projectionProviders()).thenReturn(List.of(projectionProvider2));
+    when(unit2.projectionDefinitions()).thenReturn(List.of(projectionProvider2));
 
-    ModuleDefault module = mock(ModuleDefault.class);
+    ShadowModule module = mock(ShadowModule.class);
     when(module.units()).thenReturn(List.of(unit1, unit2));
 
     // Then
@@ -113,15 +116,15 @@ public class ModuleValidatorTest {
     when(injection.targetClass()).thenReturn((Class) String.class);
     when(injection.unitClass()).thenReturn(unitClass);
 
-    Unit unit = mock(Unit.class);
+    ShadowUnit unit = mock(ShadowUnit.class);
     when(unit.isMain()).thenReturn(true);
     when(unit.unitClass()).thenReturn(unitClass);
     when(unit.startupMethod()).thenReturn(Optional.empty());
     when(unit.shutdownMethod()).thenReturn(Optional.empty());
     when(unit.injections()).thenReturn(List.of(injection));
-    when(unit.projectionProviders()).thenReturn(List.of());
+    when(unit.projectionDefinitions()).thenReturn(List.of());
 
-    ModuleDefault module = mock(ModuleDefault.class);
+    ShadowModule module = mock(ShadowModule.class);
     when(module.units()).thenReturn(List.of(unit));
 
     // Then
@@ -153,15 +156,15 @@ public class ModuleValidatorTest {
     when(projectionProvider.name()).thenReturn(projectionName);
     when(projectionProvider.type()).thenReturn(projectionType);
 
-    Unit unit = mock(Unit.class);
+    ShadowUnit unit = mock(ShadowUnit.class);
     when(unit.isMain()).thenReturn(true);
     when(unit.unitClass()).thenReturn(unitClass);
     when(unit.startupMethod()).thenReturn(Optional.empty());
     when(unit.shutdownMethod()).thenReturn(Optional.empty());
     when(unit.injections()).thenReturn(List.of(injection));
-    when(unit.projectionProviders()).thenReturn(List.of(projectionProvider));
+    when(unit.projectionDefinitions()).thenReturn(List.of(projectionProvider));
 
-    ModuleDefault module = mock(ModuleDefault.class);
+    ShadowModule module = mock(ShadowModule.class);
     when(module.units()).thenReturn(List.of(unit));
 
     // Then
@@ -175,7 +178,7 @@ public class ModuleValidatorTest {
   @SuppressWarnings("unchecked,rawtypes")
   public void testValidate_whenValid() throws Exception {
     // Given
-    Unit unit1 = mock(Unit.class);
+    ShadowUnit unit1 = mock(ShadowUnit.class);
     when(unit1.isMain()).thenReturn(true);
     when(unit1.unitClass()).thenReturn((Class) String.class);
 
@@ -185,9 +188,9 @@ public class ModuleValidatorTest {
     when(projectionProvider1.name()).thenReturn("projection1");
     when(projectionProvider1.unit()).thenReturn(unit1);
     when(projectionProvider1.projectionMethod()).thenReturn(String.class.getDeclaredMethod("trim"));
-    when(unit1.projectionProviders()).thenReturn(List.of(projectionProvider1));
+    when(unit1.projectionDefinitions()).thenReturn(List.of(projectionProvider1));
 
-    Unit unit2 = mock(Unit.class);
+    ShadowUnit unit2 = mock(ShadowUnit.class);
     when(unit2.isMain()).thenReturn(false);
     when(unit2.unitClass()).thenReturn((Class) Integer.class);
     when(unit2.shutdownAction()).thenReturn(Optional.empty());
@@ -195,9 +198,9 @@ public class ModuleValidatorTest {
     when(projectionProvider2.unit()).thenReturn(unit1);
     when(projectionProvider2.projectionMethod()).thenReturn(Integer.class.getDeclaredMethod("intValue"));
     when(projectionProvider2.name()).thenReturn("projection2");
-    when(unit2.projectionProviders()).thenReturn(List.of(projectionProvider2));
+    when(unit2.projectionDefinitions()).thenReturn(List.of(projectionProvider2));
 
-    ModuleDefault module = mock(ModuleDefault.class);
+    ShadowModule module = mock(ShadowModule.class);
     when(module.units()).thenReturn(List.of(unit1, unit2));
 
     // Then

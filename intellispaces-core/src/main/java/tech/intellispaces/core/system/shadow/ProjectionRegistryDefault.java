@@ -1,9 +1,15 @@
-package tech.intellispaces.core.system;
+package tech.intellispaces.core.system.shadow;
 
 import tech.intellispaces.commons.exception.ExceptionFunctions;
 import tech.intellispaces.core.exception.ConfigurationException;
 import tech.intellispaces.core.exception.CyclicDependencyException;
 import tech.intellispaces.core.object.ObjectFunctions;
+import tech.intellispaces.core.system.ModuleProjection;
+import tech.intellispaces.core.system.ProjectionDefinition;
+import tech.intellispaces.core.system.ProjectionDefinitionTypes;
+import tech.intellispaces.core.system.ProjectionRegistry;
+import tech.intellispaces.core.system.UnitProjectionDefinition;
+import tech.intellispaces.core.system.UnitWrapper;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;

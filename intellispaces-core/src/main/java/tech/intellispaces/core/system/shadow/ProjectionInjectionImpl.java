@@ -1,7 +1,10 @@
-package tech.intellispaces.core.system;
+package tech.intellispaces.core.system.shadow;
 
 import tech.intellispaces.actions.Action2;
 import tech.intellispaces.commons.exception.UnexpectedViolationException;
+import tech.intellispaces.core.system.InjectionType;
+import tech.intellispaces.core.system.InjectionTypes;
+import tech.intellispaces.core.system.ProjectionInjection;
 
 public class ProjectionInjectionImpl implements ProjectionInjection {
   private final String name;

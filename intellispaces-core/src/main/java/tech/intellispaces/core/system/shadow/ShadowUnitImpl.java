@@ -1,44 +1,57 @@
-package tech.intellispaces.core.system;
+package tech.intellispaces.core.system.shadow;
 
 import tech.intellispaces.actions.Action;
+import tech.intellispaces.actions.Actions;
+import tech.intellispaces.actions.getter.ResettableGetter;
 import tech.intellispaces.core.guide.Guide;
+import tech.intellispaces.core.system.Injection;
+import tech.intellispaces.core.system.UnitProjectionDefinition;
+import tech.intellispaces.core.system.UnitWrapper;
 import tech.intellispaces.core.system.action.InvokeUnitMethodAction;
 
 import java.lang.reflect.Method;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-class UnitImpl implements Unit {
+class ShadowUnitImpl implements ShadowUnit {
   private final boolean main;
   private final Class<?> unitClass;
-  private final UnitWrapper instance;
-  private final List<UnitProjectionDefinition> projectionProviders;
-  private final List<Guide<?, ?>> guides;
+  private List<ResettableGetter<Action>> guideActions = List.of();
+  private UnitWrapper instance;
+  private List<UnitProjectionDefinition> projectionDefinitions;
+  private List<Guide<?, ?>> guides;
   private Method startupMethod;
   private Method shutdownMethod;
   private Action startupAction;
   private Action shutdownAction;
 
-  public UnitImpl(
-      boolean main,
-      Class<?> unitClass,
-      UnitWrapper instance,
-      List<UnitProjectionDefinition> projectionProviders,
-      List<Guide<?, ?>> guides,
-      InvokeUnitMethodAction<Void> startupAction,
-      InvokeUnitMethodAction<Void> shutdownAction
-  ) {
+  ShadowUnitImpl(boolean main, Class<?> unitClass) {
     this.main = main;
     this.unitClass = unitClass;
+  }
+
+  public void setInstance(UnitWrapper instance) {
     this.instance = instance;
-    this.projectionProviders = Collections.unmodifiableList(projectionProviders);
-    this.guides = Collections.unmodifiableList(guides);
+  }
+
+  public void setProjectionDefinitions(List<UnitProjectionDefinition> projectionDefinitions) {
+    this.projectionDefinitions = projectionDefinitions;
+  }
+
+  public void setGuides(List<Guide<?, ?>> guides) {
+    this.guides = guides;
+  }
+
+  public void setStartupAction(InvokeUnitMethodAction<Void> startupAction) {
     this.startupAction = startupAction;
-    this.shutdownAction = shutdownAction;
     if (startupAction != null) {
       this.startupMethod = startupAction.getUnitMethod();
     }
+  }
+
+  public void setShutdownAction(InvokeUnitMethodAction<Void> shutdownAction) {
+    this.shutdownAction = shutdownAction;
     if (shutdownAction != null) {
       this.shutdownMethod = shutdownAction.getUnitMethod();
     }
@@ -65,8 +78,8 @@ class UnitImpl implements Unit {
   }
 
   @Override
-  public List<UnitProjectionDefinition> projectionProviders() {
-    return projectionProviders;
+  public List<UnitProjectionDefinition> projectionDefinitions() {
+    return projectionDefinitions;
   }
 
   @Override
@@ -102,5 +115,26 @@ class UnitImpl implements Unit {
   @Override
   public void setShutdownAction(Action action) {
     this.shutdownAction = action;
+  }
+
+  @Override
+  public void setGuideActions(Action... actions) {
+    if (actions == null) {
+      guideActions = List.of();
+      return;
+    }
+    guideActions = Arrays.stream(actions)
+        .map(Actions::resettableGetter)
+        .toList();
+  }
+
+  @Override
+  public int numberGuides() {
+    return guideActions.size();
+  }
+
+  @Override
+  public Action getGuideAction(int index) {
+    return guideActions.get(index).get();
   }
 }

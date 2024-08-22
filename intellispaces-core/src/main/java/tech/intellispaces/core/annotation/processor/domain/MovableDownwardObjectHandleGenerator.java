@@ -166,8 +166,6 @@ public class MovableDownwardObjectHandleGenerator extends AbstractConversionDoma
     sb.append("  return this.")
         .append(childFieldName)
         .append(".")
-//        .append(NameConventionFunctions.getConversionMethodName(parentDomainType.targetType()))
-//        .append("().")
         .append(method.name())
         .append("();\n");
     sb.append("}");

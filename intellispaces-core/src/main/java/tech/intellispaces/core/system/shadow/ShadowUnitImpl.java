@@ -4,8 +4,8 @@ import tech.intellispaces.actions.Action;
 import tech.intellispaces.actions.Actions;
 import tech.intellispaces.actions.getter.ResettableGetter;
 import tech.intellispaces.core.guide.Guide;
-import tech.intellispaces.core.system.Injection;
 import tech.intellispaces.core.system.UnitProjectionDefinition;
+import tech.intellispaces.core.system.UnitProjectionInjection;
 import tech.intellispaces.core.system.UnitWrapper;
 import tech.intellispaces.core.system.action.InvokeUnitMethodAction;
 
@@ -19,8 +19,9 @@ class ShadowUnitImpl implements ShadowUnit {
   private final Class<?> unitClass;
   private List<ResettableGetter<Action>> guideActions = List.of();
   private UnitWrapper instance;
-  private List<UnitProjectionDefinition> projectionDefinitions;
-  private List<Guide<?, ?>> guides;
+  private List<UnitProjectionInjection> projectionInjections = List.of();
+  private List<UnitProjectionDefinition> projectionDefinitions = List.of();
+  private List<Guide<?, ?>> guides = List.of();
   private Method startupMethod;
   private Method shutdownMethod;
   private Action startupAction;
@@ -31,16 +32,37 @@ class ShadowUnitImpl implements ShadowUnit {
     this.unitClass = unitClass;
   }
 
+  @Override
+  public Object instance() {
+    return instance;
+  }
+
+  @Override
+  public boolean isMain() {
+    return main;
+  }
+
+  @Override
+  public Class<?> unitClass() {
+    return unitClass;
+  }
+
   public void setInstance(UnitWrapper instance) {
     this.instance = instance;
   }
 
-  public void setProjectionDefinitions(List<UnitProjectionDefinition> projectionDefinitions) {
-    this.projectionDefinitions = projectionDefinitions;
+  @Override
+  public List<UnitProjectionDefinition> projectionDefinitions() {
+    return projectionDefinitions;
   }
 
-  public void setGuides(List<Guide<?, ?>> guides) {
-    this.guides = guides;
+  @Override
+  public void setProjectionDefinitions(UnitProjectionDefinition... projectionDefinitions) {
+    if (projectionDefinitions == null) {
+      this.projectionDefinitions = List.of();
+    } else {
+      this.projectionDefinitions = Arrays.stream(projectionDefinitions).toList();
+    }
   }
 
   public void setStartupAction(InvokeUnitMethodAction<Void> startupAction) {
@@ -58,33 +80,31 @@ class ShadowUnitImpl implements ShadowUnit {
   }
 
   @Override
-  public boolean isMain() {
-    return main;
+  public UnitProjectionInjection projectionInjection(int injectionIndex) {
+    return projectionInjections.get(injectionIndex);
   }
 
   @Override
-  public Class<?> unitClass() {
-    return unitClass;
+  public List<UnitProjectionInjection> projectionInjections() {
+    return projectionInjections;
   }
 
   @Override
-  public Object instance() {
-    return instance;
-  }
-
-  @Override
-  public List<Injection> injections() {
-    return instance.getInjections();
-  }
-
-  @Override
-  public List<UnitProjectionDefinition> projectionDefinitions() {
-    return projectionDefinitions;
+  public void setProjectionInjections(UnitProjectionInjection... projectionInjections) {
+    if (projectionInjections == null) {
+      this.projectionInjections = List.of();
+    } else {
+      this.projectionInjections = Arrays.stream(projectionInjections).toList();
+    }
   }
 
   @Override
   public List<Guide<?, ?>> guides() {
     return guides;
+  }
+
+  public void setGuides(List<Guide<?, ?>> guides) {
+    this.guides = guides;
   }
 
   @Override

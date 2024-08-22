@@ -27,11 +27,11 @@ public enum GuideKinds implements GuideKind {
   Mover5(false, 5);
 
   private final boolean mapper;
-  private final int qualifierCount;
+  private final int guideOrder;
 
-  GuideKinds(boolean mapper, int qualifierCount) {
+  GuideKinds(boolean mapper, int guideOrder) {
     this.mapper = mapper;
-    this.qualifierCount = qualifierCount;
+    this.guideOrder = guideOrder;
   }
 
   @Override
@@ -45,7 +45,7 @@ public enum GuideKinds implements GuideKind {
   }
 
   @Override
-  public int qualifierCount() {
-    return qualifierCount;
+  public int guideOrder() {
+    return guideOrder;
   }
 }

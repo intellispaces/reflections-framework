@@ -5,7 +5,6 @@ import tech.intellispaces.commons.exception.UnexpectedViolationException;
 import tech.intellispaces.core.annotation.Configuration;
 import tech.intellispaces.core.annotation.Guide;
 import tech.intellispaces.core.annotation.Module;
-import tech.intellispaces.core.annotation.Projection;
 import tech.intellispaces.core.annotation.Shutdown;
 import tech.intellispaces.core.annotation.Startup;
 import tech.intellispaces.core.aop.AopFunctions;
@@ -17,7 +16,6 @@ import tech.intellispaces.core.system.ProjectionDefinition;
 import tech.intellispaces.core.system.ProjectionRegistry;
 import tech.intellispaces.core.system.Unit;
 import tech.intellispaces.core.system.UnitGuideRegistry;
-import tech.intellispaces.core.system.UnitProjectionDefinition;
 import tech.intellispaces.core.system.UnitWrapper;
 import tech.intellispaces.core.system.action.InvokeUnitMethodAction;
 import tech.intellispaces.core.system.empty.EmptyModule;
@@ -90,8 +88,6 @@ public class ModuleFactory {
 
   private ShadowUnit createEmptyMainUnit() {
     var unit = new ShadowUnitImpl(true, EmptyModule.class);
-    unit.setProjectionDefinitions(List.of());
-    unit.setGuides(List.of());
 
     UnitWrapper unitInstance = createUnitInstance(EmptyModule.class, EmptyModuleWrapper.class);
     unitInstance.$init(unit);
@@ -113,12 +109,10 @@ public class ModuleFactory {
   }
 
   private ShadowUnit createUnit(Class<?> unitClass, boolean main) {
-    List<UnitProjectionDefinition> projectionDefinitions = new ArrayList<>();
     Optional<Method> startupMethod = findStartupMethod(unitClass);
     Optional<Method> shutdownMethod = findShutdownMethod(unitClass);
 
     var unit = new ShadowUnitImpl(main, unitClass);
-    unit.setProjectionDefinitions(Collections.unmodifiableList(projectionDefinitions));
 
     Class<?> unitWrapperClass = getUnitWrapperClass(unitClass);
     UnitWrapper unitInstance = createUnitInstance(unitClass, unitWrapperClass);
@@ -131,7 +125,6 @@ public class ModuleFactory {
     List<tech.intellispaces.core.guide.Guide<?, ?>> unitGuides = GuideFunctions.loadUnitGuides(unitClass, unitInstance);
     unit.setGuides(Collections.unmodifiableList(unitGuides));
 
-    addProjectionProviders(unitWrapperClass, unit, projectionDefinitions);
     return unit;
   }
 
@@ -152,26 +145,6 @@ public class ModuleFactory {
       throw UnexpectedViolationException.withCauseAndMessage(e, "Error creating module unit {}",
           unitClass.getCanonicalName());
     }
-  }
-
-  private void addProjectionProviders(
-      Class<?> unitWrapperClass, Unit unit, List<UnitProjectionDefinition> projectionProviders
-  ) {
-    Arrays.stream(unitWrapperClass.getDeclaredMethods())
-        .filter(m -> m.isAnnotationPresent(Projection.class))
-        .map(m -> createProjectionProvider(unit, m))
-        .forEach(projectionProviders::add);
-  }
-
-  private UnitProjectionDefinition createProjectionProvider(Unit unit, Method method) {
-    Projection annotation = method.getAnnotation(Projection.class);
-    return new UnitProjectionDefinitionImpl(
-        annotation.value().trim().isBlank() ? method.getName() : annotation.value().trim(),
-        method.getReturnType(),
-        unit,
-        annotation.lazy(),
-        method
-    );
   }
 
   private ProjectionRegistry createProjectionRegistry(List<ShadowUnit> units) {

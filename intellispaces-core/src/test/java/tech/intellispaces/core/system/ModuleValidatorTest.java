@@ -78,7 +78,7 @@ public class ModuleValidatorTest {
     when(unit1.shutdownAction()).thenReturn(Optional.empty());
     UnitProjectionDefinition projectionProvider1 = mock(UnitProjectionDefinition.class);
     when(projectionProvider1.name()).thenReturn(projectionName);
-    when(projectionProvider1.unit()).thenReturn(unit1);
+    when(projectionProvider1.unitClass()).thenReturn(unitClass1);
     when(projectionProvider1.projectionMethod()).thenReturn(String.class.getDeclaredMethod("trim"));
     when(unit1.projectionDefinitions()).thenReturn(List.of(projectionProvider1));
 
@@ -87,7 +87,7 @@ public class ModuleValidatorTest {
     when(unit2.unitClass()).thenReturn(unitClass2);
     when(unit2.shutdownAction()).thenReturn(Optional.empty());
     UnitProjectionDefinition projectionProvider2 = mock(UnitProjectionDefinition.class);
-    when(projectionProvider2.unit()).thenReturn(unit2);
+    when(projectionProvider2.unitClass()).thenReturn(unitClass2);
     when(projectionProvider2.projectionMethod()).thenReturn(Integer.class.getDeclaredMethod("intValue"));
     when(projectionProvider2.name()).thenReturn(projectionName);
     when(unit2.projectionDefinitions()).thenReturn(List.of(projectionProvider2));
@@ -110,8 +110,7 @@ public class ModuleValidatorTest {
     Class unitClass = EmptyModule.class;
     String projectionName = "projection";
 
-    ProjectionInjection injection = mock(ProjectionInjection.class);
-    when(injection.type()).thenReturn(InjectionTypes.ProjectionInjection);
+    UnitProjectionInjection injection = mock(UnitProjectionInjection.class);
     when(injection.name()).thenReturn(projectionName);
     when(injection.targetClass()).thenReturn((Class) String.class);
     when(injection.unitClass()).thenReturn(unitClass);
@@ -121,7 +120,7 @@ public class ModuleValidatorTest {
     when(unit.unitClass()).thenReturn(unitClass);
     when(unit.startupMethod()).thenReturn(Optional.empty());
     when(unit.shutdownMethod()).thenReturn(Optional.empty());
-    when(unit.injections()).thenReturn(List.of(injection));
+    when(unit.projectionInjections()).thenReturn(List.of(injection));
     when(unit.projectionDefinitions()).thenReturn(List.of());
 
     ShadowModule module = mock(ShadowModule.class);
@@ -143,8 +142,7 @@ public class ModuleValidatorTest {
     Class projectionType = String.class;
     Class injectionType = Integer.class;
 
-    ProjectionInjection injection = mock(ProjectionInjection.class);
-    when(injection.type()).thenReturn(InjectionTypes.ProjectionInjection);
+    UnitProjectionInjection injection = mock(UnitProjectionInjection.class);
     when(injection.name()).thenReturn(projectionName);
     when(injection.targetClass()).thenReturn(injectionType);
     when(injection.unitClass()).thenReturn(unitClass);
@@ -161,7 +159,7 @@ public class ModuleValidatorTest {
     when(unit.unitClass()).thenReturn(unitClass);
     when(unit.startupMethod()).thenReturn(Optional.empty());
     when(unit.shutdownMethod()).thenReturn(Optional.empty());
-    when(unit.injections()).thenReturn(List.of(injection));
+    when(unit.projectionInjections()).thenReturn(List.of(injection));
     when(unit.projectionDefinitions()).thenReturn(List.of(projectionProvider));
 
     ShadowModule module = mock(ShadowModule.class);
@@ -179,23 +177,25 @@ public class ModuleValidatorTest {
   public void testValidate_whenValid() throws Exception {
     // Given
     ShadowUnit unit1 = mock(ShadowUnit.class);
+    Class unitClass1 = String.class;
     when(unit1.isMain()).thenReturn(true);
-    when(unit1.unitClass()).thenReturn((Class) String.class);
+    when(unit1.unitClass()).thenReturn(unitClass1);
 
     when(unit1.startupMethod()).thenReturn(Optional.of(String.class.getDeclaredMethod("isEmpty")));
     when(unit1.shutdownMethod()).thenReturn(Optional.of(String.class.getDeclaredMethod("isBlank")));
     UnitProjectionDefinition projectionProvider1 = mock(UnitProjectionDefinition.class);
     when(projectionProvider1.name()).thenReturn("projection1");
-    when(projectionProvider1.unit()).thenReturn(unit1);
+    when(projectionProvider1.unitClass()).thenReturn(unitClass1);
     when(projectionProvider1.projectionMethod()).thenReturn(String.class.getDeclaredMethod("trim"));
     when(unit1.projectionDefinitions()).thenReturn(List.of(projectionProvider1));
 
     ShadowUnit unit2 = mock(ShadowUnit.class);
+    Class unitClass2 = Integer.class;
     when(unit2.isMain()).thenReturn(false);
-    when(unit2.unitClass()).thenReturn((Class) Integer.class);
+    when(unit2.unitClass()).thenReturn(unitClass2);
     when(unit2.shutdownAction()).thenReturn(Optional.empty());
     UnitProjectionDefinition projectionProvider2 = mock(UnitProjectionDefinition.class);
-    when(projectionProvider2.unit()).thenReturn(unit1);
+    when(projectionProvider2.unitClass()).thenReturn(unitClass2);
     when(projectionProvider2.projectionMethod()).thenReturn(Integer.class.getDeclaredMethod("intValue"));
     when(projectionProvider2.name()).thenReturn("projection2");
     when(unit2.projectionDefinitions()).thenReturn(List.of(projectionProvider2));

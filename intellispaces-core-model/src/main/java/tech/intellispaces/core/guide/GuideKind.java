@@ -8,5 +8,5 @@ public interface GuideKind {
 
   boolean isMover();
 
-  int qualifierCount();
+  int guideOrder();
 }

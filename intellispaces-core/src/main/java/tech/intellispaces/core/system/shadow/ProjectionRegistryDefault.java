@@ -1,19 +1,28 @@
 package tech.intellispaces.core.system.shadow;
 
+import tech.intellispaces.actions.Action;
 import tech.intellispaces.commons.exception.ExceptionFunctions;
+import tech.intellispaces.commons.exception.UnexpectedViolationException;
+import tech.intellispaces.commons.type.TypeFunctions;
+import tech.intellispaces.core.annotation.Projection;
 import tech.intellispaces.core.exception.ConfigurationException;
 import tech.intellispaces.core.exception.CyclicDependencyException;
 import tech.intellispaces.core.object.ObjectFunctions;
 import tech.intellispaces.core.system.ModuleProjection;
 import tech.intellispaces.core.system.ProjectionDefinition;
-import tech.intellispaces.core.system.ProjectionDefinitionTypes;
+import tech.intellispaces.core.system.ProjectionDefinitionKinds;
+import tech.intellispaces.core.system.ProjectionInjection;
+import tech.intellispaces.core.system.ProjectionProvider;
 import tech.intellispaces.core.system.ProjectionRegistry;
 import tech.intellispaces.core.system.UnitProjectionDefinition;
-import tech.intellispaces.core.system.UnitWrapper;
+import tech.intellispaces.core.system.projection.ProjectionDefinitionBasedOnMethodAction;
+import tech.intellispaces.core.system.projection.ProjectionDefinitionBasedOnProviderClass;
+import tech.intellispaces.core.system.projection.ProjectionFunctions;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -171,47 +180,87 @@ class ProjectionRegistryDefault implements ProjectionRegistry {
 
   private ModuleProjection createProjection(ProjectionDefinition definition, Set<String> dependencyPath) {
     dependencyPath.add(definition.name());
-    if (ProjectionDefinitionTypes.UnitMethod == definition.kind()) {
-      return createUnitProjection((UnitProjectionDefinition) definition, dependencyPath);
+    if (ProjectionDefinitionKinds.ProjectionDefinitionBasedOnUnitMethod == definition.kind()) {
+      return createProjection((ProjectionDefinitionBasedOnMethodAction) definition, dependencyPath);
+    } else if (ProjectionDefinitionKinds.ProjectionDefinitionBasedOnProviderClass == definition.kind()) {
+      return createProjection((ProjectionDefinitionBasedOnProviderClass) definition, dependencyPath);
     } else {
       throw new UnsupportedOperationException("Unsupported projection definition type: " + definition.type());
     }
   }
 
-  private ModuleProjection createUnitProjection(
-      UnitProjectionDefinition definition, Set<String> dependencyPath
+  private ModuleProjection createProjection(
+      ProjectionDefinitionBasedOnMethodAction projectionDefinition, Set<String> dependencyPath
   ) {
     final Object target;
     try {
-      Method projectionMethod = definition.projectionMethod();
-      Object[] projectionArguments = getProjectionArguments(definition, dependencyPath);
-      target = projectionMethod.invoke(definition.unit().instance(), projectionArguments);
+      Action action = projectionDefinition.methodAction();
+      Object[] actionArguments = getProjectionArguments(projectionDefinition, dependencyPath);
+      target = action.execute(actionArguments);
     } catch (Exception e) {
       throw ExceptionFunctions.coverIfChecked(e);
     }
-    ModuleProjection projection = new ModuleProjectionImpl(definition.name(), definition.type(), definition, target);
+    ModuleProjection projection = new ModuleProjectionImpl(
+        projectionDefinition.name(), projectionDefinition.type(), projectionDefinition, target
+    );
+    projectionsByName.put(projection.name(), projection);
+    return projection;
+  }
+
+  private ModuleProjection createProjection(
+      ProjectionDefinitionBasedOnProviderClass projectionDefinition, Set<String> dependencyPath
+  ) {
+    Class<?> providerClass = TypeFunctions.getClass(projectionDefinition.providerClassCanonicalName())
+        .orElseThrow(() -> UnexpectedViolationException.withMessage(
+            "Could not find projection provider class be name {}",
+            projectionDefinition.providerClassCanonicalName()));
+
+    Method projectionMethod = Arrays.stream(projectionDefinition.unitClass().getDeclaredMethods())
+        .filter(m -> m.isAnnotationPresent(Projection.class))
+        .filter(m -> projectionDefinition.name().equals(ProjectionFunctions.getProjectionName(m)))
+        .findAny()
+        .orElseThrow(() -> UnexpectedViolationException.withMessage(
+            "Could not find projection method {} in unit {}",
+            projectionDefinition.name(), projectionDefinition.unitClass().getCanonicalName()
+        ));
+
+    final ProjectionProvider provider;
+    try {
+      Constructor<?> providerConstructor = providerClass.getConstructor(Method.class);
+      provider = (ProjectionProvider) providerConstructor.newInstance(projectionMethod);
+    } catch (Exception e) {
+      throw UnexpectedViolationException.withCauseAndMessage(e, "Failed to create projection provider");
+    }
+
+    final Object target;
+    try {
+      target = provider.get();
+    } catch (Exception e) {
+      throw UnexpectedViolationException.withCauseAndMessage(e, "Failed to call projection provider");
+    }
+
+    ModuleProjection projection = new ModuleProjectionImpl(
+        projectionDefinition.name(), projectionDefinition.type(), projectionDefinition, target
+    );
     projectionsByName.put(projection.name(), projection);
     return projection;
   }
 
   private Object[] getProjectionArguments(
-      UnitProjectionDefinition definition, Set<String> dependencyPath
+      ProjectionDefinitionBasedOnMethodAction definition, Set<String> dependencyPath
   ) {
-    Method method = definition.projectionMethod();
-    Object[] arguments = new Object[method.getParameterCount()];
+    List<ProjectionInjection> requiredProjections = definition.requiredProjections();
+    Object[] arguments = new Object[requiredProjections.size()];
     int ind = 0;
-    for (Parameter param : method.getParameters()) {
-      if (dependencyPath.contains(param.getName())) {
-        throw makeCyclicDependencyException(dependencyPath, param.getName());
+    for (ProjectionInjection requiredProjection : requiredProjections) {
+      if (dependencyPath.contains(requiredProjection.name())) {
+        throw makeCyclicDependencyException(dependencyPath, requiredProjection.name());
       }
-      Object target = getProjection(param.getName(), param.getType(), dependencyPath);
+      Object target = getProjection(requiredProjection.name(), requiredProjection.targetClass(), dependencyPath);
       if (target == null) {
-        getProjection(param.getName(), param.getType(), dependencyPath);
-
-
-        Method actualMethod = UnitWrapper.getActualMethod(method);
-        throw ConfigurationException.withMessage("Cannot to resolve parameter '{}' in method '{}' of unit {}",
-            param.getName(), actualMethod.getName(), actualMethod.getDeclaringClass().getCanonicalName());
+        throw ConfigurationException.withMessage("Cannot to resolve required projection '{}' " +
+                "in projection definition '{}' of unit {}",
+            requiredProjection.name(), definition.name(), definition.unitClass().getCanonicalName());
       }
       arguments[ind++] = target;
     }
@@ -230,25 +279,25 @@ class ProjectionRegistryDefault implements ProjectionRegistry {
 
     ProjectionDefinition cycleFirstDefinition = projectionDefinitions.get(projections.get(cycleBeginIndex));
     ProjectionDefinition cycleLastDefinition = projectionDefinitions.get(projections.get(cycleEndIndex));
-    if (ProjectionDefinitionTypes.UnitMethod != cycleFirstDefinition.kind()) {
+    if (ProjectionDefinitionKinds.ProjectionDefinitionBasedOnUnitMethod != cycleFirstDefinition.kind()) {
       throw new UnsupportedOperationException("Unsupported projection definition type: " + cycleFirstDefinition.kind());
     }
-    if (ProjectionDefinitionTypes.UnitMethod != cycleLastDefinition.kind()) {
+    if (ProjectionDefinitionKinds.ProjectionDefinitionBasedOnUnitMethod != cycleLastDefinition.kind()) {
       throw new UnsupportedOperationException("Unsupported projection definition type: " + cycleLastDefinition.kind());
     }
     UnitProjectionDefinition cycleFirstUnitDefinition = (UnitProjectionDefinition) cycleFirstDefinition;
     UnitProjectionDefinition cycleLastUnitDefinition = (UnitProjectionDefinition) cycleLastDefinition;
-    if (cycleFirstUnitDefinition.unit().unitClass() == cycleLastUnitDefinition.unit().unitClass()) {
+    if (cycleFirstUnitDefinition.unitClass() == cycleLastUnitDefinition.unitClass()) {
       throw CyclicDependencyException.withMessage(
           "Cyclic dependency between projections '{}' and '{}' in unit {}. Dependency path: {}",
           cycleFirstUnitDefinition.name(), cycleLastUnitDefinition.name(),
-          cycleFirstUnitDefinition.unit().unitClass().getCanonicalName(),
+          cycleFirstUnitDefinition.unitClass().getCanonicalName(),
           buildDependencyPathExpression(projections.subList(cycleBeginIndex, cycleEndIndex + 2)));
     } else {
       throw CyclicDependencyException.withMessage(
           "Cyclic dependency between projection '{}' in unit {} and projection '{}' in unit {}. Dependency path: {}",
-          cycleFirstUnitDefinition.name(), cycleFirstUnitDefinition.unit().unitClass().getCanonicalName(),
-          cycleLastUnitDefinition.name(), cycleLastUnitDefinition.unit().unitClass().getCanonicalName(),
+          cycleFirstUnitDefinition.name(), cycleFirstUnitDefinition.unitClass().getCanonicalName(),
+          cycleLastUnitDefinition.name(), cycleLastUnitDefinition.unitClass().getCanonicalName(),
           buildDependencyPathExpression(projections.subList(cycleBeginIndex, cycleEndIndex + 2)));
     }
   }

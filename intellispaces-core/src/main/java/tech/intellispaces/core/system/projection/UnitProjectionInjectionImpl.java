@@ -1,30 +1,19 @@
-package tech.intellispaces.core.system.shadow;
+package tech.intellispaces.core.system.projection;
 
-import tech.intellispaces.actions.Action2;
 import tech.intellispaces.commons.exception.UnexpectedViolationException;
-import tech.intellispaces.core.system.InjectionType;
-import tech.intellispaces.core.system.InjectionTypes;
-import tech.intellispaces.core.system.ProjectionInjection;
+import tech.intellispaces.core.system.Modules;
+import tech.intellispaces.core.system.UnitProjectionInjection;
 
-public class ProjectionInjectionImpl implements ProjectionInjection {
-  private final String name;
+class UnitProjectionInjectionImpl implements UnitProjectionInjection {
   private final Class<?> unitClass;
+  private final String name;
   private final Class<?> targetClass;
-  private final Action2<Object, String, Class<?>> projectionTargetGetter;
   private Object projectionTarget;
 
-  public ProjectionInjectionImpl(
-      String name, Class<?> unitClass, Class<?> targetClass, Action2<Object, String, Class<?>> projectionTargetGetter
-  ) {
-    this.name = name;
+  UnitProjectionInjectionImpl(Class<?> unitClass, String name, Class<?> targetClass) {
     this.unitClass = unitClass;
+    this.name = name;
     this.targetClass = targetClass;
-    this.projectionTargetGetter = projectionTargetGetter;
-  }
-
-  @Override
-  public InjectionType type() {
-    return InjectionTypes.ProjectionInjection;
   }
 
   @Override
@@ -50,7 +39,7 @@ public class ProjectionInjectionImpl implements ProjectionInjection {
   @Override
   public Object value() {
     if (projectionTarget == null) {
-      projectionTarget = projectionTargetGetter.execute(name, targetClass);
+      projectionTarget = Modules.current().getProjection(name, targetClass);
       if (projectionTarget == null) {
         throw UnexpectedViolationException.withMessage("Value of injection '{}' in unit {} is not defined",
             name(), unitClass.getCanonicalName());

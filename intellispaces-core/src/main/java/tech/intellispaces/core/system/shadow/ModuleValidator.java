@@ -2,10 +2,9 @@ package tech.intellispaces.core.system.shadow;
 
 import tech.intellispaces.core.exception.ConfigurationException;
 import tech.intellispaces.core.object.ObjectFunctions;
-import tech.intellispaces.core.system.InjectionTypes;
-import tech.intellispaces.core.system.ProjectionInjection;
 import tech.intellispaces.core.system.Unit;
 import tech.intellispaces.core.system.UnitProjectionDefinition;
+import tech.intellispaces.core.system.UnitProjectionInjection;
 
 import java.util.List;
 import java.util.Map;
@@ -59,14 +58,14 @@ public class ModuleValidator {
     checkUnitInjections(module, projectionProviders);
   }
 
-  private void checkUnitInjections(ShadowModule module, Map<String, UnitProjectionDefinition> projectionProviders) {
-    List<ProjectionInjection> unitInjections = module.units().stream()
-        .map(Unit::injections)
+  private void checkUnitInjections(
+      ShadowModule module, Map<String, UnitProjectionDefinition> projectionProviders
+  ) {
+    List<UnitProjectionInjection> unitInjections = module.units().stream()
+        .map(ShadowUnit::projectionInjections)
         .flatMap(List::stream)
-        .filter(injection -> InjectionTypes.ProjectionInjection == injection.type())
-        .map(inj -> (ProjectionInjection) inj)
         .toList();
-    for (ProjectionInjection injection : unitInjections) {
+    for (UnitProjectionInjection injection : unitInjections) {
       UnitProjectionDefinition provider = projectionProviders.get(injection.name());
       if (provider == null) {
         throw ConfigurationException.withMessage("Projection injection by name '{}' declared in unit {} is not found",
@@ -87,6 +86,6 @@ public class ModuleValidator {
   }
 
   private String getProjectionProviderName(UnitProjectionDefinition projectionProvider) {
-    return projectionProvider.unit().unitClass().getCanonicalName() + "#" + projectionProvider.projectionMethod().getName();
+    return projectionProvider.unitClass().getCanonicalName() + "#" + projectionProvider.projectionMethod().getName();
   }
 }

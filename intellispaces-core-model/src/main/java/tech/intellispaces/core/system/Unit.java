@@ -13,10 +13,6 @@ public interface Unit {
 
   Class<?> unitClass();
 
-  Object instance();
-
-  List<Injection> injections();
-
   List<UnitProjectionDefinition> projectionDefinitions();
 
   List<Guide<?, ?>> guides();

@@ -1,5 +1,7 @@
 package tech.intellispaces.core.annotation;
 
+import tech.intellispaces.core.system.ProjectionProvider;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -12,5 +14,5 @@ public @interface ProjectionDefinition {
   /**
    * Class of getter action to get projection target.
    */
-  Class<?> provider() default Void.class;
+  Class<? extends ProjectionProvider> provider() default ProjectionProvider.class;
 }

@@ -14,8 +14,8 @@ import tech.intellispaces.core.samples.system.ModuleWithTwoProjectionProvidersIn
 import tech.intellispaces.core.samples.system.ModuleWithTwoProjectionProvidersInDifferentUnitsWithCyclicDependency2;
 import tech.intellispaces.core.samples.system.ModuleWithTwoProjectionProvidersInDifferentUnitsWithCyclicDependency3;
 import tech.intellispaces.core.samples.system.ModuleWithTwoProjectionProvidersWithCyclicDependency;
-import tech.intellispaces.core.system.shadow.ShadowModule;
 import tech.intellispaces.core.system.shadow.ModuleFactory;
+import tech.intellispaces.core.system.shadow.ShadowModule;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -168,6 +168,6 @@ public class ModuleFactoryTest {
     Module module = factory.createModule(ModuleWithTwoProjectionProvidersInDifferentUnitsWithCyclicDependency3.ModuleSample.class);
     Assertions.assertThatThrownBy(module::start)
         .isExactlyInstanceOf(ConfigurationException.class)
-        .hasMessage("Cannot to resolve parameter 'projection3' in method 'projection2' of unit " + ModuleWithTwoProjectionProvidersInDifferentUnitsWithCyclicDependency3.UnitSample.class.getCanonicalName());
+        .hasMessage("Cannot to resolve required projection 'projection3' in projection definition 'projection2' of unit " + ModuleWithTwoProjectionProvidersInDifferentUnitsWithCyclicDependency3.UnitSample.class.getCanonicalName());
   }
 }

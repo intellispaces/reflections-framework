@@ -14,28 +14,27 @@ import {{$importedClass}};
 public class {{$classSimpleName}} extends {{$sourceClassSimpleName}} implements UnitWrapper {
   private ShadowUnit $shadowUnit;
 
-{{for projectionDefinition : $projectionDefinitions}}
-  private final {{$projectionDefinition.get("providerType")}} _{{$projectionDefinition.get("name")}}Provider = new {{$projectionDefinition.get("providerType")}}(TypeFunctions.getMethod({{$sourceClassSimpleName}}.class, "{{$projectionDefinition.get("name")}}").orElseThrow());
-{{end}}
-{{for injection : $projectionInjections}}
-  private final ProjectionInjection _{{$injection.get("name")}}Injection;
-{{end}}
-  private final List<Injection> _injections = new ArrayList<>();
-
-  public {{$classSimpleName}}() {
-{{for injection : $projectionInjections}}
-    this._{{$injection.get("name")}}Injection = new ProjectionInjectionImpl("{{$injection.get("name")}}", {{$sourceClassSimpleName}}.class, {{$injection.get("type")}}.class, Actions.get(this::getProjectionTarget));
-    this._injections.add(this._{{$injection.get("name")}}Injection);
-{{end}}
-  }
-
   @Override
   public void $init(ShadowUnit shadowUnit) {
     this.$shadowUnit = shadowUnit;
-{{when $actionGetters.isNotEmpty()}}
+{{when $injections.isNotEmpty()}}
+    this.$shadowUnit.setProjectionInjections(
+{{for injection : $injections}}
+      UnitProjectionInjections.get({{$sourceClassSimpleName}}.class, "{{$injection.get("name")}}", {{$injection.get("type")}}.class){{when $injection.isNotLast()}},{{end}}
+{{end}}
+    );
+{{end}}
+{{when $projectionDefinitions.isNotEmpty()}}
+    this.$shadowUnit.setProjectionDefinitions(
+{{for projectionDefinition : $projectionDefinitions}}
+      {{$projectionDefinition}}{{when $projectionDefinition.isNotLast()}},{{end}}
+{{end}}
+    );
+{{end}}
+{{when $guideActions.isNotEmpty()}}
     this.$shadowUnit.setGuideActions(
-{{for actionGetter : $actionGetters}}
-      {{$actionGetter}}{{when $actionGetter.isNotLast()}},{{end}}
+{{for guideAction : $guideActions}}
+      {{$guideAction}}{{when $guideAction.isNotLast()}},{{end}}
 {{end}}
     );
 {{end}}
@@ -46,7 +45,7 @@ public class {{$classSimpleName}} extends {{$sourceClassSimpleName}} implements 
     return this.$shadowUnit;
   }
 
-{{for method : $methods}}
+{{for method : $projectionMethods}}
   {{$method.get("javadoc")}}
 {{for annotation : $method.get("annotations")}}
   @{{$annotation}}
@@ -56,18 +55,9 @@ public class {{$classSimpleName}} extends {{$sourceClassSimpleName}} implements 
   }
 {{end}}
 {{for method : $guideMethods}}
-  @Ordinal({{$method.index()}})
   @Override
+  @Ordinal({{$method.index()}})
   {{$method.get("declaration")}}
 
-{{end}}
-  @Override
-  public List<Injection> getInjections() {
-    return Collections.unmodifiableList(_injections);
-  }
-{{when $projectionInjections.isNotEmpty()}}
-  private Object getProjectionTarget(String name, Class<?> targetClass) {
-    return Modules.current().getProjection(name, targetClass);
-  }
 {{end}}
 }

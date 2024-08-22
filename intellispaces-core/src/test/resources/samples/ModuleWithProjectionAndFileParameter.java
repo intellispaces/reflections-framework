@@ -1,8 +1,8 @@
 package samples;
 
-import tech.intellispaces.core.annotation.Module;
-import tech.intellispaces.core.annotation.Projection;
-import tech.intellispaces.core.annotation.validator.Sample;
+import intellispaces.core.annotation.Module;
+import intellispaces.core.annotation.Projection;
+import intellispaces.core.annotation.validator.Sample;
 
 import java.io.File;
 

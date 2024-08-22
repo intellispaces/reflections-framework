@@ -1,9 +1,9 @@
 package samples;
 
-import tech.intellispaces.core.annotation.Module;
-import tech.intellispaces.core.annotation.Projection;
-import tech.intellispaces.core.annotation.Properties;
-import tech.intellispaces.core.annotation.validator.Sample;
+import intellispaces.core.annotation.Module;
+import intellispaces.core.annotation.Projection;
+import intellispaces.core.annotation.Properties;
+import intellispaces.core.annotation.validator.Sample;
 
 @Sample
 @Module

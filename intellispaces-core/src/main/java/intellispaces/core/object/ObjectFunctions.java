@@ -4,7 +4,6 @@ import intellispaces.actions.common.string.StringActions;
 import intellispaces.actions.runner.Runner;
 import intellispaces.commons.exception.UnexpectedViolationException;
 import intellispaces.commons.type.TypeFunctions;
-import intellispaces.core.annotation.Data;
 import intellispaces.core.annotation.ObjectHandleBunch;
 import intellispaces.core.common.AnnotationFunctions;
 import intellispaces.core.common.NameConventionFunctions;
@@ -26,10 +25,6 @@ import java.util.function.Function;
 public class ObjectFunctions {
 
   private ObjectFunctions() {}
-
-  public static boolean isDataObjectHandle(Class<?> objectHandleClass) {
-    return getDomainClassOfObjectHandle(objectHandleClass).isAnnotationPresent(Data.class);
-  }
 
   public static Class<?> getObjectHandleClass(ObjectHandleTypes objectHandleType) {
     return switch (objectHandleType) {

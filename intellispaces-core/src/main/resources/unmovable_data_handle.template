@@ -19,7 +19,7 @@ public class {{$classSimpleName}} implements {{$objectHandleClassName}} {
 
   public {{$classSimpleName}}(
 {{for projection : $projections}}
-    {{$projection.get("type")}} {{$projection.get("name")}}{{when $projection.isNotLast()}},{{end}}
+    @Name("{{$projection.get("name")}}") {{$projection.get("type")}} {{$projection.get("name")}}{{when $projection.isNotLast()}},{{end}}
 {{end}}
   ) {
 {{for projection : $projections}}

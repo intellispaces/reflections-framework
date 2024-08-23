@@ -1,5 +1,6 @@
 package intellispaces.core.annotation.processor.data;
 
+import intellispaces.core.annotation.Name;
 import intellispaces.core.annotation.processor.AbstractGenerator;
 import intellispaces.core.common.NameConventionFunctions;
 import intellispaces.core.object.ObjectHandleTypes;
@@ -49,6 +50,7 @@ public class UnmovableDataHandleGenerator extends AbstractGenerator {
     if (annotatedType.isNested()) {
       context.addImport(sourceClassCanonicalName());
     }
+    context.addImport(Name.class);
 
     analyzeProjections();
     return true;

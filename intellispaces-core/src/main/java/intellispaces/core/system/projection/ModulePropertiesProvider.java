@@ -2,6 +2,7 @@ package intellispaces.core.system.projection;
 
 import intellispaces.commons.exception.UnexpectedViolationException;
 import intellispaces.core.annotation.Properties;
+import intellispaces.core.object.DataFunctions;
 import intellispaces.core.object.ObjectFunctions;
 import intellispaces.core.object.ObjectHandleConstants;
 import intellispaces.core.space.SpaceConstants;
@@ -39,7 +40,7 @@ public class ModulePropertiesProvider extends AbstractProjectionProvider {
       return target;
     }
     if (ObjectFunctions.isCustomObjectHandleClass(expectedReturnType)) {
-      if (ObjectFunctions.isDataObjectHandle(expectedReturnType)) {
+      if (DataFunctions.isDataObjectHandle(expectedReturnType)) {
         return module.mapThruTransition1(target, SpaceConstants.PROPERTIES_TO_DATA_TID, expectedReturnType);
       }
     }

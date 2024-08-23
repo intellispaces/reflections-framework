@@ -85,7 +85,7 @@ public interface NameConventionFunctions {
   }
 
   static String getDataClassName(String domainClassName) {
-    return transformClassName(domainClassName) + "HandleImpl";
+    return StringFunctions.replaceEndingOrElseThrow(transformClassName(domainClassName), "Domain", "") + "Data";
   }
 
   static String getTransitionClassCanonicalName(MethodStatement transitionMethod) {

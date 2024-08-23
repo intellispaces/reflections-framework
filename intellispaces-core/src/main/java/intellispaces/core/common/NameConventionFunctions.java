@@ -22,6 +22,34 @@ import java.util.Optional;
 
 public interface NameConventionFunctions {
 
+  static String getObjectHandleTypename(String domainClassName, ObjectHandleTypes handleType) {
+    return switch (handleType) {
+      case Bunch -> getBunchObjectHandleTypename(domainClassName);
+      case Common -> getBaseObjectHandleTypename(domainClassName);
+      case Movable -> getMovableObjectHandleTypename(domainClassName);
+      case Unmovable -> getUnmovableObjectHandleTypename(domainClassName);
+    };
+  }
+
+  static String getBunchObjectHandleTypename(String domainClassName) {
+    if (ObjectFunctions.isDefaultObjectHandleType(domainClassName)) {
+      return domainClassName;
+    }
+    return StringFunctions.replaceEndingOrElseThrow(transformClassName(domainClassName), "Domain", "Bunch");
+  }
+
+  static String getBaseObjectHandleTypename(String domainClassName) {
+    return StringFunctions.replaceEndingOrElseThrow(transformClassName(domainClassName), "Domain", "");
+  }
+
+  static String getMovableObjectHandleTypename(String domainClassName) {
+    return TypeFunctions.addPrefixToClassName("Movable", getBaseObjectHandleTypename(domainClassName));
+  }
+
+  static String getUnmovableObjectHandleTypename(String domainClassName) {
+    return TypeFunctions.addPrefixToClassName("Unmovable", getBaseObjectHandleTypename(domainClassName));
+  }
+
   static String getObjectHandleImplementationCanonicalName(CustomType objectHandleType) {
     Optional<MovableObjectHandle> annotation = objectHandleType.selectAnnotation(MovableObjectHandle.class);
     if (annotation.isPresent()) {
@@ -50,34 +78,6 @@ public interface NameConventionFunctions {
         return objectHandleClass.getCanonicalName() + "Impl";
       }
     }
-  }
-
-  static String getObjectHandleTypename(String domainClassName, ObjectHandleTypes handleType) {
-    return switch (handleType) {
-      case Bunch -> getBunchObjectHandleTypename(domainClassName);
-      case Common -> getBaseObjectHandleTypename(domainClassName);
-      case Movable -> getMovableObjectHandleTypename(domainClassName);
-      case Unmovable -> getUnmovableObjectHandleTypename(domainClassName);
-    };
-  }
-
-  static String getBunchObjectHandleTypename(String domainClassName) {
-    if (ObjectFunctions.isDefaultObjectHandleType(domainClassName)) {
-      return domainClassName;
-    }
-    return transformClassName(domainClassName) + "HandleBunch";
-  }
-
-  static String getBaseObjectHandleTypename(String domainClassName) {
-    return transformClassName(domainClassName) + "Handle";
-  }
-
-  static String getMovableObjectHandleTypename(String domainClassName) {
-    return TypeFunctions.addPrefixToClassName("Movable", transformClassName(domainClassName)) + "Handle";
-  }
-
-  static String getUnmovableObjectHandleTypename(String domainClassName) {
-    return TypeFunctions.addPrefixToClassName("Unmovable", transformClassName(domainClassName)) + "Handle";
   }
 
   static String getUnitWrapperCanonicalName(String unitClassName) {
@@ -112,7 +112,9 @@ public interface NameConventionFunctions {
 
   static String getUnmovableUpwardObjectHandleTypename(CustomType domainType, CustomType baseDomainType) {
     String packageName = TypeFunctions.getPackageName(domainType.canonicalName());
-    String simpleName = domainType.simpleName() + "BasedOn" + StringFunctions.capitalizeFirstLetter(baseDomainType.simpleName());
+    String simpleName = StringFunctions.replaceEndingOrElseThrow(domainType.simpleName(), "Domain", "") +
+        "BasedOn" +
+        StringFunctions.capitalizeFirstLetter(StringFunctions.replaceEndingOrElseThrow(baseDomainType.simpleName(), "Domain", ""));
     return TypeFunctions.joinPackageAndSimpleName(packageName, simpleName);
   }
 
@@ -163,7 +165,8 @@ public interface NameConventionFunctions {
   }
 
   static String getConversionMethodName(CustomType targetType) {
-    return "as" + StringFunctions.capitalizeFirstLetter(targetType.simpleName());
+    return "as" + StringFunctions.capitalizeFirstLetter(
+        StringFunctions.replaceEndingOrElseThrow(targetType.simpleName(), "Domain", ""));
   }
 
   private static String assignTransitionClassCanonicalName(
@@ -181,7 +184,9 @@ public interface NameConventionFunctions {
   private static String assumeTransitionClassSimpleNameWhenDomainClass(
       CustomType domainType, MethodStatement transitionMethod
   ) {
-    String simpleName = TypeFunctions.getSimpleName(domainType.canonicalName());
+    String simpleName = StringFunctions.replaceEndingOrElseThrow(
+        TypeFunctions.getSimpleName(domainType.canonicalName()), "Domain", ""
+    );
     if (isMappingTraverseType(transitionMethod)) {
       if (isTransformTransition(transitionMethod)) {
         simpleName = StringFunctions.capitalizeFirstLetter(simpleName) + "To" +

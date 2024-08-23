@@ -44,7 +44,8 @@ public class UnmovableUpwardObjectHandleGenerator extends AbstractDomainObjectHa
   @Override
   public String getArtifactName() {
     return NameConventionFunctions.getUnmovableUpwardObjectHandleTypename(
-        annotatedType, baseDomainType.targetType());
+        annotatedType, baseDomainType.targetType()
+    );
   }
 
   @Override
@@ -85,7 +86,9 @@ public class UnmovableUpwardObjectHandleGenerator extends AbstractDomainObjectHa
 
     classTypeParams = annotatedType.typeParametersFullDeclaration();
     classTypeParamsBrief = annotatedType.typeParametersBriefDeclaration();
-    baseField = StringFunctions.lowercaseFirstLetter(baseDomainType.targetType().simpleName());
+    baseField = StringFunctions.lowercaseFirstLetter(
+        StringFunctions.replaceEndingOrElseThrow(baseDomainType.targetType().simpleName(), "Domain", "")
+    );
     baseObjectHandleType = getParentObjectHandleType();
 
     analyzeObjectHandleMethods(annotatedType, roundEnv);

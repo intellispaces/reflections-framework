@@ -11,7 +11,7 @@ import {{$importedClass}};
  */
 {{$generatedAnnotation}}
 @FunctionalInterface
-public interface {{$classSimpleName}} extends {{$guideClassSimpleName}}{{$guideTypeParams}} {
+public interface {{$classSimpleName}}{{$guideTypeParamsFull}} extends {{$guideClassSimpleName}}{{$guideTypeParams}} {
 
   @Override
   default String tid() {

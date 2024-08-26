@@ -21,6 +21,11 @@ public class DomainGuideGenerator extends AbstractGuideGenerator {
   }
 
   @Override
+  protected String getGuideTypeParamDeclaration() {
+    return DomainGeneratorFunctions.getTransitionTypeParams(annotatedType, transitionMethod);
+  }
+
+  @Override
   protected List<MethodParam> getQualifierMethodParams() {
     return transitionMethod.params();
   }

@@ -50,6 +50,8 @@ public class UnitWrapperGenerator extends AbstractGenerator {
   private final List<Map<String, Object>> projectionMethods = new ArrayList<>();
   private List<Map<String, Object>> guideMethods;
   private List<String> guideActions;
+  private String typeParamsFullDeclaration;
+  private String typeParamsBriefDeclaration;
 
   public UnitWrapperGenerator(CustomType annotatedType) {
     super(annotatedType);
@@ -73,6 +75,8 @@ public class UnitWrapperGenerator extends AbstractGenerator {
     vars.put("sourceClassName", sourceClassCanonicalName());
     vars.put("sourceClassSimpleName", sourceClassSimpleName());
     vars.put("classSimpleName", context.generatedClassSimpleName());
+    vars.put("typeParamsFullDeclaration", typeParamsFullDeclaration);
+    vars.put("typeParamsBriefDeclaration", typeParamsBriefDeclaration);
     vars.put("importedClasses", context.getImports());
     vars.put("projectionDefinitions", projectionDefinitions);
     vars.put("injections", injections);
@@ -106,10 +110,16 @@ public class UnitWrapperGenerator extends AbstractGenerator {
     context.addImport(ProjectionInjections.class);
     context.addImport(UnitProjectionInjections.class);
 
+    analyzeTypeParams();
     analyzeMethods();
     analyzeGuideMethods();
     analyzeGuideActions();
     return true;
+  }
+
+  private void analyzeTypeParams() {
+    typeParamsFullDeclaration = annotatedType.typeParametersFullDeclaration();
+    typeParamsBriefDeclaration = annotatedType.typeParametersBriefDeclaration();
   }
 
   private void analyzeGuideMethods() {

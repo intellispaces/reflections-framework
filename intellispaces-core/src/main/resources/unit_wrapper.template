@@ -11,7 +11,7 @@ import {{$importedClass}};
  */
 {{$generatedAnnotation}}
 @Wrapper({{$sourceClassSimpleName}}.class)
-public class {{$classSimpleName}} extends {{$sourceClassSimpleName}} implements UnitWrapper {
+public class {{$classSimpleName}}{{$typeParamsFullDeclaration}} extends {{$sourceClassSimpleName}}{{$typeParamsBriefDeclaration}} implements UnitWrapper {
   private ShadowUnit $shadowUnit;
 
   @Override

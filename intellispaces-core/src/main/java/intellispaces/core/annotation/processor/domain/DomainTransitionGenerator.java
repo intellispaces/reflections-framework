@@ -26,36 +26,7 @@ public class DomainTransitionGenerator extends AbstractTransitionGenerator {
 
   @Override
   protected String getTransitionClassTypeParams() {
-    if (annotatedType.typeParameters().isEmpty() && transitionMethod.typeParameters().isEmpty()) {
-      return "";
-    } else if (!annotatedType.typeParameters().isEmpty() && transitionMethod.typeParameters().isEmpty()) {
-      return annotatedType.typeParametersFullDeclaration();
-    } else if (annotatedType.typeParameters().isEmpty() && !transitionMethod.typeParameters().isEmpty()) {
-      return getTransitionMethodTypeParametersDeclaration();
-    } else {
-      String domainTypeParams = annotatedType.typeParametersFullDeclaration();
-      String transitionTypeParams = getTransitionMethodTypeParametersDeclaration();
-      return domainTypeParams.substring(0, domainTypeParams.length() - 1) +
-          ", " +
-          transitionTypeParams.substring(1);
-    }
-  }
-
-  private String getTransitionMethodTypeParametersDeclaration() {
-    var sb = new StringBuilder();
-    sb.append("<");
-
-    boolean first = true;
-    for (NamedReference typeParam : transitionMethod.typeParameters()) {
-      if (!first) {
-        sb.append(", ");
-      }
-      sb.append(typeParam.actualDeclaration());
-      first = false;
-    }
-
-    sb.append(">");
-    return sb.toString();
+    return DomainGeneratorFunctions.getTransitionTypeParams(annotatedType, transitionMethod);
   }
 
   @Override

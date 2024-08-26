@@ -1,5 +1,7 @@
 package intellispaces.core.annotation.processor.ontology;
 
+import intellispaces.actions.common.string.StringActions;
+import intellispaces.actions.runner.Runner;
 import intellispaces.commons.exception.UnexpectedViolationException;
 import intellispaces.commons.type.TypeFunctions;
 import intellispaces.core.annotation.processor.AbstractGuideGenerator;
@@ -9,6 +11,7 @@ import intellispaces.javastatements.JavaStatements;
 import intellispaces.javastatements.customtype.CustomType;
 import intellispaces.javastatements.method.MethodParam;
 import intellispaces.javastatements.method.MethodStatement;
+import intellispaces.javastatements.reference.NamedReference;
 import intellispaces.javastatements.reference.TypeReference;
 
 import java.util.List;
@@ -28,6 +31,24 @@ public class OntologyGuideGenerator extends AbstractGuideGenerator {
   @Override
   protected CustomType getDomainType() {
     return domainType;
+  }
+
+  @Override
+  protected String getGuideTypeParamDeclaration() {
+    List<NamedReference> typeParams = transitionMethod.typeParameters();
+    if (typeParams.isEmpty()) {
+      return "";
+    }
+
+    var sb = new StringBuilder();
+    sb.append("<");
+    Runner commaAppender = StringActions.skippingFirstTimeCommaAppender(sb);
+    for (NamedReference typeParam : typeParams) {
+      commaAppender.run();
+      sb.append(typeParam.formalFullDeclaration());
+    }
+    sb.append(">");
+    return sb.toString();
   }
 
   @Override

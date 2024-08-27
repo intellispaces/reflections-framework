@@ -23,17 +23,17 @@ public class DomainAnnotationProcessor extends AnnotatedTypeProcessor {
   }
 
   @Override
-  protected boolean isApplicable(CustomType domainType) {
+  public boolean isApplicable(CustomType domainType) {
     return AnnotationProcessorFunctions.isAutoGenerationEnabled(domainType);
   }
 
   @Override
-  protected AnnotatedTypeValidator getValidator() {
+  public AnnotatedTypeValidator getValidator() {
     return new DomainValidator();
   }
 
   @Override
-  protected List<ArtifactGenerator> makeArtifactGenerators(CustomType domainType, RoundEnvironment roundEnv) {
+  public List<ArtifactGenerator> makeArtifactGenerators(CustomType domainType, RoundEnvironment roundEnv) {
     return AnnotationProcessorFunctions.makeDomainArtifactGenerators(domainType, roundEnv);
   }
 }

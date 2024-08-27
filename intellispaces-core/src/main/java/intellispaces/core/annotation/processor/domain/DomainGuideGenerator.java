@@ -1,7 +1,6 @@
 package intellispaces.core.annotation.processor.domain;
 
 import intellispaces.core.annotation.processor.AbstractGuideGenerator;
-import intellispaces.core.annotation.processor.AnnotationProcessorFunctions;
 import intellispaces.core.common.NameConventionFunctions;
 import intellispaces.core.traverse.TraverseType;
 import intellispaces.javastatements.customtype.CustomType;

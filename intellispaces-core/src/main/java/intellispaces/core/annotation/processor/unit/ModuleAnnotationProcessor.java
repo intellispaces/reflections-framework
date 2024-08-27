@@ -23,17 +23,17 @@ public class ModuleAnnotationProcessor extends AnnotatedTypeProcessor {
   }
 
   @Override
-  protected boolean isApplicable(CustomType moduleType) {
+  public boolean isApplicable(CustomType moduleType) {
     return AnnotationProcessorFunctions.isAutoGenerationEnabled(moduleType);
   }
 
   @Override
-  protected AnnotatedTypeValidator getValidator() {
+  public AnnotatedTypeValidator getValidator() {
     return new ModuleValidator();
   }
 
   @Override
-  protected List<ArtifactGenerator> makeArtifactGenerators(CustomType moduleType, RoundEnvironment roundEnv) {
+  public List<ArtifactGenerator> makeArtifactGenerators(CustomType moduleType, RoundEnvironment roundEnv) {
     return AnnotationProcessorFunctions.makeModuleArtifactGenerators(moduleType);
   }
 }

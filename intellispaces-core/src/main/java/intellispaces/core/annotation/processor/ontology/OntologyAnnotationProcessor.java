@@ -22,17 +22,17 @@ public class OntologyAnnotationProcessor extends AnnotatedTypeProcessor {
   }
 
   @Override
-  protected boolean isApplicable(CustomType ontologyType) {
+  public boolean isApplicable(CustomType ontologyType) {
     return AnnotationProcessorFunctions.isAutoGenerationEnabled(ontologyType);
   }
 
   @Override
-  protected AnnotatedTypeValidator getValidator() {
+  public AnnotatedTypeValidator getValidator() {
     return null;
   }
 
   @Override
-  protected List<ArtifactGenerator> makeArtifactGenerators(
+  public List<ArtifactGenerator> makeArtifactGenerators(
       CustomType ontologyType, RoundEnvironment roundEnv
   ) {
     return AnnotationProcessorFunctions.makeOntologyArtifactGenerators(ontologyType, roundEnv);

@@ -22,17 +22,17 @@ public class PreprocessingAnnotationProcessor extends AnnotatedTypeProcessor {
   }
 
   @Override
-  protected boolean isApplicable(CustomType customType) {
+  public boolean isApplicable(CustomType customType) {
     return AnnotationProcessorFunctions.isAutoGenerationEnabled(customType);
   }
 
   @Override
-  protected AnnotatedTypeValidator getValidator() {
+  public AnnotatedTypeValidator getValidator() {
     return null;
   }
 
   @Override
-  protected List<ArtifactGenerator> makeArtifactGenerators(CustomType customType, RoundEnvironment roundEnv) {
+  public List<ArtifactGenerator> makeArtifactGenerators(CustomType customType, RoundEnvironment roundEnv) {
     return AnnotationProcessorFunctions.makePreprocessingArtifactGenerators(customType, roundEnv);
   }
 }

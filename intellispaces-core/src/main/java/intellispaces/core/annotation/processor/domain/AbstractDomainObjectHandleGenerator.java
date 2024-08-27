@@ -1,7 +1,7 @@
 package intellispaces.core.annotation.processor.domain;
 
 import intellispaces.core.annotation.processor.AbstractObjectHandleGenerator;
-import intellispaces.core.annotation.processor.AnnotationFunctions;
+import intellispaces.core.annotation.processor.AnnotationProcessorFunctions;
 import intellispaces.core.annotation.processor.ArtifactTypes;
 import intellispaces.core.object.ObjectFunctions;
 import intellispaces.core.space.domain.DomainFunctions;
@@ -37,7 +37,7 @@ abstract class AbstractDomainObjectHandleGenerator extends AbstractObjectHandleG
 
   protected List<MethodStatement> getAdditionalOMethods(CustomType customType, RoundEnvironment roundEnv) {
     List<MethodStatement> methods = new ArrayList<>();
-    List<CustomType> artifactAnnexes = AnnotationFunctions.findArtifactAnnexes(
+    List<CustomType> artifactAnnexes = AnnotationProcessorFunctions.findArtifactAnnexes(
         customType, ArtifactTypes.ObjectHandle, roundEnv
     );
     for (CustomType artifactAnnex : artifactAnnexes) {

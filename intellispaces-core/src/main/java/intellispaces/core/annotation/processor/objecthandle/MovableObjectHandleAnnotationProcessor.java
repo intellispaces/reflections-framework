@@ -22,17 +22,17 @@ public class MovableObjectHandleAnnotationProcessor extends AnnotatedTypeProcess
   }
 
   @Override
-  protected boolean isApplicable(CustomType objectHandleType) {
+  public boolean isApplicable(CustomType objectHandleType) {
     return objectHandleType.isAbstract() && AnnotationProcessorFunctions.isAutoGenerationEnabled(objectHandleType);
   }
 
   @Override
-  protected AnnotatedTypeValidator getValidator() {
+  public AnnotatedTypeValidator getValidator() {
     return null;
   }
 
   @Override
-  protected List<ArtifactGenerator> makeArtifactGenerators(CustomType objectHandleType, RoundEnvironment roundEnv) {
+  public List<ArtifactGenerator> makeArtifactGenerators(CustomType objectHandleType, RoundEnvironment roundEnv) {
     return AnnotationProcessorFunctions.makeMovableObjectHandleArtifactGenerators(objectHandleType);
   }
 }

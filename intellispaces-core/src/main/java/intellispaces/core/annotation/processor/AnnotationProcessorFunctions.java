@@ -1,8 +1,10 @@
 package intellispaces.core.annotation.processor;
 
+import intellispaces.annotations.AnnotatedTypeProcessor;
 import intellispaces.annotations.generator.ArtifactGenerator;
 import intellispaces.commons.collection.ArraysFunctions;
 import intellispaces.commons.type.TypeFunctions;
+import intellispaces.core.annotation.AnnotationProcessor;
 import intellispaces.core.annotation.Data;
 import intellispaces.core.annotation.Domain;
 import intellispaces.core.annotation.Module;
@@ -31,8 +33,11 @@ import intellispaces.core.system.UnitFunctions;
 import intellispaces.core.traverse.TraverseTypes;
 import intellispaces.javastatements.AnnotatedStatement;
 import intellispaces.javastatements.JavaStatements;
+import intellispaces.javastatements.customtype.AnnotationFunctions;
 import intellispaces.javastatements.customtype.CustomType;
 import intellispaces.javastatements.instance.AnnotationInstance;
+import intellispaces.javastatements.instance.ClassInstance;
+import intellispaces.javastatements.instance.Instance;
 import intellispaces.javastatements.method.MethodStatement;
 import intellispaces.javastatements.reference.CustomTypeReference;
 import intellispaces.javastatements.reference.TypeReference;
@@ -71,7 +76,26 @@ public interface AnnotationProcessorFunctions {
     addBasicObjectHandleGenerators(domainType, generators, roundEnv);
     addDownwardObjectHandleGenerators(domainType, generators);
     addUpwardObjectHandleGenerators(domainType, domainType, generators);
+    addIncludedGenerators(domainType, generators, roundEnv);
     return generators;
+  }
+
+  private static void addIncludedGenerators(
+      CustomType annotatedType, List<ArtifactGenerator> generators, RoundEnvironment roundEnv
+  ) {
+    List<AnnotatedTypeProcessor> processors = AnnotationFunctions.allAnnotationsOf(
+        annotatedType, AnnotationProcessor.class
+    ).stream()
+        .map(AnnotationProcessor::value)
+        .distinct()
+        .map(c -> (AnnotatedTypeProcessor) TypeFunctions.newInstance(c))
+        .toList();
+    for (AnnotatedTypeProcessor processor : processors) {
+      if (processor.isApplicable(annotatedType)) {
+        processor.getValidator().validate(annotatedType);
+        generators.addAll(processor.makeArtifactGenerators(annotatedType, roundEnv));
+      }
+    }
   }
 
   private static void addObjectHandleBunchGenerator(
@@ -168,7 +192,7 @@ public interface AnnotationProcessorFunctions {
   ) {
     AnnotationInstance preprocessingAnnotation = customType.selectAnnotation(
         Preprocessing.class.getCanonicalName()).orElseThrow();
-    List<CustomType> preprocessingClasses = AnnotationFunctions.getPreprocessingTargets(preprocessingAnnotation);
+    List<CustomType> preprocessingClasses = getPreprocessingTargets(preprocessingAnnotation);
     if (preprocessingClasses.isEmpty()) {
       return List.of();
     }
@@ -226,12 +250,12 @@ public interface AnnotationProcessorFunctions {
         .map(stm -> (AnnotatedStatement) stm)
         .map(stm -> stm.selectAnnotation(Preprocessing.class.getCanonicalName()))
         .map(Optional::orElseThrow)
-        .filter(ann -> AnnotationFunctions.isPreprocessingAnnotationFor(ann, annotatedType.canonicalName()))
+        .filter(ann -> isPreprocessingAnnotationFor(ann, annotatedType.canonicalName()))
         .toList();
     if (preprocessingAnnotations.isEmpty()) {
       return true;
     }
-    return preprocessingAnnotations.stream().allMatch(AnnotationFunctions::isPreprocessingEnabled);
+    return preprocessingAnnotations.stream().allMatch(AnnotationProcessorFunctions::isPreprocessingEnabled);
   }
 
   static String getDomainClassLink(TypeReference type) {
@@ -251,5 +275,90 @@ public interface AnnotationProcessorFunctions {
       return Void.class.getCanonicalName().equals(type.asCustomTypeReferenceOrElseThrow().targetType().canonicalName());
     }
     return false;
+  }
+
+  static List<CustomType> findArtifactAnnexes(
+      CustomType customType, ArtifactTypes artifactType, RoundEnvironment roundEnv
+  ) {
+    return findArtifactAnnexes(customType.canonicalName(), artifactType, roundEnv);
+  }
+
+  static List<CustomType> findArtifactAnnexes(
+      String canonicalName, ArtifactTypes artifactType, RoundEnvironment roundEnv
+  ) {
+    return roundEnv.getElementsAnnotatedWith(Preprocessing.class).stream()
+        .map(JavaStatements::statement)
+        .map(stm -> (CustomType) stm)
+        .filter(stm -> isArtifactAnnexFor(stm, canonicalName, artifactType))
+        .toList();
+  }
+
+  static boolean isArtifactAnnexFor(
+      CustomType customType, String canonicalName, ArtifactTypes artifactType
+  ) {
+    return isPreprocessingAnnotationFor(
+        customType.selectAnnotation(Preprocessing.class.getCanonicalName()).orElseThrow(),
+        canonicalName,
+        artifactType
+    );
+  }
+
+  static boolean isPreprocessingAnnotationFor(
+      AnnotationInstance preprocessingAnnotation, String canonicalClassName
+  ) {
+    List<CustomType> preprocessingTargets = getPreprocessingAnnexTargets(preprocessingAnnotation);
+    for (CustomType target : preprocessingTargets) {
+      if (canonicalClassName.equals(target.canonicalName())) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  static boolean isPreprocessingAnnotationFor(
+      AnnotationInstance preprocessingAnnotation, String canonicalClassName, ArtifactTypes artifact
+  ) {
+    List<CustomType> preprocessingTargets = getPreprocessingAnnexTargets(preprocessingAnnotation);
+    for (CustomType target : preprocessingTargets) {
+      if (canonicalClassName.equals(target.canonicalName())) {
+        if (artifact.name().equals(getPreprocessingArtifactName(preprocessingAnnotation))) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  static List<CustomType> getPreprocessingTargets(AnnotationInstance preprocessingAnnotation) {
+    return preprocessingAnnotation.elementValue("value").orElseThrow()
+        .asArray().orElseThrow()
+        .elements().stream()
+        .map(Instance::asClass)
+        .map(Optional::orElseThrow)
+        .map(ClassInstance::type)
+        .toList();
+  }
+
+  static List<CustomType> getPreprocessingAnnexTargets(AnnotationInstance preprocessingAnnotation) {
+    return preprocessingAnnotation.elementValue("annexFor").orElseThrow()
+        .asArray().orElseThrow()
+        .elements().stream()
+        .map(Instance::asClass)
+        .map(Optional::orElseThrow)
+        .map(ClassInstance::type)
+        .toList();
+  }
+
+  static boolean isPreprocessingEnabled(AnnotationInstance preprocessingAnnotation) {
+    Object enabled = preprocessingAnnotation.elementValue("enable").orElseThrow()
+        .asPrimitive().orElseThrow()
+        .value();
+    return Boolean.TRUE == enabled;
+  }
+
+  static String getPreprocessingArtifactName(AnnotationInstance preprocessingAnnotation) {
+    return preprocessingAnnotation.elementValue("artifact").orElseThrow()
+        .asString().orElseThrow()
+        .value();
   }
 }

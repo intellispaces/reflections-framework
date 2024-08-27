@@ -73,15 +73,27 @@ public class ObjectFunctions {
   }
 
   public static String getBaseObjectHandleTypename(TypeReference domainType) {
-    if (domainType.isPrimitiveReference()) {
+    return getBaseObjectHandleTypename(domainType, Function.identity());
+  }
+
+  public static String getBaseObjectHandleTypename(
+      TypeReference type,
+      Function<TypeReference, TypeReference> typeReplacer
+  ) {
+    type = typeReplacer.apply(type);
+    if (type.isPrimitiveReference()) {
       return TypeFunctions.getPrimitiveWrapperClass(
-          domainType.asPrimitiveReferenceOrElseThrow().typename()).getCanonicalName();
-    } else if (domainType.isNamedReference()) {
-      return domainType.asNamedReferenceOrElseThrow().name();
-    } else if (domainType.isWildcard()) {
-      return Object.class.getCanonicalName();
+          type.asPrimitiveReferenceOrElseThrow().typename()).getCanonicalName();
+    } else if (type.isNamedReference()) {
+      return type.asNamedReferenceOrElseThrow().name();
+    } else if (type.isWildcard()) {
+      if (type.asWildcardOrElseThrow().extendedBound().isEmpty()) {
+        return "?";
+      }
+      return "? extends " + getBaseObjectHandleTypename(type.asWildcardOrElseThrow().extendedBound().get(), typeReplacer);
+//      return Object.class.getCanonicalName();
     }
-    return getBaseObjectHandleTypename(domainType.asCustomTypeReferenceOrElseThrow().targetType());
+    return getBaseObjectHandleTypename(type.asCustomTypeReferenceOrElseThrow().targetType());
   }
 
   public static String getBaseObjectHandleTypename(CustomType domainType) {

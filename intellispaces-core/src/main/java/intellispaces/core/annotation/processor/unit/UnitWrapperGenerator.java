@@ -174,6 +174,8 @@ public class UnitWrapperGenerator extends AbstractGenerator {
       NamedReference namedType = type.asNamedReferenceOrElseThrow();
       if (namedType.extendedBounds().isEmpty()) {
         return "Object";
+      } else {
+        return buildTypeDeclaration(namedType.extendedBounds().get(0));
       }
     }
     return context.addToImportAndGetSimpleName(

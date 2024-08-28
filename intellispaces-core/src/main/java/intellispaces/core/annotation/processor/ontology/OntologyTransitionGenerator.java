@@ -41,9 +41,7 @@ public class OntologyTransitionGenerator extends AbstractTransitionGenerator {
 
   @Override
   protected String getTransitionClassCanonicalName() {
-    String packageName = TypeFunctions.getPackageName(annotatedType.canonicalName());
-    String simpleName = NameConventionFunctions.getDefaultTransitionClassSimpleName(transitionMethod);
-    return TypeFunctions.joinPackageAndSimpleName(packageName, simpleName);
+    return NameConventionFunctions.getTransitionClassCanonicalName(transitionMethod);
   }
 
   @Override

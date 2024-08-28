@@ -1,5 +1,7 @@
 package intellispaces.core.object;
 
+import intellispaces.core.exception.TraverseException;
+import intellispaces.core.space.transition.Transition1;
 import intellispaces.javastatements.type.Type;
 
 /**
@@ -20,4 +22,9 @@ public interface ObjectHandle<D> {
   boolean isMovable();
 
   MovableObjectHandle<D> asMovableOrElseThrow();
+
+  @SuppressWarnings("rawtypes")
+  default <T, Q> T mapThru(Class<? extends Transition1> transitionClass, Q qualifier) throws TraverseException {
+    throw new RuntimeException("Not implemented");
+  }
 }

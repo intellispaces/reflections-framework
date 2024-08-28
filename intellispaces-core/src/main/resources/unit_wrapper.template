@@ -9,8 +9,8 @@ import {{$importedClass}};
  *
  * This class was generated automatically. Don't try to change it.
  */
-{{$generatedAnnotation}}
 @Wrapper({{$sourceClassSimpleName}}.class)
+{{$generatedAnnotation}}
 public class {{$classSimpleName}}{{$typeParamsFullDeclaration}} extends {{$sourceClassSimpleName}}{{$typeParamsBriefDeclaration}} implements UnitWrapper {
   private ShadowUnit $shadowUnit;
 

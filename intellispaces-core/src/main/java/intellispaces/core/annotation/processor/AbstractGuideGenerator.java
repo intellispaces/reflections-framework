@@ -4,6 +4,7 @@ import intellispaces.actions.common.string.StringActions;
 import intellispaces.actions.runner.Runner;
 import intellispaces.commons.exception.UnexpectedViolationException;
 import intellispaces.commons.type.TypeFunctions;
+import intellispaces.core.annotation.Guide;
 import intellispaces.core.common.NameConventionFunctions;
 import intellispaces.core.guide.GuideFunctions;
 import intellispaces.core.guide.GuideKind;
@@ -93,6 +94,7 @@ public abstract class AbstractGuideGenerator extends AbstractGenerator {
     if (annotatedType.isNested()) {
       context.addImport(annotatedType.canonicalName());
     }
+    context.addImport(Guide.class);
     context.addImport(TransitionFunctions.class);
     analyzeGuideType();
     return true;
@@ -133,7 +135,7 @@ public abstract class AbstractGuideGenerator extends AbstractGenerator {
   }
 
   private String getGuideClassSimpleName(Class<?> guideClass) {
-    String abstractGuideCanonicalName = TypeFunctions.addPrefixToClassName(
+    String abstractGuideCanonicalName = TypeFunctions.addPrefixToSimpleName(
         "Abstract", guideClass.getCanonicalName()
     );
     return context.addToImportAndGetSimpleName(abstractGuideCanonicalName);

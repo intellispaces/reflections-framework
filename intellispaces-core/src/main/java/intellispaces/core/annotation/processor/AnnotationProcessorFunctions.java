@@ -2,6 +2,7 @@ package intellispaces.core.annotation.processor;
 
 import intellispaces.annotations.AnnotatedTypeProcessor;
 import intellispaces.annotations.generator.ArtifactGenerator;
+import intellispaces.annotations.validator.AnnotatedTypeValidator;
 import intellispaces.commons.collection.ArraysFunctions;
 import intellispaces.commons.type.TypeFunctions;
 import intellispaces.core.annotation.AnnotationProcessor;
@@ -92,7 +93,10 @@ public interface AnnotationProcessorFunctions {
         .toList();
     for (AnnotatedTypeProcessor processor : processors) {
       if (processor.isApplicable(annotatedType)) {
-        processor.getValidator().validate(annotatedType);
+        AnnotatedTypeValidator validator = processor.getValidator();
+        if (validator != null) {
+          validator.validate(annotatedType);
+        }
         generators.addAll(processor.makeArtifactGenerators(annotatedType, roundEnv));
       }
     }
@@ -223,7 +227,7 @@ public interface AnnotationProcessorFunctions {
   ) {
     return isAutoGenerationEnabled(domainType, ArtifactTypes.Mapper, roundEnv) &&
         ArraysFunctions.contains(
-            method.selectAnnotation(Transition.class).orElseThrow().allowedTraverseTypes(),
+            method.selectAnnotation(Transition.class).orElseThrow().allowedTraverse(),
             TraverseTypes.Mapping);
   }
 
@@ -232,7 +236,7 @@ public interface AnnotationProcessorFunctions {
   ) {
     return isAutoGenerationEnabled(domainType, ArtifactTypes.Mover, roundEnv) &&
         ArraysFunctions.contains(
-            method.selectAnnotation(Transition.class).orElseThrow().allowedTraverseTypes(),
+            method.selectAnnotation(Transition.class).orElseThrow().allowedTraverse(),
             TraverseTypes.Moving);
   }
 

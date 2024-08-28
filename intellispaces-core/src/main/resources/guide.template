@@ -9,8 +9,9 @@ import {{$importedClass}};
  *
  * This class was generated automatically. Don't try to change it.
  */
-{{$generatedAnnotation}}
+@Guide
 @FunctionalInterface
+{{$generatedAnnotation}}
 public interface {{$classSimpleName}}{{$guideTypeParamsFull}} extends {{$guideClassSimpleName}}{{$guideTypeParams}} {
 
   @Override

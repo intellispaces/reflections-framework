@@ -217,7 +217,9 @@ public interface TransitionFunctions {
     return getObjectHandleMethodTransitionAnnotation(objectHandleMethod);
   }
 
-  private static String extractTransitionId(List<Method> trackedMethods, Class<?> sourceDomain, Object transitionMethod) {
+  private static String extractTransitionId(
+      List<Method> trackedMethods, Class<?> sourceDomain, Object transitionMethod
+  ) {
     if (trackedMethods.isEmpty()) {
       throw UnexpectedViolationException.withMessage("Several methods of the domain class {} were invoked while transition method {} was being testing",
           sourceDomain.getCanonicalName(), transitionMethod);
@@ -244,10 +246,10 @@ public interface TransitionFunctions {
   }
 
   static TraverseTypes getTraverseType(Transition transition) {
-    if (transition.allowedTraverseTypes().length > 1) {
+    if (transition.allowedTraverse().length > 1) {
       return transition.defaultTraverseType();
     }
-    return transition.allowedTraverseTypes()[0];
+    return transition.allowedTraverse()[0];
   }
 
   static TraverseTypes getTraverseType(MethodStatement method) {

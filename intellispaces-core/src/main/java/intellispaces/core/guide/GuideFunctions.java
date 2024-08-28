@@ -34,6 +34,7 @@ import intellispaces.javastatements.customtype.CustomTypes;
 import intellispaces.javastatements.method.MethodFunctions;
 import intellispaces.javastatements.method.MethodStatement;
 import intellispaces.javastatements.method.Methods;
+import intellispaces.javastatements.reference.TypeReference;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -46,8 +47,19 @@ public final class GuideFunctions {
 
   private GuideFunctions() {}
 
+  public static boolean isGuideType(TypeReference type) {
+    return type.isCustomTypeReference() &&
+        type.asCustomTypeReferenceOrElseThrow().targetType().hasAnnotation(intellispaces.core.annotation.Guide.class);
+  }
+
   public static boolean isGuideMethod(MethodStatement method) {
-    return method.hasAnnotation(intellispaces.core.annotation.Mapper.class) || method.hasAnnotation(intellispaces.core.annotation.Mover.class);
+    return method.hasAnnotation(intellispaces.core.annotation.Mapper.class) ||
+        method.hasAnnotation(intellispaces.core.annotation.Mover.class);
+  }
+
+  public static boolean isGuideMethod(Method method) {
+    return method.isAnnotationPresent(intellispaces.core.annotation.Mapper.class) ||
+        method.isAnnotationPresent(intellispaces.core.annotation.Mover.class);
   }
 
   public static Transition getObjectGuideTransitionAnnotation(Method objectHandleMethod) {
@@ -61,7 +73,7 @@ public final class GuideFunctions {
   public static List<Guide<?, ?>> loadObjectGuides(Class<?> objectHandleClass) {
     List<Guide<?, ?>> guides = new ArrayList<>();
     for (Method method : objectHandleClass.getDeclaredMethods()) {
-      if (method.isAnnotationPresent(intellispaces.core.annotation.Mapper.class) || method.isAnnotationPresent(intellispaces.core.annotation.Mover.class)) {
+      if (isGuideMethod(method)) {
         Transition transition = getObjectGuideTransitionAnnotation(method);
         if (TraverseTypes.Mapping == TransitionFunctions.getTraverseType(transition)) {
           guides.add(createObjectMapper(objectHandleClass, transition.value(), method));

@@ -26,7 +26,9 @@ public interface MovableObjectHandle<D> extends ObjectHandle<D> {
 
   <B, Q> B moveThru(TransitionMethod1<? super D, B, Q> transitionMethod, Q qualifier) throws TraverseException;
 
+  @SuppressWarnings("rawtypes")
   <B> B moveThru(Class<? extends Transition0> transitionClass) throws TraverseException;
 
+  @SuppressWarnings("rawtypes")
   <B, Q> B moveThru(Class<? extends Transition1> transitionClass, Q qualifier) throws TraverseException;
 }

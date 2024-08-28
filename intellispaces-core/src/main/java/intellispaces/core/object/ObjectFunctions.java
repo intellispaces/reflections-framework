@@ -91,7 +91,6 @@ public class ObjectFunctions {
         return "?";
       }
       return "? extends " + getBaseObjectHandleTypename(type.asWildcardOrElseThrow().extendedBound().get(), typeReplacer);
-//      return Object.class.getCanonicalName();
     }
     return getBaseObjectHandleTypename(type.asCustomTypeReferenceOrElseThrow().targetType());
   }

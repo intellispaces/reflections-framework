@@ -43,11 +43,11 @@ public interface NameConventionFunctions {
   }
 
   static String getMovableObjectHandleTypename(String domainClassName) {
-    return TypeFunctions.addPrefixToClassName("Movable", getBaseObjectHandleTypename(domainClassName));
+    return TypeFunctions.addPrefixToSimpleName("Movable", getBaseObjectHandleTypename(domainClassName));
   }
 
   static String getUnmovableObjectHandleTypename(String domainClassName) {
-    return TypeFunctions.addPrefixToClassName("Unmovable", getBaseObjectHandleTypename(domainClassName));
+    return TypeFunctions.addPrefixToSimpleName("Unmovable", getBaseObjectHandleTypename(domainClassName));
   }
 
   static String getObjectHandleImplementationCanonicalName(CustomType objectHandleType) {
@@ -85,19 +85,19 @@ public interface NameConventionFunctions {
   }
 
   static String getDataClassName(String domainClassName) {
-    return StringFunctions.replaceEndingOrElseThrow(transformClassName(domainClassName), "Domain", "") + "Data";
+    return StringFunctions.replaceEndingOrElseThrow(transformClassName(domainClassName), "Domain", "Data");
   }
 
   static String getTransitionClassCanonicalName(MethodStatement transitionMethod) {
     String spaceName = transitionMethod.owner().packageName();
-    CustomType domainType = transitionMethod.owner();
-    if (!domainType.hasAnnotation(Domain.class)) {
-      throw UnexpectedViolationException.withMessage("Transition method {} should be declared in domain class. " +
-          "But actual class {} is not marked with annotation {}",
-          transitionMethod.name(), domainType.canonicalName(), transitionMethod.owner().canonicalName()
+    CustomType owner = transitionMethod.owner();
+    if (!owner.hasAnnotation(Domain.class) && !owner.hasAnnotation(Ontology.class)) {
+      throw UnexpectedViolationException.withMessage("Transition method {} should be declared in domain or ontology class. " +
+          "But actual class {} is not marked with annotation",
+          transitionMethod.name(), owner.canonicalName()
       );
     }
-    return getTransitionClassCanonicalName(spaceName, domainType, transitionMethod);
+    return getTransitionClassCanonicalName(spaceName, owner, transitionMethod);
   }
 
   static String getTransitionClassCanonicalName(
@@ -230,11 +230,10 @@ public interface NameConventionFunctions {
   }
 
   static String getGuideClassCanonicalName(
-      TraverseType traverseType, String spaceName, CustomType domainType, MethodStatement transitionMethod
+      String spaceName, CustomType domainType, MethodStatement transitionMethod
   ) {
     String transitionCanonicalName = getTransitionClassCanonicalName(spaceName, domainType, transitionMethod);
-    String suffix = traverseType == TraverseTypes.Mapping ? "Mapper" : "Mover";
-    return StringFunctions.replaceLast(transitionCanonicalName, "Transition", suffix);
+    return StringFunctions.replaceLast(transitionCanonicalName, "Transition", "Guide");
   }
 
   private static boolean isMappingTraverseType(MethodStatement method) {

@@ -9,6 +9,7 @@ import intellispaces.core.annotation.ProjectionDefinition;
 import intellispaces.core.annotation.Shutdown;
 import intellispaces.core.annotation.Startup;
 import intellispaces.core.exception.IntelliSpacesException;
+import intellispaces.core.guide.GuideFunctions;
 import intellispaces.core.object.ObjectFunctions;
 import intellispaces.core.system.ModuleFunctions;
 import intellispaces.javastatements.customtype.CustomType;
@@ -137,12 +138,12 @@ public class ModuleValidator implements AnnotatedTypeValidator {
       throw IntelliSpacesException.withMessage("Abstract method '{}' in unit {} should return value",
           method.name(), method.owner().canonicalName());
     }
-    if (!ObjectFunctions.isObjectHandleType(returnType.get())) {
-      throw IntelliSpacesException.withMessage("Injection '{}' in unit {} should return object handle class",
-          method.name(), method.owner().canonicalName());
-    }
     if (!method.params().isEmpty()) {
       throw IntelliSpacesException.withMessage("Abstract method '{}' in unit {} should have no parameters",
+          method.name(), method.owner().canonicalName());
+    }
+    if (!ObjectFunctions.isObjectHandleType(returnType.get()) && !GuideFunctions.isGuideType(returnType.get())) {
+      throw IntelliSpacesException.withMessage("Injection '{}' in unit {} should return object handle or guide class",
           method.name(), method.owner().canonicalName());
     }
   }

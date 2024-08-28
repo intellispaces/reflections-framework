@@ -23,6 +23,10 @@ public final class DomainFunctions {
 
   private DomainFunctions() {}
 
+  public static String getDomainId(CustomType domain) {
+    return domain.selectAnnotation(Domain.class).orElseThrow().value();
+  }
+
   public static boolean isDomainClass(Class<?> aClass) {
     return aClass.isAnnotationPresent(Domain.class);
   }

@@ -9,9 +9,9 @@ import {{$importedClass}};
  *
  * This class was generated automatically. Don't try to change it.
  */
-{{$generatedAnnotation}}
-@FunctionalInterface
 @Transition("{{$tid}}")
+@FunctionalInterface
+{{$generatedAnnotation}}
 public interface {{$classSimpleName}}{{$transitionTypeParamsFull}} extends {{$transitionClass}}{{$transitionTypeParamsBrief}} {
 
   {{$transitionMethod}};

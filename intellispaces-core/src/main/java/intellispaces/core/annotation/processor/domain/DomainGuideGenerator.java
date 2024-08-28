@@ -33,7 +33,7 @@ public class DomainGuideGenerator extends AbstractGuideGenerator {
   @Override
   protected String getGuideClassCanonicalName() {
     return NameConventionFunctions.getGuideClassCanonicalName(
-        traverseType, annotatedType.packageName(), annotatedType, transitionMethod
+        annotatedType.packageName(), annotatedType, transitionMethod
     );
   }
 }

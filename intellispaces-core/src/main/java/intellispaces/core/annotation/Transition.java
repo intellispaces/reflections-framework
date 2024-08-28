@@ -19,7 +19,7 @@ public @interface Transition {
    */
   String value();
 
-  TraverseTypes[] allowedTraverseTypes() default { TraverseTypes.Mapping };
+  TraverseTypes[] allowedTraverse() default { TraverseTypes.Mapping };
 
   /**
    * Default traverse type.<p/>

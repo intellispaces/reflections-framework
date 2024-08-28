@@ -1,7 +1,7 @@
 package intellispaces.core.annotation.processor.domain;
 
 import intellispaces.commons.string.StringFunctions;
-import intellispaces.core.annotation.MovableObjectHandle;
+import intellispaces.core.annotation.ObjectHandle;
 import intellispaces.core.annotation.Transition;
 import intellispaces.core.common.NameConventionFunctions;
 import intellispaces.core.exception.TraverseException;
@@ -86,7 +86,7 @@ public class MovableDownwardObjectHandleGenerator extends AbstractConversionDoma
 
     context.addImport(Type.class);
     context.addImport(Types.class);
-    context.addImport(MovableObjectHandle.class);
+    context.addImport(ObjectHandle.class);
     context.addImport(ObjectFunctions.class);
     context.addImport(TraverseException.class);
     context.addImport(Transition0.class);

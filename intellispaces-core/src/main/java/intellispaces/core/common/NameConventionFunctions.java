@@ -4,14 +4,12 @@ import intellispaces.commons.exception.UnexpectedViolationException;
 import intellispaces.commons.string.StringFunctions;
 import intellispaces.commons.type.TypeFunctions;
 import intellispaces.core.annotation.Domain;
-import intellispaces.core.annotation.MovableObjectHandle;
+import intellispaces.core.annotation.ObjectHandle;
 import intellispaces.core.annotation.Ontology;
 import intellispaces.core.annotation.Transition;
-import intellispaces.core.annotation.UnmovableObjectHandle;
 import intellispaces.core.object.ObjectFunctions;
 import intellispaces.core.object.ObjectHandleTypes;
 import intellispaces.core.space.transition.TransitionFunctions;
-import intellispaces.core.traverse.TraverseType;
 import intellispaces.core.traverse.TraverseTypes;
 import intellispaces.javastatements.customtype.CustomType;
 import intellispaces.javastatements.method.MethodParam;
@@ -50,34 +48,20 @@ public interface NameConventionFunctions {
     return TypeFunctions.addPrefixToSimpleName("Unmovable", getBaseObjectHandleTypename(domainClassName));
   }
 
-  static String getObjectHandleImplementationCanonicalName(CustomType objectHandleType) {
-    Optional<MovableObjectHandle> annotation = objectHandleType.selectAnnotation(MovableObjectHandle.class);
-    if (annotation.isPresent()) {
-      return TypeFunctions.replaceSimpleName(objectHandleType.canonicalName(), annotation.get().value());
-    } else {
-      Optional<UnmovableObjectHandle> unmovableObjectAnnotation = objectHandleType.selectAnnotation(
-          UnmovableObjectHandle.class
-      );
-      if (unmovableObjectAnnotation.isPresent()) {
-        return TypeFunctions.replaceSimpleName(objectHandleType.canonicalName(), unmovableObjectAnnotation.get().value());
-      } else {
-        return objectHandleType.canonicalName() + "Impl";
-      }
+  static String getObjectHandleWrapperCanonicalName(CustomType objectHandleType) {
+    Optional<ObjectHandle> a = objectHandleType.selectAnnotation(ObjectHandle.class);
+    if (a.isPresent()) {
+      return TypeFunctions.replaceSimpleName(objectHandleType.canonicalName(), a.get().value());
     }
+    return objectHandleType.canonicalName() + "Wrapper";
   }
 
-  static String getObjectHandleImplementationCanonicalName(Class<?> objectHandleClass) {
-    MovableObjectHandle movableObjectAnnotation = objectHandleClass.getAnnotation(MovableObjectHandle.class);
-    if (movableObjectAnnotation != null) {
-      return TypeFunctions.replaceSimpleName(objectHandleClass.getCanonicalName(), movableObjectAnnotation.value());
-    } else {
-      UnmovableObjectHandle unmovableObjectAnnotation = objectHandleClass.getAnnotation(UnmovableObjectHandle.class);
-      if (unmovableObjectAnnotation != null) {
-        return TypeFunctions.replaceSimpleName(objectHandleClass.getCanonicalName(), unmovableObjectAnnotation.value());
-      } else {
-        return objectHandleClass.getCanonicalName() + "Impl";
-      }
+  static String getObjectHandleWrapperCanonicalName(Class<?> objectHandleClass) {
+    ObjectHandle a = objectHandleClass.getAnnotation(ObjectHandle.class);
+    if (a != null) {
+      return TypeFunctions.replaceSimpleName(objectHandleClass.getCanonicalName(), a.value());
     }
+    return objectHandleClass.getCanonicalName() + "Wrapper";
   }
 
   static String getUnitWrapperCanonicalName(String unitClassName) {

@@ -153,7 +153,7 @@ public final class GuideFunctions {
   }
 
   public static int getTransitionIndex(Class<?> objectHandleClass, Method guideMethod) {
-    String implClassCanonicalName = NameConventionFunctions.getObjectHandleImplementationCanonicalName(
+    String implClassCanonicalName = NameConventionFunctions.getObjectHandleWrapperCanonicalName(
         objectHandleClass
     );
     Optional<Class<?>> objectHandleImplClass = TypeFunctions.getClass(implClassCanonicalName);

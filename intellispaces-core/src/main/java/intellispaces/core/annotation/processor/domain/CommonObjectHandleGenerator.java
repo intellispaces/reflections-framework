@@ -67,9 +67,9 @@ public class CommonObjectHandleGenerator extends AbstractDomainObjectHandleGener
   protected boolean analyzeAnnotatedType(RoundEnvironment roundEnv) {
     context.generatedClassCanonicalName(getArtifactName());
     context.addImport(sourceClassCanonicalName());
-    context.addImport(ObjectHandle.class);
     context.addImport(Type.class);
     context.addImport(Types.class);
+    context.addImport(ObjectHandle.class);
 
     domainTypeParamsFull = annotatedType.typeParametersFullDeclaration();
     domainTypeParamsBrief = annotatedType.typeParametersBriefDeclaration();

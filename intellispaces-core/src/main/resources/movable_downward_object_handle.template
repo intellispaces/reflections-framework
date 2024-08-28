@@ -9,7 +9,7 @@ import {{$importedClass}};
  *
  * This class was generated automatically. Don't try to change it.
  */
-@MovableObjectHandle
+@ObjectHandle
 {{$generatedAnnotation}}
 public class {{$classSimpleName}}{{$classTypeParams}} implements {{$movableObjectHandleName}}{{$classTypeParamsBrief}} {
   private final {{$childObjectHandleType}} {{$childField}};

@@ -2,7 +2,6 @@ package intellispaces.core.annotation.processor.domain;
 
 import intellispaces.actions.common.string.StringActions;
 import intellispaces.actions.runner.Runner;
-import intellispaces.core.annotation.ObjectHandleBunch;
 import intellispaces.core.annotation.Transition;
 import intellispaces.core.common.NameConventionFunctions;
 import intellispaces.core.object.ObjectHandleTypes;
@@ -60,7 +59,6 @@ public class ObjectHandleBunchGenerator extends AbstractDomainObjectHandleGenera
   protected boolean analyzeAnnotatedType(RoundEnvironment roundEnv) {
     context.generatedClassCanonicalName(getArtifactName());
     context.addImport(sourceClassCanonicalName());
-    context.addImport(ObjectHandleBunch.class);
 
     domainTypeParamsFull = annotatedType.typeParametersFullDeclaration();
     domainTypeParamsBrief = annotatedType.typeParametersBriefDeclaration();

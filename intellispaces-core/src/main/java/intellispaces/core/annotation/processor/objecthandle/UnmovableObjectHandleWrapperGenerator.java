@@ -3,6 +3,7 @@ package intellispaces.core.annotation.processor.objecthandle;
 import intellispaces.actions.Actions;
 import intellispaces.actions.getter.ResettableGetter;
 import intellispaces.core.annotation.Ordinal;
+import intellispaces.core.annotation.Wrapper;
 import intellispaces.core.exception.TraverseException;
 import intellispaces.core.guide.n0.Mapper0;
 import intellispaces.core.guide.n1.Mapper1;
@@ -21,9 +22,9 @@ import javax.annotation.processing.RoundEnvironment;
 import java.util.HashMap;
 import java.util.Map;
 
-public class UnmovableObjectHandleImplGenerator extends AbstractObjectHandleImplGenerator {
+public class UnmovableObjectHandleWrapperGenerator extends AbstractObjectHandleWrapperGenerator {
 
-  public UnmovableObjectHandleImplGenerator(CustomType objectHandleType) {
+  public UnmovableObjectHandleWrapperGenerator(CustomType objectHandleType) {
     super(objectHandleType);
   }
 
@@ -34,7 +35,7 @@ public class UnmovableObjectHandleImplGenerator extends AbstractObjectHandleImpl
 
   @Override
   protected String templateName() {
-    return "/unmovable_object_handle_impl.template";
+    return "/unmovable_object_handle_wrapper.template";
   }
 
   protected Map<String, Object> templateVariables() {
@@ -70,6 +71,7 @@ public class UnmovableObjectHandleImplGenerator extends AbstractObjectHandleImpl
     context.addImport(ResettableGetter.class);
     context.addImport(Actions.class);
     context.addImport(Ordinal.class);
+    context.addImport(Wrapper.class);
     context.addImport(ObjectHandleWrapper.class);
     context.addImport(ShadowObjectHandle.class);
 

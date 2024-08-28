@@ -4,12 +4,12 @@ import intellispaces.actions.common.string.StringActions;
 import intellispaces.actions.runner.Runner;
 import intellispaces.commons.exception.UnexpectedViolationException;
 import intellispaces.commons.type.TypeFunctions;
-import intellispaces.core.annotation.ObjectHandleBunch;
-import intellispaces.core.common.AnnotationFunctions;
+import intellispaces.core.annotation.ObjectHandle;
 import intellispaces.core.common.NameConventionFunctions;
 import intellispaces.core.space.domain.DomainFunctions;
 import intellispaces.javastatements.JavaStatements;
 import intellispaces.javastatements.customtype.CustomType;
+import intellispaces.javastatements.instance.AnnotationInstance;
 import intellispaces.javastatements.reference.CustomTypeReference;
 import intellispaces.javastatements.reference.NotPrimitiveReference;
 import intellispaces.javastatements.reference.TypeReference;
@@ -17,9 +17,12 @@ import intellispaces.javastatements.reference.WildcardReference;
 import intellispaces.javastatements.type.Type;
 
 import java.lang.reflect.Constructor;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 public class ObjectFunctions {
@@ -28,7 +31,7 @@ public class ObjectFunctions {
 
   public static Class<?> getObjectHandleClass(ObjectHandleTypes objectHandleType) {
     return switch (objectHandleType) {
-      case Common -> ObjectHandle.class;
+      case Common -> intellispaces.core.object.ObjectHandle.class;
       case Movable -> MovableObjectHandle.class;
       case Unmovable -> UnmovableObjectHandle.class;
       case Bunch -> throw UnexpectedViolationException.withMessage("Bunch object handle class is not defined");
@@ -120,11 +123,11 @@ public class ObjectFunctions {
   }
 
   public static boolean isCustomObjectHandleClass(Class<?> aClass) {
-    return ObjectHandle.class.isAssignableFrom(aClass);
+    return intellispaces.core.object.ObjectHandle.class.isAssignableFrom(aClass);
   }
 
   public static boolean isCustomObjectHandleType(TypeReference type) {
-    return type.isCustomTypeReference() && type.asCustomTypeReferenceOrElseThrow().targetType().hasParent(ObjectHandle.class);
+    return type.isCustomTypeReference() && type.asCustomTypeReferenceOrElseThrow().targetType().hasParent(intellispaces.core.object.ObjectHandle.class);
   }
 
   public static Class<?> defineObjectHandleClass(Class<?> aClass) {
@@ -132,8 +135,7 @@ public class ObjectFunctions {
   }
 
   private static Class<?> defineObjectHandleClassInternal(Class<?> aClass) {
-    if (aClass.isAnnotationPresent(intellispaces.core.annotation.MovableObjectHandle.class) ||
-        aClass.isAnnotationPresent(intellispaces.core.annotation.UnmovableObjectHandle.class) ||
+    if (aClass.isAnnotationPresent(intellispaces.core.annotation.ObjectHandle.class) ||
         isDefaultObjectHandleClass(aClass)
     ) {
       return aClass;
@@ -171,18 +173,16 @@ public class ObjectFunctions {
   }
 
   public static CustomType getDomainTypeOfObjectHandle(CustomType objectHandleType) {
-    List<CustomType> objectHandleTypes = AnnotationFunctions.findTopAnnotatedTypes(
-        objectHandleType, ObjectHandleBunch.class.getCanonicalName()
-    );
-    if (objectHandleTypes.isEmpty()) {
+    List<AnnotationInstance> annotations = findObjectHandleAnnotations(objectHandleType);
+    if (annotations.isEmpty()) {
       throw UnexpectedViolationException.withMessage("Could not find object handle type of class {}",
           objectHandleType.canonicalName());
-    } else if (objectHandleTypes.size() > 1) {
+    } else if (annotations.size() > 1) {
       throw UnexpectedViolationException.withMessage("More than one object handle type of class {} found",
           objectHandleType.canonicalName());
     }
-    return objectHandleTypes.get(0).selectAnnotation(ObjectHandleBunch.class.getCanonicalName()).orElseThrow()
-        .elementValue("value").orElseThrow()
+    return annotations.get(0)
+        .elementValue("domain").orElseThrow()
         .asClass().orElseThrow()
         .type();
   }
@@ -191,17 +191,15 @@ public class ObjectFunctions {
     if (isDefaultObjectHandleClass(objectHandleClass)) {
       return objectHandleClass;
     }
-    List<Class<?>> objectHandleTypes = AnnotationFunctions.findTopAnnotatedClasses(
-        objectHandleClass, ObjectHandleBunch.class
-    );
-    if (objectHandleTypes.isEmpty()) {
+    List<ObjectHandle> annotations = findObjectHandleAnnotations(objectHandleClass);
+    if (annotations.isEmpty()) {
       throw UnexpectedViolationException.withMessage("Could not find object handle type of class {}",
           objectHandleClass.getCanonicalName());
-    } else if (objectHandleTypes.size() > 1) {
+    } else if (annotations.size() > 1) {
       throw UnexpectedViolationException.withMessage("More than one object handle type of class {} found",
           objectHandleClass.getCanonicalName());
     }
-    return objectHandleTypes.get(0).getAnnotation(ObjectHandleBunch.class).value();
+    return annotations.get(0).domain();
   }
 
   @SuppressWarnings("unchecked")
@@ -217,6 +215,62 @@ public class ObjectFunctions {
       }
     }
     return null;
+  }
+
+  private static List<AnnotationInstance> findObjectHandleAnnotations(CustomType objectHandle) {
+    var result = new ArrayList<AnnotationInstance>();
+    Optional<AnnotationInstance> a = objectHandle.selectAnnotation(ObjectHandle.class.getCanonicalName());
+    if (a.isPresent() && !Void.class.getCanonicalName().equals(a.get().elementValue("domain").orElseThrow()
+        .asClass().orElseThrow()
+        .type().canonicalName())
+    ) {
+      result.add(a.get());
+    }
+    findObjectHandleAnnotationsRecursively(objectHandle, result::add, new HashSet<>());
+    return result;
+  }
+
+  private static void findObjectHandleAnnotationsRecursively(
+      CustomType type, Consumer<AnnotationInstance> consumer, Set<String> history
+  ) {
+    for (CustomTypeReference parent : type.parentTypes()) {
+      if (history.add(parent.targetType().canonicalName())) {
+        Optional<AnnotationInstance> a = parent.targetType().selectAnnotation(ObjectHandle.class.getCanonicalName());
+        if (a.isPresent() && !Void.class.getCanonicalName().equals(a.get().elementValue("domain").orElseThrow()
+            .asClass().orElseThrow()
+            .type().canonicalName())
+        ) {
+          consumer.accept(a.get());
+        } else {
+          findObjectHandleAnnotationsRecursively(parent.targetType(), consumer, history);
+        }
+      }
+    }
+  }
+
+  private static List<ObjectHandle> findObjectHandleAnnotations(Class<?> objectHandle) {
+    var result = new ArrayList<ObjectHandle>();
+    ObjectHandle a = objectHandle.getAnnotation(ObjectHandle.class);
+    if (a != null && a.domain() != Void.class) {
+      result.add(a);
+    }
+    findObjectHandleAnnotationRecursively(objectHandle, result::add, new HashSet<>());
+    return result;
+  }
+
+  private static void findObjectHandleAnnotationRecursively(
+      Class<?> aClass, Consumer<ObjectHandle> consumer, Set<String> history
+  ) {
+    for (Class<?> parent : TypeFunctions.getParents(aClass)) {
+      if (history.add(parent.getCanonicalName())) {
+        ObjectHandle a = parent.getAnnotation(ObjectHandle.class);
+        if (a != null && a.domain() != Void.class) {
+          consumer.accept(a);
+        } else {
+          findObjectHandleAnnotationRecursively(parent, consumer, history);
+        }
+      }
+    }
   }
 
   private static Object tryCreateDowngradeObjectHandle(

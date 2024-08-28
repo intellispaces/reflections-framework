@@ -28,7 +28,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-abstract class AbstractObjectHandleImplGenerator extends AbstractObjectHandleGenerator {
+abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandleGenerator {
   protected String domainSimpleClassName;
   protected String typeParamsFull;
   protected String typeParamsBrief;
@@ -37,7 +37,7 @@ abstract class AbstractObjectHandleImplGenerator extends AbstractObjectHandleGen
   protected List<String> guideActions;
   protected List<String> transitionActions;
 
-  AbstractObjectHandleImplGenerator(CustomType objectHandleType) {
+  AbstractObjectHandleWrapperGenerator(CustomType objectHandleType) {
     super(objectHandleType);
 
     CustomType domainType = ObjectFunctions.getDomainTypeOfObjectHandle(objectHandleType);
@@ -178,7 +178,7 @@ abstract class AbstractObjectHandleImplGenerator extends AbstractObjectHandleGen
   }
 
   protected String getGeneratedClassCanonicalName() {
-    return NameConventionFunctions.getObjectHandleImplementationCanonicalName(annotatedType);
+    return NameConventionFunctions.getObjectHandleWrapperCanonicalName(annotatedType);
   }
 
   protected void analyzeTypeParams(CustomType objectHandleType) {

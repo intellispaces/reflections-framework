@@ -4,16 +4,16 @@ import intellispaces.annotations.AnnotatedTypeProcessor;
 import intellispaces.annotations.generator.ArtifactGenerator;
 import intellispaces.annotations.validator.AnnotatedTypeValidator;
 import intellispaces.commons.collection.ArraysFunctions;
+import intellispaces.commons.exception.UnexpectedViolationException;
 import intellispaces.commons.type.TypeFunctions;
 import intellispaces.core.annotation.AnnotationProcessor;
 import intellispaces.core.annotation.Data;
 import intellispaces.core.annotation.Domain;
 import intellispaces.core.annotation.Module;
-import intellispaces.core.annotation.MovableObjectHandle;
+import intellispaces.core.annotation.ObjectHandle;
 import intellispaces.core.annotation.Ontology;
 import intellispaces.core.annotation.Preprocessing;
 import intellispaces.core.annotation.Transition;
-import intellispaces.core.annotation.UnmovableObjectHandle;
 import intellispaces.core.annotation.processor.data.UnmovableDataHandleGenerator;
 import intellispaces.core.annotation.processor.domain.CommonObjectHandleGenerator;
 import intellispaces.core.annotation.processor.domain.DomainGuideGenerator;
@@ -23,11 +23,13 @@ import intellispaces.core.annotation.processor.domain.MovableObjectHandleGenerat
 import intellispaces.core.annotation.processor.domain.ObjectHandleBunchGenerator;
 import intellispaces.core.annotation.processor.domain.UnmovableObjectHandleGenerator;
 import intellispaces.core.annotation.processor.domain.UnmovableUpwardObjectHandleGenerator;
-import intellispaces.core.annotation.processor.objecthandle.MovableObjectHandleImplGenerator;
-import intellispaces.core.annotation.processor.objecthandle.UnmovableObjectHandleImplGenerator;
+import intellispaces.core.annotation.processor.objecthandle.MovableObjectHandleWrapperGenerator;
+import intellispaces.core.annotation.processor.objecthandle.UnmovableObjectHandleWrapperGenerator;
 import intellispaces.core.annotation.processor.ontology.OntologyGuideGenerator;
 import intellispaces.core.annotation.processor.ontology.OntologyTransitionGenerator;
 import intellispaces.core.annotation.processor.unit.UnitWrapperGenerator;
+import intellispaces.core.object.MovableObjectHandle;
+import intellispaces.core.object.UnmovableObjectHandle;
 import intellispaces.core.space.domain.DomainFunctions;
 import intellispaces.core.system.ModuleFunctions;
 import intellispaces.core.system.UnitFunctions;
@@ -175,12 +177,15 @@ public interface AnnotationProcessorFunctions {
     return generators;
   }
 
-  static List<ArtifactGenerator> makeMovableObjectHandleArtifactGenerators(CustomType objectHandleType) {
-      return List.of(new MovableObjectHandleImplGenerator(objectHandleType));
-  }
-
-  static List<ArtifactGenerator> makeUnmovableObjectHandleArtifactGenerators(CustomType objectHandleType) {
-    return List.of(new UnmovableObjectHandleImplGenerator(objectHandleType));
+  static List<ArtifactGenerator> makeObjectHandleArtifactGenerators(CustomType objectHandleType) {
+    if (objectHandleType.hasParent(UnmovableObjectHandle.class)) {
+      return List.of(new UnmovableObjectHandleWrapperGenerator(objectHandleType));
+    } else if (objectHandleType.hasParent(MovableObjectHandle.class)) {
+      return List.of(new MovableObjectHandleWrapperGenerator(objectHandleType));
+    } else {
+      throw UnexpectedViolationException.withMessage("Could not define movable type of the object handle {}",
+          objectHandleType.canonicalName());
+    }
   }
 
   static List<ArtifactGenerator> makeModuleArtifactGenerators(CustomType moduleType) {
@@ -211,10 +216,10 @@ public interface AnnotationProcessorFunctions {
         generators.addAll(makeModuleArtifactGenerators(preprocessingClass));
       } else if (UnitFunctions.isUnitType(preprocessingClass)) {
         generators.add(new UnitWrapperGenerator(preprocessingClass));
-      } else if (preprocessingClass.hasAnnotation(MovableObjectHandle.class)) {
-        generators.addAll(makeMovableObjectHandleArtifactGenerators(preprocessingClass));
-      } else if (preprocessingClass.hasAnnotation(UnmovableObjectHandle.class)) {
-        generators.addAll(makeUnmovableObjectHandleArtifactGenerators(preprocessingClass));
+      } else if (preprocessingClass.hasAnnotation(ObjectHandle.class)) {
+        if (preprocessingClass.asClass().isPresent()) {
+          generators.addAll(makeObjectHandleArtifactGenerators(preprocessingClass));
+        }
       } else if (preprocessingClass.hasAnnotation(Ontology.class)) {
         generators.addAll(makeOntologyArtifactGenerators(preprocessingClass, roundEnv));
       }

@@ -3,6 +3,7 @@ package intellispaces.core.annotation.processor;
 import intellispaces.annotations.artifact.JavaArtifactContext;
 import intellispaces.annotations.generator.TemplateBasedJavaArtifactGenerator;
 import intellispaces.commons.type.TypeFunctions;
+import intellispaces.core.annotation.Generated;
 import intellispaces.core.object.ObjectFunctions;
 import intellispaces.core.object.ObjectHandleTypes;
 import intellispaces.javastatements.customtype.CustomType;
@@ -11,7 +12,6 @@ import intellispaces.javastatements.method.MethodSignatureDeclarations;
 import intellispaces.javastatements.method.MethodStatement;
 import intellispaces.javastatements.reference.TypeReference;
 
-import javax.annotation.processing.Generated;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -47,9 +47,9 @@ public abstract class AbstractGenerator extends TemplateBasedJavaArtifactGenerat
     if (generatedAnnotation == null) {
       generatedAnnotation = """
         @Generated(
-          value = "Source artifact %s" +
-                  "Generated with library %s" +
-                  "Generator %s",
+          source = "%s",
+          library = "%s",
+          generator = "%s",
           date = "%s"
         )""".formatted(
           annotatedType.canonicalName(),

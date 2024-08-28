@@ -7,6 +7,7 @@ import {{$importedClass}};
 /**
  * This class was generated automatically. Don't try to change it.
  */
+@Wrapper({{$sourceClassSimpleName}}.class)
 {{$generatedAnnotation}}
 public class {{$classSimpleName}}{{$typeParamsFull}} extends {{$sourceClassSimpleName}}{{$typeParamsBrief}} implements ObjectHandleWrapper<{{$domainClassSimpleName}}{{$typeParamsBrief}}> {
   private ShadowObjectHandle $shadowHandle;

@@ -1,7 +1,7 @@
 package intellispaces.core.annotation.processor.domain;
 
 import intellispaces.commons.string.StringFunctions;
-import intellispaces.core.annotation.UnmovableObjectHandle;
+import intellispaces.core.annotation.ObjectHandle;
 import intellispaces.core.common.NameConventionFunctions;
 import intellispaces.core.object.ObjectHandleTypes;
 import intellispaces.javastatements.customtype.CustomType;
@@ -80,7 +80,7 @@ public class UnmovableUpwardObjectHandleGenerator extends AbstractDomainObjectHa
   protected boolean analyzeAnnotatedType(RoundEnvironment roundEnv) {
     context.generatedClassCanonicalName(getArtifactName());
     context.addImport(Type.class);
-    context.addImport(UnmovableObjectHandle.class);
+    context.addImport(ObjectHandle.class);
     unmovableObjectHandleName = context.addToImportAndGetSimpleName(
         NameConventionFunctions.getUnmovableObjectHandleTypename(annotatedType.className()));
 

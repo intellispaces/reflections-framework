@@ -2,6 +2,7 @@ package intellispaces.core.annotation.processor.objecthandle;
 
 import intellispaces.actions.Actions;
 import intellispaces.core.annotation.Ordinal;
+import intellispaces.core.annotation.Wrapper;
 import intellispaces.core.exception.TraverseException;
 import intellispaces.core.guide.n0.Mover0;
 import intellispaces.core.guide.n1.Mover1;
@@ -23,9 +24,9 @@ import javax.annotation.processing.RoundEnvironment;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MovableObjectHandleImplGenerator extends AbstractObjectHandleImplGenerator {
+public class MovableObjectHandleWrapperGenerator extends AbstractObjectHandleWrapperGenerator {
 
-  public MovableObjectHandleImplGenerator(CustomType objectHandleType) {
+  public MovableObjectHandleWrapperGenerator(CustomType objectHandleType) {
     super(objectHandleType);
   }
 
@@ -36,7 +37,7 @@ public class MovableObjectHandleImplGenerator extends AbstractObjectHandleImplGe
 
   @Override
   protected String templateName() {
-    return "/movable_object_handle_impl.template";
+    return "/movable_object_handle_wrapper.template";
   }
 
   protected Map<String, Object> templateVariables() {
@@ -72,6 +73,7 @@ public class MovableObjectHandleImplGenerator extends AbstractObjectHandleImplGe
     context.addImport(Actions.class);
     context.addImport(Type.class);
     context.addImport(Ordinal.class);
+    context.addImport(Wrapper.class);
     context.addImport(ObjectHandleWrapper.class);
     context.addImport(ShadowObjectHandle.class);
 

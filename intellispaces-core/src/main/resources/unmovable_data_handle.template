@@ -11,6 +11,7 @@ import {{$importedClass}};
  *
  * This class was generated automatically. Don't try to change it.
  */
+@ObjectHandle({{$sourceClassName}}.class)
 {{$generatedAnnotation}}
 public class {{$classSimpleName}} implements {{$objectHandleClassName}} {
 {{for projection : $projections}}

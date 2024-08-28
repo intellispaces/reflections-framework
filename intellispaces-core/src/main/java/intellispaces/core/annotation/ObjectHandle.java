@@ -10,12 +10,12 @@ import java.lang.annotation.Target;
 public @interface ObjectHandle {
 
   /**
-   * Object handle class simple name.
-   */
-  String value() default "";
-
-  /**
    * Object handle domain class.
    */
-  Class<?> domain() default Void.class;
+  Class<?> value();
+
+  /**
+   * Object handle class simple name.
+   */
+  String name() default "";
 }

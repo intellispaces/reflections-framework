@@ -1,5 +1,6 @@
 package intellispaces.core.annotation.processor.domain;
 
+import intellispaces.core.annotation.ObjectHandle;
 import intellispaces.core.common.NameConventionFunctions;
 import intellispaces.core.object.MovableObjectHandle;
 import intellispaces.core.object.ObjectHandleTypes;
@@ -61,6 +62,7 @@ public class MovableObjectHandleGenerator extends AbstractDomainObjectHandleGene
       context.addImport(sourceClassCanonicalName());
     }
     context.addImport(MovableObjectHandle.class);
+    context.addImport(ObjectHandle.class);
 
     domainTypeParamsFull = annotatedType.typeParametersFullDeclaration();
     domainTypeParamsBrief = annotatedType.typeParametersBriefDeclaration();

@@ -1,6 +1,5 @@
 package intellispaces.core.annotation.processor.ontology;
 
-import intellispaces.commons.type.TypeFunctions;
 import intellispaces.core.annotation.processor.AbstractTransitionGenerator;
 import intellispaces.core.common.NameConventionFunctions;
 import intellispaces.javastatements.Statement;

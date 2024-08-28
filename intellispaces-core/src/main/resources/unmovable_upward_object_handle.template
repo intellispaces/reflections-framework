@@ -9,7 +9,7 @@ import {{$importedClass}};
  *
  * This class was generated automatically. Don't try to change it.
  */
-@ObjectHandle
+@ObjectHandle({{$sourceClassName}}.class)
 {{$generatedAnnotation}}
 public class {{$classSimpleName}}{{$classTypeParams}} implements {{$unmovableObjectHandleName}}{{$classTypeParamsBrief}} {
   private final {{$baseObjectHandleType}} {{$baseField}};

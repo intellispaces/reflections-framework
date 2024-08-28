@@ -1,6 +1,7 @@
 package intellispaces.core.annotation.processor.domain;
 
 import intellispaces.commons.exception.UnexpectedViolationException;
+import intellispaces.core.annotation.ObjectHandle;
 import intellispaces.core.common.NameConventionFunctions;
 import intellispaces.core.object.ObjectHandleTypes;
 import intellispaces.core.object.UnmovableObjectHandle;
@@ -64,6 +65,7 @@ public class UnmovableObjectHandleGenerator extends AbstractDomainObjectHandleGe
     }
     context.addImport(UnexpectedViolationException.class);
     context.addImport(UnmovableObjectHandle.class);
+    context.addImport(ObjectHandle.class);
 
     domainTypeParamsFull = annotatedType.typeParametersFullDeclaration();
     domainTypeParamsBrief = annotatedType.typeParametersBriefDeclaration();

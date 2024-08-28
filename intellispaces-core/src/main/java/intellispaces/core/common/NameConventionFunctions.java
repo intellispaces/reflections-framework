@@ -51,7 +51,7 @@ public interface NameConventionFunctions {
   static String getObjectHandleWrapperCanonicalName(CustomType objectHandleType) {
     Optional<ObjectHandle> a = objectHandleType.selectAnnotation(ObjectHandle.class);
     if (a.isPresent()) {
-      return TypeFunctions.replaceSimpleName(objectHandleType.canonicalName(), a.get().value());
+      return TypeFunctions.replaceSimpleName(objectHandleType.canonicalName(), a.get().name());
     }
     return objectHandleType.canonicalName() + "Wrapper";
   }
@@ -59,7 +59,7 @@ public interface NameConventionFunctions {
   static String getObjectHandleWrapperCanonicalName(Class<?> objectHandleClass) {
     ObjectHandle a = objectHandleClass.getAnnotation(ObjectHandle.class);
     if (a != null) {
-      return TypeFunctions.replaceSimpleName(objectHandleClass.getCanonicalName(), a.value());
+      return TypeFunctions.replaceSimpleName(objectHandleClass.getCanonicalName(), a.name());
     }
     return objectHandleClass.getCanonicalName() + "Wrapper";
   }

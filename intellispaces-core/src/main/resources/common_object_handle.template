@@ -9,7 +9,7 @@ import {{$importedClass}};
  *
  * This class was generated automatically. Don't try to change it.
  */
-@ObjectHandle(domain = {{$sourceClassSimpleName}}.class)
+@ObjectHandle({{$sourceClassSimpleName}}.class)
 {{$generatedAnnotation}}
 {{when $isAlias}}
 public interface {{$classSimpleName}}{{$domainTypeParamsFull}} extends {{$primaryObjectHandle}}, {{$objectHandleBunch}}{{$domainTypeParamsBrief}} {

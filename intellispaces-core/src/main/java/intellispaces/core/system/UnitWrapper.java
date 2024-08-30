@@ -1,10 +1,10 @@
 package intellispaces.core.system;
 
-import intellispaces.core.system.shadow.ShadowUnit;
+import intellispaces.core.system.kernel.KernelUnit;
 
 public interface UnitWrapper {
 
-  void $init(ShadowUnit shadowUnit);
+  void $init(KernelUnit unit);
 
-  ShadowUnit $shadowUnit();
+  KernelUnit $unit();
 }

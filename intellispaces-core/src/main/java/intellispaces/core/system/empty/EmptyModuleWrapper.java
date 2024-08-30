@@ -2,20 +2,20 @@ package intellispaces.core.system.empty;
 
 import intellispaces.core.annotation.Wrapper;
 import intellispaces.core.system.UnitWrapper;
-import intellispaces.core.system.shadow.ShadowUnit;
+import intellispaces.core.system.kernel.KernelUnit;
 
 
 @Wrapper(EmptyModule.class)
 public class EmptyModuleWrapper extends EmptyModule implements UnitWrapper {
-  private ShadowUnit shadowUnit;
+  private KernelUnit unit;
 
   @Override
-  public void $init(ShadowUnit shadowUnit) {
-    this.shadowUnit = shadowUnit;
+  public void $init(KernelUnit unit) {
+    this.unit = unit;
   }
 
   @Override
-  public ShadowUnit $shadowUnit() {
-    return shadowUnit;
+  public KernelUnit $unit() {
+    return unit;
   }
 }

@@ -1,7 +1,7 @@
 package intellispaces.core.annotation.processor.data;
 
 import intellispaces.annotations.AnnotatedTypeProcessor;
-import intellispaces.annotations.generator.ArtifactGenerator;
+import intellispaces.annotations.generator.GenerationTask;
 import intellispaces.annotations.validator.AnnotatedTypeValidator;
 import intellispaces.core.annotation.Data;
 import intellispaces.core.annotation.processor.AnnotationProcessorFunctions;
@@ -30,7 +30,7 @@ public class DataAnnotationProcessor extends AnnotatedTypeProcessor {
   }
 
   @Override
-  public List<ArtifactGenerator> makeArtifactGenerators(CustomType dataType, RoundEnvironment roundEnv) {
-    return AnnotationProcessorFunctions.makeDataArtifactGenerators(dataType);
+  public List<GenerationTask> makeTasks(CustomType initiatorType, CustomType dataType, RoundEnvironment roundEnv) {
+    return AnnotationProcessorFunctions.makeDataArtifactGenerators(initiatorType, dataType);
   }
 }

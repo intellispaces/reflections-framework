@@ -2,7 +2,7 @@ package intellispaces.core.annotation.processor.objecthandle;
 
 import com.google.auto.service.AutoService;
 import intellispaces.annotations.AnnotatedTypeProcessor;
-import intellispaces.annotations.generator.ArtifactGenerator;
+import intellispaces.annotations.generator.GenerationTask;
 import intellispaces.annotations.validator.AnnotatedTypeValidator;
 import intellispaces.core.annotation.ObjectHandle;
 import intellispaces.core.annotation.processor.AnnotationProcessorFunctions;
@@ -32,7 +32,9 @@ public class ObjectHandleAnnotationProcessor extends AnnotatedTypeProcessor {
   }
 
   @Override
-  public List<ArtifactGenerator> makeArtifactGenerators(CustomType objectHandleType, RoundEnvironment roundEnv) {
-    return AnnotationProcessorFunctions.makeObjectHandleArtifactGenerators(objectHandleType);
+  public List<GenerationTask> makeTasks(
+      CustomType initiatorType, CustomType objectHandleType, RoundEnvironment roundEnv
+  ) {
+    return AnnotationProcessorFunctions.makeObjectHandleArtifactGenerators(initiatorType, objectHandleType);
   }
 }

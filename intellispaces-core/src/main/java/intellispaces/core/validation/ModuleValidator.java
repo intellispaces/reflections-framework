@@ -41,7 +41,7 @@ public class ModuleValidator implements AnnotatedTypeValidator {
   private void validateUnitTypeAnnotations(CustomType unitType, boolean mainUnit) {
     if (mainUnit) {
       if (!unitType.hasAnnotation(Module.class)) {
-        throw IntelliSpacesException.withMessage("Class {} is not marked with annotation {}",
+        throw IntelliSpacesException.withMessage("Class {0} is not marked with annotation {1}",
             unitType.canonicalName(), Module.class.getSimpleName());
       }
     } else {
@@ -49,7 +49,7 @@ public class ModuleValidator implements AnnotatedTypeValidator {
           !unitType.hasAnnotation(Configuration.class) &&
               !unitType.hasAnnotation(Guide.class)
       ) {
-        throw IntelliSpacesException.withMessage("Class {} is not marked with annotation {} or {}",
+        throw IntelliSpacesException.withMessage("Class {0} is not marked with annotation {1} or {2}",
             unitType.canonicalName(), Configuration.class.getSimpleName(), Guide.class.getSimpleName());
       }
     }
@@ -90,7 +90,7 @@ public class ModuleValidator implements AnnotatedTypeValidator {
         .filter(m -> m.hasAnnotation(Startup.class))
         .toList();
     if (startupMethods.size() > 1) {
-      throw IntelliSpacesException.withMessage("Module unit {} contains more that one startup methods",
+      throw IntelliSpacesException.withMessage("Module unit {0} contains more that one startup methods",
           moduleType.canonicalName());
     }
     if (!startupMethods.isEmpty()) {
@@ -103,7 +103,7 @@ public class ModuleValidator implements AnnotatedTypeValidator {
         .filter(m -> m.hasAnnotation(Shutdown.class))
         .toList();
     if (shutdownMethods.size() > 1) {
-      throw IntelliSpacesException.withMessage("Module unit {} contains more that one shutdown methods",
+      throw IntelliSpacesException.withMessage("Module unit {0} contains more that one shutdown methods",
           moduleType.canonicalName());
     }
     if (!shutdownMethods.isEmpty()) {
@@ -118,12 +118,12 @@ public class ModuleValidator implements AnnotatedTypeValidator {
   private void checkProjectionMethod(MethodStatement method) {
     Optional<TypeReference> returnType = method.returnType();
     if (returnType.isEmpty()) {
-      throw IntelliSpacesException.withMessage("Method of the projection '{}' in unit {} should return value",
-          method.name(), method.owner().canonicalName());
+      throw IntelliSpacesException.withMessage("Method of the projection ''{0}'' in unit {1} should " +
+              "return value", method.name(), method.owner().canonicalName());
     }
     if (!ObjectFunctions.isObjectHandleType(returnType.get())) {
-      throw IntelliSpacesException.withMessage("Method of the projection '{}' in unit {} should return object handle class",
-          method.name(), method.owner().canonicalName());
+      throw IntelliSpacesException.withMessage("Method of the projection ''{0}'' in unit {1} should " +
+              "return object handle class", method.name(), method.owner().canonicalName());
     }
     if (method.isAbstract()) {
       checkAbstractProjectionProviderAnnotation(method);
@@ -135,16 +135,16 @@ public class ModuleValidator implements AnnotatedTypeValidator {
   private void checkInjectedMethod(MethodStatement method) {
     Optional<TypeReference> returnType = method.returnType();
     if (returnType.isEmpty()) {
-      throw IntelliSpacesException.withMessage("Abstract method '{}' in unit {} should return value",
+      throw IntelliSpacesException.withMessage("Abstract method ''{0}'' in unit {1} should return value",
           method.name(), method.owner().canonicalName());
     }
     if (!method.params().isEmpty()) {
-      throw IntelliSpacesException.withMessage("Abstract method '{}' in unit {} should have no parameters",
+      throw IntelliSpacesException.withMessage("Abstract method ''{0}'' in unit {1} should have no parameters",
           method.name(), method.owner().canonicalName());
     }
     if (!ObjectFunctions.isObjectHandleType(returnType.get()) && !GuideFunctions.isGuideType(returnType.get())) {
-      throw IntelliSpacesException.withMessage("Injection '{}' in unit {} should return object handle or guide class",
-          method.name(), method.owner().canonicalName());
+      throw IntelliSpacesException.withMessage("Injection ''{0}'' in unit {1} should return " +
+              "object handle or guide class", method.name(), method.owner().canonicalName());
     }
   }
 
@@ -153,12 +153,12 @@ public class ModuleValidator implements AnnotatedTypeValidator {
         .filter(a -> a.annotationStatement().hasAnnotation(ProjectionDefinition.class))
         .toList();
     if (projectionDefinitionAnnotations.isEmpty()) {
-      throw IntelliSpacesException.withMessage("Abstract projection method '{}' in unit {} should have a Projection " +
-              "Definition annotation", method.name(), method.owner().canonicalName());
+      throw IntelliSpacesException.withMessage("Abstract projection method ''{0}'' in unit {1} should " +
+          "have a Projection Definition annotation", method.name(), method.owner().canonicalName());
     }
     if (projectionDefinitionAnnotations.size() > 1) {
-      throw IntelliSpacesException.withMessage("Abstract projection method '{}' in unit {} should have single Projection " +
-          "Definition annotation", method.name(), method.owner().canonicalName());
+      throw IntelliSpacesException.withMessage("Abstract projection method ''{0}'' in unit {1} should " +
+          "have single Projection Definition annotation", method.name(), method.owner().canonicalName());
     }
   }
 
@@ -166,8 +166,8 @@ public class ModuleValidator implements AnnotatedTypeValidator {
     for (MethodParam param : method.params()) {
       TypeReference paramType = param.type();
       if (!ObjectFunctions.isObjectHandleType(paramType)) {
-        throw IntelliSpacesException.withMessage("Parameter '{}' of method '{}' in unit {} should be object handle " +
-                "class", param.name(), method.name(), method.owner().canonicalName());
+        throw IntelliSpacesException.withMessage("Parameter ''{0}'' of method ''{1}'' in unit {2} should be " +
+            "object handle class", param.name(), method.name(), method.owner().canonicalName());
       }
     }
   }
@@ -175,7 +175,7 @@ public class ModuleValidator implements AnnotatedTypeValidator {
   private void checkThatIsNotUnitStartupMethod(MethodStatement method, CustomType unitType) {
     if (method.hasAnnotation(Startup.class)) {
       throw IntelliSpacesException.withMessage("Included unit should not have a starting method. " +
-          "But method '{}' in unit {} is marked with annotation @{}", method.name(), unitType.canonicalName(),
+          "But method ''{0}'' in unit {1} is marked with annotation @{2}", method.name(), unitType.canonicalName(),
           Startup.class.getSimpleName());
     }
   }
@@ -183,7 +183,7 @@ public class ModuleValidator implements AnnotatedTypeValidator {
   private void checkThatIsNotUnitShutdownMethod(MethodStatement method, CustomType unitType) {
     if (method.hasAnnotation(Shutdown.class)) {
       throw IntelliSpacesException.withMessage("Included unit should not have a shutdown method. " +
-              "But method '{}' in unit {} is marked with annotation @{}", method.name(), unitType.canonicalName(),
+              "But method ''{0}'' in unit {1} is marked with annotation @{2}", method.name(), unitType.canonicalName(),
           Shutdown.class.getSimpleName());
     }
   }

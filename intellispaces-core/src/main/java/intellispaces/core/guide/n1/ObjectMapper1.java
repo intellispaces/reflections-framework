@@ -46,11 +46,11 @@ public class ObjectMapper1<S extends ObjectHandleWrapper<S>, T, Q> implements Ab
   public T map(S source, Q qualifier) throws TraverseException {
     try {
       GuideLogger.logCallGuide(guideMethod);
-      return (T) source.$shadowHandle().getGuideAction(transitionIndex).asAction1().execute(qualifier);
+      return (T) source.$handle().getGuideAction(transitionIndex).asAction1().execute(qualifier);
     } catch (TraverseException e) {
       throw e;
     } catch (Exception e) {
-      throw TraverseException.withCauseAndMessage(e, "Failed to invoke guide method {} of object handle {}",
+      throw TraverseException.withCauseAndMessage(e, "Failed to invoke guide method ''{0}'' of object handle {1}",
           guideMethod.getName(), objectHandleClass.getCanonicalName());
     }
   }

@@ -38,11 +38,11 @@ public class UnitMapper0<S, T> implements AbstractMapper0<S, T> {
   public T map(S source) throws TraverseException {
     try {
       GuideLogger.logCallGuide(guideMethod);
-      return (T) unitInstance.$shadowUnit().getGuideAction(guideActionIndex).asAction1().execute(source);
+      return (T) unitInstance.$unit().getGuideAction(guideActionIndex).asAction1().execute(source);
     } catch (TraverseException e) {
       throw e;
     } catch (Exception e) {
-      throw TraverseException.withCauseAndMessage(e, "Failed to invoke unit guide {} in unit {}",
+      throw TraverseException.withCauseAndMessage(e, "Failed to invoke unit guide {0} in unit {0}",
           guideMethod.getName(), guideMethod.getDeclaringClass().getCanonicalName());
     }
   }

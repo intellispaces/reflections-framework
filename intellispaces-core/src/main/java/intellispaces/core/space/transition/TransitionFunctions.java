@@ -10,6 +10,7 @@ import intellispaces.core.space.domain.DomainFunctions;
 import intellispaces.core.traverse.TraverseTypes;
 import intellispaces.javastatements.customtype.CustomType;
 import intellispaces.javastatements.method.MethodStatement;
+import intellispaces.javastatements.method.Methods;
 import intellispaces.proxies.tracker.Tracker;
 import intellispaces.proxies.tracker.TrackerBuilder;
 import intellispaces.proxies.tracker.TrackerFunctions;
@@ -29,7 +30,7 @@ public interface TransitionFunctions {
   static String getTransitionId(Class<?> transitionClass) {
     Transition transition = transitionClass.getAnnotation(Transition.class);
     if (transition == null) {
-      throw UnexpectedViolationException.withMessage("Class {} does not contain annotation {}",
+      throw UnexpectedViolationException.withMessage("Class {0} does not contain annotation {1}",
           transitionClass.getCanonicalName(), Transition.class.getSimpleName());
     }
     return transition.value();
@@ -60,21 +61,39 @@ public interface TransitionFunctions {
     return transitionType.declaredMethods().stream()
         .filter(m -> m.isPublic() && !m.isDefault() && !m.isStatic())
         .findFirst()
-        .orElseThrow(() -> {throw UnexpectedViolationException.withMessage("Could not find transition method in class {}",
-            transitionType.canonicalName());});
+        .orElseThrow(() -> {throw UnexpectedViolationException.withMessage("Could not find transition method " +
+                "in class {0}", transitionType.canonicalName());});
   }
 
   static String getUnitGuideTid(Object unitInstance, Method guideMethod) {
-    if (guideMethod.isAnnotationPresent(Mapper.class)) {
-      Class<?> transitionClass = guideMethod.getAnnotation(Mapper.class).value();
+    Mapper mapper = guideMethod.getAnnotation(Mapper.class);
+    if (mapper == null) {
+      mapper = Methods.of(guideMethod).overrideMethods().stream()
+          .map(m -> m.selectAnnotation(Mapper.class))
+          .filter(Optional::isPresent)
+          .map(Optional::get)
+          .findFirst().orElse(null);
+    }
+    if (mapper != null) {
+      Class<?> transitionClass = mapper.value();
       if (transitionClass != null) {
         Transition transition = transitionClass.getAnnotation(Transition.class);
         if (transition != null) {
           return transition.value();
         }
       }
-    } else if (guideMethod.isAnnotationPresent(Mover.class)) {
-      Class<?> transitionClass = guideMethod.getAnnotation(Mover.class).value();
+    }
+
+    Mover mover = guideMethod.getAnnotation(Mover.class);
+    if (mover == null) {
+      mover = Methods.of(guideMethod).overrideMethods().stream()
+          .map(m -> m.selectAnnotation(Mover.class))
+          .filter(Optional::isPresent)
+          .map(Optional::get)
+          .findFirst().orElse(null);
+    }
+    if (mover != null) {
+      Class<?> transitionClass = mover.value();
       if (transitionClass != null) {
         Transition transition = transitionClass.getAnnotation(Transition.class);
         if (transition != null) {
@@ -85,7 +104,8 @@ public interface TransitionFunctions {
 
     Class<?> declaringClass = guideMethod.getDeclaringClass();
     if (!declaringClass.isAnnotationPresent(Guide.class)) {
-      throw UnexpectedViolationException.withMessage("Expected guide unit class {}", declaringClass.getCanonicalName());
+      throw UnexpectedViolationException.withMessage("Expected guide unit class {0}",
+          declaringClass.getCanonicalName());
     }
     if (unitInstance instanceof intellispaces.core.guide.Guide) {
       var guide = (intellispaces.core.guide.Guide<?, ?>) unitInstance;
@@ -93,15 +113,15 @@ public interface TransitionFunctions {
     } else {
       Transition transition = findOverrideTransitionRecursive(guideMethod, guideMethod.getDeclaringClass());
       if (transition == null) {
-        throw UnexpectedViolationException.withMessage("Could not get unit guide annotation @Transition. Unit {}, guide method {}",
-            guideMethod.getDeclaringClass().getCanonicalName(), guideMethod.getName());
+        throw UnexpectedViolationException.withMessage("Could not get unit guide annotation @Transition. Unit {0}, " +
+                "guide method ''{1}''", guideMethod.getDeclaringClass().getCanonicalName(), guideMethod.getName());
       }
       return transition.value();
     }
   }
 
   private static Transition findOverrideTransitionRecursive(Method guideMethod, Class<?> aClass) {
-    Transition t = getUnitGuideTid(guideMethod, aClass);
+    Transition t = getUnitGuideTransition(guideMethod, aClass);
     if (t != null) {
       return t;
     }
@@ -120,7 +140,7 @@ public interface TransitionFunctions {
     return null;
   }
 
-  private static Transition getUnitGuideTid(Method guideMethod, Class<?> aClass) {
+  private static Transition getUnitGuideTransition(Method guideMethod, Class<?> aClass) {
     Transition transition = aClass.getAnnotation(Transition.class);
     if (transition == null) {
       return null;
@@ -147,7 +167,7 @@ public interface TransitionFunctions {
         .map(Optional::get)
         .findAny();
     if (transition.isEmpty()) {
-      throw UnexpectedViolationException.withMessage("Could not find annotation @{} of method '{}' in domain {}",
+      throw UnexpectedViolationException.withMessage("Could not find annotation @{0} of method ''{1}'' in domain {2}",
         Transition.class.getSimpleName(), domainMethod.name(), domainMethod.owner().canonicalName());
     }
     return transition.get();
@@ -161,8 +181,8 @@ public interface TransitionFunctions {
         return domainMethod.selectAnnotation(Transition.class).orElseThrow();
       }
     }
-    throw UnexpectedViolationException.withMessage("Failed to find related transition annotation of method '{}' in {}",
-        objectHandleMethod.name(), objectHandleType.canonicalName());
+    throw UnexpectedViolationException.withMessage("Failed to find related transition annotation " +
+            "of method ''{0}'' in {1}", objectHandleMethod.name(), objectHandleType.canonicalName());
   }
 
   static Transition getObjectHandleMethodTransitionAnnotation(Method objectHandleMethod) {
@@ -170,8 +190,8 @@ public interface TransitionFunctions {
     Class<?> domainClass = ObjectFunctions.getDomainClassOfObjectHandle(objectHandleClass);
     Transition transition = getObjectHandleMethodTransitionAnnotation(domainClass, objectHandleMethod);
     if (transition == null) {
-      throw UnexpectedViolationException.withMessage("Failed to find related transition annotation of method '{}' in {}",
-          objectHandleMethod.getName(), objectHandleClass.getCanonicalName());
+      throw UnexpectedViolationException.withMessage("Failed to find related transition annotation " +
+              "of method ''{0}'' in {1}", objectHandleMethod.getName(), objectHandleClass.getCanonicalName());
     }
     return transition;
   }
@@ -221,16 +241,17 @@ public interface TransitionFunctions {
       List<Method> trackedMethods, Class<?> sourceDomain, Object transitionMethod
   ) {
     if (trackedMethods.isEmpty()) {
-      throw UnexpectedViolationException.withMessage("Several methods of the domain class {} were invoked while transition method {} was being testing",
+      throw UnexpectedViolationException.withMessage("Several methods of the domain class {0} were " +
+              "invoked while transition method '{1}' was being testing",
           sourceDomain.getCanonicalName(), transitionMethod);
     }
     if (trackedMethods.size() > 1) {
-      throw UnexpectedViolationException.withMessage("No method of the domain class {} was invoked while transition {} was being testing",
-          sourceDomain.getCanonicalName(), transitionMethod);
+      throw UnexpectedViolationException.withMessage("No method of the domain class {0} was invoked " +
+              "while transition {1} was being testing", sourceDomain.getCanonicalName(), transitionMethod);
     }
     Transition ta = trackedMethods.get(0).getAnnotation(Transition.class);
     if (ta == null) {
-      throw UnexpectedViolationException.withMessage("Method '{}' of the domain class {} hasn't annotation {}",
+      throw UnexpectedViolationException.withMessage("Method ''{0}'' of the domain class {1} hasn't annotation {2}",
           transitionMethod, sourceDomain.getCanonicalName(), Transition.class.getCanonicalName());
     }
     return ta.value();

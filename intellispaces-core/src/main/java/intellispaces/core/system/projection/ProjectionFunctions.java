@@ -10,7 +10,7 @@ public interface ProjectionFunctions {
 
   static String getProjectionName(MethodStatement projectionMethod) {
     Projection annotation = projectionMethod.selectAnnotation(Projection.class).orElseThrow(() ->
-        UnexpectedViolationException.withMessage("Projection method should be marked with annotation {}",
+        UnexpectedViolationException.withMessage("Projection method should be marked with annotation {0}",
         Projection.class.getSimpleName()));
     return getProjectionName(projectionMethod.name(), annotation);
   }
@@ -18,7 +18,7 @@ public interface ProjectionFunctions {
   static String getProjectionName(Method projectionMethod) {
     Projection annotation = projectionMethod.getAnnotation(Projection.class);
     if (annotation == null) {
-      throw UnexpectedViolationException.withMessage("Projection method should be marked with annotation {}",
+      throw UnexpectedViolationException.withMessage("Projection method should be marked with annotation {0}",
           Projection.class.getSimpleName());
     }
     return getProjectionName(projectionMethod.getName(), annotation);

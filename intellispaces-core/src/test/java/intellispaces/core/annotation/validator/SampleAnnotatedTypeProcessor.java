@@ -1,7 +1,7 @@
 package intellispaces.core.annotation.validator;
 
 import intellispaces.annotations.AnnotatedTypeProcessor;
-import intellispaces.annotations.generator.ArtifactGenerator;
+import intellispaces.annotations.generator.GenerationTask;
 import intellispaces.annotations.validator.AnnotatedTypeValidator;
 import intellispaces.javastatements.customtype.CustomType;
 
@@ -33,8 +33,8 @@ public class SampleAnnotatedTypeProcessor extends AnnotatedTypeProcessor {
   }
 
   @Override
-  public List<ArtifactGenerator> makeArtifactGenerators(
-      CustomType annotatedType, RoundEnvironment roundEnv
+  public List<GenerationTask> makeTasks(
+      CustomType initiatorType, CustomType annotatedType, RoundEnvironment roundEnv
   ) {
     return List.of();
   }

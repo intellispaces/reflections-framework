@@ -47,11 +47,11 @@ public class ObjectMover1<S extends ObjectHandleWrapper<S>, B, Q> implements Abs
   public B move(S source, Q qualifier) throws TraverseException {
     try {
       GuideLogger.logCallGuide(guideMethod);
-      return (B) source.$shadowHandle().getGuideAction(transitionIndex).asAction1().execute(qualifier);
+      return (B) source.$handle().getGuideAction(transitionIndex).asAction1().execute(qualifier);
     } catch (TraverseException e) {
       throw e;
     } catch (Exception e) {
-      throw TraverseException.withCauseAndMessage(e, "Failed to invoke guide method {} of object handle {}",
+      throw TraverseException.withCauseAndMessage(e, "Failed to invoke guide method ''{0}'' of object handle {1}",
           guideMethod.getName(), objectHandleClass.getCanonicalName());
     }
   }

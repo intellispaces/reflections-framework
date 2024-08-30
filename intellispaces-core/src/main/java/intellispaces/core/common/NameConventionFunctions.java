@@ -68,6 +68,10 @@ public interface NameConventionFunctions {
     return transformClassName(unitClassName) + "Wrapper";
   }
 
+  static String getAutoGuiderCanonicalName(String guideClassName) {
+    return StringFunctions.replaceEndingOrElseThrow(transformClassName(guideClassName), "Guide", "AutoGuide");
+  }
+
   static String getDataClassName(String domainClassName) {
     return StringFunctions.replaceEndingOrElseThrow(transformClassName(domainClassName), "Domain", "Data");
   }
@@ -76,8 +80,8 @@ public interface NameConventionFunctions {
     String spaceName = transitionMethod.owner().packageName();
     CustomType owner = transitionMethod.owner();
     if (!owner.hasAnnotation(Domain.class) && !owner.hasAnnotation(Ontology.class)) {
-      throw UnexpectedViolationException.withMessage("Transition method {} should be declared in domain or ontology class. " +
-          "But actual class {} is not marked with annotation",
+      throw UnexpectedViolationException.withMessage("Transition method {0} should be declared " +
+              "in domain or ontology class. But actual class {1} is not marked with annotation",
           transitionMethod.name(), owner.canonicalName()
       );
     }

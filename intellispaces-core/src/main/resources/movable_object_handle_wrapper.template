@@ -10,27 +10,27 @@ import {{$importedClass}};
 @Wrapper({{$sourceClassSimpleName}}.class)
 {{$generatedAnnotation}}
 public class {{$classSimpleName}}{{$typeParamsFull}} extends {{$sourceClassSimpleName}}{{$typeParamsBrief}} implements ObjectHandleWrapper<{{$domainClassSimpleName}}{{$typeParamsBrief}}> {
-  private ShadowObjectHandle $shadowHandle;
+  private KernelObjectHandle $handle;
 
 {{for constructor : $constructors}}
   public {{$classSimpleName}}({{for param : $constructor.get("params")}}{{$param.get("type")}} {{$param.get("name")}}{{when $param.isNotLast()}}, {{end}}{{end}}) {
     super({{for param : $constructor.get("params")}}{{$param.get("name")}}{{when $param.isNotLast()}},{{end}}{{end}});
-    ShadowModules.current().objectRegistry().add(this);
+    KernelModules.current().objectRegistry().add(this);
   }
 {{end}}
 
   @Override
-  public void $init(ShadowObjectHandle shadowHandle) {
-    this.$shadowHandle = shadowHandle;
+  public void $init(KernelObjectHandle handle) {
+    this.$handle = handle;
 {{when $transitionActions.isNotEmpty()}}
-    this.$shadowHandle.setTransitionActions(
+    this.$handle.setTransitionActions(
 {{for transitionAction : $transitionActions}}
       {{$transitionAction}}{{when $transitionAction.isNotLast()}},{{end}}
 {{end}}
     );
 {{end}}
 {{when $guideActions.isNotEmpty()}}
-    this.$shadowHandle.setGuideActions(
+    this.$handle.setGuideActions(
 {{for guideAction : $guideActions}}
       {{$guideAction}}{{when $guideAction.isNotLast()}},{{end}}
 {{end}}
@@ -39,8 +39,8 @@ public class {{$classSimpleName}}{{$typeParamsFull}} extends {{$sourceClassSimpl
   }
 
   @Override
-  public ShadowObjectHandle $shadowHandle() {
-    return this.$shadowHandle;
+  public KernelObjectHandle $handle() {
+    return this.$handle;
   }
 
 {{for method : $domainMethods}}

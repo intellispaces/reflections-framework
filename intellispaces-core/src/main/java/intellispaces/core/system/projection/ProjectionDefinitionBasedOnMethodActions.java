@@ -25,7 +25,7 @@ public interface ProjectionDefinitionBasedOnMethodActions {
       String requiredProjectionName,
       Class<?> requiredProjectionClass
   ) {
-    return new ProjectionDefinitionBasedOnMethodAction(unitClass, name, type, lazy, projectonMethodAction, ProjectionInjections.list(
+    return new ProjectionDefinitionBasedOnMethodAction(unitClass, name, type, lazy, projectonMethodAction, ProjectionReferences.list(
         requiredProjectionName, requiredProjectionClass
     ));
   }
@@ -41,7 +41,7 @@ public interface ProjectionDefinitionBasedOnMethodActions {
       String requiredProjectionName2,
       Class<?> requiredProjectionClass2
   ) {
-    return new ProjectionDefinitionBasedOnMethodAction(unitClass, name, type, lazy, projectonMethodAction, ProjectionInjections.list(
+    return new ProjectionDefinitionBasedOnMethodAction(unitClass, name, type, lazy, projectonMethodAction, ProjectionReferences.list(
         requiredProjectionName1, requiredProjectionClass1,
         requiredProjectionName2, requiredProjectionClass2
     ));
@@ -60,7 +60,7 @@ public interface ProjectionDefinitionBasedOnMethodActions {
       String requiredProjectionName3,
       Class<?> requiredProjectionClass3
   ) {
-    return new ProjectionDefinitionBasedOnMethodAction(unitClass, name, type, lazy, projectonMethodAction, ProjectionInjections.list(
+    return new ProjectionDefinitionBasedOnMethodAction(unitClass, name, type, lazy, projectonMethodAction, ProjectionReferences.list(
         requiredProjectionName1, requiredProjectionClass1,
         requiredProjectionName2, requiredProjectionClass2,
         requiredProjectionName3, requiredProjectionClass3
@@ -82,7 +82,7 @@ public interface ProjectionDefinitionBasedOnMethodActions {
       String requiredProjectionName4,
       Class<?> requiredProjectionClass4
   ) {
-    return new ProjectionDefinitionBasedOnMethodAction(unitClass, name, type, lazy, projectonMethodAction, ProjectionInjections.list(
+    return new ProjectionDefinitionBasedOnMethodAction(unitClass, name, type, lazy, projectonMethodAction, ProjectionReferences.list(
         requiredProjectionName1, requiredProjectionClass1,
         requiredProjectionName2, requiredProjectionClass2,
         requiredProjectionName3, requiredProjectionClass3,
@@ -107,7 +107,7 @@ public interface ProjectionDefinitionBasedOnMethodActions {
       String requiredProjectionName5,
       Class<?> requiredProjectionClass5
   ) {
-    return new ProjectionDefinitionBasedOnMethodAction(unitClass, name, type, lazy, projectonMethodAction, ProjectionInjections.list(
+    return new ProjectionDefinitionBasedOnMethodAction(unitClass, name, type, lazy, projectonMethodAction, ProjectionReferences.list(
         requiredProjectionName1, requiredProjectionClass1,
         requiredProjectionName2, requiredProjectionClass2,
         requiredProjectionName3, requiredProjectionClass3,
@@ -135,7 +135,7 @@ public interface ProjectionDefinitionBasedOnMethodActions {
       String requiredProjectionName6,
       Class<?> requiredProjectionClass6
   ) {
-    return new ProjectionDefinitionBasedOnMethodAction(unitClass, name, type, lazy, projectonMethodAction, ProjectionInjections.list(
+    return new ProjectionDefinitionBasedOnMethodAction(unitClass, name, type, lazy, projectonMethodAction, ProjectionReferences.list(
         requiredProjectionName1, requiredProjectionClass1,
         requiredProjectionName2, requiredProjectionClass2,
         requiredProjectionName3, requiredProjectionClass3,
@@ -166,7 +166,7 @@ public interface ProjectionDefinitionBasedOnMethodActions {
       String requiredProjectionName7,
       Class<?> requiredProjectionClass7
   ) {
-    return new ProjectionDefinitionBasedOnMethodAction(unitClass, name, type, lazy, projectonMethodAction, ProjectionInjections.list(
+    return new ProjectionDefinitionBasedOnMethodAction(unitClass, name, type, lazy, projectonMethodAction, ProjectionReferences.list(
         requiredProjectionName1, requiredProjectionClass1,
         requiredProjectionName2, requiredProjectionClass2,
         requiredProjectionName3, requiredProjectionClass3,
@@ -200,7 +200,7 @@ public interface ProjectionDefinitionBasedOnMethodActions {
       String requiredProjectionName8,
       Class<?> requiredProjectionClass8
   ) {
-    return new ProjectionDefinitionBasedOnMethodAction(unitClass, name, type, lazy, projectonMethodAction, ProjectionInjections.list(
+    return new ProjectionDefinitionBasedOnMethodAction(unitClass, name, type, lazy, projectonMethodAction, ProjectionReferences.list(
         requiredProjectionName1, requiredProjectionClass1,
         requiredProjectionName2, requiredProjectionClass2,
         requiredProjectionName3, requiredProjectionClass3,
@@ -237,7 +237,7 @@ public interface ProjectionDefinitionBasedOnMethodActions {
       String requiredProjectionName9,
       Class<?> requiredProjectionClass9
   ) {
-    return new ProjectionDefinitionBasedOnMethodAction(unitClass, name, type, lazy, projectonMethodAction, ProjectionInjections.list(
+    return new ProjectionDefinitionBasedOnMethodAction(unitClass, name, type, lazy, projectonMethodAction, ProjectionReferences.list(
         requiredProjectionName1, requiredProjectionClass1,
         requiredProjectionName2, requiredProjectionClass2,
         requiredProjectionName3, requiredProjectionClass3,
@@ -277,7 +277,7 @@ public interface ProjectionDefinitionBasedOnMethodActions {
       String requiredProjectionName10,
       Class<?> requiredProjectionClass10
   ) {
-    return new ProjectionDefinitionBasedOnMethodAction(unitClass, name, type, lazy, projectonMethodAction, ProjectionInjections.list(
+    return new ProjectionDefinitionBasedOnMethodAction(unitClass, name, type, lazy, projectonMethodAction, ProjectionReferences.list(
         requiredProjectionName1, requiredProjectionClass1,
         requiredProjectionName2, requiredProjectionClass2,
         requiredProjectionName3, requiredProjectionClass3,

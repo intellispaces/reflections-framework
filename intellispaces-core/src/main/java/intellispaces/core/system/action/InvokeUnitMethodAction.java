@@ -30,7 +30,8 @@ public class InvokeUnitMethodAction<R> extends AbstractAction0<R> {
     try {
       return (R) unitMethod.invoke(unitInstance, arguments);
     } catch (Exception e) {
-      throw UnexpectedViolationException.withCauseAndMessage(e, "Can't to invoke unit method {}", unitMethod.getName());
+      throw UnexpectedViolationException.withCauseAndMessage(e, "Could not to invoke unit method ''{0}''",
+          unitMethod.getName());
     }
   }
 
@@ -39,7 +40,7 @@ public class InvokeUnitMethodAction<R> extends AbstractAction0<R> {
     for (Parameter param : unitMethod.getParameters()) {
       Object projection = Modules.current().getProjection(param.getName(), param.getType());
       if (projection == null) {
-        throw ConfigurationException.withMessage("Cannot to resolve parameter '{}' in method '{}' in unit {}",
+        throw ConfigurationException.withMessage("Cannot to resolve parameter ''{0}'' in method ''{1}'' in unit {2}",
             param.getName(), unitMethod.getName(), unitMethod.getDeclaringClass().getCanonicalName());
       }
       arguments.add(projection);

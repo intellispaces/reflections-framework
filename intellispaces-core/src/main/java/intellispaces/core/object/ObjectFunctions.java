@@ -120,7 +120,11 @@ public class ObjectFunctions {
   }
 
   public static boolean isCustomObjectHandleClass(Class<?> aClass) {
-    return intellispaces.core.object.ObjectHandle.class.isAssignableFrom(aClass);
+    Wrapper wrapper = aClass.getAnnotation(Wrapper.class);
+    if (wrapper != null) {
+      aClass = wrapper.value();
+    }
+    return aClass.isAnnotationPresent(ObjectHandle.class);
   }
 
   public static boolean isCustomObjectHandleType(TypeReference type) {
@@ -185,7 +189,7 @@ public class ObjectFunctions {
           .asClass().orElseThrow()
           .type();
     }
-    throw UnexpectedViolationException.withMessage("Object handle class {} must be annotated with annotation {}",
+    throw UnexpectedViolationException.withMessage("Object handle class {0} must be annotated with annotation {1}",
         objectHandleType.canonicalName(), ObjectHandle.class.getSimpleName());
   }
 
@@ -202,7 +206,7 @@ public class ObjectFunctions {
     if (objectHandle != null) {
       return objectHandle.value();
     }
-    throw UnexpectedViolationException.withMessage("Object handle class {} must be annotated with annotation {}",
+    throw UnexpectedViolationException.withMessage("Object handle class {0} must be annotated with annotation {1}",
         objectHandleClass.getCanonicalName(), ObjectHandle.class.getSimpleName());
   }
 
@@ -297,7 +301,8 @@ public class ObjectFunctions {
   public static Class<?> propertiesHandleClass() {
     if (propertiesHandleClass == null) {
       propertiesHandleClass = TypeFunctions.getClass(ObjectHandleConstants.PROPERTIES_HANDLE_CLASSNAME).orElseThrow(
-          () -> UnexpectedViolationException.withMessage("Could not get class {}", ObjectHandleConstants.PROPERTIES_HANDLE_CLASSNAME)
+          () -> UnexpectedViolationException.withMessage("Could not get class {0}",
+              ObjectHandleConstants.PROPERTIES_HANDLE_CLASSNAME)
       );
     }
     return propertiesHandleClass;

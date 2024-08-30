@@ -32,10 +32,10 @@ public class ModulePropertiesFunctions {
     try {
       content = ResourceFunctions.readResourceAsString(module.getClass(), resourceName);
     } catch (Exception e) {
-      throw UnexpectedViolationException.withCauseAndMessage(e, "Failed to read resource '{}'", resourceName);
+      throw UnexpectedViolationException.withCauseAndMessage(e, "Failed to read resource ''{0}''", resourceName);
     }
     if (content.isEmpty()) {
-      throw UnexpectedViolationException.withMessage("Failed to read resource file '{}'", resourceName);
+      throw UnexpectedViolationException.withMessage("Failed to read resource file ''{0}''", resourceName);
     }
     return content.get();
   }

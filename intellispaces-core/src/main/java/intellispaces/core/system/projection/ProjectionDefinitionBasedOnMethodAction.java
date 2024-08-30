@@ -3,7 +3,7 @@ package intellispaces.core.system.projection;
 import intellispaces.actions.Action;
 import intellispaces.core.system.ProjectionDefinitionKind;
 import intellispaces.core.system.ProjectionDefinitionKinds;
-import intellispaces.core.system.ProjectionInjection;
+import intellispaces.core.system.ProjectionReference;
 import intellispaces.core.system.UnitProjectionDefinition;
 
 import java.lang.reflect.Method;
@@ -15,7 +15,7 @@ public class ProjectionDefinitionBasedOnMethodAction implements UnitProjectionDe
   private final Class<?> type;
   private final boolean lazy;
   private final Action methodAction;
-  private final List<ProjectionInjection> requiredProjections;
+  private final List<ProjectionReference> requiredProjections;
 
   ProjectionDefinitionBasedOnMethodAction(
       Class<?> unitClass,
@@ -23,7 +23,7 @@ public class ProjectionDefinitionBasedOnMethodAction implements UnitProjectionDe
       Class<?> type,
       boolean lazy,
       Action methodAction,
-      List<ProjectionInjection> requiredProjections
+      List<ProjectionReference> requiredProjections
   ) {
     this.unitClass = unitClass;
     this.name = name;
@@ -62,7 +62,7 @@ public class ProjectionDefinitionBasedOnMethodAction implements UnitProjectionDe
     return methodAction;
   }
 
-  public List<ProjectionInjection> requiredProjections() {
+  public List<ProjectionReference> requiredProjections() {
     return requiredProjections;
   }
 

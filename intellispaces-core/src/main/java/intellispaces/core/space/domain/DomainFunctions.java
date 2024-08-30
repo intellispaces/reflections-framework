@@ -46,12 +46,12 @@ public final class DomainFunctions {
     } else if (type.isCustomTypeReference()) {
       CustomType domainType = type.asCustomTypeReferenceOrElseThrow().targetType();
       if (!isDefaultDomainType(domainType) && !domainType.hasAnnotation(Domain.class)) {
-        throw UnexpectedViolationException.withMessage("Unexpected type reference. Class {} is not domain class",
+        throw UnexpectedViolationException.withMessage("Unexpected type reference. Class {0} is not domain class",
             domainType.canonicalName());
       }
       return domainType;
     } else {
-      throw UnexpectedViolationException.withMessage("Unexpected type reference: {}", type);
+      throw UnexpectedViolationException.withMessage("Unexpected type reference: {0}", type);
     }
   }
 

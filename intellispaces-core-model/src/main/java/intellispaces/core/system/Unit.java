@@ -1,7 +1,5 @@
 package intellispaces.core.system;
 
-import intellispaces.core.guide.Guide;
-
 import java.util.List;
 
 /**
@@ -15,5 +13,5 @@ public interface Unit {
 
   List<UnitProjectionDefinition> projectionDefinitions();
 
-  List<Guide<?, ?>> guides();
+  List<AttachedUnitGuide> guides();
 }

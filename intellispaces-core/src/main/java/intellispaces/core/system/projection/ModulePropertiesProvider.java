@@ -34,7 +34,7 @@ public class ModulePropertiesProvider extends AbstractProjectionProvider {
     }
     if (ObjectHandleConstants.PROPERTIES_HANDLE_CLASSNAME.equals(expectedReturnType.getCanonicalName())) {
       if (!ObjectFunctions.propertiesHandleClass().isAssignableFrom(target.getClass())) {
-        throw UnexpectedViolationException.withMessage("Invalid return type of method '{}' in class {}",
+        throw UnexpectedViolationException.withMessage("Invalid return type of method ''{0}'' in class {1}",
             projectionMethod.getName(), projectionMethod.getDeclaringClass().getCanonicalName());
       }
       return target;
@@ -44,7 +44,7 @@ public class ModulePropertiesProvider extends AbstractProjectionProvider {
         return module.mapThruTransition1(target, SpaceConstants.PROPERTIES_TO_DATA_TID, expectedReturnType);
       }
     }
-    throw UnexpectedViolationException.withMessage("Invalid return type of method '{}' in class {}",
+    throw UnexpectedViolationException.withMessage("Invalid return type of method ''{0}'' in class {1}",
         projectionMethod.getName(), projectionMethod.getDeclaringClass().getCanonicalName());
   }
 }

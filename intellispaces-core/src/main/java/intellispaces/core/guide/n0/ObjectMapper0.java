@@ -45,11 +45,11 @@ public class ObjectMapper0<S extends ObjectHandleWrapper<S>, T> implements Abstr
   public T map(S source) throws TraverseException {
     try {
       GuideLogger.logCallGuide(guideMethod);
-      return (T) source.$shadowHandle().getGuideAction(transitionIndex).asAction0().execute();
+      return (T) source.$handle().getGuideAction(transitionIndex).asAction0().execute();
     } catch (TraverseException e) {
       throw e;
     } catch (Exception e) {
-      throw TraverseException.withCauseAndMessage(e, "Failed to invoke object method {} of object handle {}",
+      throw TraverseException.withCauseAndMessage(e, "Failed to invoke object method ''{0}'' of object handle {1}",
           guideMethod.getName(), objectHandleClass.getCanonicalName());
     }
   }

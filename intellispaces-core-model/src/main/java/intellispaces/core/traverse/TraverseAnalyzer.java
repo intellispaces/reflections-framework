@@ -14,5 +14,5 @@ public interface TraverseAnalyzer {
 
   MoveObjectHandleThruTransition2Plan buildTraversePlanMoveObjectHandleThruTransition2(Class<?> objectHandleClass, String tid);
 
-  ActualPlan getActualTraversePlan(ObjectHandleTraversePlan declarativePlan, Class<?> objectHandleClass);
+  ExecutionPlan getExecutionTraversePlan(ObjectHandleTraversePlan declarativePlan, Class<?> objectHandleClass);
 }

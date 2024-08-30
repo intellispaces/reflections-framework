@@ -1,8 +1,8 @@
 package intellispaces.core.system;
 
-public interface ProjectionInjection extends Injection {
+public interface ProjectionInjection extends ProjectionReference, Injection {
 
-  String name();
+  Class<?> unitClass();
 
-  Class<?> targetClass();
+  boolean isDefined();
 }

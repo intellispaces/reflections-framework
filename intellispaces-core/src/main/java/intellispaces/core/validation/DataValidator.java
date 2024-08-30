@@ -15,7 +15,7 @@ public class DataValidator implements AnnotatedTypeValidator {
   public void validate(CustomType dataType) {
     if (!dataType.hasAnnotation(Domain.class)) {
       throw IntelliSpacesException.withMessage(
-          "Annotation {} should only be applied to types with the annotation {}",
+          "Annotation {0} should only be applied to types with the annotation {1}",
           Data.class.getSimpleName(), Domain.class.getSimpleName());
     }
   }

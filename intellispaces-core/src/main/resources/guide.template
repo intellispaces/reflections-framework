@@ -22,5 +22,6 @@ public interface {{$classSimpleName}}{{$guideTypeParamsFull}} extends {{$guideCl
   @Override
   {{$baseMethod}}
 
+  {{when $isMapper}}@Mapper{{else}}@Mover{{end}}({{$transitionClassSimpleName}}.class)
   {{$guideMethod}}
 }

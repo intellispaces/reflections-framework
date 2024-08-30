@@ -40,11 +40,11 @@ public class UnitMapper1<S, T, Q> implements AbstractMapper1<S, T, Q> {
   public T map(S source, Q qualifier) throws TraverseException {
     try {
       GuideLogger.logCallGuide(guideMethod);
-      return (T) unitInstance.$shadowUnit().getGuideAction(guideActionIndex).asAction2().execute(source, qualifier);
+      return (T) unitInstance.$unit().getGuideAction(guideActionIndex).asAction2().execute(source, qualifier);
     } catch (TraverseException e) {
       throw e;
     } catch (Exception e) {
-      throw TraverseException.withCauseAndMessage(e, "Failed to invoke unit guide {} in unit {}",
+      throw TraverseException.withCauseAndMessage(e, "Failed to invoke unit guide {0} in unit {1}",
           guideMethod.getName(), guideMethod.getDeclaringClass().getCanonicalName());
     }
   }

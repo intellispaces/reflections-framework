@@ -2,7 +2,7 @@ package intellispaces.core.annotation.processor.domain;
 
 import com.google.auto.service.AutoService;
 import intellispaces.annotations.AnnotatedTypeProcessor;
-import intellispaces.annotations.generator.ArtifactGenerator;
+import intellispaces.annotations.generator.GenerationTask;
 import intellispaces.annotations.validator.AnnotatedTypeValidator;
 import intellispaces.core.annotation.Domain;
 import intellispaces.core.annotation.processor.AnnotationProcessorFunctions;
@@ -33,7 +33,7 @@ public class DomainAnnotationProcessor extends AnnotatedTypeProcessor {
   }
 
   @Override
-  public List<ArtifactGenerator> makeArtifactGenerators(CustomType domainType, RoundEnvironment roundEnv) {
-    return AnnotationProcessorFunctions.makeDomainArtifactGenerators(domainType, roundEnv);
+  public List<GenerationTask> makeTasks(CustomType initiatorType, CustomType domainType, RoundEnvironment roundEnv) {
+    return AnnotationProcessorFunctions.makeDomainArtifactGenerators(initiatorType, domainType, roundEnv);
   }
 }

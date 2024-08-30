@@ -9,7 +9,7 @@ import java.util.Map;
 public abstract class AbstractObjectHandleTraversePlan implements ObjectHandleTraversePlan {
   private final Class<?> objectHandleClass;
   private final String tid;
-  private final Map<Class<?>, ActualPlan> actualPlans = new HashMap<>();
+  private final Map<Class<?>, ExecutionPlan> actualPlans = new HashMap<>();
 
   public AbstractObjectHandleTraversePlan(Class<?> objectHandleClass, String tid) {
     this.objectHandleClass = objectHandleClass;
@@ -27,17 +27,17 @@ public abstract class AbstractObjectHandleTraversePlan implements ObjectHandleTr
   }
 
   @Override
-  public ActualPlan getActualPlan(Class<?> objectHandleClass) {
+  public ExecutionPlan getExecutionPlan(Class<?> objectHandleClass) {
     return actualPlans.get(objectHandleClass);
   }
 
   @Override
-  public void addActualPlan(Class<?> objectHandleClass, ActualPlan traversePlan) {
+  public void addExecutionPlan(Class<?> objectHandleClass, ExecutionPlan traversePlan) {
     if (!ObjectFunctions.isObjectHandleClass(objectHandleClass)) {
       throw UnexpectedViolationException.withMessage("Expected object handle class");
     }
     if (this.objectHandleClass != objectHandleClass && !this.objectHandleClass.isAssignableFrom(objectHandleClass)) {
-      throw UnexpectedViolationException.withMessage("Expected class {} or its subclasses",
+      throw UnexpectedViolationException.withMessage("Expected class {0} or its subclasses",
           this.objectHandleClass.getCanonicalName());
     }
     actualPlans.put(objectHandleClass, traversePlan);

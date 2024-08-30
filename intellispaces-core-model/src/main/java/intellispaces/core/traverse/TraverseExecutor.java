@@ -8,6 +8,8 @@ public interface TraverseExecutor {
 
   Object execute(CallGuide1Plan plan, Object source, Object qualifier) throws TraverseException;
 
+  Object execute(CallGuide2Plan plan, Object source, Object qualifier1, Object qualifier2) throws TraverseException;
+
   Object execute(MapObjectHandleThruTransition0Plan plan, Object source) throws TraverseException;
 
   Object execute(MapObjectHandleThruTransition1Plan plan, Object source, Object qualifier) throws TraverseException;

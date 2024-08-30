@@ -1,7 +1,7 @@
 package intellispaces.core.annotation.processor;
 
 import intellispaces.annotations.AnnotatedTypeProcessor;
-import intellispaces.annotations.generator.ArtifactGenerator;
+import intellispaces.annotations.generator.GenerationTask;
 import intellispaces.annotations.validator.AnnotatedTypeValidator;
 import intellispaces.commons.collection.ArraysFunctions;
 import intellispaces.commons.exception.UnexpectedViolationException;
@@ -14,20 +14,21 @@ import intellispaces.core.annotation.ObjectHandle;
 import intellispaces.core.annotation.Ontology;
 import intellispaces.core.annotation.Preprocessing;
 import intellispaces.core.annotation.Transition;
-import intellispaces.core.annotation.processor.data.UnmovableDataHandleGenerator;
-import intellispaces.core.annotation.processor.domain.CommonObjectHandleGenerator;
-import intellispaces.core.annotation.processor.domain.DomainGuideGenerator;
-import intellispaces.core.annotation.processor.domain.DomainTransitionGenerator;
-import intellispaces.core.annotation.processor.domain.MovableDownwardObjectHandleGenerator;
-import intellispaces.core.annotation.processor.domain.MovableObjectHandleGenerator;
-import intellispaces.core.annotation.processor.domain.ObjectHandleBunchGenerator;
-import intellispaces.core.annotation.processor.domain.UnmovableObjectHandleGenerator;
-import intellispaces.core.annotation.processor.domain.UnmovableUpwardObjectHandleGenerator;
-import intellispaces.core.annotation.processor.objecthandle.MovableObjectHandleWrapperGenerator;
-import intellispaces.core.annotation.processor.objecthandle.UnmovableObjectHandleWrapperGenerator;
-import intellispaces.core.annotation.processor.ontology.OntologyGuideGenerator;
-import intellispaces.core.annotation.processor.ontology.OntologyTransitionGenerator;
-import intellispaces.core.annotation.processor.unit.UnitWrapperGenerator;
+import intellispaces.core.annotation.processor.data.UnmovableDataHandleGenerationTask;
+import intellispaces.core.annotation.processor.domain.CommonObjectHandleGenerationTask;
+import intellispaces.core.annotation.processor.domain.DomainGuideGenerationTask;
+import intellispaces.core.annotation.processor.domain.DomainTransitionGenerationTask;
+import intellispaces.core.annotation.processor.domain.MovableDownwardObjectHandleGenerationTask;
+import intellispaces.core.annotation.processor.domain.MovableObjectHandleGenerationTask;
+import intellispaces.core.annotation.processor.domain.ObjectHandleBunchGenerationTask;
+import intellispaces.core.annotation.processor.domain.UnmovableObjectHandleGenerationTask;
+import intellispaces.core.annotation.processor.domain.UnmovableUpwardObjectHandleGenerationTask;
+import intellispaces.core.annotation.processor.guide.AutoGuideGenerationTask;
+import intellispaces.core.annotation.processor.objecthandle.MovableObjectHandleWrapperGenerationTask;
+import intellispaces.core.annotation.processor.objecthandle.UnmovableObjectHandleWrapperGenerationTask;
+import intellispaces.core.annotation.processor.ontology.OntologyGuideGenerationTask;
+import intellispaces.core.annotation.processor.ontology.OntologyTransitionGenerationTask;
+import intellispaces.core.annotation.processor.unit.UnitWrapperGenerationTask;
 import intellispaces.core.object.MovableObjectHandle;
 import intellispaces.core.object.UnmovableObjectHandle;
 import intellispaces.core.space.domain.DomainFunctions;
@@ -52,39 +53,39 @@ import java.util.Optional;
 
 public interface AnnotationProcessorFunctions {
 
-  static List<ArtifactGenerator> makeDataArtifactGenerators(CustomType dataType) {
-    List<ArtifactGenerator> generators = new ArrayList<>();
-    generators.add(new UnmovableDataHandleGenerator(dataType));
+  static List<GenerationTask> makeDataArtifactGenerators(CustomType initiatorType, CustomType dataType) {
+    List<GenerationTask> generators = new ArrayList<>();
+    generators.add(new UnmovableDataHandleGenerationTask(initiatorType, dataType));
     return generators;
   }
 
-  static List<ArtifactGenerator> makeDomainArtifactGenerators(
-      CustomType domainType, RoundEnvironment roundEnv
+  static List<GenerationTask> makeDomainArtifactGenerators(
+      CustomType initiatorType, CustomType domainType, RoundEnvironment roundEnv
   ) {
-    List<ArtifactGenerator> generators = new ArrayList<>();
+    List<GenerationTask> generators = new ArrayList<>();
     for (MethodStatement method : domainType.declaredMethods()) {
       if (method.hasAnnotation(Transition.class)) {
         if (isAutoGenerationEnabled(domainType, ArtifactTypes.Transition, roundEnv)) {
-          generators.add(new DomainTransitionGenerator(domainType, method));
+          generators.add(new DomainTransitionGenerationTask(initiatorType, domainType, method));
         }
         if (isEnableMapperGuideGeneration(domainType, method, roundEnv)) {
-          generators.add(new DomainGuideGenerator(TraverseTypes.Mapping, domainType, method));
+          generators.add(new DomainGuideGenerationTask(TraverseTypes.Mapping, initiatorType, domainType, method));
         }
         if (isEnableMoverGuideGeneration(domainType, method, roundEnv)) {
-          generators.add(new DomainGuideGenerator(TraverseTypes.Moving, domainType, method));
+          generators.add(new DomainGuideGenerationTask(TraverseTypes.Moving, initiatorType, domainType, method));
         }
       }
     }
-    addObjectHandleBunchGenerator(domainType, generators, roundEnv);
-    addBasicObjectHandleGenerators(domainType, generators, roundEnv);
-    addDownwardObjectHandleGenerators(domainType, generators);
-    addUpwardObjectHandleGenerators(domainType, domainType, generators);
-    addIncludedGenerators(domainType, generators, roundEnv);
+    addObjectHandleBunchGenerator(initiatorType, domainType, generators, roundEnv);
+    addBasicObjectHandleGenerators(initiatorType, domainType, generators, roundEnv);
+    addDownwardObjectHandleGenerators(initiatorType, domainType, generators);
+    addUpwardObjectHandleGenerators(initiatorType, domainType, domainType, generators);
+    addIncludedGenerators(initiatorType, domainType, generators, roundEnv);
     return generators;
   }
 
   private static void addIncludedGenerators(
-      CustomType annotatedType, List<ArtifactGenerator> generators, RoundEnvironment roundEnv
+      CustomType initiatorType, CustomType annotatedType, List<GenerationTask> generators, RoundEnvironment roundEnv
   ) {
     List<AnnotatedTypeProcessor> processors = AnnotationFunctions.allAnnotationsOf(
         annotatedType, AnnotationProcessor.class
@@ -99,105 +100,112 @@ public interface AnnotationProcessorFunctions {
         if (validator != null) {
           validator.validate(annotatedType);
         }
-        generators.addAll(processor.makeArtifactGenerators(annotatedType, roundEnv));
+        generators.addAll(processor.makeTasks(initiatorType, annotatedType, roundEnv));
       }
     }
   }
 
   private static void addObjectHandleBunchGenerator(
-      CustomType domainType, List<ArtifactGenerator> generators, RoundEnvironment roundEnv
+      CustomType initiatorType, CustomType domainType, List<GenerationTask> generators, RoundEnvironment roundEnv
   ) {
     if (isAutoGenerationEnabled(domainType, ArtifactTypes.ObjectHandleBranch, roundEnv)) {
-      generators.add(new ObjectHandleBunchGenerator(domainType));
+      generators.add(new ObjectHandleBunchGenerationTask(initiatorType, domainType));
     }
   }
 
   private static void addBasicObjectHandleGenerators(
-      CustomType domainType, List<ArtifactGenerator> generators, RoundEnvironment roundEnv
+      CustomType initiatorType, CustomType domainType, List<GenerationTask> generators, RoundEnvironment roundEnv
   ) {
     if (isAutoGenerationEnabled(domainType, ArtifactTypes.ObjectHandle, roundEnv)) {
-      generators.add(new CommonObjectHandleGenerator(domainType));
+      generators.add(new CommonObjectHandleGenerationTask(initiatorType, domainType));
     }
     if (isAutoGenerationEnabled(domainType, ArtifactTypes.MovableObjectHandle, roundEnv)) {
-      generators.add(new MovableObjectHandleGenerator(domainType));
+      generators.add(new MovableObjectHandleGenerationTask(initiatorType, domainType));
     }
     if (isAutoGenerationEnabled(domainType, ArtifactTypes.UnmovableObjectHandle, roundEnv)) {
-      generators.add(new UnmovableObjectHandleGenerator(domainType));
+      generators.add(new UnmovableObjectHandleGenerationTask(initiatorType, domainType));
     }
   }
 
   private static void addDownwardObjectHandleGenerators(
-      CustomType domainType, List<ArtifactGenerator> generators
+      CustomType initiatorType, CustomType domainType, List<GenerationTask> generators
   ) {
     List<CustomTypeReference> parents = domainType.parentTypes();
     if (parents.size() != 1) {
       return;
     }
     CustomTypeReference parentDomainType = parents.get(0);
-    generators.add(new MovableDownwardObjectHandleGenerator(domainType, parentDomainType));
+    generators.add(new MovableDownwardObjectHandleGenerationTask(initiatorType, domainType, parentDomainType));
   }
 
   private static void addUpwardObjectHandleGenerators(
-      CustomType domainType, CustomType curDomainType, List<ArtifactGenerator> generators
+      CustomType initiatorType, CustomType domainType, CustomType curDomainType, List<GenerationTask> generators
   ) {
-    addUpwardObjectHandleGenerators2(domainType, curDomainType, new ArrayList<>(), generators);
+    addUpwardObjectHandleGenerators2(initiatorType, domainType, curDomainType, new ArrayList<>(), generators);
   }
 
   private static void addUpwardObjectHandleGenerators2(
+      CustomType initiatorType,
       CustomType domainType,
       CustomType curDomainType,
       List<CustomTypeReference> allPrimaryDomains,
-      List<ArtifactGenerator> generators
+      List<GenerationTask> generators
   ) {
     Optional<CustomTypeReference> primaryDomain = DomainFunctions.getPrimaryDomainForAliasDomain(curDomainType);
     if (primaryDomain.isPresent()) {
       allPrimaryDomains.add(primaryDomain.get());
-      generators.add(new UnmovableUpwardObjectHandleGenerator(domainType, primaryDomain.get(), List.copyOf(allPrimaryDomains)));
-      addUpwardObjectHandleGenerators2(domainType, primaryDomain.get().targetType(), allPrimaryDomains, generators);
+      generators.add(new UnmovableUpwardObjectHandleGenerationTask(
+          initiatorType, domainType, primaryDomain.get(), List.copyOf(allPrimaryDomains))
+      );
+      addUpwardObjectHandleGenerators2(
+          initiatorType, domainType, primaryDomain.get().targetType(), allPrimaryDomains, generators
+      );
     }
   }
 
-  static List<ArtifactGenerator> makeOntologyArtifactGenerators(
-      CustomType ontologyType, RoundEnvironment roundEnv
+  static List<GenerationTask> makeOntologyArtifactGenerators(
+      CustomType initiatorType, CustomType ontologyType, RoundEnvironment roundEnv
   ) {
-    List<ArtifactGenerator> generators = new ArrayList<>();
+    List<GenerationTask> generators = new ArrayList<>();
     for (MethodStatement method : ontologyType.declaredMethods()) {
       if (method.hasAnnotation(Transition.class)) {
         if (isAutoGenerationEnabled(ontologyType, ArtifactTypes.Transition, roundEnv)) {
-          generators.add(new OntologyTransitionGenerator(ontologyType, method));
+          generators.add(new OntologyTransitionGenerationTask(initiatorType, ontologyType, method));
         }
         if (isEnableMapperGuideGeneration(ontologyType, method, roundEnv)) {
-          generators.add(new OntologyGuideGenerator(TraverseTypes.Mapping, ontologyType, method));
+          generators.add(new OntologyGuideGenerationTask(TraverseTypes.Mapping, initiatorType, ontologyType, method));
         }
         if (isEnableMoverGuideGeneration(ontologyType, method, roundEnv)) {
-          generators.add(new OntologyGuideGenerator(TraverseTypes.Moving, ontologyType, method));
+          generators.add(new OntologyGuideGenerationTask(TraverseTypes.Moving, initiatorType, ontologyType, method));
         }
       }
     }
     return generators;
   }
 
-  static List<ArtifactGenerator> makeObjectHandleArtifactGenerators(CustomType objectHandleType) {
+  static List<GenerationTask> makeObjectHandleArtifactGenerators(
+      CustomType initiatorType, CustomType objectHandleType
+  ) {
     if (objectHandleType.hasParent(UnmovableObjectHandle.class)) {
-      return List.of(new UnmovableObjectHandleWrapperGenerator(objectHandleType));
+      return List.of(new UnmovableObjectHandleWrapperGenerationTask(initiatorType, objectHandleType));
     } else if (objectHandleType.hasParent(MovableObjectHandle.class)) {
-      return List.of(new MovableObjectHandleWrapperGenerator(objectHandleType));
+      return List.of(new MovableObjectHandleWrapperGenerationTask(initiatorType, objectHandleType));
     } else {
-      throw UnexpectedViolationException.withMessage("Could not define movable type of the object handle {}",
+      throw UnexpectedViolationException.withMessage("Could not define movable type of the object handle {0}",
           objectHandleType.canonicalName());
     }
   }
 
-  static List<ArtifactGenerator> makeModuleArtifactGenerators(CustomType moduleType) {
-    List<ArtifactGenerator> generators = new ArrayList<>();
-    generators.add(new UnitWrapperGenerator(moduleType));
+  static List<GenerationTask> makeModuleArtifactGenerators(CustomType initiatorType, CustomType moduleType) {
+    List<GenerationTask> generators = new ArrayList<>();
+    generators.add(new UnitWrapperGenerationTask(initiatorType, moduleType));
     Iterable<CustomType> includedUnits = ModuleFunctions.getIncludedUnits(moduleType);
-    includedUnits.forEach(u -> generators.add(new UnitWrapperGenerator(u)));
+    includedUnits.forEach(u -> generators.add(new UnitWrapperGenerationTask(initiatorType, u)));
     return generators;
   }
 
-  static List<ArtifactGenerator> makePreprocessingArtifactGenerators(
-      CustomType customType, RoundEnvironment roundEnv
+  static List<GenerationTask> makePreprocessingArtifactGenerators(
+      CustomType initiatorType, CustomType customType, RoundEnvironment roundEnv
   ) {
     AnnotationInstance preprocessingAnnotation = customType.selectAnnotation(
         Preprocessing.class.getCanonicalName()).orElseThrow();
@@ -206,22 +214,24 @@ public interface AnnotationProcessorFunctions {
       return List.of();
     }
 
-    List<ArtifactGenerator> generators = new ArrayList<>();
+    List<GenerationTask> generators = new ArrayList<>();
     for (CustomType preprocessingClass : preprocessingClasses) {
       if (preprocessingClass.hasAnnotation(Data.class)) {
-        generators.addAll(makeDataArtifactGenerators(preprocessingClass));
+        generators.addAll(makeDataArtifactGenerators(initiatorType, preprocessingClass));
       } else if (preprocessingClass.hasAnnotation(Domain.class)) {
-        generators.addAll(makeDomainArtifactGenerators(preprocessingClass, roundEnv));
+        generators.addAll(makeDomainArtifactGenerators(initiatorType, preprocessingClass, roundEnv));
       } else  if (preprocessingClass.hasAnnotation(Module.class)) {
-        generators.addAll(makeModuleArtifactGenerators(preprocessingClass));
+        generators.addAll(makeModuleArtifactGenerators(initiatorType, preprocessingClass));
       } else if (UnitFunctions.isUnitType(preprocessingClass)) {
-        generators.add(new UnitWrapperGenerator(preprocessingClass));
+        generators.add(new UnitWrapperGenerationTask(initiatorType, preprocessingClass));
+      } else if (UnitFunctions.isGuideInterface(preprocessingClass)) {
+        generators.add(new AutoGuideGenerationTask(initiatorType, preprocessingClass));
       } else if (preprocessingClass.hasAnnotation(ObjectHandle.class)) {
         if (preprocessingClass.asClass().isPresent()) {
-          generators.addAll(makeObjectHandleArtifactGenerators(preprocessingClass));
+          generators.addAll(makeObjectHandleArtifactGenerators(initiatorType, preprocessingClass));
         }
       } else if (preprocessingClass.hasAnnotation(Ontology.class)) {
-        generators.addAll(makeOntologyArtifactGenerators(preprocessingClass, roundEnv));
+        generators.addAll(makeOntologyArtifactGenerators(initiatorType, preprocessingClass, roundEnv));
       }
     }
     return generators;

@@ -46,11 +46,11 @@ public class ObjectMover0<S extends ObjectHandleWrapper<S>, B> implements Abstra
   public B move(S source) throws TraverseException {
     try {
       GuideLogger.logCallGuide(guideMethod);
-      return (B) source.$shadowHandle().getGuideAction(transitionIndex).asAction0().execute();
+      return (B) source.$handle().getGuideAction(transitionIndex).asAction0().execute();
     } catch (TraverseException e) {
       throw e;
     } catch (Exception e) {
-      throw TraverseException.withCauseAndMessage(e, "Failed to invoke guide method {} of object handle {}",
+      throw TraverseException.withCauseAndMessage(e, "Failed to invoke guide method ''{0}'' of object handle {1}",
           guideMethod.getName(), objectHandleClass.getCanonicalName());
     }
   }

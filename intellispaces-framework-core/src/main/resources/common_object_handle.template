@@ -24,7 +24,7 @@ public interface {{$classSimpleName}}{{$domainTypeParamsFull}} extends {{$primar
     return (Class) {{$mainPrimaryDomainSimpleName}}.class;
   }
 {{else}}
-public interface {{$classSimpleName}}{{$domainTypeParamsFull}} extends object.intellispaces.framework.core.ObjectHandle<{{$sourceClassSimpleName}}{{$domainTypeParamsBrief}}>, {{$objectHandleBunch}}{{$domainTypeParamsBrief}} {
+public interface {{$classSimpleName}}{{$domainTypeParamsFull}} extends intellispaces.framework.core.object.ObjectHandle<{{$sourceClassSimpleName}}{{$domainTypeParamsBrief}}>, {{$objectHandleBunch}}{{$domainTypeParamsBrief}} {
 
 {{when $domainTypeParamsBrief.isEmpty()}}
   @Override

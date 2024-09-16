@@ -10,7 +10,6 @@ import intellispaces.framework.core.system.kernel.ModuleValidator;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Optional;
 
@@ -150,9 +149,6 @@ public class ModuleValidatorTest {
     when(injection.targetClass()).thenReturn(injectionType);
     when(injection.unitClass()).thenReturn(unitClass);
 
-    Method providerMethod = mock((Method.class));
-    when(providerMethod.getName()).thenReturn(projectionName);
-    when(providerMethod.getReturnType()).thenReturn(projectionType);
     UnitProjectionDefinition projectionProvider = mock(UnitProjectionDefinition.class);
     when(projectionProvider.name()).thenReturn(projectionName);
     when(projectionProvider.type()).thenReturn(projectionType);

@@ -49,6 +49,8 @@ public interface Module {
 
   <S, B> Mover0<S, B> autoMoverThruTransition0(Type<S> sourceType, String tid);
 
+  <S, B, Q> Mover1<S, B, Q> autoMoverThruTransition1(Class<S> sourceClass, String tid);
+
   <S, B, Q> Mover1<S, B, Q> autoMoverThruTransition1(Type<S> sourceType, String tid);
 
   <S, B, Q1, Q2> Mover2<S, B, Q1, Q2> autoMoverThruTransition2(Type<S> sourceType, String tid);

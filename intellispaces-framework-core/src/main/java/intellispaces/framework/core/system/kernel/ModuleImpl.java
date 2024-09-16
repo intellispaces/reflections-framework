@@ -2,6 +2,7 @@ package intellispaces.framework.core.system.kernel;
 
 import intellispaces.common.action.Actions;
 import intellispaces.common.action.getter.Getter;
+import intellispaces.common.javastatement.type.Types;
 import intellispaces.framework.core.guide.n0.AutoMapper0;
 import intellispaces.framework.core.guide.n0.AutoMover0;
 import intellispaces.framework.core.guide.n0.Mapper0;
@@ -181,6 +182,11 @@ class ModuleImpl implements KernelModule {
         sourceType.baseClass(), tid
     );
     return new AutoMover0<>(tid, traversePlan, traverseExecutor);
+  }
+
+  @Override
+  public <S, B, Q> Mover1<S, B, Q> autoMoverThruTransition1(Class<S> sourceClass, String tid) {
+    return autoMoverThruTransition1(Types.of(sourceClass), tid);
   }
 
   @Override

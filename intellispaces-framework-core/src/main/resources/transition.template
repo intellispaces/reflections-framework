@@ -5,7 +5,7 @@ import {{$importedClass}};
 {{end}}
 
 /**
- * Space transition '{{$transitionMethodName}}' from domain {@link {{$sourceClassSimpleName}}} to {{$targetClassLink}}.<p/>
+ * Space transition '{{$transitionMethodName}}' from domain {@link {{$sourceClassSimpleName}}} to domain {{$targetClassLink}}.<p/>
  *
  * This class was generated automatically. Don't try to change it.
  */

@@ -2,9 +2,9 @@ package intellispaces.framework.core.aop;
 
 import intellispaces.common.action.Action;
 import intellispaces.common.base.exception.UnexpectedViolationException;
-import intellispaces.framework.core.annotation.ApplyAdvice;
 import intellispaces.common.javastatement.method.MethodStatement;
 import intellispaces.common.javastatement.method.Methods;
+import intellispaces.framework.core.annotation.ApplyAdvice;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;

@@ -14,7 +14,7 @@ public class CallGuide2PlanImpl implements CallGuide2Plan {
 
   @Override
   public TraversePlanType type() {
-    return TraversePlanTypes.CallGuide1;
+    return TraversePlanTypes.CallGuide2;
   }
 
   @Override
@@ -26,14 +26,14 @@ public class CallGuide2PlanImpl implements CallGuide2Plan {
   public Object execute(
       Object source, TraverseExecutor executor
   ) {
-    throw UnexpectedViolationException.withMessage("Expected traverse with two transition qualifier");
+    throw UnexpectedViolationException.withMessage("Expected traverse with two transition qualifiers");
   }
 
   @Override
   public Object execute(
       Object source, Object qualifier, TraverseExecutor executor
   ) throws TraverseException {
-    throw UnexpectedViolationException.withMessage("Expected traverse with two transition qualifier");
+    throw UnexpectedViolationException.withMessage("Expected traverse with two transition qualifiers");
   }
 
   @Override
@@ -41,5 +41,12 @@ public class CallGuide2PlanImpl implements CallGuide2Plan {
       Object source, Object qualifier1, Object qualifier2, TraverseExecutor executor
   ) throws TraverseException {
     return executor.execute(this, source, qualifier1, qualifier2);
+  }
+
+  @Override
+  public Object execute(
+    Object source, Object qualifier1, Object qualifier2, Object qualifier3, TraverseExecutor executor
+  ) throws TraverseException {
+    throw UnexpectedViolationException.withMessage("Expected traverse with two transition qualifiers");
   }
 }

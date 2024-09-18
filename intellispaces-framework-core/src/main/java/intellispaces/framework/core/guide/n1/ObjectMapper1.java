@@ -28,7 +28,7 @@ public class ObjectMapper1<S extends ObjectHandleWrapper<S>, T, Q> implements Ab
       int transitionIndex
   ) {
     if (guideMethod.getParameterCount() != 1) {
-      throw UnexpectedViolationException.withMessage("Guide should have 1 parameter");
+      throw UnexpectedViolationException.withMessage("Guide should have one parameter");
     }
     this.tid = tid;
     this.objectHandleClass = objectHandleClass;

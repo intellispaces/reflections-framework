@@ -1,7 +1,12 @@
 package intellispaces.framework.core.annotation.processor;
 
-import intellispaces.common.base.text.TextActions;
 import intellispaces.common.action.runner.Runner;
+import intellispaces.common.base.text.TextActions;
+import intellispaces.common.javastatement.customtype.CustomType;
+import intellispaces.common.javastatement.method.MethodParam;
+import intellispaces.common.javastatement.method.MethodStatement;
+import intellispaces.common.javastatement.reference.NamedReference;
+import intellispaces.common.javastatement.reference.TypeReference;
 import intellispaces.framework.core.annotation.Transition;
 import intellispaces.framework.core.common.NameConventionFunctions;
 import intellispaces.framework.core.exception.TraverseException;
@@ -9,11 +14,6 @@ import intellispaces.framework.core.object.ObjectHandleTypes;
 import intellispaces.framework.core.space.SpaceConstants;
 import intellispaces.framework.core.space.transition.TransitionFunctions;
 import intellispaces.framework.core.traverse.TraverseTypes;
-import intellispaces.common.javastatement.customtype.CustomType;
-import intellispaces.common.javastatement.method.MethodParam;
-import intellispaces.common.javastatement.method.MethodStatement;
-import intellispaces.common.javastatement.reference.NamedReference;
-import intellispaces.common.javastatement.reference.TypeReference;
 
 import javax.annotation.processing.RoundEnvironment;
 import java.util.List;

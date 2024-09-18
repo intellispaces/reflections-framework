@@ -36,7 +36,7 @@ public interface TraversePlan {
   Object execute(Object source, Object qualifier, TraverseExecutor executor) throws TraverseException;
 
   /**
-   * Executes traverse plan to source object and qualifier.
+   * Executes traverse plan to source object and two qualifiers.
    *
    * @param source source object handle.
    * @param qualifier1 first qualifier.
@@ -46,4 +46,17 @@ public interface TraversePlan {
    * @throws TraverseException throws if source object can't be traversed.
    */
   Object execute(Object source, Object qualifier1, Object qualifier2, TraverseExecutor executor) throws TraverseException;
+
+  /**
+   * Executes traverse plan to source object and three qualifiers.
+   *
+   * @param source source object handle.
+   * @param qualifier1 first qualifier.
+   * @param qualifier2 second qualifier.
+   * @param qualifier3 third qualifier.
+   * @param executor traverse executor.
+   * @return backward object handle.
+   * @throws TraverseException throws if source object can't be traversed.
+   */
+  Object execute(Object source, Object qualifier1, Object qualifier2, Object qualifier3, TraverseExecutor executor) throws TraverseException;
 }

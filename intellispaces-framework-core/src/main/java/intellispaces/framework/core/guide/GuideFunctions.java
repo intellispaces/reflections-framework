@@ -2,6 +2,15 @@ package intellispaces.framework.core.guide;
 
 import intellispaces.common.base.exception.UnexpectedViolationException;
 import intellispaces.common.base.type.TypeFunctions;
+import intellispaces.common.javastatement.customtype.CustomType;
+import intellispaces.common.javastatement.customtype.CustomTypes;
+import intellispaces.common.javastatement.instance.AnnotationInstance;
+import intellispaces.common.javastatement.instance.ClassInstance;
+import intellispaces.common.javastatement.instance.Instance;
+import intellispaces.common.javastatement.method.MethodFunctions;
+import intellispaces.common.javastatement.method.MethodStatement;
+import intellispaces.common.javastatement.method.Methods;
+import intellispaces.common.javastatement.reference.TypeReference;
 import intellispaces.framework.core.annotation.Mapper;
 import intellispaces.framework.core.annotation.Mover;
 import intellispaces.framework.core.annotation.Ordinal;
@@ -23,6 +32,8 @@ import intellispaces.framework.core.guide.n2.ObjectMapper2;
 import intellispaces.framework.core.guide.n2.ObjectMover2;
 import intellispaces.framework.core.guide.n3.Mapper3;
 import intellispaces.framework.core.guide.n3.Mover3;
+import intellispaces.framework.core.guide.n3.ObjectMapper3;
+import intellispaces.framework.core.guide.n3.ObjectMover3;
 import intellispaces.framework.core.guide.n4.Mapper4;
 import intellispaces.framework.core.guide.n4.Mover4;
 import intellispaces.framework.core.guide.n5.Mapper5;
@@ -32,15 +43,6 @@ import intellispaces.framework.core.system.AttachedUnitGuide;
 import intellispaces.framework.core.system.UnitWrapper;
 import intellispaces.framework.core.system.guide.AttachedUnitGuides;
 import intellispaces.framework.core.traverse.TraverseTypes;
-import intellispaces.common.javastatement.customtype.CustomType;
-import intellispaces.common.javastatement.customtype.CustomTypes;
-import intellispaces.common.javastatement.instance.AnnotationInstance;
-import intellispaces.common.javastatement.instance.ClassInstance;
-import intellispaces.common.javastatement.instance.Instance;
-import intellispaces.common.javastatement.method.MethodFunctions;
-import intellispaces.common.javastatement.method.MethodStatement;
-import intellispaces.common.javastatement.method.Methods;
-import intellispaces.common.javastatement.reference.TypeReference;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -189,6 +191,7 @@ public final class GuideFunctions {
       case 0 -> new ObjectMapper0<>(tid, (Class) objectHandleClass, guideMethod, transitionIndex);
       case 1 -> new ObjectMapper1<>(tid, (Class) objectHandleClass, guideMethod, transitionIndex);
       case 2 -> new ObjectMapper2<>(tid, (Class) objectHandleClass, guideMethod, transitionIndex);
+      case 3 -> new ObjectMapper3<>(tid, (Class) objectHandleClass, guideMethod, transitionIndex);
       default -> throw UnexpectedViolationException.withMessage("Unsupported number of guide qualifiers: {0}",
           qualifiersCount);
     };
@@ -204,6 +207,7 @@ public final class GuideFunctions {
       case 0 -> new ObjectMover0<>(tid, (Class) objectHandleClass, guideMethod, transitionIndex);
       case 1 -> new ObjectMover1<>(tid, (Class) objectHandleClass, guideMethod, transitionIndex);
       case 2 -> new ObjectMover2<>(tid, (Class) objectHandleClass, guideMethod, transitionIndex);
+      case 3 -> new ObjectMover3<>(tid, (Class) objectHandleClass, guideMethod, transitionIndex);
       default -> throw UnexpectedViolationException.withMessage("Unsupported number of guide qualifiers: {0}",
           qualifiersCount);
     };

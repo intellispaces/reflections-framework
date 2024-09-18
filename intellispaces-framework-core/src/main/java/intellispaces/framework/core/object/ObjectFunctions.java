@@ -1,13 +1,9 @@
 package intellispaces.framework.core.object;
 
-import intellispaces.common.base.text.TextActions;
 import intellispaces.common.action.runner.Runner;
 import intellispaces.common.base.exception.UnexpectedViolationException;
+import intellispaces.common.base.text.TextActions;
 import intellispaces.common.base.type.TypeFunctions;
-import intellispaces.framework.core.annotation.ObjectHandle;
-import intellispaces.framework.core.annotation.Wrapper;
-import intellispaces.framework.core.common.NameConventionFunctions;
-import intellispaces.framework.core.space.domain.DomainFunctions;
 import intellispaces.common.javastatement.JavaStatements;
 import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.common.javastatement.instance.AnnotationInstance;
@@ -16,6 +12,10 @@ import intellispaces.common.javastatement.reference.NotPrimitiveReference;
 import intellispaces.common.javastatement.reference.TypeReference;
 import intellispaces.common.javastatement.reference.WildcardReference;
 import intellispaces.common.javastatement.type.Type;
+import intellispaces.framework.core.annotation.ObjectHandle;
+import intellispaces.framework.core.annotation.Wrapper;
+import intellispaces.framework.core.common.NameConventionFunctions;
+import intellispaces.framework.core.space.domain.DomainFunctions;
 
 import java.lang.reflect.Constructor;
 import java.util.Optional;

@@ -1,8 +1,8 @@
 package intellispaces.framework.core.system.projection;
 
 import intellispaces.common.base.exception.UnexpectedViolationException;
-import intellispaces.framework.core.annotation.Projection;
 import intellispaces.common.javastatement.method.MethodStatement;
+import intellispaces.framework.core.annotation.Projection;
 
 import java.lang.reflect.Method;
 

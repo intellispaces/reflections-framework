@@ -2,13 +2,13 @@ package intellispaces.framework.core.space.domain;
 
 import intellispaces.common.base.exception.UnexpectedViolationException;
 import intellispaces.common.base.type.TypeFunctions;
-import intellispaces.framework.core.annotation.Domain;
 import intellispaces.common.javastatement.JavaStatements;
 import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.common.javastatement.reference.CustomTypeReference;
 import intellispaces.common.javastatement.reference.NotPrimitiveReference;
 import intellispaces.common.javastatement.reference.ReferenceBound;
 import intellispaces.common.javastatement.reference.TypeReference;
+import intellispaces.framework.core.annotation.Domain;
 
 import java.util.ArrayList;
 import java.util.List;

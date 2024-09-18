@@ -4,9 +4,9 @@ import com.google.auto.service.AutoService;
 import intellispaces.common.annotationprocessor.AnnotatedTypeProcessor;
 import intellispaces.common.annotationprocessor.generator.GenerationTask;
 import intellispaces.common.annotationprocessor.validator.AnnotatedTypeValidator;
+import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.framework.core.annotation.Preprocessing;
 import intellispaces.framework.core.annotation.processor.AnnotationProcessorFunctions;
-import intellispaces.common.javastatement.customtype.CustomType;
 
 import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;

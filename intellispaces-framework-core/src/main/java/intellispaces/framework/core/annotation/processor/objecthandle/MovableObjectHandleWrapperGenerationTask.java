@@ -2,6 +2,8 @@ package intellispaces.framework.core.annotation.processor.objecthandle;
 
 import intellispaces.common.action.Actions;
 import intellispaces.common.annotationprocessor.context.AnnotationProcessingContext;
+import intellispaces.common.javastatement.customtype.CustomType;
+import intellispaces.common.javastatement.type.Type;
 import intellispaces.framework.core.annotation.Ordinal;
 import intellispaces.framework.core.annotation.Wrapper;
 import intellispaces.framework.core.exception.TraverseException;
@@ -18,8 +20,6 @@ import intellispaces.framework.core.system.kernel.KernelModules;
 import intellispaces.framework.core.system.kernel.KernelObjectHandle;
 import intellispaces.framework.core.transition.TransitionMethod0;
 import intellispaces.framework.core.transition.TransitionMethod1;
-import intellispaces.common.javastatement.customtype.CustomType;
-import intellispaces.common.javastatement.type.Type;
 
 import javax.annotation.processing.RoundEnvironment;
 import java.util.HashMap;

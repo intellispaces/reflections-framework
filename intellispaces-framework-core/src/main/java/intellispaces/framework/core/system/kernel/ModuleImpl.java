@@ -2,6 +2,7 @@ package intellispaces.framework.core.system.kernel;
 
 import intellispaces.common.action.Actions;
 import intellispaces.common.action.getter.Getter;
+import intellispaces.common.javastatement.type.Type;
 import intellispaces.common.javastatement.type.Types;
 import intellispaces.framework.core.guide.n0.AutoMapper0;
 import intellispaces.framework.core.guide.n0.AutoMover0;
@@ -15,17 +16,21 @@ import intellispaces.framework.core.guide.n2.AutoMapper2;
 import intellispaces.framework.core.guide.n2.AutoMover2;
 import intellispaces.framework.core.guide.n2.Mapper2;
 import intellispaces.framework.core.guide.n2.Mover2;
+import intellispaces.framework.core.guide.n3.AutoMapper3;
+import intellispaces.framework.core.guide.n3.AutoMover3;
+import intellispaces.framework.core.guide.n3.Mapper3;
+import intellispaces.framework.core.guide.n3.Mover3;
 import intellispaces.framework.core.object.ObjectFunctions;
 import intellispaces.framework.core.space.transition.Transition0;
 import intellispaces.framework.core.space.transition.Transition1;
 import intellispaces.framework.core.space.transition.Transition2;
+import intellispaces.framework.core.space.transition.Transition3;
 import intellispaces.framework.core.space.transition.TransitionFunctions;
 import intellispaces.framework.core.system.ModuleProjection;
 import intellispaces.framework.core.system.Unit;
 import intellispaces.framework.core.traverse.DeclarativePlan;
 import intellispaces.framework.core.traverse.TraverseAnalyzer;
 import intellispaces.framework.core.traverse.TraverseExecutor;
-import intellispaces.common.javastatement.type.Type;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -177,6 +182,14 @@ class ModuleImpl implements KernelModule {
   }
 
   @Override
+  public <S, T, Q1, Q2, Q3> Mapper3<S, T, Q1, Q2, Q3> autoMapperThruTransition3(Type<S> sourceType, String tid) {
+    DeclarativePlan traversePlan = traverseAnalyzer.buildTraversePlanMapObjectHandleThruTransition3(
+      sourceType.baseClass(), tid
+    );
+    return new AutoMapper3<>(tid, traversePlan, traverseExecutor);
+  }
+
+  @Override
   public <S, B> Mover0<S, B> autoMoverThruTransition0(Type<S> sourceType, String tid) {
     DeclarativePlan traversePlan = traverseAnalyzer.buildTraversePlanMoveObjectHandleThruTransition0(
         sourceType.baseClass(), tid
@@ -206,6 +219,14 @@ class ModuleImpl implements KernelModule {
   }
 
   @Override
+  public <S, B, Q1, Q2, Q3> Mover3<S, B, Q1, Q2, Q3> autoMoverThruTransition3(Type<S> sourceType, String tid) {
+    DeclarativePlan traversePlan = traverseAnalyzer.buildTraversePlanMoveObjectHandleThruTransition3(
+      sourceType.baseClass(), tid
+    );
+    return new AutoMover3<>(tid, traversePlan, traverseExecutor);
+  }
+
+  @Override
   public <S, T> Mapper0<S, T> autoMapperThruTransition0(
       Type<S> sourceType, Class<? extends Transition0> transitionClass
   ) {
@@ -230,6 +251,14 @@ class ModuleImpl implements KernelModule {
 
   @Override
   @SuppressWarnings("rawtypes")
+  public <S, T, Q1, Q2, Q3> Mapper3<S, T, Q1, Q2, Q3> autoMapperThruTransition3(
+    Type<S> sourceType, Class<? extends Transition3> transitionClass
+  ) {
+    return autoMapperThruTransition3(sourceType, TransitionFunctions.getTransitionId(transitionClass));
+  }
+
+  @Override
+  @SuppressWarnings("rawtypes")
   public <S, B> Mover0<S, B> autoMoverThruTransition0(
       Type<S> sourceType, Class<? extends Transition0> transitionClass
   ) {
@@ -250,6 +279,14 @@ class ModuleImpl implements KernelModule {
       Type<S> sourceType, Class<? extends Transition2> transitionClass
   ) {
     return autoMoverThruTransition2(sourceType, TransitionFunctions.getTransitionId(transitionClass));
+  }
+
+  @Override
+  @SuppressWarnings("rawtypes")
+  public <S, B, Q1, Q2, Q3> Mover3<S, B, Q1, Q2, Q3> autoMoverThruTransition3(
+    Type<S> sourceType, Class<? extends Transition3> transitionClass
+  ) {
+    return autoMoverThruTransition3(sourceType, TransitionFunctions.getTransitionId(transitionClass));
   }
 
   @Override

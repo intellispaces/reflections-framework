@@ -1,8 +1,8 @@
 package intellispaces.framework.core.system;
 
+import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.framework.core.annotation.Configuration;
 import intellispaces.framework.core.annotation.Guide;
-import intellispaces.common.javastatement.customtype.CustomType;
 
 public interface UnitFunctions {
 

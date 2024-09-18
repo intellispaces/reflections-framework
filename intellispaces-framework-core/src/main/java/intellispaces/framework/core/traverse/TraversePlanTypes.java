@@ -13,6 +13,16 @@ public enum TraversePlanTypes implements TraversePlanType {
   CallGuide1,
 
   /**
+   * Actual traverse plan to call two times parametrized guide.
+   */
+  CallGuide2,
+
+  /**
+   * Actual traverse plan to call three times parametrized guide.
+   */
+  CallGuide3,
+
+  /**
    * Declarative traverse plan to map object handle through not-parametrized transition.
    */
   MapObjectHandleThruTransition0,
@@ -23,9 +33,14 @@ public enum TraversePlanTypes implements TraversePlanType {
   MapObjectHandleThruTransition1,
 
   /**
-   * Declarative traverse plan to map object handle through two-parametrized transition.
+   * Declarative traverse plan to map object handle through two times parametrized transition.
    */
   MapObjectHandleThruTransition2,
+
+  /**
+   * Declarative traverse plan to map object handle through three times parametrized transition.
+   */
+  MapObjectHandleThruTransition3,
 
   /**
    * Declarative traverse plan to move object handle through not-parametrized transition.
@@ -38,7 +53,12 @@ public enum TraversePlanTypes implements TraversePlanType {
   MoveObjectHandleThruTransition1,
 
   /**
-   * Declarative traverse plan to move object handle through two-parametrized transition.
+   * Declarative traverse plan to move object handle through two times parametrized transition.
    */
-  MoveObjectHandleThruTransition2
+  MoveObjectHandleThruTransition2,
+
+  /**
+   * Declarative traverse plan to move object handle through three times parametrized transition.
+   */
+  MoveObjectHandleThruTransition3
 }

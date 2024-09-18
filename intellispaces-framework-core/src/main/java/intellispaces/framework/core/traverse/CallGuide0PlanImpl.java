@@ -36,4 +36,11 @@ public class CallGuide0PlanImpl implements CallGuide0Plan {
   public Object execute(Object source, Object qualifier1, Object qualifier2, TraverseExecutor executor) throws TraverseException {
     throw UnexpectedViolationException.withMessage("Expected traverse without transition qualifier");
   }
+
+  @Override
+  public Object execute(
+    Object source, Object qualifier1, Object qualifier2, Object qualifier3, TraverseExecutor executor
+  ) throws TraverseException {
+    throw UnexpectedViolationException.withMessage("Expected traverse without transition qualifier");
+  }
 }

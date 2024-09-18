@@ -1,12 +1,12 @@
 package intellispaces.framework.core.annotation.processor.domain;
 
-import intellispaces.framework.core.common.NameConventionFunctions;
 import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.common.javastatement.method.MethodParam;
 import intellispaces.common.javastatement.method.MethodStatement;
 import intellispaces.common.javastatement.reference.CustomTypeReference;
 import intellispaces.common.javastatement.reference.TypeReference;
 import intellispaces.common.javastatement.reference.TypeReferenceFunctions;
+import intellispaces.framework.core.common.NameConventionFunctions;
 
 import javax.annotation.processing.RoundEnvironment;
 import java.util.stream.Collectors;

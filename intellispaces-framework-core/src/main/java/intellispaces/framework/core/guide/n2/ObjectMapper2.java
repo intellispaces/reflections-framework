@@ -29,7 +29,7 @@ public class ObjectMapper2<S extends ObjectHandleWrapper<S>, T, Q1, Q2> implemen
       int transitionIndex
   ) {
     if (guideMethod.getParameterCount() != 2) {
-      throw UnexpectedViolationException.withMessage("Guide should have 2 qualifiers");
+      throw UnexpectedViolationException.withMessage("Guide should have two qualifiers");
     }
     this.tid = tid;
     this.objectHandleClass = objectHandleClass;

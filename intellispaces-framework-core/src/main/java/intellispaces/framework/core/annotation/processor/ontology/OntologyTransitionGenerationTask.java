@@ -1,13 +1,13 @@
 package intellispaces.framework.core.annotation.processor.ontology;
 
 import intellispaces.common.annotationprocessor.context.AnnotationProcessingContext;
-import intellispaces.framework.core.annotation.processor.AbstractTransitionGenerationTask;
-import intellispaces.framework.core.common.NameConventionFunctions;
 import intellispaces.common.javastatement.Statement;
 import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.common.javastatement.method.MethodParam;
 import intellispaces.common.javastatement.method.MethodStatement;
 import intellispaces.common.javastatement.reference.TypeReference;
+import intellispaces.framework.core.annotation.processor.AbstractTransitionGenerationTask;
+import intellispaces.framework.core.common.NameConventionFunctions;
 
 import java.util.List;
 import java.util.stream.Collectors;

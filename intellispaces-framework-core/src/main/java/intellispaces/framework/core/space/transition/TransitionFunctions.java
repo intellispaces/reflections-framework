@@ -1,6 +1,12 @@
 package intellispaces.framework.core.space.transition;
 
 import intellispaces.common.base.exception.UnexpectedViolationException;
+import intellispaces.common.dynamicproxy.tracker.Tracker;
+import intellispaces.common.dynamicproxy.tracker.TrackerBuilder;
+import intellispaces.common.dynamicproxy.tracker.TrackerFunctions;
+import intellispaces.common.javastatement.customtype.CustomType;
+import intellispaces.common.javastatement.method.MethodStatement;
+import intellispaces.common.javastatement.method.Methods;
 import intellispaces.framework.core.annotation.Guide;
 import intellispaces.framework.core.annotation.Mapper;
 import intellispaces.framework.core.annotation.Mover;
@@ -8,14 +14,9 @@ import intellispaces.framework.core.annotation.Transition;
 import intellispaces.framework.core.object.ObjectFunctions;
 import intellispaces.framework.core.space.domain.DomainFunctions;
 import intellispaces.framework.core.traverse.TraverseTypes;
-import intellispaces.common.javastatement.customtype.CustomType;
-import intellispaces.common.javastatement.method.MethodStatement;
-import intellispaces.common.javastatement.method.Methods;
-import intellispaces.common.dynamicproxy.tracker.Tracker;
-import intellispaces.common.dynamicproxy.tracker.TrackerBuilder;
-import intellispaces.common.dynamicproxy.tracker.TrackerFunctions;
 
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.BiFunction;
@@ -262,8 +263,14 @@ public interface TransitionFunctions {
       case 0 -> Transition0.class;
       case 1 -> Transition1.class;
       case 2 -> Transition2.class;
+      case 3 -> Transition3.class;
       default -> throw UnexpectedViolationException.withMessage("Not implemented");
     };
+  }
+
+  static List<TraverseTypes> getTraverseTypes(MethodStatement method) {
+    Transition transition = method.selectAnnotation(Transition.class).orElseThrow();
+    return Arrays.asList(transition.allowedTraverse());
   }
 
   static TraverseTypes getTraverseType(Transition transition) {

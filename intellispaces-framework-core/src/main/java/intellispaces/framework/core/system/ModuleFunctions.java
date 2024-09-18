@@ -1,9 +1,9 @@
 package intellispaces.framework.core.system;
 
-import intellispaces.framework.core.annotation.Module;
 import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.common.javastatement.instance.AnnotationInstance;
 import intellispaces.common.javastatement.instance.Instance;
+import intellispaces.framework.core.annotation.Module;
 
 import java.util.HashMap;
 import java.util.List;

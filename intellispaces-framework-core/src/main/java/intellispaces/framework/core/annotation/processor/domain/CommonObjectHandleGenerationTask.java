@@ -1,16 +1,16 @@
 package intellispaces.framework.core.annotation.processor.domain;
 
 import intellispaces.common.annotationprocessor.context.AnnotationProcessingContext;
-import intellispaces.framework.core.annotation.ObjectHandle;
-import intellispaces.framework.core.common.NameConventionFunctions;
-import intellispaces.framework.core.object.ObjectFunctions;
-import intellispaces.framework.core.object.ObjectHandleTypes;
-import intellispaces.framework.core.space.domain.DomainFunctions;
 import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.common.javastatement.method.MethodStatement;
 import intellispaces.common.javastatement.reference.CustomTypeReference;
 import intellispaces.common.javastatement.type.Type;
 import intellispaces.common.javastatement.type.Types;
+import intellispaces.framework.core.annotation.ObjectHandle;
+import intellispaces.framework.core.common.NameConventionFunctions;
+import intellispaces.framework.core.object.ObjectFunctions;
+import intellispaces.framework.core.object.ObjectHandleTypes;
+import intellispaces.framework.core.space.domain.DomainFunctions;
 
 import javax.annotation.processing.RoundEnvironment;
 import java.util.HashMap;

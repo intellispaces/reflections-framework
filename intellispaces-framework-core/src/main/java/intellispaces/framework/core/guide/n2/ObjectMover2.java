@@ -30,7 +30,7 @@ public class ObjectMover2<S extends ObjectHandleWrapper<S>, B, Q1, Q2> implement
       int transitionIndex
   ) {
     if (guideMethod.getParameterCount() != 2) {
-      throw UnexpectedViolationException.withMessage("Attached guide should have 2 qualifiers");
+      throw UnexpectedViolationException.withMessage("Attached guide should have two qualifiers");
     }
     this.tid = tid;
     this.objectHandleClass = objectHandleClass;

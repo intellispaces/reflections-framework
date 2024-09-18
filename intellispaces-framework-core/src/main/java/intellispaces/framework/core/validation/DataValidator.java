@@ -1,10 +1,10 @@
 package intellispaces.framework.core.validation;
 
 import intellispaces.common.annotationprocessor.validator.AnnotatedTypeValidator;
+import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.framework.core.annotation.Data;
 import intellispaces.framework.core.annotation.Domain;
 import intellispaces.framework.core.exception.IntelliSpacesException;
-import intellispaces.common.javastatement.customtype.CustomType;
 
 /**
  * Data type validator.

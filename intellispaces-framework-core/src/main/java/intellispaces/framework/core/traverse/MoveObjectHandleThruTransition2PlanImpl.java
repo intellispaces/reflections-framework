@@ -31,4 +31,11 @@ public class MoveObjectHandleThruTransition2PlanImpl extends AbstractObjectHandl
   ) throws TraverseException {
     return traverseExecutor.execute(this, source, qualifier1, qualifier2);
   }
+
+  @Override
+  public Object execute(
+    Object source, Object qualifier1, Object qualifier2, Object qualifier3, TraverseExecutor executor
+  ) throws TraverseException {
+    throw UnexpectedViolationException.withMessage("Expected traverse with two qualifiers");
+  }
 }

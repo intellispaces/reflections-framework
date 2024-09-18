@@ -3,14 +3,14 @@ package intellispaces.framework.core.annotation.processor;
 import intellispaces.common.annotationprocessor.context.JavaArtifactContext;
 import intellispaces.common.annotationprocessor.generator.TemplateSourceArtifactGenerationTask;
 import intellispaces.common.base.type.TypeFunctions;
-import intellispaces.framework.core.annotation.Generated;
-import intellispaces.framework.core.object.ObjectFunctions;
-import intellispaces.framework.core.object.ObjectHandleTypes;
 import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.common.javastatement.method.MethodParam;
 import intellispaces.common.javastatement.method.MethodSignatureDeclarations;
 import intellispaces.common.javastatement.method.MethodStatement;
 import intellispaces.common.javastatement.reference.TypeReference;
+import intellispaces.framework.core.annotation.Generated;
+import intellispaces.framework.core.object.ObjectFunctions;
+import intellispaces.framework.core.object.ObjectHandleTypes;
 
 import java.time.ZonedDateTime;
 import java.util.List;

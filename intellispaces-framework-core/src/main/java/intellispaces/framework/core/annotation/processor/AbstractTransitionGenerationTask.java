@@ -2,13 +2,14 @@ package intellispaces.framework.core.annotation.processor;
 
 import intellispaces.common.base.exception.UnexpectedViolationException;
 import intellispaces.common.base.type.TypeFunctions;
-import intellispaces.framework.core.annotation.Transition;
-import intellispaces.framework.core.space.transition.TransitionFunctions;
-import intellispaces.framework.core.traverse.TraverseTypes;
 import intellispaces.common.javastatement.Statement;
 import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.common.javastatement.method.MethodStatement;
+import intellispaces.common.javastatement.reference.CustomTypeReferences;
 import intellispaces.common.javastatement.reference.TypeReference;
+import intellispaces.framework.core.annotation.Transition;
+import intellispaces.framework.core.space.transition.TransitionFunctions;
+import intellispaces.framework.core.traverse.TraverseTypes;
 
 import javax.annotation.processing.RoundEnvironment;
 import java.util.HashMap;
@@ -58,7 +59,14 @@ public abstract class AbstractTransitionGenerationTask extends AbstractGeneratio
     vars.put("packageName", context.packageName());
     vars.put("sourceClassName", sourceClassCanonicalName());
     vars.put("sourceClassSimpleName", sourceClassSimpleName());
-    vars.put("targetClassLink", AnnotationProcessorFunctions.getDomainClassLink(transitionMethod.returnType().orElseThrow()));
+
+    boolean isMovingTransition = TransitionFunctions.getTraverseTypes(transitionMethod).contains(TraverseTypes.Moving);
+    if (isMovingTransition) {
+      vars.put("targetClassLink", AnnotationProcessorFunctions.getDomainClassLink(CustomTypeReferences.get(annotatedType)));
+    } else {
+      vars.put("targetClassLink", AnnotationProcessorFunctions.getDomainClassLink(transitionMethod.returnType().orElseThrow()));
+    }
+
     vars.put("classSimpleName", context.generatedClassSimpleName());
     vars.put("importedClasses", context.getImports());
     vars.put("transitionMethod", transitionMethodSignature);
@@ -96,7 +104,11 @@ public abstract class AbstractTransitionGenerationTask extends AbstractGeneratio
     sb.append("<");
     appendTypeDeclaration(sb, getSourceType());
     sb.append(", ");
-    appendTypeDeclaration(sb, getTargetType());
+    if (TransitionFunctions.getTraverseTypes(transitionMethod).contains(TraverseTypes.Moving)) {
+      appendTypeDeclaration(sb, getSourceType());
+    } else {
+      appendTypeDeclaration(sb, getTargetType());
+    }
     for (TypeReference qualifierType : getQualifierTypes()) {
       sb.append(", ");
       appendTypeDeclaration(sb, qualifierType);

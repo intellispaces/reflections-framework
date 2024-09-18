@@ -29,7 +29,7 @@ public class ObjectMover1<S extends ObjectHandleWrapper<S>, B, Q> implements Abs
       int transitionIndex
   ) {
     if (guideMethod.getParameterCount() != 1) {
-      throw UnexpectedViolationException.withMessage("Attached guide should have 1 parameter");
+      throw UnexpectedViolationException.withMessage("Attached guide should have one parameter");
     }
     this.tid = tid;
     this.objectHandleClass = objectHandleClass;

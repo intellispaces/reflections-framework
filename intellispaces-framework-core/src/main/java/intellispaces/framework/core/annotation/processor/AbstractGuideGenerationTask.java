@@ -1,9 +1,14 @@
 package intellispaces.framework.core.annotation.processor;
 
-import intellispaces.common.base.text.TextActions;
 import intellispaces.common.action.runner.Runner;
 import intellispaces.common.base.exception.UnexpectedViolationException;
+import intellispaces.common.base.text.TextActions;
 import intellispaces.common.base.type.TypeFunctions;
+import intellispaces.common.javastatement.customtype.CustomType;
+import intellispaces.common.javastatement.method.MethodParam;
+import intellispaces.common.javastatement.method.MethodStatement;
+import intellispaces.common.javastatement.reference.NotPrimitiveReference;
+import intellispaces.common.javastatement.reference.TypeReference;
 import intellispaces.framework.core.annotation.Guide;
 import intellispaces.framework.core.annotation.Mapper;
 import intellispaces.framework.core.annotation.Mover;
@@ -26,11 +31,6 @@ import intellispaces.framework.core.object.ObjectFunctions;
 import intellispaces.framework.core.space.transition.TransitionFunctions;
 import intellispaces.framework.core.traverse.TraverseType;
 import intellispaces.framework.core.traverse.TraverseTypes;
-import intellispaces.common.javastatement.customtype.CustomType;
-import intellispaces.common.javastatement.method.MethodParam;
-import intellispaces.common.javastatement.method.MethodStatement;
-import intellispaces.common.javastatement.reference.NotPrimitiveReference;
-import intellispaces.common.javastatement.reference.TypeReference;
 
 import javax.annotation.processing.RoundEnvironment;
 import java.util.HashMap;

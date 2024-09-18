@@ -3,6 +3,10 @@ package intellispaces.framework.core.common;
 import intellispaces.common.base.exception.UnexpectedViolationException;
 import intellispaces.common.base.text.TextFunctions;
 import intellispaces.common.base.type.TypeFunctions;
+import intellispaces.common.javastatement.customtype.CustomType;
+import intellispaces.common.javastatement.method.MethodParam;
+import intellispaces.common.javastatement.method.MethodStatement;
+import intellispaces.common.javastatement.reference.CustomTypeReference;
 import intellispaces.framework.core.annotation.Domain;
 import intellispaces.framework.core.annotation.ObjectHandle;
 import intellispaces.framework.core.annotation.Ontology;
@@ -11,10 +15,6 @@ import intellispaces.framework.core.object.ObjectFunctions;
 import intellispaces.framework.core.object.ObjectHandleTypes;
 import intellispaces.framework.core.space.transition.TransitionFunctions;
 import intellispaces.framework.core.traverse.TraverseTypes;
-import intellispaces.common.javastatement.customtype.CustomType;
-import intellispaces.common.javastatement.method.MethodParam;
-import intellispaces.common.javastatement.method.MethodStatement;
-import intellispaces.common.javastatement.reference.CustomTypeReference;
 
 import java.util.Optional;
 

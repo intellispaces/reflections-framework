@@ -1,10 +1,10 @@
 package intellispaces.framework.core.action;
 
 import intellispaces.common.action.AbstractAction3;
+import intellispaces.common.javastatement.type.Type;
 import intellispaces.framework.core.guide.n2.Mapper2;
 import intellispaces.framework.core.space.transition.Transition2;
 import intellispaces.framework.core.system.Modules;
-import intellispaces.common.javastatement.type.Type;
 
 class MapThruTransition2Action<T, S, Q1, Q2> extends AbstractAction3<T, S, Q1, Q2> {
   private final Type<S> sourceType;

@@ -1,14 +1,10 @@
 package intellispaces.framework.core.annotation.processor.ontology;
 
-import intellispaces.common.base.text.TextActions;
 import intellispaces.common.action.runner.Runner;
 import intellispaces.common.annotationprocessor.context.AnnotationProcessingContext;
 import intellispaces.common.base.exception.UnexpectedViolationException;
+import intellispaces.common.base.text.TextActions;
 import intellispaces.common.base.type.TypeFunctions;
-import intellispaces.framework.core.annotation.processor.AbstractGuideGenerationTask;
-import intellispaces.framework.core.annotation.processor.AnnotationProcessorFunctions;
-import intellispaces.framework.core.common.NameConventionFunctions;
-import intellispaces.framework.core.traverse.TraverseType;
 import intellispaces.common.javastatement.JavaStatements;
 import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.common.javastatement.method.MethodParam;
@@ -16,6 +12,10 @@ import intellispaces.common.javastatement.method.MethodStatement;
 import intellispaces.common.javastatement.reference.NamedReference;
 import intellispaces.common.javastatement.reference.NamedTypes;
 import intellispaces.common.javastatement.reference.TypeReference;
+import intellispaces.framework.core.annotation.processor.AbstractGuideGenerationTask;
+import intellispaces.framework.core.annotation.processor.AnnotationProcessorFunctions;
+import intellispaces.framework.core.common.NameConventionFunctions;
+import intellispaces.framework.core.traverse.TraverseType;
 
 import java.util.List;
 import java.util.function.Function;

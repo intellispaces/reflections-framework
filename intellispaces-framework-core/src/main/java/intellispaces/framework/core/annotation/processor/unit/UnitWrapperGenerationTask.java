@@ -2,12 +2,21 @@ package intellispaces.framework.core.annotation.processor.unit;
 
 import intellispaces.common.action.Action;
 import intellispaces.common.action.Actions;
-import intellispaces.common.base.text.TextActions;
+import intellispaces.common.action.functional.FunctionActions;
 import intellispaces.common.action.getter.ResettableGetter;
 import intellispaces.common.action.runner.Runner;
 import intellispaces.common.annotationprocessor.context.AnnotationProcessingContext;
 import intellispaces.common.base.exception.UnexpectedViolationException;
+import intellispaces.common.base.text.TextActions;
 import intellispaces.common.base.type.TypeFunctions;
+import intellispaces.common.javastatement.customtype.CustomType;
+import intellispaces.common.javastatement.instance.AnnotationInstance;
+import intellispaces.common.javastatement.instance.ClassInstance;
+import intellispaces.common.javastatement.instance.Instance;
+import intellispaces.common.javastatement.method.MethodParam;
+import intellispaces.common.javastatement.method.MethodStatement;
+import intellispaces.common.javastatement.reference.NamedReference;
+import intellispaces.common.javastatement.reference.TypeReference;
 import intellispaces.framework.core.annotation.Ordinal;
 import intellispaces.framework.core.annotation.Projection;
 import intellispaces.framework.core.annotation.ProjectionDefinition;
@@ -29,14 +38,6 @@ import intellispaces.framework.core.system.projection.ProjectionDefinitionBasedO
 import intellispaces.framework.core.system.projection.ProjectionDefinitionBasedOnProviderClasses;
 import intellispaces.framework.core.system.projection.ProjectionFunctions;
 import intellispaces.framework.core.system.projection.ProjectionReferences;
-import intellispaces.common.javastatement.customtype.CustomType;
-import intellispaces.common.javastatement.instance.AnnotationInstance;
-import intellispaces.common.javastatement.instance.ClassInstance;
-import intellispaces.common.javastatement.instance.Instance;
-import intellispaces.common.javastatement.method.MethodParam;
-import intellispaces.common.javastatement.method.MethodStatement;
-import intellispaces.common.javastatement.reference.NamedReference;
-import intellispaces.common.javastatement.reference.TypeReference;
 
 import javax.annotation.processing.RoundEnvironment;
 import java.util.ArrayList;
@@ -106,6 +107,7 @@ public class UnitWrapperGenerationTask extends AbstractGenerationTask {
     context.addImport(ArrayList.class);
     context.addImport(Action.class);
     context.addImport(Actions.class);
+    context.addImport(FunctionActions.class);
     context.addImport(ResettableGetter.class);
     context.addImport(KernelUnit.class);
     context.addImport(Wrapper.class);
@@ -165,7 +167,7 @@ public class UnitWrapperGenerationTask extends AbstractGenerationTask {
 
   private String buildGuideAction(MethodStatement guideMethod) {
     var sb = new StringBuilder();
-    sb.append("Actions.get(super::").append(guideMethod.name());
+    sb.append("FunctionActions.of(super::").append(guideMethod.name());
     sb.append(", ");
     sb.append(buildTypeDeclaration(guideMethod.returnType().orElseThrow())).append(".class");
     for (MethodParam param : guideMethod.params()) {
@@ -253,8 +255,7 @@ public class UnitWrapperGenerationTask extends AbstractGenerationTask {
     sb.append("  \"").append(ProjectionFunctions.getProjectionName(method)).append("\",\n");
     sb.append("  ").append(buildTypeDeclaration(method.returnType().orElseThrow())).append(".class,\n");
     sb.append("  ").append(method.selectAnnotation(Projection.class).orElseThrow().lazy()).append(",\n");
-    sb.append("  ").append("Actions.get(");
-    sb.append("super::").append(method.name()).append(", ");
+    sb.append("  ").append("Actions.of(super::").append(method.name()).append(", ");
     sb.append(buildTypeDeclaration(method.returnType().orElseThrow())).append(".class");
 
     for (MethodParam param : method.params()) {

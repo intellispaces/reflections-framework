@@ -1,14 +1,14 @@
 package intellispaces.framework.core.annotation.processor.data;
 
 import intellispaces.common.annotationprocessor.context.AnnotationProcessingContext;
+import intellispaces.common.javastatement.customtype.CustomType;
+import intellispaces.common.javastatement.method.MethodStatement;
+import intellispaces.common.javastatement.reference.TypeReference;
 import intellispaces.framework.core.annotation.Name;
 import intellispaces.framework.core.annotation.ObjectHandle;
 import intellispaces.framework.core.annotation.processor.AbstractGenerationTask;
 import intellispaces.framework.core.common.NameConventionFunctions;
 import intellispaces.framework.core.object.ObjectHandleTypes;
-import intellispaces.common.javastatement.customtype.CustomType;
-import intellispaces.common.javastatement.method.MethodStatement;
-import intellispaces.common.javastatement.reference.TypeReference;
 
 import javax.annotation.processing.RoundEnvironment;
 import java.util.ArrayList;

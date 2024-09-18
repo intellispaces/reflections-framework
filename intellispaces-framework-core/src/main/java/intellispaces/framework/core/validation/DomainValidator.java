@@ -1,11 +1,11 @@
 package intellispaces.framework.core.validation;
 
 import intellispaces.common.annotationprocessor.validator.AnnotatedTypeValidator;
+import intellispaces.common.javastatement.customtype.CustomType;
+import intellispaces.common.javastatement.method.MethodStatement;
 import intellispaces.framework.core.annotation.Transition;
 import intellispaces.framework.core.exception.IntelliSpacesException;
 import intellispaces.framework.core.object.ObjectFunctions;
-import intellispaces.common.javastatement.customtype.CustomType;
-import intellispaces.common.javastatement.method.MethodStatement;
 
 /**
  * Domain type validator.

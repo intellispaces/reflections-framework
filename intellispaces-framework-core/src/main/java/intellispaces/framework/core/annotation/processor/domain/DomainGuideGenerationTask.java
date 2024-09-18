@@ -1,12 +1,12 @@
 package intellispaces.framework.core.annotation.processor.domain;
 
 import intellispaces.common.annotationprocessor.context.AnnotationProcessingContext;
-import intellispaces.framework.core.annotation.processor.AbstractGuideGenerationTask;
-import intellispaces.framework.core.common.NameConventionFunctions;
-import intellispaces.framework.core.traverse.TraverseType;
 import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.common.javastatement.method.MethodParam;
 import intellispaces.common.javastatement.method.MethodStatement;
+import intellispaces.framework.core.annotation.processor.AbstractGuideGenerationTask;
+import intellispaces.framework.core.common.NameConventionFunctions;
+import intellispaces.framework.core.traverse.TraverseType;
 
 import java.util.List;
 

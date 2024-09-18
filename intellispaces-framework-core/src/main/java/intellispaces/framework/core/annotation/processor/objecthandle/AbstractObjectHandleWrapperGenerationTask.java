@@ -1,9 +1,15 @@
 package intellispaces.framework.core.annotation.processor.objecthandle;
 
 import intellispaces.common.action.Actions;
-import intellispaces.common.base.text.TextActions;
 import intellispaces.common.action.runner.Runner;
+import intellispaces.common.base.text.TextActions;
 import intellispaces.common.base.type.TypeFunctions;
+import intellispaces.common.javastatement.customtype.CustomType;
+import intellispaces.common.javastatement.method.MethodParam;
+import intellispaces.common.javastatement.method.MethodStatement;
+import intellispaces.common.javastatement.reference.NamedReference;
+import intellispaces.common.javastatement.reference.TypeReference;
+import intellispaces.common.javastatement.type.Types;
 import intellispaces.framework.core.action.TraverseActions;
 import intellispaces.framework.core.annotation.processor.AbstractObjectHandleGenerationTask;
 import intellispaces.framework.core.common.NameConventionFunctions;
@@ -12,12 +18,6 @@ import intellispaces.framework.core.object.ObjectFunctions;
 import intellispaces.framework.core.object.ObjectHandleTypes;
 import intellispaces.framework.core.space.transition.TransitionFunctions;
 import intellispaces.framework.core.traverse.TraverseTypes;
-import intellispaces.common.javastatement.customtype.CustomType;
-import intellispaces.common.javastatement.method.MethodParam;
-import intellispaces.common.javastatement.method.MethodStatement;
-import intellispaces.common.javastatement.reference.NamedReference;
-import intellispaces.common.javastatement.reference.TypeReference;
-import intellispaces.common.javastatement.type.Types;
 
 import javax.annotation.processing.RoundEnvironment;
 import java.util.ArrayList;
@@ -147,8 +147,7 @@ abstract class AbstractObjectHandleWrapperGenerationTask extends AbstractObjectH
 
   private String buildGuideAction(MethodStatement objectHandleMethod) {
     var sb = new StringBuilder();
-    sb.append("Actions.get(super::");
-    sb.append(objectHandleMethod.name());
+    sb.append("Actions.of(super::");sb.append(objectHandleMethod.name());
     sb.append(", ");
     sb.append(buildProjectionActionTypeParameter(objectHandleMethod.returnType().orElseThrow()));
     sb.append(".class");

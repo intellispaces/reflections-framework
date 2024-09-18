@@ -1,6 +1,11 @@
 package intellispaces.framework.core.validation;
 
 import intellispaces.common.annotationprocessor.validator.AnnotatedTypeValidator;
+import intellispaces.common.javastatement.customtype.CustomType;
+import intellispaces.common.javastatement.instance.AnnotationInstance;
+import intellispaces.common.javastatement.method.MethodParam;
+import intellispaces.common.javastatement.method.MethodStatement;
+import intellispaces.common.javastatement.reference.TypeReference;
 import intellispaces.framework.core.annotation.Configuration;
 import intellispaces.framework.core.annotation.Guide;
 import intellispaces.framework.core.annotation.Module;
@@ -12,11 +17,6 @@ import intellispaces.framework.core.exception.IntelliSpacesException;
 import intellispaces.framework.core.guide.GuideFunctions;
 import intellispaces.framework.core.object.ObjectFunctions;
 import intellispaces.framework.core.system.ModuleFunctions;
-import intellispaces.common.javastatement.customtype.CustomType;
-import intellispaces.common.javastatement.instance.AnnotationInstance;
-import intellispaces.common.javastatement.method.MethodParam;
-import intellispaces.common.javastatement.method.MethodStatement;
-import intellispaces.common.javastatement.reference.TypeReference;
 
 import java.util.List;
 import java.util.Optional;

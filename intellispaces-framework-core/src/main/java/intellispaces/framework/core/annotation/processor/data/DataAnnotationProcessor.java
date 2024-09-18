@@ -3,10 +3,10 @@ package intellispaces.framework.core.annotation.processor.data;
 import intellispaces.common.annotationprocessor.AnnotatedTypeProcessor;
 import intellispaces.common.annotationprocessor.generator.GenerationTask;
 import intellispaces.common.annotationprocessor.validator.AnnotatedTypeValidator;
+import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.framework.core.annotation.Data;
 import intellispaces.framework.core.annotation.processor.AnnotationProcessorFunctions;
 import intellispaces.framework.core.validation.DataValidator;
-import intellispaces.common.javastatement.customtype.CustomType;
 
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.ElementKind;

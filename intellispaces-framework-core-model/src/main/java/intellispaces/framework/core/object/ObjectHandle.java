@@ -1,8 +1,8 @@
 package intellispaces.framework.core.object;
 
+import intellispaces.common.javastatement.type.Type;
 import intellispaces.framework.core.exception.TraverseException;
 import intellispaces.framework.core.space.transition.Transition1;
-import intellispaces.common.javastatement.type.Type;
 
 /**
  * Handle of object.<p/>

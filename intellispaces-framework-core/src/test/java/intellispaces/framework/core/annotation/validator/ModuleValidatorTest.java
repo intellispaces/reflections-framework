@@ -4,9 +4,9 @@ import com.google.testing.compile.Compilation;
 import com.google.testing.compile.CompilationSubject;
 import com.google.testing.compile.Compiler;
 import com.google.testing.compile.JavaFileObjects;
+import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.framework.core.exception.IntelliSpacesException;
 import intellispaces.framework.core.validation.ModuleValidator;
-import intellispaces.common.javastatement.customtype.CustomType;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 

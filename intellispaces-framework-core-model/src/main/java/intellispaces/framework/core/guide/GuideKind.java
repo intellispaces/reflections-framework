@@ -4,9 +4,9 @@ public interface GuideKind {
 
   String name();
 
+  int order();
+
   boolean isMapper();
 
   boolean isMover();
-
-  int guideOrder();
 }

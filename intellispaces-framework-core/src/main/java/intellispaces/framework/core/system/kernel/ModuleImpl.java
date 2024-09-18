@@ -143,18 +143,18 @@ class ModuleImpl implements KernelModule {
 
   @Override
   @SuppressWarnings("unchecked")
-  public <S, B> B moveThruTransition0(S source, String tid) {
+  public <S, R> R moveThruTransition0(S source, String tid) {
     DeclarativePlan traversePlan = traverseAnalyzer.buildTraversePlanMoveObjectHandleThruTransition0(
         ObjectFunctions.defineObjectHandleClass(source.getClass()), tid);
-    return (B) traversePlan.execute(source, traverseExecutor);
+    return (R) traversePlan.execute(source, traverseExecutor);
   }
 
   @Override
   @SuppressWarnings("unchecked")
-  public <S, B, Q> B moveThruTransition1(S source, String tid, Q qualifier) {
+  public <S, R, Q> R moveThruTransition1(S source, String tid, Q qualifier) {
     DeclarativePlan traversePlan = traverseAnalyzer.buildTraversePlanMoveObjectHandleThruTransition1(
         ObjectFunctions.defineObjectHandleClass(source.getClass()), tid);
-    return (B) traversePlan.execute(source, qualifier, traverseExecutor);
+    return (R) traversePlan.execute(source, qualifier, traverseExecutor);
   }
 
   @Override
@@ -190,7 +190,7 @@ class ModuleImpl implements KernelModule {
   }
 
   @Override
-  public <S, B> Mover0<S, B> autoMoverThruTransition0(Type<S> sourceType, String tid) {
+  public <S, R> Mover0<S, R> autoMoverThruTransition0(Type<S> sourceType, String tid) {
     DeclarativePlan traversePlan = traverseAnalyzer.buildTraversePlanMoveObjectHandleThruTransition0(
         sourceType.baseClass(), tid
     );
@@ -198,12 +198,12 @@ class ModuleImpl implements KernelModule {
   }
 
   @Override
-  public <S, B, Q> Mover1<S, B, Q> autoMoverThruTransition1(Class<S> sourceClass, String tid) {
+  public <S, R, Q> Mover1<S, R, Q> autoMoverThruTransition1(Class<S> sourceClass, String tid) {
     return autoMoverThruTransition1(Types.of(sourceClass), tid);
   }
 
   @Override
-  public <S, B, Q> Mover1<S, B, Q> autoMoverThruTransition1(Type<S> sourceType, String tid) {
+  public <S, R, Q> Mover1<S, R, Q> autoMoverThruTransition1(Type<S> sourceType, String tid) {
     DeclarativePlan traversePlan = traverseAnalyzer.buildTraversePlanMoveObjectHandleThruTransition1(
         sourceType.baseClass(), tid
     );
@@ -211,7 +211,7 @@ class ModuleImpl implements KernelModule {
   }
 
   @Override
-  public <S, B, Q1, Q2> Mover2<S, B, Q1, Q2> autoMoverThruTransition2(Type<S> sourceType, String tid) {
+  public <S, R, Q1, Q2> Mover2<S, R, Q1, Q2> autoMoverThruTransition2(Type<S> sourceType, String tid) {
     DeclarativePlan traversePlan = traverseAnalyzer.buildTraversePlanMoveObjectHandleThruTransition2(
         sourceType.baseClass(), tid
     );
@@ -219,7 +219,7 @@ class ModuleImpl implements KernelModule {
   }
 
   @Override
-  public <S, B, Q1, Q2, Q3> Mover3<S, B, Q1, Q2, Q3> autoMoverThruTransition3(Type<S> sourceType, String tid) {
+  public <S, R, Q1, Q2, Q3> Mover3<S, R, Q1, Q2, Q3> autoMoverThruTransition3(Type<S> sourceType, String tid) {
     DeclarativePlan traversePlan = traverseAnalyzer.buildTraversePlanMoveObjectHandleThruTransition3(
       sourceType.baseClass(), tid
     );
@@ -259,7 +259,7 @@ class ModuleImpl implements KernelModule {
 
   @Override
   @SuppressWarnings("rawtypes")
-  public <S, B> Mover0<S, B> autoMoverThruTransition0(
+  public <S, R> Mover0<S, R> autoMoverThruTransition0(
       Type<S> sourceType, Class<? extends Transition0> transitionClass
   ) {
     return autoMoverThruTransition0(sourceType, TransitionFunctions.getTransitionId(transitionClass));
@@ -267,7 +267,7 @@ class ModuleImpl implements KernelModule {
 
   @Override
   @SuppressWarnings("rawtypes")
-  public <S, B, Q> Mover1<S, B, Q> autoMoverThruTransition1(
+  public <S, R, Q> Mover1<S, R, Q> autoMoverThruTransition1(
       Type<S> sourceType, Class<? extends Transition1> transitionClass
   ) {
     return autoMoverThruTransition1(sourceType, TransitionFunctions.getTransitionId(transitionClass));
@@ -275,7 +275,7 @@ class ModuleImpl implements KernelModule {
 
   @Override
   @SuppressWarnings("rawtypes")
-  public <S, B, Q1, Q2> Mover2<S, B, Q1, Q2> autoMoverThruTransition2(
+  public <S, R, Q1, Q2> Mover2<S, R, Q1, Q2> autoMoverThruTransition2(
       Type<S> sourceType, Class<? extends Transition2> transitionClass
   ) {
     return autoMoverThruTransition2(sourceType, TransitionFunctions.getTransitionId(transitionClass));
@@ -283,7 +283,7 @@ class ModuleImpl implements KernelModule {
 
   @Override
   @SuppressWarnings("rawtypes")
-  public <S, B, Q1, Q2, Q3> Mover3<S, B, Q1, Q2, Q3> autoMoverThruTransition3(
+  public <S, R, Q1, Q2, Q3> Mover3<S, R, Q1, Q2, Q3> autoMoverThruTransition3(
     Type<S> sourceType, Class<? extends Transition3> transitionClass
   ) {
     return autoMoverThruTransition3(sourceType, TransitionFunctions.getTransitionId(transitionClass));

@@ -36,25 +36,25 @@ public interface TraverseActions {
     return new MapThruTransition3Action<>(sourceType, transitionClass);
   }
 
-  static <S, B> Action1<B, S> moveThruTransition0(
+  static <S, R> Action1<R, S> moveThruTransition0(
     Type<S> sourceType, Class<? extends Transition0> transitionClass
   ) {
     return new MoveThruTransition0Action<>(sourceType, transitionClass);
   }
 
-  static <S, B, Q> Action2<B, S, Q> moveThruTransition1(
+  static <S, R, Q> Action2<R, S, Q> moveThruTransition1(
     Type<S> sourceType, Class<? extends Transition1> transitionClass
   ) {
     return new MoveThruTransition1Action<>(sourceType, transitionClass);
   }
 
-  static <S, B, Q1, Q2> Action3<B, S, Q1, Q2> moveThruTransition2(
+  static <S, R, Q1, Q2> Action3<R, S, Q1, Q2> moveThruTransition2(
     Type<S> sourceType, Class<? extends Transition2> transitionClass
   ) {
     return new MoveThruTransition2Action<>(sourceType, transitionClass);
   }
 
-  static <S, B, Q1, Q2, Q3> Action4<B, S, Q1, Q2, Q3> moveThruTransition3(
+  static <S, R, Q1, Q2, Q3> Action4<R, S, Q1, Q2, Q3> moveThruTransition3(
     Type<S> sourceType, Class<? extends Transition3> transitionClass
   ) {
     return new MoveThruTransition3Action<>(sourceType, transitionClass);

@@ -7,9 +7,9 @@ import intellispaces.framework.core.guide.Guide;
  * Non-parameterized guide.
  *
  * @param <S> source object type.
- * @param <B> backward object handle type.
+ * @param <R> result object handle type.
  */
-public interface Guide0<S, B> extends Guide<S, B> {
+public interface Guide0<S, R> extends Guide<S, R> {
 
-  B traverse(S source) throws TraverseException;
+  R traverse(S source) throws TraverseException;
 }

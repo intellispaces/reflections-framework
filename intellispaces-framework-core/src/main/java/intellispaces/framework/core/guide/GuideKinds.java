@@ -45,7 +45,7 @@ public enum GuideKinds implements GuideKind {
   }
 
   @Override
-  public int guideOrder() {
+  public int order() {
     return guideOrder;
   }
 }

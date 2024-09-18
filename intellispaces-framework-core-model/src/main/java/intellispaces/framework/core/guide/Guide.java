@@ -8,14 +8,12 @@ import intellispaces.framework.core.exception.TraverseException;
  * Guide is a micro system designed for processing objects. Guide can map or move objects.
  * Guides splits code into lightweight systems.<p/>
  *
- * Guide can act back on the initiator (other guide) by passing it a backward object.<p/>
- *
  * The guide is object. Guide can be constructed from other guides.<p/>
  *
  * @param <S> source object handle type. This type defines guide applicability.
- * @param <B> backward object handle type.
+ * @param <R> result object handle type.
  */
-public interface Guide<S, B> {
+public interface Guide<S, R> {
 
   /**
    * Guide kind.
@@ -34,8 +32,8 @@ public interface Guide<S, B> {
    *
    * @param source source object.
    * @param qualifiers guide qualifiers.
-   * @return backward object.
+   * @return returned object.
    * @throws TraverseException throws if guide was started, but can't traverse source object.
    */
-  B traverse(S source, Object... qualifiers) throws TraverseException;
+  R traverse(S source, Object... qualifiers) throws TraverseException;
 }

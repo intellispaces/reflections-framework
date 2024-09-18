@@ -42,7 +42,6 @@ import intellispaces.framework.core.space.transition.TransitionFunctions;
 import intellispaces.framework.core.system.AttachedUnitGuide;
 import intellispaces.framework.core.system.UnitWrapper;
 import intellispaces.framework.core.system.guide.AttachedUnitGuides;
-import intellispaces.framework.core.traverse.TraverseTypes;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -126,10 +125,10 @@ public final class GuideFunctions {
     for (Method method : objectHandleClass.getDeclaredMethods()) {
       if (isGuideMethod(method)) {
         Transition transition = getObjectGuideTransitionAnnotation(method);
-        if (TraverseTypes.Mapping == TransitionFunctions.getTraverseType(transition)) {
-          guides.add(createObjectMapper(objectHandleClass, transition.value(), method));
-        } else {
+        if (TransitionFunctions.getTraverseType(transition).isMovingRelated()) {
           guides.add(createObjectMover(objectHandleClass, transition.value(), method));
+        } else {
+          guides.add(createObjectMapper(objectHandleClass, transition.value(), method));
         }
       }
     }

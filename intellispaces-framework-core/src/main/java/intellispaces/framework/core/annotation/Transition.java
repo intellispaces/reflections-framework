@@ -8,30 +8,31 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Specifies that the interface or method is a space transition.
+ * Specifies that the interface or method is a semantic space transition.
  */
 @Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Transition {
 
   /**
-   * Transition ID.
+   * Transition identifier.
    */
   String value();
 
+  /**
+   * Transition name.
+   */
+  String name() default "";
+
+  /**
+   * Allowed traverse types.
+   */
   TraverseTypes[] allowedTraverse() default { TraverseTypes.Mapping };
 
   /**
    * Default traverse type.<p/>
    *
-   * This parameter is used only if parameter allowedTraverseTypes has multiple values.
+   * This parameter is used only if parameter allowedTraverse has multiple values.
    */
-  TraverseTypes defaultTraverseType() default TraverseTypes.Mapping;
-
-  /**
-   * Assigned transition name.
-   */
-  String name() default "";
-
-  boolean factory() default false;
+  TraverseTypes defaultTraverse() default TraverseTypes.Mapping;
 }

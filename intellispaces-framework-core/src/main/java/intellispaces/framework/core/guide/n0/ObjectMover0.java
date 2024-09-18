@@ -13,9 +13,9 @@ import java.lang.reflect.Method;
  * Attached guide can be used exclusively with this object handle only.
  *
  * @param <S> source object handle type.
- * @param <B> backward object handle type.
+ * @param <R> result object handle type.
  */
-public class ObjectMover0<S extends ObjectHandleWrapper<S>, B> implements AbstractMover0<S, B> {
+public class ObjectMover0<S extends ObjectHandleWrapper<S>, R> implements AbstractMover0<S, R> {
   private final Class<S> objectHandleClass;
   private final String tid;
   private final Method guideMethod;
@@ -43,10 +43,10 @@ public class ObjectMover0<S extends ObjectHandleWrapper<S>, B> implements Abstra
 
   @Override
   @SuppressWarnings("unchecked")
-  public B move(S source) throws TraverseException {
+  public R move(S source) throws TraverseException {
     try {
       GuideLogger.logCallGuide(guideMethod);
-      return (B) source.$handle().getGuideAction(transitionIndex).asAction0().execute();
+      return (R) source.$handle().getGuideAction(transitionIndex).asAction0().execute();
     } catch (TraverseException e) {
       throw e;
     } catch (Exception e) {

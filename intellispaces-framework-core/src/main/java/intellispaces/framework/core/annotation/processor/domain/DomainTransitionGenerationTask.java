@@ -64,7 +64,7 @@ public class DomainTransitionGenerationTask extends AbstractTransitionGeneration
   }
 
   @Override
-  protected TypeReference getTargetType() {
+  protected TypeReference getResultType() {
     return transitionMethod.returnType().orElseThrow();
   }
 

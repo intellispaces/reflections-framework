@@ -5,7 +5,6 @@ import intellispaces.common.base.type.TypeFunctions;
 import intellispaces.common.javastatement.Statement;
 import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.common.javastatement.method.MethodStatement;
-import intellispaces.common.javastatement.reference.CustomTypeReferences;
 import intellispaces.common.javastatement.reference.TypeReference;
 import intellispaces.framework.core.annotation.Transition;
 import intellispaces.framework.core.space.transition.TransitionFunctions;
@@ -38,7 +37,7 @@ public abstract class AbstractTransitionGenerationTask extends AbstractGeneratio
 
   protected abstract Statement getSourceType();
 
-  protected abstract TypeReference getTargetType();
+  protected abstract TypeReference getResultType();
 
   protected abstract List<TypeReference> getQualifierTypes();
 
@@ -59,14 +58,7 @@ public abstract class AbstractTransitionGenerationTask extends AbstractGeneratio
     vars.put("packageName", context.packageName());
     vars.put("sourceClassName", sourceClassCanonicalName());
     vars.put("sourceClassSimpleName", sourceClassSimpleName());
-
-    boolean isMovingTransition = TransitionFunctions.getTraverseTypes(transitionMethod).contains(TraverseTypes.Moving);
-    if (isMovingTransition) {
-      vars.put("targetClassLink", AnnotationProcessorFunctions.getDomainClassLink(CustomTypeReferences.get(annotatedType)));
-    } else {
-      vars.put("targetClassLink", AnnotationProcessorFunctions.getDomainClassLink(transitionMethod.returnType().orElseThrow()));
-    }
-
+    vars.put("targetClassLink", AnnotationProcessorFunctions.getDomainClassLink(transitionMethod.returnType().orElseThrow()));
     vars.put("classSimpleName", context.generatedClassSimpleName());
     vars.put("importedClasses", context.getImports());
     vars.put("transitionMethod", transitionMethodSignature);
@@ -104,11 +96,7 @@ public abstract class AbstractTransitionGenerationTask extends AbstractGeneratio
     sb.append("<");
     appendTypeDeclaration(sb, getSourceType());
     sb.append(", ");
-    if (TransitionFunctions.getTraverseTypes(transitionMethod).contains(TraverseTypes.Moving)) {
-      appendTypeDeclaration(sb, getSourceType());
-    } else {
-      appendTypeDeclaration(sb, getTargetType());
-    }
+    appendTypeDeclaration(sb, getResultType());
     for (TypeReference qualifierType : getQualifierTypes()) {
       sb.append(", ");
       appendTypeDeclaration(sb, qualifierType);

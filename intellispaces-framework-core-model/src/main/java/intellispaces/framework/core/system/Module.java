@@ -40,9 +40,9 @@ public interface Module {
 
   <S, T, Q> T mapThruTransition1(S source, String tid, Q qualifier);
 
-  <S, B> B moveThruTransition0(S source, String tid);
+  <S, R> R moveThruTransition0(S source, String tid);
 
-  <S, B, Q> B moveThruTransition1(S source, String tid, Q qualifier);
+  <S, R, Q> R moveThruTransition1(S source, String tid, Q qualifier);
 
   <S, T> Mapper0<S, T> autoMapperThruTransition0(Type<S> sourceType, String tid);
 
@@ -52,15 +52,15 @@ public interface Module {
 
   <S, T, Q1, Q2, Q3> Mapper3<S, T, Q1, Q2, Q3> autoMapperThruTransition3(Type<S> sourceType, String tid);
 
-  <S, B> Mover0<S, B> autoMoverThruTransition0(Type<S> sourceType, String tid);
+  <S, R> Mover0<S, R> autoMoverThruTransition0(Type<S> sourceType, String tid);
 
-  <S, B, Q> Mover1<S, B, Q> autoMoverThruTransition1(Class<S> sourceClass, String tid);
+  <S, R, Q> Mover1<S, R, Q> autoMoverThruTransition1(Class<S> sourceClass, String tid);
 
-  <S, B, Q> Mover1<S, B, Q> autoMoverThruTransition1(Type<S> sourceType, String tid);
+  <S, R, Q> Mover1<S, R, Q> autoMoverThruTransition1(Type<S> sourceType, String tid);
 
-  <S, B, Q1, Q2> Mover2<S, B, Q1, Q2> autoMoverThruTransition2(Type<S> sourceType, String tid);
+  <S, R, Q1, Q2> Mover2<S, R, Q1, Q2> autoMoverThruTransition2(Type<S> sourceType, String tid);
 
-  <S, B, Q1, Q2, Q3> Mover3<S, B, Q1, Q2, Q3> autoMoverThruTransition3(Type<S> sourceType, String tid);
+  <S, R, Q1, Q2, Q3> Mover3<S, R, Q1, Q2, Q3> autoMoverThruTransition3(Type<S> sourceType, String tid);
 
   @SuppressWarnings("rawtypes")
   <S, T> Mapper0<S, T> autoMapperThruTransition0(Type<S> sourceType, Class<? extends Transition0> transitionClass);
@@ -75,14 +75,14 @@ public interface Module {
   <S, T, Q1, Q2, Q3> Mapper3<S, T, Q1, Q2, Q3> autoMapperThruTransition3(Type<S> sourceType, Class<? extends Transition3> transitionClass);
 
   @SuppressWarnings("rawtypes")
-  <S, B> Mover0<S, B> autoMoverThruTransition0(Type<S> sourceType, Class<? extends Transition0> transitionClass);
+  <S, R> Mover0<S, R> autoMoverThruTransition0(Type<S> sourceType, Class<? extends Transition0> transitionClass);
 
   @SuppressWarnings("rawtypes")
-  <S, B, Q> Mover1<S, B, Q> autoMoverThruTransition1(Type<S> sourceType, Class<? extends Transition1> transitionClass);
+  <S, R, Q> Mover1<S, R, Q> autoMoverThruTransition1(Type<S> sourceType, Class<? extends Transition1> transitionClass);
 
   @SuppressWarnings("rawtypes")
-  <S, B, Q1, Q2> Mover2<S, B, Q1, Q2> autoMoverThruTransition2(Type<S> sourceType, Class<? extends Transition2> transitionClass);
+  <S, R, Q1, Q2> Mover2<S, R, Q1, Q2> autoMoverThruTransition2(Type<S> sourceType, Class<? extends Transition2> transitionClass);
 
   @SuppressWarnings("rawtypes")
-  <S, B, Q1, Q2, Q3> Mover3<S, B, Q1, Q2, Q3> autoMoverThruTransition3(Type<S> sourceType, Class<? extends Transition3> transitionClass);
+  <S, R, Q1, Q2, Q3> Mover3<S, R, Q1, Q2, Q3> autoMoverThruTransition3(Type<S> sourceType, Class<? extends Transition3> transitionClass);
 }

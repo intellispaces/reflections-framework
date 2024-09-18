@@ -30,7 +30,6 @@ import intellispaces.framework.core.guide.n5.Mover5;
 import intellispaces.framework.core.object.ObjectFunctions;
 import intellispaces.framework.core.space.transition.TransitionFunctions;
 import intellispaces.framework.core.traverse.TraverseType;
-import intellispaces.framework.core.traverse.TraverseTypes;
 
 import javax.annotation.processing.RoundEnvironment;
 import java.util.HashMap;
@@ -84,7 +83,7 @@ public abstract class AbstractGuideGenerationTask extends AbstractGenerationTask
     vars.put("guideTypeParamsFull", guideTypeParamsFull);
     vars.put("guideClassSimpleName", guideClassSimpleName);
     vars.put("guideTypeParams", buildGuideTypeParams(Function.identity()));
-    vars.put("isMapper", traverseType == TraverseTypes.Mapping);
+    vars.put("isMapper", !traverseType.isMovingRelated());
     vars.put("guideMethod", guideMethod);
     vars.put("baseMethod", baseMethod);
     vars.put("importedClasses", context.getImports());
@@ -99,12 +98,11 @@ public abstract class AbstractGuideGenerationTask extends AbstractGenerationTask
     }
     context.addImport(Guide.class);
     context.addImport(TransitionFunctions.class);
-    if (traverseType == TraverseTypes.Mapping) {
-      context.addImport(Mapper.class);
-    } else {
+    if (traverseType.isMovingRelated()) {
       context.addImport(Mover.class);
+    } else {
+      context.addImport(Mapper.class);
     }
-
     analyzeGuideType();
     return true;
   }
@@ -152,18 +150,7 @@ public abstract class AbstractGuideGenerationTask extends AbstractGenerationTask
 
   private Class<?> getGuideClass() {
     int qualifierCount = getQualifierMethodParams().size();
-    if (TraverseTypes.Mapping == traverseType) {
-      return switch (qualifierCount) {
-        case 0 -> Mapper0.class;
-        case 1 -> Mapper1.class;
-        case 2 -> Mapper2.class;
-        case 3 -> Mapper3.class;
-        case 4 -> Mapper4.class;
-        case 5 -> Mapper5.class;
-        default -> throw UnexpectedViolationException.withMessage("Unsupported number of mapper guide qualifies: {0}",
-            qualifierCount);
-      };
-    } else {
+    if (traverseType.isMovingRelated()) {
       return switch (qualifierCount) {
         case 0 -> Mover0.class;
         case 1 -> Mover1.class;
@@ -172,7 +159,18 @@ public abstract class AbstractGuideGenerationTask extends AbstractGenerationTask
         case 4 -> Mover4.class;
         case 5 -> Mover5.class;
         default -> throw UnexpectedViolationException.withMessage("Unsupported number of mapper guide qualifies: {0}",
-            qualifierCount);
+          qualifierCount);
+      };
+    } else {
+      return switch (qualifierCount) {
+        case 0 -> Mapper0.class;
+        case 1 -> Mapper1.class;
+        case 2 -> Mapper2.class;
+        case 3 -> Mapper3.class;
+        case 4 -> Mapper4.class;
+        case 5 -> Mapper5.class;
+        default -> throw UnexpectedViolationException.withMessage("Unsupported number of mapper guide qualifies: {0}",
+          qualifierCount);
       };
     }
   }

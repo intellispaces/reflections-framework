@@ -50,41 +50,41 @@ public class {{$classSimpleName}}{{$typeParamsFull}} extends {{$sourceClassSimpl
 {{end}}
 
   @Override
-  public <B, Q> B moveThru(String tid, Q qualifier) throws TraverseException {
+  public <R, Q> R moveThru(String tid, Q qualifier) throws TraverseException {
     Type<{{$sourceClassSimpleName}}{{$typeParamsBrief}}> sourceType = Types.of({{$sourceClassSimpleName}}.class);
-    Mover1<{{$sourceClassSimpleName}}, B, Q> mover = Modules.current().autoMoverThruTransition1(sourceType, tid);
-    return (B) mover.move(this, qualifier);
+    Mover1<{{$sourceClassSimpleName}}, R, Q> mover = Modules.current().autoMoverThruTransition1(sourceType, tid);
+    return (R) mover.move(this, qualifier);
   }
 
   @Override
-  public <B> B moveThru(TransitionMethod0<? super {{$domainClassSimpleName}}, B> transitionMethod) throws TraverseException {
+  public <R> R moveThru(TransitionMethod0<? super {{$domainClassSimpleName}}, R> transitionMethod) throws TraverseException {
     String tid = TransitionFunctions.getTransitionId({{$domainClassSimpleName}}.class, transitionMethod);
     Type<{{$sourceClassSimpleName}}{{$typeParamsBrief}}> sourceType = Types.of({{$sourceClassSimpleName}}.class);
-    Mover0<{{$sourceClassSimpleName}}, B> mover = Modules.current().autoMoverThruTransition0(sourceType, tid);
-    return (B) mover.move(this);
+    Mover0<{{$sourceClassSimpleName}}, R> mover = Modules.current().autoMoverThruTransition0(sourceType, tid);
+    return (R) mover.move(this);
   }
 
   @Override
-  public <B, Q> B moveThru(TransitionMethod1<? super {{$domainClassSimpleName}}, B, Q> transitionMethod, Q qualifier) throws TraverseException {
+  public <R, Q> R moveThru(TransitionMethod1<? super {{$domainClassSimpleName}}, R, Q> transitionMethod, Q qualifier) throws TraverseException {
     String tid = TransitionFunctions.getTransitionId({{$domainClassSimpleName}}.class, transitionMethod, null);
     Type<{{$sourceClassSimpleName}}{{$typeParamsBrief}}> sourceType = Types.of({{$sourceClassSimpleName}}.class);
-    Mover1<{{$sourceClassSimpleName}}, B, Q> mover = Modules.current().autoMoverThruTransition1(sourceType, tid);
-    return (B) mover.move(this, qualifier);
+    Mover1<{{$sourceClassSimpleName}}, R, Q> mover = Modules.current().autoMoverThruTransition1(sourceType, tid);
+    return (R) mover.move(this, qualifier);
   }
 
   @Override
-  public <B> B moveThru(Class<? extends Transition0> transitionClass) throws TraverseException {
+  public <R> R moveThru(Class<? extends Transition0> transitionClass) throws TraverseException {
     String tid = TransitionFunctions.getTransitionId(transitionClass);
     Type<{{$sourceClassSimpleName}}{{$typeParamsBrief}}> sourceType = Types.of({{$sourceClassSimpleName}}.class);
-    Mover0<{{$sourceClassSimpleName}}, B> mover = Modules.current().autoMoverThruTransition0(sourceType, tid);
-    return (B) mover.move(this);
+    Mover0<{{$sourceClassSimpleName}}, R> mover = Modules.current().autoMoverThruTransition0(sourceType, tid);
+    return (R) mover.move(this);
   }
 
   @Override
-  public <B, Q> B moveThru(Class<? extends Transition1> transitionClass, Q qualifier) throws TraverseException {
+  public <R, Q> R moveThru(Class<? extends Transition1> transitionClass, Q qualifier) throws TraverseException {
     String tid = TransitionFunctions.getTransitionId(transitionClass);
     Type<{{$sourceClassSimpleName}}{{$typeParamsBrief}}> sourceType = Types.of({{$sourceClassSimpleName}}.class);
-    Mover1<{{$sourceClassSimpleName}}, B, Q> mover = Modules.current().autoMoverThruTransition1(sourceType, tid);
-    return (B) mover.move(this, qualifier);
+    Mover1<{{$sourceClassSimpleName}}, R, Q> mover = Modules.current().autoMoverThruTransition1(sourceType, tid);
+    return (R) mover.move(this, qualifier);
   }
 }

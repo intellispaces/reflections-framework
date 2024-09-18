@@ -20,15 +20,15 @@ public interface MovableObjectHandle<D> extends ObjectHandle<D> {
     return true;
   }
 
-  <B, Q> B moveThru(String tid, Q qualifier) throws TraverseException;
+  <R, Q> R moveThru(String tid, Q qualifier) throws TraverseException;
 
-  <B> B moveThru(TransitionMethod0<? super D, B> transitionMethod) throws TraverseException;
+  <R> R moveThru(TransitionMethod0<? super D, R> transitionMethod) throws TraverseException;
 
-  <B, Q> B moveThru(TransitionMethod1<? super D, B, Q> transitionMethod, Q qualifier) throws TraverseException;
-
-  @SuppressWarnings("rawtypes")
-  <B> B moveThru(Class<? extends Transition0> transitionClass) throws TraverseException;
+  <R, Q> R moveThru(TransitionMethod1<? super D, R, Q> transitionMethod, Q qualifier) throws TraverseException;
 
   @SuppressWarnings("rawtypes")
-  <B, Q> B moveThru(Class<? extends Transition1> transitionClass, Q qualifier) throws TraverseException;
+  <R> R moveThru(Class<? extends Transition0> transitionClass) throws TraverseException;
+
+  @SuppressWarnings("rawtypes")
+  <R, Q> R moveThru(Class<? extends Transition1> transitionClass, Q qualifier) throws TraverseException;
 }

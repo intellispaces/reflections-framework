@@ -6,10 +6,10 @@ import intellispaces.framework.core.guide.n0.Mover0;
 import intellispaces.framework.core.space.transition.Transition0;
 import intellispaces.framework.core.system.Modules;
 
-class MoveThruTransition0Action<B, S> extends AbstractAction1<B, S> {
+class MoveThruTransition0Action<R, S> extends AbstractAction1<R, S> {
   private final Type<S> sourceType;
   private final Class<? extends Transition0> transitionClass;
-  private final Mover0<S, B> autoMover;
+  private final Mover0<S, R> autoMover;
 
   MoveThruTransition0Action(
       Type<S> sourceType,
@@ -21,7 +21,7 @@ class MoveThruTransition0Action<B, S> extends AbstractAction1<B, S> {
   }
 
   @Override
-  public B execute(S source) {
+  public R execute(S source) {
     return autoMover.move(source);
   }
 }

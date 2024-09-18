@@ -241,8 +241,7 @@ public interface AnnotationProcessorFunctions {
       CustomType domainType, MethodStatement method, RoundEnvironment roundEnv
   ) {
     return isAutoGenerationEnabled(domainType, ArtifactTypes.Mapper, roundEnv) &&
-        ArraysFunctions.contains(
-            method.selectAnnotation(Transition.class).orElseThrow().allowedTraverse(),
+        ArraysFunctions.contains(method.selectAnnotation(Transition.class).orElseThrow().allowedTraverse(),
             TraverseTypes.Mapping);
   }
 
@@ -250,9 +249,8 @@ public interface AnnotationProcessorFunctions {
       CustomType domainType, MethodStatement method, RoundEnvironment roundEnv
   ) {
     return isAutoGenerationEnabled(domainType, ArtifactTypes.Mover, roundEnv) &&
-        ArraysFunctions.contains(
-            method.selectAnnotation(Transition.class).orElseThrow().allowedTraverse(),
-            TraverseTypes.Moving);
+        ArraysFunctions.containsAny(method.selectAnnotation(Transition.class).orElseThrow().allowedTraverse(),
+            TraverseTypes.Moving, TraverseTypes.MovingThenMapping);
   }
 
   static boolean isAutoGenerationEnabled(CustomType annotatedType) {

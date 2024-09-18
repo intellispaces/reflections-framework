@@ -8,7 +8,7 @@ import intellispaces.framework.core.guide.GuideKinds;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
-public interface AbstractMover0<S, B> extends Mover0<S, B> {
+public interface AbstractMover0<S, R> extends Mover0<S, R> {
 
   @Override
   default GuideKind kind() {

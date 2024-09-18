@@ -13,7 +13,6 @@ import intellispaces.framework.core.exception.TraverseException;
 import intellispaces.framework.core.object.ObjectHandleTypes;
 import intellispaces.framework.core.space.SpaceConstants;
 import intellispaces.framework.core.space.transition.TransitionFunctions;
-import intellispaces.framework.core.traverse.TraverseTypes;
 
 import javax.annotation.processing.RoundEnvironment;
 import java.util.List;
@@ -85,7 +84,7 @@ public abstract class AbstractObjectHandleGenerationTask extends AbstractGenerat
 
   protected boolean isDisableMoving(MethodStatement method) {
     Transition transition = TransitionFunctions.getDomainMainTransitionAnnotation(method);
-    return TransitionFunctions.getTraverseType(transition) == TraverseTypes.Moving &&
+    return TransitionFunctions.getTraverseType(transition).isMovingRelated() &&
         getObjectHandleType() == ObjectHandleTypes.Unmovable;
   }
 

@@ -37,12 +37,12 @@ public interface TransitionFunctions {
     return transition.value();
   }
 
-  static <S, B> String getTransitionId(Class<S> sourceDomain, Function<? super S, B> transitionMethod) {
+  static <S, R> String getTransitionId(Class<S> sourceDomain, Function<? super S, R> transitionMethod) {
     return findTransitionId(sourceDomain, transitionMethod, transitionMethod::apply);
   }
 
-  static <S, B, Q> String getTransitionId(
-      Class<S> sourceDomain, BiFunction<? super S, Q, B> transitionMethod, Q qualifierAnyValidValue
+  static <S, R, Q> String getTransitionId(
+    Class<S> sourceDomain, BiFunction<? super S, Q, R> transitionMethod, Q qualifierAnyValidValue
   ) {
     return findTransitionId(sourceDomain, transitionMethod,
         (trackedObject) -> transitionMethod.apply(trackedObject, qualifierAnyValidValue));
@@ -268,6 +268,11 @@ public interface TransitionFunctions {
     };
   }
 
+  static boolean isMovingTraverse(MethodStatement transitionMethod) {
+    return getTraverseTypes(transitionMethod).stream()
+      .anyMatch(type -> type == TraverseTypes.Moving || type == TraverseTypes.MovingThenMapping);
+  }
+
   static List<TraverseTypes> getTraverseTypes(MethodStatement method) {
     Transition transition = method.selectAnnotation(Transition.class).orElseThrow();
     return Arrays.asList(transition.allowedTraverse());
@@ -275,7 +280,7 @@ public interface TransitionFunctions {
 
   static TraverseTypes getTraverseType(Transition transition) {
     if (transition.allowedTraverse().length > 1) {
-      return transition.defaultTraverseType();
+      return transition.defaultTraverse();
     }
     return transition.allowedTraverse()[0];
   }

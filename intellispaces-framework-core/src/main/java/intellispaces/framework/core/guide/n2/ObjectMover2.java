@@ -13,11 +13,11 @@ import java.lang.reflect.Method;
  * Attached guide can be used exclusively with this object handle only.
  *
  * @param <S> source type.
- * @param <B> backward object type.
+ * @param <R> result object type.
  * @param <Q1> first qualifier type.
  * @param <Q2> second qualifier type.
  */
-public class ObjectMover2<S extends ObjectHandleWrapper<S>, B, Q1, Q2> implements AbstractMover2<S, B, Q1, Q2> {
+public class ObjectMover2<S extends ObjectHandleWrapper<S>, R, Q1, Q2> implements AbstractMover2<S, R, Q1, Q2> {
   private final Class<S> objectHandleClass;
   private final String tid;
   private final Method guideMethod;
@@ -45,10 +45,10 @@ public class ObjectMover2<S extends ObjectHandleWrapper<S>, B, Q1, Q2> implement
 
   @Override
   @SuppressWarnings("unchecked")
-  public B move(S source, Q1 qualifier1, Q2 qualifier2) throws TraverseException {
+  public R move(S source, Q1 qualifier1, Q2 qualifier2) throws TraverseException {
     try {
       GuideLogger.logCallGuide(guideMethod);
-      return (B) source.$handle().getGuideAction(transitionIndex).asAction2().execute(qualifier1, qualifier2);
+      return (R) source.$handle().getGuideAction(transitionIndex).asAction2().execute(qualifier1, qualifier2);
     } catch (TraverseException e) {
       throw e;
     } catch (Exception e) {

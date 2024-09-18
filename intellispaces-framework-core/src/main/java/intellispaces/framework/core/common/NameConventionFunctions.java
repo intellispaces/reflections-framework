@@ -14,7 +14,6 @@ import intellispaces.framework.core.annotation.Transition;
 import intellispaces.framework.core.object.ObjectFunctions;
 import intellispaces.framework.core.object.ObjectHandleTypes;
 import intellispaces.framework.core.space.transition.TransitionFunctions;
-import intellispaces.framework.core.traverse.TraverseTypes;
 
 import java.util.Optional;
 
@@ -225,7 +224,7 @@ public interface NameConventionFunctions {
   }
 
   private static boolean isMappingTraverseType(MethodStatement method) {
-    return TransitionFunctions.getTraverseType(method) == TraverseTypes.Mapping;
+    return !TransitionFunctions.getTraverseType(method).isMovingRelated();
   }
 
   private static String transformClassName(String className) {

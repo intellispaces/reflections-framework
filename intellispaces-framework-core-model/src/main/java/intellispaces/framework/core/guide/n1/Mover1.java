@@ -13,48 +13,48 @@ import java.util.function.BiConsumer;
  * Mover guide with one qualifier.
  *
  * @param <S> source object type.
- * @param <B> backward object handle type.
+ * @param <R> result object handle type.
  * @param <Q> qualifier type.
  */
-public interface Mover1<S, B, Q> extends
-    Guide1<S, B, Q>,
-    Mover<S, B>,
-    Mover2<S, B, Q, Void>,
-    Mover3<S, B, Q, Void, Void>,
-    Mover4<S, B, Q, Void, Void, Void>,
-    Mover5<S, B, Q, Void, Void, Void, Void>
+public interface Mover1<S, R, Q> extends
+    Guide1<S, R, Q>,
+    Mover<S, R>,
+    Mover2<S, R, Q, Void>,
+    Mover3<S, R, Q, Void, Void>,
+    Mover4<S, R, Q, Void, Void, Void>,
+    Mover5<S, R, Q, Void, Void, Void, Void>
 {
-  B move(S source, Q qualifier) throws TraverseException;
+  R move(S source, Q qualifier) throws TraverseException;
 
   BiConsumer<S, Q> asBiConsumer();
 
   @Override
-  default B move(S source, Q qualifier1, Void qualifier2) throws TraverseException {
+  default R move(S source, Q qualifier1, Void qualifier2) throws TraverseException {
     return move(source, qualifier1);
   }
 
   @Override
-  default B move(S source, Q qualifier1, Void qualifier2, Void qualifier3) throws TraverseException {
+  default R move(S source, Q qualifier1, Void qualifier2, Void qualifier3) throws TraverseException {
     return move(source, qualifier1);
   }
 
   @Override
-  default B move(S source, Q qualifier1, Void qualifier2, Void qualifier3, Void qualifier4) throws TraverseException {
+  default R move(S source, Q qualifier1, Void qualifier2, Void qualifier3, Void qualifier4) throws TraverseException {
     return move(source, qualifier1);
   }
 
   @Override
-  default B move(S source, Q qualifier1, Void qualifier2, Void qualifier3, Void qualifier4, Void qualifier5) throws TraverseException {
+  default R move(S source, Q qualifier1, Void qualifier2, Void qualifier3, Void qualifier4, Void qualifier5) throws TraverseException {
     return move(source, qualifier1);
   }
 
   @Override
-  default B traverse(S source, Q qualifier) throws TraverseException {
+  default R traverse(S source, Q qualifier) throws TraverseException {
     return move(source, qualifier);
   }
 
   @SuppressWarnings("unchecked")
-  default B traverse(S source, Object... qualifiers) throws TraverseException {
+  default R traverse(S source, Object... qualifiers) throws TraverseException {
     return move(source, (Q) qualifiers[0]);
   }
 }

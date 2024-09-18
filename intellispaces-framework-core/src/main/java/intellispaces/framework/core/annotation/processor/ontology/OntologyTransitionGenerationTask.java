@@ -55,7 +55,7 @@ public class OntologyTransitionGenerationTask extends AbstractTransitionGenerati
   }
 
   @Override
-  protected TypeReference getTargetType() {
+  protected TypeReference getResultType() {
     return transitionMethod.returnType().orElseThrow();
   }
 

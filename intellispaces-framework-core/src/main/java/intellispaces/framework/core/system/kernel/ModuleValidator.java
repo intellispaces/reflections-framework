@@ -17,14 +17,14 @@ import java.util.stream.Collectors;
  */
 public class ModuleValidator {
 
-  public void validate(KernelModule module) {
+  public void validate(SystemModule module) {
     checkThatOneMainUnit(module);
     checkThatThereAreNoProjectionsWithSameName(module);
     checkInjections(module);
   }
 
-  private void checkThatOneMainUnit(KernelModule module) {
-    List<KernelUnit> mainUnits = module.units().stream()
+  private void checkThatOneMainUnit(SystemModule module) {
+    List<SystemUnit> mainUnits = module.units().stream()
         .filter(Unit::isMain)
         .toList();
     if (mainUnits.isEmpty()) {
@@ -36,7 +36,7 @@ public class ModuleValidator {
     }
   }
 
-  private void checkThatThereAreNoProjectionsWithSameName(KernelModule module) {
+  private void checkThatThereAreNoProjectionsWithSameName(SystemModule module) {
     String message = module.units().stream()
         .map(Unit::projectionDefinitions)
         .flatMap(List::stream)
@@ -50,7 +50,7 @@ public class ModuleValidator {
     }
   }
 
-  private void checkInjections(KernelModule module) {
+  private void checkInjections(SystemModule module) {
     Map<String, UnitProjectionDefinition> projectionProviders = module.units().stream()
         .map(Unit::projectionDefinitions)
         .flatMap(List::stream)
@@ -60,10 +60,10 @@ public class ModuleValidator {
   }
 
   private void checkUnitInjections(
-      KernelModule module, Map<String, UnitProjectionDefinition> projectionProviders
+    SystemModule module, Map<String, UnitProjectionDefinition> projectionProviders
   ) {
     List<ProjectionInjection> injections = module.units().stream()
-        .map(KernelUnit::injections)
+        .map(SystemUnit::injections)
         .flatMap(List::stream)
         .filter(injection -> injection.type() == InjectionTypes.ProjectionInjection)
         .map(injection -> (ProjectionInjection) injection)

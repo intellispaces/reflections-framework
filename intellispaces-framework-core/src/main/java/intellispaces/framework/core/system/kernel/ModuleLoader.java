@@ -9,9 +9,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class ModuleLoader {
-  private static final ModuleFactory factory = new ModuleFactory();
-  private static final ModuleValidator moduleValidator = new ModuleValidator();
-
+  private static final ModuleFactory FACTORY = new ModuleFactory();
+  private static final ModuleValidator MODULE_VALIDATOR = new ModuleValidator();
   private static final Logger LOG = LoggerFactory.getLogger(ModuleLoader.class);
 
   public static void loadModule(Class<?> moduleClass, String[] args) {
@@ -28,22 +27,22 @@ public class ModuleLoader {
       LOG.warn("Current module has already been loaded into application. Current active module will be reloaded");
     }
 
-    KernelModule newModule = factory.createModule(unitClasses);
-    moduleValidator.validate(newModule);
+    SystemModule newModule = FACTORY.createModule(unitClasses);
+    MODULE_VALIDATOR.validate(newModule);
     if (currentModule != null) {
       currentModule.stop();
-      KernelModules.setCurrentModule(null);
+      SystemFunctions.setCurrentModule(null);
     }
-    KernelModules.setCurrentModule(newModule);
+    SystemFunctions.setCurrentModule(newModule);
 
     newModule.start(args);
   }
 
   public static void unloadModule() {
-    Module currentModule = KernelModules.currentSilently();
+    Module currentModule = SystemFunctions.currentModuleSilently();
     if (currentModule != null) {
       currentModule.stop();
     }
-    KernelModules.setCurrentModule(null);
+    SystemFunctions.setCurrentModule(null);
   }
 }

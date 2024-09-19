@@ -8,7 +8,7 @@ import intellispaces.common.base.exception.UnexpectedViolationException;
 import java.util.Arrays;
 import java.util.List;
 
-class ObjectHandleImpl implements KernelObjectHandle {
+class ObjectHandleImpl implements SystemObjectHandle {
   private List<ResettableGetter<Action>> transitionActions = List.of();
   private List<Action> guideActions = List.of();
 

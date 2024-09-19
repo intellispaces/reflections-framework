@@ -16,8 +16,8 @@ import intellispaces.framework.core.space.transition.Transition1;
 import intellispaces.framework.core.space.transition.TransitionFunctions;
 import intellispaces.framework.core.system.Modules;
 import intellispaces.framework.core.system.ObjectHandleWrapper;
-import intellispaces.framework.core.system.kernel.KernelModules;
-import intellispaces.framework.core.system.kernel.KernelObjectHandle;
+import intellispaces.framework.core.system.kernel.SystemFunctions;
+import intellispaces.framework.core.system.kernel.SystemObjectHandle;
 import intellispaces.framework.core.transition.TransitionMethod0;
 import intellispaces.framework.core.transition.TransitionMethod1;
 
@@ -74,14 +74,14 @@ public class MovableObjectHandleWrapperGenerationTask extends AbstractObjectHand
     context.generatedClassCanonicalName(artifactName());
 
     context.addImport(Modules.class);
-    context.addImport(KernelModules.class);
+    context.addImport(SystemFunctions.class);
     context.addImport(TraverseException.class);
     context.addImport(Actions.class);
     context.addImport(Type.class);
     context.addImport(Ordinal.class);
     context.addImport(Wrapper.class);
     context.addImport(ObjectHandleWrapper.class);
-    context.addImport(KernelObjectHandle.class);
+    context.addImport(SystemObjectHandle.class);
 
     context.addImport(Mover0.class);
     context.addImport(Mover1.class);

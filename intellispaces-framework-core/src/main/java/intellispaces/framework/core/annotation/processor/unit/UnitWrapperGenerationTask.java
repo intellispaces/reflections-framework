@@ -32,7 +32,7 @@ import intellispaces.framework.core.system.ProjectionProvider;
 import intellispaces.framework.core.system.UnitWrapper;
 import intellispaces.framework.core.system.injection.GuideInjections;
 import intellispaces.framework.core.system.injection.ProjectionInjections;
-import intellispaces.framework.core.system.kernel.KernelUnit;
+import intellispaces.framework.core.system.kernel.SystemUnit;
 import intellispaces.framework.core.system.kernel.ProjectionRegistry;
 import intellispaces.framework.core.system.projection.ProjectionDefinitionBasedOnMethodActions;
 import intellispaces.framework.core.system.projection.ProjectionDefinitionBasedOnProviderClasses;
@@ -109,7 +109,7 @@ public class UnitWrapperGenerationTask extends AbstractGenerationTask {
     context.addImport(Actions.class);
     context.addImport(FunctionActions.class);
     context.addImport(ResettableGetter.class);
-    context.addImport(KernelUnit.class);
+    context.addImport(SystemUnit.class);
     context.addImport(Wrapper.class);
     context.addImport(Ordinal.class);
     context.addImport(Modules.class);

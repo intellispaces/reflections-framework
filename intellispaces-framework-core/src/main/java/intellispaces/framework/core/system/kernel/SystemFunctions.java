@@ -8,14 +8,14 @@ import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.atomic.AtomicReference;
 
-public final class KernelModules {
-  private static final AtomicReference<KernelModule> CURRENT = new AtomicReference<>();
+public final class SystemFunctions {
+  private static final AtomicReference<SystemModule> CURRENT = new AtomicReference<>();
   private static final Logger LOG = LoggerFactory.getLogger(Modules.class);
 
-  private KernelModules() {}
+  private SystemFunctions() {}
 
-  public static KernelModule current() {
-    KernelModule module = currentSilently();
+  public static SystemModule currentModule() {
+    SystemModule module = currentModuleSilently();
     if (module == null) {
       throw UnexpectedViolationException.withMessage("Current module is not defined. " +
           "It is possible that the module is not loaded yet");
@@ -23,11 +23,11 @@ public final class KernelModules {
     return module;
   }
 
-  public static KernelModule currentSilently() {
+  public static SystemModule currentModuleSilently() {
     return CURRENT.get();
   }
 
-  public static void setCurrentModule(KernelModule module) {
+  public static void setCurrentModule(SystemModule module) {
     Module previous = CURRENT.getAndSet(module);
     if (previous != null && module != null) {
       LOG.warn("Current module has been changed");

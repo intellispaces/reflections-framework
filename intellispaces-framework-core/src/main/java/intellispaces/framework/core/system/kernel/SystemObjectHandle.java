@@ -3,9 +3,9 @@ package intellispaces.framework.core.system.kernel;
 import intellispaces.common.action.Action;
 
 /**
- * Internal representation of the object handle.
+ * Internal system representation of the object handle.
  */
-public interface KernelObjectHandle {
+public interface SystemObjectHandle {
 
   int numberTransitions();
 

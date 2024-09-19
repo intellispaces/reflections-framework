@@ -39,10 +39,10 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * Implementation of the {@link KernelModule}.
+ * Implementation of the {@link SystemModule}.
  */
-class ModuleImpl implements KernelModule {
-  private final List<KernelUnit> units;
+class SystemModuleImpl implements SystemModule {
+  private final List<SystemUnit> units;
   private final ObjectRegistry objectRegistry;
   private final ProjectionRegistry projectionRegistry;
   private final GuideRegistry guideRegistry;
@@ -50,12 +50,12 @@ class ModuleImpl implements KernelModule {
   private final TraverseExecutor traverseExecutor;
 
   private final AtomicBoolean started = new AtomicBoolean(false);
-  private final Getter<KernelUnit> mainUnitGetter = Actions.cachedLazyGetter(this::mainUnitSupplier);
+  private final Getter<SystemUnit> mainUnitGetter = Actions.cachedLazyGetter(this::mainUnitSupplier);
 
-  private static final Logger LOG = LoggerFactory.getLogger(ModuleImpl.class);
+  private static final Logger LOG = LoggerFactory.getLogger(SystemModuleImpl.class);
 
-  ModuleImpl(
-      List<KernelUnit> units,
+  SystemModuleImpl(
+      List<SystemUnit> units,
       ObjectRegistry objectRegistry,
       ProjectionRegistry projectionRegistry,
       GuideRegistry guideRegistry,
@@ -94,11 +94,11 @@ class ModuleImpl implements KernelModule {
   }
 
   @Override
-  public KernelUnit mainUnit() {
+  public SystemUnit mainUnit() {
     return mainUnitGetter.get();
   }
 
-  private KernelUnit mainUnitSupplier() {
+  private SystemUnit mainUnitSupplier() {
     return units.stream()
         .filter(Unit::isMain)
         .findFirst()
@@ -106,7 +106,7 @@ class ModuleImpl implements KernelModule {
   }
 
   @Override
-  public List<KernelUnit> units() {
+  public List<SystemUnit> units() {
     return units;
   }
 

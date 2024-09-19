@@ -12,10 +12,10 @@ import {{$importedClass}};
 @Wrapper({{$sourceClassSimpleName}}.class)
 {{$generatedAnnotation}}
 public class {{$classSimpleName}}{{$typeParamsFullDeclaration}} extends {{$sourceClassSimpleName}}{{$typeParamsBriefDeclaration}} implements UnitWrapper {
-  private KernelUnit $unit;
+  private SystemUnit $unit;
 
   @Override
-  public void $init(KernelUnit unit) {
+  public void $init(SystemUnit unit) {
     this.$unit = unit;
 {{when $injections.isNotEmpty()}}
     this.$unit.setInjections(
@@ -45,7 +45,7 @@ public class {{$classSimpleName}}{{$typeParamsFullDeclaration}} extends {{$sourc
   }
 
   @Override
-  public KernelUnit $unit() {
+  public SystemUnit $unit() {
     return this.$unit;
   }
 

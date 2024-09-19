@@ -10,17 +10,17 @@ import {{$importedClass}};
 @Wrapper({{$sourceClassSimpleName}}.class)
 {{$generatedAnnotation}}
 public class {{$classSimpleName}}{{$typeParamsFull}} extends {{$sourceClassSimpleName}}{{$typeParamsBrief}} implements ObjectHandleWrapper<{{$domainClassSimpleName}}{{$typeParamsBrief}}> {
-  private KernelObjectHandle $handle;
+  private SystemObjectHandle $handle;
 
 {{for constructor : $constructors}}
   public {{$classSimpleName}}({{for param : $constructor.get("params")}}{{$param.get("type")}} {{$param.get("name")}}{{when $param.isNotLast()}}, {{end}}{{end}}) {
     super({{for param : $constructor.get("params")}}{{$param.get("name")}}{{when $param.isNotLast()}},{{end}}{{end}});
-    KernelModules.current().objectRegistry().add(this);
+    SystemFunctions.currentModule().objectRegistry().add(this);
   }
 {{end}}
 
   @Override
-  public void $init(KernelObjectHandle handle) {
+  public void $init(SystemObjectHandle handle) {
     this.$handle = handle;
 {{when $transitionActions.isNotEmpty()}}
     this.$handle.setTransitionActions(
@@ -39,7 +39,7 @@ public class {{$classSimpleName}}{{$typeParamsFull}} extends {{$sourceClassSimpl
   }
 
   @Override
-  public KernelObjectHandle $handle() {
+  public SystemObjectHandle $handle() {
     return this.$handle;
   }
 

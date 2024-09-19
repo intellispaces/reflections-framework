@@ -5,13 +5,13 @@ import intellispaces.framework.core.system.Module;
 import java.util.List;
 
 /**
- * Internal module presentation.
+ * Internal system module presentation.
  */
-public interface KernelModule extends Module {
+public interface SystemModule extends Module {
 
-  KernelUnit mainUnit();
+  SystemUnit mainUnit();
 
-  List<KernelUnit> units();
+  List<SystemUnit> units();
 
   ProjectionRegistry projectionRegistry();
 

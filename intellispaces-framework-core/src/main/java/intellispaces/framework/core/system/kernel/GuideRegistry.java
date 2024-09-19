@@ -11,5 +11,5 @@ public interface GuideRegistry {
 
   List<Guide<?, ?>> findGuides(GuideKind kind, Class<?> objectHandleClass, String tid);
 
-  void addGuideUnit(KernelUnit guideUnit);
+  void addGuideUnit(SystemUnit guideUnit);
 }

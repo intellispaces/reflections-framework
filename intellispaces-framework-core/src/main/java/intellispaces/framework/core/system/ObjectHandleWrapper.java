@@ -1,11 +1,11 @@
 package intellispaces.framework.core.system;
 
 import intellispaces.framework.core.object.ObjectHandle;
-import intellispaces.framework.core.system.kernel.KernelObjectHandle;
+import intellispaces.framework.core.system.kernel.SystemObjectHandle;
 
 public interface ObjectHandleWrapper<D> extends ObjectHandle<D> {
 
-  void $init(KernelObjectHandle handle);
+  void $init(SystemObjectHandle handle);
 
-  KernelObjectHandle $handle();
+  SystemObjectHandle $handle();
 }

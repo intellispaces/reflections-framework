@@ -3,7 +3,7 @@ package intellispaces.framework.core.system.injection;
 import intellispaces.common.base.exception.UnexpectedViolationException;
 import intellispaces.framework.core.system.GuideInjection;
 import intellispaces.framework.core.system.InjectionType;
-import intellispaces.framework.core.system.kernel.KernelModules;
+import intellispaces.framework.core.system.kernel.SystemFunctions;
 
 class GuideInjectionImpl implements GuideInjection {
   private final Class<?> unitClass;
@@ -40,7 +40,7 @@ class GuideInjectionImpl implements GuideInjection {
   @Override
   public Object value() {
     if (guide == null) {
-      guide = KernelModules.currentSilently().guideRegistry().getGuide(name, guideClass);
+      guide = SystemFunctions.currentModuleSilently().guideRegistry().getGuide(name, guideClass);
       if (guide == null) {
         throw UnexpectedViolationException.withMessage("Value of guide injection ''{0}'' in unit {1} is not defined",
             name(), unitClass.getCanonicalName());

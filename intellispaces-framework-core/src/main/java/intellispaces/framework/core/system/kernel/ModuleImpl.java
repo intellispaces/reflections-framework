@@ -128,7 +128,7 @@ class ModuleImpl implements KernelModule {
   @Override
   @SuppressWarnings("unchecked")
   public <S, T> T mapThruTransition0(S source, String tid) {
-    DeclarativePlan traversePlan = traverseAnalyzer.buildTraversePlanMapObjectHandleThruTransition0(
+    DeclarativePlan traversePlan = traverseAnalyzer.buildMapObjectHandleThruTransition0Plan(
         ObjectFunctions.defineObjectHandleClass(source.getClass()), tid);
     return (T) traversePlan.execute(source, traverseExecutor);
   }
@@ -136,7 +136,7 @@ class ModuleImpl implements KernelModule {
   @Override
   @SuppressWarnings("unchecked")
   public <S, T, Q> T mapThruTransition1(S source, String tid, Q qualifier) {
-    DeclarativePlan traversePlan = traverseAnalyzer.buildTraversePlanMapObjectHandleThruTransition1(
+    DeclarativePlan traversePlan = traverseAnalyzer.buildMapObjectHandleThruTransition1Plan(
         ObjectFunctions.defineObjectHandleClass(source.getClass()), tid);
     return (T) traversePlan.execute(source, qualifier, traverseExecutor);
   }
@@ -144,7 +144,7 @@ class ModuleImpl implements KernelModule {
   @Override
   @SuppressWarnings("unchecked")
   public <S, R> R moveThruTransition0(S source, String tid) {
-    DeclarativePlan traversePlan = traverseAnalyzer.buildTraversePlanMoveObjectHandleThruTransition0(
+    DeclarativePlan traversePlan = traverseAnalyzer.buildMoveObjectHandleThruTransition0Plan(
         ObjectFunctions.defineObjectHandleClass(source.getClass()), tid);
     return (R) traversePlan.execute(source, traverseExecutor);
   }
@@ -152,14 +152,14 @@ class ModuleImpl implements KernelModule {
   @Override
   @SuppressWarnings("unchecked")
   public <S, R, Q> R moveThruTransition1(S source, String tid, Q qualifier) {
-    DeclarativePlan traversePlan = traverseAnalyzer.buildTraversePlanMoveObjectHandleThruTransition1(
+    DeclarativePlan traversePlan = traverseAnalyzer.buildMoveObjectHandleThruTransition1Plan(
         ObjectFunctions.defineObjectHandleClass(source.getClass()), tid);
     return (R) traversePlan.execute(source, qualifier, traverseExecutor);
   }
 
   @Override
   public <S, T> Mapper0<S, T> autoMapperThruTransition0(Type<S> sourceType, String tid) {
-    DeclarativePlan traversePlan = traverseAnalyzer.buildTraversePlanMapObjectHandleThruTransition0(
+    DeclarativePlan traversePlan = traverseAnalyzer.buildMapObjectHandleThruTransition0Plan(
         sourceType.baseClass(), tid
     );
     return new AutoMapper0<>(tid, traversePlan, traverseExecutor);
@@ -167,7 +167,7 @@ class ModuleImpl implements KernelModule {
 
   @Override
   public <S, T, Q> Mapper1<S, T, Q> autoMapperThruTransition1(Type<S> sourceType, String tid) {
-    DeclarativePlan traversePlan = traverseAnalyzer.buildTraversePlanMapObjectHandleThruTransition1(
+    DeclarativePlan traversePlan = traverseAnalyzer.buildMapObjectHandleThruTransition1Plan(
         sourceType.baseClass(), tid
     );
     return new AutoMapper1<>(tid, traversePlan, traverseExecutor);
@@ -175,7 +175,7 @@ class ModuleImpl implements KernelModule {
 
   @Override
   public <S, T, Q1, Q2> Mapper2<S, T, Q1, Q2> autoMapperThruTransition2(Type<S> sourceType, String tid) {
-    DeclarativePlan traversePlan = traverseAnalyzer.buildTraversePlanMapObjectHandleThruTransition2(
+    DeclarativePlan traversePlan = traverseAnalyzer.buildMapObjectHandleThruTransition2Plan(
         sourceType.baseClass(), tid
     );
     return new AutoMapper2<>(tid, traversePlan, traverseExecutor);
@@ -183,7 +183,7 @@ class ModuleImpl implements KernelModule {
 
   @Override
   public <S, T, Q1, Q2, Q3> Mapper3<S, T, Q1, Q2, Q3> autoMapperThruTransition3(Type<S> sourceType, String tid) {
-    DeclarativePlan traversePlan = traverseAnalyzer.buildTraversePlanMapObjectHandleThruTransition3(
+    DeclarativePlan traversePlan = traverseAnalyzer.buildMapObjectHandleThruTransition3Plan(
       sourceType.baseClass(), tid
     );
     return new AutoMapper3<>(tid, traversePlan, traverseExecutor);
@@ -191,7 +191,7 @@ class ModuleImpl implements KernelModule {
 
   @Override
   public <S, R> Mover0<S, R> autoMoverThruTransition0(Type<S> sourceType, String tid) {
-    DeclarativePlan traversePlan = traverseAnalyzer.buildTraversePlanMoveObjectHandleThruTransition0(
+    DeclarativePlan traversePlan = traverseAnalyzer.buildMoveObjectHandleThruTransition0Plan(
         sourceType.baseClass(), tid
     );
     return new AutoMover0<>(tid, traversePlan, traverseExecutor);
@@ -204,7 +204,7 @@ class ModuleImpl implements KernelModule {
 
   @Override
   public <S, R, Q> Mover1<S, R, Q> autoMoverThruTransition1(Type<S> sourceType, String tid) {
-    DeclarativePlan traversePlan = traverseAnalyzer.buildTraversePlanMoveObjectHandleThruTransition1(
+    DeclarativePlan traversePlan = traverseAnalyzer.buildMoveObjectHandleThruTransition1Plan(
         sourceType.baseClass(), tid
     );
     return new AutoMover1<>(tid, traversePlan, traverseExecutor);
@@ -212,7 +212,7 @@ class ModuleImpl implements KernelModule {
 
   @Override
   public <S, R, Q1, Q2> Mover2<S, R, Q1, Q2> autoMoverThruTransition2(Type<S> sourceType, String tid) {
-    DeclarativePlan traversePlan = traverseAnalyzer.buildTraversePlanMoveObjectHandleThruTransition2(
+    DeclarativePlan traversePlan = traverseAnalyzer.buildMoveObjectHandleThruTransition2Plan(
         sourceType.baseClass(), tid
     );
     return new AutoMover2<>(tid, traversePlan, traverseExecutor);
@@ -220,7 +220,7 @@ class ModuleImpl implements KernelModule {
 
   @Override
   public <S, R, Q1, Q2, Q3> Mover3<S, R, Q1, Q2, Q3> autoMoverThruTransition3(Type<S> sourceType, String tid) {
-    DeclarativePlan traversePlan = traverseAnalyzer.buildTraversePlanMoveObjectHandleThruTransition3(
+    DeclarativePlan traversePlan = traverseAnalyzer.buildMoveObjectHandleThruTransition3Plan(
       sourceType.baseClass(), tid
     );
     return new AutoMover3<>(tid, traversePlan, traverseExecutor);

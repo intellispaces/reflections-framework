@@ -44,116 +44,126 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
   }
 
   @Override
-  public MapObjectHandleThruTransition0Plan buildTraversePlanMapObjectHandleThruTransition0(
-      Class<?> objectHandleClass, String tid
+  public MapObjectHandleThruTransition0Plan buildMapObjectHandleThruTransition0Plan(
+    Class<?> sourceClass, String tid
   ) {
     MapObjectHandleThruTransition0Plan declarativePlan = new MapObjectHandleThruTransition0PlanImpl(
-        objectHandleClass, tid);
-    setExecutionPlan(declarativePlan, objectHandleClass);
+      sourceClass, tid);
+    setExecutionPlan(declarativePlan, sourceClass);
     return declarativePlan;
   }
 
   @Override
-  public MapObjectHandleThruTransition1Plan buildTraversePlanMapObjectHandleThruTransition1(
-      Class<?> objectHandleClass, String tid
+  public MapObjectHandleThruTransition1Plan buildMapObjectHandleThruTransition1Plan(
+    Class<?> sourceClass, String tid
   ) {
     MapObjectHandleThruTransition1Plan declarativePlan = new MapObjectHandleThruTransition1PlanImpl(
-        objectHandleClass, tid);
-    setExecutionPlan(declarativePlan, objectHandleClass);
+      sourceClass, tid);
+    setExecutionPlan(declarativePlan, sourceClass);
     return declarativePlan;
   }
 
   @Override
-  public MapObjectHandleThruTransition2Plan buildTraversePlanMapObjectHandleThruTransition2(
-      Class<?> objectHandleClass, String tid
+  public MapObjectHandleThruTransition2Plan buildMapObjectHandleThruTransition2Plan(
+    Class<?> sourceClass, String tid
   ) {
     MapObjectHandleThruTransition2Plan declarativePlan = new MapObjectHandleThruTransition2PlanImpl(
-        objectHandleClass, tid);
-    setExecutionPlan(declarativePlan, objectHandleClass);
+      sourceClass, tid);
+    setExecutionPlan(declarativePlan, sourceClass);
     return declarativePlan;
   }
 
   @Override
-  public MapObjectHandleThruTransition3Plan buildTraversePlanMapObjectHandleThruTransition3(
-    Class<?> objectHandleClass, String tid
+  public MapObjectHandleThruTransition3Plan buildMapObjectHandleThruTransition3Plan(
+    Class<?> sourceClass, String tid
   ) {
     MapObjectHandleThruTransition3Plan declarativePlan = new MapObjectHandleThruTransition3PlanImpl(
-      objectHandleClass, tid);
-    setExecutionPlan(declarativePlan, objectHandleClass);
+      sourceClass, tid);
+    setExecutionPlan(declarativePlan, sourceClass);
     return declarativePlan;
   }
 
   @Override
-  public MoveObjectHandleThruTransition0Plan buildTraversePlanMoveObjectHandleThruTransition0(
-      Class<?> objectHandleClass, String tid
+  public MoveObjectHandleThruTransition0Plan buildMoveObjectHandleThruTransition0Plan(
+    Class<?> sourceClass, String tid
   ) {
     MoveObjectHandleThruTransition0Plan declarativePlan = new MoveObjectHandleThruTransition0PlanImpl(
-        objectHandleClass, tid);
-    setExecutionPlan(declarativePlan, objectHandleClass);
+      sourceClass, tid);
+    setExecutionPlan(declarativePlan, sourceClass);
     return declarativePlan;
   }
 
   @Override
-  public MoveObjectHandleThruTransition1Plan buildTraversePlanMoveObjectHandleThruTransition1(
-      Class<?> objectHandleClass, String tid
+  public MoveObjectHandleThruTransition1Plan buildMoveObjectHandleThruTransition1Plan(
+    Class<?> sourceClass, String tid
   ) {
     MoveObjectHandleThruTransition1Plan declarativePlan = new MoveObjectHandleThruTransition1PlanImpl(
-        objectHandleClass, tid);
-    setExecutionPlan(declarativePlan, objectHandleClass);
+      sourceClass, tid);
+    setExecutionPlan(declarativePlan, sourceClass);
     return declarativePlan;
   }
 
   @Override
-  public MoveObjectHandleThruTransition2Plan buildTraversePlanMoveObjectHandleThruTransition2(
-      Class<?> objectHandleClass, String tid
+  public MoveObjectHandleThruTransition2Plan buildMoveObjectHandleThruTransition2Plan(
+    Class<?> sourceClass, String tid
   ) {
     MoveObjectHandleThruTransition2Plan declarativePlan = new MoveObjectHandleThruTransition2PlanImpl(
-        objectHandleClass, tid);
-    setExecutionPlan(declarativePlan, objectHandleClass);
+      sourceClass, tid);
+    setExecutionPlan(declarativePlan, sourceClass);
     return declarativePlan;
   }
 
   @Override
-  public MoveObjectHandleThruTransition3Plan buildTraversePlanMoveObjectHandleThruTransition3(
-    Class<?> objectHandleClass, String tid
+  public MoveObjectHandleThruTransition3Plan buildMoveObjectHandleThruTransition3Plan(
+    Class<?> sourceClass, String tid
   ) {
     MoveObjectHandleThruTransition3Plan declarativePlan = new MoveObjectHandleThruTransition3PlanImpl(
-      objectHandleClass, tid);
-    setExecutionPlan(declarativePlan, objectHandleClass);
+      sourceClass, tid);
+    setExecutionPlan(declarativePlan, sourceClass);
     return declarativePlan;
   }
 
   private void setExecutionPlan(ObjectHandleTraversePlan plan, Class<?> objectHandleClass) {
-    ExecutionPlan executionPlan = getExecutionTraversePlan(plan, objectHandleClass);
+    ExecutionPlan executionPlan = getExecutionPlan(plan, objectHandleClass);
     if (executionPlan != null) {
       plan.addExecutionPlan(objectHandleClass, executionPlan);
     }
   }
 
   @Override
-  public ExecutionPlan getExecutionTraversePlan(ObjectHandleTraversePlan plan, Class<?> objectHandleClass) {
-    if (!ObjectFunctions.isObjectHandleClass(objectHandleClass)) {
+  public ExecutionPlan getExecutionPlan(ObjectHandleTraversePlan plan, Class<?> sourceClass) {
+    ExecutionPlan executionPlan = plan.getExecutionPlan(sourceClass);
+    if (executionPlan != null) {
+      return executionPlan;
+    }
+
+    if (!ObjectFunctions.isObjectHandleClass(sourceClass)) {
       throw UnexpectedViolationException.withMessage("Traverse plan of type {0} expected object handle to input",
           plan.type());
     }
-    if (objectHandleClass != plan.objectHandleClass() && !plan.objectHandleClass().isAssignableFrom(objectHandleClass)) {
+    Class<?> objectHandleClass = ObjectFunctions.defineObjectHandleClass(sourceClass);
+    executionPlan = plan.getExecutionPlan(objectHandleClass);
+    if (executionPlan != null) {
+      return executionPlan;
+    }
+
+    if (sourceClass != plan.objectHandleClass() && !plan.objectHandleClass().isAssignableFrom(sourceClass)) {
       throw UnexpectedViolationException.withMessage("Traverse plan of type {0} expected object handle of class {1} " +
           "or it subclass", plan.objectHandleClass());
     }
-
-    ExecutionPlan executionPlan = plan.getExecutionPlan(plan.objectHandleClass());
-    if (executionPlan == null) {
-      executionPlan = plan.getExecutionPlan(objectHandleClass);
+    executionPlan = plan.getExecutionPlan(plan.objectHandleClass());
+    if (executionPlan != null) {
+      return executionPlan;
     }
-    if (executionPlan == null) {
-      executionPlan = buildExecutionTraversePlan(plan, plan.objectHandleClass());
+
+    executionPlan = buildExecutionTraversePlan(plan, sourceClass);
+    if (executionPlan != null) {
+      plan.addExecutionPlan(sourceClass, executionPlan);
+    } else {
+      executionPlan = buildExecutionTraversePlan(plan, objectHandleClass);
       if (executionPlan != null) {
-        plan.addExecutionPlan(plan.objectHandleClass(), executionPlan);
-      } else {
-        executionPlan = buildExecutionTraversePlan(plan, objectHandleClass);
-        if (executionPlan != null) {
-          plan.addExecutionPlan(objectHandleClass, executionPlan);
-        }
+        plan.addExecutionPlan(sourceClass, executionPlan);
+        plan.addExecutionPlan(objectHandleClass, executionPlan);
       }
     }
     return executionPlan;

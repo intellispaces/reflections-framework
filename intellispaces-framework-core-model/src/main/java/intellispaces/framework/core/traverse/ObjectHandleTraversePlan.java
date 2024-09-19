@@ -15,7 +15,7 @@ public interface ObjectHandleTraversePlan extends DeclarativePlan {
    */
   String tid();
 
-  ExecutionPlan getExecutionPlan(Class<?> objectHandleClass);
+  ExecutionPlan getExecutionPlan(Class<?> sourceClass);
 
-  void addExecutionPlan(Class<?> objectHandleClass, ExecutionPlan traversePlan);
+  void addExecutionPlan(Class<?> sourceClass, ExecutionPlan traversePlan);
 }

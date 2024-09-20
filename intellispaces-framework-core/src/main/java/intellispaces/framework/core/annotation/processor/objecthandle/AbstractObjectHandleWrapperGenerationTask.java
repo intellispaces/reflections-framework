@@ -17,6 +17,8 @@ import intellispaces.framework.core.guide.GuideFunctions;
 import intellispaces.framework.core.object.ObjectFunctions;
 import intellispaces.framework.core.object.ObjectHandleTypes;
 import intellispaces.framework.core.space.transition.TransitionFunctions;
+import intellispaces.framework.core.system.Modules;
+import intellispaces.framework.core.system.ProjectionInjection;
 import intellispaces.framework.core.traverse.TraverseTypes;
 
 import javax.annotation.processing.RoundEnvironment;
@@ -36,6 +38,8 @@ abstract class AbstractObjectHandleWrapperGenerationTask extends AbstractObjectH
   protected List<Object> constructors;
   protected List<String> guideActions;
   protected List<String> transitionActions;
+  protected final List<Map<String, Object>> injections = new ArrayList<>();
+  protected final List<Map<String, Object>> guideMethods = new ArrayList<>();
 
   AbstractObjectHandleWrapperGenerationTask(CustomType initiatorType, CustomType objectHandleType) {
     super(initiatorType, objectHandleType);
@@ -104,6 +108,38 @@ abstract class AbstractObjectHandleWrapperGenerationTask extends AbstractObjectH
         this.guideActions.add(buildGuideAction(objectHandleMethod));
       }
     }
+  }
+
+  protected void analyzeInjectedGuides(CustomType objectHandleType) {
+    for (MethodStatement method : annotatedType.declaredMethods()) {
+      if (method.isAbstract()) {
+        addInjectionAndProjectionMethod(method);
+      }
+    }
+  }
+
+  private void addInjectionAndProjectionMethod(MethodStatement method) {
+    context.addImport(Modules.class);
+    context.addImport(ProjectionInjection.class);
+
+    String injectionName = method.name();
+    String injectionType = method.returnType().orElseThrow().actualDeclaration();
+
+    Map<String, Object> injection = new HashMap<>();
+    injection.put("name", injectionName);
+    injection.put("type", injectionType);
+    injections.add(injection);
+
+    Map<String, Object> methodProperties = new HashMap<>();
+    methodProperties.put("javadoc", "");
+    methodProperties.put("annotations", List.of(Override.class.getSimpleName()));
+    methodProperties.put("signature", buildMethodSignature(method));
+    methodProperties.put("body", buildGuideInjectionMethodBody(injectionType, injections.size() - 1));
+    guideMethods.add(methodProperties);
+  }
+
+  private String buildGuideInjectionMethodBody(String injectionType, int injectionIndex) {
+    return "return (" + injectionType + ") this.$handle.injection(" + injectionIndex + ").value();";
   }
 
   private MethodStatement findObjectHandleMethods(

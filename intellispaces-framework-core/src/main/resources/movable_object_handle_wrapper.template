@@ -22,6 +22,13 @@ public class {{$classSimpleName}}{{$typeParamsFull}} extends {{$sourceClassSimpl
   @Override
   public void $init(SystemObjectHandle handle) {
     this.$handle = handle;
+{{when $injections.isNotEmpty()}}
+    this.$handle.setInjections(
+{{for injection : $injections}}
+      GuideInjections.get({{$sourceClassSimpleName}}.class, "{{$injection.get("name")}}", {{$injection.get("type")}}.class){{when $injection.isNotLast()}},{{end}}
+{{end}}
+    );
+{{end}}
 {{when $transitionActions.isNotEmpty()}}
     this.$handle.setTransitionActions(
 {{for transitionAction : $transitionActions}}
@@ -87,4 +94,14 @@ public class {{$classSimpleName}}{{$typeParamsFull}} extends {{$sourceClassSimpl
     Mover1<{{$sourceClassSimpleName}}, R, Q> mover = Modules.current().autoMoverThruTransition1(sourceType, tid);
     return (R) mover.move(this, qualifier);
   }
+
+{{for method : $guideMethods}}
+  {{$method.get("javadoc")}}
+{{for annotation : $method.get("annotations")}}
+  @{{$annotation}}
+{{end}}
+  public {{$method.get("signature")}} {
+    {{$method.get("body")}}
+  }
+{{end}}
 }

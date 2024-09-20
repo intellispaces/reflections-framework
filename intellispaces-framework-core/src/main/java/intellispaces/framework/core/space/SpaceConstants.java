@@ -2,10 +2,6 @@ package intellispaces.framework.core.space;
 
 public interface SpaceConstants {
 
-  String POINT_DOMAIN_NAME = "intellispaces.ixora.base.Point";
-
-  String PROPERTIES_DOMAIN_NAME = "intellispaces.ixora.structures.properties.Properties";
-
   String POINT_TO_DOMAIN_TRANSITION_SIMPLE_NAME = "domain";
 
   String STRING_TO_PROPERTIES_TID = "1830e924-2c78-4f18-b9eb-39f002cbeea6";

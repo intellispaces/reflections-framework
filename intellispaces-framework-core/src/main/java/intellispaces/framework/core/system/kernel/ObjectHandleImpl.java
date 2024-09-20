@@ -4,6 +4,7 @@ import intellispaces.common.action.Action;
 import intellispaces.common.action.Actions;
 import intellispaces.common.action.getter.ResettableGetter;
 import intellispaces.common.base.exception.UnexpectedViolationException;
+import intellispaces.framework.core.system.Injection;
 
 import java.util.Arrays;
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.List;
 class ObjectHandleImpl implements SystemObjectHandle {
   private List<ResettableGetter<Action>> transitionActions = List.of();
   private List<Action> guideActions = List.of();
+  private List<Injection> injections = List.of();
 
   @Override
   public int numberTransitions() {
@@ -49,5 +51,24 @@ class ObjectHandleImpl implements SystemObjectHandle {
       return;
     }
     guideActions = Arrays.stream(actions).toList();
+  }
+
+  @Override
+  public Injection injection(int ordinal) {
+    return injections.get(ordinal);
+  }
+
+  @Override
+  public List<Injection> injections() {
+    return injections;
+  }
+
+  @Override
+  public void setInjections(Injection... projectionInjections) {
+    if (projectionInjections == null) {
+      this.injections = List.of();
+    } else {
+      this.injections = Arrays.stream(projectionInjections).toList();
+    }
   }
 }

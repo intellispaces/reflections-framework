@@ -1,6 +1,7 @@
 package intellispaces.framework.core.system.kernel;
 
 import intellispaces.common.action.Action;
+import intellispaces.common.base.collection.Streams;
 import intellispaces.common.base.exception.UnexpectedViolationException;
 import intellispaces.framework.core.annotation.Configuration;
 import intellispaces.framework.core.annotation.Guide;
@@ -11,6 +12,7 @@ import intellispaces.framework.core.aop.AopFunctions;
 import intellispaces.framework.core.common.NameConventionFunctions;
 import intellispaces.framework.core.guide.GuideFunctions;
 import intellispaces.framework.core.system.AttachedUnitGuide;
+import intellispaces.framework.core.system.ModuleFunctions;
 import intellispaces.framework.core.system.ProjectionDefinition;
 import intellispaces.framework.core.system.Unit;
 import intellispaces.framework.core.system.UnitFunctions;
@@ -61,9 +63,7 @@ public class ModuleFactory {
       Class<?> unitclass = unitClasses.get(0);
       if (unitclass.isAnnotationPresent(Module.class)) {
         return createModuleUnits(unitclass);
-      } else if (unitclass.isAnnotationPresent(Configuration.class) ||
-          unitclass.isAnnotationPresent(Guide.class)
-      ) {
+      } else if (unitclass.isAnnotationPresent(Configuration.class) || unitclass.isAnnotationPresent(Guide.class)) {
         return createEmptyMainUnitAndIncludedUnits(List.of(unitclass));
       } else {
         throw UnexpectedViolationException.withMessage("Expected module, configuration or guide class");
@@ -99,7 +99,8 @@ public class ModuleFactory {
   }
 
   private void createIncludedUnits(Class<?> moduleClass, List<SystemUnit> units) {
-    Arrays.stream(moduleClass.getAnnotation(Module.class).units())
+    Iterable<Class<?>> unitClasses = ModuleFunctions.getIncludedUnits(moduleClass);
+    Streams.get(unitClasses)
         .map(this::createIncludedUnit)
         .forEach(units::add);
   }

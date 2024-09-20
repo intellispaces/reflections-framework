@@ -12,8 +12,8 @@ import intellispaces.framework.core.samples.system.ModuleWithTwoProjectionProvid
 import intellispaces.framework.core.samples.system.ModuleWithTwoProjectionProvidersInDifferentUnitsWithCyclicDependency2;
 import intellispaces.framework.core.samples.system.ModuleWithTwoProjectionProvidersInDifferentUnitsWithCyclicDependency3;
 import intellispaces.framework.core.samples.system.ModuleWithTwoProjectionProvidersWithCyclicDependency;
-import intellispaces.framework.core.system.kernel.SystemModule;
 import intellispaces.framework.core.system.kernel.ModuleFactory;
+import intellispaces.framework.core.system.kernel.SystemModule;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 

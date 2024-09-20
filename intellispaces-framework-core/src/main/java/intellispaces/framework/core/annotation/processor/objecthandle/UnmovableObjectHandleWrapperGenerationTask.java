@@ -14,6 +14,7 @@ import intellispaces.framework.core.object.ObjectHandleTypes;
 import intellispaces.framework.core.space.transition.TransitionFunctions;
 import intellispaces.framework.core.system.Modules;
 import intellispaces.framework.core.system.ObjectHandleWrapper;
+import intellispaces.framework.core.system.injection.GuideInjections;
 import intellispaces.framework.core.system.kernel.SystemFunctions;
 import intellispaces.framework.core.system.kernel.SystemObjectHandle;
 import intellispaces.framework.core.transition.TransitionMethod0;
@@ -59,6 +60,8 @@ public class UnmovableObjectHandleWrapperGenerationTask extends AbstractObjectHa
     vars.put("transitionActions", transitionActions);
     vars.put("guideActions", guideActions);
     vars.put("domainMethods", methods);
+    vars.put("injections", injections);
+    vars.put("guideMethods", guideMethods);
     return vars;
   }
 
@@ -86,6 +89,7 @@ public class UnmovableObjectHandleWrapperGenerationTask extends AbstractObjectHa
     context.addImport(TransitionMethod0.class);
     context.addImport(TransitionMethod1.class);
     context.addImport(TransitionFunctions.class);
+    context.addImport(GuideInjections.class);
 
     CustomType domainType = ObjectFunctions.getDomainTypeOfObjectHandle(annotatedType);
     context.addImport(domainType.canonicalName());
@@ -95,6 +99,7 @@ public class UnmovableObjectHandleWrapperGenerationTask extends AbstractObjectHa
     analyzeTypeParams(annotatedType);
     analyzeConstructors(annotatedType);
     analyzeGuideActions(annotatedType);
+    analyzeInjectedGuides(annotatedType);
     analyzeTransitionActions();
     analyzeObjectHandleMethods(annotatedType, roundEnv);
     return true;

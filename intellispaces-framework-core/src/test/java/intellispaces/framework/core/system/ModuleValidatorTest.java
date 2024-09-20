@@ -4,9 +4,9 @@ import intellispaces.framework.core.exception.ConfigurationException;
 import intellispaces.framework.core.samples.system.EmptyModule;
 import intellispaces.framework.core.samples.system.EmptyUnit;
 import intellispaces.framework.core.system.injection.InjectionTypes;
+import intellispaces.framework.core.system.kernel.ModuleValidator;
 import intellispaces.framework.core.system.kernel.SystemModule;
 import intellispaces.framework.core.system.kernel.SystemUnit;
-import intellispaces.framework.core.system.kernel.ModuleValidator;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 

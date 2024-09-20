@@ -1,7 +1,7 @@
 package intellispaces.framework.core.system;
 
-import intellispaces.framework.core.system.kernel.SystemModule;
 import intellispaces.framework.core.system.kernel.SystemFunctions;
+import intellispaces.framework.core.system.kernel.SystemModule;
 
 public interface ContextProjections {
 

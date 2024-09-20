@@ -4,7 +4,7 @@ import intellispaces.common.action.Action1;
 import intellispaces.common.action.Action2;
 import intellispaces.common.action.Action3;
 import intellispaces.common.action.Action4;
-import intellispaces.common.javastatement.type.Type;
+import intellispaces.common.base.type.Type;
 import intellispaces.framework.core.space.transition.Transition0;
 import intellispaces.framework.core.space.transition.Transition1;
 import intellispaces.framework.core.space.transition.Transition2;

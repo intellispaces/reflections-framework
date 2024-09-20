@@ -1,7 +1,7 @@
 package intellispaces.framework.core.action;
 
 import intellispaces.common.action.AbstractAction4;
-import intellispaces.common.javastatement.type.Type;
+import intellispaces.common.base.type.Type;
 import intellispaces.framework.core.guide.n3.Mover3;
 import intellispaces.framework.core.space.transition.Transition3;
 import intellispaces.framework.core.system.Modules;

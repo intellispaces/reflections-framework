@@ -2,8 +2,8 @@ package intellispaces.framework.core.annotation.processor.objecthandle;
 
 import intellispaces.common.action.Actions;
 import intellispaces.common.annotationprocessor.context.AnnotationProcessingContext;
+import intellispaces.common.base.type.Type;
 import intellispaces.common.javastatement.customtype.CustomType;
-import intellispaces.common.javastatement.type.Type;
 import intellispaces.framework.core.annotation.Ordinal;
 import intellispaces.framework.core.annotation.Wrapper;
 import intellispaces.framework.core.exception.TraverseException;

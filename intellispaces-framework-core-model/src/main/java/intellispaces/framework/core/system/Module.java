@@ -1,6 +1,6 @@
 package intellispaces.framework.core.system;
 
-import intellispaces.common.javastatement.type.Type;
+import intellispaces.common.base.type.Type;
 import intellispaces.framework.core.guide.n0.Mapper0;
 import intellispaces.framework.core.guide.n0.Mover0;
 import intellispaces.framework.core.guide.n1.Mapper1;

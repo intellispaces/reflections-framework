@@ -1,14 +1,13 @@
 package intellispaces.framework.core.annotation.processor.domain;
 
 import intellispaces.common.annotationprocessor.context.AnnotationProcessingContext;
+import intellispaces.common.base.type.Type;
 import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.common.javastatement.method.MethodStatement;
 import intellispaces.common.javastatement.reference.CustomTypeReference;
-import intellispaces.common.javastatement.type.Type;
 import intellispaces.common.javastatement.type.Types;
 import intellispaces.framework.core.annotation.ObjectHandle;
 import intellispaces.framework.core.common.NameConventionFunctions;
-import intellispaces.framework.core.object.ObjectFunctions;
 import intellispaces.framework.core.object.ObjectHandleTypes;
 import intellispaces.framework.core.space.domain.DomainFunctions;
 
@@ -103,9 +102,7 @@ public class CommonObjectHandleGenerationTask extends AbstractDomainObjectHandle
   ) {
     return super.getObjectHandleMethods(customType, roundEnv)
         .filter(this::isNotGetDomainMethod)
-        .filter(m -> m.returnType().isPresent() &&
-            !m.returnType().get().isNamedReference() &&
-            !ObjectFunctions.isDefaultObjectHandleType(m.returnType().get())
+        .filter(m -> m.returnType().isPresent() && !m.returnType().get().isNamedReference()
         );
   }
 }

@@ -2,7 +2,7 @@ package intellispaces.framework.core.system.kernel;
 
 import intellispaces.common.action.Actions;
 import intellispaces.common.action.getter.Getter;
-import intellispaces.common.javastatement.type.Type;
+import intellispaces.common.base.type.Type;
 import intellispaces.common.javastatement.type.Types;
 import intellispaces.framework.core.guide.n0.AutoMapper0;
 import intellispaces.framework.core.guide.n0.AutoMover0;

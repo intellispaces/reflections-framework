@@ -125,7 +125,7 @@ public final class GuideFunctions {
     for (Method method : objectHandleClass.getDeclaredMethods()) {
       if (isGuideMethod(method)) {
         Transition transition = getObjectGuideTransitionAnnotation(method);
-        if (TransitionFunctions.getTraverseType(transition).isMovingRelated()) {
+        if (TransitionFunctions.getTraverseType(transition).isMovingBased()) {
           guides.add(createObjectMover(objectHandleClass, transition.value(), method));
         } else {
           guides.add(createObjectMapper(objectHandleClass, transition.value(), method));

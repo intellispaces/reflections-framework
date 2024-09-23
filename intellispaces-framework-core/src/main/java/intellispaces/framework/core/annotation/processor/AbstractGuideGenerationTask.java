@@ -83,7 +83,7 @@ public abstract class AbstractGuideGenerationTask extends AbstractGenerationTask
     vars.put("guideTypeParamsFull", guideTypeParamsFull);
     vars.put("guideClassSimpleName", guideClassSimpleName);
     vars.put("guideTypeParams", buildGuideTypeParams(Function.identity()));
-    vars.put("isMapper", !traverseType.isMovingRelated());
+    vars.put("isMapper", !traverseType.isMovingBased());
     vars.put("guideMethod", guideMethod);
     vars.put("baseMethod", baseMethod);
     vars.put("importedClasses", context.getImports());
@@ -98,7 +98,7 @@ public abstract class AbstractGuideGenerationTask extends AbstractGenerationTask
     }
     context.addImport(Guide.class);
     context.addImport(TransitionFunctions.class);
-    if (traverseType.isMovingRelated()) {
+    if (traverseType.isMovingBased()) {
       context.addImport(Mover.class);
     } else {
       context.addImport(Mapper.class);
@@ -150,7 +150,7 @@ public abstract class AbstractGuideGenerationTask extends AbstractGenerationTask
 
   private Class<?> getGuideClass() {
     int qualifierCount = getQualifierMethodParams().size();
-    if (traverseType.isMovingRelated()) {
+    if (traverseType.isMovingBased()) {
       return switch (qualifierCount) {
         case 0 -> Mover0.class;
         case 1 -> Mover1.class;

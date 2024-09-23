@@ -270,7 +270,7 @@ public interface TransitionFunctions {
 
   static boolean isMovingTraverse(MethodStatement transitionMethod) {
     return getTraverseTypes(transitionMethod).stream()
-      .anyMatch(type -> type == TraverseTypes.Moving || type == TraverseTypes.MovingThenMapping);
+      .anyMatch(type -> type == TraverseTypes.Moving || type == TraverseTypes.MappingRelatedToMoving);
   }
 
   static List<TraverseTypes> getTraverseTypes(MethodStatement method) {

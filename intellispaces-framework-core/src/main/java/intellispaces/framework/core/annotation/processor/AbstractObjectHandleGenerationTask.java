@@ -84,7 +84,7 @@ public abstract class AbstractObjectHandleGenerationTask extends AbstractGenerat
 
   protected boolean isDisableMoving(MethodStatement method) {
     Transition transition = TransitionFunctions.getDomainMainTransitionAnnotation(method);
-    return TransitionFunctions.getTraverseType(transition).isMovingRelated() &&
+    return TransitionFunctions.getTraverseType(transition).isMovingBased() &&
         getObjectHandleType() == ObjectHandleTypes.Unmovable;
   }
 

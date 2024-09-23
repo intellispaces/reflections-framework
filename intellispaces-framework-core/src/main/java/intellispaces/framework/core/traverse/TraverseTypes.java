@@ -13,18 +13,20 @@ public enum TraverseTypes implements TraverseType {
   Moving(true),
 
   /**
+   * Mapping traverse related to a specific movement.<p/>
+   *
    * Combined transition that sequentially combines directly related movement and then mapping traverses.
    */
-  MovingThenMapping(true);
+  MappingRelatedToMoving(true);
 
-  private final boolean moving;
+  private final boolean movingBased;
 
-  TraverseTypes(boolean moving) {
-    this.moving = moving;
+  TraverseTypes(boolean movingBased) {
+    this.movingBased = movingBased;
   }
 
   @Override
-  public boolean isMovingRelated() {
-    return moving;
+  public boolean isMovingBased() {
+    return movingBased;
   }
 }

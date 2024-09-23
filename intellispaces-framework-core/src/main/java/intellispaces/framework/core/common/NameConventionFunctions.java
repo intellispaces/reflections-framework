@@ -224,7 +224,7 @@ public interface NameConventionFunctions {
   }
 
   private static boolean isMappingTraverseType(MethodStatement method) {
-    return !TransitionFunctions.getTraverseType(method).isMovingRelated();
+    return !TransitionFunctions.getTraverseType(method).isMovingBased();
   }
 
   private static String transformClassName(String className) {

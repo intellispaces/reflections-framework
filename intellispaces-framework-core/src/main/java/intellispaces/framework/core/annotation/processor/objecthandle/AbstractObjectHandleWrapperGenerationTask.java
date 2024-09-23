@@ -74,7 +74,7 @@ abstract class AbstractObjectHandleWrapperGenerationTask extends AbstractObjectH
     sb.append(".cachedLazyGetter(");
     sb.append(context.addToImportAndGetSimpleName(TraverseActions.class));
     sb.append("::");
-    sb.append(getTraverseType(domainMethod).isMovingRelated() ? "move" : "map");
+    sb.append(getTraverseType(domainMethod).isMovingBased() ? "move" : "map");
     sb.append("ThruTransition");
     sb.append(domainMethod.params().size());
     sb.append(",\n");

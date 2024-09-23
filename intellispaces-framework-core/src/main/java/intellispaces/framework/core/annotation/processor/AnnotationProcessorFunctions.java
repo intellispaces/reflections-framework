@@ -250,7 +250,7 @@ public interface AnnotationProcessorFunctions {
   ) {
     return isAutoGenerationEnabled(domainType, ArtifactTypes.Mover, roundEnv) &&
         ArraysFunctions.containsAny(method.selectAnnotation(Transition.class).orElseThrow().allowedTraverse(),
-            TraverseTypes.Moving, TraverseTypes.MovingThenMapping);
+            TraverseTypes.Moving, TraverseTypes.MappingRelatedToMoving);
   }
 
   static boolean isAutoGenerationEnabled(CustomType annotatedType) {
@@ -323,7 +323,7 @@ public interface AnnotationProcessorFunctions {
   static boolean isPreprocessingAnnotationFor(
       AnnotationInstance preprocessingAnnotation, String canonicalClassName
   ) {
-    List<CustomType> preprocessingTargets = getPreprocessingAnnexTargets(preprocessingAnnotation);
+    List<CustomType> preprocessingTargets = getPreprocessingAddOnsTargets(preprocessingAnnotation);
     for (CustomType target : preprocessingTargets) {
       if (canonicalClassName.equals(target.canonicalName())) {
         return true;
@@ -335,7 +335,7 @@ public interface AnnotationProcessorFunctions {
   static boolean isPreprocessingAnnotationFor(
       AnnotationInstance preprocessingAnnotation, String canonicalClassName, ArtifactTypes artifact
   ) {
-    List<CustomType> preprocessingTargets = getPreprocessingAnnexTargets(preprocessingAnnotation);
+    List<CustomType> preprocessingTargets = getPreprocessingAddOnsTargets(preprocessingAnnotation);
     for (CustomType target : preprocessingTargets) {
       if (canonicalClassName.equals(target.canonicalName())) {
         if (artifact.name().equals(getPreprocessingArtifactName(preprocessingAnnotation))) {
@@ -356,8 +356,8 @@ public interface AnnotationProcessorFunctions {
         .toList();
   }
 
-  static List<CustomType> getPreprocessingAnnexTargets(AnnotationInstance preprocessingAnnotation) {
-    return preprocessingAnnotation.elementValue("annexFor").orElseThrow()
+  static List<CustomType> getPreprocessingAddOnsTargets(AnnotationInstance preprocessingAnnotation) {
+    return preprocessingAnnotation.elementValue("addOnsTo").orElseThrow()
         .asArray().orElseThrow()
         .elements().stream()
         .map(Instance::asClass)

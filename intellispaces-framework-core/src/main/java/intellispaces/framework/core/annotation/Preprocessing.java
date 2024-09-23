@@ -15,5 +15,5 @@ public @interface Preprocessing {
 
   String artifact() default "";
 
-  Class<?>[] annexFor() default {};
+  Class<?>[] addOnsTo() default {};
 }

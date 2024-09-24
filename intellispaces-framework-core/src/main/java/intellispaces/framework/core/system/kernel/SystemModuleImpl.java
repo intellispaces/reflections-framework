@@ -5,20 +5,28 @@ import intellispaces.common.action.getter.Getter;
 import intellispaces.common.base.type.Type;
 import intellispaces.common.javastatement.type.Types;
 import intellispaces.framework.core.guide.n0.AutoMapper0;
+import intellispaces.framework.core.guide.n0.AutoMapperOfMoving0;
 import intellispaces.framework.core.guide.n0.AutoMover0;
 import intellispaces.framework.core.guide.n0.Mapper0;
+import intellispaces.framework.core.guide.n0.MapperOfMoving0;
 import intellispaces.framework.core.guide.n0.Mover0;
 import intellispaces.framework.core.guide.n1.AutoMapper1;
+import intellispaces.framework.core.guide.n1.AutoMapperOfMoving1;
 import intellispaces.framework.core.guide.n1.AutoMover1;
 import intellispaces.framework.core.guide.n1.Mapper1;
+import intellispaces.framework.core.guide.n1.MapperOfMoving1;
 import intellispaces.framework.core.guide.n1.Mover1;
 import intellispaces.framework.core.guide.n2.AutoMapper2;
+import intellispaces.framework.core.guide.n2.AutoMapperOfMoving2;
 import intellispaces.framework.core.guide.n2.AutoMover2;
 import intellispaces.framework.core.guide.n2.Mapper2;
+import intellispaces.framework.core.guide.n2.MapperOfMoving2;
 import intellispaces.framework.core.guide.n2.Mover2;
 import intellispaces.framework.core.guide.n3.AutoMapper3;
+import intellispaces.framework.core.guide.n3.AutoMapperOfMoving3;
 import intellispaces.framework.core.guide.n3.AutoMover3;
 import intellispaces.framework.core.guide.n3.Mapper3;
+import intellispaces.framework.core.guide.n3.MapperOfMoving3;
 import intellispaces.framework.core.guide.n3.Mover3;
 import intellispaces.framework.core.object.ObjectFunctions;
 import intellispaces.framework.core.space.transition.Transition0;
@@ -190,7 +198,7 @@ class SystemModuleImpl implements SystemModule {
   }
 
   @Override
-  public <S, R> Mover0<S, R> autoMoverThruTransition0(Type<S> sourceType, String tid) {
+  public <S> Mover0<S> autoMoverThruTransition0(Type<S> sourceType, String tid) {
     DeclarativePlan traversePlan = traverseAnalyzer.buildMoveObjectHandleThruTransition0Plan(
         sourceType.baseClass(), tid
     );
@@ -198,12 +206,12 @@ class SystemModuleImpl implements SystemModule {
   }
 
   @Override
-  public <S, R, Q> Mover1<S, R, Q> autoMoverThruTransition1(Class<S> sourceClass, String tid) {
+  public <S, Q> Mover1<S, Q> autoMoverThruTransition1(Class<S> sourceClass, String tid) {
     return autoMoverThruTransition1(Types.of(sourceClass), tid);
   }
 
   @Override
-  public <S, R, Q> Mover1<S, R, Q> autoMoverThruTransition1(Type<S> sourceType, String tid) {
+  public <S, Q> Mover1<S, Q> autoMoverThruTransition1(Type<S> sourceType, String tid) {
     DeclarativePlan traversePlan = traverseAnalyzer.buildMoveObjectHandleThruTransition1Plan(
         sourceType.baseClass(), tid
     );
@@ -211,7 +219,7 @@ class SystemModuleImpl implements SystemModule {
   }
 
   @Override
-  public <S, R, Q1, Q2> Mover2<S, R, Q1, Q2> autoMoverThruTransition2(Type<S> sourceType, String tid) {
+  public <S, Q1, Q2> Mover2<S, Q1, Q2> autoMoverThruTransition2(Type<S> sourceType, String tid) {
     DeclarativePlan traversePlan = traverseAnalyzer.buildMoveObjectHandleThruTransition2Plan(
         sourceType.baseClass(), tid
     );
@@ -219,11 +227,43 @@ class SystemModuleImpl implements SystemModule {
   }
 
   @Override
-  public <S, R, Q1, Q2, Q3> Mover3<S, R, Q1, Q2, Q3> autoMoverThruTransition3(Type<S> sourceType, String tid) {
+  public <S, Q1, Q2, Q3> Mover3<S, Q1, Q2, Q3> autoMoverThruTransition3(Type<S> sourceType, String tid) {
     DeclarativePlan traversePlan = traverseAnalyzer.buildMoveObjectHandleThruTransition3Plan(
       sourceType.baseClass(), tid
     );
     return new AutoMover3<>(tid, traversePlan, traverseExecutor);
+  }
+
+  @Override
+  public <S, T> MapperOfMoving0<S, T> autoMapperOfMovingThruTransition0(Type<S> sourceType, String tid) {
+    DeclarativePlan traversePlan = traverseAnalyzer.buildMapOfMovingObjectHandleThruTransition0Plan(
+        sourceType.baseClass(), tid
+    );
+    return new AutoMapperOfMoving0<>(tid, traversePlan, traverseExecutor);
+  }
+
+  @Override
+  public <S, T, Q> MapperOfMoving1<S, T, Q> autoMapperOfMovingThruTransition1(Type<S> sourceType, String tid) {
+    DeclarativePlan traversePlan = traverseAnalyzer.buildMapOfMovingObjectHandleThruTransition1Plan(
+        sourceType.baseClass(), tid
+    );
+    return new AutoMapperOfMoving1<>(tid, traversePlan, traverseExecutor);
+  }
+
+  @Override
+  public <S, T, Q1, Q2> MapperOfMoving2<S, T, Q1, Q2> autoMapperOfMovingThruTransition2(Type<S> sourceType, String tid) {
+    DeclarativePlan traversePlan = traverseAnalyzer.buildMapOfMovingObjectHandleThruTransition2Plan(
+        sourceType.baseClass(), tid
+    );
+    return new AutoMapperOfMoving2<>(tid, traversePlan, traverseExecutor);
+  }
+
+  @Override
+  public <S, T, Q1, Q2, Q3> MapperOfMoving3<S, T, Q1, Q2, Q3> autoMapperOfMovingThruTransition3(Type<S> sourceType, String tid) {
+    DeclarativePlan traversePlan = traverseAnalyzer.buildMapOfMovingObjectHandleThruTransition3Plan(
+        sourceType.baseClass(), tid
+    );
+    return new AutoMapperOfMoving3<>(tid, traversePlan, traverseExecutor);
   }
 
   @Override
@@ -259,7 +299,7 @@ class SystemModuleImpl implements SystemModule {
 
   @Override
   @SuppressWarnings("rawtypes")
-  public <S, R> Mover0<S, R> autoMoverThruTransition0(
+  public <S> Mover0<S> autoMoverThruTransition0(
       Type<S> sourceType, Class<? extends Transition0> transitionClass
   ) {
     return autoMoverThruTransition0(sourceType, TransitionFunctions.getTransitionId(transitionClass));
@@ -267,7 +307,7 @@ class SystemModuleImpl implements SystemModule {
 
   @Override
   @SuppressWarnings("rawtypes")
-  public <S, R, Q> Mover1<S, R, Q> autoMoverThruTransition1(
+  public <S, Q> Mover1<S, Q> autoMoverThruTransition1(
       Type<S> sourceType, Class<? extends Transition1> transitionClass
   ) {
     return autoMoverThruTransition1(sourceType, TransitionFunctions.getTransitionId(transitionClass));
@@ -275,7 +315,7 @@ class SystemModuleImpl implements SystemModule {
 
   @Override
   @SuppressWarnings("rawtypes")
-  public <S, R, Q1, Q2> Mover2<S, R, Q1, Q2> autoMoverThruTransition2(
+  public <S, Q1, Q2> Mover2<S, Q1, Q2> autoMoverThruTransition2(
       Type<S> sourceType, Class<? extends Transition2> transitionClass
   ) {
     return autoMoverThruTransition2(sourceType, TransitionFunctions.getTransitionId(transitionClass));
@@ -283,10 +323,41 @@ class SystemModuleImpl implements SystemModule {
 
   @Override
   @SuppressWarnings("rawtypes")
-  public <S, R, Q1, Q2, Q3> Mover3<S, R, Q1, Q2, Q3> autoMoverThruTransition3(
+  public <S, Q1, Q2, Q3> Mover3<S, Q1, Q2, Q3> autoMoverThruTransition3(
     Type<S> sourceType, Class<? extends Transition3> transitionClass
   ) {
     return autoMoverThruTransition3(sourceType, TransitionFunctions.getTransitionId(transitionClass));
+  }
+
+  @Override
+  public <S, T> MapperOfMoving0<S, T> autoMapperOfMovingThruTransition0(
+      Type<S> sourceType, Class<? extends Transition0> transitionClass
+  ) {
+    return autoMapperOfMovingThruTransition0(sourceType, TransitionFunctions.getTransitionId(transitionClass));
+  }
+
+  @Override
+  @SuppressWarnings("rawtypes")
+  public <S, T, Q> MapperOfMoving1<S, T, Q> autoMapperOfMovingThruTransition1(
+      Type<S> sourceType, Class<? extends Transition1> transitionClass
+  ) {
+    return autoMapperOfMovingThruTransition1(sourceType, TransitionFunctions.getTransitionId(transitionClass));
+  }
+
+  @Override
+  @SuppressWarnings("rawtypes")
+  public <S, T, Q1, Q2> MapperOfMoving2<S, T, Q1, Q2> autoMapperOfMovingThruTransition2(
+      Type<S> sourceType, Class<? extends Transition2> transitionClass
+  ) {
+    return autoMapperOfMovingThruTransition2(sourceType, TransitionFunctions.getTransitionId(transitionClass));
+  }
+
+  @Override
+  @SuppressWarnings("rawtypes")
+  public <S, T, Q1, Q2, Q3> MapperOfMoving3<S, T, Q1, Q2, Q3> autoMapperOfMovingThruTransition3(
+      Type<S> sourceType, Class<? extends Transition3> transitionClass
+  ) {
+    return autoMapperOfMovingThruTransition3(sourceType, TransitionFunctions.getTransitionId(transitionClass));
   }
 
   @Override

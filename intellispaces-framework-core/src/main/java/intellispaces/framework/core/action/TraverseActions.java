@@ -36,27 +36,51 @@ public interface TraverseActions {
     return new MapThruTransition3Action<>(sourceType, transitionClass);
   }
 
-  static <S, R> Action1<R, S> moveThruTransition0(
+  static <S> Action1<S, S> moveThruTransition0(
     Type<S> sourceType, Class<? extends Transition0> transitionClass
   ) {
     return new MoveThruTransition0Action<>(sourceType, transitionClass);
   }
 
-  static <S, R, Q> Action2<R, S, Q> moveThruTransition1(
+  static <S, Q> Action2<S, S, Q> moveThruTransition1(
     Type<S> sourceType, Class<? extends Transition1> transitionClass
   ) {
     return new MoveThruTransition1Action<>(sourceType, transitionClass);
   }
 
-  static <S, R, Q1, Q2> Action3<R, S, Q1, Q2> moveThruTransition2(
+  static <S, Q1, Q2> Action3<S, S, Q1, Q2> moveThruTransition2(
     Type<S> sourceType, Class<? extends Transition2> transitionClass
   ) {
     return new MoveThruTransition2Action<>(sourceType, transitionClass);
   }
 
-  static <S, R, Q1, Q2, Q3> Action4<R, S, Q1, Q2, Q3> moveThruTransition3(
+  static <S, Q1, Q2, Q3> Action4<S, S, Q1, Q2, Q3> moveThruTransition3(
     Type<S> sourceType, Class<? extends Transition3> transitionClass
   ) {
     return new MoveThruTransition3Action<>(sourceType, transitionClass);
+  }
+
+  static <S, T> Action1<T, S> mapOfMovingThruTransition0(
+      Type<S> sourceType, Class<? extends Transition0> transitionClass
+  ) {
+    return new MapOfMovingThruTransition0Action<>(sourceType, transitionClass);
+  }
+
+  static <S, T, Q> Action2<T, S, Q> mapOfMovingThruTransition1(
+      Type<S> sourceType, Class<? extends Transition1> transitionClass
+  ) {
+    return new MapOfMovingThruTransition1Action<>(sourceType, transitionClass);
+  }
+
+  static <S, T, Q1, Q2> Action3<T, S, Q1, Q2> mapOfMovingThruTransition2(
+      Type<S> sourceType, Class<? extends Transition2> transitionClass
+  ) {
+    return new MapOfMovingThruTransition2Action<>(sourceType, transitionClass);
+  }
+
+  static <S, T, Q1, Q2, Q3> Action4<T, S, Q1, Q2, Q3> mapOfMovingThruTransition3(
+      Type<S> sourceType, Class<? extends Transition3> transitionClass
+  ) {
+    return new MapOfMovingThruTransition3Action<>(sourceType, transitionClass);
   }
 }

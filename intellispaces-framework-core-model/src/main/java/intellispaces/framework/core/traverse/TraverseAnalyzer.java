@@ -18,5 +18,13 @@ public interface TraverseAnalyzer {
 
   MoveObjectHandleThruTransition3Plan buildMoveObjectHandleThruTransition3Plan(Class<?> sourceClass, String tid);
 
+  MapOfMovingObjectHandleThruTransition0Plan buildMapOfMovingObjectHandleThruTransition0Plan(Class<?> sourceClass, String tid);
+
+  MapOfMovingObjectHandleThruTransition1Plan buildMapOfMovingObjectHandleThruTransition1Plan(Class<?> sourceClass, String tid);
+
+  MapOfMovingObjectHandleThruTransition2Plan buildMapOfMovingObjectHandleThruTransition2Plan(Class<?> sourceClass, String tid);
+
+  MapOfMovingObjectHandleThruTransition3Plan buildMapOfMovingObjectHandleThruTransition3Plan(Class<?> sourceClass, String tid);
+
   ExecutionPlan getExecutionPlan(ObjectHandleTraversePlan declarativePlan, Class<?> sourceClass);
 }

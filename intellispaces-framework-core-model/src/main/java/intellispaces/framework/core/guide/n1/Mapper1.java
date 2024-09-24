@@ -26,8 +26,6 @@ public interface Mapper1<S, T, Q> extends
     Mapper4<S, T, Q, Void, Void, Void>,
     Mapper5<S, T, Q, Void, Void, Void, Void>
 {
-  T map(S source, Q qualifier) throws TraverseException;
-
   BiFunction<S, Q, T> asBiFunction();
 
   @Override
@@ -40,34 +38,53 @@ public interface Mapper1<S, T, Q> extends
     return (source, qualifier1, qualifier2, qualifier3) -> map(source, qualifier1);
   }
 
+  default T map(S source, Q qualifier) throws TraverseException {
+    return traverse(source, qualifier);
+  }
+
   @Override
   default T map(S source, Q qualifier1, Void qualifier2) throws TraverseException {
-    return map(source, qualifier1);
+    return traverse(source, qualifier1);
   }
 
   @Override
   default T map(S source, Q qualifier1, Void qualifier2, Void qualifier3) throws TraverseException {
-    return map(source, qualifier1);
+    return traverse(source, qualifier1);
   }
 
   @Override
   default T map(S source, Q qualifier1, Void qualifier2, Void qualifier3, Void qualifier4) throws TraverseException {
-    return map(source, qualifier1);
+    return traverse(source, qualifier1);
   }
 
   @Override
   default T map(S source, Q qualifier1, Void qualifier2, Void qualifier3, Void qualifier4, Void qualifier5) throws TraverseException {
-    return map(source, qualifier1);
-  }
-
-  @Override
-  default T traverse(S source, Q qualifier) throws TraverseException {
-    return map(source, qualifier);
+    return traverse(source, qualifier1);
   }
 
   @Override
   @SuppressWarnings("unchecked")
   default T traverse(S source, Object... qualifiers) throws TraverseException {
-    return map(source, (Q) qualifiers[0]);
+    return traverse(source, (Q) qualifiers[0]);
+  }
+
+  @Override
+  default T traverse(S source, Q qualifier1, Void qualifier2) throws TraverseException {
+    return traverse(source, qualifier1);
+  }
+
+  @Override
+  default T traverse(S source, Q qualifier1, Void qualifier2, Void qualifier3) throws TraverseException {
+    return traverse(source, qualifier1);
+  }
+
+  @Override
+  default T traverse(S source, Q qualifier1, Void qualifier2, Void qualifier3, Void qualifier4) throws TraverseException {
+    return traverse(source, qualifier1);
+  }
+
+  @Override
+  default T traverse(S source, Q qualifier1, Void qualifier2, Void qualifier3, Void qualifier4, Void qualifier5) throws TraverseException {
+    return traverse(source, qualifier1);
   }
 }

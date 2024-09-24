@@ -14,6 +14,10 @@ import intellispaces.framework.core.traverse.MapObjectHandleThruTransition0Plan;
 import intellispaces.framework.core.traverse.MapObjectHandleThruTransition1Plan;
 import intellispaces.framework.core.traverse.MapObjectHandleThruTransition2Plan;
 import intellispaces.framework.core.traverse.MapObjectHandleThruTransition3Plan;
+import intellispaces.framework.core.traverse.MapOfMovingObjectHandleThruTransition0Plan;
+import intellispaces.framework.core.traverse.MapOfMovingObjectHandleThruTransition1Plan;
+import intellispaces.framework.core.traverse.MapOfMovingObjectHandleThruTransition2Plan;
+import intellispaces.framework.core.traverse.MapOfMovingObjectHandleThruTransition3Plan;
 import intellispaces.framework.core.traverse.MoveObjectHandleThruTransition0Plan;
 import intellispaces.framework.core.traverse.MoveObjectHandleThruTransition1Plan;
 import intellispaces.framework.core.traverse.MoveObjectHandleThruTransition2Plan;
@@ -151,6 +155,54 @@ class TraverseExecutorImpl implements TraverseExecutor {
     if (executionPlan == null) {
       throw TraverseException.withMessage("Cannot to build traverse plan to move object of class {0} through " +
               "transition {1}. Suitable guide has not been found", source.getClass().getCanonicalName(), plan.tid());
+    }
+    return executionPlan.execute(source, qualifier1, qualifier2, qualifier3, this);
+  }
+
+  @Override
+  public Object execute(
+      MapOfMovingObjectHandleThruTransition0Plan plan, Object source
+  ) throws TraverseException {
+    ExecutionPlan executionPlan = traverseAnalyzer.getExecutionPlan(plan, source.getClass());
+    if (executionPlan == null) {
+      throw TraverseException.withMessage("Cannot to build traverse plan to map object of class {0} through " +
+          "transition {1}. Suitable guide has not been found", source.getClass().getCanonicalName(), plan.tid());
+    }
+    return executionPlan.execute(source, this);
+  }
+
+  @Override
+  public Object execute(
+      MapOfMovingObjectHandleThruTransition1Plan plan, Object source, Object qualifier
+  ) throws TraverseException {
+    ExecutionPlan executionPlan = traverseAnalyzer.getExecutionPlan(plan, source.getClass());
+    if (executionPlan == null) {
+      throw TraverseException.withMessage("Cannot to build traverse plan to map object of class {0} through " +
+          "transition {1}. Suitable guide has not been found", source.getClass().getCanonicalName(), plan.tid());
+    }
+    return executionPlan.execute(source, qualifier, this);
+  }
+
+  @Override
+  public Object execute(
+      MapOfMovingObjectHandleThruTransition2Plan plan, Object source, Object qualifier1, Object qualifier2
+  ) throws TraverseException {
+    ExecutionPlan executionPlan = traverseAnalyzer.getExecutionPlan(plan, source.getClass());
+    if (executionPlan == null) {
+      throw TraverseException.withMessage("Cannot to build traverse plan to map object of class {0} through " +
+          "transition {1}. Suitable guide has not been found", source.getClass().getCanonicalName(), plan.tid());
+    }
+    return executionPlan.execute(source, qualifier1, qualifier2, this);
+  }
+
+  @Override
+  public Object execute(
+      MapOfMovingObjectHandleThruTransition3Plan plan, Object source, Object qualifier1, Object qualifier2, Object qualifier3
+  ) throws TraverseException {
+    ExecutionPlan executionPlan = traverseAnalyzer.getExecutionPlan(plan, source.getClass());
+    if (executionPlan == null) {
+      throw TraverseException.withMessage("Cannot to build traverse plan to map object of class {0} through " +
+          "transition {1}. Suitable guide has not been found", source.getClass().getCanonicalName(), plan.tid());
     }
     return executionPlan.execute(source, qualifier1, qualifier2, qualifier3, this);
   }

@@ -74,6 +74,9 @@ public interface AnnotationProcessorFunctions {
         if (isEnableMoverGuideGeneration(domainType, method, roundEnv)) {
           generators.add(new DomainGuideGenerationTask(TraverseTypes.Moving, initiatorType, domainType, method));
         }
+        if (isEnableMapperOfMovingGuideGeneration(domainType, method, roundEnv)) {
+          generators.add(new DomainGuideGenerationTask(TraverseTypes.MappingOfMoving, initiatorType, domainType, method));
+        }
       }
     }
     addObjectHandleBunchGenerator(initiatorType, domainType, generators, roundEnv);
@@ -249,8 +252,16 @@ public interface AnnotationProcessorFunctions {
       CustomType domainType, MethodStatement method, RoundEnvironment roundEnv
   ) {
     return isAutoGenerationEnabled(domainType, ArtifactTypes.Mover, roundEnv) &&
-        ArraysFunctions.containsAny(method.selectAnnotation(Transition.class).orElseThrow().allowedTraverse(),
-            TraverseTypes.Moving, TraverseTypes.MappingRelatedToMoving);
+        ArraysFunctions.contains(method.selectAnnotation(Transition.class).orElseThrow().allowedTraverse(),
+            TraverseTypes.Moving);
+  }
+
+  static boolean isEnableMapperOfMovingGuideGeneration(
+      CustomType domainType, MethodStatement method, RoundEnvironment roundEnv
+  ) {
+    return isAutoGenerationEnabled(domainType, ArtifactTypes.MapperOfMoving, roundEnv) &&
+        ArraysFunctions.contains(method.selectAnnotation(Transition.class).orElseThrow().allowedTraverse(),
+            TraverseTypes.MappingOfMoving);
   }
 
   static boolean isAutoGenerationEnabled(CustomType annotatedType) {

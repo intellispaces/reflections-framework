@@ -53,40 +53,85 @@ public class {{$classSimpleName}}{{$classTypeParams}} implements {{$movableObjec
   {{$method.get("declaration")}};
 
 {{end}}
+
   @Override
-  public <R, Q> R moveThru(String tid, Q qualifier) throws TraverseException {
-    return (R) {{$childField}}.moveThru(tid, qualifier);
+  public <Q> {{$movableObjectHandleName}}{{$classTypeParamsBrief}} moveThru(String tid, Q qualifier) throws TraverseException {
+    {{$childField}}.moveThru(tid, qualifier);
+    return this;
   }
 
 {{when $isAlias}}
   @Override
-  public <R> R moveThru(TransitionMethod0<? super {{$mainPrimaryDomainSimpleName}}{{$classTypeParamsBrief}}, R> transitionMethod) throws TraverseException {
-    return (R) {{$childField}}.moveThru((TransitionMethod0<? super {{$mainPrimaryDomainSimpleName}}, R>) transitionMethod);
+  public {{$movableObjectHandleName}}{{$classTypeParamsBrief}} moveThru(TransitionMethod0<? super {{$mainPrimaryDomainSimpleName}}{{$classTypeParamsBrief}}, ? super {{$mainPrimaryDomainSimpleName}}{{$classTypeParamsBrief}}> transitionMethod) throws TraverseException {
+    {{$childField}}.moveThru((TransitionMethod0<? super {{$mainPrimaryDomainSimpleName}}, ? super {{$mainPrimaryDomainSimpleName}}>) transitionMethod);
+    return this;
   }
 
   @Override
-  public <R, Q> R moveThru(TransitionMethod1<? super {{$mainPrimaryDomainSimpleName}}{{$classTypeParamsBrief}}, R, Q> transitionMethod, Q qualifier) throws TraverseException {
-    return (R) {{$childField}}.moveThru((TransitionMethod1<? super {{$mainPrimaryDomainSimpleName}}, R, Q>) transitionMethod, qualifier);
+  public <Q> {{$movableObjectHandleName}}{{$classTypeParamsBrief}} moveThru(TransitionMethod1<? super {{$mainPrimaryDomainSimpleName}}{{$classTypeParamsBrief}}, ? super {{$mainPrimaryDomainSimpleName}}{{$classTypeParamsBrief}}, Q> transitionMethod, Q qualifier) throws TraverseException {
+    {{$childField}}.moveThru((TransitionMethod1<? super {{$mainPrimaryDomainSimpleName}}, ? super {{$mainPrimaryDomainSimpleName}}, Q>) transitionMethod, qualifier);
+    return this;
   }
 {{else}}
   @Override
-  public <R> R moveThru(TransitionMethod0<? super {{$domainClassSimpleName}}{{$classTypeParamsBrief}}, R> transitionMethod) throws TraverseException {
-    return (R) {{$childField}}.moveThru((TransitionMethod0<? super {{$childDomainClassSimpleName}}, R>) transitionMethod);
+  public {{$movableObjectHandleName}}{{$classTypeParamsBrief}} moveThru(TransitionMethod0<? super {{$domainClassSimpleName}}{{$classTypeParamsBrief}}, ? super {{$domainClassSimpleName}}{{$classTypeParamsBrief}}> transitionMethod) throws TraverseException {
+    {{$childField}}.moveThru((TransitionMethod0<? super {{$childDomainClassSimpleName}}, ? super {{$childDomainClassSimpleName}}>) transitionMethod);
+    return this;
   }
 
   @Override
-  public <R, Q> R moveThru(TransitionMethod1<? super {{$domainClassSimpleName}}{{$classTypeParamsBrief}}, R, Q> transitionMethod, Q qualifier) throws TraverseException {
-    return (R) {{$childField}}.moveThru((TransitionMethod1<? super {{$childDomainClassSimpleName}}, R, Q>) transitionMethod, qualifier);
+  public <Q> {{$movableObjectHandleName}}{{$classTypeParamsBrief}} moveThru(TransitionMethod1<? super {{$domainClassSimpleName}}{{$classTypeParamsBrief}}, ? super {{$domainClassSimpleName}}{{$classTypeParamsBrief}}, Q> transitionMethod, Q qualifier) throws TraverseException {
+    {{$childField}}.moveThru((TransitionMethod1<? super {{$childDomainClassSimpleName}}, ? super {{$childDomainClassSimpleName}}, Q>) transitionMethod, qualifier);
+    return this;
   }
 {{end}}
 
   @Override
-  public <R> R moveThru(Class<? extends Transition0> transitionClass) throws TraverseException {
-    return (R) {{$childField}}.moveThru(transitionClass);
+  public {{$movableObjectHandleName}}{{$classTypeParamsBrief}} moveThru(Class<? extends Transition0> transitionClass) throws TraverseException {
+    {{$childField}}.moveThru(transitionClass);
+    return this;
   }
 
   @Override
-  public <R, Q> R moveThru(Class<? extends Transition1> transitionClass, Q qualifier) throws TraverseException {
-    return (R) {{$childField}}.moveThru(transitionClass, qualifier);
+  public <Q> {{$movableObjectHandleName}}{{$classTypeParamsBrief}} moveThru(Class<? extends Transition1> transitionClass, Q qualifier) throws TraverseException {
+    {{$childField}}.moveThru(transitionClass, qualifier);
+    return this;
+  }
+
+  @Override
+  public <R, Q> R mapOfMovingThru(String tid, Q qualifier) throws TraverseException {
+    return (R) {{$childField}}.mapOfMovingThru(tid, qualifier);
+  }
+
+{{when $isAlias}}
+  @Override
+  public <R> R mapOfMovingThru(TransitionMethod0<? super {{$mainPrimaryDomainSimpleName}}{{$classTypeParamsBrief}}, R> transitionMethod) throws TraverseException {
+    return (R) {{$childField}}.mapOfMovingThru((TransitionMethod0<? super {{$mainPrimaryDomainSimpleName}}, R>) transitionMethod);
+  }
+
+  @Override
+  public <R, Q> R mapOfMovingThru(TransitionMethod1<? super {{$mainPrimaryDomainSimpleName}}{{$classTypeParamsBrief}}, R, Q> transitionMethod, Q qualifier) throws TraverseException {
+    return (R) {{$childField}}.mapOfMovingThru((TransitionMethod1<? super {{$mainPrimaryDomainSimpleName}}, R, Q>) transitionMethod, qualifier);
+  }
+{{else}}
+  @Override
+  public <R> R mapOfMovingThru(TransitionMethod0<? super {{$domainClassSimpleName}}{{$classTypeParamsBrief}}, R> transitionMethod) throws TraverseException {
+    return (R) {{$childField}}.mapOfMovingThru((TransitionMethod0<? super {{$childDomainClassSimpleName}}, R>) transitionMethod);
+  }
+
+  @Override
+  public <R, Q> R mapOfMovingThru(TransitionMethod1<? super {{$domainClassSimpleName}}{{$classTypeParamsBrief}}, R, Q> transitionMethod, Q qualifier) throws TraverseException {
+    return (R) {{$childField}}.mapOfMovingThru((TransitionMethod1<? super {{$childDomainClassSimpleName}}, R, Q>) transitionMethod, qualifier);
+  }
+{{end}}
+
+  @Override
+  public <R> R mapOfMovingThru(Class<? extends Transition0> transitionClass) throws TraverseException {
+    return (R) {{$childField}}.mapOfMovingThru(transitionClass);
+  }
+
+  @Override
+  public <R, Q> R mapOfMovingThru(Class<? extends Transition1> transitionClass, Q qualifier) throws TraverseException {
+    return (R) {{$childField}}.mapOfMovingThru(transitionClass, qualifier);
   }
 }

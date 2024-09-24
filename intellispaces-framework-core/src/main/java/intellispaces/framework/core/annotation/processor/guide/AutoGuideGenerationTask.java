@@ -128,7 +128,13 @@ public class AutoGuideGenerationTask extends AbstractGenerationTask {
     sb.append(".cachedLazyGetter(");
     sb.append(context.addToImportAndGetSimpleName(TraverseActions.class));
     sb.append("::");
-    sb.append(GuideFunctions.isMapperMethod(method) ? "map" : "move");
+    if (GuideFunctions.isMapperMethod(method)) {
+      sb.append("map");
+    } else if (GuideFunctions.isMoverMethod(method)) {
+      sb.append("move");
+    } else if (GuideFunctions.isMapperOfMovingMethod(method)) {
+      sb.append("mapOfMoving");
+    }
     sb.append("ThruTransition");
     sb.append(method.params().size() - 1);
     sb.append(",\n");

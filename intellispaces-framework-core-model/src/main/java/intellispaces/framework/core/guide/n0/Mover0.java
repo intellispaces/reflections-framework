@@ -14,53 +14,74 @@ import java.util.function.Consumer;
  * Mover guide without qualifiers.
  *
  * @param <S> source object type.
- * @param <R> result object handle type.
  */
-public interface Mover0<S, R> extends
-    Guide0<S, R>,
-    Mover<S, R>,
-    Mover1<S, R, Void>,
-    Mover2<S, R, Void, Void>,
-    Mover3<S, R, Void, Void, Void>,
-    Mover4<S, R, Void, Void, Void, Void>,
-    Mover5<S, R, Void, Void, Void, Void, Void>
+public interface Mover0<S> extends
+    Guide0<S, S>,
+    Mover<S>,
+    Mover1<S, Void>,
+    Mover2<S, Void, Void>,
+    Mover3<S, Void, Void, Void>,
+    Mover4<S, Void, Void, Void, Void>,
+    Mover5<S, Void, Void, Void, Void, Void>
 {
-  R move(S source) throws TraverseException;
-
   Consumer<S> asConsumer();
 
-  @Override
-  default R move(S source, Void qualifier) throws TraverseException {
-    return move(source);
+  default S move(S source) throws TraverseException {
+    return traverse(source);
   }
 
   @Override
-  default R move(S source, Void qualifier1, Void qualifier2) throws TraverseException {
-    return move(source);
+  default S move(S source, Void qualifier) throws TraverseException {
+    return traverse(source);
   }
 
   @Override
-  default R move(S source, Void qualifier1, Void qualifier2, Void qualifier3) throws TraverseException {
-    return move(source);
+  default S move(S source, Void qualifier1, Void qualifier2) throws TraverseException {
+    return traverse(source);
   }
 
   @Override
-  default R move(S source, Void qualifier1, Void qualifier2, Void qualifier3, Void qualifier4) throws TraverseException {
-    return move(source);
+  default S move(S source, Void qualifier1, Void qualifier2, Void qualifier3) throws TraverseException {
+    return traverse(source);
   }
 
   @Override
-  default R move(S source, Void qualifier1, Void qualifier2, Void qualifier3, Void qualifier4, Void qualifier5) throws TraverseException {
-    return move(source);
+  default S move(S source, Void qualifier1, Void qualifier2, Void qualifier3, Void qualifier4) throws TraverseException {
+    return traverse(source);
   }
 
   @Override
-  default R traverse(S source) throws TraverseException {
-    return move(source);
+  default S move(S source, Void qualifier1, Void qualifier2, Void qualifier3, Void qualifier4, Void qualifier5) throws TraverseException {
+    return traverse(source);
   }
 
   @Override
-  default R traverse(S source, Object... qualifiers) throws TraverseException {
-    return move(source);
+  default S traverse(S source, Object... qualifiers) throws TraverseException {
+    return traverse(source);
+  }
+
+  @Override
+  default S traverse(S source, Void qualifier) throws TraverseException {
+    return traverse(source);
+  }
+
+  @Override
+  default S traverse(S source, Void qualifier1, Void qualifier2) throws TraverseException {
+    return traverse(source);
+  }
+
+  @Override
+  default S traverse(S source, Void qualifier1, Void qualifier2, Void qualifier3) throws TraverseException {
+    return traverse(source);
+  }
+
+  @Override
+  default S traverse(S source, Void qualifier1, Void qualifier2, Void qualifier3, Void qualifier4) throws TraverseException {
+    return traverse(source);
+  }
+
+  @Override
+  default S traverse(S source, Void qualifier1, Void qualifier2, Void qualifier3, Void qualifier4, Void qualifier5) throws TraverseException {
+    return traverse(source);
   }
 }

@@ -10,9 +10,8 @@ import intellispaces.framework.core.traverse.TraverseExecutor;
  * <p>Automatic guide builds the traverse plan itself.
  *
  * @param <S> source object handle type.
- * @param <R> result object handle type.
  */
-public class AutoMover0<S, R> implements AbstractMover0<S, R> {
+public class AutoMover0<S> implements AbstractMover0<S> {
   private final String tid;
   private final TraverseExecutor traverseExecutor;
   private final DeclarativePlan declarativeTaskPlan;
@@ -30,7 +29,7 @@ public class AutoMover0<S, R> implements AbstractMover0<S, R> {
 
   @Override
   @SuppressWarnings("unchecked")
-  public R move(S source) throws TraverseException {
-    return (R) declarativeTaskPlan.execute(source, traverseExecutor);
+  public S traverse(S source) throws TraverseException {
+    return (S) declarativeTaskPlan.execute(source, traverseExecutor);
   }
 }

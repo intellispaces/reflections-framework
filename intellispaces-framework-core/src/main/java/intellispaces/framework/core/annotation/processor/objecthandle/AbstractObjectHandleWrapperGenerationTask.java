@@ -19,7 +19,6 @@ import intellispaces.framework.core.object.ObjectHandleTypes;
 import intellispaces.framework.core.space.transition.TransitionFunctions;
 import intellispaces.framework.core.system.Modules;
 import intellispaces.framework.core.system.ProjectionInjection;
-import intellispaces.framework.core.traverse.TraverseTypes;
 
 import javax.annotation.processing.RoundEnvironment;
 import java.util.ArrayList;
@@ -74,7 +73,17 @@ abstract class AbstractObjectHandleWrapperGenerationTask extends AbstractObjectH
     sb.append(".cachedLazyGetter(");
     sb.append(context.addToImportAndGetSimpleName(TraverseActions.class));
     sb.append("::");
-    sb.append(getTraverseType(domainMethod).isMovingBased() ? "move" : "map");
+    switch (TransitionFunctions.getTraverseType(domainMethod)) {
+      case Mapping:
+        sb.append("map");
+        break;
+      case Moving:
+        sb.append("move");
+        break;
+      case MappingOfMoving:
+        sb.append("mapOfMoving");
+        break;
+    }
     sb.append("ThruTransition");
     sb.append(domainMethod.params().size());
     sb.append(",\n");
@@ -206,10 +215,6 @@ abstract class AbstractObjectHandleWrapperGenerationTask extends AbstractObjectH
       return context.addToImportAndGetSimpleName(type.asCustomTypeReferenceOrElseThrow().targetType().canonicalName());
     }
     return type.actualDeclaration(context::addToImportAndGetSimpleName);
-  }
-
-  private static TraverseTypes getTraverseType(MethodStatement domainMethod) {
-    return TransitionFunctions.getTraverseType(domainMethod);
   }
 
   protected String getGeneratedClassCanonicalName() {

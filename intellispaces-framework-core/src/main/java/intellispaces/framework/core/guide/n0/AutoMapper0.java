@@ -30,7 +30,7 @@ public class AutoMapper0<S, T> implements AbstractMapper0<S, T> {
 
   @Override
   @SuppressWarnings("unchecked")
-  public T map(S source) throws TraverseException {
+  public T traverse(S source) throws TraverseException {
     return (T) declarativeTaskPlan.execute(source, traverseExecutor);
   }
 }

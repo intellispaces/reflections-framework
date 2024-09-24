@@ -13,23 +13,28 @@ import intellispaces.framework.core.annotation.Guide;
 import intellispaces.framework.core.annotation.Mapper;
 import intellispaces.framework.core.annotation.Mover;
 import intellispaces.framework.core.common.NameConventionFunctions;
-import intellispaces.framework.core.guide.GuideFunctions;
-import intellispaces.framework.core.guide.GuideKind;
 import intellispaces.framework.core.guide.n0.Mapper0;
+import intellispaces.framework.core.guide.n0.MapperOfMoving0;
 import intellispaces.framework.core.guide.n0.Mover0;
 import intellispaces.framework.core.guide.n1.Mapper1;
+import intellispaces.framework.core.guide.n1.MapperOfMoving1;
 import intellispaces.framework.core.guide.n1.Mover1;
 import intellispaces.framework.core.guide.n2.Mapper2;
+import intellispaces.framework.core.guide.n2.MapperOfMoving2;
 import intellispaces.framework.core.guide.n2.Mover2;
 import intellispaces.framework.core.guide.n3.Mapper3;
+import intellispaces.framework.core.guide.n3.MapperOfMoving3;
 import intellispaces.framework.core.guide.n3.Mover3;
 import intellispaces.framework.core.guide.n4.Mapper4;
+import intellispaces.framework.core.guide.n4.MapperOfMoving4;
 import intellispaces.framework.core.guide.n4.Mover4;
 import intellispaces.framework.core.guide.n5.Mapper5;
+import intellispaces.framework.core.guide.n5.MapperOfMoving5;
 import intellispaces.framework.core.guide.n5.Mover5;
 import intellispaces.framework.core.object.ObjectFunctions;
 import intellispaces.framework.core.space.transition.TransitionFunctions;
 import intellispaces.framework.core.traverse.TraverseType;
+import intellispaces.framework.core.traverse.TraverseTypes;
 
 import javax.annotation.processing.RoundEnvironment;
 import java.util.HashMap;
@@ -137,7 +142,7 @@ public abstract class AbstractGuideGenerationTask extends AbstractGenerationTask
     Class<?> guideClass = getGuideClass();
     guideClassSimpleName = getGuideClassSimpleName(guideClass);
     guideTypeParamsFull = getGuideTypeParamDeclaration();
-    baseMethod = buildBaseMethod(guideClass, Function.identity());
+    baseMethod = buildBaseMethod(Function.identity());
     guideMethod = buildGuideMethod();
   }
 
@@ -150,18 +155,7 @@ public abstract class AbstractGuideGenerationTask extends AbstractGenerationTask
 
   private Class<?> getGuideClass() {
     int qualifierCount = getQualifierMethodParams().size();
-    if (traverseType.isMovingBased()) {
-      return switch (qualifierCount) {
-        case 0 -> Mover0.class;
-        case 1 -> Mover1.class;
-        case 2 -> Mover2.class;
-        case 3 -> Mover3.class;
-        case 4 -> Mover4.class;
-        case 5 -> Mover5.class;
-        default -> throw UnexpectedViolationException.withMessage("Unsupported number of mapper guide qualifies: {0}",
-          qualifierCount);
-      };
-    } else {
+    if (traverseType == TraverseTypes.Mapping) {
       return switch (qualifierCount) {
         case 0 -> Mapper0.class;
         case 1 -> Mapper1.class;
@@ -169,9 +163,33 @@ public abstract class AbstractGuideGenerationTask extends AbstractGenerationTask
         case 3 -> Mapper3.class;
         case 4 -> Mapper4.class;
         case 5 -> Mapper5.class;
-        default -> throw UnexpectedViolationException.withMessage("Unsupported number of mapper guide qualifies: {0}",
+        default -> throw UnexpectedViolationException.withMessage("Unsupported number of guide qualifies: {0}",
+            qualifierCount);
+      };
+    } else if (traverseType == TraverseTypes.Moving) {
+      return switch (qualifierCount) {
+        case 0 -> Mover0.class;
+        case 1 -> Mover1.class;
+        case 2 -> Mover2.class;
+        case 3 -> Mover3.class;
+        case 4 -> Mover4.class;
+        case 5 -> Mover5.class;
+        default -> throw UnexpectedViolationException.withMessage("Unsupported number of guide qualifies: {0}",
           qualifierCount);
       };
+    } else if (traverseType == TraverseTypes.MappingOfMoving) {
+      return switch (qualifierCount) {
+        case 0 -> MapperOfMoving0.class;
+        case 1 -> MapperOfMoving1.class;
+        case 2 -> MapperOfMoving2.class;
+        case 3 -> MapperOfMoving3.class;
+        case 4 -> MapperOfMoving4.class;
+        case 5 -> MapperOfMoving5.class;
+        default -> throw UnexpectedViolationException.withMessage("Unsupported number of guide qualifies: {0}",
+            qualifierCount);
+      };
+    } else {
+      throw UnexpectedViolationException.withMessage("Unsupported traverse type: {0}", traverseType);
     }
   }
 
@@ -179,8 +197,10 @@ public abstract class AbstractGuideGenerationTask extends AbstractGenerationTask
     var sb = new StringBuilder();
     sb.append("<");
     sb.append(buildSourceObjectHandleDeclaration(typeReplacer));
-    sb.append(", ");
-    sb.append(buildTargetObjectHandleDeclaration(typeReplacer));
+    if (traverseType == TraverseTypes.Mapping || traverseType == TraverseTypes.MappingOfMoving) {
+      sb.append(", ");
+      sb.append(buildTargetObjectHandleDeclaration(typeReplacer));
+    }
     for (MethodParam param : getQualifierMethodParams()) {
       sb.append(", ");
       sb.append(buildObjectHandleDeclaration(param.type(), typeReplacer));
@@ -189,13 +209,11 @@ public abstract class AbstractGuideGenerationTask extends AbstractGenerationTask
     return sb.toString();
   }
 
-  private String buildBaseMethod(Class<?> guideClass, Function<TypeReference, TypeReference> typeReplacer) {
-    GuideKind guideKind = GuideFunctions.getGuideKind(guideClass);
-
+  private String buildBaseMethod(Function<TypeReference, TypeReference> typeReplacer) {
     var sb = new StringBuilder();
     sb.append("default ");
     sb.append(buildTargetObjectHandleDeclaration(typeReplacer));
-    sb.append(guideKind.isMapper() ? " map(" : " move(");
+    sb.append(" traverse(");
     sb.append(buildSourceObjectHandleDeclaration(typeReplacer));
     sb.append(" ").append("source");
     for (MethodParam param : getQualifierMethodParams()) {

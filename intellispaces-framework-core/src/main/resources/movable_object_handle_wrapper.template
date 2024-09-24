@@ -57,42 +57,86 @@ public class {{$classSimpleName}}{{$typeParamsFull}} extends {{$sourceClassSimpl
 {{end}}
 
   @Override
-  public <R, Q> R moveThru(String tid, Q qualifier) throws TraverseException {
+  public <Q> {{$sourceClassSimpleName}} moveThru(String tid, Q qualifier) throws TraverseException {
     Type<{{$sourceClassSimpleName}}{{$typeParamsBrief}}> sourceType = Types.of({{$sourceClassSimpleName}}.class);
-    Mover1<{{$sourceClassSimpleName}}, R, Q> mover = Modules.current().autoMoverThruTransition1(sourceType, tid);
-    return (R) mover.move(this, qualifier);
+    Mover1<{{$sourceClassSimpleName}}, Q> mover = Modules.current().autoMoverThruTransition1(sourceType, tid);
+    return ({{$sourceClassSimpleName}}) mover.move(this, qualifier);
   }
 
   @Override
-  public <R> R moveThru(TransitionMethod0<? super {{$domainClassSimpleName}}, R> transitionMethod) throws TraverseException {
+  public {{$sourceClassSimpleName}} moveThru(TransitionMethod0<? super {{$domainClassSimpleName}}, ? super {{$domainClassSimpleName}}> transitionMethod) throws TraverseException {
     String tid = TransitionFunctions.getTransitionId({{$domainClassSimpleName}}.class, transitionMethod);
     Type<{{$sourceClassSimpleName}}{{$typeParamsBrief}}> sourceType = Types.of({{$sourceClassSimpleName}}.class);
-    Mover0<{{$sourceClassSimpleName}}, R> mover = Modules.current().autoMoverThruTransition0(sourceType, tid);
-    return (R) mover.move(this);
+    Mover0<{{$sourceClassSimpleName}}> mover = Modules.current().autoMoverThruTransition0(sourceType, tid);
+    return ({{$sourceClassSimpleName}}) mover.move(this);
   }
 
   @Override
-  public <R, Q> R moveThru(TransitionMethod1<? super {{$domainClassSimpleName}}, R, Q> transitionMethod, Q qualifier) throws TraverseException {
+  public <Q> {{$sourceClassSimpleName}} moveThru(TransitionMethod1<? super {{$domainClassSimpleName}}, ? super {{$domainClassSimpleName}}, Q> transitionMethod, Q qualifier) throws TraverseException {
     String tid = TransitionFunctions.getTransitionId({{$domainClassSimpleName}}.class, transitionMethod, null);
     Type<{{$sourceClassSimpleName}}{{$typeParamsBrief}}> sourceType = Types.of({{$sourceClassSimpleName}}.class);
-    Mover1<{{$sourceClassSimpleName}}, R, Q> mover = Modules.current().autoMoverThruTransition1(sourceType, tid);
-    return (R) mover.move(this, qualifier);
+    Mover1<{{$sourceClassSimpleName}}, Q> mover = Modules.current().autoMoverThruTransition1(sourceType, tid);
+    return ({{$sourceClassSimpleName}}) mover.move(this, qualifier);
   }
 
   @Override
-  public <R> R moveThru(Class<? extends Transition0> transitionClass) throws TraverseException {
+  public {{$sourceClassSimpleName}} moveThru(Class<? extends Transition0> transitionClass) throws TraverseException {
     String tid = TransitionFunctions.getTransitionId(transitionClass);
     Type<{{$sourceClassSimpleName}}{{$typeParamsBrief}}> sourceType = Types.of({{$sourceClassSimpleName}}.class);
-    Mover0<{{$sourceClassSimpleName}}, R> mover = Modules.current().autoMoverThruTransition0(sourceType, tid);
-    return (R) mover.move(this);
+    Mover0<{{$sourceClassSimpleName}}> mover = Modules.current().autoMoverThruTransition0(sourceType, tid);
+    return ({{$sourceClassSimpleName}}) mover.move(this);
   }
 
   @Override
-  public <R, Q> R moveThru(Class<? extends Transition1> transitionClass, Q qualifier) throws TraverseException {
+  public <Q> {{$sourceClassSimpleName}} moveThru(Class<? extends Transition1> transitionClass, Q qualifier) throws TraverseException {
     String tid = TransitionFunctions.getTransitionId(transitionClass);
     Type<{{$sourceClassSimpleName}}{{$typeParamsBrief}}> sourceType = Types.of({{$sourceClassSimpleName}}.class);
-    Mover1<{{$sourceClassSimpleName}}, R, Q> mover = Modules.current().autoMoverThruTransition1(sourceType, tid);
-    return (R) mover.move(this, qualifier);
+    Mover1<{{$sourceClassSimpleName}}, Q> mover = Modules.current().autoMoverThruTransition1(sourceType, tid);
+    return ({{$sourceClassSimpleName}}) mover.move(this, qualifier);
+  }
+
+  @Override
+  public <R, Q> R mapOfMovingThru(String tid, Q qualifier) throws TraverseException {
+    //Type<{{$sourceClassSimpleName}}{{$typeParamsBrief}}> sourceType = Types.of({{$sourceClassSimpleName}}.class);
+    //Mover1<{{$sourceClassSimpleName}}, R, Q> mover = Modules.current().autoMoverThruTransition1(sourceType, tid);
+    //return (R) mover.move(this, qualifier);
+    throw new RuntimeException("Not implemented");
+  }
+
+  @Override
+  public <R> R mapOfMovingThru(TransitionMethod0<? super {{$domainClassSimpleName}}, R> transitionMethod) throws TraverseException {
+    //String tid = TransitionFunctions.getTransitionId({{$domainClassSimpleName}}.class, transitionMethod);
+    //Type<{{$sourceClassSimpleName}}{{$typeParamsBrief}}> sourceType = Types.of({{$sourceClassSimpleName}}.class);
+    //Mover0<{{$sourceClassSimpleName}}, R> mover = Modules.current().autoMoverThruTransition0(sourceType, tid);
+    //return (R) mover.move(this);
+    throw new RuntimeException("Not implemented");
+  }
+
+  @Override
+  public <R, Q> R mapOfMovingThru(TransitionMethod1<? super {{$domainClassSimpleName}}, R, Q> transitionMethod, Q qualifier) throws TraverseException {
+    //String tid = TransitionFunctions.getTransitionId({{$domainClassSimpleName}}.class, transitionMethod, null);
+    //Type<{{$sourceClassSimpleName}}{{$typeParamsBrief}}> sourceType = Types.of({{$sourceClassSimpleName}}.class);
+    //Mover1<{{$sourceClassSimpleName}}, R, Q> mover = Modules.current().autoMoverThruTransition1(sourceType, tid);
+    //return (R) mover.move(this, qualifier);
+    throw new RuntimeException("Not implemented");
+  }
+
+  @Override
+  public <R> R mapOfMovingThru(Class<? extends Transition0> transitionClass) throws TraverseException {
+    //String tid = TransitionFunctions.getTransitionId(transitionClass);
+    //Type<{{$sourceClassSimpleName}}{{$typeParamsBrief}}> sourceType = Types.of({{$sourceClassSimpleName}}.class);
+    //Mover0<{{$sourceClassSimpleName}}, R> mover = Modules.current().autoMoverThruTransition0(sourceType, tid);
+    //return (R) mover.move(this);
+    throw new RuntimeException("Not implemented");
+  }
+
+  @Override
+  public <R, Q> R mapOfMovingThru(Class<? extends Transition1> transitionClass, Q qualifier) throws TraverseException {
+    //String tid = TransitionFunctions.getTransitionId(transitionClass);
+    //Type<{{$sourceClassSimpleName}}{{$typeParamsBrief}}> sourceType = Types.of({{$sourceClassSimpleName}}.class);
+    //Mover1<{{$sourceClassSimpleName}}, R, Q> mover = Modules.current().autoMoverThruTransition1(sourceType, tid);
+    //return (R) mover.move(this, qualifier);
+    throw new RuntimeException("Not implemented");
   }
 
 {{for method : $guideMethods}}

@@ -22,6 +22,14 @@ import intellispaces.framework.core.traverse.MapObjectHandleThruTransition2Plan;
 import intellispaces.framework.core.traverse.MapObjectHandleThruTransition2PlanImpl;
 import intellispaces.framework.core.traverse.MapObjectHandleThruTransition3Plan;
 import intellispaces.framework.core.traverse.MapObjectHandleThruTransition3PlanImpl;
+import intellispaces.framework.core.traverse.MapOfMovingObjectHandleThruTransition0Plan;
+import intellispaces.framework.core.traverse.MapOfMovingObjectHandleThruTransition0PlanImpl;
+import intellispaces.framework.core.traverse.MapOfMovingObjectHandleThruTransition1Plan;
+import intellispaces.framework.core.traverse.MapOfMovingObjectHandleThruTransition1PlanImpl;
+import intellispaces.framework.core.traverse.MapOfMovingObjectHandleThruTransition2Plan;
+import intellispaces.framework.core.traverse.MapOfMovingObjectHandleThruTransition2PlanImpl;
+import intellispaces.framework.core.traverse.MapOfMovingObjectHandleThruTransition3Plan;
+import intellispaces.framework.core.traverse.MapOfMovingObjectHandleThruTransition3PlanImpl;
 import intellispaces.framework.core.traverse.MoveObjectHandleThruTransition0Plan;
 import intellispaces.framework.core.traverse.MoveObjectHandleThruTransition0PlanImpl;
 import intellispaces.framework.core.traverse.MoveObjectHandleThruTransition1Plan;
@@ -123,6 +131,46 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
     return declarativePlan;
   }
 
+  @Override
+  public MapOfMovingObjectHandleThruTransition0Plan buildMapOfMovingObjectHandleThruTransition0Plan(
+      Class<?> sourceClass, String tid
+  ) {
+    MapOfMovingObjectHandleThruTransition0Plan declarativePlan = new MapOfMovingObjectHandleThruTransition0PlanImpl(
+        sourceClass, tid);
+    setExecutionPlan(declarativePlan, sourceClass);
+    return declarativePlan;
+  }
+
+  @Override
+  public MapOfMovingObjectHandleThruTransition1Plan buildMapOfMovingObjectHandleThruTransition1Plan(
+      Class<?> sourceClass, String tid
+  ) {
+    MapOfMovingObjectHandleThruTransition1Plan declarativePlan = new MapOfMovingObjectHandleThruTransition1PlanImpl(
+        sourceClass, tid);
+    setExecutionPlan(declarativePlan, sourceClass);
+    return declarativePlan;
+  }
+
+  @Override
+  public MapOfMovingObjectHandleThruTransition2Plan buildMapOfMovingObjectHandleThruTransition2Plan(
+      Class<?> sourceClass, String tid
+  ) {
+    MapOfMovingObjectHandleThruTransition2Plan declarativePlan = new MapOfMovingObjectHandleThruTransition2PlanImpl(
+        sourceClass, tid);
+    setExecutionPlan(declarativePlan, sourceClass);
+    return declarativePlan;
+  }
+
+  @Override
+  public MapOfMovingObjectHandleThruTransition3Plan buildMapOfMovingObjectHandleThruTransition3Plan(
+      Class<?> sourceClass, String tid
+  ) {
+    MapOfMovingObjectHandleThruTransition3Plan declarativePlan = new MapOfMovingObjectHandleThruTransition3PlanImpl(
+        sourceClass, tid);
+    setExecutionPlan(declarativePlan, sourceClass);
+    return declarativePlan;
+  }
+
   private void setExecutionPlan(ObjectHandleTraversePlan plan, Class<?> objectHandleClass) {
     ExecutionPlan executionPlan = getExecutionPlan(plan, objectHandleClass);
     if (executionPlan != null) {
@@ -181,10 +229,10 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
       throw new UnsupportedOperationException("Not implemented");
     }
     return switch (guideKind) {
-      case Mapper0, Mover0 -> new CallGuide0PlanImpl((Guide0<?, ?>) guides.get(0));
-      case Mapper1, Mover1 -> new CallGuide1PlanImpl((Guide1<?, ?, ?>) guides.get(0));
-      case Mapper2, Mover2 -> new CallGuide2PlanImpl((Guide2<?, ?, ?, ?>) guides.get(0));
-      case Mapper3, Mover3 -> new CallGuide3PlanImpl((Guide3<?, ?, ?, ?, ?>) guides.get(0));
+      case Mapper0, Mover0, MapperOfMoving0 -> new CallGuide0PlanImpl((Guide0<?, ?>) guides.get(0));
+      case Mapper1, Mover1, MapperOfMoving1 -> new CallGuide1PlanImpl((Guide1<?, ?, ?>) guides.get(0));
+      case Mapper2, Mover2, MapperOfMoving2 -> new CallGuide2PlanImpl((Guide2<?, ?, ?, ?>) guides.get(0));
+      case Mapper3, Mover3, MapperOfMoving3 -> new CallGuide3PlanImpl((Guide3<?, ?, ?, ?, ?>) guides.get(0));
       default -> throw new UnsupportedOperationException("Not implemented");
     };
   }
@@ -203,6 +251,10 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
       case MoveObjectHandleThruTransition1 -> GuideKinds.Mover1;
       case MoveObjectHandleThruTransition2 -> GuideKinds.Mover2;
       case MoveObjectHandleThruTransition3 -> GuideKinds.Mover3;
+      case MapOfMovingObjectHandleThruTransition0 -> GuideKinds.MapperOfMoving0;
+      case MapOfMovingObjectHandleThruTransition1 -> GuideKinds.MapperOfMoving1;
+      case MapOfMovingObjectHandleThruTransition2 -> GuideKinds.MapperOfMoving2;
+      case MapOfMovingObjectHandleThruTransition3 -> GuideKinds.MapperOfMoving3;
       default -> throw new UnsupportedOperationException("Not implemented");
     };
   }

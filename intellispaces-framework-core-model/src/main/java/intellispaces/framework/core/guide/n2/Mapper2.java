@@ -22,33 +22,45 @@ public interface Mapper2<S, T, Q1, Q2> extends
     Mapper4<S, T, Q1, Q2, Void, Void>,
     Mapper5<S, T, Q1, Q2, Void, Void, Void>
 {
-  T map(S source, Q1 qualifier1, Q2 qualifier2) throws TraverseException;
-
   TriFunction<S, Q1, Q2, T> asTriFunction();
+
+  default T map(S source, Q1 qualifier1, Q2 qualifier2) throws TraverseException {
+    return traverse(source, qualifier1, qualifier2);
+  }
 
   @Override
   default T map(S source, Q1 qualifier1, Q2 qualifier2, Void qualifier3) throws TraverseException {
-    return map(source, qualifier1, qualifier2);
+    return traverse(source, qualifier1, qualifier2);
   }
 
   @Override
   default T map(S source, Q1 qualifier1, Q2 qualifier2, Void qualifier3, Void qualifier4) throws TraverseException {
-    return map(source, qualifier1, qualifier2);
+    return traverse(source, qualifier1, qualifier2);
   }
 
   @Override
   default T map(S source, Q1 qualifier1, Q2 qualifier2, Void qualifier3, Void qualifier4, Void qualifier5) throws TraverseException {
-    return map(source, qualifier1, qualifier2);
-  }
-
-  @Override
-  default T traverse(S source, Q1 qualifier1, Q2 qualifier2) throws TraverseException {
-    return map(source, qualifier1, qualifier2);
+    return traverse(source, qualifier1, qualifier2);
   }
 
   @Override
   @SuppressWarnings("unchecked")
   default T traverse(S source, Object... qualifiers) throws TraverseException {
-    return map(source, (Q1) qualifiers[0], (Q2) qualifiers[1]);
+    return traverse(source, (Q1) qualifiers[0], (Q2) qualifiers[1]);
+  }
+
+  @Override
+  default T traverse(S source, Q1 qualifier1, Q2 qualifier2, Void qualifier3) throws TraverseException {
+    return traverse(source, qualifier1, qualifier2);
+  }
+
+  @Override
+  default T traverse(S source, Q1 qualifier1, Q2 qualifier2, Void qualifier3, Void qualifier4) throws TraverseException {
+    return traverse(source, qualifier1, qualifier2);
+  }
+
+  @Override
+  default T traverse(S source, Q1 qualifier1, Q2 qualifier2, Void qualifier3, Void qualifier4, Void qualifier5) throws TraverseException {
+    return traverse(source, qualifier1, qualifier2);
   }
 }

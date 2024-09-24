@@ -33,7 +33,7 @@ public class AutoMapper3<S, T, Q1, Q2,  Q3> implements AbstractMapper3<S, T, Q1,
 
   @Override
   @SuppressWarnings("unchecked")
-  public T map(S source, Q1 qualifier1, Q2 qualifier2, Q3 qualifier3) throws TraverseException {
+  public T traverse(S source, Q1 qualifier1, Q2 qualifier2, Q3 qualifier3) throws TraverseException {
     return (T) declarativeTaskPlan.execute(source, qualifier1, qualifier2, qualifier3, traverseExecutor);
   }
 }

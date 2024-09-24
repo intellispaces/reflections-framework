@@ -3,7 +3,7 @@ package intellispaces.framework.core.guide.n3;
 import intellispaces.framework.core.guide.GuideKind;
 import intellispaces.framework.core.guide.GuideKinds;
 
-public interface AbstractMover3<S, R, Q1, Q2, Q3> extends Mover3<S, R, Q1, Q2, Q3> {
+public interface AbstractMover3<S, Q1, Q2, Q3> extends Mover3<S, Q1, Q2, Q3> {
 
   @Override
   default GuideKind kind() {

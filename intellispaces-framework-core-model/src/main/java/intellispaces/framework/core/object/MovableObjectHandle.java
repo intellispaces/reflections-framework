@@ -20,15 +20,27 @@ public interface MovableObjectHandle<D> extends ObjectHandle<D> {
     return true;
   }
 
-  <R, Q> R moveThru(String tid, Q qualifier) throws TraverseException;
+  <Q> MovableObjectHandle<D> moveThru(String tid, Q qualifier) throws TraverseException;
 
-  <R> R moveThru(TransitionMethod0<? super D, R> transitionMethod) throws TraverseException;
+  MovableObjectHandle<D> moveThru(TransitionMethod0<? super D, ? super D> transitionMethod) throws TraverseException;
 
-  <R, Q> R moveThru(TransitionMethod1<? super D, R, Q> transitionMethod, Q qualifier) throws TraverseException;
-
-  @SuppressWarnings("rawtypes")
-  <R> R moveThru(Class<? extends Transition0> transitionClass) throws TraverseException;
+  <Q> MovableObjectHandle<D> moveThru(TransitionMethod1<? super D, ? super D, Q> transitionMethod, Q qualifier) throws TraverseException;
 
   @SuppressWarnings("rawtypes")
-  <R, Q> R moveThru(Class<? extends Transition1> transitionClass, Q qualifier) throws TraverseException;
+  MovableObjectHandle<D> moveThru(Class<? extends Transition0> transitionClass) throws TraverseException;
+
+  @SuppressWarnings("rawtypes")
+  <Q> MovableObjectHandle<D> moveThru(Class<? extends Transition1> transitionClass, Q qualifier) throws TraverseException;
+
+  <R, Q> R mapOfMovingThru(String tid, Q qualifier) throws TraverseException;
+
+  <R> R mapOfMovingThru(TransitionMethod0<? super D, R> transitionMethod) throws TraverseException;
+
+  <R, Q> R mapOfMovingThru(TransitionMethod1<? super D, R, Q> transitionMethod, Q qualifier) throws TraverseException;
+
+  @SuppressWarnings("rawtypes")
+  <R> R mapOfMovingThru(Class<? extends Transition0> transitionClass) throws TraverseException;
+
+  @SuppressWarnings("rawtypes")
+  <R, Q> R mapOfMovingThru(Class<? extends Transition1> transitionClass, Q qualifier) throws TraverseException;
 }

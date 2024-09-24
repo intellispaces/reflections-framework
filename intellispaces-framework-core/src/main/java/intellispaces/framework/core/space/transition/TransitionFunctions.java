@@ -9,6 +9,7 @@ import intellispaces.common.javastatement.method.MethodStatement;
 import intellispaces.common.javastatement.method.Methods;
 import intellispaces.framework.core.annotation.Guide;
 import intellispaces.framework.core.annotation.Mapper;
+import intellispaces.framework.core.annotation.MapperOfMoving;
 import intellispaces.framework.core.annotation.Mover;
 import intellispaces.framework.core.annotation.Transition;
 import intellispaces.framework.core.object.ObjectFunctions;
@@ -95,6 +96,24 @@ public interface TransitionFunctions {
     }
     if (mover != null) {
       Class<?> transitionClass = mover.value();
+      if (transitionClass != null) {
+        Transition transition = transitionClass.getAnnotation(Transition.class);
+        if (transition != null) {
+          return transition.value();
+        }
+      }
+    }
+
+    MapperOfMoving mapperOfMoving = guideMethod.getAnnotation(MapperOfMoving.class);
+    if (mapperOfMoving == null) {
+      mapperOfMoving = Methods.of(guideMethod).overrideMethods().stream()
+        .map(m -> m.selectAnnotation(MapperOfMoving.class))
+        .filter(Optional::isPresent)
+        .map(Optional::get)
+        .findFirst().orElse(null);
+    }
+    if (mapperOfMoving != null) {
+      Class<?> transitionClass = mapperOfMoving.value();
       if (transitionClass != null) {
         Transition transition = transitionClass.getAnnotation(Transition.class);
         if (transition != null) {
@@ -270,7 +289,7 @@ public interface TransitionFunctions {
 
   static boolean isMovingTraverse(MethodStatement transitionMethod) {
     return getTraverseTypes(transitionMethod).stream()
-      .anyMatch(type -> type == TraverseTypes.Moving || type == TraverseTypes.MappingRelatedToMoving);
+      .anyMatch(type -> type == TraverseTypes.Moving || type == TraverseTypes.MappingOfMoving);
   }
 
   static List<TraverseTypes> getTraverseTypes(MethodStatement method) {

@@ -11,10 +11,10 @@ import java.util.Map;
 import java.util.WeakHashMap;
 
 class AttachedObjectGuideRegistry {
-  private final Map<Class<?>, HandleDescription> handle2DescriptionMap = new WeakHashMap<>();
+  private final Map<Class<?>, HandleDescription> handleDescriptions = new WeakHashMap<>();
 
   public Guide<?, ?> getGuide(GuideKind kind, Class<?> objectHandleClass, String tid) {
-    HandleDescription description = handle2DescriptionMap.computeIfAbsent(
+    HandleDescription description = handleDescriptions.computeIfAbsent(
         objectHandleClass, this::createHandleDescription);
     return description.getGuide(kind, tid);
   }
@@ -32,8 +32,9 @@ class AttachedObjectGuideRegistry {
 
   private final class HandleDescription {
     private final Class<?> objectHandleClass;
-    private final Map<String, Guide<?, ?>> mappers = new HashMap<>();
-    private final Map<String, Guide<?, ?>> movers = new HashMap<>();
+    private final Map<String, Guide<?, ?>> mapperGuides = new HashMap<>();
+    private final Map<String, Guide<?, ?>> moverGuides = new HashMap<>();
+    private final Map<String, Guide<?, ?>> mapperOfMovingGuides = new HashMap<>();
 
     HandleDescription(Class<?> objectHandleClass) {
       this.objectHandleClass = objectHandleClass;
@@ -45,17 +46,22 @@ class AttachedObjectGuideRegistry {
 
     Guide<?, ?> getGuide(GuideKind kind, String tid) {
       if (kind.isMapper()) {
-        return mappers.get(tid);
-      } else {
-        return movers.get(tid);
+        return mapperGuides.get(tid);
+      } else if (kind.isMover()) {
+        return moverGuides.get(tid);
+      } else if (kind.isMapperOfMoving()) {
+        return mapperOfMovingGuides.get(tid);
       }
+      return null;
     }
 
     void addGuide(Guide<?, ?> guide) {
       if (guide.kind().isMapper()) {
-        mappers.put(guide.tid(), guide);
-      } else {
-        movers.put(guide.tid(), guide);
+        mapperGuides.put(guide.tid(), guide);
+      } else if (guide.kind().isMover()) {
+        moverGuides.put(guide.tid(), guide);
+      } else if (guide.kind().isMapperOfMoving()) {
+        mapperOfMovingGuides.put(guide.tid(), guide);
       }
     }
   }

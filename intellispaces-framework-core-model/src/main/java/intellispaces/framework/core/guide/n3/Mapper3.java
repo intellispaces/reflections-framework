@@ -21,28 +21,35 @@ public interface Mapper3<S, T, Q1, Q2, Q3> extends
     Mapper4<S, T, Q1, Q2, Q3, Void>,
     Mapper5<S, T, Q1, Q2, Q3, Void, Void>
 {
-  T map(S source, Q1 qualifier1, Q2 qualifier2, Q3 qualifier3) throws TraverseException;
-
   QuadFunction<S, Q1, Q2, Q3, T> asQuadFunction();
+
+  default T map(S source, Q1 qualifier1, Q2 qualifier2, Q3 qualifier3) throws TraverseException {
+    return traverse(source, qualifier1, qualifier2, qualifier3);
+  }
 
   @Override
   default T map(S source, Q1 qualifier1, Q2 qualifier2, Q3 qualifier3, Void qualifier4) throws TraverseException {
-    return map(source, qualifier1, qualifier2, qualifier3);
+    return traverse(source, qualifier1, qualifier2, qualifier3);
   }
 
   @Override
   default T map(S source, Q1 qualifier1, Q2 qualifier2, Q3 qualifier3, Void qualifier4, Void qualifier5) throws TraverseException {
-    return map(source, qualifier1, qualifier2, qualifier3);
-  }
-
-  @Override
-  default T traverse(S source, Q1 qualifier1, Q2 qualifier2, Q3 qualifier3) throws TraverseException {
-    return map(source, qualifier1, qualifier2, qualifier3);
+    return traverse(source, qualifier1, qualifier2, qualifier3);
   }
 
   @Override
   @SuppressWarnings("unchecked")
   default T traverse(S source, Object... qualifiers) throws TraverseException {
-    return map(source, (Q1) qualifiers[0], (Q2) qualifiers[1], (Q3) qualifiers[2]);
+    return traverse(source, (Q1) qualifiers[0], (Q2) qualifiers[1], (Q3) qualifiers[2]);
+  }
+
+  @Override
+  default T traverse(S source, Q1 qualifier1, Q2 qualifier2, Q3 qualifier3, Void qualifier4) throws TraverseException {
+    return traverse(source, qualifier1, qualifier2, qualifier3);
+  }
+
+  @Override
+  default T traverse(S source, Q1 qualifier1, Q2 qualifier2, Q3 qualifier3, Void qualifier4, Void qualifier5) throws TraverseException {
+    return traverse(source, qualifier1, qualifier2, qualifier3);
   }
 }

@@ -60,5 +60,25 @@ public enum TraversePlanTypes implements TraversePlanType {
   /**
    * Declarative traverse plan to move object handle through three times parametrized transition.
    */
-  MoveObjectHandleThruTransition3
+  MoveObjectHandleThruTransition3,
+
+  /**
+   * Declarative traverse plan to map of moving object handle through not-parametrized transition.
+   */
+  MapOfMovingObjectHandleThruTransition0,
+
+  /**
+   * Declarative traverse plan to map of moving object handle through one-parametrized transition.
+   */
+  MapOfMovingObjectHandleThruTransition1,
+
+  /**
+   * Declarative traverse plan to map of moving object handle through two times parametrized transition.
+   */
+  MapOfMovingObjectHandleThruTransition2,
+
+  /**
+   * Declarative traverse plan to map of moving object handle through three times parametrized transition.
+   */
+  MapOfMovingObjectHandleThruTransition3,
 }

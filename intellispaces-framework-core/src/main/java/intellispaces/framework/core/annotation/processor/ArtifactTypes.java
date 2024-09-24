@@ -14,5 +14,7 @@ public enum ArtifactTypes {
 
   Mapper,
 
-  Mover
+  Mover,
+
+  MapperOfMoving
 }

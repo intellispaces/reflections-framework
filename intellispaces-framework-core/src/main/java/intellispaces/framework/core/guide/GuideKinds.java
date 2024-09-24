@@ -2,36 +2,53 @@ package intellispaces.framework.core.guide;
 
 public enum GuideKinds implements GuideKind {
 
-  Mapper0(true, 0),
+  Mapper0(true, false, false, 0),
 
-  Mapper1(true, 1),
+  Mapper1(true, false, false, 1),
 
-  Mapper2(true, 2),
+  Mapper2(true, false, false, 2),
 
-  Mapper3(true, 3),
+  Mapper3(true, false, false, 3),
 
-  Mapper4(true, 4),
+  Mapper4(true, false, false, 4),
 
-  Mapper5(true, 5),
+  Mapper5(true, false, false, 5),
 
-  Mover0(false, 0),
+  Mover0(false, true, false, 0),
 
-  Mover1(false, 1),
+  Mover1(false, true, false, 1),
 
-  Mover2(false, 2),
+  Mover2(false, true, false, 2),
 
-  Mover3(false, 3),
+  Mover3(false, true, false, 3),
 
-  Mover4(false, 4),
+  Mover4(false, true, false, 4),
 
-  Mover5(false, 5);
+  Mover5(false, true, false, 5),
+
+  MapperOfMoving0(true, false, true, 0),
+
+  MapperOfMoving1(true, false, true, 1),
+
+  MapperOfMoving2(true, false, true, 2),
+
+  MapperOfMoving3(true, false, true, 3),
+
+  MapperOfMoving4(true, false, true, 4),
+
+  MapperOfMoving5(true, false, true, 5);
+
 
   private final boolean mapper;
-  private final int guideOrder;
+  private final boolean mover;
+  private final boolean mapperOfMoving;
+  private final int order;
 
-  GuideKinds(boolean mapper, int guideOrder) {
+  GuideKinds(boolean mapper, boolean mover, boolean mapperOfMoving, int order) {
     this.mapper = mapper;
-    this.guideOrder = guideOrder;
+    this.mover = mover;
+    this.mapperOfMoving = mapperOfMoving;
+    this.order = order;
   }
 
   @Override
@@ -41,11 +58,21 @@ public enum GuideKinds implements GuideKind {
 
   @Override
   public boolean isMover() {
-    return !mapper;
+    return mover;
+  }
+
+  @Override
+  public boolean isMapperOfMoving() {
+    return mapperOfMoving;
+  }
+
+  @Override
+  public boolean isMovingBased() {
+    return mover || mapperOfMoving;
   }
 
   @Override
   public int order() {
-    return guideOrder;
+    return order;
   }
 }

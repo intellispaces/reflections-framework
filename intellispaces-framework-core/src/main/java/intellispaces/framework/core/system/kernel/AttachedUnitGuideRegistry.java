@@ -10,14 +10,17 @@ import java.util.List;
 import java.util.Map;
 
 class AttachedUnitGuideRegistry {
-  private final Map<String, List<Guide<?, ?>>> mappers = new HashMap<>();
-  private final Map<String, List<Guide<?, ?>>> movers = new HashMap<>();
+  private final Map<String, List<Guide<?, ?>>> mapperGuides = new HashMap<>();
+  private final Map<String, List<Guide<?, ?>>> moverGuides = new HashMap<>();
+  private final Map<String, List<Guide<?, ?>>> mapperOfMovingGuides = new HashMap<>();
 
   public void addGuide(Guide<?, ?> guide) {
     if (guide.kind().isMapper()) {
-      mappers.computeIfAbsent(guide.tid(), k -> newList(guide));
-    } else {
-      movers.computeIfAbsent(guide.tid(), k -> newList(guide));
+      mapperGuides.computeIfAbsent(guide.tid(), k -> newList(guide));
+    } else if (guide.kind().isMover()) {
+      moverGuides.computeIfAbsent(guide.tid(), k -> newList(guide));
+    } else if (guide.kind().isMapperOfMoving()) {
+      mapperOfMovingGuides.computeIfAbsent(guide.tid(), k -> newList(guide));
     }
   }
 
@@ -28,7 +31,14 @@ class AttachedUnitGuideRegistry {
   }
 
   public List<Guide<?, ?>> findGuides(GuideKind kind, String tid) {
-    List<Guide<?, ?>> guides = kind.isMapper() ? mappers.get(tid) : movers.get(tid);
+    List<Guide<?, ?>> guides = null;
+    if (kind.isMapper()) {
+      guides = mapperGuides.get(tid);
+    } else if (kind.isMover()) {
+      guides = moverGuides.get(tid);
+    } else if (kind.isMapperOfMoving()) {
+      guides = mapperOfMovingGuides.get(tid);
+    }
     if (guides == null) {
       return List.of();
     }

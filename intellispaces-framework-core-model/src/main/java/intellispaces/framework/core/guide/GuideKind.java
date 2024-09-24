@@ -9,4 +9,8 @@ public interface GuideKind {
   boolean isMapper();
 
   boolean isMover();
+
+  boolean isMapperOfMoving();
+
+  boolean isMovingBased();
 }

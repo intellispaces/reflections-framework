@@ -11,6 +11,7 @@ import intellispaces.common.javastatement.reference.NotPrimitiveReference;
 import intellispaces.common.javastatement.reference.TypeReference;
 import intellispaces.framework.core.annotation.Guide;
 import intellispaces.framework.core.annotation.Mapper;
+import intellispaces.framework.core.annotation.MapperOfMoving;
 import intellispaces.framework.core.annotation.Mover;
 import intellispaces.framework.core.common.NameConventionFunctions;
 import intellispaces.framework.core.guide.n0.Mapper0;
@@ -46,6 +47,7 @@ public abstract class AbstractGuideGenerationTask extends AbstractGenerationTask
   protected final TraverseType traverseType;
   protected final MethodStatement transitionMethod;
   private String guideClassSimpleName;
+  private String guideAnnotation;
   private String guideMethod;
   private String baseMethod;
   private String guideTypeParamsFull;
@@ -88,7 +90,7 @@ public abstract class AbstractGuideGenerationTask extends AbstractGenerationTask
     vars.put("guideTypeParamsFull", guideTypeParamsFull);
     vars.put("guideClassSimpleName", guideClassSimpleName);
     vars.put("guideTypeParams", buildGuideTypeParams(Function.identity()));
-    vars.put("isMapper", !traverseType.isMovingBased());
+    vars.put("guideAnnotation", guideAnnotation);
     vars.put("guideMethod", guideMethod);
     vars.put("baseMethod", baseMethod);
     vars.put("importedClasses", context.getImports());
@@ -103,11 +105,6 @@ public abstract class AbstractGuideGenerationTask extends AbstractGenerationTask
     }
     context.addImport(Guide.class);
     context.addImport(TransitionFunctions.class);
-    if (traverseType.isMovingBased()) {
-      context.addImport(Mover.class);
-    } else {
-      context.addImport(Mapper.class);
-    }
     analyzeGuideType();
     return true;
   }
@@ -143,7 +140,7 @@ public abstract class AbstractGuideGenerationTask extends AbstractGenerationTask
     guideClassSimpleName = getGuideClassSimpleName(guideClass);
     guideTypeParamsFull = getGuideTypeParamDeclaration();
     baseMethod = buildBaseMethod(Function.identity());
-    guideMethod = buildGuideMethod();
+    analyzeGuideMethod();
   }
 
   private String getGuideClassSimpleName(Class<?> guideClass) {
@@ -207,6 +204,21 @@ public abstract class AbstractGuideGenerationTask extends AbstractGenerationTask
     }
     sb.append(">");
     return sb.toString();
+  }
+
+  private void analyzeGuideMethod() {
+    if (traverseType == TraverseTypes.Mapping) {
+      context.addImport(Mapper.class);
+      guideAnnotation = "@" + Mapper.class.getSimpleName();
+    } else if (traverseType == TraverseTypes.Moving) {
+      context.addImport(Mover.class);
+      guideAnnotation = "@" + Mover.class.getSimpleName();
+    } else if (traverseType == TraverseTypes.MappingOfMoving) {
+      context.addImport(MapperOfMoving.class);
+      guideAnnotation = "@" + MapperOfMoving.class.getSimpleName();
+    }
+
+    guideMethod = buildGuideMethod();
   }
 
   private String buildBaseMethod(Function<TypeReference, TypeReference> typeReplacer) {

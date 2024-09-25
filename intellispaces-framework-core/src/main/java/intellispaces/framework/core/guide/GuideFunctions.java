@@ -52,7 +52,6 @@ import intellispaces.framework.core.guide.n5.Mover5;
 import intellispaces.framework.core.space.transition.TransitionFunctions;
 import intellispaces.framework.core.system.UnitGuide;
 import intellispaces.framework.core.system.UnitWrapper;
-import intellispaces.framework.core.system.guide.UnitGuides;
 import intellispaces.framework.core.traverse.TraverseTypes;
 
 import java.lang.reflect.Method;
@@ -172,18 +171,18 @@ public final class GuideFunctions {
     return guides;
   }
 
-  public static List<UnitGuide> readUnitGuides(Class<?> unitClass, UnitWrapper unitInstance) {
-    List<UnitGuide> guides = new ArrayList<>();
+  public static List<UnitGuide<?, ?>> readUnitGuides(Class<?> unitClass, UnitWrapper unitInstance) {
+    List<UnitGuide<?, ?>> guides = new ArrayList<>();
     for (Method method : unitClass.getDeclaredMethods()) {
       if (isMapperMethod(method)) {
-        intellispaces.framework.core.guide.Mapper<?, ?> mapper = createMapper(unitInstance, method);
-          guides.add(UnitGuides.get(mapper));
+        UnitGuide<?, ?> mapper = createMapper(unitInstance, method);
+        guides.add(mapper);
       } else if (isMoverMethod(method)) {
-        intellispaces.framework.core.guide.Mover<?> mover = createMover(unitInstance, method);
-          guides.add(UnitGuides.get(mover));
+        UnitGuide<?, ?> mover = createMover(unitInstance, method);
+          guides.add(mover);
       } else if (isMapperOfMovingMethod(method)) {
-        intellispaces.framework.core.guide.MapperOfMoving<?, ?> mapperOfMoving = createMapperOfMoving(unitInstance, method);
-        guides.add(UnitGuides.get(mapperOfMoving));
+        UnitGuide<?, ?> mapperOfMoving = createMapperOfMoving(unitInstance, method);
+        guides.add(mapperOfMoving);
       }
     }
     return guides;
@@ -197,9 +196,7 @@ public final class GuideFunctions {
     return guideKind;
   }
 
-  private static intellispaces.framework.core.guide.Mapper<?, ?> createMapper(
-      UnitWrapper unitInstance, Method guideMethod
-  ) {
+  private static UnitGuide<?, ?> createMapper(UnitWrapper unitInstance, Method guideMethod) {
     String tid = getUnitGuideTid(unitInstance, guideMethod);
     int guideOrdinal = getUnitGuideOrdinal(unitInstance, guideMethod);
     int qualifiersCount = guideMethod.getParameterCount();
@@ -213,16 +210,12 @@ public final class GuideFunctions {
     };
   }
 
-  private static intellispaces.framework.core.guide.Mover<?> createMover(
-      Object unitInstance, Method guideMethod
-  ) {
+  private static UnitGuide<?, ?> createMover(Object unitInstance, Method guideMethod) {
     String tid = getUnitGuideTid(unitInstance, guideMethod);
     throw new UnsupportedOperationException("Not implemented");
   }
 
-  private static intellispaces.framework.core.guide.MapperOfMoving<?, ?> createMapperOfMoving(
-      UnitWrapper unitInstance, Method guideMethod
-  ) {
+  private static UnitGuide<?, ?> createMapperOfMoving(UnitWrapper unitInstance, Method guideMethod) {
     String tid = getUnitGuideTid(unitInstance, guideMethod);
     int guideOrdinal = getUnitGuideOrdinal(unitInstance, guideMethod);
     int qualifiersCount = guideMethod.getParameterCount();

@@ -11,11 +11,11 @@ import intellispaces.framework.core.annotation.Startup;
 import intellispaces.framework.core.aop.AopFunctions;
 import intellispaces.framework.core.common.NameConventionFunctions;
 import intellispaces.framework.core.guide.GuideFunctions;
-import intellispaces.framework.core.system.UnitGuide;
 import intellispaces.framework.core.system.ModuleFunctions;
 import intellispaces.framework.core.system.ProjectionDefinition;
 import intellispaces.framework.core.system.Unit;
 import intellispaces.framework.core.system.UnitFunctions;
+import intellispaces.framework.core.system.UnitGuide;
 import intellispaces.framework.core.system.UnitWrapper;
 import intellispaces.framework.core.system.action.InvokeUnitMethodAction;
 import intellispaces.framework.core.system.empty.EmptyModule;
@@ -126,7 +126,7 @@ public class ModuleFactory {
     unit.setStartupAction(startupMethod.map(m -> new InvokeUnitMethodAction<Void>(unitInstance, m)).orElse(null));
     unit.setShutdownAction(shutdownMethod.map(m -> new InvokeUnitMethodAction<Void>(unitInstance, m)).orElse(null));
 
-    List<UnitGuide> unitGuides = GuideFunctions.readUnitGuides(unitClass, unitInstance);
+    List<UnitGuide<?, ?>> unitGuides = GuideFunctions.readUnitGuides(unitClass, unitInstance);
     unit.setGuides(Collections.unmodifiableList(unitGuides));
     return unit;
   }
@@ -200,9 +200,9 @@ public class ModuleFactory {
   }
 
   private void applyGuideActionAdvises(KernelUnit unit) {
-    List<UnitGuide> guides = unit.guides();
-    for (UnitGuide guide : guides) {
-      KernelUnitGuide<?, ?> kernelGuide = (KernelUnitGuide<?, ?>) guide.guide();
+    List<UnitGuide<? ,?>> guides = unit.guides();
+    for (UnitGuide<?, ?> guide : guides) {
+      KernelUnitGuide<?, ?> kernelGuide = (KernelUnitGuide<?, ?>) guide;
       Method method = kernelGuide.guideMethod();
       Action originalAction = unit.getGuideAction(kernelGuide.guideOrdinal());
       Action chainAction = AopFunctions.buildChainAction(method, originalAction);

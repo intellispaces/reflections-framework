@@ -13,5 +13,5 @@ public interface Unit {
 
   List<UnitProjectionDefinition> projectionDefinitions();
 
-  List<UnitGuide> guides();
+  List<UnitGuide<?, ?>> guides();
 }

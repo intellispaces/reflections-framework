@@ -57,6 +57,6 @@ class GuideRegistryImpl implements GuideRegistry {
   @Override
   public void addGuideUnit(KernelUnit guideUnit) {
     guideUnits.put(guideUnit.unitClass(), guideUnit.instance());
-    guideUnit.guides().forEach(g -> unitGuideRegistry.addGuide(g.guide()));
+    guideUnit.guides().forEach(unitGuideRegistry::addGuide);
   }
 }

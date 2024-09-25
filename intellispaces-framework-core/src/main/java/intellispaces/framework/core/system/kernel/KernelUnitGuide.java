@@ -1,10 +1,10 @@
 package intellispaces.framework.core.system.kernel;
 
-import intellispaces.framework.core.guide.Guide;
+import intellispaces.framework.core.system.UnitGuide;
 
 import java.lang.reflect.Method;
 
-public interface KernelUnitGuide<S, R> extends Guide<S, R> {
+public interface KernelUnitGuide<S, R> extends UnitGuide<S, R> {
 
   Method guideMethod();
 

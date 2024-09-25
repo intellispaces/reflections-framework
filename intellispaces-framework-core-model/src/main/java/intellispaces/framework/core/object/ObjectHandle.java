@@ -24,7 +24,5 @@ public interface ObjectHandle<D> {
   MovableObjectHandle<D> asMovableOrElseThrow();
 
   @SuppressWarnings("rawtypes")
-  default <T, Q> T mapThru(Class<? extends Transition1> transitionClass, Q qualifier) throws TraverseException {
-    throw new RuntimeException("Not implemented");
-  }
+  <T, Q> T mapThru(Class<? extends Transition1> transitionClass, Q qualifier) throws TraverseException;
 }

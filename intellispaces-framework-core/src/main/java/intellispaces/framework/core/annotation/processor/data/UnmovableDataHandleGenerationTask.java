@@ -1,14 +1,22 @@
 package intellispaces.framework.core.annotation.processor.data;
 
+import intellispaces.common.action.runner.Runner;
 import intellispaces.common.annotationprocessor.context.AnnotationProcessingContext;
+import intellispaces.common.base.text.TextActions;
+import intellispaces.common.base.type.Type;
+import intellispaces.common.base.type.Types;
 import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.common.javastatement.method.MethodStatement;
+import intellispaces.common.javastatement.reference.NamedReference;
 import intellispaces.common.javastatement.reference.TypeReference;
 import intellispaces.framework.core.annotation.Name;
 import intellispaces.framework.core.annotation.ObjectHandle;
 import intellispaces.framework.core.annotation.processor.AbstractGenerationTask;
 import intellispaces.framework.core.common.NameConventionFunctions;
+import intellispaces.framework.core.exception.TraverseException;
 import intellispaces.framework.core.object.ObjectHandleTypes;
+import intellispaces.framework.core.space.transition.Transition1;
+import intellispaces.framework.core.system.Modules;
 
 import javax.annotation.processing.RoundEnvironment;
 import java.util.ArrayList;
@@ -18,6 +26,7 @@ import java.util.Map;
 
 public class UnmovableDataHandleGenerationTask extends AbstractGenerationTask {
   private final List<Map<String, String>> projectionProperties = new ArrayList<>();
+  protected String typeParamsBrief;
 
   public UnmovableDataHandleGenerationTask(CustomType initiatorType, CustomType dataType) {
     super(initiatorType, dataType);
@@ -44,7 +53,9 @@ public class UnmovableDataHandleGenerationTask extends AbstractGenerationTask {
         "generatedAnnotation", makeGeneratedAnnotation(),
         "packageName", context.packageName(),
         "sourceClassName", sourceClassCanonicalName(),
+        "sourceClassSimpleName", sourceClassSimpleName(),
         "objectHandleClassName", NameConventionFunctions.getUnmovableObjectHandleTypename(annotatedType.className()),
+        "typeParamsBrief", typeParamsBrief,
         "classSimpleName", context.generatedClassSimpleName(),
         "importedClasses", context.getImports(),
         "projections", projectionProperties
@@ -59,7 +70,13 @@ public class UnmovableDataHandleGenerationTask extends AbstractGenerationTask {
     }
     context.addImport(Name.class);
     context.addImport(ObjectHandle.class);
+    context.addImport(Modules.class);
+    context.addImport(Type.class);
+    context.addImport(Types.class);
+    context.addImport(Transition1.class);
+    context.addImport(TraverseException.class);
 
+    analyzeTypeParams(annotatedType);
     analyzeProjections();
     return true;
   }
@@ -74,5 +91,27 @@ public class UnmovableDataHandleGenerationTask extends AbstractGenerationTask {
       properties.put("name", method.name());
       projectionProperties.add(properties);
     }
+  }
+
+  protected void analyzeTypeParams(CustomType objectHandleType) {
+    if (objectHandleType.typeParameters().isEmpty()) {
+      typeParamsBrief = "";
+      return;
+    }
+
+    var typeParamsFullBuilder = new StringBuilder();
+    var typeParamsBriefBuilder = new StringBuilder();
+    Runner commaAppender = TextActions.skippingFirstTimeCommaAppender(typeParamsFullBuilder, typeParamsBriefBuilder);
+
+    typeParamsFullBuilder.append("<");
+    typeParamsBriefBuilder.append("<");
+    for (NamedReference typeParam : objectHandleType.typeParameters()) {
+      commaAppender.run();
+      typeParamsFullBuilder.append(typeParam.formalFullDeclaration());
+      typeParamsBriefBuilder.append(typeParam.formalBriefDeclaration());
+    }
+    typeParamsFullBuilder.append(">");
+    typeParamsBriefBuilder.append(">");
+    typeParamsBrief = typeParamsBriefBuilder.toString();
   }
 }

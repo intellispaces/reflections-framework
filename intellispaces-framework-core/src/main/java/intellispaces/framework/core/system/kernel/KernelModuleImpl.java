@@ -142,11 +142,23 @@ class KernelModuleImpl implements KernelModule {
   }
 
   @Override
+  @SuppressWarnings("rawtypes")
+  public <S, T> T mapThruTransition0(S source, Class<? extends Transition0> transitionClass) {
+    return mapThruTransition0(source, TransitionFunctions.getTransitionId(transitionClass));
+  }
+
+  @Override
   @SuppressWarnings("unchecked")
   public <S, T, Q> T mapThruTransition1(S source, String tid, Q qualifier) {
     DeclarativePlan traversePlan = traverseAnalyzer.buildMapObjectHandleThruTransition1Plan(
         ObjectFunctions.defineObjectHandleClass(source.getClass()), tid);
     return (T) traversePlan.execute(source, qualifier, traverseExecutor);
+  }
+
+  @Override
+  @SuppressWarnings("rawtypes")
+  public <S, T, Q> T mapThruTransition1(S source, Class<? extends Transition1> transitionClass, Q qualifier) {
+    return mapThruTransition1(source, TransitionFunctions.getTransitionId(transitionClass), qualifier);
   }
 
   @Override

@@ -11,6 +11,7 @@ import intellispaces.framework.core.guide.n0.Mapper0;
 import intellispaces.framework.core.guide.n1.Mapper1;
 import intellispaces.framework.core.object.ObjectFunctions;
 import intellispaces.framework.core.object.ObjectHandleTypes;
+import intellispaces.framework.core.space.transition.Transition1;
 import intellispaces.framework.core.space.transition.TransitionFunctions;
 import intellispaces.framework.core.system.Modules;
 import intellispaces.framework.core.system.ObjectHandleWrapper;
@@ -87,6 +88,7 @@ public class UnmovableObjectHandleWrapperGenerationTask extends AbstractObjectHa
 
     context.addImport(Mapper0.class);
     context.addImport(Mapper1.class);
+    context.addImport(Transition1.class);
     context.addImport(TransitionMethod0.class);
     context.addImport(TransitionMethod1.class);
     context.addImport(TransitionFunctions.class);

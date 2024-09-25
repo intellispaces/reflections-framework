@@ -35,4 +35,10 @@ public class {{$classSimpleName}} implements {{$objectHandleClassName}} {
     return this.{{$projection.get("name")}};
   }
 {{end}}
+
+  @Override
+  public <T, Q> T mapThru(Class<? extends Transition1> transitionClass, Q qualifier) throws TraverseException {
+    Type<{{$sourceClassSimpleName}}{{$typeParamsBrief}}> sourceType = Types.of({{$sourceClassSimpleName}}.class);
+    return Modules.current().mapThruTransition1(sourceType, transitionClass, qualifier);
+  }
 }

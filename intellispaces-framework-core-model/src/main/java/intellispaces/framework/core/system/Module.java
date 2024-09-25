@@ -42,7 +42,13 @@ public interface Module {
 
   <S, T> T mapThruTransition0(S source, String tid);
 
+  @SuppressWarnings("rawtypes")
+  <S, T> T mapThruTransition0(S source, Class<? extends Transition0> transitionClass);
+
   <S, T, Q> T mapThruTransition1(S source, String tid, Q qualifier);
+
+  @SuppressWarnings("rawtypes")
+  <S, T, Q> T mapThruTransition1(S source, Class<? extends Transition1> transitionClass, Q qualifier);
 
   <S, R> R moveThruTransition0(S source, String tid);
 

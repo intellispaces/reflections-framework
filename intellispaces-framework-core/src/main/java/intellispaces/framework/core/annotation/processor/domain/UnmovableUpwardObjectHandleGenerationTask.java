@@ -9,7 +9,9 @@ import intellispaces.common.javastatement.method.MethodStatement;
 import intellispaces.common.javastatement.reference.CustomTypeReference;
 import intellispaces.framework.core.annotation.ObjectHandle;
 import intellispaces.framework.core.common.NameConventionFunctions;
+import intellispaces.framework.core.exception.TraverseException;
 import intellispaces.framework.core.object.ObjectHandleTypes;
+import intellispaces.framework.core.space.transition.Transition1;
 
 import javax.annotation.processing.RoundEnvironment;
 import java.util.HashMap;
@@ -88,6 +90,9 @@ public class UnmovableUpwardObjectHandleGenerationTask extends AbstractDomainObj
     context.generatedClassCanonicalName(artifactName());
     context.addImport(Type.class);
     context.addImport(ObjectHandle.class);
+    context.addImport(Transition1.class);
+    context.addImport(TraverseException.class);
+
     unmovableObjectHandleName = context.addToImportAndGetSimpleName(
         NameConventionFunctions.getUnmovableObjectHandleTypename(annotatedType.className()));
 

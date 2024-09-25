@@ -23,4 +23,9 @@ public class {{$classSimpleName}}{{$classTypeParams}} implements {{$unmovableObj
   {{$method.get("declaration")}};
 
 {{end}}
+
+  @Override
+  public <T, Q> T mapThru(Class<? extends Transition1> transitionClass, Q qualifier) throws TraverseException {
+    return (T) {{$baseField}}.mapThru(transitionClass, qualifier);
+  }
 }

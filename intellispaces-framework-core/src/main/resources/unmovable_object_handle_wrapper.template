@@ -69,4 +69,9 @@ public class {{$classSimpleName}}{{$typeParamsFull}} extends {{$sourceClassSimpl
     {{$method.get("body")}}
   }
 {{end}}
+
+  @Override
+  public <T, Q> T mapThru(Class<? extends Transition1> transitionClass, Q qualifier) throws TraverseException {
+    return Modules.current().mapThruTransition1(this, transitionClass, qualifier);
+  }
 }

@@ -55,6 +55,11 @@ public class {{$classSimpleName}}{{$classTypeParams}} implements {{$movableObjec
 {{end}}
 
   @Override
+  public <T, Q> T mapThru(Class<? extends Transition1> transitionClass, Q qualifier) throws TraverseException {
+    return (T) {{$childField}}.mapThru(transitionClass, qualifier);
+  }
+
+  @Override
   public <Q> {{$movableObjectHandleName}}{{$classTypeParamsBrief}} moveThru(String tid, Q qualifier) throws TraverseException {
     {{$childField}}.moveThru(tid, qualifier);
     return this;

@@ -50,9 +50,9 @@ import intellispaces.framework.core.guide.n4.Mover4;
 import intellispaces.framework.core.guide.n5.Mapper5;
 import intellispaces.framework.core.guide.n5.Mover5;
 import intellispaces.framework.core.space.transition.TransitionFunctions;
-import intellispaces.framework.core.system.AttachedUnitGuide;
+import intellispaces.framework.core.system.UnitGuide;
 import intellispaces.framework.core.system.UnitWrapper;
-import intellispaces.framework.core.system.guide.AttachedUnitGuides;
+import intellispaces.framework.core.system.guide.UnitGuides;
 import intellispaces.framework.core.traverse.TraverseTypes;
 
 import java.lang.reflect.Method;
@@ -172,20 +172,18 @@ public final class GuideFunctions {
     return guides;
   }
 
-  public static List<AttachedUnitGuide> readAttachedUnitGuides(
-      Class<?> unitClass, UnitWrapper unitInstance
-  ) {
-    List<AttachedUnitGuide> guides = new ArrayList<>();
+  public static List<UnitGuide> readUnitGuides(Class<?> unitClass, UnitWrapper unitInstance) {
+    List<UnitGuide> guides = new ArrayList<>();
     for (Method method : unitClass.getDeclaredMethods()) {
       if (isMapperMethod(method)) {
         intellispaces.framework.core.guide.Mapper<?, ?> mapper = createMapper(unitInstance, method);
-          guides.add(AttachedUnitGuides.get(mapper));
+          guides.add(UnitGuides.get(mapper));
       } else if (isMoverMethod(method)) {
         intellispaces.framework.core.guide.Mover<?> mover = createMover(unitInstance, method);
-          guides.add(AttachedUnitGuides.get(mover));
+          guides.add(UnitGuides.get(mover));
       } else if (isMapperOfMovingMethod(method)) {
         intellispaces.framework.core.guide.MapperOfMoving<?, ?> mapperOfMoving = createMapperOfMoving(unitInstance, method);
-        guides.add(AttachedUnitGuides.get(mapperOfMoving));
+        guides.add(UnitGuides.get(mapperOfMoving));
       }
     }
     return guides;
@@ -203,13 +201,13 @@ public final class GuideFunctions {
       UnitWrapper unitInstance, Method guideMethod
   ) {
     String tid = getUnitGuideTid(unitInstance, guideMethod);
-    int guideIndex = getUnitGuideOrdinal(unitInstance, guideMethod);
+    int guideOrdinal = getUnitGuideOrdinal(unitInstance, guideMethod);
     int qualifiersCount = guideMethod.getParameterCount();
     return switch (qualifiersCount) {
-      case 1 -> new UnitMapper0<>(tid, unitInstance, guideMethod, guideIndex);
-      case 2 -> new UnitMapper1<>(tid, unitInstance, guideMethod, guideIndex);
-      case 3 -> new UnitMapper2<>(tid, unitInstance, guideMethod, guideIndex);
-      case 4 -> new UnitMapper3<>(tid, unitInstance, guideMethod, guideIndex);
+      case 1 -> new UnitMapper0<>(tid, unitInstance, guideMethod, guideOrdinal);
+      case 2 -> new UnitMapper1<>(tid, unitInstance, guideMethod, guideOrdinal);
+      case 3 -> new UnitMapper2<>(tid, unitInstance, guideMethod, guideOrdinal);
+      case 4 -> new UnitMapper3<>(tid, unitInstance, guideMethod, guideOrdinal);
       default -> throw UnexpectedViolationException.withMessage("Unsupported number of guide qualifiers: {0}",
           qualifiersCount);
     };
@@ -226,13 +224,13 @@ public final class GuideFunctions {
       UnitWrapper unitInstance, Method guideMethod
   ) {
     String tid = getUnitGuideTid(unitInstance, guideMethod);
-    int guideIndex = getUnitGuideOrdinal(unitInstance, guideMethod);
+    int guideOrdinal = getUnitGuideOrdinal(unitInstance, guideMethod);
     int qualifiersCount = guideMethod.getParameterCount();
     return switch (qualifiersCount) {
-      case 1 -> new UnitMapperOfMoving0<>(tid, unitInstance, guideMethod, guideIndex);
-      case 2 -> new UnitMapperOfMoving1<>(tid, unitInstance, guideMethod, guideIndex);
-      case 3 -> new UnitMapperOfMoving2<>(tid, unitInstance, guideMethod, guideIndex);
-      case 4 -> new UnitMapperOfMoving3<>(tid, unitInstance, guideMethod, guideIndex);
+      case 1 -> new UnitMapperOfMoving0<>(tid, unitInstance, guideMethod, guideOrdinal);
+      case 2 -> new UnitMapperOfMoving1<>(tid, unitInstance, guideMethod, guideOrdinal);
+      case 3 -> new UnitMapperOfMoving2<>(tid, unitInstance, guideMethod, guideOrdinal);
+      case 4 -> new UnitMapperOfMoving3<>(tid, unitInstance, guideMethod, guideOrdinal);
       default -> throw UnexpectedViolationException.withMessage("Unsupported number of guide qualifiers: {0}",
           qualifiersCount);
     };

@@ -3,7 +3,7 @@ package intellispaces.framework.core.system.kernel;
 import intellispaces.common.action.Action;
 import intellispaces.common.action.Actions;
 import intellispaces.common.action.getter.ResettableGetter;
-import intellispaces.framework.core.system.AttachedUnitGuide;
+import intellispaces.framework.core.system.UnitGuide;
 import intellispaces.framework.core.system.Injection;
 import intellispaces.framework.core.system.UnitProjectionDefinition;
 import intellispaces.framework.core.system.UnitWrapper;
@@ -21,7 +21,8 @@ class KernelUnitImpl implements KernelUnit {
   private UnitWrapper instance;
   private List<Injection> injections = List.of();
   private List<UnitProjectionDefinition> projectionDefinitions = List.of();
-  private List<AttachedUnitGuide> guides = List.of();
+  private List<UnitGuide> guides = List.of();
+  private List<Method> guideMethods = List.of();
   private Method startupMethod;
   private Method shutdownMethod;
   private Action startupAction;
@@ -99,11 +100,11 @@ class KernelUnitImpl implements KernelUnit {
   }
 
   @Override
-  public List<AttachedUnitGuide> guides() {
+  public List<UnitGuide> guides() {
     return guides;
   }
 
-  void setGuides(List<AttachedUnitGuide> guides) {
+  void setGuides(List<UnitGuide> guides) {
     this.guides = guides;
   }
 
@@ -138,6 +139,11 @@ class KernelUnitImpl implements KernelUnit {
   }
 
   @Override
+  public List<Method> guideMethods() {
+    return guideMethods;
+  }
+
+  @Override
   public void setGuideActions(Action... actions) {
     if (actions == null) {
       guideActions = List.of();
@@ -146,6 +152,11 @@ class KernelUnitImpl implements KernelUnit {
     guideActions = Arrays.stream(actions)
         .map(Actions::resettableGetter)
         .toList();
+  }
+
+  @Override
+  public void setGuideAction(int index, Action action) {
+    guideActions.get(index).set(action);
   }
 
   @Override

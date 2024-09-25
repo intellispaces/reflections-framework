@@ -1,12 +1,12 @@
 package intellispaces.framework.core.system.guide;
 
 import intellispaces.framework.core.guide.Guide;
-import intellispaces.framework.core.system.AttachedUnitGuide;
+import intellispaces.framework.core.system.UnitGuide;
 
-class AttachedUnitGuideImpl implements AttachedUnitGuide {
+class UnitGuideImpl implements UnitGuide {
   private final Guide<?, ?> guide;
 
-   AttachedUnitGuideImpl(Guide<?, ?> guide) {
+   UnitGuideImpl(Guide<?, ?> guide) {
     this.guide = guide;
   }
 

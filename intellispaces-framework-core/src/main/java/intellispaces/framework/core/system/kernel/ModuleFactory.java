@@ -11,7 +11,7 @@ import intellispaces.framework.core.annotation.Startup;
 import intellispaces.framework.core.aop.AopFunctions;
 import intellispaces.framework.core.common.NameConventionFunctions;
 import intellispaces.framework.core.guide.GuideFunctions;
-import intellispaces.framework.core.system.AttachedUnitGuide;
+import intellispaces.framework.core.system.UnitGuide;
 import intellispaces.framework.core.system.ModuleFunctions;
 import intellispaces.framework.core.system.ProjectionDefinition;
 import intellispaces.framework.core.system.Unit;
@@ -126,9 +126,8 @@ public class ModuleFactory {
     unit.setStartupAction(startupMethod.map(m -> new InvokeUnitMethodAction<Void>(unitInstance, m)).orElse(null));
     unit.setShutdownAction(shutdownMethod.map(m -> new InvokeUnitMethodAction<Void>(unitInstance, m)).orElse(null));
 
-    List<AttachedUnitGuide> attachedUnitGuides = GuideFunctions.readAttachedUnitGuides(unitClass, unitInstance);
-    unit.setGuides(Collections.unmodifiableList(attachedUnitGuides));
-
+    List<UnitGuide> unitGuides = GuideFunctions.readUnitGuides(unitClass, unitInstance);
+    unit.setGuides(Collections.unmodifiableList(unitGuides));
     return unit;
   }
 
@@ -184,6 +183,7 @@ public class ModuleFactory {
 
   private void applyAdvises(KernelUnit unit) {
     applyStartupActionAdvises(unit);
+    applyGuideActionAdvises(unit);
   }
 
   @SuppressWarnings("unchecked")
@@ -196,6 +196,19 @@ public class ModuleFactory {
     Action chainAction = AopFunctions.buildChainAction(startupMethod, startupAction);
     if (chainAction != startupAction) {
       unit.setStartupAction(chainAction);
+    }
+  }
+
+  private void applyGuideActionAdvises(KernelUnit unit) {
+    List<UnitGuide> guides = unit.guides();
+    for (UnitGuide guide : guides) {
+      KernelUnitGuide<?, ?> kernelGuide = (KernelUnitGuide<?, ?>) guide.guide();
+      Method method = kernelGuide.guideMethod();
+      Action originalAction = unit.getGuideAction(kernelGuide.guideOrdinal());
+      Action chainAction = AopFunctions.buildChainAction(method, originalAction);
+      if (chainAction != originalAction) {
+        unit.setGuideAction(kernelGuide.guideOrdinal(), chainAction);
+      }
     }
   }
 }

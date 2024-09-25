@@ -16,7 +16,7 @@ public class UnitMapper2<S, T, Q1, Q2>
     extends UnitGuide2<S, T, Q1, Q2>
     implements AbstractMapper2<S, T, Q1, Q2>
 {
-  public UnitMapper2(String tid, UnitWrapper unitInstance, Method guideMethod, int guideActionIndex) {
-    super(tid, unitInstance, guideMethod, guideActionIndex);
+  public UnitMapper2(String tid, UnitWrapper unitInstance, Method guideMethod, int guideOrdinal) {
+    super(tid, unitInstance, guideMethod, guideOrdinal);
   }
 }

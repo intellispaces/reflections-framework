@@ -15,12 +15,12 @@ import java.util.stream.Collectors;
 
 public interface AopFunctions {
 
-  static Action buildChainAction(Method method, Action terminalAction) {
-    return buildChainAction(Methods.of(method), terminalAction);
+  static Action buildChainAction(Method method, Action action) {
+    return buildChainAction(Methods.of(method), action);
   }
 
   @SuppressWarnings("unchecked, rawtypes")
-  static Action buildChainAction(MethodStatement method, Action terminalAction) {
+  static Action buildChainAction(MethodStatement method, Action action) {
     List<ApplyAdvice> applyAdviceAnnotations = method.annotations().stream()
         .map(a -> a.annotationStatement().selectAnnotation(ApplyAdvice.class).orElse(null))
         .filter(Objects::nonNull)
@@ -30,7 +30,7 @@ public interface AopFunctions {
         .filter(a -> a.adviceClass() != null)
         .collect(Collectors.groupingBy(ApplyAdvice::adviceClass))
         .keySet();
-    Action currentAction = terminalAction;
+    Action currentAction = action;
     for (Class<?> adviceClass : adviceClasses) {
       try {
         Constructor constructor = adviceClass.getConstructor(MethodStatement.class, Action.class);

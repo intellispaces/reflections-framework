@@ -38,7 +38,11 @@ public interface KernelUnit extends Unit {
 
   int numberGuides();
 
+  List<Method> guideMethods();
+
   Action getGuideAction(int index);
 
   void setGuideActions(Action... actions);
+
+  void setGuideAction(int index, Action action);
 }

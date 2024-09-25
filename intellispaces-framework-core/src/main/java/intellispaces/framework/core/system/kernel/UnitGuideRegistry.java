@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-class AttachedUnitGuideRegistry {
+class UnitGuideRegistry {
   private final Map<String, List<Guide<?, ?>>> mapperGuides = new HashMap<>();
   private final Map<String, List<Guide<?, ?>>> moverGuides = new HashMap<>();
   private final Map<String, List<Guide<?, ?>>> mapperOfMovingGuides = new HashMap<>();
@@ -22,12 +22,6 @@ class AttachedUnitGuideRegistry {
     } else if (guide.kind().isMapperOfMoving()) {
       mapperOfMovingGuides.computeIfAbsent(guide.tid(), k -> newList(guide));
     }
-  }
-
-  private List<Guide<?, ?>> newList(Guide<?, ?> guide) {
-    List<Guide<?, ?>> list = new ArrayList<>();
-    list.add(guide);
-    return list;
   }
 
   public List<Guide<?, ?>> findGuides(GuideKind kind, String tid) {
@@ -43,5 +37,11 @@ class AttachedUnitGuideRegistry {
       return List.of();
     }
     return Collections.unmodifiableList(guides);
+  }
+
+  private List<Guide<?, ?>> newList(Guide<?, ?> guide) {
+    List<Guide<?, ?>> list = new ArrayList<>();
+    list.add(guide);
+    return list;
   }
 }

@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
 
-class AttachedObjectGuideRegistry {
+class ObjectGuideRegistry {
   private final Map<Class<?>, HandleDescription> handleDescriptions = new WeakHashMap<>();
 
   public Guide<?, ?> getGuide(GuideKind kind, Class<?> objectHandleClass, String tid) {

@@ -10,9 +10,9 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Internal system representation of the module unit.
+ * Internal kernel representation of the module unit.
  */
-public interface SystemUnit extends Unit {
+public interface KernelUnit extends Unit {
 
   Object instance();
 

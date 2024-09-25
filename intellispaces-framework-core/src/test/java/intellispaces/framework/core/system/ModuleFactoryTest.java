@@ -12,8 +12,8 @@ import intellispaces.framework.core.samples.system.ModuleWithTwoProjectionProvid
 import intellispaces.framework.core.samples.system.ModuleWithTwoProjectionProvidersInDifferentUnitsWithCyclicDependency2;
 import intellispaces.framework.core.samples.system.ModuleWithTwoProjectionProvidersInDifferentUnitsWithCyclicDependency3;
 import intellispaces.framework.core.samples.system.ModuleWithTwoProjectionProvidersWithCyclicDependency;
+import intellispaces.framework.core.system.kernel.KernelModule;
 import intellispaces.framework.core.system.kernel.ModuleFactory;
-import intellispaces.framework.core.system.kernel.SystemModule;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -28,7 +28,7 @@ public class ModuleFactoryTest {
   @Test
   public void testCreateModule_whenOneEmptyUnit() {
     // When
-    SystemModule module = factory.createModule(EmptyModule.class);
+    KernelModule module = factory.createModule(EmptyModule.class);
 
     // Then
     Assertions.assertThat(module.units()).hasSize(1);
@@ -41,7 +41,7 @@ public class ModuleFactoryTest {
   @Test
   public void testCreateModule_whenOneUnit_andStartup_andShutdownMethods() {
     // When
-    SystemModule module = factory.createModule(ModuleWithStartupAndShutdownMethods.class);
+    KernelModule module = factory.createModule(ModuleWithStartupAndShutdownMethods.class);
 
     // Then
     Assertions.assertThat(module.units()).hasSize(1);
@@ -56,7 +56,7 @@ public class ModuleFactoryTest {
   @Test
   public void testCreateModule_whenOneUnit_andSimpleProjections() {
     // When
-    SystemModule module = factory.createModule(ModuleWithSimpleProjections.class);
+    KernelModule module = factory.createModule(ModuleWithSimpleProjections.class);
 
     // Then
     Assertions.assertThat(module.units()).hasSize(1);

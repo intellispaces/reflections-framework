@@ -14,7 +14,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-class SystemUnitImpl implements SystemUnit {
+class KernelUnitImpl implements KernelUnit {
   private final boolean main;
   private final Class<?> unitClass;
   private List<ResettableGetter<Action>> guideActions = List.of();
@@ -27,7 +27,7 @@ class SystemUnitImpl implements SystemUnit {
   private Action startupAction;
   private Action shutdownAction;
 
-  SystemUnitImpl(boolean main, Class<?> unitClass) {
+  KernelUnitImpl(boolean main, Class<?> unitClass) {
     this.main = main;
     this.unitClass = unitClass;
   }

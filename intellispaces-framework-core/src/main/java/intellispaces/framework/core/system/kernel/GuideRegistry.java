@@ -9,7 +9,9 @@ public interface GuideRegistry {
 
   <G> G getGuide(String name, Class<G> guideClass);
 
+  <G> G getAutoGuide(Class<G> guideClass);
+
   List<Guide<?, ?>> findGuides(GuideKind kind, Class<?> objectHandleClass, String tid);
 
-  void addGuideUnit(SystemUnit guideUnit);
+  void addGuideUnit(KernelUnit guideUnit);
 }

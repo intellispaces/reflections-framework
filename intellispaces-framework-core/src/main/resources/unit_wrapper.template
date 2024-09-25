@@ -12,18 +12,20 @@ import {{$importedClass}};
 @Wrapper({{$sourceClassSimpleName}}.class)
 {{$generatedAnnotation}}
 public class {{$classSimpleName}}{{$typeParamsFullDeclaration}} extends {{$sourceClassSimpleName}}{{$typeParamsBriefDeclaration}} implements UnitWrapper {
-  private SystemUnit $unit;
+  private KernelUnit $unit;
 
   @Override
-  public void $init(SystemUnit unit) {
+  public void $init(KernelUnit unit) {
     this.$unit = unit;
 {{when $injections.isNotEmpty()}}
     this.$unit.setInjections(
 {{for injection : $injections}}
-{{when $injection.get("isProjection")}}
+{{when $injection.get("kind").eq("projection")}}
       ProjectionInjections.get({{$sourceClassSimpleName}}.class, "{{$injection.get("name")}}", {{$injection.get("type")}}.class){{when $injection.isNotLast()}},{{end}}
-{{else}}
+{{else when $injection.get("kind").eq("guide")}}
       GuideInjections.get({{$sourceClassSimpleName}}.class, "{{$injection.get("name")}}", {{$injection.get("type")}}.class){{when $injection.isNotLast()}},{{end}}
+{{else}}
+      AutoGuideInjections.get({{$sourceClassSimpleName}}.class, "{{$injection.get("name")}}", {{$injection.get("type")}}.class){{when $injection.isNotLast()}},{{end}}
 {{end}}
 {{end}}
     );
@@ -45,11 +47,11 @@ public class {{$classSimpleName}}{{$typeParamsFullDeclaration}} extends {{$sourc
   }
 
   @Override
-  public SystemUnit $unit() {
+  public KernelUnit $unit() {
     return this.$unit;
   }
 
-{{for method : $projectionMethods}}
+{{for method : $injectionMethods}}
   {{$method.get("javadoc")}}
 {{for annotation : $method.get("annotations")}}
   @{{$annotation}}

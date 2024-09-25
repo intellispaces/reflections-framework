@@ -18,7 +18,7 @@ public interface ModuleFunctions {
 
   static Iterable<Class<?>> getIncludedUnits(Class<?> moduleClass) {
     Set<Class<?>> unitClasses = new HashSet<>();
-    ArraysFunctions.foreach(moduleClass.getAnnotation(Module.class).units(),
+    ArraysFunctions.foreach(moduleClass.getAnnotation(Module.class).include(),
       u -> addUnitClass(u, unitClasses)
     );
     return unitClasses;
@@ -37,7 +37,7 @@ public interface ModuleFunctions {
   static Iterable<CustomType> getIncludedUnits(CustomType moduleType) {
     Map<String, CustomType> unitTypes = new HashMap<>();
     AnnotationInstance moduleAnnotation = moduleType.selectAnnotation(Module.class.getCanonicalName()).orElseThrow();
-    Optional<Instance> unitsAttr = moduleAnnotation.elementValue("units");
+    Optional<Instance> unitsAttr = moduleAnnotation.elementValue("include");
     if (unitsAttr.isPresent()) {
       List<Instance> units = unitsAttr.get().asArray().orElseThrow().elements();
       for (Instance unit : units) {

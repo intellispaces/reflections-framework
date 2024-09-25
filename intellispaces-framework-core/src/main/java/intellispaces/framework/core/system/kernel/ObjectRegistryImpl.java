@@ -6,7 +6,7 @@ class ObjectRegistryImpl implements ObjectRegistry {
 
   @Override
   public void add(ObjectHandleWrapper<?> handle) {
-    SystemObjectHandle innerHandle = new ObjectHandleImpl();
+    KernelObjectHandle innerHandle = new ObjectHandleImpl();
     handle.$init(innerHandle);
   }
 }

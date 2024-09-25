@@ -1,12 +1,12 @@
 package intellispaces.framework.core.system;
 
-import intellispaces.framework.core.system.kernel.SystemFunctions;
-import intellispaces.framework.core.system.kernel.SystemModule;
+import intellispaces.framework.core.system.kernel.KernelFunctions;
+import intellispaces.framework.core.system.kernel.KernelModule;
 
 public interface ContextProjections {
 
   static <T> void addProjection(String name, Class<T> type, T target) {
-    SystemModule module = SystemFunctions.currentModuleSilently();
+    KernelModule module = KernelFunctions.currentModuleSilently();
     if (module == null) {
       return;
     }
@@ -14,7 +14,7 @@ public interface ContextProjections {
   }
 
   static void removeProjection(String name) {
-    SystemModule module = SystemFunctions.currentModuleSilently();
+    KernelModule module = KernelFunctions.currentModuleSilently();
     if (module == null) {
       return;
     }

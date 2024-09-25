@@ -9,7 +9,7 @@ import intellispaces.framework.core.system.Injection;
 import java.util.Arrays;
 import java.util.List;
 
-class ObjectHandleImpl implements SystemObjectHandle {
+class ObjectHandleImpl implements KernelObjectHandle {
   private List<ResettableGetter<Action>> transitionActions = List.of();
   private List<Action> guideActions = List.of();
   private List<Injection> injections = List.of();

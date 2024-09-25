@@ -33,12 +33,12 @@ import java.util.Optional;
  */
 public class ModuleFactory {
 
-  public SystemModule createModule(Class<?> unitClass) {
+  public KernelModule createModule(Class<?> unitClass) {
     return createModule(List.of(unitClass));
   }
 
-  public SystemModule createModule(List<Class<?>> unitClasses) {
-    List<SystemUnit> units = createUnits(unitClasses);
+  public KernelModule createModule(List<Class<?>> unitClasses) {
+    List<KernelUnit> units = createUnits(unitClasses);
     applyAdvises(units);
     var objectRegistry = new ObjectRegistryImpl();
     ProjectionRegistry projectionRegistry = createProjectionRegistry(units);
@@ -46,7 +46,7 @@ public class ModuleFactory {
     loadAttachedUnitGuides(guideRegistry, units);
     var traverseAnalyzer = new TraverseAnalyzerImpl(guideRegistry);
     var traverseExecutor = new TraverseExecutorImpl(traverseAnalyzer);
-    return new SystemModuleImpl(
+    return new KernelModuleImpl(
         units,
         objectRegistry,
         projectionRegistry,
@@ -56,7 +56,7 @@ public class ModuleFactory {
     );
   }
 
-  private List<SystemUnit> createUnits(List<Class<?>> unitClasses) {
+  private List<KernelUnit> createUnits(List<Class<?>> unitClasses) {
     if (unitClasses == null || unitClasses.isEmpty()) {
       return List.of(createEmptyMainUnit());
     } else if (unitClasses.size() == 1) {
@@ -73,15 +73,15 @@ public class ModuleFactory {
     }
   }
 
-  private List<SystemUnit> createModuleUnits(Class<?> moduleclass) {
-    List<SystemUnit> units = new ArrayList<>();
+  private List<KernelUnit> createModuleUnits(Class<?> moduleclass) {
+    List<KernelUnit> units = new ArrayList<>();
     units.add(createUnit(moduleclass, true));
     createIncludedUnits(moduleclass, units);
     return units;
   }
 
-  private List<SystemUnit> createEmptyMainUnitAndIncludedUnits(List<Class<?>> unitClasses) {
-    List<SystemUnit> units = new ArrayList<>();
+  private List<KernelUnit> createEmptyMainUnitAndIncludedUnits(List<Class<?>> unitClasses) {
+    List<KernelUnit> units = new ArrayList<>();
     units.add(createEmptyMainUnit());
     unitClasses.stream()
         .map(this::createIncludedUnit)
@@ -89,8 +89,8 @@ public class ModuleFactory {
     return units;
   }
 
-  private SystemUnit createEmptyMainUnit() {
-    var unit = new SystemUnitImpl(true, EmptyModule.class);
+  private KernelUnit createEmptyMainUnit() {
+    var unit = new KernelUnitImpl(true, EmptyModule.class);
 
     UnitWrapper unitInstance = createUnitInstance(EmptyModule.class, EmptyModuleWrapper.class);
     unitInstance.$init(unit);
@@ -98,25 +98,25 @@ public class ModuleFactory {
     return unit;
   }
 
-  private void createIncludedUnits(Class<?> moduleClass, List<SystemUnit> units) {
+  private void createIncludedUnits(Class<?> moduleClass, List<KernelUnit> units) {
     Iterable<Class<?>> unitClasses = ModuleFunctions.getIncludedUnits(moduleClass);
     Streams.get(unitClasses)
         .map(this::createIncludedUnit)
         .forEach(units::add);
   }
 
-  private SystemUnit createIncludedUnit(Class<?> unitClass) {
+  private KernelUnit createIncludedUnit(Class<?> unitClass) {
     if (unitClass != Void.class) {
       return createUnit(unitClass, false);
     }
     throw new UnsupportedOperationException("Not implemented yet");
   }
 
-  private SystemUnit createUnit(Class<?> unitClass, boolean main) {
+  private KernelUnit createUnit(Class<?> unitClass, boolean main) {
     Optional<Method> startupMethod = findStartupMethod(unitClass);
     Optional<Method> shutdownMethod = findShutdownMethod(unitClass);
 
-    var unit = new SystemUnitImpl(main, unitClass);
+    var unit = new KernelUnitImpl(main, unitClass);
 
     Class<?> unitWrapperClass = getUnitWrapperClass(unitClass);
     UnitWrapper unitInstance = createUnitInstance(unitClass, unitWrapperClass);
@@ -151,7 +151,7 @@ public class ModuleFactory {
     }
   }
 
-  private ProjectionRegistry createProjectionRegistry(List<SystemUnit> units) {
+  private ProjectionRegistry createProjectionRegistry(List<KernelUnit> units) {
     List<ProjectionDefinition> projectionDefinitions = new ArrayList<>();
     units.stream()
         .map(Unit::projectionDefinitions)
@@ -160,7 +160,7 @@ public class ModuleFactory {
     return new ProjectionRegistryImpl(projectionDefinitions);
   }
 
-  private void loadAttachedUnitGuides(GuideRegistry guideRegistry, List<SystemUnit> units) {
+  private void loadAttachedUnitGuides(GuideRegistry guideRegistry, List<KernelUnit> units) {
     units.stream()
         .filter(u -> UnitFunctions.isGuideUnit(u.unitClass()))
         .forEach(guideRegistry::addGuideUnit);
@@ -178,16 +178,16 @@ public class ModuleFactory {
         .findAny();
   }
 
-  private void applyAdvises(List<SystemUnit> units) {
+  private void applyAdvises(List<KernelUnit> units) {
     units.forEach(this::applyAdvises);
   }
 
-  private void applyAdvises(SystemUnit unit) {
+  private void applyAdvises(KernelUnit unit) {
     applyStartupActionAdvises(unit);
   }
 
   @SuppressWarnings("unchecked")
-  private void applyStartupActionAdvises(SystemUnit unit) {
+  private void applyStartupActionAdvises(KernelUnit unit) {
     if (unit.startupAction().isEmpty()) {
       return;
     }

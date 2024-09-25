@@ -1,7 +1,7 @@
 package intellispaces.framework.core.system.injection;
 
 import intellispaces.common.base.exception.UnexpectedViolationException;
-import intellispaces.framework.core.system.InjectionType;
+import intellispaces.framework.core.system.InjectionKind;
 import intellispaces.framework.core.system.Modules;
 import intellispaces.framework.core.system.ProjectionInjection;
 
@@ -18,8 +18,8 @@ class ProjectionInjectionImpl implements ProjectionInjection {
   }
 
   @Override
-  public InjectionType type() {
-    return InjectionTypes.ProjectionInjection;
+  public InjectionKind kind() {
+    return InjectionKinds.ProjectionInjection;
   }
 
   @Override

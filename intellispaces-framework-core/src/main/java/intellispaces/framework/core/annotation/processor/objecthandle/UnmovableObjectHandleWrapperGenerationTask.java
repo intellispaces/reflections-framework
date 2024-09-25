@@ -14,9 +14,10 @@ import intellispaces.framework.core.object.ObjectHandleTypes;
 import intellispaces.framework.core.space.transition.TransitionFunctions;
 import intellispaces.framework.core.system.Modules;
 import intellispaces.framework.core.system.ObjectHandleWrapper;
+import intellispaces.framework.core.system.injection.AutoGuideInjections;
 import intellispaces.framework.core.system.injection.GuideInjections;
-import intellispaces.framework.core.system.kernel.SystemFunctions;
-import intellispaces.framework.core.system.kernel.SystemObjectHandle;
+import intellispaces.framework.core.system.kernel.KernelFunctions;
+import intellispaces.framework.core.system.kernel.KernelObjectHandle;
 import intellispaces.framework.core.transition.TransitionMethod0;
 import intellispaces.framework.core.transition.TransitionMethod1;
 
@@ -61,7 +62,7 @@ public class UnmovableObjectHandleWrapperGenerationTask extends AbstractObjectHa
     vars.put("guideActions", guideActions);
     vars.put("domainMethods", methods);
     vars.put("injections", injections);
-    vars.put("guideMethods", guideMethods);
+    vars.put("injectionMethods", injectionMethods);
     return vars;
   }
 
@@ -75,14 +76,14 @@ public class UnmovableObjectHandleWrapperGenerationTask extends AbstractObjectHa
     context.generatedClassCanonicalName(artifactName());
 
     context.addImport(Modules.class);
-    context.addImport(SystemFunctions.class);
+    context.addImport(KernelFunctions.class);
     context.addImport(TraverseException.class);
     context.addImport(ResettableGetter.class);
     context.addImport(Actions.class);
     context.addImport(Ordinal.class);
     context.addImport(Wrapper.class);
     context.addImport(ObjectHandleWrapper.class);
-    context.addImport(SystemObjectHandle.class);
+    context.addImport(KernelObjectHandle.class);
 
     context.addImport(Mapper0.class);
     context.addImport(Mapper1.class);
@@ -90,6 +91,7 @@ public class UnmovableObjectHandleWrapperGenerationTask extends AbstractObjectHa
     context.addImport(TransitionMethod1.class);
     context.addImport(TransitionFunctions.class);
     context.addImport(GuideInjections.class);
+    context.addImport(AutoGuideInjections.class);
 
     CustomType domainType = ObjectFunctions.getDomainTypeOfObjectHandle(annotatedType);
     context.addImport(domainType.canonicalName());

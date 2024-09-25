@@ -5,7 +5,7 @@ import intellispaces.framework.core.object.ObjectFunctions;
 import intellispaces.framework.core.system.ProjectionInjection;
 import intellispaces.framework.core.system.Unit;
 import intellispaces.framework.core.system.UnitProjectionDefinition;
-import intellispaces.framework.core.system.injection.InjectionTypes;
+import intellispaces.framework.core.system.injection.InjectionKinds;
 
 import java.util.List;
 import java.util.Map;
@@ -17,14 +17,14 @@ import java.util.stream.Collectors;
  */
 public class ModuleValidator {
 
-  public void validate(SystemModule module) {
+  public void validate(KernelModule module) {
     checkThatOneMainUnit(module);
     checkThatThereAreNoProjectionsWithSameName(module);
     checkInjections(module);
   }
 
-  private void checkThatOneMainUnit(SystemModule module) {
-    List<SystemUnit> mainUnits = module.units().stream()
+  private void checkThatOneMainUnit(KernelModule module) {
+    List<KernelUnit> mainUnits = module.units().stream()
         .filter(Unit::isMain)
         .toList();
     if (mainUnits.isEmpty()) {
@@ -36,7 +36,7 @@ public class ModuleValidator {
     }
   }
 
-  private void checkThatThereAreNoProjectionsWithSameName(SystemModule module) {
+  private void checkThatThereAreNoProjectionsWithSameName(KernelModule module) {
     String message = module.units().stream()
         .map(Unit::projectionDefinitions)
         .flatMap(List::stream)
@@ -50,7 +50,7 @@ public class ModuleValidator {
     }
   }
 
-  private void checkInjections(SystemModule module) {
+  private void checkInjections(KernelModule module) {
     Map<String, UnitProjectionDefinition> projectionProviders = module.units().stream()
         .map(Unit::projectionDefinitions)
         .flatMap(List::stream)
@@ -60,12 +60,12 @@ public class ModuleValidator {
   }
 
   private void checkUnitInjections(
-    SystemModule module, Map<String, UnitProjectionDefinition> projectionProviders
+      KernelModule module, Map<String, UnitProjectionDefinition> projectionProviders
   ) {
     List<ProjectionInjection> injections = module.units().stream()
-        .map(SystemUnit::injections)
+        .map(KernelUnit::injections)
         .flatMap(List::stream)
-        .filter(injection -> injection.type() == InjectionTypes.ProjectionInjection)
+        .filter(injection -> injection.kind() == InjectionKinds.ProjectionInjection)
         .map(injection -> (ProjectionInjection) injection)
         .toList();
     for (ProjectionInjection injection : injections) {

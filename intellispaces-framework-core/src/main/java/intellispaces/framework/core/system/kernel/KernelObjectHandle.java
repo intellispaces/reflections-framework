@@ -6,9 +6,9 @@ import intellispaces.framework.core.system.Injection;
 import java.util.List;
 
 /**
- * Internal system representation of the object handle.
+ * Internal kernel representation of the object handle.
  */
-public interface SystemObjectHandle {
+public interface KernelObjectHandle {
 
   int numberTransitions();
 

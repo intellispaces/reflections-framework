@@ -27,22 +27,22 @@ public class ModuleLoader {
       LOG.warn("Current module has already been loaded into application. Current active module will be reloaded");
     }
 
-    SystemModule newModule = FACTORY.createModule(unitClasses);
+    KernelModule newModule = FACTORY.createModule(unitClasses);
     MODULE_VALIDATOR.validate(newModule);
     if (currentModule != null) {
       currentModule.stop();
-      SystemFunctions.setCurrentModule(null);
+      KernelFunctions.setCurrentModule(null);
     }
-    SystemFunctions.setCurrentModule(newModule);
+    KernelFunctions.setCurrentModule(newModule);
 
     newModule.start(args);
   }
 
   public static void unloadModule() {
-    Module currentModule = SystemFunctions.currentModuleSilently();
+    Module currentModule = KernelFunctions.currentModuleSilently();
     if (currentModule != null) {
       currentModule.stop();
     }
-    SystemFunctions.setCurrentModule(null);
+    KernelFunctions.setCurrentModule(null);
   }
 }

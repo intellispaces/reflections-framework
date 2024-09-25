@@ -2,7 +2,7 @@ package intellispaces.framework.core.system;
 
 public interface Injection {
 
-  InjectionType type();
+  InjectionKind kind();
 
   Object value();
 }

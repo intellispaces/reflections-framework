@@ -1,17 +1,17 @@
 package intellispaces.framework.core.system.injection;
 
 import intellispaces.common.base.exception.UnexpectedViolationException;
-import intellispaces.framework.core.system.GuideInjection;
+import intellispaces.framework.core.system.AutoGuideInjection;
 import intellispaces.framework.core.system.InjectionKind;
 import intellispaces.framework.core.system.kernel.KernelFunctions;
 
-class GuideInjectionImpl implements GuideInjection {
+class AutoGuideInjectionImpl implements AutoGuideInjection {
   private final Class<?> unitClass;
   private final String name;
   private final Class<?> guideClass;
   private Object guide;
 
-  GuideInjectionImpl(Class<?> unitClass, String name, Class<?> guideClass) {
+  AutoGuideInjectionImpl(Class<?> unitClass, String name, Class<?> guideClass) {
     this.unitClass = unitClass;
     this.name = name;
     this.guideClass = guideClass;
@@ -19,7 +19,7 @@ class GuideInjectionImpl implements GuideInjection {
 
   @Override
   public InjectionKind kind() {
-    return InjectionKinds.GuideInjection;
+    return InjectionKinds.AutoGuideInjection;
   }
 
   @Override
@@ -40,9 +40,9 @@ class GuideInjectionImpl implements GuideInjection {
   @Override
   public Object value() {
     if (guide == null) {
-      guide = KernelFunctions.currentModuleSilently().guideRegistry().getGuide(name, guideClass);
+      guide = KernelFunctions.currentModuleSilently().guideRegistry().getAutoGuide(guideClass);
       if (guide == null) {
-        throw UnexpectedViolationException.withMessage("Value of guide injection ''{0}'' in unit {1} is not defined",
+        throw UnexpectedViolationException.withMessage("Value of auto guide injection ''{0}'' in unit {1} is not defined",
             name(), unitClass.getCanonicalName());
       }
     }

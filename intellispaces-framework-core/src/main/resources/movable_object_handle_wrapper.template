@@ -10,22 +10,26 @@ import {{$importedClass}};
 @Wrapper({{$sourceClassSimpleName}}.class)
 {{$generatedAnnotation}}
 public class {{$classSimpleName}}{{$typeParamsFull}} extends {{$sourceClassSimpleName}}{{$typeParamsBrief}} implements ObjectHandleWrapper<{{$domainClassSimpleName}}{{$typeParamsBrief}}> {
-  private SystemObjectHandle $handle;
+  private KernelObjectHandle $handle;
 
 {{for constructor : $constructors}}
   public {{$classSimpleName}}({{for param : $constructor.get("params")}}{{$param.get("type")}} {{$param.get("name")}}{{when $param.isNotLast()}}, {{end}}{{end}}) {
     super({{for param : $constructor.get("params")}}{{$param.get("name")}}{{when $param.isNotLast()}},{{end}}{{end}});
-    SystemFunctions.currentModule().objectRegistry().add(this);
+    KernelFunctions.currentModule().objectRegistry().add(this);
   }
 {{end}}
 
   @Override
-  public void $init(SystemObjectHandle handle) {
+  public void $init(KernelObjectHandle handle) {
     this.$handle = handle;
 {{when $injections.isNotEmpty()}}
     this.$handle.setInjections(
 {{for injection : $injections}}
+{{when $injection.get("kind").eq("guide")}}
       GuideInjections.get({{$sourceClassSimpleName}}.class, "{{$injection.get("name")}}", {{$injection.get("type")}}.class){{when $injection.isNotLast()}},{{end}}
+{{else}}
+      AutoGuideInjections.get({{$sourceClassSimpleName}}.class, "{{$injection.get("name")}}", {{$injection.get("type")}}.class){{when $injection.isNotLast()}},{{end}}
+{{end}}
 {{end}}
     );
 {{end}}
@@ -46,7 +50,7 @@ public class {{$classSimpleName}}{{$typeParamsFull}} extends {{$sourceClassSimpl
   }
 
   @Override
-  public SystemObjectHandle $handle() {
+  public KernelObjectHandle $handle() {
     return this.$handle;
   }
 
@@ -139,7 +143,7 @@ public class {{$classSimpleName}}{{$typeParamsFull}} extends {{$sourceClassSimpl
     throw new RuntimeException("Not implemented");
   }
 
-{{for method : $guideMethods}}
+{{for method : $injectionMethods}}
   {{$method.get("javadoc")}}
 {{for annotation : $method.get("annotations")}}
   @{{$annotation}}

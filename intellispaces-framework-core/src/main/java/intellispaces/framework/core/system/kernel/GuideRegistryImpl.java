@@ -1,8 +1,5 @@
 package intellispaces.framework.core.system.kernel;
 
-import intellispaces.common.base.exception.UnexpectedViolationException;
-import intellispaces.common.base.type.TypeFunctions;
-import intellispaces.framework.core.common.NameConventionFunctions;
 import intellispaces.framework.core.exception.ConfigurationException;
 import intellispaces.framework.core.guide.Guide;
 import intellispaces.framework.core.guide.GuideKind;
@@ -14,10 +11,17 @@ import java.util.Map;
 import java.util.WeakHashMap;
 
 class GuideRegistryImpl implements GuideRegistry {
-  private final AttachedObjectGuideRegistry attachedObjectGuideRegistry = new AttachedObjectGuideRegistry();
-  private final AttachedUnitGuideRegistry attachedUnitGuideRegistry = new AttachedUnitGuideRegistry();
+  private final ObjectGuideRegistry objectGuideRegistry = new ObjectGuideRegistry();
+  private final UnitGuideRegistry unitGuideRegistry = new UnitGuideRegistry();
+  private final AutoGuideRegistry autoGuideRegistry = new AutoGuideRegistry();
   private final Map<Class<?>, Object> guideUnits = new WeakHashMap<>();
   private final Map<String, Object> name2guideMap = new HashMap<>();
+
+
+  @Override
+  public <G> G getAutoGuide(Class<G> guideClass) {
+    return autoGuideRegistry.getAutoGuide(guideClass);
+  }
 
   @Override
   @SuppressWarnings("unchecked")
@@ -31,11 +35,7 @@ class GuideRegistryImpl implements GuideRegistry {
       return guide;
     }
 
-    if (guideClass.isInterface()) {
-      guide = createAutoGuide(guideClass);
-    } else {
-      guide = (G) guideUnits.get(guideClass);
-    }
+    guide = (G) guideUnits.get(guideClass);
     if (guide != null) {
       name2guideMap.put(name, guide);
       return guide;
@@ -46,27 +46,17 @@ class GuideRegistryImpl implements GuideRegistry {
   @Override
   public List<Guide<?, ?>> findGuides(GuideKind kind, Class<?> objectHandleClass, String tid) {
     var guides = new ArrayList<Guide<?, ?>>();
-    Guide<?, ?> guide = attachedObjectGuideRegistry.getGuide(kind, objectHandleClass, tid);
+    Guide<?, ?> guide = objectGuideRegistry.getGuide(kind, objectHandleClass, tid);
     if (guide != null) {
       guides.add(guide);
     }
-    guides.addAll(attachedUnitGuideRegistry.findGuides(kind, tid));
+    guides.addAll(unitGuideRegistry.findGuides(kind, tid));
     return guides;
   }
 
   @Override
-  public void addGuideUnit(SystemUnit guideUnit) {
+  public void addGuideUnit(KernelUnit guideUnit) {
     guideUnits.put(guideUnit.unitClass(), guideUnit.instance());
-    guideUnit.guides().forEach(g -> attachedUnitGuideRegistry.addGuide(g.guide()));
-  }
-
-  @SuppressWarnings("unchecked")
-  private <G> G createAutoGuide(Class<G> guideClass) {
-    String autoGuideCanonicalName = NameConventionFunctions.getAutoGuiderCanonicalName(guideClass.getName());
-    Class<G> autoGuideClass = (Class<G>) TypeFunctions.getClass(autoGuideCanonicalName)
-        .orElseThrow(() -> UnexpectedViolationException.withMessage("Could not load auto guide class by name {0}",
-            autoGuideCanonicalName)
-        );
-    return TypeFunctions.newInstance(autoGuideClass);
+    guideUnit.guides().forEach(g -> unitGuideRegistry.addGuide(g.guide()));
   }
 }

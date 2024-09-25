@@ -1,7 +1,7 @@
 package intellispaces.framework.core.system;
 
 import intellispaces.common.base.exception.UnexpectedViolationException;
-import intellispaces.framework.core.system.kernel.SystemFunctions;
+import intellispaces.framework.core.system.kernel.KernelFunctions;
 
 public interface Modules {
 
@@ -15,6 +15,6 @@ public interface Modules {
   }
 
   static Module currentSilently() {
-    return SystemFunctions.currentModuleSilently();
+    return KernelFunctions.currentModuleSilently();
   }
 }

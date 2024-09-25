@@ -1,10 +1,10 @@
 package intellispaces.framework.core.system;
 
-import intellispaces.framework.core.system.kernel.SystemUnit;
+import intellispaces.framework.core.system.kernel.KernelUnit;
 
 public interface UnitWrapper {
 
-  void $init(SystemUnit unit);
+  void $init(KernelUnit unit);
 
-  SystemUnit $unit();
+  KernelUnit $unit();
 }

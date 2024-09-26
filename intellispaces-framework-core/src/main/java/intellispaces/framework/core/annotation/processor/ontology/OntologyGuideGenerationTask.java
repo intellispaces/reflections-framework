@@ -117,7 +117,6 @@ public class OntologyGuideGenerationTask extends AbstractGuideGenerationTask {
       }
       sb.append(");");
       return sb.toString();
-
     }
   }
 

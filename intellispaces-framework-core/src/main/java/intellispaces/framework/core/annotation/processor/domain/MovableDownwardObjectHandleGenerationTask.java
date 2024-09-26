@@ -6,6 +6,7 @@ import intellispaces.common.base.type.Type;
 import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.common.javastatement.method.MethodStatement;
 import intellispaces.common.javastatement.reference.CustomTypeReference;
+import intellispaces.common.javastatement.reference.CustomTypeReferences;
 import intellispaces.common.javastatement.type.Types;
 import intellispaces.framework.core.annotation.ObjectHandle;
 import intellispaces.framework.core.annotation.Transition;
@@ -114,7 +115,10 @@ public class MovableDownwardObjectHandleGenerationTask extends AbstractConversio
     childDomainClassSimpleName = annotatedType.simpleName();
     parentDomainClassSimpleName = context.addToImportAndGetSimpleName(parentDomainType.targetType().canonicalName());
 
-    analyzeObjectHandleMethods(parentDomainType.effectiveTargetType(), roundEnv);
+    CustomType actualParentDomainType = buildActualType(parentDomainType.targetType(), roundEnv);
+    CustomTypeReference actualParentDomainTypeReference = CustomTypeReferences.get(actualParentDomainType, parentDomainType.typeArguments());
+    CustomType effectiveActualParentDomainType = actualParentDomainTypeReference.effectiveTargetType();
+    analyzeObjectHandleMethods(effectiveActualParentDomainType, roundEnv);
 
     Optional<CustomTypeReference> primaryDomain = DomainFunctions.getPrimaryDomainForAliasDomain(annotatedType);
     isAlias = primaryDomain.isPresent();

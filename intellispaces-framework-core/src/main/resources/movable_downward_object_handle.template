@@ -47,6 +47,7 @@ public class {{$classSimpleName}}{{$classTypeParams}} implements {{$movableObjec
 {{end}}
 {{end}}
 {{end}}
+
 {{for method : $methods}}
   {{$method.get("javadoc")}}
   @Override

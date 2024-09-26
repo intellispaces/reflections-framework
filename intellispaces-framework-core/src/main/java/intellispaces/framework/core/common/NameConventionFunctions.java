@@ -22,7 +22,7 @@ public interface NameConventionFunctions {
   static String getObjectHandleTypename(String domainClassName, ObjectHandleTypes handleType) {
     return switch (handleType) {
       case Bunch -> getBunchObjectHandleTypename(domainClassName);
-      case Common -> getBaseObjectHandleTypename(domainClassName);
+      case Common -> getCommonObjectHandleTypename(domainClassName);
       case Movable -> getMovableObjectHandleTypename(domainClassName);
       case Unmovable -> getUnmovableObjectHandleTypename(domainClassName);
     };
@@ -35,16 +35,16 @@ public interface NameConventionFunctions {
     return TextFunctions.replaceEndingOrElseThrow(transformClassName(domainClassName), "Domain", "Bunch");
   }
 
-  static String getBaseObjectHandleTypename(String domainClassName) {
+  static String getCommonObjectHandleTypename(String domainClassName) {
     return TextFunctions.replaceEndingOrElseThrow(transformClassName(domainClassName), "Domain", "");
   }
 
   static String getMovableObjectHandleTypename(String domainClassName) {
-    return TypeFunctions.addPrefixToSimpleName("Movable", getBaseObjectHandleTypename(domainClassName));
+    return TypeFunctions.addPrefixToSimpleName("Movable", getCommonObjectHandleTypename(domainClassName));
   }
 
   static String getUnmovableObjectHandleTypename(String domainClassName) {
-    return TypeFunctions.addPrefixToSimpleName("Unmovable", getBaseObjectHandleTypename(domainClassName));
+    return TypeFunctions.addPrefixToSimpleName("Unmovable", getCommonObjectHandleTypename(domainClassName));
   }
 
   static String getObjectHandleWrapperCanonicalName(CustomType objectHandleType) {
@@ -118,7 +118,7 @@ public interface NameConventionFunctions {
 
   static String getBaseDownwardObjectHandleTypename(CustomType domainType, CustomType baseDomainType) {
     String packageName = TypeFunctions.getPackageName(domainType.canonicalName());
-    String simpleName = TextFunctions.capitalizeFirstLetter(baseDomainType.simpleName()) +
+    String simpleName = TextFunctions.capitalizeFirstLetter(TextFunctions.replaceEndingOrElseThrow(baseDomainType.simpleName(), "Domain", "")) +
         "BasedOn" + TextFunctions.capitalizeFirstLetter(domainType.simpleName());
     return TypeFunctions.joinPackageAndSimpleName(packageName, simpleName);
   }
@@ -126,7 +126,7 @@ public interface NameConventionFunctions {
   static String getMovableDownwardObjectHandleTypename(CustomType domainType, CustomType baseDomainType) {
     String packageName = TypeFunctions.getPackageName(domainType.canonicalName());
     String simpleName = "Movable" +
-        TextFunctions.capitalizeFirstLetter(baseDomainType.simpleName()) +
+        TextFunctions.capitalizeFirstLetter(TextFunctions.replaceEndingOrElseThrow(baseDomainType.simpleName(), "Domain", "")) +
         "BasedOn" + TextFunctions.capitalizeFirstLetter(domainType.simpleName());
     return TypeFunctions.joinPackageAndSimpleName(packageName, simpleName);
   }
@@ -134,7 +134,7 @@ public interface NameConventionFunctions {
   static String getUnmovableDownwardObjectHandleTypename(CustomType domainType, CustomType baseDomainType) {
     String packageName = TypeFunctions.getPackageName(domainType.canonicalName());
     String simpleName = "Unmovable" +
-        TextFunctions.capitalizeFirstLetter(baseDomainType.simpleName()) +
+        TextFunctions.capitalizeFirstLetter(TextFunctions.replaceEndingOrElseThrow(baseDomainType.simpleName(), "Domain", "")) +
         "BasedOn" + TextFunctions.capitalizeFirstLetter(domainType.simpleName());
     return TypeFunctions.joinPackageAndSimpleName(packageName, simpleName);
   }
@@ -142,7 +142,7 @@ public interface NameConventionFunctions {
   static String getMovableDownwardObjectHandleTypename(Class<?> domainClass, Class<?> baseDomainClass) {
     String packageName = TypeFunctions.getPackageName(domainClass.getCanonicalName());
     String simpleName = "Movable" +
-        TextFunctions.capitalizeFirstLetter(baseDomainClass.getSimpleName()) +
+        TextFunctions.capitalizeFirstLetter(TextFunctions.replaceEndingOrElseThrow(baseDomainClass.getSimpleName(), "Domain", "")) +
         "BasedOn" + TextFunctions.capitalizeFirstLetter(domainClass.getSimpleName());
     return TypeFunctions.joinPackageAndSimpleName(packageName, simpleName);
   }

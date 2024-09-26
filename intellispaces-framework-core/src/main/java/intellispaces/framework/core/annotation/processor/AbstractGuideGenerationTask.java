@@ -270,7 +270,7 @@ public abstract class AbstractGuideGenerationTask extends AbstractGenerationTask
     if (type.isNamedReference()) {
       return type.asNamedReferenceOrElseThrow().name();
     } else {
-      String canonicalName = ObjectFunctions.getBaseObjectHandleTypename(type, typeReplacer);
+      String canonicalName = ObjectFunctions.getCommonObjectHandleTypename(type, typeReplacer);
       String name = type.isCustomTypeReference() ? context.addToImportAndGetSimpleName(canonicalName) : canonicalName;
       if (type.isCustomTypeReference() && !type.asCustomTypeReferenceOrElseThrow().typeArguments().isEmpty()) {
         var sb = new StringBuilder();
@@ -294,7 +294,7 @@ public abstract class AbstractGuideGenerationTask extends AbstractGenerationTask
     } else if (type.isNamedReference()) {
       return type.asNamedReferenceOrElseThrow().name();
     } else {
-      String canonicalName = ObjectFunctions.getBaseObjectHandleTypename(type);
+      String canonicalName = ObjectFunctions.getCommonObjectHandleTypename(type);
       String simpleName = context.addToImportAndGetSimpleName(canonicalName);
       if (type.isCustomTypeReference() && !type.asCustomTypeReferenceOrElseThrow().typeArguments().isEmpty()) {
         var sb = new StringBuilder();
@@ -313,7 +313,7 @@ public abstract class AbstractGuideGenerationTask extends AbstractGenerationTask
   }
 
   private String buildObjectHandleDeclaration(CustomType type) {
-    String canonicalName = ObjectFunctions.getBaseObjectHandleTypename(type);
+    String canonicalName = ObjectFunctions.getCommonObjectHandleTypename(type);
     String simpleName = context.addToImportAndGetSimpleName(canonicalName);
     if (!type.typeParameters().isEmpty()) {
       var sb = new StringBuilder();

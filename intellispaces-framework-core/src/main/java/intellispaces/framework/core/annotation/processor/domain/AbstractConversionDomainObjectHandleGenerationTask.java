@@ -27,8 +27,7 @@ abstract class AbstractConversionDomainObjectHandleGenerationTask extends Abstra
   protected Stream<MethodStatement> getObjectHandleMethods(
       CustomType customType, RoundEnvironment roundEnv
   ) {
-    return buildActualType(customType, roundEnv)
-        .actualMethods().stream()
+    return customType.actualMethods().stream()
         .filter(this::isNotGetDomainMethod);
   }
 

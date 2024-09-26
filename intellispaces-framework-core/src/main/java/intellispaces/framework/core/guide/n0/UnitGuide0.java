@@ -48,7 +48,7 @@ abstract class UnitGuide0<S, R> implements Guide0<S, R>, KernelUnitGuide<S, R> {
     } catch (TraverseException e) {
       throw e;
     } catch (Exception e) {
-      throw TraverseException.withCauseAndMessage(e, "Failed to invoke unit guide {0} in unit {0}",
+      throw TraverseException.withCauseAndMessage(e, "Failed to invoke unit guide {0} in unit {1}",
         guideMethod.getName(), guideMethod.getDeclaringClass().getCanonicalName());
     }
   }

@@ -72,13 +72,12 @@ public class ObjectFunctions {
     return objectHandleType.hasParent(MovableObjectHandle.class.getCanonicalName());
   }
 
-  public static String getBaseObjectHandleTypename(TypeReference domainType) {
-    return getBaseObjectHandleTypename(domainType, Function.identity());
+  public static String getCommonObjectHandleTypename(TypeReference domainType) {
+    return getCommonObjectHandleTypename(domainType, Function.identity());
   }
 
-  public static String getBaseObjectHandleTypename(
-      TypeReference type,
-      Function<TypeReference, TypeReference> typeReplacer
+  public static String getCommonObjectHandleTypename(
+      TypeReference type, Function<TypeReference, TypeReference> typeReplacer
   ) {
     type = typeReplacer.apply(type);
     if (type.isPrimitiveReference()) {
@@ -90,16 +89,16 @@ public class ObjectFunctions {
       if (type.asWildcardOrElseThrow().extendedBound().isEmpty()) {
         return "?";
       }
-      return "? extends " + getBaseObjectHandleTypename(type.asWildcardOrElseThrow().extendedBound().get(), typeReplacer);
+      return "? extends " + getCommonObjectHandleTypename(type.asWildcardOrElseThrow().extendedBound().get(), typeReplacer);
     }
-    return getBaseObjectHandleTypename(type.asCustomTypeReferenceOrElseThrow().targetType());
+    return getCommonObjectHandleTypename(type.asCustomTypeReferenceOrElseThrow().targetType());
   }
 
-  public static String getBaseObjectHandleTypename(CustomType domainType) {
+  public static String getCommonObjectHandleTypename(CustomType domainType) {
     if (isDefaultObjectHandleType(domainType)) {
       return domainType.className();
     }
-    return NameConventionFunctions.getBaseObjectHandleTypename(domainType.className());
+    return NameConventionFunctions.getCommonObjectHandleTypename(domainType.className());
   }
 
   public static String getObjectHandleTypename(CustomType customType, ObjectHandleTypes type) {
@@ -128,7 +127,9 @@ public class ObjectFunctions {
   }
 
   public static boolean isCustomObjectHandleType(TypeReference type) {
-    return type.isCustomTypeReference() && type.asCustomTypeReferenceOrElseThrow().targetType().hasParent(intellispaces.framework.core.object.ObjectHandle.class);
+    return type.isCustomTypeReference() && type.asCustomTypeReferenceOrElseThrow().targetType().hasParent(
+      intellispaces.framework.core.object.ObjectHandle.class
+    );
   }
 
   public static Class<?> defineObjectHandleClass(Class<?> aClass) {
@@ -164,7 +165,9 @@ public class ObjectFunctions {
 
   public static CustomType getDomainTypeOfObjectHandle(TypeReference objectHandleType) {
     if (objectHandleType.isPrimitiveReference()) {
-      Class<?> wrapperClass = TypeFunctions.getPrimitiveWrapperClass(objectHandleType.asPrimitiveReferenceOrElseThrow().typename());
+      Class<?> wrapperClass = TypeFunctions.getPrimitiveWrapperClass(
+        objectHandleType.asPrimitiveReferenceOrElseThrow().typename()
+      );
       return JavaStatements.customTypeStatement(wrapperClass);
     } else if (objectHandleType.isCustomTypeReference()) {
       return getDomainTypeOfObjectHandle(objectHandleType.asCustomTypeReferenceOrElseThrow().targetType());
@@ -182,7 +185,9 @@ public class ObjectFunctions {
           .type();
     }
 
-    Optional<AnnotationInstance> objectHandle = objectHandleType.selectAnnotation(intellispaces.framework.core.annotation.ObjectHandle.class.getCanonicalName());
+    Optional<AnnotationInstance> objectHandle = objectHandleType.selectAnnotation(
+      intellispaces.framework.core.annotation.ObjectHandle.class.getCanonicalName()
+    );
     if (objectHandle.isPresent()) {
       return objectHandle.get()
           .elementValue("value").orElseThrow()
@@ -202,7 +207,9 @@ public class ObjectFunctions {
       objectHandleClass = wrapper.value();
     }
 
-    intellispaces.framework.core.annotation.ObjectHandle objectHandle = objectHandleClass.getAnnotation(intellispaces.framework.core.annotation.ObjectHandle.class);
+    intellispaces.framework.core.annotation.ObjectHandle objectHandle = objectHandleClass.getAnnotation(
+      intellispaces.framework.core.annotation.ObjectHandle.class
+    );
     if (objectHandle != null) {
       return objectHandle.value();
     }

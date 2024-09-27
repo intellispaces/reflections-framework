@@ -13,7 +13,7 @@ import java.lang.reflect.Method;
  * @param <T> target object type.
  * @param <Q> qualifier object type.
  */
-public class ObjectMapperOfMoving1<S extends ObjectHandleWrapper<S>, T, Q>
+public class ObjectMapperOfMoving1<S extends ObjectHandleWrapper, T, Q>
     extends ObjectGuide1<S, T, Q>
     implements AbstractMapperOfMoving1<S, T, Q>
 {

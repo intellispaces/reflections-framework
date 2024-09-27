@@ -12,7 +12,7 @@ import java.lang.reflect.Method;
  * @param <S> mapper source object type.
  * @param <Q> mapper qualified type.
  */
-public class ObjectMapper1<S extends ObjectHandleWrapper<S>, T, Q>
+public class ObjectMapper1<S extends ObjectHandleWrapper, T, Q>
     extends ObjectGuide1<S, T, Q>
     implements AbstractMapper1<S, T, Q>
 {

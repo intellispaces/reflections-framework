@@ -11,7 +11,7 @@ import java.lang.reflect.Method;
  *
  * @param <S> source object handle type.
  */
-public class ObjectMover0<S extends ObjectHandleWrapper<S>>
+public class ObjectMover0<S extends ObjectHandleWrapper>
     extends ObjectGuide0<S, S>
     implements AbstractMover0<S>
 {

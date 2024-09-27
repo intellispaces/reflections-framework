@@ -13,7 +13,7 @@ import java.lang.reflect.Method;
  * @param <Q1> first qualifier type.
  * @param <Q2> second qualifier type.
  */
-public class ObjectMover3<S extends ObjectHandleWrapper<S>, Q1, Q2, Q3>
+public class ObjectMover3<S extends ObjectHandleWrapper, Q1, Q2, Q3>
     extends ObjectGuide3<S, S, Q1, Q2, Q3>
     implements AbstractMover3<S, Q1, Q2, Q3>
 {

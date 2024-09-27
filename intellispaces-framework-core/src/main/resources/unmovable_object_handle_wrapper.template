@@ -9,7 +9,7 @@ import {{$importedClass}};
  */
 @Wrapper({{$sourceClassSimpleName}}.class)
 {{$generatedAnnotation}}
-public class {{$classSimpleName}}{{$typeParamsFull}} extends {{$sourceClassSimpleName}}{{$typeParamsBrief}} implements ObjectHandleWrapper<{{$domainClassSimpleName}}{{$typeParamsBrief}}> {
+public class {{$classSimpleName}}{{$typeParamsFull}} extends {{$sourceClassSimpleName}}{{$typeParamsBrief}} implements ObjectHandleWrapper {
   private KernelObjectHandle $handle;
 
 {{for constructor : $constructors}}

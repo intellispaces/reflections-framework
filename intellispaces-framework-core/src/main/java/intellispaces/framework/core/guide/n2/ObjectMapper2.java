@@ -13,7 +13,7 @@ import java.lang.reflect.Method;
  * @param <Q1> first qualifier type.
  * @param <Q2> second qualifier type.
  */
-public class ObjectMapper2<S extends ObjectHandleWrapper<S>, T, Q1, Q2>
+public class ObjectMapper2<S extends ObjectHandleWrapper, T, Q1, Q2>
     extends ObjectGuide2<S, T, Q1, Q2>
     implements AbstractMapper2<S, T, Q1, Q2>
 {

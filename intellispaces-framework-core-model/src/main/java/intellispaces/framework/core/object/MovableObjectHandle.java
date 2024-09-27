@@ -22,15 +22,15 @@ public interface MovableObjectHandle<D> extends ObjectHandle<D> {
 
   <Q> MovableObjectHandle<D> moveThru(String tid, Q qualifier) throws TraverseException;
 
-  MovableObjectHandle<D> moveThru(TransitionMethod0<? super D, ? super D> transitionMethod) throws TraverseException;
-
-  <Q> MovableObjectHandle<D> moveThru(TransitionMethod1<? super D, ? super D, Q> transitionMethod, Q qualifier) throws TraverseException;
-
   @SuppressWarnings("rawtypes")
   MovableObjectHandle<D> moveThru(Class<? extends Transition0> transitionClass) throws TraverseException;
 
+  <D$ extends D> MovableObjectHandle<D> moveThru(TransitionMethod0<D$, D$> transitionMethod) throws TraverseException;
+
   @SuppressWarnings("rawtypes")
   <Q> MovableObjectHandle<D> moveThru(Class<? extends Transition1> transitionClass, Q qualifier) throws TraverseException;
+
+  <D$ extends D, Q> MovableObjectHandle<D> moveThru(TransitionMethod1<D$, D$, Q> transitionMethod, Q qualifier) throws TraverseException;
 
   <R, Q> R mapOfMovingThru(String tid, Q qualifier) throws TraverseException;
 

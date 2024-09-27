@@ -15,7 +15,7 @@ import java.lang.reflect.Method;
  * @param <Q2> second qualifier object type.
  * @param <Q3> third qualifier object type.
  */
-public class ObjectMapperOfMoving3<S extends ObjectHandleWrapper<S>, T, Q1, Q2, Q3>
+public class ObjectMapperOfMoving3<S extends ObjectHandleWrapper, T, Q1, Q2, Q3>
     extends ObjectGuide3<S, T, Q1, Q2, Q3>
     implements AbstractMapperOfMoving3<S, T, Q1, Q2, Q3>
 {

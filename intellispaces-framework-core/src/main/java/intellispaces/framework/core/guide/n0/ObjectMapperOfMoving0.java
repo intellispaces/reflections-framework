@@ -11,7 +11,7 @@ import java.lang.reflect.Method;
  *
  * @param <S> mapper source object type.
  */
-public class ObjectMapperOfMoving0<S extends ObjectHandleWrapper<S>, T>
+public class ObjectMapperOfMoving0<S extends ObjectHandleWrapper, T>
     extends ObjectGuide0<S, T>
     implements AbstractMapperOfMoving0<S, T>
 {

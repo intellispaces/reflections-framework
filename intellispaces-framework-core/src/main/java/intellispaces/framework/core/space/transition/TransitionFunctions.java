@@ -12,6 +12,7 @@ import intellispaces.framework.core.annotation.Mapper;
 import intellispaces.framework.core.annotation.MapperOfMoving;
 import intellispaces.framework.core.annotation.Mover;
 import intellispaces.framework.core.annotation.Transition;
+import intellispaces.framework.core.exception.ConfigurationException;
 import intellispaces.framework.core.object.ObjectFunctions;
 import intellispaces.framework.core.space.domain.DomainFunctions;
 import intellispaces.framework.core.traverse.TraverseTypes;
@@ -305,7 +306,10 @@ public interface TransitionFunctions {
   }
 
   static TraverseTypes getTraverseType(MethodStatement method) {
-    Transition transition = method.selectAnnotation(Transition.class).orElseThrow();
+    Transition transition = method.selectAnnotation(Transition.class).orElseThrow(() ->
+        ConfigurationException.withMessage("Could not define traverse type of method '{0}' in '{1}'",
+            method.name(), method.owner().className())
+        );
     return getTraverseType(transition);
   }
 }

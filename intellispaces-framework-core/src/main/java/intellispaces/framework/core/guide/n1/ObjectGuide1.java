@@ -7,7 +7,7 @@ import intellispaces.framework.core.system.ObjectHandleWrapper;
 
 import java.lang.reflect.Method;
 
-abstract class ObjectGuide1<S extends ObjectHandleWrapper<S>, R, Q> implements Guide1<S, R, Q> {
+abstract class ObjectGuide1<S extends ObjectHandleWrapper, R, Q> implements Guide1<S, R, Q> {
   private final Class<S> objectHandleClass;
   private final String tid;
   private final Method guideMethod;

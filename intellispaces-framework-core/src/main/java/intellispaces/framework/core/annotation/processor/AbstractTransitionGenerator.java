@@ -15,14 +15,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public abstract class AbstractTransitionGenerationTask extends AbstractGenerationTask {
+public abstract class AbstractTransitionGenerator extends AbstractGenerator {
   protected final MethodStatement transitionMethod;
   private String transitionMethodSignature;
   private String transitionClass;
   private String transitionTypeParamsFull;
   private String transitionTypeParamsBrief;
 
-  public AbstractTransitionGenerationTask(
+  public AbstractTransitionGenerator(
       CustomType initiatorType, CustomType annotatedType, MethodStatement transitionMethod
   ) {
     super(initiatorType, annotatedType);

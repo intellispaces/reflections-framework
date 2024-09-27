@@ -43,7 +43,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
-public abstract class AbstractGuideGenerationTask extends AbstractGenerationTask {
+public abstract class AbstractGuideGenerator extends AbstractGenerator {
   protected final TraverseType traverseType;
   protected final MethodStatement transitionMethod;
   private String guideClassSimpleName;
@@ -52,7 +52,7 @@ public abstract class AbstractGuideGenerationTask extends AbstractGenerationTask
   private String baseMethod;
   private String guideTypeParamsFull;
 
-  public AbstractGuideGenerationTask(
+  public AbstractGuideGenerator(
       TraverseType traverseType, CustomType initiatorType, CustomType annotatedType, MethodStatement transitionMethod
   ) {
     super(initiatorType, annotatedType);

@@ -2,7 +2,7 @@ package intellispaces.framework.core.annotation.processor.preprocessing;
 
 import com.google.auto.service.AutoService;
 import intellispaces.common.annotationprocessor.AnnotatedTypeProcessor;
-import intellispaces.common.annotationprocessor.generator.GenerationTask;
+import intellispaces.common.annotationprocessor.generator.Generator;
 import intellispaces.common.annotationprocessor.validator.AnnotatedTypeValidator;
 import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.framework.core.annotation.Preprocessing;
@@ -32,7 +32,7 @@ public class PreprocessingAnnotationProcessor extends AnnotatedTypeProcessor {
   }
 
   @Override
-  public List<GenerationTask> makeTasks(CustomType initiatorType, CustomType customType, RoundEnvironment roundEnv) {
+  public List<Generator> makeGenerators(CustomType initiatorType, CustomType customType, RoundEnvironment roundEnv) {
     return AnnotationProcessorFunctions.makePreprocessingArtifactGenerators(initiatorType, customType, roundEnv);
   }
 }

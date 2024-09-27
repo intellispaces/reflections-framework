@@ -4,15 +4,15 @@ import intellispaces.common.annotationprocessor.context.AnnotationProcessingCont
 import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.common.javastatement.method.MethodParam;
 import intellispaces.common.javastatement.method.MethodStatement;
-import intellispaces.framework.core.annotation.processor.AbstractGuideGenerationTask;
+import intellispaces.framework.core.annotation.processor.AbstractGuideGenerator;
 import intellispaces.framework.core.common.NameConventionFunctions;
 import intellispaces.framework.core.traverse.TraverseType;
 
 import java.util.List;
 
-public class DomainGuideGenerationTask extends AbstractGuideGenerationTask {
+public class DomainGuideGenerator extends AbstractGuideGenerator {
 
-  public DomainGuideGenerationTask(
+  public DomainGuideGenerator(
       TraverseType traverseType, CustomType initiatorType, CustomType domainType, MethodStatement transitionMethod
   ) {
     super(traverseType, initiatorType, domainType, transitionMethod);

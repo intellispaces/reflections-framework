@@ -1,13 +1,12 @@
 package intellispaces.framework.core.annotation.processor.domain;
 
 import intellispaces.common.annotationprocessor.context.AnnotationProcessingContext;
-import intellispaces.common.base.exception.UnexpectedViolationException;
 import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.common.javastatement.reference.CustomTypeReference;
 import intellispaces.framework.core.annotation.ObjectHandle;
 import intellispaces.framework.core.common.NameConventionFunctions;
+import intellispaces.framework.core.object.MovableObjectHandle;
 import intellispaces.framework.core.object.ObjectHandleTypes;
-import intellispaces.framework.core.object.UnmovableObjectHandle;
 import intellispaces.framework.core.space.domain.DomainFunctions;
 
 import javax.annotation.processing.RoundEnvironment;
@@ -15,12 +14,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-public class UnmovableObjectHandleGenerationTask extends AbstractDomainObjectHandleGenerationTask {
+public class MovableObjectHandleGenerator extends AbstractDomainObjectHandleGenerator {
   private String baseObjectHandle;
   private boolean isAlias;
   private String primaryObjectHandle;
 
-  public UnmovableObjectHandleGenerationTask(CustomType initiatorType, CustomType domainType) {
+  public MovableObjectHandleGenerator(CustomType initiatorType, CustomType domainType) {
     super(initiatorType, domainType);
   }
 
@@ -31,17 +30,17 @@ public class UnmovableObjectHandleGenerationTask extends AbstractDomainObjectHan
 
   @Override
   protected ObjectHandleTypes getObjectHandleType() {
-    return ObjectHandleTypes.Unmovable;
+    return ObjectHandleTypes.Movable;
   }
 
   @Override
   public String artifactName() {
-    return NameConventionFunctions.getUnmovableObjectHandleTypename(annotatedType.className());
+    return NameConventionFunctions.getMovableObjectHandleTypename(annotatedType.className());
   }
 
   @Override
   protected String templateName() {
-    return "/unmovable_object_handle.template";
+    return "/movable_object_handle.template";
   }
 
   protected Map<String, Object> templateVariables() {
@@ -51,13 +50,12 @@ public class UnmovableObjectHandleGenerationTask extends AbstractDomainObjectHan
     vars.put("importedClasses", context.getImports());
     vars.put("sourceClassName", sourceClassCanonicalName());
     vars.put("sourceClassSimpleName", sourceClassSimpleName());
-    vars.put("movableClassSimpleName", movableClassSimpleName());
     vars.put("classSimpleName", context.generatedClassSimpleName());
     vars.put("domainTypeParamsFull", domainTypeParamsFull);
     vars.put("domainTypeParamsBrief", domainTypeParamsBrief);
     vars.put("baseObjectHandle", baseObjectHandle);
     vars.put("domainMethods", methods);
-    vars.put("unmovableObjectHandleName", context.addToImportAndGetSimpleName(UnmovableObjectHandle.class));
+    vars.put("movableObjectHandleName", context.addToImportAndGetSimpleName(MovableObjectHandle.class));
     vars.put("isAlias", isAlias);
     vars.put("primaryObjectHandle", primaryObjectHandle);
     return vars;
@@ -69,8 +67,7 @@ public class UnmovableObjectHandleGenerationTask extends AbstractDomainObjectHan
     if (annotatedType.isNested()) {
       context.addImport(sourceClassCanonicalName());
     }
-    context.addImport(UnexpectedViolationException.class);
-    context.addImport(UnmovableObjectHandle.class);
+    context.addImport(MovableObjectHandle.class);
     context.addImport(ObjectHandle.class);
 
     domainTypeParamsFull = annotatedType.typeParametersFullDeclaration();
@@ -83,7 +80,7 @@ public class UnmovableObjectHandleGenerationTask extends AbstractDomainObjectHan
     Optional<CustomTypeReference> primaryDomain = DomainFunctions.getPrimaryDomainForAliasDomain(annotatedType);
     isAlias = primaryDomain.isPresent();
     if (isAlias) {
-      primaryObjectHandle = getObjectHandleDeclaration(primaryDomain.get(), ObjectHandleTypes.Unmovable);
+      primaryObjectHandle = getObjectHandleDeclaration(primaryDomain.get(), ObjectHandleTypes.Movable);
     }
     return true;
   }

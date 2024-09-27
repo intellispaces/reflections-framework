@@ -11,7 +11,7 @@ import intellispaces.common.javastatement.reference.NamedReference;
 import intellispaces.common.javastatement.reference.TypeReference;
 import intellispaces.framework.core.annotation.Name;
 import intellispaces.framework.core.annotation.ObjectHandle;
-import intellispaces.framework.core.annotation.processor.AbstractGenerationTask;
+import intellispaces.framework.core.annotation.processor.AbstractGenerator;
 import intellispaces.framework.core.common.NameConventionFunctions;
 import intellispaces.framework.core.exception.TraverseException;
 import intellispaces.framework.core.object.ObjectHandleTypes;
@@ -24,11 +24,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class UnmovableDataHandleGenerationTask extends AbstractGenerationTask {
+public class UnmovableDataHandleGenerator extends AbstractGenerator {
   private final List<Map<String, String>> projectionProperties = new ArrayList<>();
   protected String typeParamsBrief;
 
-  public UnmovableDataHandleGenerationTask(CustomType initiatorType, CustomType dataType) {
+  public UnmovableDataHandleGenerator(CustomType initiatorType, CustomType dataType) {
     super(initiatorType, dataType);
   }
 

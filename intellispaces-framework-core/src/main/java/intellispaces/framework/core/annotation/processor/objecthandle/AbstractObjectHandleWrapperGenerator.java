@@ -13,7 +13,7 @@ import intellispaces.common.javastatement.type.Types;
 import intellispaces.framework.core.action.TraverseActions;
 import intellispaces.framework.core.annotation.AutoGuide;
 import intellispaces.framework.core.annotation.Inject;
-import intellispaces.framework.core.annotation.processor.AbstractObjectHandleGenerationTask;
+import intellispaces.framework.core.annotation.processor.AbstractObjectHandleGenerator;
 import intellispaces.framework.core.common.NameConventionFunctions;
 import intellispaces.framework.core.exception.ConfigurationException;
 import intellispaces.framework.core.guide.GuideFunctions;
@@ -32,7 +32,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-abstract class AbstractObjectHandleWrapperGenerationTask extends AbstractObjectHandleGenerationTask {
+abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandleGenerator {
   protected String domainSimpleClassName;
   protected String typeParamsFull;
   protected String typeParamsBrief;
@@ -43,7 +43,7 @@ abstract class AbstractObjectHandleWrapperGenerationTask extends AbstractObjectH
   protected final List<Map<String, Object>> injections = new ArrayList<>();
   protected final List<Map<String, Object>> injectionMethods = new ArrayList<>();
 
-  AbstractObjectHandleWrapperGenerationTask(CustomType initiatorType, CustomType objectHandleType) {
+  AbstractObjectHandleWrapperGenerator(CustomType initiatorType, CustomType objectHandleType) {
     super(initiatorType, objectHandleType);
 
     CustomType domainType = ObjectFunctions.getDomainTypeOfObjectHandle(objectHandleType);

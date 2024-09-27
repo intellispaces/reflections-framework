@@ -2,7 +2,7 @@ package intellispaces.framework.core.annotation.processor.guide;
 
 import com.google.auto.service.AutoService;
 import intellispaces.common.annotationprocessor.AnnotatedTypeProcessor;
-import intellispaces.common.annotationprocessor.generator.GenerationTask;
+import intellispaces.common.annotationprocessor.generator.Generator;
 import intellispaces.common.annotationprocessor.validator.AnnotatedTypeValidator;
 import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.framework.core.annotation.Guide;
@@ -32,7 +32,7 @@ public class GuideAnnotationProcessor extends AnnotatedTypeProcessor {
   }
 
   @Override
-  public List<GenerationTask> makeTasks(CustomType initiatorType, CustomType guideType, RoundEnvironment roundEnv) {
-    return List.of(new AutoGuideGenerationTask(initiatorType, guideType));
+  public List<Generator> makeGenerators(CustomType initiatorType, CustomType guideType, RoundEnvironment roundEnv) {
+    return List.of(new AutoGuideGenerator(initiatorType, guideType));
   }
 }

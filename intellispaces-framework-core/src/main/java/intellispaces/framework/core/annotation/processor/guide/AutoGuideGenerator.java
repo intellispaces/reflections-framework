@@ -12,7 +12,7 @@ import intellispaces.common.javastatement.method.MethodStatement;
 import intellispaces.common.javastatement.reference.TypeReference;
 import intellispaces.common.javastatement.type.Types;
 import intellispaces.framework.core.action.TraverseActions;
-import intellispaces.framework.core.annotation.processor.AbstractGenerationTask;
+import intellispaces.framework.core.annotation.processor.AbstractGenerator;
 import intellispaces.framework.core.common.NameConventionFunctions;
 import intellispaces.framework.core.guide.GuideFunctions;
 
@@ -21,12 +21,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class AutoGuideGenerationTask extends AbstractGenerationTask {
+public class AutoGuideGenerator extends AbstractGenerator {
   private List<Map<String, Object>> guideMethods;
   private String typeParamsFullDeclaration;
   private String typeParamsBriefDeclaration;
 
-  public AutoGuideGenerationTask(CustomType initiatorType, CustomType annotatedType) {
+  public AutoGuideGenerator(CustomType initiatorType, CustomType annotatedType) {
     super(initiatorType, annotatedType);
   }
 

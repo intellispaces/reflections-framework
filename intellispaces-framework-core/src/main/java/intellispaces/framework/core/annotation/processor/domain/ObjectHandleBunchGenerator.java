@@ -18,10 +18,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
-public class ObjectHandleBunchGenerationTask extends AbstractDomainObjectHandleGenerationTask {
+public class ObjectHandleBunchGenerator extends AbstractDomainObjectHandleGenerator {
   private String extendDeclaration;
 
-  public ObjectHandleBunchGenerationTask(CustomType initiatorType, CustomType domainType) {
+  public ObjectHandleBunchGenerator(CustomType initiatorType, CustomType domainType) {
     super(initiatorType, domainType);
   }
 

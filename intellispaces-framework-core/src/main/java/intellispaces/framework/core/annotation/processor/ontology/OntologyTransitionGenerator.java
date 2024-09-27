@@ -6,15 +6,15 @@ import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.common.javastatement.method.MethodParam;
 import intellispaces.common.javastatement.method.MethodStatement;
 import intellispaces.common.javastatement.reference.TypeReference;
-import intellispaces.framework.core.annotation.processor.AbstractTransitionGenerationTask;
+import intellispaces.framework.core.annotation.processor.AbstractTransitionGenerator;
 import intellispaces.framework.core.common.NameConventionFunctions;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class OntologyTransitionGenerationTask extends AbstractTransitionGenerationTask {
+public class OntologyTransitionGenerator extends AbstractTransitionGenerator {
 
-  public OntologyTransitionGenerationTask(CustomType initiatorType, CustomType ontologyType, MethodStatement transitionMethod) {
+  public OntologyTransitionGenerator(CustomType initiatorType, CustomType ontologyType, MethodStatement transitionMethod) {
     super(initiatorType, ontologyType, transitionMethod);
   }
 

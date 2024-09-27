@@ -12,11 +12,11 @@ import javax.annotation.processing.RoundEnvironment;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-abstract class AbstractConversionDomainObjectHandleGenerationTask extends AbstractDomainObjectHandleGenerationTask {
+abstract class AbstractConversionDomainObjectHandleGenerator extends AbstractDomainObjectHandleGenerator {
   protected final CustomTypeReference parentDomainType;
   protected String childFieldName;
 
-  public AbstractConversionDomainObjectHandleGenerationTask(
+  public AbstractConversionDomainObjectHandleGenerator(
       CustomType initiatorType, CustomType customType, CustomTypeReference parentDomainType
   ) {
     super(initiatorType, customType);

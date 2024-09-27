@@ -12,7 +12,7 @@ import intellispaces.common.javastatement.method.MethodStatement;
 import intellispaces.common.javastatement.reference.NamedReference;
 import intellispaces.common.javastatement.reference.NamedTypes;
 import intellispaces.common.javastatement.reference.TypeReference;
-import intellispaces.framework.core.annotation.processor.AbstractGuideGenerationTask;
+import intellispaces.framework.core.annotation.processor.AbstractGuideGenerator;
 import intellispaces.framework.core.annotation.processor.AnnotationProcessorFunctions;
 import intellispaces.framework.core.common.NameConventionFunctions;
 import intellispaces.framework.core.traverse.TraverseType;
@@ -20,11 +20,11 @@ import intellispaces.framework.core.traverse.TraverseType;
 import java.util.List;
 import java.util.function.Function;
 
-public class OntologyGuideGenerationTask extends AbstractGuideGenerationTask {
+public class OntologyGuideGenerator extends AbstractGuideGenerator {
   private final CustomType domainType;
   private final List<MethodParam> qualifierMethodParams;
 
-  public OntologyGuideGenerationTask(
+  public OntologyGuideGenerator(
       TraverseType traverseType, CustomType initiatorType, CustomType ontologyType, MethodStatement transitionMethod
   ) {
     super(traverseType, initiatorType, ontologyType, transitionMethod);

@@ -23,7 +23,7 @@ import intellispaces.framework.core.annotation.Ordinal;
 import intellispaces.framework.core.annotation.Projection;
 import intellispaces.framework.core.annotation.ProjectionDefinition;
 import intellispaces.framework.core.annotation.Wrapper;
-import intellispaces.framework.core.annotation.processor.AbstractGenerationTask;
+import intellispaces.framework.core.annotation.processor.AbstractGenerator;
 import intellispaces.framework.core.common.NameConventionFunctions;
 import intellispaces.framework.core.exception.ConfigurationException;
 import intellispaces.framework.core.guide.GuideFunctions;
@@ -51,7 +51,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class UnitWrapperGenerationTask extends AbstractGenerationTask {
+public class UnitWrapperGenerator extends AbstractGenerator {
   private final List<Map<String, Object>> injections = new ArrayList<>();
   private final List<String> projectionDefinitions = new ArrayList<>();
   private final List<Map<String, Object>> injectionMethods = new ArrayList<>();
@@ -61,7 +61,7 @@ public class UnitWrapperGenerationTask extends AbstractGenerationTask {
   private String typeParamsFullDeclaration;
   private String typeParamsBriefDeclaration;
 
-  public UnitWrapperGenerationTask(CustomType initiatorType, CustomType annotatedType) {
+  public UnitWrapperGenerator(CustomType initiatorType, CustomType annotatedType) {
     super(initiatorType, annotatedType);
   }
 

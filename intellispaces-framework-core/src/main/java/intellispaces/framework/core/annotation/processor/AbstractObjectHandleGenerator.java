@@ -20,12 +20,12 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public abstract class AbstractObjectHandleGenerationTask extends AbstractGenerationTask {
+public abstract class AbstractObjectHandleGenerator extends AbstractGenerator {
   protected String domainTypeParamsFull;
   protected String domainTypeParamsBrief;
   protected List<Map<String, String>> methods;
 
-  public AbstractObjectHandleGenerationTask(CustomType initiatorType, CustomType customType) {
+  public AbstractObjectHandleGenerator(CustomType initiatorType, CustomType customType) {
     super(initiatorType, customType);
   }
 

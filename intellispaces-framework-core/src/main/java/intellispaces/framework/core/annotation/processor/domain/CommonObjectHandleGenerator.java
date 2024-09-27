@@ -17,14 +17,14 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-public class CommonObjectHandleGenerationTask extends AbstractDomainObjectHandleGenerationTask {
+public class CommonObjectHandleGenerator extends AbstractDomainObjectHandleGenerator {
   private String objectHandleBunch;
   private boolean isAlias;
   private String primaryObjectHandle;
   private String mainPrimaryDomainSimpleName;
   private String primaryDomainTypeArguments;
 
-  public CommonObjectHandleGenerationTask(CustomType initiatorType, CustomType domainType) {
+  public CommonObjectHandleGenerator(CustomType initiatorType, CustomType domainType) {
     super(initiatorType, domainType);
   }
 

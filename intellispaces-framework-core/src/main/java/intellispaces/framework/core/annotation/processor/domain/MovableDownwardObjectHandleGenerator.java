@@ -25,7 +25,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-public class MovableDownwardObjectHandleGenerationTask extends AbstractConversionDomainObjectHandleGenerationTask {
+public class MovableDownwardObjectHandleGenerator extends AbstractConversionDomainObjectHandleGenerator {
   private String classTypeParams;
   private String classTypeParamsBrief;
   private String movableObjectHandleName;
@@ -38,7 +38,7 @@ public class MovableDownwardObjectHandleGenerationTask extends AbstractConversio
   private String mainPrimaryDomainSimpleName;
   private String primaryDomainTypeArguments;
 
-  public MovableDownwardObjectHandleGenerationTask(
+  public MovableDownwardObjectHandleGenerator(
       CustomType initiatorType, CustomType annotatedType, CustomTypeReference parentDomainType
   ) {
     super(initiatorType, annotatedType, parentDomainType);

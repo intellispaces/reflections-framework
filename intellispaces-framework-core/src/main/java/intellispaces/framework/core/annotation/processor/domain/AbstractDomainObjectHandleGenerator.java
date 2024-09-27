@@ -6,7 +6,7 @@ import intellispaces.common.javastatement.customtype.Interfaces;
 import intellispaces.common.javastatement.method.MethodStatement;
 import intellispaces.common.javastatement.reference.CustomTypeReference;
 import intellispaces.common.javastatement.reference.CustomTypeReferences;
-import intellispaces.framework.core.annotation.processor.AbstractObjectHandleGenerationTask;
+import intellispaces.framework.core.annotation.processor.AbstractObjectHandleGenerator;
 import intellispaces.framework.core.annotation.processor.AnnotationProcessorFunctions;
 import intellispaces.framework.core.annotation.processor.ArtifactTypes;
 import intellispaces.framework.core.object.ObjectFunctions;
@@ -17,9 +17,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
-abstract class AbstractDomainObjectHandleGenerationTask extends AbstractObjectHandleGenerationTask {
+abstract class AbstractDomainObjectHandleGenerator extends AbstractObjectHandleGenerator {
 
-  public AbstractDomainObjectHandleGenerationTask(CustomType initiatorType, CustomType domainType) {
+  public AbstractDomainObjectHandleGenerator(CustomType initiatorType, CustomType domainType) {
     super(initiatorType, domainType);
   }
 

@@ -1,17 +1,16 @@
 package intellispaces.framework.core.annotation.processor.objecthandle;
 
 import intellispaces.common.action.Actions;
+import intellispaces.common.action.getter.ResettableGetter;
 import intellispaces.common.annotationprocessor.context.AnnotationProcessingContext;
-import intellispaces.common.base.type.Type;
 import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.framework.core.annotation.Ordinal;
 import intellispaces.framework.core.annotation.Wrapper;
 import intellispaces.framework.core.exception.TraverseException;
-import intellispaces.framework.core.guide.n0.Mover0;
-import intellispaces.framework.core.guide.n1.Mover1;
+import intellispaces.framework.core.guide.n0.Mapper0;
+import intellispaces.framework.core.guide.n1.Mapper1;
 import intellispaces.framework.core.object.ObjectFunctions;
 import intellispaces.framework.core.object.ObjectHandleTypes;
-import intellispaces.framework.core.space.transition.Transition0;
 import intellispaces.framework.core.space.transition.Transition1;
 import intellispaces.framework.core.space.transition.TransitionFunctions;
 import intellispaces.framework.core.system.Modules;
@@ -27,9 +26,9 @@ import javax.annotation.processing.RoundEnvironment;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MovableObjectHandleWrapperGenerationTask extends AbstractObjectHandleWrapperGenerationTask {
+public class UnmovableObjectHandleWrapperGenerator extends AbstractObjectHandleWrapperGenerator {
 
-  public MovableObjectHandleWrapperGenerationTask(CustomType initiatorType, CustomType objectHandleType) {
+  public UnmovableObjectHandleWrapperGenerator(CustomType initiatorType, CustomType objectHandleType) {
     super(initiatorType, objectHandleType);
   }
 
@@ -45,7 +44,7 @@ public class MovableObjectHandleWrapperGenerationTask extends AbstractObjectHand
 
   @Override
   protected String templateName() {
-    return "/movable_object_handle_wrapper.template";
+    return "/unmovable_object_handle_wrapper.template";
   }
 
   protected Map<String, Object> templateVariables() {
@@ -70,7 +69,7 @@ public class MovableObjectHandleWrapperGenerationTask extends AbstractObjectHand
 
   @Override
   protected ObjectHandleTypes getObjectHandleType() {
-    return ObjectHandleTypes.Movable;
+    return ObjectHandleTypes.Unmovable;
   }
 
   @Override
@@ -80,16 +79,15 @@ public class MovableObjectHandleWrapperGenerationTask extends AbstractObjectHand
     context.addImport(Modules.class);
     context.addImport(KernelFunctions.class);
     context.addImport(TraverseException.class);
+    context.addImport(ResettableGetter.class);
     context.addImport(Actions.class);
-    context.addImport(Type.class);
     context.addImport(Ordinal.class);
     context.addImport(Wrapper.class);
     context.addImport(ObjectHandleWrapper.class);
     context.addImport(KernelObjectHandle.class);
 
-    context.addImport(Mover0.class);
-    context.addImport(Mover1.class);
-    context.addImport(Transition0.class);
+    context.addImport(Mapper0.class);
+    context.addImport(Mapper1.class);
     context.addImport(Transition1.class);
     context.addImport(TransitionMethod0.class);
     context.addImport(TransitionMethod1.class);

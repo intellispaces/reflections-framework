@@ -21,7 +21,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class UnmovableUpwardObjectHandleGenerationTask extends AbstractDomainObjectHandleGenerationTask {
+public class UnmovableUpwardObjectHandleGenerator extends AbstractDomainObjectHandleGenerator {
   private final CustomTypeReference baseDomainType;
   private final List<CustomTypeReference> allPrimaryDomains;
   private final Set<String> allUpwardMethodNames;
@@ -31,7 +31,7 @@ public class UnmovableUpwardObjectHandleGenerationTask extends AbstractDomainObj
   private String baseObjectHandleType;
   private String baseField;
 
-  public UnmovableUpwardObjectHandleGenerationTask(
+  public UnmovableUpwardObjectHandleGenerator(
       CustomType initiatorType,
       CustomType annotatedType,
       CustomTypeReference baseDomainType,

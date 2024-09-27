@@ -9,14 +9,14 @@ import intellispaces.common.javastatement.method.MethodParam;
 import intellispaces.common.javastatement.method.MethodStatement;
 import intellispaces.common.javastatement.reference.NamedReference;
 import intellispaces.common.javastatement.reference.TypeReference;
-import intellispaces.framework.core.annotation.processor.AbstractTransitionGenerationTask;
+import intellispaces.framework.core.annotation.processor.AbstractTransitionGenerator;
 import intellispaces.framework.core.common.NameConventionFunctions;
 
 import java.util.List;
 
-public class DomainTransitionGenerationTask extends AbstractTransitionGenerationTask {
+public class DomainTransitionGenerator extends AbstractTransitionGenerator {
 
-  public DomainTransitionGenerationTask(
+  public DomainTransitionGenerator(
       CustomType initiatorType, CustomType domainType, MethodStatement transitionMethod
   ) {
     super(initiatorType, domainType, transitionMethod);

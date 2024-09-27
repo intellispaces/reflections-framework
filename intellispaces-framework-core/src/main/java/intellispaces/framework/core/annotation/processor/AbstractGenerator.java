@@ -1,7 +1,7 @@
 package intellispaces.framework.core.annotation.processor;
 
 import intellispaces.common.annotationprocessor.context.JavaArtifactContext;
-import intellispaces.common.annotationprocessor.generator.TemplateSourceArtifactGenerationTask;
+import intellispaces.common.annotationprocessor.generator.TemplatedGenerator;
 import intellispaces.common.base.type.TypeFunctions;
 import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.common.javastatement.method.MethodParam;
@@ -18,11 +18,11 @@ import java.util.stream.Collectors;
 
 import static java.time.format.DateTimeFormatter.ISO_OFFSET_DATE_TIME;
 
-public abstract class AbstractGenerationTask extends TemplateSourceArtifactGenerationTask {
+public abstract class AbstractGenerator extends TemplatedGenerator {
   protected String generatedAnnotation;
   protected final JavaArtifactContext context = new JavaArtifactContext();
 
-  public AbstractGenerationTask(CustomType initiatorType, CustomType annotatedType) {
+  public AbstractGenerator(CustomType initiatorType, CustomType annotatedType) {
     super(initiatorType, annotatedType);
     context.addImport(Generated.class);
   }

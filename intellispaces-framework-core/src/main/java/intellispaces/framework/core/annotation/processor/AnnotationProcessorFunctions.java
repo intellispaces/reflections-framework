@@ -32,7 +32,6 @@ import intellispaces.framework.core.annotation.processor.domain.MovableDownwardO
 import intellispaces.framework.core.annotation.processor.domain.MovableObjectHandleGenerator;
 import intellispaces.framework.core.annotation.processor.domain.ObjectHandleBunchGenerator;
 import intellispaces.framework.core.annotation.processor.domain.UnmovableObjectHandleGenerator;
-import intellispaces.framework.core.annotation.processor.domain.UnmovableUpwardObjectHandleGenerator;
 import intellispaces.framework.core.annotation.processor.guide.AutoGuideGenerator;
 import intellispaces.framework.core.annotation.processor.objecthandle.MovableObjectHandleWrapperGenerator;
 import intellispaces.framework.core.annotation.processor.objecthandle.UnmovableObjectHandleWrapperGenerator;
@@ -41,7 +40,6 @@ import intellispaces.framework.core.annotation.processor.ontology.OntologyTransi
 import intellispaces.framework.core.annotation.processor.unit.UnitWrapperGenerator;
 import intellispaces.framework.core.object.MovableObjectHandle;
 import intellispaces.framework.core.object.UnmovableObjectHandle;
-import intellispaces.framework.core.space.domain.DomainFunctions;
 import intellispaces.framework.core.system.ModuleFunctions;
 import intellispaces.framework.core.system.UnitFunctions;
 import intellispaces.framework.core.traverse.TraverseTypes;
@@ -82,7 +80,6 @@ public interface AnnotationProcessorFunctions {
     addObjectHandleBunchGenerator(initiatorType, domainType, generators, roundEnv);
     addBasicObjectHandleGenerators(initiatorType, domainType, generators, roundEnv);
     addDownwardObjectHandleGenerators(initiatorType, domainType, generators);
-    addUpwardObjectHandleGenerators(initiatorType, domainType, domainType, generators);
     addIncludedGenerators(initiatorType, domainType, generators, roundEnv);
     return generators;
   }
@@ -139,31 +136,6 @@ public interface AnnotationProcessorFunctions {
     }
     CustomTypeReference parentDomainType = parents.get(0);
     generators.add(new MovableDownwardObjectHandleGenerator(initiatorType, domainType, parentDomainType));
-  }
-
-  private static void addUpwardObjectHandleGenerators(
-      CustomType initiatorType, CustomType domainType, CustomType curDomainType, List<Generator> generators
-  ) {
-    addUpwardObjectHandleGenerators2(initiatorType, domainType, curDomainType, new ArrayList<>(), generators);
-  }
-
-  private static void addUpwardObjectHandleGenerators2(
-      CustomType initiatorType,
-      CustomType domainType,
-      CustomType curDomainType,
-      List<CustomTypeReference> allPrimaryDomains,
-      List<Generator> generators
-  ) {
-    Optional<CustomTypeReference> primaryDomain = DomainFunctions.getPrimaryDomainForAliasDomain(curDomainType);
-    if (primaryDomain.isPresent()) {
-      allPrimaryDomains.add(primaryDomain.get());
-      generators.add(new UnmovableUpwardObjectHandleGenerator(
-          initiatorType, domainType, primaryDomain.get(), List.copyOf(allPrimaryDomains))
-      );
-      addUpwardObjectHandleGenerators2(
-          initiatorType, domainType, primaryDomain.get().targetType(), allPrimaryDomains, generators
-      );
-    }
   }
 
   static List<Generator> makeOntologyArtifactGenerators(

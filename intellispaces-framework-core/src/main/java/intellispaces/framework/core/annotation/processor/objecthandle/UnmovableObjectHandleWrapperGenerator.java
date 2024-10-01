@@ -95,11 +95,7 @@ public class UnmovableObjectHandleWrapperGenerator extends AbstractObjectHandleW
     context.addImport(GuideInjections.class);
     context.addImport(AutoGuideInjections.class);
 
-    CustomType domainType = ObjectFunctions.getDomainTypeOfObjectHandle(annotatedType);
-    context.addImport(domainType.canonicalName());
-
-    domainSimpleClassName = context.simpleNameOf(domainType.canonicalName());
-
+    analyzeDomain();
     analyzeTypeParams(annotatedType);
     analyzeConstructors(annotatedType);
     analyzeGuideActions(annotatedType);

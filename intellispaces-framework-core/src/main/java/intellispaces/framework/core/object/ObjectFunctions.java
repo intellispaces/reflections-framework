@@ -293,7 +293,9 @@ public class ObjectFunctions {
     } else if (domainType.isWildcard()) {
       WildcardReference wildcardTypeReference = domainType.asWildcardOrElseThrow();
       if (wildcardTypeReference.extendedBound().isPresent()) {
-        return getObjectHandleDeclaration(wildcardTypeReference.extendedBound().get(), handleType, simpleNameMapping);
+        return "? extends " + getObjectHandleDeclaration(
+            wildcardTypeReference.extendedBound().get(), handleType, simpleNameMapping
+        );
       } else {
         return Object.class.getCanonicalName();
       }
@@ -326,6 +328,7 @@ public class ObjectFunctions {
       char.class.getCanonicalName(),
       Object.class.getCanonicalName(),
       Boolean.class.getCanonicalName(),
+      Number.class.getCanonicalName(),
       Byte.class.getCanonicalName(),
       Short.class.getCanonicalName(),
       Integer.class.getCanonicalName(),

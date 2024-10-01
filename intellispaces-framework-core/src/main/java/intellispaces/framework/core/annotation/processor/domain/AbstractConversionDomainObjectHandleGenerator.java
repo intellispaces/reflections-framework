@@ -7,6 +7,7 @@ import intellispaces.common.javastatement.reference.CustomTypeReference;
 import intellispaces.common.javastatement.reference.TypeReference;
 import intellispaces.common.javastatement.reference.TypeReferenceFunctions;
 import intellispaces.framework.core.common.NameConventionFunctions;
+import intellispaces.framework.core.object.ObjectFunctions;
 
 import javax.annotation.processing.RoundEnvironment;
 import java.util.stream.Collectors;
@@ -47,7 +48,11 @@ abstract class AbstractConversionDomainObjectHandleGenerator extends AbstractDom
       if (parentReturnTypeRef.isCustomTypeReference() && childReturnTypeRef.isCustomTypeReference()) {
         CustomType expectedReturnType = parentReturnTypeRef.asCustomTypeReferenceOrElseThrow().targetType();
         CustomType actualReturnType = childReturnTypeRef.asCustomTypeReferenceOrElseThrow().targetType();
-        if (actualReturnType.hasParent(expectedReturnType)) {
+        if (
+            !ObjectFunctions.isDefaultObjectHandleType(actualReturnType)
+                && !ObjectFunctions.isDefaultObjectHandleType(expectedReturnType)
+                && actualReturnType.hasParent(expectedReturnType)
+        ) {
           buildDownwardReturnStatement(sb, method, actualReturnType, expectedReturnType);
         } else {
           buildCastReturnStatement(sb, method);

@@ -9,7 +9,6 @@ import intellispaces.framework.core.annotation.Wrapper;
 import intellispaces.framework.core.exception.TraverseException;
 import intellispaces.framework.core.guide.n0.Mover0;
 import intellispaces.framework.core.guide.n1.Mover1;
-import intellispaces.framework.core.object.ObjectFunctions;
 import intellispaces.framework.core.object.ObjectHandleTypes;
 import intellispaces.framework.core.space.transition.Transition0;
 import intellispaces.framework.core.space.transition.Transition1;
@@ -58,6 +57,9 @@ public class MovableObjectHandleWrapperGenerator extends AbstractObjectHandleWra
     vars.put("typeParamsFull", typeParamsFull);
     vars.put("typeParamsBrief", typeParamsBrief);
     vars.put("domainClassSimpleName", domainSimpleClassName);
+    vars.put("isAlias", isAlias);
+    vars.put("primaryDomainSimpleName", primaryDomainSimpleName);
+    vars.put("primaryDomainTypeArguments", primaryDomainTypeArguments);
     vars.put("constructors", constructors);
     vars.put("importedClasses", context.getImports());
     vars.put("transitionActions", transitionActions);
@@ -97,11 +99,7 @@ public class MovableObjectHandleWrapperGenerator extends AbstractObjectHandleWra
     context.addImport(GuideInjections.class);
     context.addImport(AutoGuideInjections.class);
 
-    CustomType domainType = ObjectFunctions.getDomainTypeOfObjectHandle(annotatedType);
-    context.addImport(domainType.canonicalName());
-
-    domainSimpleClassName = context.simpleNameOf(domainType.canonicalName());
-
+    analyzeDomain();
     analyzeTypeParams(annotatedType);
     analyzeConstructors(annotatedType);
     analyzeGuideActions(annotatedType);

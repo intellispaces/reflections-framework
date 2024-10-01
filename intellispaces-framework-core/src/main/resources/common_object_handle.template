@@ -15,32 +15,22 @@ import {{$importedClass}};
 public interface {{$classSimpleName}}{{$domainTypeParamsFull}} extends {{$primaryObjectHandle}}, {{$objectHandleBunch}}{{$domainTypeParamsBrief}} {
 
   @Override
-  default Type<{{$mainPrimaryDomainSimpleName}}{{$primaryDomainTypeArguments}}> domain() {
-    return Types.of({{$mainPrimaryDomainSimpleName}}.class);
-  }
-
-  @Override
-  default Class<{{$mainPrimaryDomainSimpleName}}{{$primaryDomainTypeArguments}}> domainClass() {
-    return (Class) {{$mainPrimaryDomainSimpleName}}.class;
+  default Type<{{$primaryDomainSimpleName}}{{$primaryDomainTypeArguments}}> domain() {
+    return {{$domainType}}
   }
 {{else}}
 public interface {{$classSimpleName}}{{$domainTypeParamsFull}} extends intellispaces.framework.core.object.ObjectHandle<{{$sourceClassSimpleName}}{{$domainTypeParamsBrief}}>, {{$objectHandleBunch}}{{$domainTypeParamsBrief}} {
 
-{{when $domainTypeParamsBrief.isEmpty()}}
   @Override
-  default Type<{{$sourceClassSimpleName}}> domain() {
-    return Types.of({{$sourceClassSimpleName}}.class);
+  default Type<{{$sourceClassSimpleName}}{{$domainTypeParamsBrief}}> domain() {
+    return {{$domainType}}
   }
-{{else}}
-  @Override
-  Type<{{$sourceClassSimpleName}}{{$domainTypeParamsBrief}}> domain();
 {{end}}
 
   @Override
-  default Class<{{$sourceClassSimpleName}}{{$domainTypeParamsBrief}}> domainClass() {
-    return (Class) {{$sourceClassSimpleName}}.class;
+  default Class<?> domainClass() {
+    return {{$primaryDomainSimpleName}}.class;
   }
-{{end}}
 
 {{for method : $domainMethods}}
   {{$method.get("javadoc")}}

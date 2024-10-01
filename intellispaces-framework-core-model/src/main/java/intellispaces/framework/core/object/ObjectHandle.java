@@ -15,9 +15,15 @@ import intellispaces.framework.core.space.transition.Transition1;
  */
 public interface ObjectHandle<D> {
 
+  /**
+   * Returns the type of the primary domain declaration.
+   */
   Type<D> domain();
 
-  Class<D> domainClass();
+  /**
+   * Returns the class declaring the domain.
+   */
+  Class<?> domainClass();
 
   boolean isMovable();
 

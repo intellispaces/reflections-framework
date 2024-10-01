@@ -22,6 +22,7 @@ import intellispaces.framework.core.transition.TransitionMethod1;
 
 import javax.annotation.processing.RoundEnvironment;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -33,10 +34,13 @@ public class MovableDownwardObjectHandleGenerator extends AbstractConversionDoma
   private String childObjectHandleType;
   private String parentDomainClassSimpleName;
   private String domainClassSimpleName;
+  protected String domainTypeParams;
   protected String domainTypeParamsBrief;
+  protected String domainTypeArguments;
   private boolean isAlias;
-  private String mainPrimaryDomainSimpleName;
+  private String primaryDomainSimpleName;
   private String primaryDomainTypeArguments;
+  private String domainType;
 
   public MovableDownwardObjectHandleGenerator(
       CustomType initiatorType, CustomType annotatedType, CustomTypeReference parentDomainType
@@ -74,7 +78,9 @@ public class MovableDownwardObjectHandleGenerator extends AbstractConversionDoma
     vars.put("classSimpleName", context.generatedClassSimpleName());
     vars.put("classTypeParams", classTypeParams);
     vars.put("classTypeParamsBrief", classTypeParamsBrief);
+    vars.put("domainTypeParams", domainTypeParams);
     vars.put("domainTypeParamsBrief", domainTypeParamsBrief);
+    vars.put("domainTypeArguments", domainTypeArguments);
     vars.put("childDomainClassSimpleName", childDomainClassSimpleName);
     vars.put("parentDomainClassSimpleName", parentDomainClassSimpleName);
     vars.put("childObjectHandleType", childObjectHandleType);
@@ -84,8 +90,9 @@ public class MovableDownwardObjectHandleGenerator extends AbstractConversionDoma
     vars.put("movableObjectHandleName", movableObjectHandleName);
     vars.put("domainClassSimpleName", domainClassSimpleName);
     vars.put("isAlias", isAlias);
-    vars.put("mainPrimaryDomainSimpleName", mainPrimaryDomainSimpleName);
+    vars.put("primaryDomainSimpleName", primaryDomainSimpleName);
     vars.put("primaryDomainTypeArguments", primaryDomainTypeArguments);
+    vars.put("domainType", domainType);
     return vars;
   }
 
@@ -106,10 +113,12 @@ public class MovableDownwardObjectHandleGenerator extends AbstractConversionDoma
         NameConventionFunctions.getMovableObjectHandleTypename(parentDomainType.targetType().className()));
     domainClassSimpleName = context.addToImportAndGetSimpleName(parentDomainType.targetType().canonicalName());
 
+    domainTypeParams = parentDomainType.targetType().typeParametersFullDeclaration();
     domainTypeParamsBrief = parentDomainType.targetType().typeParametersBriefDeclaration();
 
     classTypeParams = annotatedType.typeParametersFullDeclaration();
-    classTypeParamsBrief = parentDomainType.typeArgumentsDeclaration(context::addToImportAndGetSimpleName);
+    classTypeParamsBrief = annotatedType.typeParametersBriefDeclaration();
+    domainTypeArguments = parentDomainType.typeArgumentsDeclaration(context::addToImportAndGetSimpleName);
     childFieldName = TextFunctions.lowercaseFirstLetter(annotatedType.simpleName());
     childObjectHandleType = getChildObjectHandleType();
     childDomainClassSimpleName = annotatedType.simpleName();
@@ -118,16 +127,20 @@ public class MovableDownwardObjectHandleGenerator extends AbstractConversionDoma
     CustomType actualParentDomainType = buildActualType(parentDomainType.targetType(), roundEnv);
     CustomTypeReference actualParentDomainTypeReference = CustomTypeReferences.get(actualParentDomainType, parentDomainType.typeArguments());
     CustomType effectiveActualParentDomainType = actualParentDomainTypeReference.effectiveTargetType();
+
     analyzeObjectHandleMethods(effectiveActualParentDomainType, roundEnv);
 
-    Optional<CustomTypeReference> primaryDomain = DomainFunctions.getPrimaryDomainForAliasDomain(annotatedType);
+    Optional<CustomTypeReference> primaryDomain = DomainFunctions.getPrimaryDomainOfAlias(annotatedType);
     isAlias = primaryDomain.isPresent();
     if (isAlias) {
-      primaryDomainTypeArguments = primaryDomain.get().typeArgumentsDeclaration(context::addToImportAndGetSimpleName);
-      Optional<CustomTypeReference> mainPrimaryDomain = DomainFunctions.getMainPrimaryDomainForAliasDomain(annotatedType);
-      mainPrimaryDomainSimpleName = context.addToImportAndGetSimpleName(
+      Optional<CustomTypeReference> mainPrimaryDomain = DomainFunctions.getMainPrimaryDomainOfAlias(annotatedType);
+      primaryDomainSimpleName = context.addToImportAndGetSimpleName(
           mainPrimaryDomain.orElseThrow().targetType().canonicalName()
       );
+      primaryDomainTypeArguments = mainPrimaryDomain.get().typeArgumentsDeclaration(context::addToImportAndGetSimpleName);
+      domainType = buildDomainType(mainPrimaryDomain.get().targetType(), primaryDomain.get().typeArguments());
+    } else {
+      domainType = buildDomainType(parentDomainType.targetType(), (List) annotatedType.typeParameters());
     }
     return true;
   }

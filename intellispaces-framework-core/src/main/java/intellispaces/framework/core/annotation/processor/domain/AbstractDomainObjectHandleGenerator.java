@@ -6,6 +6,9 @@ import intellispaces.common.javastatement.customtype.Interfaces;
 import intellispaces.common.javastatement.method.MethodStatement;
 import intellispaces.common.javastatement.reference.CustomTypeReference;
 import intellispaces.common.javastatement.reference.CustomTypeReferences;
+import intellispaces.common.javastatement.reference.NamedReference;
+import intellispaces.common.javastatement.reference.NotPrimitiveReference;
+import intellispaces.common.javastatement.reference.ReferenceBound;
 import intellispaces.framework.core.annotation.processor.AbstractObjectHandleGenerator;
 import intellispaces.framework.core.annotation.processor.AnnotationProcessorFunctions;
 import intellispaces.framework.core.annotation.processor.ArtifactTypes;
@@ -60,5 +63,40 @@ abstract class AbstractDomainObjectHandleGenerator extends AbstractObjectHandleG
     }
     builder.extendedInterfaces(parentInterfaces);
     return builder.get();
+  }
+
+  protected String buildDomainType(CustomType domainType, List<NotPrimitiveReference> typeQualifiers) {
+    StringBuilder sb = new StringBuilder();
+    sb.append("Types.of(");
+    sb.append(context.addToImportAndGetSimpleName(domainType.canonicalName())).append(".class");
+    for (NotPrimitiveReference typeQualifier : typeQualifiers) {
+      sb.append(", ");
+      analyzeDomainType(typeQualifier, sb);
+    }
+    sb.append(");");
+    return sb.toString();
+  }
+
+  private void analyzeDomainType(NotPrimitiveReference typeReference, StringBuilder sb) {
+    if (typeReference.isCustomTypeReference()) {
+      CustomTypeReference customTypeReference = typeReference.asCustomTypeReferenceOrElseThrow();
+      sb.append("Types.of(");
+      sb.append(context.addToImportAndGetSimpleName(customTypeReference.targetType().canonicalName())).append(".class");
+      for (NotPrimitiveReference typeArg : customTypeReference.typeArguments()) {
+        sb.append(", ");
+        analyzeDomainType(typeArg, sb);
+      }
+      sb.append(")");
+    } else if (typeReference.isNamedReference()) {
+      NamedReference namedReference = typeReference.asNamedReferenceOrElseThrow();
+      if (namedReference.extendedBounds().isEmpty()) {
+        sb.append("Types.of(");
+        sb.append(context.addToImportAndGetSimpleName(Object.class)).append(".class");
+        sb.append(")");
+      } else {
+        ReferenceBound extendedBound = namedReference.extendedBounds().get(0);
+        analyzeDomainType(extendedBound, sb);
+      }
+    }
   }
 }

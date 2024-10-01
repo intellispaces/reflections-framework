@@ -77,7 +77,7 @@ public class MovableObjectHandleGenerator extends AbstractDomainObjectHandleGene
     );
     analyzeObjectHandleMethods(annotatedType, roundEnv);
 
-    Optional<CustomTypeReference> primaryDomain = DomainFunctions.getPrimaryDomainForAliasDomain(annotatedType);
+    Optional<CustomTypeReference> primaryDomain = DomainFunctions.getPrimaryDomainOfAlias(annotatedType);
     isAlias = primaryDomain.isPresent();
     if (isAlias) {
       primaryObjectHandle = getObjectHandleDeclaration(primaryDomain.get(), ObjectHandleTypes.Movable);

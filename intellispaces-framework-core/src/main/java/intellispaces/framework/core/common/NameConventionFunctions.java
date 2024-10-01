@@ -127,7 +127,7 @@ public interface NameConventionFunctions {
     String packageName = TypeFunctions.getPackageName(domainType.canonicalName());
     String simpleName = "Movable" +
         TextFunctions.capitalizeFirstLetter(TextFunctions.replaceEndingOrElseThrow(baseDomainType.simpleName(), "Domain", "")) +
-        "BasedOn" + TextFunctions.capitalizeFirstLetter(domainType.simpleName());
+        "BasedOn" + TextFunctions.capitalizeFirstLetter(TextFunctions.replaceEndingOrElseThrow(domainType.simpleName(), "Domain", ""));
     return TypeFunctions.joinPackageAndSimpleName(packageName, simpleName);
   }
 
@@ -143,7 +143,7 @@ public interface NameConventionFunctions {
     String packageName = TypeFunctions.getPackageName(domainClass.getCanonicalName());
     String simpleName = "Movable" +
         TextFunctions.capitalizeFirstLetter(TextFunctions.replaceEndingOrElseThrow(baseDomainClass.getSimpleName(), "Domain", "")) +
-        "BasedOn" + TextFunctions.capitalizeFirstLetter(domainClass.getSimpleName());
+        "BasedOn" + TextFunctions.capitalizeFirstLetter(TextFunctions.replaceEndingOrElseThrow(domainClass.getSimpleName(), "Domain", ""));
     return TypeFunctions.joinPackageAndSimpleName(packageName, simpleName);
   }
 
@@ -154,6 +154,12 @@ public interface NameConventionFunctions {
   static String getConversionMethodName(CustomType targetType) {
     return "as" + TextFunctions.capitalizeFirstLetter(
         TextFunctions.replaceEndingOrElseThrow(targetType.simpleName(), "Domain", ""));
+  }
+
+  static boolean isConversionMethod(MethodStatement method) {
+    return method.name().length() > 2
+        && method.name().startsWith("as")
+        && Character.isUpperCase(method.name().charAt(2));
   }
 
   private static String assignTransitionClassCanonicalName(

@@ -78,10 +78,10 @@ public final class DomainFunctions {
   }
 
   public static boolean isAliasDomain(CustomType domain) {
-    return getPrimaryDomainForAliasDomain(domain).isPresent();
+    return getPrimaryDomainOfAlias(domain).isPresent();
   }
 
-  public static Optional<CustomTypeReference> getPrimaryDomainForAliasDomain(CustomType domain) {
+  public static Optional<CustomTypeReference> getPrimaryDomainOfAlias(CustomType domain) {
     List<CustomTypeReference> parents = domain.parentTypes();
     if (parents.size() != 1) {
       return Optional.empty();
@@ -91,24 +91,34 @@ public final class DomainFunctions {
     if (parentTypeArguments.isEmpty()) {
       return Optional.empty();
     }
-    boolean allTypeArgumentsAreCustomTypes = parentTypeArguments.stream()
+    boolean allTypeArgumentsAreCustomTypeRelated = parentTypeArguments.stream()
         .allMatch(DomainFunctions::isCustomTypeRelated);
-    if (!allTypeArgumentsAreCustomTypes) {
+    if (!allTypeArgumentsAreCustomTypeRelated) {
       return Optional.empty();
     }
     return Optional.of(parentDomainType);
   }
 
-  public static Optional<CustomTypeReference> getMainPrimaryDomainForAliasDomain(CustomType domain) {
-    Optional<CustomTypeReference> primaryDomain = getPrimaryDomainForAliasDomain(domain);
+  public static Optional<CustomTypeReference> getMainPrimaryDomainOfAlias(CustomType domain) {
+    List<CustomTypeReference> primaryDomains = getAllPrimaryDomainOfAlias(domain);
+    if (primaryDomains.isEmpty()) {
+      return Optional.empty();
+    }
+    return Optional.of(primaryDomains.get(primaryDomains.size() - 1));
+  }
+
+  public static List<CustomTypeReference> getAllPrimaryDomainOfAlias(CustomType domain) {
+    List<CustomTypeReference> result = new ArrayList<>();
+    Optional<CustomTypeReference> primaryDomain = getPrimaryDomainOfAlias(domain);
     while (primaryDomain.isPresent()) {
-      Optional<CustomTypeReference> nextPrimaryDomain = getPrimaryDomainForAliasDomain(primaryDomain.get().targetType());
+      result.add(primaryDomain.get());
+      Optional<CustomTypeReference> nextPrimaryDomain = getPrimaryDomainOfAlias(primaryDomain.get().targetType());
       if (nextPrimaryDomain.isEmpty()) {
         break;
       }
       primaryDomain = nextPrimaryDomain;
     }
-    return primaryDomain;
+    return result;
   }
 
   private static boolean isCustomTypeRelated(TypeReference type) {

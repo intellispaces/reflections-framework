@@ -70,17 +70,31 @@ public class {{$classSimpleName}}{{$typeParamsFull}} extends {{$sourceClassSimpl
     return Modules.current().moveThruTransition1(this, tid, qualifier);
   }
 
+{{when $isAlias}}
   @Override
-  public {{$sourceClassSimpleName}} moveThru(TransitionMethod0<? super {{$domainClassSimpleName}}, ? super {{$domainClassSimpleName}}> transitionMethod) throws TraverseException {
+  public {{$sourceClassSimpleName}} moveThru(TransitionMethod0<? super {{$primaryDomainSimpleName}}{{$primaryDomainTypeArguments}}, ? super {{$primaryDomainSimpleName}}{{$primaryDomainTypeArguments}}> transitionMethod) throws TraverseException {
     String tid = TransitionFunctions.getTransitionId({{$domainClassSimpleName}}.class, transitionMethod);
     return Modules.current().moveThruTransition0(this, tid);
   }
 
   @Override
-  public <Q> {{$sourceClassSimpleName}} moveThru(TransitionMethod1<? super {{$domainClassSimpleName}}, ? super {{$domainClassSimpleName}}, Q> transitionMethod, Q qualifier) throws TraverseException {
+  public <Q> {{$sourceClassSimpleName}} moveThru(TransitionMethod1<? super {{$primaryDomainSimpleName}}{{$primaryDomainTypeArguments}}, ? super {{$primaryDomainSimpleName}}{{$primaryDomainTypeArguments}}, Q> transitionMethod, Q qualifier) throws TraverseException {
     String tid = TransitionFunctions.getTransitionId({{$domainClassSimpleName}}.class, transitionMethod, null);
     return Modules.current().moveThruTransition1(this, tid, qualifier);
   }
+{{else}}
+  @Override
+  public {{$sourceClassSimpleName}} moveThru(TransitionMethod0<? super {{$domainClassSimpleName}}{{$typeParamsBrief}}, ? super {{$domainClassSimpleName}}{{$typeParamsBrief}}> transitionMethod) throws TraverseException {
+    String tid = TransitionFunctions.getTransitionId({{$domainClassSimpleName}}.class, transitionMethod);
+    return Modules.current().moveThruTransition0(this, tid);
+  }
+
+  @Override
+  public <Q> {{$sourceClassSimpleName}} moveThru(TransitionMethod1<? super {{$domainClassSimpleName}}{{$typeParamsBrief}}, ? super {{$domainClassSimpleName}}{{$typeParamsBrief}}, Q> transitionMethod, Q qualifier) throws TraverseException {
+    String tid = TransitionFunctions.getTransitionId({{$domainClassSimpleName}}.class, transitionMethod, null);
+    return Modules.current().moveThruTransition1(this, tid, qualifier);
+  }
+{{end}}
 
   @Override
   public {{$sourceClassSimpleName}} moveThru(Class<? extends Transition0> transitionClass) throws TraverseException {
@@ -99,15 +113,27 @@ public class {{$classSimpleName}}{{$typeParamsFull}} extends {{$sourceClassSimpl
     throw new RuntimeException("Not implemented");
   }
 
+{{when $isAlias}}
   @Override
-  public <R> R mapOfMovingThru(TransitionMethod0<? super {{$domainClassSimpleName}}, R> transitionMethod) throws TraverseException {
+  public <R> R mapOfMovingThru(TransitionMethod0<? super {{$primaryDomainSimpleName}}{{$primaryDomainTypeArguments}}, R> transitionMethod) throws TraverseException {
     throw new RuntimeException("Not implemented");
   }
 
   @Override
-  public <R, Q> R mapOfMovingThru(TransitionMethod1<? super {{$domainClassSimpleName}}, R, Q> transitionMethod, Q qualifier) throws TraverseException {
+  public <R, Q> R mapOfMovingThru(TransitionMethod1<? super {{$primaryDomainSimpleName}}{{$primaryDomainTypeArguments}}, R, Q> transitionMethod, Q qualifier) throws TraverseException {
     throw new RuntimeException("Not implemented");
   }
+{{else}}
+  @Override
+  public <R> R mapOfMovingThru(TransitionMethod0<? super {{$domainClassSimpleName}}{{$typeParamsBrief}}, R> transitionMethod) throws TraverseException {
+    throw new RuntimeException("Not implemented");
+  }
+
+  @Override
+  public <R, Q> R mapOfMovingThru(TransitionMethod1<? super {{$domainClassSimpleName}}{{$typeParamsBrief}}, R, Q> transitionMethod, Q qualifier) throws TraverseException {
+    throw new RuntimeException("Not implemented");
+  }
+{{end}}
 
   @Override
   public <R> R mapOfMovingThru(Class<? extends Transition0> transitionClass) throws TraverseException {
@@ -118,7 +144,6 @@ public class {{$classSimpleName}}{{$typeParamsFull}} extends {{$sourceClassSimpl
   public <R, Q> R mapOfMovingThru(Class<? extends Transition1> transitionClass, Q qualifier) throws TraverseException {
     throw new RuntimeException("Not implemented");
   }
-
 {{for method : $injectionMethods}}
   {{$method.get("javadoc")}}
 {{for annotation : $method.get("annotations")}}

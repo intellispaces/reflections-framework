@@ -5,6 +5,9 @@ import intellispaces.common.base.type.Type;
 import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.common.javastatement.method.MethodStatement;
 import intellispaces.common.javastatement.reference.CustomTypeReference;
+import intellispaces.common.javastatement.reference.NamedReference;
+import intellispaces.common.javastatement.reference.NotPrimitiveReference;
+import intellispaces.common.javastatement.reference.ReferenceBound;
 import intellispaces.common.javastatement.type.Types;
 import intellispaces.framework.core.annotation.ObjectHandle;
 import intellispaces.framework.core.common.NameConventionFunctions;
@@ -13,6 +16,7 @@ import intellispaces.framework.core.space.domain.DomainFunctions;
 
 import javax.annotation.processing.RoundEnvironment;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -21,8 +25,9 @@ public class CommonObjectHandleGenerator extends AbstractDomainObjectHandleGener
   private String objectHandleBunch;
   private boolean isAlias;
   private String primaryObjectHandle;
-  private String mainPrimaryDomainSimpleName;
+  private String primaryDomainSimpleName;
   private String primaryDomainTypeArguments;
+  private String domainType;
 
   public CommonObjectHandleGenerator(CustomType initiatorType, CustomType domainType) {
     super(initiatorType, domainType);
@@ -60,11 +65,12 @@ public class CommonObjectHandleGenerator extends AbstractDomainObjectHandleGener
     vars.put("domainTypeParamsFull", domainTypeParamsFull);
     vars.put("domainTypeParamsBrief", domainTypeParamsBrief);
     vars.put("objectHandleBunch", objectHandleBunch);
+    vars.put("domainType", domainType);
     vars.put("domainMethods", methods);
     vars.put("isAlias", isAlias);
     vars.put("primaryObjectHandle", primaryObjectHandle);
     vars.put("primaryDomainTypeArguments", primaryDomainTypeArguments);
-    vars.put("mainPrimaryDomainSimpleName", mainPrimaryDomainSimpleName);
+    vars.put("primaryDomainSimpleName", primaryDomainSimpleName);
     return vars;
   }
 
@@ -83,15 +89,18 @@ public class CommonObjectHandleGenerator extends AbstractDomainObjectHandleGener
     );
     analyzeObjectHandleMethods(annotatedType, roundEnv);
 
-    Optional<CustomTypeReference> primaryDomain = DomainFunctions.getPrimaryDomainForAliasDomain(annotatedType);
+    Optional<CustomTypeReference> primaryDomain = DomainFunctions.getPrimaryDomainOfAlias(annotatedType);
     isAlias = primaryDomain.isPresent();
     if (isAlias) {
       primaryObjectHandle = getObjectHandleDeclaration(primaryDomain.get(), ObjectHandleTypes.Common);
       primaryDomainTypeArguments = primaryDomain.get().typeArgumentsDeclaration(context::addToImportAndGetSimpleName);
-      Optional<CustomTypeReference> mainPrimaryDomain = DomainFunctions.getMainPrimaryDomainForAliasDomain(annotatedType);
-      mainPrimaryDomainSimpleName = context.addToImportAndGetSimpleName(
+      Optional<CustomTypeReference> mainPrimaryDomain = DomainFunctions.getMainPrimaryDomainOfAlias(annotatedType);
+      primaryDomainSimpleName = context.addToImportAndGetSimpleName(
           mainPrimaryDomain.orElseThrow().targetType().canonicalName()
       );
+      domainType = buildDomainType(mainPrimaryDomain.get().targetType(), primaryDomain.get().typeArguments());
+    } else {
+      domainType = buildDomainType(annotatedType, (List) annotatedType.typeParameters());
     }
     return true;
   }
@@ -102,7 +111,6 @@ public class CommonObjectHandleGenerator extends AbstractDomainObjectHandleGener
   ) {
     return super.getObjectHandleMethods(customType, roundEnv)
         .filter(this::isNotGetDomainMethod)
-        .filter(m -> m.returnType().isPresent() && !m.returnType().get().isNamedReference()
-        );
+        .filter(m -> m.returnType().isPresent() && !m.returnType().get().isNamedReference());
   }
 }

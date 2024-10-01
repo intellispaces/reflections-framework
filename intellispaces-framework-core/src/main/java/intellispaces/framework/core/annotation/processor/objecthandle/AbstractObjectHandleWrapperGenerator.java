@@ -7,6 +7,7 @@ import intellispaces.common.base.type.TypeFunctions;
 import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.common.javastatement.method.MethodParam;
 import intellispaces.common.javastatement.method.MethodStatement;
+import intellispaces.common.javastatement.reference.CustomTypeReference;
 import intellispaces.common.javastatement.reference.NamedReference;
 import intellispaces.common.javastatement.reference.TypeReference;
 import intellispaces.common.javastatement.type.Types;
@@ -19,6 +20,7 @@ import intellispaces.framework.core.exception.ConfigurationException;
 import intellispaces.framework.core.guide.GuideFunctions;
 import intellispaces.framework.core.object.ObjectFunctions;
 import intellispaces.framework.core.object.ObjectHandleTypes;
+import intellispaces.framework.core.space.domain.DomainFunctions;
 import intellispaces.framework.core.space.transition.TransitionFunctions;
 import intellispaces.framework.core.system.Modules;
 import intellispaces.framework.core.system.ProjectionInjection;
@@ -28,6 +30,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Stream;
@@ -36,6 +39,9 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
   protected String domainSimpleClassName;
   protected String typeParamsFull;
   protected String typeParamsBrief;
+  protected boolean isAlias;
+  protected String primaryDomainSimpleName;
+  protected String primaryDomainTypeArguments;
   private final List<MethodStatement> domainMethods;
   protected List<Object> constructors;
   protected List<String> guideActions;
@@ -58,6 +64,20 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
       CustomType objectHandleType, RoundEnvironment roundEnv
   ) {
     return domainMethods.stream();
+  }
+
+  protected void analyzeDomain() {
+    CustomType domainType = ObjectFunctions.getDomainTypeOfObjectHandle(annotatedType);
+    context.addImport(domainType.canonicalName());
+    domainSimpleClassName = context.simpleNameOf(domainType.canonicalName());
+
+    Optional<CustomTypeReference> primaryDomain = DomainFunctions.getPrimaryDomainOfAlias(domainType);
+    isAlias = primaryDomain.isPresent();
+    if (isAlias) {
+      Optional<CustomTypeReference> mainPrimaryDomain = DomainFunctions.getMainPrimaryDomainOfAlias(domainType);
+      primaryDomainTypeArguments = primaryDomain.get().typeArgumentsDeclaration(context::addToImportAndGetSimpleName);
+      primaryDomainSimpleName = context.addToImportAndGetSimpleName(mainPrimaryDomain.orElseThrow().targetType().canonicalName());
+    }
   }
 
   protected void analyzeTransitionActions() {
@@ -306,9 +326,8 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
       TypeReference type = param.type();
       type.dependencyTypenames().forEach(imports);
       paramDescriptors.add(Map.of(
-              "name", param.name(),
-              "type", type.actualDeclaration(context::simpleNameOf)
-          )
+          "name", param.name(),
+          "type", type.actualDeclaration(context::simpleNameOf))
       );
       type.asCustomTypeReference().ifPresent(t -> imports.accept(t.targetType().canonicalName()));
     }

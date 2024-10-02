@@ -9,28 +9,28 @@ import java.lang.reflect.Method;
 
 abstract class ObjectGuide1<S extends ObjectHandleWrapper, R, Q> implements Guide1<S, R, Q> {
   private final Class<S> objectHandleClass;
-  private final String tid;
+  private final String cid;
   private final Method guideMethod;
-  private final int transitionIndex;
+  private final int channelIndex;
 
   ObjectGuide1(
-      String tid,
+      String cid,
       Class<S> objectHandleClass,
       Method guideMethod,
-      int transitionIndex
+      int channelIndex
   ) {
     if (guideMethod.getParameterCount() != 1) {
       throw UnexpectedViolationException.withMessage("Guide should have one parameter");
     }
-    this.tid = tid;
+    this.cid = cid;
     this.objectHandleClass = objectHandleClass;
     this.guideMethod = guideMethod;
-    this.transitionIndex = transitionIndex;
+    this.channelIndex = channelIndex;
   }
 
   @Override
-  public String tid() {
-    return tid;
+  public String cid() {
+    return cid;
   }
 
   @Override
@@ -38,7 +38,7 @@ abstract class ObjectGuide1<S extends ObjectHandleWrapper, R, Q> implements Guid
   public R traverse(S source, Q qualifier) throws TraverseException {
     try {
       GuideLogger.logCallGuide(guideMethod);
-      return (R) source.$handle().getGuideAction(transitionIndex).asAction1().execute(qualifier);
+      return (R) source.$handle().getGuideAction(channelIndex).asAction1().execute(qualifier);
     } catch (TraverseException e) {
       throw e;
     } catch (Exception e) {

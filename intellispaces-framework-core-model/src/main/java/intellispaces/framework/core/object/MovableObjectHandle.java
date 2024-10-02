@@ -1,10 +1,10 @@
 package intellispaces.framework.core.object;
 
 import intellispaces.framework.core.exception.TraverseException;
-import intellispaces.framework.core.space.transition.Transition0;
-import intellispaces.framework.core.space.transition.Transition1;
-import intellispaces.framework.core.transition.TransitionMethod0;
-import intellispaces.framework.core.transition.TransitionMethod1;
+import intellispaces.framework.core.space.channel.Channel0;
+import intellispaces.framework.core.space.channel.Channel1;
+import intellispaces.framework.core.space.channel.ChannelMethod0;
+import intellispaces.framework.core.space.channel.ChannelMethod1;
 
 /**
  * The handle of the movable object.<p/>
@@ -20,27 +20,27 @@ public interface MovableObjectHandle<D> extends ObjectHandle<D> {
     return true;
   }
 
-  <Q> MovableObjectHandle<D> moveThru(String tid, Q qualifier) throws TraverseException;
+  <Q> MovableObjectHandle<D> moveThru(String cid, Q qualifier) throws TraverseException;
 
   @SuppressWarnings("rawtypes")
-  MovableObjectHandle<D> moveThru(Class<? extends Transition0> transitionClass) throws TraverseException;
+  MovableObjectHandle<D> moveThru(Class<? extends Channel0> channelClass) throws TraverseException;
 
-  MovableObjectHandle<D> moveThru(TransitionMethod0<? super D, ? super D> transitionMethod) throws TraverseException;
-
-  @SuppressWarnings("rawtypes")
-  <Q> MovableObjectHandle<D> moveThru(Class<? extends Transition1> transitionClass, Q qualifier) throws TraverseException;
-
-  <Q> MovableObjectHandle<D> moveThru(TransitionMethod1<? super D, ? super D, Q> transitionMethod, Q qualifier) throws TraverseException;
-
-  <R, Q> R mapOfMovingThru(String tid, Q qualifier) throws TraverseException;
-
-  <R> R mapOfMovingThru(TransitionMethod0<? super D, R> transitionMethod) throws TraverseException;
-
-  <R, Q> R mapOfMovingThru(TransitionMethod1<? super D, R, Q> transitionMethod, Q qualifier) throws TraverseException;
+  MovableObjectHandle<D> moveThru(ChannelMethod0<? super D, ? super D> channelMethod) throws TraverseException;
 
   @SuppressWarnings("rawtypes")
-  <R> R mapOfMovingThru(Class<? extends Transition0> transitionClass) throws TraverseException;
+  <Q> MovableObjectHandle<D> moveThru(Class<? extends Channel1> channelClass, Q qualifier) throws TraverseException;
+
+  <Q> MovableObjectHandle<D> moveThru(ChannelMethod1<? super D, ? super D, Q> channelMethod, Q qualifier) throws TraverseException;
+
+  <R, Q> R mapOfMovingThru(String cid, Q qualifier) throws TraverseException;
+
+  <R> R mapOfMovingThru(ChannelMethod0<? super D, R> channelMethod) throws TraverseException;
+
+  <R, Q> R mapOfMovingThru(ChannelMethod1<? super D, R, Q> channelMethod, Q qualifier) throws TraverseException;
 
   @SuppressWarnings("rawtypes")
-  <R, Q> R mapOfMovingThru(Class<? extends Transition1> transitionClass, Q qualifier) throws TraverseException;
+  <R> R mapOfMovingThru(Class<? extends Channel0> channelClass) throws TraverseException;
+
+  @SuppressWarnings("rawtypes")
+  <R, Q> R mapOfMovingThru(Class<? extends Channel1> channelClass, Q qualifier) throws TraverseException;
 }

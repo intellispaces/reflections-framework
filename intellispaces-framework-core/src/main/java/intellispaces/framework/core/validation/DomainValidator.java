@@ -6,7 +6,7 @@ import intellispaces.common.javastatement.method.MethodStatement;
 import intellispaces.common.javastatement.reference.CustomTypeReference;
 import intellispaces.common.javastatement.reference.NotPrimitiveReference;
 import intellispaces.common.javastatement.reference.TypeReference;
-import intellispaces.framework.core.annotation.Transition;
+import intellispaces.framework.core.annotation.Channel;
 import intellispaces.framework.core.common.NameConventionFunctions;
 import intellispaces.framework.core.exception.IntelliSpacesException;
 import intellispaces.framework.core.space.domain.DomainFunctions;
@@ -58,10 +58,10 @@ public class DomainValidator implements AnnotatedTypeValidator {
       throw IntelliSpacesException.withMessage("Domain class could not contain private methods. " +
           "But method ''{0}'' in class {1} is private", method.name(), domainType.canonicalName());
     }
-    if (!method.hasAnnotation(Transition.class)) {
+    if (!method.hasAnnotation(Channel.class)) {
       throw IntelliSpacesException.withMessage("Domain class methods should be marked with annotation @{0}. " +
               "But method ''{1}'' in class {2} doesn't marked",
-          Transition.class.getSimpleName(), method.name(), domainType.canonicalName());
+          Channel.class.getSimpleName(), method.name(), domainType.canonicalName());
     }
     validateMethodReturnType(domainType, method, method.returnType(), primaryDomainDeclarations);
   }

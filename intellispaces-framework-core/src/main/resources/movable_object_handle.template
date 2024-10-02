@@ -23,25 +23,25 @@ public interface {{$classSimpleName}}{{$domainTypeParamsFull}} extends {{$baseOb
   }
 
   @Override
-  public <Q> {{$classSimpleName}}{{$domainTypeParamsBrief}} moveThru(String tid, Q qualifier) throws TraverseException;
+  public <Q> {{$classSimpleName}}{{$domainTypeParamsBrief}} moveThru(String cid, Q qualifier) throws TraverseException;
 
 {{when $isAlias}}
   @Override
-  public {{$classSimpleName}}{{$domainTypeParamsBrief}} moveThru(TransitionMethod0<? super {{$primaryDomainSimpleName}}{{$primaryDomainTypeArguments}}, ? super {{$primaryDomainSimpleName}}{{$primaryDomainTypeArguments}}> transitionMethod) throws TraverseException;
+  public {{$classSimpleName}}{{$domainTypeParamsBrief}} moveThru(ChannelMethod0<? super {{$primaryDomainSimpleName}}{{$primaryDomainTypeArguments}}, ? super {{$primaryDomainSimpleName}}{{$primaryDomainTypeArguments}}> channelMethod) throws TraverseException;
 
   @Override
-  public <Q> {{$classSimpleName}}{{$domainTypeParamsBrief}} moveThru(TransitionMethod1<? super {{$primaryDomainSimpleName}}{{$primaryDomainTypeArguments}}, ? super {{$primaryDomainSimpleName}}{{$primaryDomainTypeArguments}}, Q> transitionMethod, Q qualifier) throws TraverseException;
+  public <Q> {{$classSimpleName}}{{$domainTypeParamsBrief}} moveThru(ChannelMethod1<? super {{$primaryDomainSimpleName}}{{$primaryDomainTypeArguments}}, ? super {{$primaryDomainSimpleName}}{{$primaryDomainTypeArguments}}, Q> channelMethod, Q qualifier) throws TraverseException;
 {{else}}
   @Override
-  public {{$classSimpleName}}{{$domainTypeParamsBrief}} moveThru(TransitionMethod0<? super {{$sourceClassSimpleName}}{{$domainTypeParamsBrief}}, ? super {{$sourceClassSimpleName}}{{$domainTypeParamsBrief}}> transitionMethod) throws TraverseException;
+  public {{$classSimpleName}}{{$domainTypeParamsBrief}} moveThru(ChannelMethod0<? super {{$sourceClassSimpleName}}{{$domainTypeParamsBrief}}, ? super {{$sourceClassSimpleName}}{{$domainTypeParamsBrief}}> channelMethod) throws TraverseException;
 
   @Override
-  public <Q> {{$classSimpleName}}{{$domainTypeParamsBrief}} moveThru(TransitionMethod1<? super {{$sourceClassSimpleName}}{{$domainTypeParamsBrief}}, ? super {{$sourceClassSimpleName}}{{$domainTypeParamsBrief}}, Q> transitionMethod, Q qualifier) throws TraverseException;
+  public <Q> {{$classSimpleName}}{{$domainTypeParamsBrief}} moveThru(ChannelMethod1<? super {{$sourceClassSimpleName}}{{$domainTypeParamsBrief}}, ? super {{$sourceClassSimpleName}}{{$domainTypeParamsBrief}}, Q> channelMethod, Q qualifier) throws TraverseException;
 {{end}}
 
   @Override
-  public {{$classSimpleName}}{{$domainTypeParamsBrief}} moveThru(Class<? extends Transition0> transitionClass) throws TraverseException;
+  public {{$classSimpleName}}{{$domainTypeParamsBrief}} moveThru(Class<? extends Channel0> channelClass) throws TraverseException;
 
   @Override
-  public <Q> {{$classSimpleName}}{{$domainTypeParamsBrief}} moveThru(Class<? extends Transition1> transitionClass, Q qualifier) throws TraverseException;
+  public <Q> {{$classSimpleName}}{{$domainTypeParamsBrief}} moveThru(Class<? extends Channel1> channelClass, Q qualifier) throws TraverseException;
 }

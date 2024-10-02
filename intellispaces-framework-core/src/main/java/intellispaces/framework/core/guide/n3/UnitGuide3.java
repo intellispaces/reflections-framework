@@ -9,16 +9,16 @@ import intellispaces.framework.core.system.kernel.KernelUnitGuide;
 import java.lang.reflect.Method;
 
 abstract class UnitGuide3<S, R, Q1, Q2, Q3> implements Guide3<S, R, Q1, Q2, Q3>, KernelUnitGuide<S, R> {
-  private final String tid;
+  private final String cid;
   private final UnitWrapper unitInstance;
   private final Method guideMethod;
   private final int guideOrdinal;
 
-  UnitGuide3(String tid, UnitWrapper unitInstance, Method guideMethod, int guideOrdinal) {
+  UnitGuide3(String cid, UnitWrapper unitInstance, Method guideMethod, int guideOrdinal) {
     if (guideMethod.getParameterCount() != 4) {
       throw UnexpectedViolationException.withMessage("Guide method should have four parameters: source and three qualifiers");
     }
-    this.tid = tid;
+    this.cid = cid;
     this.unitInstance = unitInstance;
     this.guideMethod = guideMethod;
     this.guideOrdinal = guideOrdinal;
@@ -35,8 +35,8 @@ abstract class UnitGuide3<S, R, Q1, Q2, Q3> implements Guide3<S, R, Q1, Q2, Q3>,
   }
 
   @Override
-  public String tid() {
-    return tid;
+  public String cid() {
+    return cid;
   }
 
   @Override

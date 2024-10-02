@@ -44,13 +44,13 @@ class GuideRegistryImpl implements GuideRegistry {
   }
 
   @Override
-  public List<Guide<?, ?>> findGuides(GuideKind kind, Class<?> objectHandleClass, String tid) {
+  public List<Guide<?, ?>> findGuides(GuideKind kind, Class<?> objectHandleClass, String cid) {
     var guides = new ArrayList<Guide<?, ?>>();
-    Guide<?, ?> guide = objectGuideRegistry.getGuide(kind, objectHandleClass, tid);
+    Guide<?, ?> guide = objectGuideRegistry.getGuide(kind, objectHandleClass, cid);
     if (guide != null) {
       guides.add(guide);
     }
-    guides.addAll(unitGuideRegistry.findGuides(kind, tid));
+    guides.addAll(unitGuideRegistry.findGuides(kind, cid));
     return guides;
   }
 

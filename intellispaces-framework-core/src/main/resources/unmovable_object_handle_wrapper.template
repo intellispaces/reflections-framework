@@ -34,10 +34,10 @@ public class {{$classSimpleName}}{{$typeParamsFull}} extends {{$sourceClassSimpl
 {{end}}
     );
 {{end}}
-{{when $transitionActions.isNotEmpty()}}
-    this.$handle.setTransitionActions(
-{{for transitionAction : $transitionActions}}
-      {{$transitionAction}}{{when $transitionAction.isNotLast()}},{{end}}
+{{when $channelActions.isNotEmpty()}}
+    this.$handle.setChannelActions(
+{{for channelAction : $channelActions}}
+      {{$channelAction}}{{when $channelAction.isNotLast()}},{{end}}
 {{end}}
     );
 {{end}}
@@ -71,7 +71,7 @@ public class {{$classSimpleName}}{{$typeParamsFull}} extends {{$sourceClassSimpl
 {{end}}
 
   @Override
-  public <T, Q> T mapThru(Class<? extends Transition1> transitionClass, Q qualifier) throws TraverseException {
-    return Modules.current().mapThruTransition1(this, transitionClass, qualifier);
+  public <T, Q> T mapThru(Class<? extends Channel1> channelClass, Q qualifier) throws TraverseException {
+    return Modules.current().mapThruChannel1(this, channelClass, qualifier);
   }
 }

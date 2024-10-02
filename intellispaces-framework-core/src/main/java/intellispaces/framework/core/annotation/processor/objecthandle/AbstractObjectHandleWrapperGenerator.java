@@ -21,7 +21,7 @@ import intellispaces.framework.core.guide.GuideFunctions;
 import intellispaces.framework.core.object.ObjectFunctions;
 import intellispaces.framework.core.object.ObjectHandleTypes;
 import intellispaces.framework.core.space.domain.DomainFunctions;
-import intellispaces.framework.core.space.transition.TransitionFunctions;
+import intellispaces.framework.core.space.channel.ChannelFunctions;
 import intellispaces.framework.core.system.Modules;
 import intellispaces.framework.core.system.ProjectionInjection;
 
@@ -45,7 +45,7 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
   private final List<MethodStatement> domainMethods;
   protected List<Object> constructors;
   protected List<String> guideActions;
-  protected List<String> transitionActions;
+  protected List<String> channelActions;
   protected final List<Map<String, Object>> injections = new ArrayList<>();
   protected final List<Map<String, Object>> injectionMethods = new ArrayList<>();
 
@@ -80,13 +80,13 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
     }
   }
 
-  protected void analyzeTransitionActions() {
-    this.transitionActions = domainMethods.stream()
-        .map(this::buildTransitionAction)
+  protected void analyzeChannelActions() {
+    this.channelActions = domainMethods.stream()
+        .map(this::buildChannelAction)
         .toList();
   }
 
-  private String buildTransitionAction(MethodStatement domainMethod) {
+  private String buildChannelAction(MethodStatement domainMethod) {
     var sb = new StringBuilder();
     sb.append(context.addToImportAndGetSimpleName(Actions.class));
     sb.append(".delegate");
@@ -96,7 +96,7 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
     sb.append(".cachedLazyGetter(");
     sb.append(context.addToImportAndGetSimpleName(TraverseActions.class));
     sb.append("::");
-    switch (TransitionFunctions.getTraverseType(domainMethod)) {
+    switch (ChannelFunctions.getTraverseType(domainMethod)) {
       case Mapping:
         sb.append("map");
         break;
@@ -107,7 +107,7 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
         sb.append("mapOfMoving");
         break;
     }
-    sb.append("ThruTransition");
+    sb.append("ThruChannel");
     sb.append(domainMethod.params().size());
     sb.append(",\n");
     sb.append("  ");
@@ -120,7 +120,7 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
     sb.append("> of(");
     sb.append(annotatedType.simpleName());
     sb.append(".class),\n  ");
-    sb.append(context.addToImportAndGetSimpleName(NameConventionFunctions.getTransitionClassCanonicalName(domainMethod)));
+    sb.append(context.addToImportAndGetSimpleName(NameConventionFunctions.getChannelClassCanonicalName(domainMethod)));
     sb.append(".class))");
     return sb.toString();
   }
@@ -340,11 +340,11 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
     int index = 0;
     this.methods = new ArrayList<>();
     for (MethodStatement domainMethod : domainMethods) {
-      this.methods.add(buildTransitionMethod(index++, domainMethod));
+      this.methods.add(buildChannelMethod(index++, domainMethod));
     }
   }
 
-  protected Map<String, String> buildTransitionMethod(int methodIndex, MethodStatement domainMethod) {
+  protected Map<String, String> buildChannelMethod(int methodIndex, MethodStatement domainMethod) {
     if (isDisableMoving(domainMethod)) {
       return Map.of();
     }
@@ -363,7 +363,7 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
     sb.append(" {\n");
     sb.append("  return (");
     appendMethodReturnHandleType(sb, domainMethod);
-    sb.append(") $handle.getTransitionAction(");
+    sb.append(") $handle.getChannelAction(");
     sb.append(methodIndex);
     sb.append(").asAction");
     sb.append(domainMethod.params().size() + 1);

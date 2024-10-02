@@ -9,28 +9,28 @@ import java.lang.reflect.Method;
 
 abstract class ObjectGuide2<S extends ObjectHandleWrapper, R, Q1, Q2> implements Guide2<S, R, Q1, Q2> {
   private final Class<S> objectHandleClass;
-  private final String tid;
+  private final String cid;
   private final Method guideMethod;
-  private final int transitionIndex;
+  private final int channelIndex;
 
   ObjectGuide2(
-      String tid,
+      String cid,
       Class<S> objectHandleClass,
       Method guideMethod,
-      int transitionIndex
+      int channelIndex
   ) {
     if (guideMethod.getParameterCount() != 2) {
       throw UnexpectedViolationException.withMessage("Guide should have two qualifiers");
     }
-    this.tid = tid;
+    this.cid = cid;
     this.objectHandleClass = objectHandleClass;
     this.guideMethod = guideMethod;
-    this.transitionIndex = transitionIndex;
+    this.channelIndex = channelIndex;
   }
 
   @Override
-  public String tid() {
-    return tid;
+  public String cid() {
+    return cid;
   }
 
   @Override
@@ -38,7 +38,7 @@ abstract class ObjectGuide2<S extends ObjectHandleWrapper, R, Q1, Q2> implements
   public R traverse(S source, Q1 qualifier1, Q2 qualifier2) throws TraverseException {
     try {
       GuideLogger.logCallGuide(guideMethod);
-      return (R) source.$handle().getGuideAction(transitionIndex).asAction2().execute(qualifier1, qualifier2);
+      return (R) source.$handle().getGuideAction(channelIndex).asAction2().execute(qualifier1, qualifier2);
     } catch (TraverseException e) {
       throw e;
     } catch (Exception e) {

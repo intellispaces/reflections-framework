@@ -9,38 +9,38 @@ import intellispaces.framework.core.guide.n1.Guide1;
 import intellispaces.framework.core.guide.n2.Guide2;
 import intellispaces.framework.core.guide.n3.Guide3;
 import intellispaces.framework.core.object.ObjectFunctions;
-import intellispaces.framework.core.traverse.CallGuide0PlanImpl;
-import intellispaces.framework.core.traverse.CallGuide1PlanImpl;
-import intellispaces.framework.core.traverse.CallGuide2PlanImpl;
-import intellispaces.framework.core.traverse.CallGuide3PlanImpl;
-import intellispaces.framework.core.traverse.ExecutionPlan;
-import intellispaces.framework.core.traverse.MapObjectHandleThruTransition0Plan;
-import intellispaces.framework.core.traverse.MapObjectHandleThruTransition0PlanImpl;
-import intellispaces.framework.core.traverse.MapObjectHandleThruTransition1Plan;
-import intellispaces.framework.core.traverse.MapObjectHandleThruTransition1PlanImpl;
-import intellispaces.framework.core.traverse.MapObjectHandleThruTransition2Plan;
-import intellispaces.framework.core.traverse.MapObjectHandleThruTransition2PlanImpl;
-import intellispaces.framework.core.traverse.MapObjectHandleThruTransition3Plan;
-import intellispaces.framework.core.traverse.MapObjectHandleThruTransition3PlanImpl;
-import intellispaces.framework.core.traverse.MapOfMovingObjectHandleThruTransition0Plan;
-import intellispaces.framework.core.traverse.MapOfMovingObjectHandleThruTransition0PlanImpl;
-import intellispaces.framework.core.traverse.MapOfMovingObjectHandleThruTransition1Plan;
-import intellispaces.framework.core.traverse.MapOfMovingObjectHandleThruTransition1PlanImpl;
-import intellispaces.framework.core.traverse.MapOfMovingObjectHandleThruTransition2Plan;
-import intellispaces.framework.core.traverse.MapOfMovingObjectHandleThruTransition2PlanImpl;
-import intellispaces.framework.core.traverse.MapOfMovingObjectHandleThruTransition3Plan;
-import intellispaces.framework.core.traverse.MapOfMovingObjectHandleThruTransition3PlanImpl;
-import intellispaces.framework.core.traverse.MoveObjectHandleThruTransition0Plan;
-import intellispaces.framework.core.traverse.MoveObjectHandleThruTransition0PlanImpl;
-import intellispaces.framework.core.traverse.MoveObjectHandleThruTransition1Plan;
-import intellispaces.framework.core.traverse.MoveObjectHandleThruTransition1PlanImpl;
-import intellispaces.framework.core.traverse.MoveObjectHandleThruTransition2Plan;
-import intellispaces.framework.core.traverse.MoveObjectHandleThruTransition2PlanImpl;
-import intellispaces.framework.core.traverse.MoveObjectHandleThruTransition3Plan;
-import intellispaces.framework.core.traverse.MoveObjectHandleThruTransition3PlanImpl;
-import intellispaces.framework.core.traverse.ObjectHandleTraversePlan;
-import intellispaces.framework.core.traverse.TraverseAnalyzer;
-import intellispaces.framework.core.traverse.TraversePlanTypes;
+import intellispaces.framework.core.traverse.plan.CallGuide0PlanImpl;
+import intellispaces.framework.core.traverse.plan.CallGuide1PlanImpl;
+import intellispaces.framework.core.traverse.plan.CallGuide2PlanImpl;
+import intellispaces.framework.core.traverse.plan.CallGuide3PlanImpl;
+import intellispaces.framework.core.traverse.plan.ExecutionPlan;
+import intellispaces.framework.core.traverse.plan.MapObjectHandleThruChannel0Plan;
+import intellispaces.framework.core.traverse.plan.MapObjectHandleThruChannel0PlanImpl;
+import intellispaces.framework.core.traverse.plan.MapObjectHandleThruChannel1Plan;
+import intellispaces.framework.core.traverse.plan.MapObjectHandleThruChannel1PlanImpl;
+import intellispaces.framework.core.traverse.plan.MapObjectHandleThruChannel2Plan;
+import intellispaces.framework.core.traverse.plan.MapObjectHandleThruChannel2PlanImpl;
+import intellispaces.framework.core.traverse.plan.MapObjectHandleThruChannel3Plan;
+import intellispaces.framework.core.traverse.plan.MapObjectHandleThruChannel3PlanImpl;
+import intellispaces.framework.core.traverse.plan.MapOfMovingObjectHandleThruChannel0Plan;
+import intellispaces.framework.core.traverse.plan.MapOfMovingObjectHandleThruChannel0PlanImpl;
+import intellispaces.framework.core.traverse.plan.MapOfMovingObjectHandleThruChannel1Plan;
+import intellispaces.framework.core.traverse.plan.MapOfMovingObjectHandleThruChannel1PlanImpl;
+import intellispaces.framework.core.traverse.plan.MapOfMovingObjectHandleThruChannel2Plan;
+import intellispaces.framework.core.traverse.plan.MapOfMovingObjectHandleThruChannel2PlanImpl;
+import intellispaces.framework.core.traverse.plan.MapOfMovingObjectHandleThruChannel3Plan;
+import intellispaces.framework.core.traverse.plan.MapOfMovingObjectHandleThruChannel3PlanImpl;
+import intellispaces.framework.core.traverse.plan.MoveObjectHandleThruChannel0Plan;
+import intellispaces.framework.core.traverse.plan.MoveObjectHandleThruChannel0PlanImpl;
+import intellispaces.framework.core.traverse.plan.MoveObjectHandleThruChannel1Plan;
+import intellispaces.framework.core.traverse.plan.MoveObjectHandleThruChannel1PlanImpl;
+import intellispaces.framework.core.traverse.plan.MoveObjectHandleThruChannel2Plan;
+import intellispaces.framework.core.traverse.plan.MoveObjectHandleThruChannel2PlanImpl;
+import intellispaces.framework.core.traverse.plan.MoveObjectHandleThruChannel3Plan;
+import intellispaces.framework.core.traverse.plan.MoveObjectHandleThruChannel3PlanImpl;
+import intellispaces.framework.core.traverse.plan.ObjectHandleTraversePlan;
+import intellispaces.framework.core.traverse.plan.TraverseAnalyzer;
+import intellispaces.framework.core.traverse.plan.TraversePlanTypes;
 
 import java.util.List;
 
@@ -52,121 +52,121 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
   }
 
   @Override
-  public MapObjectHandleThruTransition0Plan buildMapObjectHandleThruTransition0Plan(
-    Class<?> sourceClass, String tid
+  public MapObjectHandleThruChannel0Plan buildMapObjectHandleThruChannel0Plan(
+    Class<?> sourceClass, String cid
   ) {
-    MapObjectHandleThruTransition0Plan declarativePlan = new MapObjectHandleThruTransition0PlanImpl(
-      sourceClass, tid);
+    MapObjectHandleThruChannel0Plan declarativePlan = new MapObjectHandleThruChannel0PlanImpl(
+      sourceClass, cid);
     setExecutionPlan(declarativePlan, sourceClass);
     return declarativePlan;
   }
 
   @Override
-  public MapObjectHandleThruTransition1Plan buildMapObjectHandleThruTransition1Plan(
-    Class<?> sourceClass, String tid
+  public MapObjectHandleThruChannel1Plan buildMapObjectHandleThruChannel1Plan(
+    Class<?> sourceClass, String cid
   ) {
-    MapObjectHandleThruTransition1Plan declarativePlan = new MapObjectHandleThruTransition1PlanImpl(
-      sourceClass, tid);
+    MapObjectHandleThruChannel1Plan declarativePlan = new MapObjectHandleThruChannel1PlanImpl(
+      sourceClass, cid);
     setExecutionPlan(declarativePlan, sourceClass);
     return declarativePlan;
   }
 
   @Override
-  public MapObjectHandleThruTransition2Plan buildMapObjectHandleThruTransition2Plan(
-    Class<?> sourceClass, String tid
+  public MapObjectHandleThruChannel2Plan buildMapObjectHandleThruChannel2Plan(
+    Class<?> sourceClass, String cid
   ) {
-    MapObjectHandleThruTransition2Plan declarativePlan = new MapObjectHandleThruTransition2PlanImpl(
-      sourceClass, tid);
+    MapObjectHandleThruChannel2Plan declarativePlan = new MapObjectHandleThruChannel2PlanImpl(
+      sourceClass, cid);
     setExecutionPlan(declarativePlan, sourceClass);
     return declarativePlan;
   }
 
   @Override
-  public MapObjectHandleThruTransition3Plan buildMapObjectHandleThruTransition3Plan(
-    Class<?> sourceClass, String tid
+  public MapObjectHandleThruChannel3Plan buildMapObjectHandleThruChannel3Plan(
+    Class<?> sourceClass, String cid
   ) {
-    MapObjectHandleThruTransition3Plan declarativePlan = new MapObjectHandleThruTransition3PlanImpl(
-      sourceClass, tid);
+    MapObjectHandleThruChannel3Plan declarativePlan = new MapObjectHandleThruChannel3PlanImpl(
+      sourceClass, cid);
     setExecutionPlan(declarativePlan, sourceClass);
     return declarativePlan;
   }
 
   @Override
-  public MoveObjectHandleThruTransition0Plan buildMoveObjectHandleThruTransition0Plan(
-    Class<?> sourceClass, String tid
+  public MoveObjectHandleThruChannel0Plan buildMoveObjectHandleThruChannel0Plan(
+    Class<?> sourceClass, String cid
   ) {
-    MoveObjectHandleThruTransition0Plan declarativePlan = new MoveObjectHandleThruTransition0PlanImpl(
-      sourceClass, tid);
+    MoveObjectHandleThruChannel0Plan declarativePlan = new MoveObjectHandleThruChannel0PlanImpl(
+      sourceClass, cid);
     setExecutionPlan(declarativePlan, sourceClass);
     return declarativePlan;
   }
 
   @Override
-  public MoveObjectHandleThruTransition1Plan buildMoveObjectHandleThruTransition1Plan(
-    Class<?> sourceClass, String tid
+  public MoveObjectHandleThruChannel1Plan buildMoveObjectHandleThruChannel1Plan(
+    Class<?> sourceClass, String cid
   ) {
-    MoveObjectHandleThruTransition1Plan declarativePlan = new MoveObjectHandleThruTransition1PlanImpl(
-      sourceClass, tid);
+    MoveObjectHandleThruChannel1Plan declarativePlan = new MoveObjectHandleThruChannel1PlanImpl(
+      sourceClass, cid);
     setExecutionPlan(declarativePlan, sourceClass);
     return declarativePlan;
   }
 
   @Override
-  public MoveObjectHandleThruTransition2Plan buildMoveObjectHandleThruTransition2Plan(
-    Class<?> sourceClass, String tid
+  public MoveObjectHandleThruChannel2Plan buildMoveObjectHandleThruChannel2Plan(
+    Class<?> sourceClass, String cid
   ) {
-    MoveObjectHandleThruTransition2Plan declarativePlan = new MoveObjectHandleThruTransition2PlanImpl(
-      sourceClass, tid);
+    MoveObjectHandleThruChannel2Plan declarativePlan = new MoveObjectHandleThruChannel2PlanImpl(
+      sourceClass, cid);
     setExecutionPlan(declarativePlan, sourceClass);
     return declarativePlan;
   }
 
   @Override
-  public MoveObjectHandleThruTransition3Plan buildMoveObjectHandleThruTransition3Plan(
-    Class<?> sourceClass, String tid
+  public MoveObjectHandleThruChannel3Plan buildMoveObjectHandleThruChannel3Plan(
+    Class<?> sourceClass, String cid
   ) {
-    MoveObjectHandleThruTransition3Plan declarativePlan = new MoveObjectHandleThruTransition3PlanImpl(
-      sourceClass, tid);
+    MoveObjectHandleThruChannel3Plan declarativePlan = new MoveObjectHandleThruChannel3PlanImpl(
+      sourceClass, cid);
     setExecutionPlan(declarativePlan, sourceClass);
     return declarativePlan;
   }
 
   @Override
-  public MapOfMovingObjectHandleThruTransition0Plan buildMapOfMovingObjectHandleThruTransition0Plan(
-      Class<?> sourceClass, String tid
+  public MapOfMovingObjectHandleThruChannel0Plan buildMapOfMovingObjectHandleThruChannel0Plan(
+      Class<?> sourceClass, String cid
   ) {
-    MapOfMovingObjectHandleThruTransition0Plan declarativePlan = new MapOfMovingObjectHandleThruTransition0PlanImpl(
-        sourceClass, tid);
+    MapOfMovingObjectHandleThruChannel0Plan declarativePlan = new MapOfMovingObjectHandleThruChannel0PlanImpl(
+        sourceClass, cid);
     setExecutionPlan(declarativePlan, sourceClass);
     return declarativePlan;
   }
 
   @Override
-  public MapOfMovingObjectHandleThruTransition1Plan buildMapOfMovingObjectHandleThruTransition1Plan(
-      Class<?> sourceClass, String tid
+  public MapOfMovingObjectHandleThruChannel1Plan buildMapOfMovingObjectHandleThruChannel1Plan(
+      Class<?> sourceClass, String cid
   ) {
-    MapOfMovingObjectHandleThruTransition1Plan declarativePlan = new MapOfMovingObjectHandleThruTransition1PlanImpl(
-        sourceClass, tid);
+    MapOfMovingObjectHandleThruChannel1Plan declarativePlan = new MapOfMovingObjectHandleThruChannel1PlanImpl(
+        sourceClass, cid);
     setExecutionPlan(declarativePlan, sourceClass);
     return declarativePlan;
   }
 
   @Override
-  public MapOfMovingObjectHandleThruTransition2Plan buildMapOfMovingObjectHandleThruTransition2Plan(
-      Class<?> sourceClass, String tid
+  public MapOfMovingObjectHandleThruChannel2Plan buildMapOfMovingObjectHandleThruChannel2Plan(
+      Class<?> sourceClass, String cid
   ) {
-    MapOfMovingObjectHandleThruTransition2Plan declarativePlan = new MapOfMovingObjectHandleThruTransition2PlanImpl(
-        sourceClass, tid);
+    MapOfMovingObjectHandleThruChannel2Plan declarativePlan = new MapOfMovingObjectHandleThruChannel2PlanImpl(
+        sourceClass, cid);
     setExecutionPlan(declarativePlan, sourceClass);
     return declarativePlan;
   }
 
   @Override
-  public MapOfMovingObjectHandleThruTransition3Plan buildMapOfMovingObjectHandleThruTransition3Plan(
-      Class<?> sourceClass, String tid
+  public MapOfMovingObjectHandleThruChannel3Plan buildMapOfMovingObjectHandleThruChannel3Plan(
+      Class<?> sourceClass, String cid
   ) {
-    MapOfMovingObjectHandleThruTransition3Plan declarativePlan = new MapOfMovingObjectHandleThruTransition3PlanImpl(
-        sourceClass, tid);
+    MapOfMovingObjectHandleThruChannel3Plan declarativePlan = new MapOfMovingObjectHandleThruChannel3PlanImpl(
+        sourceClass, cid);
     setExecutionPlan(declarativePlan, sourceClass);
     return declarativePlan;
   }
@@ -221,7 +221,7 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
       ObjectHandleTraversePlan plan, Class<?> objectHandleClass
   ) {
     GuideKinds guideKind = getGuideKind((TraversePlanTypes) plan.type());
-    List<Guide<?, ?>> guides = findGuides(guideKind, objectHandleClass, plan.tid());
+    List<Guide<?, ?>> guides = findGuides(guideKind, objectHandleClass, plan.cid());
     if (guides.isEmpty()) {
       return null;
     }
@@ -237,24 +237,24 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
     };
   }
 
-  private List<Guide<?, ?>> findGuides(GuideKind kind, Class<?> objectHandleClass, String tid) {
-    return guideRegistry.findGuides(kind, objectHandleClass, tid);
+  private List<Guide<?, ?>> findGuides(GuideKind kind, Class<?> objectHandleClass, String cid) {
+    return guideRegistry.findGuides(kind, objectHandleClass, cid);
   }
 
   private GuideKinds getGuideKind(TraversePlanTypes planType) {
     return switch (planType) {
-      case MapObjectHandleThruTransition0 -> GuideKinds.Mapper0;
-      case MapObjectHandleThruTransition1 -> GuideKinds.Mapper1;
-      case MapObjectHandleThruTransition2 -> GuideKinds.Mapper2;
-      case MapObjectHandleThruTransition3 -> GuideKinds.Mapper3;
-      case MoveObjectHandleThruTransition0 -> GuideKinds.Mover0;
-      case MoveObjectHandleThruTransition1 -> GuideKinds.Mover1;
-      case MoveObjectHandleThruTransition2 -> GuideKinds.Mover2;
-      case MoveObjectHandleThruTransition3 -> GuideKinds.Mover3;
-      case MapOfMovingObjectHandleThruTransition0 -> GuideKinds.MapperOfMoving0;
-      case MapOfMovingObjectHandleThruTransition1 -> GuideKinds.MapperOfMoving1;
-      case MapOfMovingObjectHandleThruTransition2 -> GuideKinds.MapperOfMoving2;
-      case MapOfMovingObjectHandleThruTransition3 -> GuideKinds.MapperOfMoving3;
+      case MapObjectHandleThruChannel0 -> GuideKinds.Mapper0;
+      case MapObjectHandleThruChannel1 -> GuideKinds.Mapper1;
+      case MapObjectHandleThruChannel2 -> GuideKinds.Mapper2;
+      case MapObjectHandleThruChannel3 -> GuideKinds.Mapper3;
+      case MoveObjectHandleThruChannel0 -> GuideKinds.Mover0;
+      case MoveObjectHandleThruChannel1 -> GuideKinds.Mover1;
+      case MoveObjectHandleThruChannel2 -> GuideKinds.Mover2;
+      case MoveObjectHandleThruChannel3 -> GuideKinds.Mover3;
+      case MapOfMovingObjectHandleThruChannel0 -> GuideKinds.MapperOfMoving0;
+      case MapOfMovingObjectHandleThruChannel1 -> GuideKinds.MapperOfMoving1;
+      case MapOfMovingObjectHandleThruChannel2 -> GuideKinds.MapperOfMoving2;
+      case MapOfMovingObjectHandleThruChannel3 -> GuideKinds.MapperOfMoving3;
       default -> throw new UnsupportedOperationException("Not implemented");
     };
   }

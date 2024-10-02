@@ -16,11 +16,11 @@ public class ObjectMover0<S extends ObjectHandleWrapper>
     implements AbstractMover0<S>
 {
   public ObjectMover0(
-      String tid,
+      String cid,
       Class<S> objectHandleClass,
       Method guideMethod,
-      int transitionIndex
+      int channelIndex
   ) {
-    super(tid, objectHandleClass, guideMethod, transitionIndex);
+    super(cid, objectHandleClass, guideMethod, channelIndex);
   }
 }

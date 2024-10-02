@@ -9,18 +9,17 @@ import intellispaces.framework.core.annotation.Wrapper;
 import intellispaces.framework.core.exception.TraverseException;
 import intellispaces.framework.core.guide.n0.Mapper0;
 import intellispaces.framework.core.guide.n1.Mapper1;
-import intellispaces.framework.core.object.ObjectFunctions;
 import intellispaces.framework.core.object.ObjectHandleTypes;
-import intellispaces.framework.core.space.transition.Transition1;
-import intellispaces.framework.core.space.transition.TransitionFunctions;
+import intellispaces.framework.core.space.channel.Channel1;
+import intellispaces.framework.core.space.channel.ChannelFunctions;
 import intellispaces.framework.core.system.Modules;
 import intellispaces.framework.core.system.ObjectHandleWrapper;
 import intellispaces.framework.core.system.injection.AutoGuideInjections;
 import intellispaces.framework.core.system.injection.GuideInjections;
 import intellispaces.framework.core.system.kernel.KernelFunctions;
 import intellispaces.framework.core.system.kernel.KernelObjectHandle;
-import intellispaces.framework.core.transition.TransitionMethod0;
-import intellispaces.framework.core.transition.TransitionMethod1;
+import intellispaces.framework.core.space.channel.ChannelMethod0;
+import intellispaces.framework.core.space.channel.ChannelMethod1;
 
 import javax.annotation.processing.RoundEnvironment;
 import java.util.HashMap;
@@ -59,7 +58,7 @@ public class UnmovableObjectHandleWrapperGenerator extends AbstractObjectHandleW
     vars.put("domainClassSimpleName", domainSimpleClassName);
     vars.put("constructors", constructors);
     vars.put("importedClasses", context.getImports());
-    vars.put("transitionActions", transitionActions);
+    vars.put("channelActions", channelActions);
     vars.put("guideActions", guideActions);
     vars.put("domainMethods", methods);
     vars.put("injections", injections);
@@ -88,10 +87,10 @@ public class UnmovableObjectHandleWrapperGenerator extends AbstractObjectHandleW
 
     context.addImport(Mapper0.class);
     context.addImport(Mapper1.class);
-    context.addImport(Transition1.class);
-    context.addImport(TransitionMethod0.class);
-    context.addImport(TransitionMethod1.class);
-    context.addImport(TransitionFunctions.class);
+    context.addImport(Channel1.class);
+    context.addImport(ChannelMethod0.class);
+    context.addImport(ChannelMethod1.class);
+    context.addImport(ChannelFunctions.class);
     context.addImport(GuideInjections.class);
     context.addImport(AutoGuideInjections.class);
 
@@ -100,7 +99,7 @@ public class UnmovableObjectHandleWrapperGenerator extends AbstractObjectHandleW
     analyzeConstructors(annotatedType);
     analyzeGuideActions(annotatedType);
     analyzeInjectedGuides(annotatedType);
-    analyzeTransitionActions();
+    analyzeChannelActions();
     analyzeObjectHandleMethods(annotatedType, roundEnv);
     return true;
   }

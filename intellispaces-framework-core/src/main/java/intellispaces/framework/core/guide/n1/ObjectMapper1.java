@@ -17,11 +17,11 @@ public class ObjectMapper1<S extends ObjectHandleWrapper, T, Q>
     implements AbstractMapper1<S, T, Q>
 {
   public ObjectMapper1(
-      String tid,
+      String cid,
       Class<S> objectHandleClass,
       Method guideMethod,
-      int transitionIndex
+      int channelIndex
   ) {
-    super(tid, objectHandleClass, guideMethod, transitionIndex);
+    super(cid, objectHandleClass, guideMethod, channelIndex);
   }
 }

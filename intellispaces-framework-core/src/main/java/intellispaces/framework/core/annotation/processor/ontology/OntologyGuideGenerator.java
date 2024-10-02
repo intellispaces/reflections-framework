@@ -25,9 +25,9 @@ public class OntologyGuideGenerator extends AbstractGuideGenerator {
   private final List<MethodParam> qualifierMethodParams;
 
   public OntologyGuideGenerator(
-      TraverseType traverseType, CustomType initiatorType, CustomType ontologyType, MethodStatement transitionMethod
+      TraverseType traverseType, CustomType initiatorType, CustomType ontologyType, MethodStatement channelMethod
   ) {
-    super(traverseType, initiatorType, ontologyType, transitionMethod);
+    super(traverseType, initiatorType, ontologyType, channelMethod);
     this.domainType = getDomainTypeInternal();
     this.qualifierMethodParams = getQualifierMethodParamsInternal();
   }
@@ -44,7 +44,7 @@ public class OntologyGuideGenerator extends AbstractGuideGenerator {
 
   @Override
   protected String getGuideTypeParamDeclaration() {
-    List<NamedReference> typeParams = transitionMethod.typeParameters();
+    List<NamedReference> typeParams = channelMethod.typeParameters();
     if (typeParams.isEmpty()) {
       return "";
     }
@@ -68,12 +68,12 @@ public class OntologyGuideGenerator extends AbstractGuideGenerator {
   @Override
   protected String getGuideClassCanonicalName() {
     return NameConventionFunctions.getGuideClassCanonicalName(
-        annotatedType.packageName(), annotatedType, transitionMethod
+        annotatedType.packageName(), annotatedType, channelMethod
     );
   }
 
   private CustomType getDomainTypeInternal() {
-    TypeReference reference = transitionMethod.params().get(0).type();
+    TypeReference reference = channelMethod.params().get(0).type();
     if (reference.isPrimitiveReference()) {
       return JavaStatements.customTypeStatement(
           TypeFunctions.getPrimitiveWrapperClass(reference.asPrimitiveReferenceOrElseThrow().typename()));
@@ -85,27 +85,27 @@ public class OntologyGuideGenerator extends AbstractGuideGenerator {
   }
 
   private List<MethodParam> getQualifierMethodParamsInternal() {
-    return transitionMethod.params().subList(1, transitionMethod.params().size());
+    return channelMethod.params().subList(1, channelMethod.params().size());
   }
 
   @Override
   protected String buildGuideMethod() {
-    if (transitionMethod.typeParameters().isEmpty()) {
+    if (channelMethod.typeParameters().isEmpty()) {
       return super.buildGuideMethod(Function.identity());
     } else {
       var sb = new StringBuilder();
       sb.append("<");
-      for (NamedReference param : transitionMethod.typeParameters()) {
+      for (NamedReference param : channelMethod.typeParameters()) {
         sb.append("_").append(param.name()).append(" extends ").append(param.name());
       }
       sb.append("> ");
-      if (AnnotationProcessorFunctions.isVoidType(transitionMethod.returnType().orElseThrow())) {
+      if (AnnotationProcessorFunctions.isVoidType(channelMethod.returnType().orElseThrow())) {
         sb.append("void");
       } else {
         sb.append(buildTargetObjectHandleDeclaration(this::replaceType));
       }
       sb.append(" ");
-      sb.append(transitionMethod.name());
+      sb.append(channelMethod.name());
       sb.append("(");
       sb.append(buildSourceObjectHandleDeclaration(this::replaceType));
       sb.append(" source");

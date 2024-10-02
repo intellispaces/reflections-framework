@@ -23,9 +23,9 @@ public class ModulePropertiesProvider extends AbstractProjectionProvider {
     Module module = Modules.current();
     Properties annotation = projectionMethod.getAnnotation(Properties.class);
     String rawProperties = ModulePropertiesFunctions.getProperties(module, null);
-    Object parsedProperties = module.mapThruTransition0(rawProperties, SpaceConstants.STRING_TO_PROPERTIES_TID);
+    Object parsedProperties = module.mapThruChannel0(rawProperties, SpaceConstants.STRING_TO_PROPERTIES_TID);
 
-    Object target = module.mapThruTransition1(
+    Object target = module.mapThruChannel1(
         parsedProperties, SpaceConstants.PROPERTIES_TO_VALUE_TID, annotation.value());
 
     Class<?> expectedReturnType = projectionMethod.getReturnType();
@@ -41,7 +41,7 @@ public class ModulePropertiesProvider extends AbstractProjectionProvider {
     }
     if (ObjectFunctions.isCustomObjectHandleClass(expectedReturnType)) {
       if (DataFunctions.isDataObjectHandle(expectedReturnType)) {
-        return module.mapThruTransition1(target, SpaceConstants.PROPERTIES_TO_DATA_TID, expectedReturnType);
+        return module.mapThruChannel1(target, SpaceConstants.PROPERTIES_TO_DATA_TID, expectedReturnType);
       }
     }
     throw UnexpectedViolationException.withMessage("Invalid return type of method ''{0}'' in class {1}",

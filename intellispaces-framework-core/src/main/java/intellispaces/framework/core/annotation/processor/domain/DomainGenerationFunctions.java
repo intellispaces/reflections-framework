@@ -6,27 +6,26 @@ import intellispaces.common.javastatement.reference.NamedReference;
 
 public interface DomainGenerationFunctions {
 
-  static String getTransitionTypeParams(CustomType domain, MethodStatement transitionMethod) {
-    if (domain.typeParameters().isEmpty() && transitionMethod.typeParameters().isEmpty()) {
+  static String getChannelTypeParams(CustomType domain, MethodStatement channelMethod) {
+    if (domain.typeParameters().isEmpty() && channelMethod.typeParameters().isEmpty()) {
       return "";
-    } else if (!domain.typeParameters().isEmpty() && transitionMethod.typeParameters().isEmpty()) {
+    } else if (!domain.typeParameters().isEmpty() && channelMethod.typeParameters().isEmpty()) {
       return domain.typeParametersFullDeclaration();
-    } else if (domain.typeParameters().isEmpty() && !transitionMethod.typeParameters().isEmpty()) {
-      return getTransitionMethodTypeParamsDeclaration(transitionMethod);
+    } else if (domain.typeParameters().isEmpty() && !channelMethod.typeParameters().isEmpty()) {
+      return getChannelMethodTypeParamsDeclaration(channelMethod);
     } else {
       String domainTypeParams = domain.typeParametersFullDeclaration();
-      String transitionTypeParams = getTransitionMethodTypeParamsDeclaration(transitionMethod);
+      String channelTypeParams = getChannelMethodTypeParamsDeclaration(channelMethod);
       return domainTypeParams.substring(0, domainTypeParams.length() - 1) +
-          ", " +
-          transitionTypeParams.substring(1);
+          ", " + channelTypeParams.substring(1);
     }
   }
 
-  private static String getTransitionMethodTypeParamsDeclaration(MethodStatement transitionMethod) {
+  private static String getChannelMethodTypeParamsDeclaration(MethodStatement channelMethod) {
     var sb = new StringBuilder();
     sb.append("<");
     boolean first = true;
-    for (NamedReference typeParam : transitionMethod.typeParameters()) {
+    for (NamedReference typeParam : channelMethod.typeParameters()) {
       if (!first) {
         sb.append(", ");
       }

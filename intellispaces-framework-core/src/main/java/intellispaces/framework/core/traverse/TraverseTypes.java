@@ -15,7 +15,7 @@ public enum TraverseTypes implements TraverseType {
   /**
    * Mapping related to a specific movement.<p/>
    *
-   * Combined transition that sequentially combines movement and then directly related mapping traverses.
+   * Combined channel that sequentially combines movement and then directly related mapping traverses.
    */
   MappingOfMoving(true);
 

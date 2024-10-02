@@ -10,10 +10,10 @@ import intellispaces.common.javastatement.reference.CustomTypeReference;
 import intellispaces.framework.core.annotation.Domain;
 import intellispaces.framework.core.annotation.ObjectHandle;
 import intellispaces.framework.core.annotation.Ontology;
-import intellispaces.framework.core.annotation.Transition;
+import intellispaces.framework.core.annotation.Channel;
 import intellispaces.framework.core.object.ObjectFunctions;
 import intellispaces.framework.core.object.ObjectHandleTypes;
-import intellispaces.framework.core.space.transition.TransitionFunctions;
+import intellispaces.framework.core.space.channel.ChannelFunctions;
 
 import java.util.Optional;
 
@@ -75,26 +75,26 @@ public interface NameConventionFunctions {
     return TextFunctions.replaceEndingOrElseThrow(transformClassName(domainClassName), "Domain", "Data");
   }
 
-  static String getTransitionClassCanonicalName(MethodStatement transitionMethod) {
-    String spaceName = transitionMethod.owner().packageName();
-    CustomType owner = transitionMethod.owner();
+  static String getChannelClassCanonicalName(MethodStatement channelMethod) {
+    String spaceName = channelMethod.owner().packageName();
+    CustomType owner = channelMethod.owner();
     if (!owner.hasAnnotation(Domain.class) && !owner.hasAnnotation(Ontology.class)) {
-      throw UnexpectedViolationException.withMessage("Transition method {0} should be declared " +
+      throw UnexpectedViolationException.withMessage("Channel method {0} should be declared " +
               "in domain or ontology class. But actual class {1} is not marked with annotation",
-          transitionMethod.name(), owner.canonicalName()
+          channelMethod.name(), owner.canonicalName()
       );
     }
-    return getTransitionClassCanonicalName(spaceName, owner, transitionMethod);
+    return getChannelClassCanonicalName(spaceName, owner, channelMethod);
   }
 
-  static String getTransitionClassCanonicalName(
-      String spaceName, CustomType domainType, MethodStatement transitionMethod
+  static String getChannelClassCanonicalName(
+      String spaceName, CustomType domainType, MethodStatement channelMethod
   ) {
-    String transitionSimpleName = transitionMethod.selectAnnotation(Transition.class).orElseThrow().name();
-    if (!transitionSimpleName.isBlank()) {
-      return TypeFunctions.joinPackageAndSimpleName(spaceName, transitionSimpleName);
+    String channelSimpleName = channelMethod.selectAnnotation(Channel.class).orElseThrow().name();
+    if (!channelSimpleName.isBlank()) {
+      return TypeFunctions.joinPackageAndSimpleName(spaceName, channelSimpleName);
     }
-    return assignTransitionClassCanonicalName(spaceName, domainType, transitionMethod);
+    return assignChannelClassCanonicalName(spaceName, domainType, channelMethod);
   }
 
   static String getUnmovableUpwardObjectHandleTypename(CustomType domainType, CustomType baseDomainType) {
@@ -162,35 +162,35 @@ public interface NameConventionFunctions {
         && Character.isUpperCase(method.name().charAt(2));
   }
 
-  private static String assignTransitionClassCanonicalName(
-      String spaceName, CustomType domainType, MethodStatement transitionMethod
+  private static String assignChannelClassCanonicalName(
+      String spaceName, CustomType domainType, MethodStatement channelMethod
   ) {
     final String simpleName;
-    if (transitionMethod.owner().hasAnnotation(Ontology.class)) {
-      simpleName = getDefaultTransitionClassSimpleName(transitionMethod);
+    if (channelMethod.owner().hasAnnotation(Ontology.class)) {
+      simpleName = getDefaultChannelClassSimpleName(channelMethod);
     } else {
-      simpleName = assumeTransitionClassSimpleNameWhenDomainClass(domainType, transitionMethod);
+      simpleName = assumeChannelClassSimpleNameWhenDomainClass(domainType, channelMethod);
     }
     return TypeFunctions.joinPackageAndSimpleName(spaceName, simpleName);
   }
 
-  private static String assumeTransitionClassSimpleNameWhenDomainClass(
-      CustomType domainType, MethodStatement transitionMethod
+  private static String assumeChannelClassSimpleNameWhenDomainClass(
+      CustomType domainType, MethodStatement channelMethod
   ) {
     String simpleName = TextFunctions.replaceEndingOrElseThrow(
         TypeFunctions.getSimpleName(domainType.canonicalName()), "Domain", ""
     );
-    if (isMappingTraverseType(transitionMethod)) {
-      if (isTransformTransition(transitionMethod)) {
+    if (isMappingTraverseType(channelMethod)) {
+      if (isTransformChannel(channelMethod)) {
         simpleName = TextFunctions.capitalizeFirstLetter(simpleName) + "To" +
-            transitionMethod.name().substring(2) + "Transition";
+            channelMethod.name().substring(2) + "Channel";
       } else {
         simpleName = TextFunctions.capitalizeFirstLetter(simpleName) + "To" +
-            TextFunctions.capitalizeFirstLetter(transitionMethod.name()) + "Transition";
+            TextFunctions.capitalizeFirstLetter(channelMethod.name()) + "Channel";
       }
     } else {
       simpleName = TextFunctions.capitalizeFirstLetter(simpleName) +
-          TextFunctions.capitalizeFirstLetter(joinMethodNameAndParameterTypes(transitionMethod)) + "Transition";
+          TextFunctions.capitalizeFirstLetter(joinMethodNameAndParameterTypes(channelMethod)) + "Channel";
     }
     return simpleName;
   }
@@ -213,24 +213,24 @@ public interface NameConventionFunctions {
     return sb.toString();
   }
 
-  private static boolean isTransformTransition(MethodStatement transitionMethod) {
-    String name = transitionMethod.name();
+  private static boolean isTransformChannel(MethodStatement channelMethod) {
+    String name = channelMethod.name();
     return (name.length() > 3 && name.startsWith("as") && Character.isUpperCase(name.charAt(2)));
   }
 
-  static String getDefaultTransitionClassSimpleName(MethodStatement transitionMethod) {
-    return TextFunctions.capitalizeFirstLetter(transitionMethod.name()) + "Transition";
+  static String getDefaultChannelClassSimpleName(MethodStatement channelMethod) {
+    return TextFunctions.capitalizeFirstLetter(channelMethod.name()) + "Channel";
   }
 
   static String getGuideClassCanonicalName(
-      String spaceName, CustomType domainType, MethodStatement transitionMethod
+      String spaceName, CustomType domainType, MethodStatement channelMethod
   ) {
-    String transitionCanonicalName = getTransitionClassCanonicalName(spaceName, domainType, transitionMethod);
-    return TextFunctions.replaceLast(transitionCanonicalName, "Transition", "Guide");
+    String channelCanonicalName = getChannelClassCanonicalName(spaceName, domainType, channelMethod);
+    return TextFunctions.replaceLast(channelCanonicalName, "Channel", "Guide");
   }
 
   private static boolean isMappingTraverseType(MethodStatement method) {
-    return !TransitionFunctions.getTraverseType(method).isMovingBased();
+    return !ChannelFunctions.getTraverseType(method).isMovingBased();
   }
 
   private static String transformClassName(String className) {

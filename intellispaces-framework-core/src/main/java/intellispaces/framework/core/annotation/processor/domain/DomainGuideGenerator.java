@@ -13,9 +13,9 @@ import java.util.List;
 public class DomainGuideGenerator extends AbstractGuideGenerator {
 
   public DomainGuideGenerator(
-      TraverseType traverseType, CustomType initiatorType, CustomType domainType, MethodStatement transitionMethod
+      TraverseType traverseType, CustomType initiatorType, CustomType domainType, MethodStatement channelMethod
   ) {
-    super(traverseType, initiatorType, domainType, transitionMethod);
+    super(traverseType, initiatorType, domainType, channelMethod);
   }
 
   @Override
@@ -30,18 +30,18 @@ public class DomainGuideGenerator extends AbstractGuideGenerator {
 
   @Override
   protected String getGuideTypeParamDeclaration() {
-    return DomainGenerationFunctions.getTransitionTypeParams(annotatedType, transitionMethod);
+    return DomainGenerationFunctions.getChannelTypeParams(annotatedType, channelMethod);
   }
 
   @Override
   protected List<MethodParam> getQualifierMethodParams() {
-    return transitionMethod.params();
+    return channelMethod.params();
   }
 
   @Override
   protected String getGuideClassCanonicalName() {
     return NameConventionFunctions.getGuideClassCanonicalName(
-        annotatedType.packageName(), annotatedType, transitionMethod
+        annotatedType.packageName(), annotatedType, channelMethod
     );
   }
 }

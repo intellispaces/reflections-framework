@@ -16,22 +16,22 @@ class UnitGuideRegistry {
 
   public void addGuide(Guide<?, ?> guide) {
     if (guide.kind().isMapper()) {
-      mapperGuides.computeIfAbsent(guide.tid(), k -> newList(guide));
+      mapperGuides.computeIfAbsent(guide.cid(), k -> newList(guide));
     } else if (guide.kind().isMover()) {
-      moverGuides.computeIfAbsent(guide.tid(), k -> newList(guide));
+      moverGuides.computeIfAbsent(guide.cid(), k -> newList(guide));
     } else if (guide.kind().isMapperOfMoving()) {
-      mapperOfMovingGuides.computeIfAbsent(guide.tid(), k -> newList(guide));
+      mapperOfMovingGuides.computeIfAbsent(guide.cid(), k -> newList(guide));
     }
   }
 
-  public List<Guide<?, ?>> findGuides(GuideKind kind, String tid) {
+  public List<Guide<?, ?>> findGuides(GuideKind kind, String cid) {
     List<Guide<?, ?>> guides = null;
     if (kind.isMapper()) {
-      guides = mapperGuides.get(tid);
+      guides = mapperGuides.get(cid);
     } else if (kind.isMover()) {
-      guides = moverGuides.get(tid);
+      guides = moverGuides.get(cid);
     } else if (kind.isMapperOfMoving()) {
-      guides = mapperOfMovingGuides.get(tid);
+      guides = mapperOfMovingGuides.get(cid);
     }
     if (guides == null) {
       return List.of();

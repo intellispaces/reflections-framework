@@ -18,11 +18,11 @@ public class ObjectMover2<S extends ObjectHandleWrapper, Q1, Q2>
     implements AbstractMover2<S, Q1, Q2>
 {
   public ObjectMover2(
-      String tid,
+      String cid,
       Class<S> objectHandleClass,
       Method guideMethod,
-      int transitionIndex
+      int channelIndex
   ) {
-    super(tid, objectHandleClass, guideMethod, transitionIndex);
+    super(cid, objectHandleClass, guideMethod, channelIndex);
   }
 }

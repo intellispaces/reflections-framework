@@ -6,9 +6,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Indicates that this transition represents a factory.<p/>
+ * Indicates that this channel represents a factory.<p/>
  *
- * Annotation is relevant only for transition methods and interfaces.
+ * Annotation is relevant only for channel methods and interfaces.
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)

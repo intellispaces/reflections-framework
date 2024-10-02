@@ -1,0 +1,18 @@
+package {{$packageName}};
+
+{{for importedClass : $importedClasses}}
+import {{$importedClass}};
+{{end}}
+
+/**
+ * Space channel '{{$channelMethodName}}' from domain {@link {{$sourceClassSimpleName}}} to domain {{$targetClassLink}}.<p/>
+ *
+ * This class was generated automatically. Don't try to change it.
+ */
+@Channel("{{$cid}}")
+@FunctionalInterface
+{{$generatedAnnotation}}
+public interface {{$classSimpleName}}{{$channelTypeParamsFull}} extends {{$channelClass}}{{$channelTypeParamsBrief}} {
+
+  {{$channelMethod}};
+}

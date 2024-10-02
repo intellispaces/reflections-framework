@@ -13,10 +13,10 @@ import intellispaces.framework.core.guide.n2.Mover2;
 import intellispaces.framework.core.guide.n3.Mapper3;
 import intellispaces.framework.core.guide.n3.MapperOfMoving3;
 import intellispaces.framework.core.guide.n3.Mover3;
-import intellispaces.framework.core.space.transition.Transition0;
-import intellispaces.framework.core.space.transition.Transition1;
-import intellispaces.framework.core.space.transition.Transition2;
-import intellispaces.framework.core.space.transition.Transition3;
+import intellispaces.framework.core.space.channel.Channel0;
+import intellispaces.framework.core.space.channel.Channel1;
+import intellispaces.framework.core.space.channel.Channel2;
+import intellispaces.framework.core.space.channel.Channel3;
 
 import java.util.Collection;
 import java.util.List;
@@ -40,79 +40,79 @@ public interface Module {
 
   Collection<ModuleProjection> allProjections();
 
-  <S, T> T mapThruTransition0(S source, String tid);
+  <S, T> T mapThruChannel0(S source, String cid);
 
   @SuppressWarnings("rawtypes")
-  <S, T> T mapThruTransition0(S source, Class<? extends Transition0> transitionClass);
+  <S, T> T mapThruChannel0(S source, Class<? extends Channel0> channelClass);
 
-  <S, T, Q> T mapThruTransition1(S source, String tid, Q qualifier);
-
-  @SuppressWarnings("rawtypes")
-  <S, T, Q> T mapThruTransition1(S source, Class<? extends Transition1> transitionClass, Q qualifier);
-
-  <S, R> R moveThruTransition0(S source, String tid);
-
-  <S, R, Q> R moveThruTransition1(S source, String tid, Q qualifier);
-
-  <S, T> Mapper0<S, T> autoMapperThruTransition0(Type<S> sourceType, String tid);
-
-  <S, T, Q> Mapper1<S, T, Q> autoMapperThruTransition1(Type<S> sourceType, String tid);
-
-  <S, T, Q1, Q2> Mapper2<S, T, Q1, Q2> autoMapperThruTransition2(Type<S> sourceType, String tid);
-
-  <S, T, Q1, Q2, Q3> Mapper3<S, T, Q1, Q2, Q3> autoMapperThruTransition3(Type<S> sourceType, String tid);
-
-  <S> Mover0<S> autoMoverThruTransition0(Type<S> sourceType, String tid);
-
-  <S, Q> Mover1<S, Q> autoMoverThruTransition1(Class<S> sourceClass, String tid);
-
-  <S, Q> Mover1<S, Q> autoMoverThruTransition1(Type<S> sourceType, String tid);
-
-  <S, Q1, Q2> Mover2<S, Q1, Q2> autoMoverThruTransition2(Type<S> sourceType, String tid);
-
-  <S, Q1, Q2, Q3> Mover3<S, Q1, Q2, Q3> autoMoverThruTransition3(Type<S> sourceType, String tid);
-
-  <S, T> MapperOfMoving0<S, T> autoMapperOfMovingThruTransition0(Type<S> sourceType, String tid);
-
-  <S, T, Q> MapperOfMoving1<S, T, Q> autoMapperOfMovingThruTransition1(Type<S> sourceType, String tid);
-
-  <S, T, Q1, Q2> MapperOfMoving2<S, T, Q1, Q2> autoMapperOfMovingThruTransition2(Type<S> sourceType, String tid);
-
-  <S, T, Q1, Q2, Q3> MapperOfMoving3<S, T, Q1, Q2, Q3> autoMapperOfMovingThruTransition3(Type<S> sourceType, String tid);
+  <S, T, Q> T mapThruChannel1(S source, String cid, Q qualifier);
 
   @SuppressWarnings("rawtypes")
-  <S, T> Mapper0<S, T> autoMapperThruTransition0(Type<S> sourceType, Class<? extends Transition0> transitionClass);
+  <S, T, Q> T mapThruChannel1(S source, Class<? extends Channel1> channelClass, Q qualifier);
+
+  <S, R> R moveThruChannel0(S source, String cid);
+
+  <S, R, Q> R moveThruChannel1(S source, String cid, Q qualifier);
+
+  <S, T> Mapper0<S, T> autoMapperThruChannel0(Type<S> sourceType, String cid);
+
+  <S, T, Q> Mapper1<S, T, Q> autoMapperThruChannel1(Type<S> sourceType, String cid);
+
+  <S, T, Q1, Q2> Mapper2<S, T, Q1, Q2> autoMapperThruChannel2(Type<S> sourceType, String cid);
+
+  <S, T, Q1, Q2, Q3> Mapper3<S, T, Q1, Q2, Q3> autoMapperThruChannel3(Type<S> sourceType, String cid);
+
+  <S> Mover0<S> autoMoverThruChannel0(Type<S> sourceType, String cid);
+
+  <S, Q> Mover1<S, Q> autoMoverThruChannel1(Class<S> sourceClass, String cid);
+
+  <S, Q> Mover1<S, Q> autoMoverThruChannel1(Type<S> sourceType, String cid);
+
+  <S, Q1, Q2> Mover2<S, Q1, Q2> autoMoverThruChannel2(Type<S> sourceType, String cid);
+
+  <S, Q1, Q2, Q3> Mover3<S, Q1, Q2, Q3> autoMoverThruChannel3(Type<S> sourceType, String cid);
+
+  <S, T> MapperOfMoving0<S, T> autoMapperOfMovingThruChannel0(Type<S> sourceType, String cid);
+
+  <S, T, Q> MapperOfMoving1<S, T, Q> autoMapperOfMovingThruChannel1(Type<S> sourceType, String cid);
+
+  <S, T, Q1, Q2> MapperOfMoving2<S, T, Q1, Q2> autoMapperOfMovingThruChannel2(Type<S> sourceType, String cid);
+
+  <S, T, Q1, Q2, Q3> MapperOfMoving3<S, T, Q1, Q2, Q3> autoMapperOfMovingThruChannel3(Type<S> sourceType, String cid);
 
   @SuppressWarnings("rawtypes")
-  <S, T, Q> Mapper1<S, T, Q> autoMapperThruTransition1(Type<S> sourceType, Class<? extends Transition1> transitionClass);
+  <S, T> Mapper0<S, T> autoMapperThruChannel0(Type<S> sourceType, Class<? extends Channel0> channelClass);
 
   @SuppressWarnings("rawtypes")
-  <S, T, Q1, Q2> Mapper2<S, T, Q1, Q2> autoMapperThruTransition2(Type<S> sourceType, Class<? extends Transition2> transitionClass);
+  <S, T, Q> Mapper1<S, T, Q> autoMapperThruChannel1(Type<S> sourceType, Class<? extends Channel1> channelClass);
 
   @SuppressWarnings("rawtypes")
-  <S, T, Q1, Q2, Q3> Mapper3<S, T, Q1, Q2, Q3> autoMapperThruTransition3(Type<S> sourceType, Class<? extends Transition3> transitionClass);
+  <S, T, Q1, Q2> Mapper2<S, T, Q1, Q2> autoMapperThruChannel2(Type<S> sourceType, Class<? extends Channel2> channelClass);
 
   @SuppressWarnings("rawtypes")
-  <S> Mover0<S> autoMoverThruTransition0(Type<S> sourceType, Class<? extends Transition0> transitionClass);
+  <S, T, Q1, Q2, Q3> Mapper3<S, T, Q1, Q2, Q3> autoMapperThruChannel3(Type<S> sourceType, Class<? extends Channel3> channelClass);
 
   @SuppressWarnings("rawtypes")
-  <S, Q> Mover1<S, Q> autoMoverThruTransition1(Type<S> sourceType, Class<? extends Transition1> transitionClass);
+  <S> Mover0<S> autoMoverThruChannel0(Type<S> sourceType, Class<? extends Channel0> channelClass);
 
   @SuppressWarnings("rawtypes")
-  <S, Q1, Q2> Mover2<S, Q1, Q2> autoMoverThruTransition2(Type<S> sourceType, Class<? extends Transition2> transitionClass);
+  <S, Q> Mover1<S, Q> autoMoverThruChannel1(Type<S> sourceType, Class<? extends Channel1> channelClass);
 
   @SuppressWarnings("rawtypes")
-  <S, Q1, Q2, Q3> Mover3<S, Q1, Q2, Q3> autoMoverThruTransition3(Type<S> sourceType, Class<? extends Transition3> transitionClass);
+  <S, Q1, Q2> Mover2<S, Q1, Q2> autoMoverThruChannel2(Type<S> sourceType, Class<? extends Channel2> channelClass);
 
   @SuppressWarnings("rawtypes")
-  <S, T> MapperOfMoving0<S, T> autoMapperOfMovingThruTransition0(Type<S> sourceType, Class<? extends Transition0> transitionClass);
+  <S, Q1, Q2, Q3> Mover3<S, Q1, Q2, Q3> autoMoverThruChannel3(Type<S> sourceType, Class<? extends Channel3> channelClass);
 
   @SuppressWarnings("rawtypes")
-  <S, T, Q> MapperOfMoving1<S, T, Q> autoMapperOfMovingThruTransition1(Type<S> sourceType, Class<? extends Transition1> transitionClass);
+  <S, T> MapperOfMoving0<S, T> autoMapperOfMovingThruChannel0(Type<S> sourceType, Class<? extends Channel0> channelClass);
 
   @SuppressWarnings("rawtypes")
-  <S, T, Q1, Q2> MapperOfMoving2<S, T, Q1, Q2> autoMapperOfMovingThruTransition2(Type<S> sourceType, Class<? extends Transition2> transitionClass);
+  <S, T, Q> MapperOfMoving1<S, T, Q> autoMapperOfMovingThruChannel1(Type<S> sourceType, Class<? extends Channel1> channelClass);
 
   @SuppressWarnings("rawtypes")
-  <S, T, Q1, Q2, Q3> MapperOfMoving3<S, T, Q1, Q2, Q3> autoMapperOfMovingThruTransition3(Type<S> sourceType, Class<? extends Transition3> transitionClass);
+  <S, T, Q1, Q2> MapperOfMoving2<S, T, Q1, Q2> autoMapperOfMovingThruChannel2(Type<S> sourceType, Class<? extends Channel2> channelClass);
+
+  @SuppressWarnings("rawtypes")
+  <S, T, Q1, Q2, Q3> MapperOfMoving3<S, T, Q1, Q2, Q3> autoMapperOfMovingThruChannel3(Type<S> sourceType, Class<? extends Channel3> channelClass);
 }

@@ -21,11 +21,11 @@ public interface Guide<S, R> {
   GuideKind kind();
 
   /**
-   * Related transition ID.<p/>
+   * Related channel ID.<p/>
    *
-   * Related transition defined guide capability.
+   * Related channel defined guide capability.
    */
-  String tid();
+  String cid();
 
   /**
    * Synchronous execution of the guide.

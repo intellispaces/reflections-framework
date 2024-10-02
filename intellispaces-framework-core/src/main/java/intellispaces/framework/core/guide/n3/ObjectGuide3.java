@@ -9,28 +9,28 @@ import java.lang.reflect.Method;
 
 abstract class ObjectGuide3<S extends ObjectHandleWrapper, R, Q1, Q2, Q3> implements Guide3<S, R, Q1, Q2, Q3> {
   private final Class<S> objectHandleClass;
-  private final String tid;
+  private final String cid;
   private final Method guideMethod;
-  private final int transitionIndex;
+  private final int channelIndex;
 
   ObjectGuide3(
-      String tid,
+      String cid,
       Class<S> objectHandleClass,
       Method guideMethod,
-      int transitionIndex
+      int channelIndex
   ) {
     if (guideMethod.getParameterCount() != 3) {
       throw UnexpectedViolationException.withMessage("Guide should have three qualifiers");
     }
-    this.tid = tid;
+    this.cid = cid;
     this.objectHandleClass = objectHandleClass;
     this.guideMethod = guideMethod;
-    this.transitionIndex = transitionIndex;
+    this.channelIndex = channelIndex;
   }
 
   @Override
-  public String tid() {
-    return tid;
+  public String cid() {
+    return cid;
   }
 
   @Override
@@ -38,7 +38,7 @@ abstract class ObjectGuide3<S extends ObjectHandleWrapper, R, Q1, Q2, Q3> implem
   public R traverse(S source, Q1 qualifier1, Q2 qualifier2, Q3 qualifier3) throws TraverseException {
     try {
       GuideLogger.logCallGuide(guideMethod);
-      return (R) source.$handle().getGuideAction(transitionIndex).asAction3().execute(qualifier1, qualifier2, qualifier3);
+      return (R) source.$handle().getGuideAction(channelIndex).asAction3().execute(qualifier1, qualifier2, qualifier3);
     } catch (TraverseException e) {
       throw e;
     } catch (Exception e) {

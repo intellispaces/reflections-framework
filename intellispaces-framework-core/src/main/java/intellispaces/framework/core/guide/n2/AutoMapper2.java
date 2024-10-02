@@ -1,8 +1,8 @@
 package intellispaces.framework.core.guide.n2;
 
 import intellispaces.framework.core.exception.TraverseException;
-import intellispaces.framework.core.traverse.DeclarativePlan;
-import intellispaces.framework.core.traverse.TraverseExecutor;
+import intellispaces.framework.core.traverse.plan.DeclarativePlan;
+import intellispaces.framework.core.traverse.plan.TraverseExecutor;
 
 /**
  * Two-parametrized automatic mapper guide.
@@ -15,19 +15,19 @@ import intellispaces.framework.core.traverse.TraverseExecutor;
  * @param <Q2> second qualifier handle type.
  */
 public class AutoMapper2<S, T, Q1, Q2> implements AbstractMapper2<S, T, Q1, Q2> {
-  private final String tid;
+  private final String cid;
   private final TraverseExecutor traverseExecutor;
   private final DeclarativePlan declarativeTaskPlan;
 
-  public AutoMapper2(String tid, DeclarativePlan declarativeTaskPlan, TraverseExecutor traverseExecutor) {
-    this.tid = tid;
+  public AutoMapper2(String cid, DeclarativePlan declarativeTaskPlan, TraverseExecutor traverseExecutor) {
+    this.cid = cid;
     this.declarativeTaskPlan = declarativeTaskPlan;
     this.traverseExecutor = traverseExecutor;
   }
 
   @Override
-  public String tid() {
-    return tid;
+  public String cid() {
+    return cid;
   }
 
   @Override

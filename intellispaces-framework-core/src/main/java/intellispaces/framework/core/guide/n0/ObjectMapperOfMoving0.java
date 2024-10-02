@@ -16,11 +16,11 @@ public class ObjectMapperOfMoving0<S extends ObjectHandleWrapper, T>
     implements AbstractMapperOfMoving0<S, T>
 {
   public ObjectMapperOfMoving0(
-      String tid,
+      String cid,
       Class<S> objectHandleClass,
       Method guideMethod,
-      int transitionIndex
+      int channelIndex
   ) {
-    super(tid, objectHandleClass, guideMethod, transitionIndex);
+    super(cid, objectHandleClass, guideMethod, channelIndex);
   }
 }

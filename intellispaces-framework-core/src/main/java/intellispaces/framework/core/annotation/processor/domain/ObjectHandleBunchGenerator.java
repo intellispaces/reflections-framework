@@ -7,7 +7,7 @@ import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.common.javastatement.method.MethodStatement;
 import intellispaces.common.javastatement.reference.CustomTypeReference;
 import intellispaces.common.javastatement.reference.TypeReference;
-import intellispaces.framework.core.annotation.Transition;
+import intellispaces.framework.core.annotation.Channel;
 import intellispaces.framework.core.common.NameConventionFunctions;
 import intellispaces.framework.core.object.ObjectHandleTypes;
 import intellispaces.framework.core.space.domain.DomainFunctions;
@@ -111,7 +111,7 @@ public class ObjectHandleBunchGenerator extends AbstractDomainObjectHandleGenera
 
   @Override
   protected Map<String, String> buildMethod(MethodStatement method) {
-    if (method.hasAnnotation(Transition.class)) {
+    if (method.hasAnnotation(Channel.class)) {
       return super.buildMethod(method);
     } else {
       return buildAdditionalMethod(method);

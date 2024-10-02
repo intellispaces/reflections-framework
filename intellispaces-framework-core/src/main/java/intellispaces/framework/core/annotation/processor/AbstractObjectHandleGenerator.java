@@ -7,12 +7,12 @@ import intellispaces.common.javastatement.method.MethodParam;
 import intellispaces.common.javastatement.method.MethodStatement;
 import intellispaces.common.javastatement.reference.NamedReference;
 import intellispaces.common.javastatement.reference.TypeReference;
-import intellispaces.framework.core.annotation.Transition;
+import intellispaces.framework.core.annotation.Channel;
 import intellispaces.framework.core.common.NameConventionFunctions;
 import intellispaces.framework.core.exception.TraverseException;
 import intellispaces.framework.core.object.ObjectHandleTypes;
 import intellispaces.framework.core.space.SpaceConstants;
-import intellispaces.framework.core.space.transition.TransitionFunctions;
+import intellispaces.framework.core.space.channel.ChannelFunctions;
 
 import javax.annotation.processing.RoundEnvironment;
 import java.util.List;
@@ -37,7 +37,7 @@ public abstract class AbstractObjectHandleGenerator extends AbstractGenerator {
 
   protected boolean isNotGetDomainMethod(MethodStatement method) {
     return !method.name().equals("domainClass") &&
-        !method.name().equals(SpaceConstants.POINT_TO_DOMAIN_TRANSITION_SIMPLE_NAME);
+        !method.name().equals(SpaceConstants.POINT_TO_DOMAIN_CHANNEL_SIMPLE_NAME);
   }
 
   protected void analyzeObjectHandleMethods(CustomType customType, RoundEnvironment roundEnv) {
@@ -83,8 +83,8 @@ public abstract class AbstractObjectHandleGenerator extends AbstractGenerator {
   }
 
   protected boolean isDisableMoving(MethodStatement method) {
-    Transition transition = TransitionFunctions.getDomainMainTransitionAnnotation(method);
-    return TransitionFunctions.getTraverseType(transition).isMovingBased() &&
+    Channel channel = ChannelFunctions.getDomainMainChannelAnnotation(method);
+    return ChannelFunctions.getTraverseType(channel).isMovingBased() &&
         getObjectHandleType() == ObjectHandleTypes.Unmovable;
   }
 

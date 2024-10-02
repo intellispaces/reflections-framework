@@ -2,7 +2,7 @@ package intellispaces.framework.core.object;
 
 import intellispaces.common.base.type.Type;
 import intellispaces.framework.core.exception.TraverseException;
-import intellispaces.framework.core.space.transition.Transition1;
+import intellispaces.framework.core.space.channel.Channel1;
 
 /**
  * Handle of object.<p/>
@@ -30,5 +30,5 @@ public interface ObjectHandle<D> {
   MovableObjectHandle<D> asMovableOrElseThrow();
 
   @SuppressWarnings("rawtypes")
-  <T, Q> T mapThru(Class<? extends Transition1> transitionClass, Q qualifier) throws TraverseException;
+  <T, Q> T mapThru(Class<? extends Channel1> channelClass, Q qualifier) throws TraverseException;
 }

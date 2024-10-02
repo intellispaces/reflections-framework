@@ -9,16 +9,16 @@ import intellispaces.common.javastatement.reference.CustomTypeReference;
 import intellispaces.common.javastatement.reference.CustomTypeReferences;
 import intellispaces.common.javastatement.type.Types;
 import intellispaces.framework.core.annotation.ObjectHandle;
-import intellispaces.framework.core.annotation.Transition;
+import intellispaces.framework.core.annotation.Channel;
 import intellispaces.framework.core.common.NameConventionFunctions;
 import intellispaces.framework.core.exception.TraverseException;
 import intellispaces.framework.core.object.ObjectFunctions;
 import intellispaces.framework.core.object.ObjectHandleTypes;
 import intellispaces.framework.core.space.domain.DomainFunctions;
-import intellispaces.framework.core.space.transition.Transition0;
-import intellispaces.framework.core.space.transition.Transition1;
-import intellispaces.framework.core.transition.TransitionMethod0;
-import intellispaces.framework.core.transition.TransitionMethod1;
+import intellispaces.framework.core.space.channel.Channel0;
+import intellispaces.framework.core.space.channel.Channel1;
+import intellispaces.framework.core.space.channel.ChannelMethod0;
+import intellispaces.framework.core.space.channel.ChannelMethod1;
 
 import javax.annotation.processing.RoundEnvironment;
 import java.util.HashMap;
@@ -104,10 +104,10 @@ public class MovableDownwardObjectHandleGenerator extends AbstractConversionDoma
     context.addImport(ObjectHandle.class);
     context.addImport(ObjectFunctions.class);
     context.addImport(TraverseException.class);
-    context.addImport(Transition0.class);
-    context.addImport(Transition1.class);
-    context.addImport(TransitionMethod0.class);
-    context.addImport(TransitionMethod1.class);
+    context.addImport(Channel0.class);
+    context.addImport(Channel1.class);
+    context.addImport(ChannelMethod0.class);
+    context.addImport(ChannelMethod1.class);
 
     movableObjectHandleName = context.addToImportAndGetSimpleName(
         NameConventionFunctions.getMovableObjectHandleTypename(parentDomainType.targetType().className()));
@@ -147,7 +147,7 @@ public class MovableDownwardObjectHandleGenerator extends AbstractConversionDoma
 
   @Override
   protected Map<String, String> buildMethod(MethodStatement method) {
-    if (method.hasAnnotation(Transition.class)) {
+    if (method.hasAnnotation(Channel.class)) {
       return buildNormalMethod(method);
     } else {
       return buildAdditionalMethod(method);

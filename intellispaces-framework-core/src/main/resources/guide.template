@@ -5,7 +5,7 @@ import {{$importedClass}};
 {{end}}
 
 /**
- * Guide through transition {@link {{$transitionClassSimpleName}}}.<p/>
+ * Guide through channel {@link {{$channelClassSimpleName}}}.<p/>
  *
  * This class was generated automatically. Don't try to change it.
  */
@@ -15,13 +15,13 @@ import {{$importedClass}};
 public interface {{$classSimpleName}}{{$guideTypeParamsFull}} extends {{$guideClassSimpleName}}{{$guideTypeParams}} {
 
   @Override
-  default String tid() {
-    return TransitionFunctions.getTransitionId({{$transitionClassSimpleName}}.class);
+  default String cid() {
+    return ChannelFunctions.getChannelId({{$channelClassSimpleName}}.class);
   }
 
   @Override
   {{$baseMethod}}
 
-  {{$guideAnnotation}}({{$transitionClassSimpleName}}.class)
+  {{$guideAnnotation}}({{$channelClassSimpleName}}.class)
   {{$guideMethod}}
 }

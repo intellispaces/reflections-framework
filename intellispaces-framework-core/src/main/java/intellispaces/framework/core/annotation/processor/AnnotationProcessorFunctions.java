@@ -17,17 +17,17 @@ import intellispaces.common.javastatement.method.MethodStatement;
 import intellispaces.common.javastatement.reference.CustomTypeReference;
 import intellispaces.common.javastatement.reference.TypeReference;
 import intellispaces.framework.core.annotation.AnnotationProcessor;
+import intellispaces.framework.core.annotation.Channel;
 import intellispaces.framework.core.annotation.Data;
 import intellispaces.framework.core.annotation.Domain;
 import intellispaces.framework.core.annotation.Module;
 import intellispaces.framework.core.annotation.ObjectHandle;
 import intellispaces.framework.core.annotation.Ontology;
 import intellispaces.framework.core.annotation.Preprocessing;
-import intellispaces.framework.core.annotation.Transition;
 import intellispaces.framework.core.annotation.processor.data.UnmovableDataHandleGenerator;
 import intellispaces.framework.core.annotation.processor.domain.CommonObjectHandleGenerator;
 import intellispaces.framework.core.annotation.processor.domain.DomainGuideGenerator;
-import intellispaces.framework.core.annotation.processor.domain.DomainTransitionGenerator;
+import intellispaces.framework.core.annotation.processor.domain.DomainChannelGenerator;
 import intellispaces.framework.core.annotation.processor.domain.MovableDownwardObjectHandleGenerator;
 import intellispaces.framework.core.annotation.processor.domain.MovableObjectHandleGenerator;
 import intellispaces.framework.core.annotation.processor.domain.ObjectHandleBunchGenerator;
@@ -36,7 +36,7 @@ import intellispaces.framework.core.annotation.processor.guide.AutoGuideGenerato
 import intellispaces.framework.core.annotation.processor.objecthandle.MovableObjectHandleWrapperGenerator;
 import intellispaces.framework.core.annotation.processor.objecthandle.UnmovableObjectHandleWrapperGenerator;
 import intellispaces.framework.core.annotation.processor.ontology.OntologyGuideGenerator;
-import intellispaces.framework.core.annotation.processor.ontology.OntologyTransitionGenerator;
+import intellispaces.framework.core.annotation.processor.ontology.OntologyChannelGenerator;
 import intellispaces.framework.core.annotation.processor.unit.UnitWrapperGenerator;
 import intellispaces.framework.core.object.MovableObjectHandle;
 import intellispaces.framework.core.object.UnmovableObjectHandle;
@@ -62,9 +62,9 @@ public interface AnnotationProcessorFunctions {
   ) {
     List<Generator> generators = new ArrayList<>();
     for (MethodStatement method : domainType.declaredMethods()) {
-      if (method.hasAnnotation(Transition.class)) {
-        if (isAutoGenerationEnabled(domainType, ArtifactTypes.Transition, roundEnv)) {
-          generators.add(new DomainTransitionGenerator(initiatorType, domainType, method));
+      if (method.hasAnnotation(Channel.class)) {
+        if (isAutoGenerationEnabled(domainType, ArtifactTypes.Channel, roundEnv)) {
+          generators.add(new DomainChannelGenerator(initiatorType, domainType, method));
         }
         if (isEnableMapperGuideGeneration(domainType, method, roundEnv)) {
           generators.add(new DomainGuideGenerator(TraverseTypes.Mapping, initiatorType, domainType, method));
@@ -143,9 +143,9 @@ public interface AnnotationProcessorFunctions {
   ) {
     List<Generator> generators = new ArrayList<>();
     for (MethodStatement method : ontologyType.declaredMethods()) {
-      if (method.hasAnnotation(Transition.class)) {
-        if (isAutoGenerationEnabled(ontologyType, ArtifactTypes.Transition, roundEnv)) {
-          generators.add(new OntologyTransitionGenerator(initiatorType, ontologyType, method));
+      if (method.hasAnnotation(Channel.class)) {
+        if (isAutoGenerationEnabled(ontologyType, ArtifactTypes.Channel, roundEnv)) {
+          generators.add(new OntologyChannelGenerator(initiatorType, ontologyType, method));
         }
         if (isEnableMapperGuideGeneration(ontologyType, method, roundEnv)) {
           generators.add(new OntologyGuideGenerator(TraverseTypes.Mapping, initiatorType, ontologyType, method));
@@ -216,7 +216,7 @@ public interface AnnotationProcessorFunctions {
       CustomType domainType, MethodStatement method, RoundEnvironment roundEnv
   ) {
     return isAutoGenerationEnabled(domainType, ArtifactTypes.Mapper, roundEnv) &&
-        ArraysFunctions.contains(method.selectAnnotation(Transition.class).orElseThrow().allowedTraverse(),
+        ArraysFunctions.contains(method.selectAnnotation(Channel.class).orElseThrow().allowedTraverse(),
             TraverseTypes.Mapping);
   }
 
@@ -224,7 +224,7 @@ public interface AnnotationProcessorFunctions {
       CustomType domainType, MethodStatement method, RoundEnvironment roundEnv
   ) {
     return isAutoGenerationEnabled(domainType, ArtifactTypes.Mover, roundEnv) &&
-        ArraysFunctions.contains(method.selectAnnotation(Transition.class).orElseThrow().allowedTraverse(),
+        ArraysFunctions.contains(method.selectAnnotation(Channel.class).orElseThrow().allowedTraverse(),
             TraverseTypes.Moving);
   }
 
@@ -232,7 +232,7 @@ public interface AnnotationProcessorFunctions {
       CustomType domainType, MethodStatement method, RoundEnvironment roundEnv
   ) {
     return isAutoGenerationEnabled(domainType, ArtifactTypes.MapperOfMoving, roundEnv) &&
-        ArraysFunctions.contains(method.selectAnnotation(Transition.class).orElseThrow().allowedTraverse(),
+        ArraysFunctions.contains(method.selectAnnotation(Channel.class).orElseThrow().allowedTraverse(),
             TraverseTypes.MappingOfMoving);
   }
 

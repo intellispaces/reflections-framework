@@ -9,16 +9,16 @@ import intellispaces.framework.core.system.kernel.KernelUnitGuide;
 import java.lang.reflect.Method;
 
 abstract class UnitGuide0<S, R> implements Guide0<S, R>, KernelUnitGuide<S, R> {
-  private final String tid;
+  private final String cid;
   private final UnitWrapper unitInstance;
   private final Method guideMethod;
   private final int guideOrdinal;
 
-  UnitGuide0(String tid, UnitWrapper unitInstance, Method guideMethod, int guideOrdinal) {
+  UnitGuide0(String cid, UnitWrapper unitInstance, Method guideMethod, int guideOrdinal) {
     if (guideMethod.getParameterCount() != 1) {
       throw UnexpectedViolationException.withMessage("Guide method should have one parameter: source");
     }
-    this.tid = tid;
+    this.cid = cid;
     this.unitInstance = unitInstance;
     this.guideMethod = guideMethod;
     this.guideOrdinal = guideOrdinal;
@@ -35,8 +35,8 @@ abstract class UnitGuide0<S, R> implements Guide0<S, R>, KernelUnitGuide<S, R> {
   }
 
   @Override
-  public String tid() {
-    return tid;
+  public String cid() {
+    return cid;
   }
 
   @Override

@@ -13,10 +13,10 @@ import java.util.WeakHashMap;
 class ObjectGuideRegistry {
   private final Map<Class<?>, HandleDescription> handleDescriptions = new WeakHashMap<>();
 
-  public Guide<?, ?> getGuide(GuideKind kind, Class<?> objectHandleClass, String tid) {
+  public Guide<?, ?> getGuide(GuideKind kind, Class<?> objectHandleClass, String cid) {
     HandleDescription description = handleDescriptions.computeIfAbsent(
         objectHandleClass, this::createHandleDescription);
-    return description.getGuide(kind, tid);
+    return description.getGuide(kind, cid);
   }
 
   private HandleDescription createHandleDescription(Class<?> objectHandleClass) {
@@ -44,24 +44,24 @@ class ObjectGuideRegistry {
       return objectHandleClass;
     }
 
-    Guide<?, ?> getGuide(GuideKind kind, String tid) {
+    Guide<?, ?> getGuide(GuideKind kind, String cid) {
       if (kind.isMapper()) {
-        return mapperGuides.get(tid);
+        return mapperGuides.get(cid);
       } else if (kind.isMover()) {
-        return moverGuides.get(tid);
+        return moverGuides.get(cid);
       } else if (kind.isMapperOfMoving()) {
-        return mapperOfMovingGuides.get(tid);
+        return mapperOfMovingGuides.get(cid);
       }
       return null;
     }
 
     void addGuide(Guide<?, ?> guide) {
       if (guide.kind().isMapper()) {
-        mapperGuides.put(guide.tid(), guide);
+        mapperGuides.put(guide.cid(), guide);
       } else if (guide.kind().isMover()) {
-        moverGuides.put(guide.tid(), guide);
+        moverGuides.put(guide.cid(), guide);
       } else if (guide.kind().isMapperOfMoving()) {
-        mapperOfMovingGuides.put(guide.tid(), guide);
+        mapperOfMovingGuides.put(guide.cid(), guide);
       }
     }
   }

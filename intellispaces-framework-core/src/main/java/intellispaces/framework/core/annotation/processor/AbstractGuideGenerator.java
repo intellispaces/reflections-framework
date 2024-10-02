@@ -33,7 +33,7 @@ import intellispaces.framework.core.guide.n5.Mapper5;
 import intellispaces.framework.core.guide.n5.MapperOfMoving5;
 import intellispaces.framework.core.guide.n5.Mover5;
 import intellispaces.framework.core.object.ObjectFunctions;
-import intellispaces.framework.core.space.transition.TransitionFunctions;
+import intellispaces.framework.core.space.channel.ChannelFunctions;
 import intellispaces.framework.core.traverse.TraverseType;
 import intellispaces.framework.core.traverse.TraverseTypes;
 
@@ -45,7 +45,7 @@ import java.util.function.Function;
 
 public abstract class AbstractGuideGenerator extends AbstractGenerator {
   protected final TraverseType traverseType;
-  protected final MethodStatement transitionMethod;
+  protected final MethodStatement channelMethod;
   private String guideClassSimpleName;
   private String guideAnnotation;
   private String guideMethod;
@@ -53,11 +53,11 @@ public abstract class AbstractGuideGenerator extends AbstractGenerator {
   private String guideTypeParamsFull;
 
   public AbstractGuideGenerator(
-      TraverseType traverseType, CustomType initiatorType, CustomType annotatedType, MethodStatement transitionMethod
+      TraverseType traverseType, CustomType initiatorType, CustomType annotatedType, MethodStatement channelMethod
   ) {
     super(initiatorType, annotatedType);
     this.traverseType = traverseType;
-    this.transitionMethod = transitionMethod;
+    this.channelMethod = channelMethod;
   }
 
   protected abstract CustomType getDomainType();
@@ -86,7 +86,7 @@ public abstract class AbstractGuideGenerator extends AbstractGenerator {
     vars.put("sourceClassName", sourceClassCanonicalName());
     vars.put("sourceClassSimpleName", sourceClassSimpleName());
     vars.put("classSimpleName", context.generatedClassSimpleName());
-    vars.put("transitionClassSimpleName", transitionClassSimpleName());
+    vars.put("channelClassSimpleName", channelClassSimpleName());
     vars.put("guideTypeParamsFull", guideTypeParamsFull);
     vars.put("guideClassSimpleName", guideClassSimpleName);
     vars.put("guideTypeParams", buildGuideTypeParams(Function.identity()));
@@ -104,7 +104,7 @@ public abstract class AbstractGuideGenerator extends AbstractGenerator {
       context.addImport(annotatedType.canonicalName());
     }
     context.addImport(Guide.class);
-    context.addImport(TransitionFunctions.class);
+    context.addImport(ChannelFunctions.class);
     analyzeGuideType();
     return true;
   }
@@ -115,13 +115,13 @@ public abstract class AbstractGuideGenerator extends AbstractGenerator {
 
   protected String buildGuideMethod(Function<TypeReference, TypeReference> typeReplacer) {
     var sb = new StringBuilder();
-    if (AnnotationProcessorFunctions.isVoidType(transitionMethod.returnType().orElseThrow())) {
+    if (AnnotationProcessorFunctions.isVoidType(channelMethod.returnType().orElseThrow())) {
       sb.append("void");
     } else {
       sb.append(buildTargetObjectHandleDeclaration(typeReplacer));
     }
     sb.append(" ");
-    sb.append(transitionMethod.name());
+    sb.append(channelMethod.name());
     sb.append("(");
     sb.append(buildSourceObjectHandleDeclaration(typeReplacer));
     sb.append(" source");
@@ -235,17 +235,17 @@ public abstract class AbstractGuideGenerator extends AbstractGenerator {
       sb.append(param.name());
     }
     sb.append(") {\n  ");
-    if (!AnnotationProcessorFunctions.isVoidType(transitionMethod.returnType().orElseThrow())) {
+    if (!AnnotationProcessorFunctions.isVoidType(channelMethod.returnType().orElseThrow())) {
       sb.append("return ");
     }
-    sb.append(transitionMethod.name());
+    sb.append(channelMethod.name());
     sb.append("(").append("source");
     for (MethodParam param : getQualifierMethodParams()) {
       sb.append(", ");
       sb.append(param.name());
     }
     sb.append(");\n");
-    if (AnnotationProcessorFunctions.isVoidType(transitionMethod.returnType().orElseThrow())) {
+    if (AnnotationProcessorFunctions.isVoidType(channelMethod.returnType().orElseThrow())) {
       sb.append("  return null;\n");
     }
     sb.append("}");
@@ -259,7 +259,7 @@ public abstract class AbstractGuideGenerator extends AbstractGenerator {
   }
 
   protected String buildTargetObjectHandleDeclaration(Function<TypeReference, TypeReference> typeReplacer) {
-    TypeReference returnType = transitionMethod.returnType().orElseThrow();
+    TypeReference returnType = channelMethod.returnType().orElseThrow();
     return buildObjectHandleDeclaration(returnType, typeReplacer);
   }
 
@@ -330,9 +330,9 @@ public abstract class AbstractGuideGenerator extends AbstractGenerator {
     return simpleName;
   }
 
-  private String transitionClassSimpleName() {
-    String canonicalName = NameConventionFunctions.getTransitionClassCanonicalName(
-        annotatedType.packageName(), getDomainType(), transitionMethod
+  private String channelClassSimpleName() {
+    String canonicalName = NameConventionFunctions.getChannelClassCanonicalName(
+        annotatedType.packageName(), getDomainType(), channelMethod
     );
     return context.addToImportAndGetSimpleName(canonicalName);
   }

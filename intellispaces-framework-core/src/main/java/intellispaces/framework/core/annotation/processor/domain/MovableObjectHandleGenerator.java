@@ -9,10 +9,10 @@ import intellispaces.framework.core.exception.TraverseException;
 import intellispaces.framework.core.object.MovableObjectHandle;
 import intellispaces.framework.core.object.ObjectHandleTypes;
 import intellispaces.framework.core.space.domain.DomainFunctions;
-import intellispaces.framework.core.space.transition.Transition0;
-import intellispaces.framework.core.space.transition.Transition1;
-import intellispaces.framework.core.transition.TransitionMethod0;
-import intellispaces.framework.core.transition.TransitionMethod1;
+import intellispaces.framework.core.space.channel.Channel0;
+import intellispaces.framework.core.space.channel.Channel1;
+import intellispaces.framework.core.space.channel.ChannelMethod0;
+import intellispaces.framework.core.space.channel.ChannelMethod1;
 
 import javax.annotation.processing.RoundEnvironment;
 import java.util.HashMap;
@@ -78,10 +78,10 @@ public class MovableObjectHandleGenerator extends AbstractDomainObjectHandleGene
     }
     context.addImport(MovableObjectHandle.class);
     context.addImport(ObjectHandle.class);
-    context.addImport(Transition0.class);
-    context.addImport(Transition1.class);
-    context.addImport(TransitionMethod0.class);
-    context.addImport(TransitionMethod1.class);
+    context.addImport(Channel0.class);
+    context.addImport(Channel1.class);
+    context.addImport(ChannelMethod0.class);
+    context.addImport(ChannelMethod1.class);
     context.addImport(TraverseException.class);
 
     domainTypeParamsFull = annotatedType.typeParametersFullDeclaration();

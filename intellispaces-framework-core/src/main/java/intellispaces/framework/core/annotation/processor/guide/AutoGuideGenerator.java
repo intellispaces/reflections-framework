@@ -135,7 +135,7 @@ public class AutoGuideGenerator extends AbstractGenerator {
     } else if (GuideFunctions.isMapperOfMovingMethod(method)) {
       sb.append("mapOfMoving");
     }
-    sb.append("ThruTransition");
+    sb.append("ThruChannel");
     sb.append(method.params().size() - 1);
     sb.append(",\n");
     sb.append("    ");
@@ -147,7 +147,7 @@ public class AutoGuideGenerator extends AbstractGenerator {
     sb.append("> of(");
     sb.append(sourceType.simpleDeclaration(context::addToImportAndGetSimpleName));
     sb.append(".class),\n    ");
-    sb.append(context.addToImportAndGetSimpleName(GuideFunctions.getTransitionType(method).canonicalName()));
+    sb.append(context.addToImportAndGetSimpleName(GuideFunctions.getChannelType(method).canonicalName()));
     sb.append(".class))");
     return sb.toString();
   }

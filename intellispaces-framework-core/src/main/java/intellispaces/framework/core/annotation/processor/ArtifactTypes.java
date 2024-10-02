@@ -2,7 +2,7 @@ package intellispaces.framework.core.annotation.processor;
 
 public enum ArtifactTypes {
 
-  Transition,
+  Channel,
 
   ObjectHandleBranch,
 

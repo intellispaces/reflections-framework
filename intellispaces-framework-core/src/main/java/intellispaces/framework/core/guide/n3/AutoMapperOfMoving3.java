@@ -1,8 +1,8 @@
 package intellispaces.framework.core.guide.n3;
 
 import intellispaces.framework.core.exception.TraverseException;
-import intellispaces.framework.core.traverse.DeclarativePlan;
-import intellispaces.framework.core.traverse.TraverseExecutor;
+import intellispaces.framework.core.traverse.plan.DeclarativePlan;
+import intellispaces.framework.core.traverse.plan.TraverseExecutor;
 
 /**
  * Three times parametrized automatic mapper of moving.
@@ -16,19 +16,19 @@ import intellispaces.framework.core.traverse.TraverseExecutor;
  * @param <Q3> third qualifier handle type.
  */
 public class AutoMapperOfMoving3<S, T, Q1, Q2,  Q3> implements AbstractMapperOfMoving3<S, T, Q1, Q2, Q3> {
-  private final String tid;
+  private final String cid;
   private final TraverseExecutor traverseExecutor;
   private final DeclarativePlan declarativeTaskPlan;
 
-  public AutoMapperOfMoving3(String tid, DeclarativePlan declarativeTaskPlan, TraverseExecutor traverseExecutor) {
-    this.tid = tid;
+  public AutoMapperOfMoving3(String cid, DeclarativePlan declarativeTaskPlan, TraverseExecutor traverseExecutor) {
+    this.cid = cid;
     this.declarativeTaskPlan = declarativeTaskPlan;
     this.traverseExecutor = traverseExecutor;
   }
 
   @Override
-  public String tid() {
-    return tid;
+  public String cid() {
+    return cid;
   }
 
   @Override

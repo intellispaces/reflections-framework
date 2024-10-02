@@ -11,7 +11,7 @@ import java.lang.reflect.Method;
  */
 public class UnitMapper0<S, T> extends UnitGuide0<S, T> implements AbstractMapper0<S, T> {
 
-  public UnitMapper0(String tid, UnitWrapper unitInstance, Method guideMethod, int guideOrdinal) {
-    super(tid, unitInstance, guideMethod, guideOrdinal);
+  public UnitMapper0(String cid, UnitWrapper unitInstance, Method guideMethod, int guideOrdinal) {
+    super(cid, unitInstance, guideMethod, guideOrdinal);
   }
 }

@@ -5,82 +5,82 @@ import intellispaces.common.action.Action2;
 import intellispaces.common.action.Action3;
 import intellispaces.common.action.Action4;
 import intellispaces.common.base.type.Type;
-import intellispaces.framework.core.space.transition.Transition0;
-import intellispaces.framework.core.space.transition.Transition1;
-import intellispaces.framework.core.space.transition.Transition2;
-import intellispaces.framework.core.space.transition.Transition3;
+import intellispaces.framework.core.space.channel.Channel0;
+import intellispaces.framework.core.space.channel.Channel1;
+import intellispaces.framework.core.space.channel.Channel2;
+import intellispaces.framework.core.space.channel.Channel3;
 
 public interface TraverseActions {
 
-  static <S, T> Action1<T, S> mapThruTransition0(
-    Type<S> sourceType, Class<? extends Transition0> transitionClass
+  static <S, T> Action1<T, S> mapThruChannel0(
+    Type<S> sourceType, Class<? extends Channel0> channelClass
   ) {
-    return new MapThruTransition0Action<>(sourceType, transitionClass);
+    return new MapThruChannel0Action<>(sourceType, channelClass);
   }
 
-  static <S, T, Q> Action2<T, S, Q> mapThruTransition1(
-    Type<S> sourceType, Class<? extends Transition1> transitionClass
+  static <S, T, Q> Action2<T, S, Q> mapThruChannel1(
+    Type<S> sourceType, Class<? extends Channel1> channelClass
   ) {
-    return new MapThruTransition1Action<>(sourceType, transitionClass);
+    return new MapThruChannel1Action<>(sourceType, channelClass);
   }
 
-  static <S, T, Q1, Q2> Action3<T, S, Q1, Q2> mapThruTransition2(
-    Type<S> sourceType, Class<? extends Transition2> transitionClass
+  static <S, T, Q1, Q2> Action3<T, S, Q1, Q2> mapThruChannel2(
+    Type<S> sourceType, Class<? extends Channel2> channelClass
   ) {
-    return new MapThruTransition2Action<>(sourceType, transitionClass);
+    return new MapThruChannel2Action<>(sourceType, channelClass);
   }
 
-  static <S, T, Q1, Q2, Q3> Action4<T, S, Q1, Q2, Q3> mapThruTransition3(
-    Type<S> sourceType, Class<? extends Transition3> transitionClass
+  static <S, T, Q1, Q2, Q3> Action4<T, S, Q1, Q2, Q3> mapThruChannel3(
+    Type<S> sourceType, Class<? extends Channel3> channelClass
   ) {
-    return new MapThruTransition3Action<>(sourceType, transitionClass);
+    return new MapThruChannel3Action<>(sourceType, channelClass);
   }
 
-  static <S> Action1<S, S> moveThruTransition0(
-    Type<S> sourceType, Class<? extends Transition0> transitionClass
+  static <S> Action1<S, S> moveThruChannel0(
+    Type<S> sourceType, Class<? extends Channel0> channelClass
   ) {
-    return new MoveThruTransition0Action<>(sourceType, transitionClass);
+    return new MoveThruChannel0Action<>(sourceType, channelClass);
   }
 
-  static <S, Q> Action2<S, S, Q> moveThruTransition1(
-    Type<S> sourceType, Class<? extends Transition1> transitionClass
+  static <S, Q> Action2<S, S, Q> moveThruChannel1(
+    Type<S> sourceType, Class<? extends Channel1> channelClass
   ) {
-    return new MoveThruTransition1Action<>(sourceType, transitionClass);
+    return new MoveThruChannel1Action<>(sourceType, channelClass);
   }
 
-  static <S, Q1, Q2> Action3<S, S, Q1, Q2> moveThruTransition2(
-    Type<S> sourceType, Class<? extends Transition2> transitionClass
+  static <S, Q1, Q2> Action3<S, S, Q1, Q2> moveThruChannel2(
+    Type<S> sourceType, Class<? extends Channel2> channelClass
   ) {
-    return new MoveThruTransition2Action<>(sourceType, transitionClass);
+    return new MoveThruChannel2Action<>(sourceType, channelClass);
   }
 
-  static <S, Q1, Q2, Q3> Action4<S, S, Q1, Q2, Q3> moveThruTransition3(
-    Type<S> sourceType, Class<? extends Transition3> transitionClass
+  static <S, Q1, Q2, Q3> Action4<S, S, Q1, Q2, Q3> moveThruChannel3(
+    Type<S> sourceType, Class<? extends Channel3> channelClass
   ) {
-    return new MoveThruTransition3Action<>(sourceType, transitionClass);
+    return new MoveThruChannel3Action<>(sourceType, channelClass);
   }
 
-  static <S, T> Action1<T, S> mapOfMovingThruTransition0(
-      Type<S> sourceType, Class<? extends Transition0> transitionClass
+  static <S, T> Action1<T, S> mapOfMovingThruChannel0(
+      Type<S> sourceType, Class<? extends Channel0> channelClass
   ) {
-    return new MapOfMovingThruTransition0Action<>(sourceType, transitionClass);
+    return new MapOfMovingThruChannel0Action<>(sourceType, channelClass);
   }
 
-  static <S, T, Q> Action2<T, S, Q> mapOfMovingThruTransition1(
-      Type<S> sourceType, Class<? extends Transition1> transitionClass
+  static <S, T, Q> Action2<T, S, Q> mapOfMovingThruChannel1(
+      Type<S> sourceType, Class<? extends Channel1> channelClass
   ) {
-    return new MapOfMovingThruTransition1Action<>(sourceType, transitionClass);
+    return new MapOfMovingThruChannel1Action<>(sourceType, channelClass);
   }
 
-  static <S, T, Q1, Q2> Action3<T, S, Q1, Q2> mapOfMovingThruTransition2(
-      Type<S> sourceType, Class<? extends Transition2> transitionClass
+  static <S, T, Q1, Q2> Action3<T, S, Q1, Q2> mapOfMovingThruChannel2(
+      Type<S> sourceType, Class<? extends Channel2> channelClass
   ) {
-    return new MapOfMovingThruTransition2Action<>(sourceType, transitionClass);
+    return new MapOfMovingThruChannel2Action<>(sourceType, channelClass);
   }
 
-  static <S, T, Q1, Q2, Q3> Action4<T, S, Q1, Q2, Q3> mapOfMovingThruTransition3(
-      Type<S> sourceType, Class<? extends Transition3> transitionClass
+  static <S, T, Q1, Q2, Q3> Action4<T, S, Q1, Q2, Q3> mapOfMovingThruChannel3(
+      Type<S> sourceType, Class<? extends Channel3> channelClass
   ) {
-    return new MapOfMovingThruTransition3Action<>(sourceType, transitionClass);
+    return new MapOfMovingThruChannel3Action<>(sourceType, channelClass);
   }
 }

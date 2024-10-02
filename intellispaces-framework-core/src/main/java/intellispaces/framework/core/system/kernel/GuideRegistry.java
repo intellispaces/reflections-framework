@@ -11,7 +11,7 @@ public interface GuideRegistry {
 
   <G> G getAutoGuide(Class<G> guideClass);
 
-  List<Guide<?, ?>> findGuides(GuideKind kind, Class<?> objectHandleClass, String tid);
+  List<Guide<?, ?>> findGuides(GuideKind kind, Class<?> objectHandleClass, String cid);
 
   void addGuideUnit(KernelUnit guideUnit);
 }

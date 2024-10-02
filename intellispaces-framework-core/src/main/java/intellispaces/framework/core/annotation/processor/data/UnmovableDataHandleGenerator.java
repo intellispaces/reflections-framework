@@ -15,7 +15,7 @@ import intellispaces.framework.core.annotation.processor.AbstractGenerator;
 import intellispaces.framework.core.common.NameConventionFunctions;
 import intellispaces.framework.core.exception.TraverseException;
 import intellispaces.framework.core.object.ObjectHandleTypes;
-import intellispaces.framework.core.space.transition.Transition1;
+import intellispaces.framework.core.space.channel.Channel1;
 import intellispaces.framework.core.system.Modules;
 
 import javax.annotation.processing.RoundEnvironment;
@@ -73,7 +73,7 @@ public class UnmovableDataHandleGenerator extends AbstractGenerator {
     context.addImport(Modules.class);
     context.addImport(Type.class);
     context.addImport(Types.class);
-    context.addImport(Transition1.class);
+    context.addImport(Channel1.class);
     context.addImport(TraverseException.class);
 
     analyzeTypeParams(annotatedType);

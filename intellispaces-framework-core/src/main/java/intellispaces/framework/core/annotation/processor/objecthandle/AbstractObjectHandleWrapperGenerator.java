@@ -75,8 +75,8 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
     isAlias = primaryDomain.isPresent();
     if (isAlias) {
       Optional<CustomTypeReference> mainPrimaryDomain = DomainFunctions.getMainPrimaryDomainOfAlias(domainType);
-      primaryDomainTypeArguments = primaryDomain.get().typeArgumentsDeclaration(context::addToImportAndGetSimpleName);
       primaryDomainSimpleName = context.addToImportAndGetSimpleName(mainPrimaryDomain.orElseThrow().targetType().canonicalName());
+      primaryDomainTypeArguments = primaryDomain.get().typeArgumentsDeclaration(context::addToImportAndGetSimpleName);
     }
   }
 

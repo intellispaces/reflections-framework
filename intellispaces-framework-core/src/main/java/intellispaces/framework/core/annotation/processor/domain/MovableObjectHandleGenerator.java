@@ -5,9 +5,14 @@ import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.common.javastatement.reference.CustomTypeReference;
 import intellispaces.framework.core.annotation.ObjectHandle;
 import intellispaces.framework.core.common.NameConventionFunctions;
+import intellispaces.framework.core.exception.TraverseException;
 import intellispaces.framework.core.object.MovableObjectHandle;
 import intellispaces.framework.core.object.ObjectHandleTypes;
 import intellispaces.framework.core.space.domain.DomainFunctions;
+import intellispaces.framework.core.space.transition.Transition0;
+import intellispaces.framework.core.space.transition.Transition1;
+import intellispaces.framework.core.transition.TransitionMethod0;
+import intellispaces.framework.core.transition.TransitionMethod1;
 
 import javax.annotation.processing.RoundEnvironment;
 import java.util.HashMap;
@@ -17,6 +22,8 @@ import java.util.Optional;
 public class MovableObjectHandleGenerator extends AbstractDomainObjectHandleGenerator {
   private String baseObjectHandle;
   private boolean isAlias;
+  private String primaryDomainSimpleName;
+  private String primaryDomainTypeArguments;
   private String primaryObjectHandle;
 
   public MovableObjectHandleGenerator(CustomType initiatorType, CustomType domainType) {
@@ -58,6 +65,8 @@ public class MovableObjectHandleGenerator extends AbstractDomainObjectHandleGene
     vars.put("movableObjectHandleName", context.addToImportAndGetSimpleName(MovableObjectHandle.class));
     vars.put("isAlias", isAlias);
     vars.put("primaryObjectHandle", primaryObjectHandle);
+    vars.put("primaryDomainSimpleName", primaryDomainSimpleName);
+    vars.put("primaryDomainTypeArguments", primaryDomainTypeArguments);
     return vars;
   }
 
@@ -69,6 +78,11 @@ public class MovableObjectHandleGenerator extends AbstractDomainObjectHandleGene
     }
     context.addImport(MovableObjectHandle.class);
     context.addImport(ObjectHandle.class);
+    context.addImport(Transition0.class);
+    context.addImport(Transition1.class);
+    context.addImport(TransitionMethod0.class);
+    context.addImport(TransitionMethod1.class);
+    context.addImport(TraverseException.class);
 
     domainTypeParamsFull = annotatedType.typeParametersFullDeclaration();
     domainTypeParamsBrief = annotatedType.typeParametersBriefDeclaration();
@@ -81,6 +95,10 @@ public class MovableObjectHandleGenerator extends AbstractDomainObjectHandleGene
     isAlias = primaryDomain.isPresent();
     if (isAlias) {
       primaryObjectHandle = getObjectHandleDeclaration(primaryDomain.get(), ObjectHandleTypes.Movable);
+
+      Optional<CustomTypeReference> mainPrimaryDomain = DomainFunctions.getMainPrimaryDomainOfAlias(annotatedType);
+      primaryDomainSimpleName = context.addToImportAndGetSimpleName(mainPrimaryDomain.orElseThrow().targetType().canonicalName());
+      primaryDomainTypeArguments = primaryDomain.get().typeArgumentsDeclaration(context::addToImportAndGetSimpleName);
     }
     return true;
   }

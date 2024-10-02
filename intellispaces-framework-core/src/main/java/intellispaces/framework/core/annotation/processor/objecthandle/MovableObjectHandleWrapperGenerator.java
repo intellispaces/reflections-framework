@@ -13,14 +13,14 @@ import intellispaces.framework.core.object.ObjectHandleTypes;
 import intellispaces.framework.core.space.channel.Channel0;
 import intellispaces.framework.core.space.channel.Channel1;
 import intellispaces.framework.core.space.channel.ChannelFunctions;
+import intellispaces.framework.core.space.channel.ChannelMethod0;
+import intellispaces.framework.core.space.channel.ChannelMethod1;
 import intellispaces.framework.core.system.Modules;
 import intellispaces.framework.core.system.ObjectHandleWrapper;
 import intellispaces.framework.core.system.injection.AutoGuideInjections;
 import intellispaces.framework.core.system.injection.GuideInjections;
 import intellispaces.framework.core.system.kernel.KernelFunctions;
 import intellispaces.framework.core.system.kernel.KernelObjectHandle;
-import intellispaces.framework.core.space.channel.ChannelMethod0;
-import intellispaces.framework.core.space.channel.ChannelMethod1;
 
 import javax.annotation.processing.RoundEnvironment;
 import java.util.HashMap;

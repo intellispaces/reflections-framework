@@ -5,9 +5,6 @@ import intellispaces.common.base.type.Type;
 import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.common.javastatement.method.MethodStatement;
 import intellispaces.common.javastatement.reference.CustomTypeReference;
-import intellispaces.common.javastatement.reference.NamedReference;
-import intellispaces.common.javastatement.reference.NotPrimitiveReference;
-import intellispaces.common.javastatement.reference.ReferenceBound;
 import intellispaces.common.javastatement.type.Types;
 import intellispaces.framework.core.annotation.ObjectHandle;
 import intellispaces.framework.core.common.NameConventionFunctions;
@@ -18,7 +15,6 @@ import javax.annotation.processing.RoundEnvironment;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Stream;
 
 public class CommonObjectHandleGenerator extends AbstractDomainObjectHandleGenerator {
@@ -89,16 +85,16 @@ public class CommonObjectHandleGenerator extends AbstractDomainObjectHandleGener
     );
     analyzeObjectHandleMethods(annotatedType, roundEnv);
 
-    Optional<CustomTypeReference> primaryDomain = DomainFunctions.getPrimaryDomainOfAlias(annotatedType);
-    isAlias = primaryDomain.isPresent();
+    List<CustomTypeReference> equivalentDomains = DomainFunctions.getEquivalentDomains(annotatedType);
+    isAlias = !equivalentDomains.isEmpty();
     if (isAlias) {
-      primaryObjectHandle = getObjectHandleDeclaration(primaryDomain.get(), ObjectHandleTypes.Common);
-      primaryDomainTypeArguments = primaryDomain.get().typeArgumentsDeclaration(context::addToImportAndGetSimpleName);
-      Optional<CustomTypeReference> mainPrimaryDomain = DomainFunctions.getMainPrimaryDomainOfAlias(annotatedType);
-      primaryDomainSimpleName = context.addToImportAndGetSimpleName(
-          mainPrimaryDomain.orElseThrow().targetType().canonicalName()
-      );
-      domainType = buildDomainType(mainPrimaryDomain.get().targetType(), primaryDomain.get().typeArguments());
+      CustomTypeReference nearEquivalentDomain = equivalentDomains.get(0);
+      CustomTypeReference mainEquivalentDomain = equivalentDomains.get(equivalentDomains.size() - 1);
+
+      primaryObjectHandle = getObjectHandleDeclaration(nearEquivalentDomain, ObjectHandleTypes.Common);
+      primaryDomainTypeArguments = nearEquivalentDomain.typeArgumentsDeclaration(context::addToImportAndGetSimpleName);
+      primaryDomainSimpleName = context.addToImportAndGetSimpleName(mainEquivalentDomain.targetType().canonicalName());
+      domainType = buildDomainType(mainEquivalentDomain.targetType(), mainEquivalentDomain.typeArguments());
     } else {
       domainType = buildDomainType(annotatedType, (List) annotatedType.typeParameters());
     }

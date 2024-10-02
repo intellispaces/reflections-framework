@@ -80,10 +80,10 @@ public class UnmovableObjectHandleGenerator extends AbstractDomainObjectHandleGe
     );
     analyzeObjectHandleMethods(annotatedType, roundEnv);
 
-    Optional<CustomTypeReference> primaryDomain = DomainFunctions.getPrimaryDomainOfAlias(annotatedType);
-    isAlias = primaryDomain.isPresent();
+    Optional<CustomTypeReference> equivalentDomain = DomainFunctions.getNearEquivalentDomain(annotatedType);
+    isAlias = equivalentDomain.isPresent();
     if (isAlias) {
-      primaryObjectHandle = getObjectHandleDeclaration(primaryDomain.get(), ObjectHandleTypes.Unmovable);
+      primaryObjectHandle = getObjectHandleDeclaration(equivalentDomain.get(), ObjectHandleTypes.Unmovable);
     }
     return true;
   }

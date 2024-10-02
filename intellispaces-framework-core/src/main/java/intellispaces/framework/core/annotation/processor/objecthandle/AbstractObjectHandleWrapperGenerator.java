@@ -20,8 +20,8 @@ import intellispaces.framework.core.exception.ConfigurationException;
 import intellispaces.framework.core.guide.GuideFunctions;
 import intellispaces.framework.core.object.ObjectFunctions;
 import intellispaces.framework.core.object.ObjectHandleTypes;
-import intellispaces.framework.core.space.domain.DomainFunctions;
 import intellispaces.framework.core.space.channel.ChannelFunctions;
+import intellispaces.framework.core.space.domain.DomainFunctions;
 import intellispaces.framework.core.system.Modules;
 import intellispaces.framework.core.system.ProjectionInjection;
 
@@ -30,7 +30,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Stream;
@@ -71,12 +70,14 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
     context.addImport(domainType.canonicalName());
     domainSimpleClassName = context.simpleNameOf(domainType.canonicalName());
 
-    Optional<CustomTypeReference> primaryDomain = DomainFunctions.getPrimaryDomainOfAlias(domainType);
-    isAlias = primaryDomain.isPresent();
+    List<CustomTypeReference> equivalentDomains = DomainFunctions.getEquivalentDomains(domainType);
+    isAlias = !equivalentDomains.isEmpty();
     if (isAlias) {
-      Optional<CustomTypeReference> mainPrimaryDomain = DomainFunctions.getMainPrimaryDomainOfAlias(domainType);
-      primaryDomainSimpleName = context.addToImportAndGetSimpleName(mainPrimaryDomain.orElseThrow().targetType().canonicalName());
-      primaryDomainTypeArguments = primaryDomain.get().typeArgumentsDeclaration(context::addToImportAndGetSimpleName);
+      CustomTypeReference nearEquivalentDomain = equivalentDomains.get(0);
+      CustomTypeReference mainEquivalentDomain = equivalentDomains.get(equivalentDomains.size() - 1);
+
+      primaryDomainSimpleName = context.addToImportAndGetSimpleName(mainEquivalentDomain.targetType().canonicalName());
+      primaryDomainTypeArguments = nearEquivalentDomain.typeArgumentsDeclaration(context::addToImportAndGetSimpleName);
     }
   }
 

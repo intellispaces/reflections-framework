@@ -8,17 +8,17 @@ import intellispaces.common.javastatement.method.MethodStatement;
 import intellispaces.common.javastatement.reference.CustomTypeReference;
 import intellispaces.common.javastatement.reference.CustomTypeReferences;
 import intellispaces.common.javastatement.type.Types;
-import intellispaces.framework.core.annotation.ObjectHandle;
 import intellispaces.framework.core.annotation.Channel;
+import intellispaces.framework.core.annotation.ObjectHandle;
 import intellispaces.framework.core.common.NameConventionFunctions;
 import intellispaces.framework.core.exception.TraverseException;
 import intellispaces.framework.core.object.ObjectFunctions;
 import intellispaces.framework.core.object.ObjectHandleTypes;
-import intellispaces.framework.core.space.domain.DomainFunctions;
 import intellispaces.framework.core.space.channel.Channel0;
 import intellispaces.framework.core.space.channel.Channel1;
 import intellispaces.framework.core.space.channel.ChannelMethod0;
 import intellispaces.framework.core.space.channel.ChannelMethod1;
+import intellispaces.framework.core.space.domain.DomainFunctions;
 
 import javax.annotation.processing.RoundEnvironment;
 import java.util.HashMap;
@@ -130,15 +130,16 @@ public class MovableDownwardObjectHandleGenerator extends AbstractConversionDoma
 
     analyzeObjectHandleMethods(effectiveActualParentDomainType, roundEnv);
 
-    Optional<CustomTypeReference> primaryDomain = DomainFunctions.getPrimaryDomainOfAlias(annotatedType);
-    isAlias = primaryDomain.isPresent();
+    Optional<CustomTypeReference> mainEquivalentDomain = DomainFunctions.getMainEquivalentDomain(annotatedType);
+    isAlias = mainEquivalentDomain.isPresent();
     if (isAlias) {
-      Optional<CustomTypeReference> mainPrimaryDomain = DomainFunctions.getMainPrimaryDomainOfAlias(annotatedType);
       primaryDomainSimpleName = context.addToImportAndGetSimpleName(
-          mainPrimaryDomain.orElseThrow().targetType().canonicalName()
+          mainEquivalentDomain.get().targetType().canonicalName()
       );
-      primaryDomainTypeArguments = mainPrimaryDomain.get().typeArgumentsDeclaration(context::addToImportAndGetSimpleName);
-      domainType = buildDomainType(mainPrimaryDomain.get().targetType(), primaryDomain.get().typeArguments());
+      primaryDomainTypeArguments = mainEquivalentDomain.get().typeArgumentsDeclaration(
+          context::addToImportAndGetSimpleName
+      );
+      domainType = buildDomainType(mainEquivalentDomain.get().targetType(), mainEquivalentDomain.get().typeArguments());
     } else {
       domainType = buildDomainType(parentDomainType.targetType(), (List) annotatedType.typeParameters());
     }

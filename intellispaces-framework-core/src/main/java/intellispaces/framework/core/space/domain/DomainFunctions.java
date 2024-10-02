@@ -5,13 +5,16 @@ import intellispaces.common.base.type.TypeFunctions;
 import intellispaces.common.javastatement.JavaStatements;
 import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.common.javastatement.reference.CustomTypeReference;
+import intellispaces.common.javastatement.reference.CustomTypeReferences;
+import intellispaces.common.javastatement.reference.NamedReference;
 import intellispaces.common.javastatement.reference.NotPrimitiveReference;
-import intellispaces.common.javastatement.reference.ReferenceBound;
 import intellispaces.common.javastatement.reference.TypeReference;
+import intellispaces.common.javastatement.reference.TypeReferenceFunctions;
 import intellispaces.framework.core.annotation.Domain;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -77,61 +80,94 @@ public final class DomainFunctions {
     }
   }
 
-  public static boolean isAliasDomain(CustomType domain) {
-    return getPrimaryDomainOfAlias(domain).isPresent();
-  }
-
-  public static Optional<CustomTypeReference> getPrimaryDomainOfAlias(CustomType domain) {
-    List<CustomTypeReference> parents = domain.parentTypes();
-    if (parents.size() != 1) {
-      return Optional.empty();
-    }
-    CustomTypeReference parentDomainType = parents.get(0);
-    List<NotPrimitiveReference> parentTypeArguments = parentDomainType.typeArguments();
-    if (parentTypeArguments.isEmpty()) {
-      return Optional.empty();
-    }
-    boolean allTypeArgumentsAreCustomTypeRelated = parentTypeArguments.stream()
-        .allMatch(DomainFunctions::isCustomTypeRelated);
-    if (!allTypeArgumentsAreCustomTypeRelated) {
-      return Optional.empty();
-    }
-    return Optional.of(parentDomainType);
-  }
-
-  public static Optional<CustomTypeReference> getMainPrimaryDomainOfAlias(CustomType domain) {
-    List<CustomTypeReference> primaryDomains = getAllPrimaryDomainOfAlias(domain);
-    if (primaryDomains.isEmpty()) {
-      return Optional.empty();
-    }
-    return Optional.of(primaryDomains.get(primaryDomains.size() - 1));
-  }
-
-  public static List<CustomTypeReference> getAllPrimaryDomainOfAlias(CustomType domain) {
-    List<CustomTypeReference> result = new ArrayList<>();
-    Optional<CustomTypeReference> primaryDomain = getPrimaryDomainOfAlias(domain);
-    while (primaryDomain.isPresent()) {
-      result.add(primaryDomain.get());
-      Optional<CustomTypeReference> nextPrimaryDomain = getPrimaryDomainOfAlias(primaryDomain.get().targetType());
-      if (nextPrimaryDomain.isEmpty()) {
-        break;
-      }
-      primaryDomain = nextPrimaryDomain;
-    }
-    return result;
-  }
-
-  private static boolean isCustomTypeRelated(TypeReference type) {
-    if (type.isCustomTypeReference()) {
-      return true;
-    }
-    if (type.isNamedReference()) {
-      List<ReferenceBound> extendedBounds = type.asNamedReferenceOrElseThrow().extendedBounds();
-      if (extendedBounds.size() == 1 && extendedBounds.get(0).isCustomTypeReference()) {
+  public static boolean isAliasOf(CustomTypeReference testAliasDomain, CustomType domain) {
+    List<CustomTypeReference> equivalentDomains = getEquivalentDomains(domain);
+    for (CustomTypeReference equivalentDomain : equivalentDomains) {
+      if (TypeReferenceFunctions.isEqualTypes(testAliasDomain, equivalentDomain)) {
         return true;
       }
     }
     return false;
+  }
+
+  public static List<CustomTypeReference> getEquivalentDomains(CustomType domain) {
+    if (domain.parentTypes().isEmpty()) {
+      return List.of();
+    }
+    List<CustomTypeReference> aliases = new ArrayList<>();
+    addEquivalentDomains(domain, aliases, List.of());
+    return aliases;
+  }
+
+  private static void addEquivalentDomains(
+      CustomType domain, List<CustomTypeReference> aliases, List<NotPrimitiveReference> arguments
+  ) {
+    if (domain.parentTypes().isEmpty()) {
+      return;
+    }
+
+    Map<String, NamedReference> aliasDomainTypeParameters = domain.typeParameterMap();
+    for (CustomTypeReference parent : domain.parentTypes()) {
+      List<NotPrimitiveReference> aliasTypeArguments = new ArrayList<>();
+      boolean isAlias = false;
+      for (NotPrimitiveReference typeArgument : parent.typeArguments()) {
+        if (typeArgument.isCustomTypeReference()) {
+          isAlias = true;
+          aliasTypeArguments.add(typeArgument);
+        } else if (typeArgument.isNamedReference()) {
+          String typeArgumentName = typeArgument.asNamedReferenceOrElseThrow().name();
+          NamedReference domainTypeParam = aliasDomainTypeParameters.get(typeArgumentName);
+          if (!domainTypeParam.extendedBounds().isEmpty()) {
+            isAlias = true;
+
+            if (arguments.isEmpty()) {
+              aliasTypeArguments.add(domainTypeParam);
+            } else {
+              int index = 0;
+              for (NamedReference domainTypeParam2 : domain.typeParameters()) {
+                if (domainTypeParam2.name().equals(typeArgumentName)) {
+                  aliasTypeArguments.add(arguments.get(index));
+                  break;
+                }
+                index++;
+              }
+            }
+          }
+        }
+      }
+      if (isAlias) {
+        aliases.add(CustomTypeReferences.get(parent.targetType(), aliasTypeArguments));
+        addEquivalentDomains(parent.targetType(), aliases, aliasTypeArguments);
+      }
+    }
+  }
+
+  /**
+   * Returns near equivalent domain definition of domain alias.
+   *
+   * @param domain the domain.
+   * @return near equivalent domain definition or empty optional when domain is not alias.
+   */
+  public static Optional<CustomTypeReference> getNearEquivalentDomain(CustomType domain) {
+    List<CustomTypeReference> equivalentDomains = getEquivalentDomains(domain);
+    if (equivalentDomains.isEmpty()) {
+      return Optional.empty();
+    }
+    return Optional.of(equivalentDomains.get(0));
+  }
+
+  /**
+   * Returns primary equivalent domain definition of domain alias.
+   *
+   * @param domain the domain.
+   * @return primary equivalent domain definition or empty optional when domain is not alias.
+   */
+  public static Optional<CustomTypeReference> getMainEquivalentDomain(CustomType domain) {
+    List<CustomTypeReference> equivalentDomains = getEquivalentDomains(domain);
+    if (equivalentDomains.isEmpty()) {
+      return Optional.empty();
+    }
+    return Optional.of(equivalentDomains.get(equivalentDomains.size() - 1));
   }
 
   public static boolean isDefaultDomainType(CustomType type) {

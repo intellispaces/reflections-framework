@@ -1,13 +1,16 @@
 package intellispaces.framework.core.validation;
 
 import intellispaces.common.annotationprocessor.validator.AnnotatedTypeValidator;
+import intellispaces.common.base.type.TypeFunctions;
 import intellispaces.common.javastatement.customtype.CustomType;
+import intellispaces.common.javastatement.method.MethodParam;
 import intellispaces.common.javastatement.method.MethodStatement;
 import intellispaces.common.javastatement.reference.CustomTypeReference;
 import intellispaces.common.javastatement.reference.NotPrimitiveReference;
 import intellispaces.common.javastatement.reference.ReferenceBound;
 import intellispaces.common.javastatement.reference.TypeReference;
 import intellispaces.framework.core.annotation.Channel;
+import intellispaces.framework.core.annotation.Domain;
 import intellispaces.framework.core.common.NameConventionFunctions;
 import intellispaces.framework.core.exception.IntelliSpacesException;
 import intellispaces.framework.core.space.domain.DomainFunctions;
@@ -37,7 +40,7 @@ public class DomainValidator implements AnnotatedTypeValidator {
       if (isAliasDomain(baseDomain)) {
         isAlias = true;
       }
-      validateBaseDomain(domainType, baseDomain);
+      validateBaseDomain(baseDomain, domainType);
     }
   }
 
@@ -57,7 +60,7 @@ public class DomainValidator implements AnnotatedTypeValidator {
     return false;
   }
 
-  private void validateBaseDomain(CustomType domainType, CustomTypeReference baseDomain) {
+  private void validateBaseDomain(CustomTypeReference baseDomain, CustomType domainType) {
     for (NotPrimitiveReference typeArgument : baseDomain.typeArguments()) {
       if (typeArgument.isCustomTypeReference()) {
         CustomType argumentType = typeArgument.asCustomTypeReferenceOrElseThrow().targetType();
@@ -71,10 +74,10 @@ public class DomainValidator implements AnnotatedTypeValidator {
   }
 
   private void validateMethods(CustomType domainType) {
-    domainType.declaredMethods().forEach(method -> validateMethod(domainType, method));
+    domainType.declaredMethods().forEach(method -> validateMethod(method, domainType));
   }
 
-  private void validateMethod(CustomType domainType, MethodStatement method) {
+  private void validateMethod(MethodStatement method, CustomType domainType) {
     if (!method.isPublic()) {
       throw IntelliSpacesException.withMessage("Domain class could not contain private methods. " +
           "Check method ''{0}'' in class {1}", method.name(), domainType.canonicalName());
@@ -84,12 +87,12 @@ public class DomainValidator implements AnnotatedTypeValidator {
               "Check method ''{1}'' in class {2}",
           Channel.class.getSimpleName(), method.name(), domainType.canonicalName());
     }
-    validateMethodReturnType(domainType, method, method.returnType());
+    validateMethodReturnType(method, domainType);
+    validateMethodParameters(method, domainType);
   }
 
-  private void validateMethodReturnType(
-      CustomType domainType, MethodStatement method, Optional<TypeReference> returnType
-  ) {
+  private void validateMethodReturnType(MethodStatement method, CustomType domainType) {
+    Optional<TypeReference> returnType = method.returnType();
     if (returnType.isEmpty()) {
       throw IntelliSpacesException.withMessage("Domain methods must return a value. " +
           "Check method ''{0}'' in class 12}", method.name(), domainType.canonicalName());
@@ -105,20 +108,50 @@ public class DomainValidator implements AnnotatedTypeValidator {
     if (returnType.get().isCustomTypeReference()) {
       CustomTypeReference customTypeReference = returnType.get().asCustomTypeReferenceOrElseThrow();
       CustomType customType = customTypeReference.targetType();
-      if (UNACCEPTABLE_RETURN_TYPES.contains(customType.canonicalName())) {
-        throw IntelliSpacesException.withMessage("Domain methods should not return an array. " +
-            "Domain method ''{0}'' in class {1}", method.name(), domainType.canonicalName());
+      if (UNACCEPTABLE_TYPES.contains(customType.canonicalName())) {
+        throw IntelliSpacesException.withMessage("Domain method returns unacceptable type. " +
+            "Check method ''{0}'' in class {1}", method.name(), domainType.canonicalName());
       }
       if (NameConventionFunctions.isConversionMethod(method)) {
         if (DomainFunctions.isAliasOf(customTypeReference, domainType)) {
           throw IntelliSpacesException.withMessage("Domain conversion method should not return equivalent domain. " +
-              "But method ''{0}'' in class {1}", method.name(), domainType.canonicalName());
+              "Check method ''{0}'' in class {1}", method.name(), domainType.canonicalName());
         }
       }
     }
   }
 
-  private static final List<String> UNACCEPTABLE_RETURN_TYPES = List.of(
+  private void validateMethodParameters(MethodStatement method, CustomType domainType) {
+    method.params().forEach(p -> validateMethodParameter(p, method, domainType));
+  }
+
+  private void validateMethodParameter(MethodParam param, MethodStatement method, CustomType domainType) {
+    if (param.type().isArrayReference()) {
+      throw IntelliSpacesException.withMessage("It is not allowed to use array type in channel qualifiers. " +
+          "Check method ''{0}'' in class {1}", method.name(), domainType.canonicalName());
+    }
+    if (param.type().isCustomTypeReference()) {
+      CustomTypeReference customTypeReference = param.type().asCustomTypeReferenceOrElseThrow();
+      if (TypeFunctions.isPrimitiveWrapperClass(customTypeReference.targetType().canonicalName())) {
+        throw IntelliSpacesException.withMessage("It is not allowed to use primitive wrapper type in channel qualifiers. " +
+            "Check parameter ''{0}'' in method ''{1}'' in class {2}",
+            param.name(), method.name(), domainType.canonicalName());
+      }
+      CustomType customType = customTypeReference.targetType();
+      if (UNACCEPTABLE_TYPES.contains(customType.canonicalName())) {
+        throw IntelliSpacesException.withMessage("Channel method qualifier has unacceptable type. " +
+            "Check parameter ''{0}'' in method ''{1}'' in class {2}",
+            param.name(), method.name(), domainType.canonicalName());
+      }
+      if (customType.hasAnnotation(Domain.class) && DomainFunctions.hasEquivalentDomains(customType)) {
+        throw IntelliSpacesException.withMessage("It is not allowed to use domain alias in channel method qualifier. " +
+                "Check parameter ''{0}'' in method ''{1}'' in class {2}",
+            param.name(), method.name(), domainType.canonicalName());
+      }
+    }
+  }
+
+  private static final List<String> UNACCEPTABLE_TYPES = List.of(
       Optional.class.getCanonicalName(),
       Future.class.getCanonicalName()
   );

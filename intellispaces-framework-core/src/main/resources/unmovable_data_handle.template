@@ -29,11 +29,24 @@ public class {{$classSimpleName}} implements {{$objectHandleClassName}} {
   }
 
 {{for projection : $projections}}
-
   @Override
   public {{$projection.get("type")}} {{$projection.get("name")}}() {
     return this.{{$projection.get("name")}};
   }
+
+{{when $projection.get("type").eq("Integer")}}
+  @Override
+  public int {{$projection.get("name")}}Primitive() {
+    Objects.requireNonNull(this.{{$projection.get("name")}});
+    return this.{{$projection.get("name")}};
+  }
+{{else when $projection.get("type").eq("Double")}}
+  @Override
+  public double {{$projection.get("name")}}Primitive() {
+    Objects.requireNonNull(this.{{$projection.get("name")}});
+    return this.{{$projection.get("name")}};
+  }
+{{end}}
 {{end}}
 
   @Override

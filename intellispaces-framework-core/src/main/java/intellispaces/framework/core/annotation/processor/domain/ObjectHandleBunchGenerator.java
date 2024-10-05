@@ -9,6 +9,7 @@ import intellispaces.common.javastatement.reference.CustomTypeReference;
 import intellispaces.common.javastatement.reference.TypeReference;
 import intellispaces.framework.core.annotation.Channel;
 import intellispaces.framework.core.common.NameConventionFunctions;
+import intellispaces.framework.core.guide.GuideForm;
 import intellispaces.framework.core.object.ObjectHandleTypes;
 import intellispaces.framework.core.space.domain.DomainFunctions;
 
@@ -79,7 +80,7 @@ public class ObjectHandleBunchGenerator extends AbstractDomainObjectHandleGenera
   ) {
     return buildActualType(customType, roundEnv)
         .actualMethods().stream()
-        .filter(this::isNotGetDomainMethod);
+        .filter(this::isNotDomainClassGetter);
   }
 
   private String buildExtendDeclaration() {
@@ -110,9 +111,9 @@ public class ObjectHandleBunchGenerator extends AbstractDomainObjectHandleGenera
   }
 
   @Override
-  protected Map<String, String> buildMethod(MethodStatement method) {
+  protected Map<String, String> generateMethod(MethodStatement method, GuideForm guideForm, int methodIndex) {
     if (method.hasAnnotation(Channel.class)) {
-      return super.buildMethod(method);
+      return super.generateMethod(method, guideForm, methodIndex);
     } else {
       return buildAdditionalMethod(method);
     }

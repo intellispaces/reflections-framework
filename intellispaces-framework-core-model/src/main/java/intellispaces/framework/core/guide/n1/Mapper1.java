@@ -14,9 +14,9 @@ import java.util.function.BiFunction;
 /**
  * Mapper guide with one qualifier.
  *
- * @param <S> source object type.
- * @param <T> target object type.
- * @param <Q> qualifier type.
+ * @param <S> source handle type.
+ * @param <T> target handle type.
+ * @param <Q> qualifier handle type.
  */
 public interface Mapper1<S, T, Q> extends
     Guide1<S, T, Q>,

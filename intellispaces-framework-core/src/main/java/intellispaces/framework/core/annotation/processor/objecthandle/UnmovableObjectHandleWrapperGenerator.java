@@ -58,7 +58,7 @@ public class UnmovableObjectHandleWrapperGenerator extends AbstractObjectHandleW
     vars.put("domainClassSimpleName", domainSimpleClassName);
     vars.put("constructors", constructors);
     vars.put("importedClasses", context.getImports());
-    vars.put("channelActions", channelActions);
+    vars.put("methodActions", methodActions);
     vars.put("guideActions", guideActions);
     vars.put("domainMethods", methods);
     vars.put("injections", injections);
@@ -97,9 +97,7 @@ public class UnmovableObjectHandleWrapperGenerator extends AbstractObjectHandleW
     analyzeDomain();
     analyzeTypeParams(annotatedType);
     analyzeConstructors(annotatedType);
-    analyzeGuideActions(annotatedType);
     analyzeInjectedGuides(annotatedType);
-    analyzeChannelActions();
     analyzeObjectHandleMethods(annotatedType, roundEnv);
     return true;
   }

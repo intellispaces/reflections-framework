@@ -10,13 +10,11 @@ import java.util.List;
  */
 public interface KernelObjectHandle {
 
-  int numberChannels();
-
-  Action getChannelAction(int index);
+  Action getMethodAction(int index);
 
   Action getGuideAction(int index);
 
-  void setChannelActions(Action... actions);
+  void setMethodActions(Action... actions);
 
   void setGuideActions(Action... actions);
 

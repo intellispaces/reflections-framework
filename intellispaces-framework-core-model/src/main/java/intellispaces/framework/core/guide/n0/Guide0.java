@@ -6,8 +6,8 @@ import intellispaces.framework.core.guide.Guide;
 /**
  * Non-parameterized guide.
  *
- * @param <S> source object type.
- * @param <R> result object handle type.
+ * @param <S> source handle type.
+ * @param <R> result handle type.
  */
 public interface Guide0<S, R> extends Guide<S, R> {
 

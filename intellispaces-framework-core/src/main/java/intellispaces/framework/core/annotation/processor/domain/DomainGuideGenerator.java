@@ -6,6 +6,7 @@ import intellispaces.common.javastatement.method.MethodParam;
 import intellispaces.common.javastatement.method.MethodStatement;
 import intellispaces.framework.core.annotation.processor.AbstractGuideGenerator;
 import intellispaces.framework.core.common.NameConventionFunctions;
+import intellispaces.framework.core.guide.GuideForm;
 import intellispaces.framework.core.traverse.TraverseType;
 
 import java.util.List;
@@ -13,9 +14,13 @@ import java.util.List;
 public class DomainGuideGenerator extends AbstractGuideGenerator {
 
   public DomainGuideGenerator(
-      TraverseType traverseType, CustomType initiatorType, CustomType domainType, MethodStatement channelMethod
+      GuideForm guideForm,
+      TraverseType traverseType,
+      CustomType initiatorType,
+      CustomType domainType,
+      MethodStatement channelMethod
   ) {
-    super(traverseType, initiatorType, domainType, channelMethod);
+    super(guideForm, traverseType, initiatorType, domainType, channelMethod);
   }
 
   @Override
@@ -41,7 +46,7 @@ public class DomainGuideGenerator extends AbstractGuideGenerator {
   @Override
   protected String getGuideClassCanonicalName() {
     return NameConventionFunctions.getGuideClassCanonicalName(
-        annotatedType.packageName(), annotatedType, channelMethod
+        guideForm, annotatedType.packageName(), annotatedType, channelMethod
     );
   }
 }

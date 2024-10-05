@@ -6,13 +6,13 @@ import intellispaces.framework.core.guide.MapperOfMoving;
 /**
  * Mapper related to moving guide with five qualifiers.
  *
- * @param <S> source object type.
- * @param <T> target object type.
- * @param <Q1> first qualifier type.
- * @param <Q2> second qualifier type.
- * @param <Q3> third qualifier type.
- * @param <Q4> fourth qualifier type.
- * @param <Q5> fifth qualifier type.
+ * @param <S> source handle type.
+ * @param <T> target handle type.
+ * @param <Q1> first qualifier handle type.
+ * @param <Q2> second qualifier handle type.
+ * @param <Q3> third qualifier handle type.
+ * @param <Q4> fourth qualifier handle type.
+ * @param <Q5> fifth qualifier handle type.
  */
 public interface MapperOfMoving5<S, T, Q1, Q2, Q3, Q4, Q5> extends
     Guide5<S, T, Q1, Q2, Q3, Q4, Q5>,

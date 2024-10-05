@@ -10,18 +10,13 @@ import java.util.Arrays;
 import java.util.List;
 
 class ObjectHandleImpl implements KernelObjectHandle {
-  private List<ResettableGetter<Action>> channelActions = List.of();
+  private List<ResettableGetter<Action>> methodActions = List.of();
   private List<Action> guideActions = List.of();
   private List<Injection> injections = List.of();
 
   @Override
-  public int numberChannels() {
-    return channelActions.size();
-  }
-
-  @Override
-  public Action getChannelAction(int index) {
-    return channelActions.get(index).get();
+  public Action getMethodAction(int index) {
+    return methodActions.get(index).get();
   }
 
   @Override
@@ -34,12 +29,12 @@ class ObjectHandleImpl implements KernelObjectHandle {
   }
 
   @Override
-  public void setChannelActions(Action... actions) {
+  public void setMethodActions(Action... actions) {
     if (actions == null) {
-      channelActions = List.of();
+      methodActions = List.of();
       return;
     }
-    channelActions = Arrays.stream(actions)
+    methodActions = Arrays.stream(actions)
         .map(Actions::resettableGetter)
         .toList();
   }

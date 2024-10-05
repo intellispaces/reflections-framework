@@ -33,10 +33,10 @@ public class {{$classSimpleName}}{{$typeParamsFull}} extends {{$sourceClassSimpl
 {{end}}
     );
 {{end}}
-{{when $channelActions.isNotEmpty()}}
-    this.$handle.setChannelActions(
-{{for channelAction : $channelActions}}
-      {{$channelAction}}{{when $channelAction.isNotLast()}},{{end}}
+{{when $methodActions.isNotEmpty()}}
+    this.$handle.setMethodActions(
+{{for methodAction : $methodActions}}
+      {{$methodAction}}{{when $methodAction.isNotLast()}},{{end}}
 {{end}}
     );
 {{end}}

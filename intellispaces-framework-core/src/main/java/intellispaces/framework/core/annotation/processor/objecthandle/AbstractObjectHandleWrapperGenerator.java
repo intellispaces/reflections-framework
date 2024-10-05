@@ -2,6 +2,7 @@ package intellispaces.framework.core.annotation.processor.objecthandle;
 
 import intellispaces.common.action.Actions;
 import intellispaces.common.action.runner.Runner;
+import intellispaces.common.base.exception.UnexpectedViolationException;
 import intellispaces.common.base.text.TextActions;
 import intellispaces.common.base.type.TypeFunctions;
 import intellispaces.common.javastatement.customtype.CustomType;
@@ -17,6 +18,8 @@ import intellispaces.framework.core.annotation.Inject;
 import intellispaces.framework.core.annotation.processor.AbstractObjectHandleGenerator;
 import intellispaces.framework.core.common.NameConventionFunctions;
 import intellispaces.framework.core.exception.ConfigurationException;
+import intellispaces.framework.core.guide.GuideForm;
+import intellispaces.framework.core.guide.GuideForms;
 import intellispaces.framework.core.guide.GuideFunctions;
 import intellispaces.framework.core.object.ObjectFunctions;
 import intellispaces.framework.core.object.ObjectHandleTypes;
@@ -42,9 +45,9 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
   protected String primaryDomainSimpleName;
   protected String primaryDomainTypeArguments;
   private final List<MethodStatement> domainMethods;
-  protected List<Object> constructors;
-  protected List<String> guideActions;
-  protected List<String> channelActions;
+  protected final List<Object> constructors = new ArrayList<>();
+  protected final List<String> methodActions = new ArrayList<>();
+  protected final List<String> guideActions = new ArrayList<>();
   protected final List<Map<String, Object>> injections = new ArrayList<>();
   protected final List<Map<String, Object>> injectionMethods = new ArrayList<>();
 
@@ -54,7 +57,7 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
     CustomType domainType = ObjectFunctions.getDomainTypeOfObjectHandle(objectHandleType);
     this.domainMethods = domainType.actualMethods().stream()
         .filter(m -> !m.isDefault())
-        .filter(this::isNotGetDomainMethod)
+        .filter(this::isNotDomainClassGetter)
         .toList();
   }
 
@@ -81,13 +84,7 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
     }
   }
 
-  protected void analyzeChannelActions() {
-    this.channelActions = domainMethods.stream()
-        .map(this::buildChannelAction)
-        .toList();
-  }
-
-  private String buildChannelAction(MethodStatement domainMethod) {
+  private String buildMethodAction(MethodStatement domainMethod) {
     var sb = new StringBuilder();
     sb.append(context.addToImportAndGetSimpleName(Actions.class));
     sb.append(".delegate");
@@ -124,23 +121,6 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
     sb.append(context.addToImportAndGetSimpleName(NameConventionFunctions.getChannelClassCanonicalName(domainMethod)));
     sb.append(".class))");
     return sb.toString();
-  }
-
-  protected void analyzeGuideActions(CustomType objectHandleType) {
-    this.guideActions = new ArrayList<>();
-
-    List<MethodStatement> objectHandleMethods = objectHandleType.actualMethods();
-    for (MethodStatement domainMethod : domainMethods) {
-      if (domainMethod.isDefault()) {
-        continue;
-      }
-      MethodStatement objectHandleMethod = findObjectHandleMethods(domainMethod, objectHandleMethods);
-      if (objectHandleMethod == null) {
-        this.guideActions.add("null");
-      } else {
-        this.guideActions.add(buildGuideAction(objectHandleMethod));
-      }
-    }
   }
 
   protected void analyzeInjectedGuides(CustomType objectHandleType) {
@@ -213,14 +193,14 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
   }
 
   private MethodStatement findObjectHandleMethods(
-      MethodStatement domainMethod, List<MethodStatement> objectHandleMethods
+      MethodStatement domainMethod, List<MethodStatement> objectHandleMethods, GuideForm guideForm
   ) {
     for (MethodStatement objectHandleMethod : objectHandleMethods) {
       if (!GuideFunctions.isGuideMethod(objectHandleMethod)) {
         continue;
       }
       if (
-          domainMethod.name().equals(objectHandleMethod.name())
+          getMethodName(domainMethod, guideForm).equals(objectHandleMethod.name())
               && equalParams(domainMethod.params(), objectHandleMethod.params())
       ) {
         return objectHandleMethod;
@@ -251,11 +231,13 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
     return paramMatches;
   }
 
-  private String buildGuideAction(MethodStatement objectHandleMethod) {
+  private String buildGuideAction(
+      MethodStatement objectHandleMethod, GuideForm guideForm, int methodIndex
+  ) {
     var sb = new StringBuilder();
     sb.append("Actions.of(super::");sb.append(objectHandleMethod.name());
     sb.append(", ");
-    sb.append(buildProjectionActionTypeParameter(objectHandleMethod.returnType().orElseThrow()));
+    sb.append(buildProjectionActionTypeReturnType(objectHandleMethod.returnType().orElseThrow(), guideForm));
     sb.append(".class");
     for (MethodParam param : objectHandleMethod.params()) {
       sb.append(", ");
@@ -264,6 +246,16 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
     }
     sb.append(")");
     return sb.toString();
+  }
+
+  private String buildProjectionActionTypeReturnType(TypeReference type, GuideForm guideForm) {
+    if (guideForm == GuideForms.Main) {
+      return buildProjectionActionTypeParameter(type);
+    } else if (guideForm == GuideForms.Primitive) {
+      return type.asPrimitiveReferenceOrElseThrow().typename();
+    } else {
+      throw UnexpectedViolationException.withMessage("Not supported guide form: {0}", guideForm.name());
+    }
   }
 
   private String buildProjectionActionTypeParameter(TypeReference type) {
@@ -305,18 +297,13 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
     typeParamsBrief = typeParamsBriefBuilder.toString();
   }
 
-  @SuppressWarnings("unchecked, rawtypes")
   protected void analyzeConstructors(CustomType objectHandleType) {
     List<MethodStatement> constructors;
     if (objectHandleType.asClass().isPresent()) {
       constructors = objectHandleType.asClass().get().constructors();
-      List<Map<String, Object>> constructorDescriptors = new ArrayList<>();
       for (MethodStatement constructor : constructors) {
-        constructorDescriptors.add(analyzeConstructor(constructor, context.getImportConsumer()));
+        this.constructors.add(analyzeConstructor(constructor, context.getImportConsumer()));
       }
-      this.constructors = (List) constructorDescriptors;
-    } else {
-      this.constructors = List.of();
     }
   }
 
@@ -337,15 +324,32 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
   }
 
   @Override
-  protected void analyzeObjectHandleMethods(CustomType customType, RoundEnvironment roundEnv) {
-    int index = 0;
-    this.methods = new ArrayList<>();
-    for (MethodStatement domainMethod : domainMethods) {
-      this.methods.add(buildChannelMethod(index++, domainMethod));
+  protected void analyzeMethod(MethodStatement method, GuideForm guideForm, int methodIndex) {
+    super.analyzeMethod(method, guideForm, methodIndex);
+    analyzeGuideAction(method, guideForm, methodIndex);
+    analyzeChannelAction(method, guideForm);
+  }
+
+  protected void analyzeChannelAction(MethodStatement method, GuideForm guideForm) {
+    methodActions.add(buildMethodAction(method));
+  }
+
+  protected void analyzeGuideAction(MethodStatement method, GuideForm guideForm, int methodIndex) {
+    if (method.isDefault()) {
+      return;
+    }
+    List<MethodStatement> objectHandleMethods = annotatedType.actualMethods();
+    MethodStatement objectHandleMethod = findObjectHandleMethods(method, objectHandleMethods, guideForm);
+    if (objectHandleMethod == null || objectHandleMethod.isAbstract()) {
+      this.guideActions.add("null");
+    } else {
+      this.guideActions.add(buildGuideAction(objectHandleMethod, guideForm, methodIndex));
     }
   }
 
-  protected Map<String, String> buildChannelMethod(int methodIndex, MethodStatement domainMethod) {
+  protected Map<String, String> generateMethod(
+      MethodStatement domainMethod, GuideForm guideForm, int methodIndex
+  ) {
     if (isDisableMoving(domainMethod)) {
       return Map.of();
     }
@@ -354,17 +358,17 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
     sb.append("@Ordinal(").append(methodIndex).append(")\n");
     sb.append("public ");
     appendMethodTypeParameters(sb, domainMethod);
-    appendMethodReturnHandleType(sb, domainMethod);
+    appendMethodReturnHandleType(sb, domainMethod, guideForm);
     sb.append(" ");
-    sb.append(domainMethod.name());
+    sb.append(getMethodName(domainMethod, guideForm));
     sb.append("(");
     appendMethodParameters(sb, domainMethod);
     sb.append(")");
     appendMethodExceptions(sb, domainMethod);
     sb.append(" {\n");
     sb.append("  return (");
-    appendMethodReturnHandleType(sb, domainMethod);
-    sb.append(") $handle.getChannelAction(");
+    appendMethodReturnHandleType(sb, domainMethod, guideForm);
+    sb.append(") $handle.getMethodAction(");
     sb.append(methodIndex);
     sb.append(").asAction");
     sb.append(domainMethod.params().size() + 1);

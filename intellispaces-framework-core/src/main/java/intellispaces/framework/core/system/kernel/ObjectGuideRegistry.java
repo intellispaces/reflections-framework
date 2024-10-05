@@ -25,8 +25,8 @@ class ObjectGuideRegistry {
     if (actualObjectHandleClass == null) {
       return handleDescription;
     }
-    List<Guide<?, ?>> attachedGuides = GuideFunctions.loadObjectGuides(actualObjectHandleClass);
-    attachedGuides.forEach(handleDescription::addGuide);
+    List<Guide<?, ?>> objectGuides = GuideFunctions.loadObjectGuides(actualObjectHandleClass);
+    objectGuides.forEach(handleDescription::addGuide);
     return handleDescription;
   }
 

@@ -13,7 +13,7 @@ import java.util.function.Consumer;
 /**
  * Mover guide without qualifiers.
  *
- * @param <S> source object type.
+ * @param <S> source handle type.
  */
 public interface Mover0<S> extends
     Guide0<S, S>,

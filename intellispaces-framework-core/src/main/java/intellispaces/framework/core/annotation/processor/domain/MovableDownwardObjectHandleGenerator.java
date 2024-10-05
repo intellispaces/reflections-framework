@@ -1,6 +1,7 @@
 package intellispaces.framework.core.annotation.processor.domain;
 
 import intellispaces.common.annotationprocessor.context.AnnotationProcessingContext;
+import intellispaces.common.base.exception.UnexpectedViolationException;
 import intellispaces.common.base.text.TextFunctions;
 import intellispaces.common.base.type.Type;
 import intellispaces.common.javastatement.customtype.CustomType;
@@ -12,6 +13,8 @@ import intellispaces.framework.core.annotation.Channel;
 import intellispaces.framework.core.annotation.ObjectHandle;
 import intellispaces.framework.core.common.NameConventionFunctions;
 import intellispaces.framework.core.exception.TraverseException;
+import intellispaces.framework.core.guide.GuideForm;
+import intellispaces.framework.core.guide.GuideForms;
 import intellispaces.framework.core.object.ObjectFunctions;
 import intellispaces.framework.core.object.ObjectHandleTypes;
 import intellispaces.framework.core.space.channel.Channel0;
@@ -147,28 +150,28 @@ public class MovableDownwardObjectHandleGenerator extends AbstractConversionDoma
   }
 
   @Override
-  protected Map<String, String> buildMethod(MethodStatement method) {
+  protected Map<String, String> generateMethod(MethodStatement method, GuideForm guideForm, int methodIndex) {
     if (method.hasAnnotation(Channel.class)) {
-      return buildNormalMethod(method);
+      return generateMethodNormal(method, guideForm, methodIndex);
     } else {
-      return buildAdditionalMethod(method);
+      return generateAdditionalMethod(convertMethodBeforeGenerate(method));
     }
   }
 
-  private Map<String, String> buildNormalMethod(MethodStatement method) {
+  protected Map<String, String> generateMethodNormal(MethodStatement method, GuideForm guideForm, int methodIndex) {
     var sb = new StringBuilder();
     sb.append("public ");
     appendMethodTypeParameters(sb, method);
-    appendMethodReturnHandleType(sb, method);
+    appendMethodReturnHandleType(sb, method, guideForm);
     sb.append(" ");
-    sb.append(method.name());
+    sb.append(getMethodName(method, guideForm));
     sb.append("(");
     appendMethodParameters(sb, method);
     sb.append(")");
     appendMethodExceptions(sb, method);
     sb.append(" {\n");
     sb.append("    ");
-    buildReturnStatement(sb, method);
+    buildReturnStatement(sb, method, guideForm);
     sb.append("\n}\n");
     return Map.of(
         "javadoc", buildGeneratedMethodJavadoc(method.owner().canonicalName(), method),
@@ -176,7 +179,7 @@ public class MovableDownwardObjectHandleGenerator extends AbstractConversionDoma
     );
   }
 
-  private Map<String, String> buildAdditionalMethod(MethodStatement method) {
+  private Map<String, String> generateAdditionalMethod(MethodStatement method) {
     var sb = new StringBuilder();
     sb.append("public ");
     appendMethodTypeParameters(sb, method);

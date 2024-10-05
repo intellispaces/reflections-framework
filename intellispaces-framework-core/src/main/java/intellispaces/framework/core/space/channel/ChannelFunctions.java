@@ -1,6 +1,8 @@
 package intellispaces.framework.core.space.channel;
 
 import intellispaces.common.base.exception.UnexpectedViolationException;
+import intellispaces.common.base.text.TextFunctions;
+import intellispaces.common.base.type.TypeFunctions;
 import intellispaces.common.dynamicproxy.tracker.Tracker;
 import intellispaces.common.dynamicproxy.tracker.TrackerBuilder;
 import intellispaces.common.dynamicproxy.tracker.TrackerFunctions;
@@ -212,7 +214,8 @@ public interface ChannelFunctions {
     Channel channel = getObjectHandleMethodChannelAnnotation(domainClass, objectHandleMethod);
     if (channel == null) {
       throw UnexpectedViolationException.withMessage("Failed to find related channel annotation " +
-              "of method ''{0}'' in {1}", objectHandleMethod.getName(), objectHandleClass.getCanonicalName());
+          "of method ''{0}'' in {1}. Domain class {2}",
+          objectHandleMethod.getName(), objectHandleClass.getCanonicalName(), domainClass.getCanonicalName());
     }
     return channel;
   }
@@ -237,7 +240,7 @@ public interface ChannelFunctions {
   }
 
   private static boolean isEquivalentMethods(Method domainMethod, Method objectHandleMethod) {
-    if (!domainMethod.getName().equals(objectHandleMethod.getName())) {
+    if (!domainMethod.getName().equals(getMainName(objectHandleMethod))) {
       return false;
     } else if (domainMethod.getParameterCount() != objectHandleMethod.getParameterCount()) {
       return false;
@@ -254,7 +257,14 @@ public interface ChannelFunctions {
     }
   }
 
-  static Channel getAttachedGuideChannelAnnotation(Method objectHandleMethod) {
+  private static String getMainName(Method objectHandleMethod) {
+    if (objectHandleMethod.getReturnType().isPrimitive()) {
+      return TextFunctions.removeTailOrElseThrow(objectHandleMethod.getName(), "Primitive");
+    }
+    return objectHandleMethod.getName();
+  }
+
+  static Channel getObjectGuideChannelAnnotation(Method objectHandleMethod) {
     return getObjectHandleMethodChannelAnnotation(objectHandleMethod);
   }
 

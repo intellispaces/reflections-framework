@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
 public @interface MapperOfMoving {
 
   /**
-   * Class of the transition implemented by this guide.
+   * Channel class.
    */
   Class<?> value() default Void.class;
 }

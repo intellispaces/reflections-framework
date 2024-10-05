@@ -14,8 +14,8 @@ import java.util.function.Function;
 /**
  * Mapper related to moving guide without qualifiers.
  *
- * @param <S> source object type.
- * @param <T> target object type.
+ * @param <S> source handle type.
+ * @param <T> target handle type.
  */
 public interface MapperOfMoving0<S, T> extends
     Guide0<S, T>,

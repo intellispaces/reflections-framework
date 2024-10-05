@@ -1,7 +1,9 @@
 package intellispaces.framework.core.annotation.processor;
 
 import intellispaces.common.action.runner.Runner;
+import intellispaces.common.base.exception.UnexpectedViolationException;
 import intellispaces.common.base.text.TextActions;
+import intellispaces.common.base.type.TypeFunctions;
 import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.common.javastatement.method.MethodParam;
 import intellispaces.common.javastatement.method.MethodStatement;
@@ -10,11 +12,14 @@ import intellispaces.common.javastatement.reference.TypeReference;
 import intellispaces.framework.core.annotation.Channel;
 import intellispaces.framework.core.common.NameConventionFunctions;
 import intellispaces.framework.core.exception.TraverseException;
+import intellispaces.framework.core.guide.GuideForm;
+import intellispaces.framework.core.guide.GuideForms;
 import intellispaces.framework.core.object.ObjectHandleTypes;
 import intellispaces.framework.core.space.SpaceConstants;
 import intellispaces.framework.core.space.channel.ChannelFunctions;
 
 import javax.annotation.processing.RoundEnvironment;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -23,7 +28,7 @@ import java.util.stream.Stream;
 public abstract class AbstractObjectHandleGenerator extends AbstractGenerator {
   protected String domainTypeParamsFull;
   protected String domainTypeParamsBrief;
-  protected List<Map<String, String>> methods;
+  protected final List<Map<String, String>> methods = new ArrayList<>();;
 
   public AbstractObjectHandleGenerator(CustomType initiatorType, CustomType customType) {
     super(initiatorType, customType);
@@ -31,38 +36,54 @@ public abstract class AbstractObjectHandleGenerator extends AbstractGenerator {
 
   abstract protected ObjectHandleTypes getObjectHandleType();
 
-  abstract protected Stream<MethodStatement> getObjectHandleMethods(
-      CustomType customType, RoundEnvironment roundEnv
-  );
-
-  protected boolean isNotGetDomainMethod(MethodStatement method) {
-    return !method.name().equals("domainClass") &&
-        !method.name().equals(SpaceConstants.POINT_TO_DOMAIN_CHANNEL_SIMPLE_NAME);
-  }
-
-  protected void analyzeObjectHandleMethods(CustomType customType, RoundEnvironment roundEnv) {
-    this.methods = getObjectHandleMethods(customType, roundEnv)
-        .map(this::buildMethod)
-        .filter(m -> !m.isEmpty())
-        .toList();
-  }
-
   protected String movableClassSimpleName() {
     return context.addToImportAndGetSimpleName(
         NameConventionFunctions.getMovableObjectHandleTypename(annotatedType.className())
     );
   }
 
-  protected Map<String, String> buildMethod(MethodStatement method) {
+  protected boolean isNotDomainClassGetter(MethodStatement method) {
+    return !method.name().equals("domainClass") &&
+        !method.name().equals(SpaceConstants.POINT_TO_DOMAIN_CHANNEL_SIMPLE_NAME);
+  }
+
+  protected void analyzeObjectHandleMethods(CustomType customType, RoundEnvironment roundEnv) {
+    List<MethodStatement> input = getObjectHandleMethods(customType, roundEnv).toList();
+    int methodIndex = 0;
+    for (MethodStatement method : input) {
+      MethodStatement effectiveMethod = convertMethodBeforeGenerate(method);
+      analyzeMethod(effectiveMethod, GuideForms.Main, methodIndex++);
+      if (method.returnType().orElseThrow().isCustomTypeReference()) {
+        CustomType customType2 = method.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow().targetType();
+        if (TypeFunctions.isPrimitiveWrapperClass(customType2.canonicalName())) {
+          analyzeMethod(effectiveMethod, GuideForms.Primitive, methodIndex++);
+        }
+      }
+    }
+  }
+
+  abstract protected Stream<MethodStatement> getObjectHandleMethods(
+      CustomType customType, RoundEnvironment roundEnv
+  );
+
+  protected MethodStatement convertMethodBeforeGenerate(MethodStatement method) {
+    return method;
+  }
+
+  protected void analyzeMethod(MethodStatement method, GuideForm guideForm, int methodIndex) {
+    methods.add(generateMethod(method, guideForm, methodIndex));
+  }
+
+  protected Map<String, String> generateMethod(MethodStatement method, GuideForm guideForm, int methodIndex) {
     var sb = new StringBuilder();
     appendMethodTypeParameters(sb, method);
     boolean disableMoving = isDisableMoving(method);
     if (disableMoving) {
       sb.append("default ");
     }
-    appendMethodReturnHandleType(sb, method);
+    appendMethodReturnHandleType(sb, method, guideForm);
     sb.append(" ");
-    sb.append(method.name());
+    sb.append(getMethodName(method, guideForm));
     sb.append("(");
     appendMethodParameters(sb, method);
     sb.append(")");
@@ -82,6 +103,16 @@ public abstract class AbstractObjectHandleGenerator extends AbstractGenerator {
     );
   }
 
+  protected String getMethodName(MethodStatement method, GuideForm guideForm) {
+    if (guideForm == GuideForms.Main) {
+      return method.name();
+    } else if (guideForm == GuideForms.Primitive) {
+      return method.name() + "Primitive";
+    } else {
+      throw UnexpectedViolationException.withMessage("Unsupported guide form - {0}", guideForm);
+    }
+  }
+
   protected boolean isDisableMoving(MethodStatement method) {
     Channel channel = ChannelFunctions.getDomainMainChannelAnnotation(method);
     return ChannelFunctions.getTraverseType(channel).isMovingBased() &&
@@ -94,6 +125,17 @@ public abstract class AbstractObjectHandleGenerator extends AbstractGenerator {
     }
     TypeReference returnType = method.returnType().orElseThrow();
     sb.append(returnType.actualDeclaration(context::addToImportAndGetSimpleName));
+  }
+
+  protected void appendMethodReturnHandleType(StringBuilder sb, MethodStatement method, GuideForm guideForm) {
+    if (guideForm == GuideForms.Main) {
+      appendMethodReturnHandleType(sb, method);
+    } else if (guideForm == GuideForms.Primitive) {
+      CustomType ct = method.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow().targetType();
+      sb.append(TypeFunctions.getPrimitiveTypeOfWrapper(ct.canonicalName()));
+    } else {
+      throw UnexpectedViolationException.withMessage("Unsupported guide form - {0}", guideForm);
+    }
   }
 
   protected void appendMethodReturnHandleType(StringBuilder sb, MethodStatement method) {

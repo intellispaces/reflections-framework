@@ -14,9 +14,9 @@ import java.util.function.BiFunction;
 /**
  * Mapper related to moving guide with one qualifier.
  *
- * @param <S> source object type.
- * @param <T> target object type.
- * @param <Q> qualifier type.
+ * @param <S> source handle type.
+ * @param <T> target handle type.
+ * @param <Q> qualifier handle type.
  */
 public interface MapperOfMoving1<S, T, Q> extends
     Guide1<S, T, Q>,

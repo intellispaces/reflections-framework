@@ -106,7 +106,7 @@ public class CommonObjectHandleGenerator extends AbstractDomainObjectHandleGener
       CustomType customType, RoundEnvironment roundEnv
   ) {
     return super.getObjectHandleMethods(customType, roundEnv)
-        .filter(this::isNotGetDomainMethod)
+        .filter(this::isNotDomainClassGetter)
         .filter(m -> m.returnType().isPresent() && !m.returnType().get().isNamedReference());
   }
 }

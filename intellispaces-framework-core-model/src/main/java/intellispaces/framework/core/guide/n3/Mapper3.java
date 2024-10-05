@@ -9,11 +9,11 @@ import intellispaces.framework.core.guide.n5.Mapper5;
 /**
  * Mapper guide with three qualifiers.
  *
- * @param <S> source object type.
- * @param <T> target object type.
- * @param <Q1> first qualifier type.
- * @param <Q2> second qualifier type.
- * @param <Q3> third qualifier type.
+ * @param <S> source handle type.
+ * @param <T> target handle type.
+ * @param <Q1> first qualifier handle type.
+ * @param <Q2> second qualifier handle type.
+ * @param <Q3> third qualifier handle type.
  */
 public interface Mapper3<S, T, Q1, Q2, Q3> extends
     Guide3<S, T, Q1, Q2, Q3>,

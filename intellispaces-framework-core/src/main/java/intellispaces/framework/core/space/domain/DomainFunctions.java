@@ -90,6 +90,10 @@ public final class DomainFunctions {
     return false;
   }
 
+  public static boolean hasEquivalentDomains(CustomType domain) {
+    return !getEquivalentDomains(domain).isEmpty();
+  }
+
   public static List<CustomTypeReference> getEquivalentDomains(CustomType domain) {
     if (domain.parentTypes().isEmpty()) {
       return List.of();

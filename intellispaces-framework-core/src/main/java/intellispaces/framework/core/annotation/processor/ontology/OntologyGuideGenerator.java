@@ -15,6 +15,7 @@ import intellispaces.common.javastatement.reference.TypeReference;
 import intellispaces.framework.core.annotation.processor.AbstractGuideGenerator;
 import intellispaces.framework.core.annotation.processor.AnnotationProcessorFunctions;
 import intellispaces.framework.core.common.NameConventionFunctions;
+import intellispaces.framework.core.guide.GuideForm;
 import intellispaces.framework.core.traverse.TraverseType;
 
 import java.util.List;
@@ -25,9 +26,13 @@ public class OntologyGuideGenerator extends AbstractGuideGenerator {
   private final List<MethodParam> qualifierMethodParams;
 
   public OntologyGuideGenerator(
-      TraverseType traverseType, CustomType initiatorType, CustomType ontologyType, MethodStatement channelMethod
+      GuideForm guideForm,
+      TraverseType traverseType,
+      CustomType initiatorType,
+      CustomType ontologyType,
+      MethodStatement channelMethod
   ) {
-    super(traverseType, initiatorType, ontologyType, channelMethod);
+    super(guideForm, traverseType, initiatorType, ontologyType, channelMethod);
     this.domainType = getDomainTypeInternal();
     this.qualifierMethodParams = getQualifierMethodParamsInternal();
   }
@@ -68,7 +73,7 @@ public class OntologyGuideGenerator extends AbstractGuideGenerator {
   @Override
   protected String getGuideClassCanonicalName() {
     return NameConventionFunctions.getGuideClassCanonicalName(
-        annotatedType.packageName(), annotatedType, channelMethod
+        guideForm, annotatedType.packageName(), annotatedType, channelMethod
     );
   }
 

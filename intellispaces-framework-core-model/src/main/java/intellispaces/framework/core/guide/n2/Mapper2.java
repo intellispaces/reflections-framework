@@ -10,10 +10,10 @@ import intellispaces.framework.core.guide.n5.Mapper5;
 /**
  * Mapper guide with two qualifiers.
  *
- * @param <S> source object type.
- * @param <T> target object type.
- * @param <Q1> first qualifier type.
- * @param <Q2> second qualifier type.
+ * @param <S> source handle type.
+ * @param <T> target handle type.
+ * @param <Q1> first qualifier handle type.
+ * @param <Q2> second qualifier handle type.
  */
 public interface Mapper2<S, T, Q1, Q2> extends
     Guide2<S, T, Q1, Q2>,

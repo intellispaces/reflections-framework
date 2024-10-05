@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class UnmovableDataHandleGenerator extends AbstractGenerator {
   private final List<Map<String, String>> projectionProperties = new ArrayList<>();
@@ -75,6 +76,7 @@ public class UnmovableDataHandleGenerator extends AbstractGenerator {
     context.addImport(Types.class);
     context.addImport(Channel1.class);
     context.addImport(TraverseException.class);
+    context.addImport(Objects.class);
 
     analyzeTypeParams(annotatedType);
     analyzeProjections();

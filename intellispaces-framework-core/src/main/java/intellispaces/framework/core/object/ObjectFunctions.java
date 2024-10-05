@@ -96,7 +96,7 @@ public class ObjectFunctions {
 
   public static String getCommonObjectHandleTypename(CustomType domainType) {
     if (isDefaultObjectHandleType(domainType)) {
-      return domainType.className();
+      return domainType.canonicalName();
     }
     return NameConventionFunctions.getCommonObjectHandleTypename(domainType.className());
   }

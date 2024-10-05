@@ -9,8 +9,8 @@ package intellispaces.framework.core.guide;
  *
  * Mapper guides always return a handle to an existing object. Mapper guides does not create new objects.<p/>
  *
- * @param <S> source object handle type.
- * @param <T> target object handle type.
+ * @param <S> source handle type.
+ * @param <T> target handle type.
  */
 public interface Mapper<S, T> extends Guide<S, T> {
 }

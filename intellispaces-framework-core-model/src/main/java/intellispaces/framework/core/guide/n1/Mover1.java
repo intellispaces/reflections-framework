@@ -12,8 +12,8 @@ import java.util.function.BiConsumer;
 /**
  * Mover guide with one qualifier.
  *
- * @param <S> source object type.
- * @param <Q> qualifier type.
+ * @param <S> source handle type.
+ * @param <Q> qualifier handle type.
  */
 public interface Mover1<S, Q> extends
     Guide1<S, S, Q>,

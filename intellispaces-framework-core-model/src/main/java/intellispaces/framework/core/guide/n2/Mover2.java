@@ -9,7 +9,7 @@ import intellispaces.framework.core.guide.n5.Mover5;
 /**
  * Mover guide with two qualifiers.
  *
- * @param <S> source object handle type.
+ * @param <S> source handle type.
  * @param <Q1> first qualifier handle type.
  * @param <Q2> second qualifier handle type.
  */

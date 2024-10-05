@@ -62,7 +62,7 @@ public class MovableObjectHandleWrapperGenerator extends AbstractObjectHandleWra
     vars.put("primaryDomainTypeArguments", primaryDomainTypeArguments);
     vars.put("constructors", constructors);
     vars.put("importedClasses", context.getImports());
-    vars.put("channelActions", channelActions);
+    vars.put("methodActions", methodActions);
     vars.put("guideActions", guideActions);
     vars.put("domainMethods", methods);
     vars.put("injections", injections);
@@ -102,9 +102,7 @@ public class MovableObjectHandleWrapperGenerator extends AbstractObjectHandleWra
     analyzeDomain();
     analyzeTypeParams(annotatedType);
     analyzeConstructors(annotatedType);
-    analyzeGuideActions(annotatedType);
     analyzeInjectedGuides(annotatedType);
-    analyzeChannelActions();
     analyzeObjectHandleMethods(annotatedType, roundEnv);
     return true;
   }

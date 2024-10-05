@@ -40,11 +40,11 @@ abstract class AbstractDomainObjectHandleGenerator extends AbstractObjectHandleG
 
   protected List<MethodStatement> getAdditionalOMethods(CustomType customType, RoundEnvironment roundEnv) {
     List<MethodStatement> methods = new ArrayList<>();
-    List<CustomType> artifactAnnexes = AnnotationProcessorFunctions.findArtifactAnnexes(
+    List<CustomType> artifactAddOns = AnnotationProcessorFunctions.findArtifactAddOns(
         customType, ArtifactTypes.ObjectHandle, roundEnv
     );
-    for (CustomType artifactAnnex : artifactAnnexes) {
-      methods.addAll(artifactAnnex.declaredMethods());
+    for (CustomType artifactAddOn : artifactAddOns) {
+      methods.addAll(artifactAddOn.declaredMethods());
     }
     return methods;
   }

@@ -147,7 +147,7 @@ public final class GuideFunctions {
   }
 
   public static Channel getObjectChannelAnnotation(Method objectHandleMethod) {
-    return ChannelFunctions.getAttachedGuideChannelAnnotation(objectHandleMethod);
+    return ChannelFunctions.getObjectGuideChannelAnnotation(objectHandleMethod);
   }
 
   public static String getUnitGuideTid(Object unitInstance, Method guideMethod) {

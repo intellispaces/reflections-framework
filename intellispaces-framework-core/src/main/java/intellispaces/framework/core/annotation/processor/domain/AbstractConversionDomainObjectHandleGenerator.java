@@ -4,12 +4,15 @@ import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.common.javastatement.method.MethodParam;
 import intellispaces.common.javastatement.method.MethodStatement;
 import intellispaces.common.javastatement.reference.CustomTypeReference;
+import intellispaces.common.javastatement.reference.NotPrimitiveReference;
 import intellispaces.common.javastatement.reference.TypeReference;
 import intellispaces.common.javastatement.reference.TypeReferenceFunctions;
 import intellispaces.framework.core.common.NameConventionFunctions;
+import intellispaces.framework.core.guide.GuideForm;
 import intellispaces.framework.core.object.ObjectFunctions;
 
 import javax.annotation.processing.RoundEnvironment;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -28,11 +31,16 @@ abstract class AbstractConversionDomainObjectHandleGenerator extends AbstractDom
   protected Stream<MethodStatement> getObjectHandleMethods(
       CustomType customType, RoundEnvironment roundEnv
   ) {
-    return customType.actualMethods().stream()
-        .filter(this::isNotGetDomainMethod);
+    return buildActualType(parentDomainType.targetType(), roundEnv).actualMethods().stream()
+        .filter(this::isNotDomainClassGetter);
   }
 
-  protected void buildReturnStatement(StringBuilder sb, MethodStatement method) {
+  protected MethodStatement convertMethodBeforeGenerate(MethodStatement method) {
+    Map<String, NotPrimitiveReference> typeMapping = parentDomainType.typeArgumentMapping();
+    return method.effective(typeMapping);
+  }
+
+  protected void buildReturnStatement(StringBuilder sb, MethodStatement method, GuideForm guideForm) {
     MethodStatement actualParentMethod = parentDomainType.asCustomTypeReferenceOrElseThrow().targetType().actualMethod(
         method.name(), method.parameterTypes()
     ).orElseThrow();
@@ -43,7 +51,7 @@ abstract class AbstractConversionDomainObjectHandleGenerator extends AbstractDom
     TypeReference childReturnTypeRef = actualChildMethod.returnType().orElseThrow();
 
     if (TypeReferenceFunctions.isEqualTypes(parentReturnTypeRef, childReturnTypeRef)) {
-      buildDirectReturnStatement(sb, method);
+      buildDirectReturnStatement(sb, method, guideForm);
     } else {
       if (parentReturnTypeRef.isCustomTypeReference() && childReturnTypeRef.isCustomTypeReference()) {
         CustomType expectedReturnType = parentReturnTypeRef.asCustomTypeReferenceOrElseThrow().targetType();
@@ -55,18 +63,18 @@ abstract class AbstractConversionDomainObjectHandleGenerator extends AbstractDom
         ) {
           buildDownwardReturnStatement(sb, method, actualReturnType, expectedReturnType);
         } else {
-          buildCastReturnStatement(sb, method);
+          buildCastReturnStatement(sb, method, guideForm);
         }
       } else {
-        buildCastReturnStatement(sb, method);
+        buildCastReturnStatement(sb, method, guideForm);
       }
     }
   }
 
-  private void buildDirectReturnStatement(StringBuilder sb, MethodStatement method) {
+  private void buildDirectReturnStatement(StringBuilder sb, MethodStatement method, GuideForm guideForm) {
     sb.append("return ");
     sb.append("this.").append(childFieldName).append(".");
-    sb.append(method.name());
+    sb.append(getMethodName(method, guideForm));
     sb.append("(");
     sb.append(method.params().stream()
         .map(MethodParam::name)
@@ -74,13 +82,13 @@ abstract class AbstractConversionDomainObjectHandleGenerator extends AbstractDom
     sb.append(");");
   }
 
-  private void buildCastReturnStatement(StringBuilder sb, MethodStatement method) {
+  private void buildCastReturnStatement(StringBuilder sb, MethodStatement method, GuideForm guideForm) {
     sb.append("return ");
     sb.append("(");
     appendMethodReturnHandleType(sb, method);
     sb.append(") ");
     sb.append("this.").append(childFieldName).append(".");
-    sb.append(method.name());
+    sb.append(getMethodName(method, guideForm));
     sb.append("(");
     sb.append(method.params().stream()
         .map(MethodParam::name)

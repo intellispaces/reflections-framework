@@ -6,9 +6,9 @@ import intellispaces.framework.core.guide.Guide;
 /**
  * Guide with one qualifier.
  *
- * @param <S> source object type.
- * @param <R> result object handle type.
- * @param <Q> qualifier object type.
+ * @param <S> source handle type.
+ * @param <R> result handle type.
+ * @param <Q> qualifier handle type.
  */
 public interface Guide1<S, R, Q> extends Guide<S, R> {
 

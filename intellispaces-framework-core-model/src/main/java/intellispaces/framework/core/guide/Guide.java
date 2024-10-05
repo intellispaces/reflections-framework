@@ -10,8 +10,8 @@ import intellispaces.framework.core.exception.TraverseException;
  *
  * The guide is object. Guide can be constructed from other guides.<p/>
  *
- * @param <S> source object handle type. This type defines guide applicability.
- * @param <R> result object handle type.
+ * @param <S> source handle type. This type defines guide applicability.
+ * @param <R> result handle type.
  */
 public interface Guide<S, R> {
 

@@ -12,4 +12,8 @@ import intellispaces.framework.core.guide.Guide;
 public interface Guide0<S, R> extends Guide<S, R> {
 
   R traverse(S source) throws TraverseException;
+
+  int traverseToInt(S source) throws TraverseException;
+
+  double traverseToDouble(S source) throws TraverseException;
 }

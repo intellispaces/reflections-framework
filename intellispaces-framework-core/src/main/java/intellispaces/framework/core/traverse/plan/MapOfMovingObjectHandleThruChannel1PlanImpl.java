@@ -16,13 +16,23 @@ public class MapOfMovingObjectHandleThruChannel1PlanImpl extends AbstractObjectH
   }
 
   @Override
-  public Object execute(Object source, TraverseExecutor traverseExecutor) {
+  public Object execute(Object source, TraverseExecutor executor) {
     throw UnexpectedViolationException.withMessage("Expected traverse with one qualifier");
   }
 
   @Override
-  public Object execute(Object source, Object qualifier, TraverseExecutor traverseExecutor) throws TraverseException {
-    return traverseExecutor.execute(this, source, qualifier);
+  public int executeReturnInt(Object source, TraverseExecutor executor) throws TraverseException {
+    throw UnexpectedViolationException.withMessage("Expected traverse with one qualifier");
+  }
+
+  @Override
+  public double executeReturnDouble(Object source, TraverseExecutor executor) throws TraverseException {
+    throw UnexpectedViolationException.withMessage("Expected traverse with one qualifier");
+  }
+
+  @Override
+  public Object execute(Object source, Object qualifier, TraverseExecutor executor) throws TraverseException {
+    return executor.execute(this, source, qualifier);
   }
 
   @Override

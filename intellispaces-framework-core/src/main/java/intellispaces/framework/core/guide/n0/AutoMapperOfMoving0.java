@@ -1,8 +1,9 @@
 package intellispaces.framework.core.guide.n0;
 
 import intellispaces.framework.core.exception.TraverseException;
-import intellispaces.framework.core.traverse.plan.DeclarativePlan;
+import intellispaces.framework.core.guide.GuideForm;
 import intellispaces.framework.core.traverse.plan.TraverseExecutor;
+import intellispaces.framework.core.traverse.plan.TraversePlan;
 
 /**
  * Not-parametrized automatic mapper of moving.
@@ -14,12 +15,16 @@ import intellispaces.framework.core.traverse.plan.TraverseExecutor;
  */
 public class AutoMapperOfMoving0<S, T> implements AbstractMapperOfMoving0<S, T> {
   private final String cid;
+  private final TraversePlan traversePlan;
+  private final GuideForm guideForm;
   private final TraverseExecutor traverseExecutor;
-  private final DeclarativePlan declarativeTaskPlan;
 
-  public AutoMapperOfMoving0(String cid, DeclarativePlan declarativeTaskPlan, TraverseExecutor traverseExecutor) {
+  public AutoMapperOfMoving0(
+      String cid, TraversePlan traversePlan, GuideForm guideForm, TraverseExecutor traverseExecutor
+  ) {
     this.cid = cid;
-    this.declarativeTaskPlan = declarativeTaskPlan;
+    this.traversePlan = traversePlan;
+    this.guideForm = guideForm;
     this.traverseExecutor = traverseExecutor;
   }
 
@@ -29,8 +34,23 @@ public class AutoMapperOfMoving0<S, T> implements AbstractMapperOfMoving0<S, T> 
   }
 
   @Override
+  public GuideForm guideForm() {
+    return guideForm;
+  }
+
+  @Override
   @SuppressWarnings("unchecked")
   public T traverse(S source) throws TraverseException {
-    return (T) declarativeTaskPlan.execute(source, traverseExecutor);
+    return (T) traversePlan.execute(source, traverseExecutor);
+  }
+
+  @Override
+  public int traverseToInt(S source) throws TraverseException {
+    return traversePlan.executeReturnInt(source, traverseExecutor);
+  }
+
+  @Override
+  public double traverseToDouble(S source) throws TraverseException {
+    return traversePlan.executeReturnDouble(source, traverseExecutor);
   }
 }

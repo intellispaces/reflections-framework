@@ -2,6 +2,7 @@ package intellispaces.framework.core.guide.n1;
 
 import intellispaces.common.base.exception.UnexpectedViolationException;
 import intellispaces.framework.core.exception.TraverseException;
+import intellispaces.framework.core.guide.GuideForm;
 import intellispaces.framework.core.guide.GuideLogger;
 import intellispaces.framework.core.system.UnitWrapper;
 import intellispaces.framework.core.system.kernel.KernelUnitGuide;
@@ -13,8 +14,9 @@ abstract class UnitGuide1<S, R, Q> implements Guide1<S, R, Q>, KernelUnitGuide<S
   private final UnitWrapper unitInstance;
   private final Method guideMethod;
   private final int guideOrdinal;
+  private final GuideForm guideForm;
 
-  UnitGuide1(String cid, UnitWrapper unitInstance, Method guideMethod, int guideOrdinal) {
+  UnitGuide1(String cid, UnitWrapper unitInstance, Method guideMethod, int guideOrdinal, GuideForm guideForm) {
     if (guideMethod.getParameterCount() != 2) {
       throw UnexpectedViolationException.withMessage("Guide method should have two parameters: source and qualifier");
     }
@@ -22,6 +24,7 @@ abstract class UnitGuide1<S, R, Q> implements Guide1<S, R, Q>, KernelUnitGuide<S
     this.unitInstance = unitInstance;
     this.guideMethod = guideMethod;
     this.guideOrdinal = guideOrdinal;
+    this.guideForm = guideForm;
   }
 
   @Override
@@ -40,11 +43,16 @@ abstract class UnitGuide1<S, R, Q> implements Guide1<S, R, Q>, KernelUnitGuide<S
   }
 
   @Override
+  public GuideForm guideForm() {
+    return guideForm;
+  }
+
+  @Override
   @SuppressWarnings("unchecked")
   public R traverse(S source, Q qualifier) throws TraverseException {
     try {
       GuideLogger.logCallGuide(guideMethod);
-      return (R) unitInstance.$unit().getGuideAction(guideOrdinal).asAction2().execute(source, qualifier);
+      return (R) unitInstance.$unit().getGuideAction(guideOrdinal).asAction3().execute(unitInstance, source, qualifier);
     } catch (TraverseException e) {
       throw e;
     } catch (Exception e) {

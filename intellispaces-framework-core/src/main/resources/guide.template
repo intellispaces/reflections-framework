@@ -20,7 +20,19 @@ public interface {{$classSimpleName}}{{$guideTypeParamsFull}} extends {{$guideCl
   }
 
   @Override
+  default GuideForm guideForm() {
+    return GuideForms.{{$guideForm}};
+  }
+
+  @Override
   {{$baseMethod}}
+{{when $guideClassSimpleName.eqAnyOf("AbstractMapper0", "AbstractMapperOfMoving0")}}
+  @Override
+  {{$longPrimitiveMethod}}
+
+  @Override
+  {{$doublePrimitiveMethod}}
+{{end}}
 
   {{$guideAnnotation}}({{$channelClassSimpleName}}.class)
   {{$guideMethod}}

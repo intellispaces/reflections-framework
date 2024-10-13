@@ -2,6 +2,7 @@ package intellispaces.framework.core.system.kernel;
 
 import intellispaces.common.base.exception.UnexpectedViolationException;
 import intellispaces.framework.core.guide.Guide;
+import intellispaces.framework.core.guide.GuideForm;
 import intellispaces.framework.core.guide.GuideKind;
 import intellispaces.framework.core.guide.GuideKinds;
 import intellispaces.framework.core.guide.n0.Guide0;
@@ -13,7 +14,7 @@ import intellispaces.framework.core.traverse.plan.CallGuide0PlanImpl;
 import intellispaces.framework.core.traverse.plan.CallGuide1PlanImpl;
 import intellispaces.framework.core.traverse.plan.CallGuide2PlanImpl;
 import intellispaces.framework.core.traverse.plan.CallGuide3PlanImpl;
-import intellispaces.framework.core.traverse.plan.ExecutionPlan;
+import intellispaces.framework.core.traverse.plan.ExecutionTraversePlan;
 import intellispaces.framework.core.traverse.plan.MapObjectHandleThruChannel0Plan;
 import intellispaces.framework.core.traverse.plan.MapObjectHandleThruChannel0PlanImpl;
 import intellispaces.framework.core.traverse.plan.MapObjectHandleThruChannel1Plan;
@@ -53,134 +54,126 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
 
   @Override
   public MapObjectHandleThruChannel0Plan buildMapObjectHandleThruChannel0Plan(
-    Class<?> sourceClass, String cid
+    Class<?> sourceClass, String cid, GuideForm guideForm
   ) {
-    MapObjectHandleThruChannel0Plan declarativePlan = new MapObjectHandleThruChannel0PlanImpl(
-      sourceClass, cid);
-    setExecutionPlan(declarativePlan, sourceClass);
+    MapObjectHandleThruChannel0Plan declarativePlan = new MapObjectHandleThruChannel0PlanImpl(sourceClass, cid);
+    defineExecutionPlan(declarativePlan, sourceClass, guideForm);
     return declarativePlan;
   }
 
   @Override
   public MapObjectHandleThruChannel1Plan buildMapObjectHandleThruChannel1Plan(
-    Class<?> sourceClass, String cid
+    Class<?> sourceClass, String cid, GuideForm guideForm
   ) {
-    MapObjectHandleThruChannel1Plan declarativePlan = new MapObjectHandleThruChannel1PlanImpl(
-      sourceClass, cid);
-    setExecutionPlan(declarativePlan, sourceClass);
+    MapObjectHandleThruChannel1Plan declarativePlan = new MapObjectHandleThruChannel1PlanImpl(sourceClass, cid);
+    defineExecutionPlan(declarativePlan, sourceClass, guideForm);
     return declarativePlan;
   }
 
   @Override
   public MapObjectHandleThruChannel2Plan buildMapObjectHandleThruChannel2Plan(
-    Class<?> sourceClass, String cid
+    Class<?> sourceClass, String cid, GuideForm guideForm
   ) {
-    MapObjectHandleThruChannel2Plan declarativePlan = new MapObjectHandleThruChannel2PlanImpl(
-      sourceClass, cid);
-    setExecutionPlan(declarativePlan, sourceClass);
+    MapObjectHandleThruChannel2Plan declarativePlan = new MapObjectHandleThruChannel2PlanImpl(sourceClass, cid);
+    defineExecutionPlan(declarativePlan, sourceClass, guideForm);
     return declarativePlan;
   }
 
   @Override
   public MapObjectHandleThruChannel3Plan buildMapObjectHandleThruChannel3Plan(
-    Class<?> sourceClass, String cid
+    Class<?> sourceClass, String cid, GuideForm guideForm
   ) {
-    MapObjectHandleThruChannel3Plan declarativePlan = new MapObjectHandleThruChannel3PlanImpl(
-      sourceClass, cid);
-    setExecutionPlan(declarativePlan, sourceClass);
+    MapObjectHandleThruChannel3Plan declarativePlan = new MapObjectHandleThruChannel3PlanImpl(sourceClass, cid);
+    defineExecutionPlan(declarativePlan, sourceClass, guideForm);
     return declarativePlan;
   }
 
   @Override
   public MoveObjectHandleThruChannel0Plan buildMoveObjectHandleThruChannel0Plan(
-    Class<?> sourceClass, String cid
+    Class<?> sourceClass, String cid, GuideForm guideForm
   ) {
-    MoveObjectHandleThruChannel0Plan declarativePlan = new MoveObjectHandleThruChannel0PlanImpl(
-      sourceClass, cid);
-    setExecutionPlan(declarativePlan, sourceClass);
+    MoveObjectHandleThruChannel0Plan declarativePlan = new MoveObjectHandleThruChannel0PlanImpl(sourceClass, cid);
+    defineExecutionPlan(declarativePlan, sourceClass, guideForm);
     return declarativePlan;
   }
 
   @Override
   public MoveObjectHandleThruChannel1Plan buildMoveObjectHandleThruChannel1Plan(
-    Class<?> sourceClass, String cid
+    Class<?> sourceClass, String cid, GuideForm guideForm
   ) {
-    MoveObjectHandleThruChannel1Plan declarativePlan = new MoveObjectHandleThruChannel1PlanImpl(
-      sourceClass, cid);
-    setExecutionPlan(declarativePlan, sourceClass);
+    MoveObjectHandleThruChannel1Plan declarativePlan = new MoveObjectHandleThruChannel1PlanImpl(sourceClass, cid);
+    defineExecutionPlan(declarativePlan, sourceClass, guideForm);
     return declarativePlan;
   }
 
   @Override
   public MoveObjectHandleThruChannel2Plan buildMoveObjectHandleThruChannel2Plan(
-    Class<?> sourceClass, String cid
+    Class<?> sourceClass, String cid, GuideForm guideForm
   ) {
-    MoveObjectHandleThruChannel2Plan declarativePlan = new MoveObjectHandleThruChannel2PlanImpl(
-      sourceClass, cid);
-    setExecutionPlan(declarativePlan, sourceClass);
+    MoveObjectHandleThruChannel2Plan declarativePlan = new MoveObjectHandleThruChannel2PlanImpl(sourceClass, cid);
+    defineExecutionPlan(declarativePlan, sourceClass, guideForm);
     return declarativePlan;
   }
 
   @Override
   public MoveObjectHandleThruChannel3Plan buildMoveObjectHandleThruChannel3Plan(
-    Class<?> sourceClass, String cid
+    Class<?> sourceClass, String cid, GuideForm guideForm
   ) {
-    MoveObjectHandleThruChannel3Plan declarativePlan = new MoveObjectHandleThruChannel3PlanImpl(
-      sourceClass, cid);
-    setExecutionPlan(declarativePlan, sourceClass);
+    MoveObjectHandleThruChannel3Plan declarativePlan = new MoveObjectHandleThruChannel3PlanImpl(sourceClass, cid);
+    defineExecutionPlan(declarativePlan, sourceClass, guideForm);
     return declarativePlan;
   }
 
   @Override
   public MapOfMovingObjectHandleThruChannel0Plan buildMapOfMovingObjectHandleThruChannel0Plan(
-      Class<?> sourceClass, String cid
+      Class<?> sourceClass, String cid, GuideForm guideForm
   ) {
-    MapOfMovingObjectHandleThruChannel0Plan declarativePlan = new MapOfMovingObjectHandleThruChannel0PlanImpl(
-        sourceClass, cid);
-    setExecutionPlan(declarativePlan, sourceClass);
+    MapOfMovingObjectHandleThruChannel0Plan declarativePlan = new MapOfMovingObjectHandleThruChannel0PlanImpl(sourceClass, cid);
+    defineExecutionPlan(declarativePlan, sourceClass, guideForm);
     return declarativePlan;
   }
 
   @Override
   public MapOfMovingObjectHandleThruChannel1Plan buildMapOfMovingObjectHandleThruChannel1Plan(
-      Class<?> sourceClass, String cid
+      Class<?> sourceClass, String cid, GuideForm guideForm
   ) {
-    MapOfMovingObjectHandleThruChannel1Plan declarativePlan = new MapOfMovingObjectHandleThruChannel1PlanImpl(
-        sourceClass, cid);
-    setExecutionPlan(declarativePlan, sourceClass);
+    MapOfMovingObjectHandleThruChannel1Plan declarativePlan = new MapOfMovingObjectHandleThruChannel1PlanImpl(sourceClass, cid);
+    defineExecutionPlan(declarativePlan, sourceClass, guideForm);
     return declarativePlan;
   }
 
   @Override
   public MapOfMovingObjectHandleThruChannel2Plan buildMapOfMovingObjectHandleThruChannel2Plan(
-      Class<?> sourceClass, String cid
+      Class<?> sourceClass, String cid, GuideForm guideForm
   ) {
-    MapOfMovingObjectHandleThruChannel2Plan declarativePlan = new MapOfMovingObjectHandleThruChannel2PlanImpl(
-        sourceClass, cid);
-    setExecutionPlan(declarativePlan, sourceClass);
+    MapOfMovingObjectHandleThruChannel2Plan declarativePlan = new MapOfMovingObjectHandleThruChannel2PlanImpl(sourceClass, cid);
+    defineExecutionPlan(declarativePlan, sourceClass, guideForm);
     return declarativePlan;
   }
 
   @Override
   public MapOfMovingObjectHandleThruChannel3Plan buildMapOfMovingObjectHandleThruChannel3Plan(
-      Class<?> sourceClass, String cid
+      Class<?> sourceClass, String cid, GuideForm guideForm
   ) {
-    MapOfMovingObjectHandleThruChannel3Plan declarativePlan = new MapOfMovingObjectHandleThruChannel3PlanImpl(
-        sourceClass, cid);
-    setExecutionPlan(declarativePlan, sourceClass);
+    MapOfMovingObjectHandleThruChannel3Plan declarativePlan = new MapOfMovingObjectHandleThruChannel3PlanImpl(sourceClass, cid);
+    defineExecutionPlan(declarativePlan, sourceClass, guideForm);
     return declarativePlan;
   }
 
-  private void setExecutionPlan(ObjectHandleTraversePlan plan, Class<?> objectHandleClass) {
-    ExecutionPlan executionPlan = getExecutionPlan(plan, objectHandleClass);
+  private void defineExecutionPlan(
+      ObjectHandleTraversePlan plan, Class<?> objectHandleClass, GuideForm guideForm
+  ) {
+    ExecutionTraversePlan executionPlan = getExecutionPlan(plan, objectHandleClass, guideForm);
     if (executionPlan != null) {
       plan.addExecutionPlan(objectHandleClass, executionPlan);
     }
   }
 
   @Override
-  public ExecutionPlan getExecutionPlan(ObjectHandleTraversePlan plan, Class<?> sourceClass) {
-    ExecutionPlan executionPlan = plan.getExecutionPlan(sourceClass);
+  public ExecutionTraversePlan getExecutionPlan(
+      ObjectHandleTraversePlan plan, Class<?> sourceClass, GuideForm guideForm
+  ) {
+    ExecutionTraversePlan executionPlan = plan.getExecutionPlan(sourceClass);
     if (executionPlan != null) {
       return executionPlan;
     }
@@ -204,11 +197,11 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
       return executionPlan;
     }
 
-    executionPlan = buildExecutionTraversePlan(plan, sourceClass);
+    executionPlan = buildExecutionTraversePlan(plan, sourceClass, guideForm);
     if (executionPlan != null) {
       plan.addExecutionPlan(sourceClass, executionPlan);
     } else {
-      executionPlan = buildExecutionTraversePlan(plan, objectHandleClass);
+      executionPlan = buildExecutionTraversePlan(plan, objectHandleClass, guideForm);
       if (executionPlan != null) {
         plan.addExecutionPlan(sourceClass, executionPlan);
         plan.addExecutionPlan(objectHandleClass, executionPlan);
@@ -217,11 +210,11 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
     return executionPlan;
   }
 
-  private ExecutionPlan buildExecutionTraversePlan(
-      ObjectHandleTraversePlan plan, Class<?> objectHandleClass
+  private ExecutionTraversePlan buildExecutionTraversePlan(
+      ObjectHandleTraversePlan plan, Class<?> objectHandleClass, GuideForm guideForm
   ) {
     GuideKinds guideKind = getGuideKind((TraversePlanTypes) plan.type());
-    List<Guide<?, ?>> guides = findGuides(guideKind, objectHandleClass, plan.cid());
+    List<Guide<?, ?>> guides = findGuides(guideKind, objectHandleClass, plan.cid(), guideForm);
     if (guides.isEmpty()) {
       return null;
     }
@@ -237,8 +230,8 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
     };
   }
 
-  private List<Guide<?, ?>> findGuides(GuideKind kind, Class<?> objectHandleClass, String cid) {
-    return guideRegistry.findGuides(kind, objectHandleClass, cid);
+  private List<Guide<?, ?>> findGuides(GuideKind kind, Class<?> objectHandleClass, String cid, GuideForm guideForm) {
+    return guideRegistry.findGuides(kind, objectHandleClass, cid, guideForm);
   }
 
   private GuideKinds getGuideKind(TraversePlanTypes planType) {

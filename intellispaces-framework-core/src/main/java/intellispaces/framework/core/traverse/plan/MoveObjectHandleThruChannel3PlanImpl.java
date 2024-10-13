@@ -16,12 +16,22 @@ public class MoveObjectHandleThruChannel3PlanImpl extends AbstractObjectHandleTr
   }
 
   @Override
-  public Object execute(Object source, TraverseExecutor traverseExecutor) {
+  public Object execute(Object source, TraverseExecutor executor) {
     throw UnexpectedViolationException.withMessage("Expected traverse with three qualifiers");
   }
 
   @Override
-  public Object execute(Object source, Object qualifier, TraverseExecutor traverseExecutor) throws TraverseException {
+  public int executeReturnInt(Object source, TraverseExecutor executor) throws TraverseException {
+    throw UnexpectedViolationException.withMessage("Invalid operation");
+  }
+
+  @Override
+  public double executeReturnDouble(Object source, TraverseExecutor executor) throws TraverseException {
+    throw UnexpectedViolationException.withMessage("Invalid operation");
+  }
+
+  @Override
+  public Object execute(Object source, Object qualifier, TraverseExecutor executor) throws TraverseException {
     throw UnexpectedViolationException.withMessage("Expected traverse with three qualifiers");
   }
 
@@ -34,8 +44,8 @@ public class MoveObjectHandleThruChannel3PlanImpl extends AbstractObjectHandleTr
 
   @Override
   public Object execute(
-      Object source, Object qualifier1, Object qualifier2, Object qualifier3, TraverseExecutor traverseExecutor
+      Object source, Object qualifier1, Object qualifier2, Object qualifier3, TraverseExecutor executor
   ) throws TraverseException {
-    return traverseExecutor.execute(this, source, qualifier1, qualifier2, qualifier3);
+    return executor.execute(this, source, qualifier1, qualifier2, qualifier3);
   }
 }

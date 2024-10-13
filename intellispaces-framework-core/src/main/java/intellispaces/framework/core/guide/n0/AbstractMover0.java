@@ -30,4 +30,14 @@ public interface AbstractMover0<S> extends Mover0<S> {
   default BiConsumer<S, Void> asBiConsumer() {
     return this::move;
   }
+
+  @Override
+  default int traverseToInt(S source) throws TraverseException {
+    throw TraverseException.withMessage("Invalid operation");
+  }
+
+  @Override
+  default double traverseToDouble(S source) throws TraverseException {
+    throw TraverseException.withMessage("Invalid operation");
+  }
 }

@@ -1,5 +1,6 @@
 package intellispaces.framework.core.guide.n3;
 
+import intellispaces.framework.core.guide.GuideForm;
 import intellispaces.framework.core.system.ObjectHandleWrapper;
 
 import java.lang.reflect.Method;
@@ -21,8 +22,9 @@ public class ObjectMover3<S extends ObjectHandleWrapper, Q1, Q2, Q3>
       String cid,
       Class<S> objectHandleClass,
       Method guideMethod,
-      int channelIndex
+      int channelIndex,
+      GuideForm guideForm
   ) {
-    super(cid, objectHandleClass, guideMethod, channelIndex);
+    super(cid, objectHandleClass, guideMethod, channelIndex, guideForm);
   }
 }

@@ -2,6 +2,7 @@ package intellispaces.framework.core.system.kernel;
 
 import intellispaces.framework.core.exception.ConfigurationException;
 import intellispaces.framework.core.guide.Guide;
+import intellispaces.framework.core.guide.GuideForm;
 import intellispaces.framework.core.guide.GuideKind;
 
 import java.util.ArrayList;
@@ -44,13 +45,22 @@ class GuideRegistryImpl implements GuideRegistry {
   }
 
   @Override
-  public List<Guide<?, ?>> findGuides(GuideKind kind, Class<?> objectHandleClass, String cid) {
+  public List<Guide<?, ?>> findGuides(GuideKind kind, Class<?> objectHandleClass, String cid, GuideForm guideForm) {
     var guides = new ArrayList<Guide<?, ?>>();
-    Guide<?, ?> guide = objectGuideRegistry.getGuide(kind, objectHandleClass, cid);
-    if (guide != null) {
-      guides.add(guide);
+
+    List<Guide<?, ?>> objectGuides = objectGuideRegistry.getGuides(kind, objectHandleClass, cid);
+    for (Guide<?, ?> guide : objectGuides) {
+      if (guide.guideForm() == guideForm) {
+        guides.add(guide);
+      }
     }
-    guides.addAll(unitGuideRegistry.findGuides(kind, cid));
+
+    List<Guide<?, ?>> unitGuides = unitGuideRegistry.findGuides(kind, cid);
+    for (Guide<?, ?> guide : unitGuides) {
+      if (guide.guideForm() == guideForm) {
+        guides.add(guide);
+      }
+    }
     return guides;
   }
 

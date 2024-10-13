@@ -37,6 +37,14 @@ public interface Mapper0<S, T> extends
     return traverse(source);
   }
 
+  default int mapToInt(S source) throws TraverseException {
+    return traverseToInt(source);
+  }
+
+  default double mapToDouble(S source) throws TraverseException {
+    return traverseToDouble(source);
+  }
+
   @Override
   default T map(S source, Void qualifier) throws TraverseException {
     return traverse(source);

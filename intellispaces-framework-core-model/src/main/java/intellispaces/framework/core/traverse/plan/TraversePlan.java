@@ -24,6 +24,10 @@ public interface TraversePlan {
    */
   Object execute(Object source, TraverseExecutor executor) throws TraverseException;
 
+  int executeReturnInt(Object source, TraverseExecutor executor) throws TraverseException;
+
+  double executeReturnDouble(Object source, TraverseExecutor executor) throws TraverseException;
+
   /**
    * Executes traverse plan to source object and qualifier.
    *

@@ -1,8 +1,9 @@
 package intellispaces.framework.core.guide.n0;
 
 import intellispaces.framework.core.exception.TraverseException;
-import intellispaces.framework.core.traverse.plan.DeclarativePlan;
+import intellispaces.framework.core.guide.GuideForm;
 import intellispaces.framework.core.traverse.plan.TraverseExecutor;
+import intellispaces.framework.core.traverse.plan.TraversePlan;
 
 /**
  * Not-parametrized automatic mover guide.
@@ -13,12 +14,16 @@ import intellispaces.framework.core.traverse.plan.TraverseExecutor;
  */
 public class AutoMover0<S> implements AbstractMover0<S> {
   private final String cid;
+  private final TraversePlan traversePlan;
+  private final GuideForm guideForm;
   private final TraverseExecutor traverseExecutor;
-  private final DeclarativePlan declarativeTaskPlan;
 
-  public AutoMover0(String cid, DeclarativePlan declarativeTaskPlan, TraverseExecutor traverseExecutor) {
+  public AutoMover0(
+      String cid, TraversePlan traversePlan, GuideForm guideForm, TraverseExecutor traverseExecutor
+  ) {
     this.cid = cid;
-    this.declarativeTaskPlan = declarativeTaskPlan;
+    this.traversePlan = traversePlan;
+    this.guideForm = guideForm;
     this.traverseExecutor = traverseExecutor;
   }
 
@@ -28,8 +33,13 @@ public class AutoMover0<S> implements AbstractMover0<S> {
   }
 
   @Override
+  public GuideForm guideForm() {
+    return guideForm;
+  }
+
+  @Override
   @SuppressWarnings("unchecked")
   public S traverse(S source) throws TraverseException {
-    return (S) declarativeTaskPlan.execute(source, traverseExecutor);
+    return (S) traversePlan.execute(source, traverseExecutor);
   }
 }

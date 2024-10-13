@@ -3,7 +3,9 @@ package intellispaces.framework.core.annotation.processor.objecthandle;
 import intellispaces.common.action.Actions;
 import intellispaces.common.action.runner.Runner;
 import intellispaces.common.base.exception.UnexpectedViolationException;
+import intellispaces.common.base.object.ObjectInstanceFunctions;
 import intellispaces.common.base.text.TextActions;
+import intellispaces.common.base.type.Primitives;
 import intellispaces.common.base.type.TypeFunctions;
 import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.common.javastatement.method.MethodParam;
@@ -16,6 +18,7 @@ import intellispaces.framework.core.action.TraverseActions;
 import intellispaces.framework.core.annotation.AutoGuide;
 import intellispaces.framework.core.annotation.Inject;
 import intellispaces.framework.core.annotation.processor.AbstractObjectHandleGenerator;
+import intellispaces.framework.core.annotation.processor.GuideProcessorFunctions;
 import intellispaces.framework.core.common.NameConventionFunctions;
 import intellispaces.framework.core.exception.ConfigurationException;
 import intellispaces.framework.core.guide.GuideForm;
@@ -48,6 +51,7 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
   protected final List<Object> constructors = new ArrayList<>();
   protected final List<String> methodActions = new ArrayList<>();
   protected final List<String> guideActions = new ArrayList<>();
+  protected final List<Map<String, String>> guideMethods = new ArrayList<>();
   protected final List<Map<String, Object>> injections = new ArrayList<>();
   protected final List<Map<String, Object>> injectionMethods = new ArrayList<>();
 
@@ -84,7 +88,7 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
     }
   }
 
-  private String buildMethodAction(MethodStatement domainMethod) {
+  private String buildMethodAction(MethodStatement domainMethod, GuideForm guideForm) {
     var sb = new StringBuilder();
     sb.append(context.addToImportAndGetSimpleName(Actions.class));
     sb.append(".delegate");
@@ -119,7 +123,9 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
     sb.append(annotatedType.simpleName());
     sb.append(".class),\n  ");
     sb.append(context.addToImportAndGetSimpleName(NameConventionFunctions.getChannelClassCanonicalName(domainMethod)));
-    sb.append(".class))");
+    sb.append(".class,\n");
+    sb.append("GuideForms.").append(guideForm.name());
+    sb.append("))");
     return sb.toString();
   }
 
@@ -231,45 +237,6 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
     return paramMatches;
   }
 
-  private String buildGuideAction(
-      MethodStatement objectHandleMethod, GuideForm guideForm, int methodIndex
-  ) {
-    var sb = new StringBuilder();
-    sb.append("Actions.of(super::");sb.append(objectHandleMethod.name());
-    sb.append(", ");
-    sb.append(buildProjectionActionTypeReturnType(objectHandleMethod.returnType().orElseThrow(), guideForm));
-    sb.append(".class");
-    for (MethodParam param : objectHandleMethod.params()) {
-      sb.append(", ");
-      sb.append(buildProjectionActionTypeParameter(param.type()));
-      sb.append(".class");
-    }
-    sb.append(")");
-    return sb.toString();
-  }
-
-  private String buildProjectionActionTypeReturnType(TypeReference type, GuideForm guideForm) {
-    if (guideForm == GuideForms.Main) {
-      return buildProjectionActionTypeParameter(type);
-    } else if (guideForm == GuideForms.Primitive) {
-      return type.asPrimitiveReferenceOrElseThrow().typename();
-    } else {
-      throw UnexpectedViolationException.withMessage("Not supported guide form: {0}", guideForm.name());
-    }
-  }
-
-  private String buildProjectionActionTypeParameter(TypeReference type) {
-    if (type.isNamedReference()) {
-      NamedReference namedType = type.asNamedReferenceOrElseThrow();
-      if (namedType.extendedBounds().isEmpty()) {
-        return "Object";
-      }
-    } else if (type.isCustomTypeReference()) {
-      return context.addToImportAndGetSimpleName(type.asCustomTypeReferenceOrElseThrow().targetType().canonicalName());
-    }
-    return type.actualDeclaration(context::addToImportAndGetSimpleName);
-  }
-
   protected String getGeneratedClassCanonicalName() {
     return NameConventionFunctions.getObjectHandleWrapperCanonicalName(annotatedType);
   }
@@ -331,7 +298,7 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
   }
 
   protected void analyzeChannelAction(MethodStatement method, GuideForm guideForm) {
-    methodActions.add(buildMethodAction(method));
+    methodActions.add(buildMethodAction(method, guideForm));
   }
 
   protected void analyzeGuideAction(MethodStatement method, GuideForm guideForm, int methodIndex) {
@@ -343,7 +310,10 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
     if (objectHandleMethod == null || objectHandleMethod.isAbstract()) {
       this.guideActions.add("null");
     } else {
-      this.guideActions.add(buildGuideAction(objectHandleMethod, guideForm, methodIndex));
+      this.guideActions.add(
+          GuideProcessorFunctions.buildGuideAction(getGeneratedClassCanonicalName(), objectHandleMethod, context)
+      );
+      this.guideMethods.add(GuideProcessorFunctions.buildGuideActionMethod(objectHandleMethod, context));
     }
   }
 
@@ -366,19 +336,90 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
     sb.append(")");
     appendMethodExceptions(sb, domainMethod);
     sb.append(" {\n");
-    sb.append("  return (");
-    appendMethodReturnHandleType(sb, domainMethod, guideForm);
-    sb.append(") $handle.getMethodAction(");
+    sb.append("  return ");
+    if (guideForm == GuideForms.Primitive) {
+      CustomType ct = domainMethod.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow().targetType();
+      String typename = TypeFunctions.getPrimitiveTypeOfWrapper(ct.canonicalName());
+      if (Primitives.Boolean.typename().equals(typename)) {
+        sb.append("MathFunctions.longToBoolean(");
+        buildInvokeMethodAction(domainMethod, guideForm, methodIndex, sb);
+        sb.append(")");
+      } else {
+        sb.append("(");
+        appendMethodReturnHandleType(sb, domainMethod, guideForm);
+        sb.append(") ");
+        buildInvokeMethodAction(domainMethod, guideForm, methodIndex, sb);
+      }
+    } else {
+      sb.append("(");
+      appendMethodReturnHandleType(sb, domainMethod, guideForm);
+      sb.append(") ");
+      buildInvokeMethodAction(domainMethod, guideForm, methodIndex, sb);
+    }
+    sb.append(";\n}");
+    return Map.of("declaration", sb.toString());
+  }
+
+  private void buildInvokeMethodAction(
+      MethodStatement domainMethod, GuideForm guideForm, int methodIndex, StringBuilder sb
+  ) {
+    sb.append("$handle.getMethodAction(");
     sb.append(methodIndex);
     sb.append(").asAction");
     sb.append(domainMethod.params().size() + 1);
-    sb.append("().execute(this");
+    sb.append("().");
+    sb.append(buildExecuteMethod(domainMethod, guideForm));
+    sb.append("(this");
     for (MethodParam param : domainMethod.params()) {
       sb.append(", ");
+      addMethodParam(sb, param);
+    }
+    sb.append(")");
+  }
+
+  private void addMethodParam(StringBuilder sb, MethodParam param) {
+    if (param.type().isPrimitiveReference()) {
+      String typename = param.type().asPrimitiveReferenceOrElseThrow().typename();
+      if (Primitives.Boolean.typename().equals(typename)) {
+        sb.append("MathFunctions.booleanToInt(").append(param.name()).append(")");
+      } else if (Primitives.Char.typename().equals(typename)) {
+        sb.append("(int) ").append(param.name());
+      } else if (Primitives.Byte.typename().equals(typename)) {
+        sb.append("(int) ").append(param.name());
+      } else if (Primitives.Short.typename().equals(typename)) {
+        sb.append("(int) ").append(param.name());
+      } else {
+        sb.append(param.name());
+      }
+    } else {
       sb.append(param.name());
     }
-    sb.append(");\n}");
-    return Map.of("declaration", sb.toString());
+  }
+
+  private String buildExecuteMethod(MethodStatement domainMethod, GuideForm guideForm) {
+    if (guideForm == GuideForms.Main) {
+      return "execute";
+    } else if (guideForm == GuideForms.Primitive) {
+      CustomType ct = domainMethod.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow().targetType();
+      String typename = TypeFunctions.getPrimitiveTypeOfWrapper(ct.canonicalName());
+      if (ObjectInstanceFunctions.equalsAnyOf(
+          typename,
+          Primitives.Boolean.typename(),
+          Primitives.Char.typename(),
+          Primitives.Byte.typename(),
+          Primitives.Short.typename(),
+          Primitives.Int.typename(),
+          Primitives.Long.typename()
+      )) {
+        return "executeReturnInt";
+      } else if (Primitives.Float.typename().equals(typename) || Primitives.Double.typename().equals(typename)) {
+        return "executeReturnDouble";
+      } else {
+        return "execute";
+      }
+    } else {
+      throw UnexpectedViolationException.withMessage("Unsupported guide form - {0}", guideForm);
+    }
   }
 
   private boolean isInjectionMethod(MethodStatement method) {

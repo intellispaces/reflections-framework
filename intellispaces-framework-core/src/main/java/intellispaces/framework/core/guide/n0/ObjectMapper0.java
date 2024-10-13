@@ -1,5 +1,6 @@
 package intellispaces.framework.core.guide.n0;
 
+import intellispaces.framework.core.guide.GuideForm;
 import intellispaces.framework.core.system.ObjectHandleWrapper;
 
 import java.lang.reflect.Method;
@@ -19,8 +20,9 @@ public class ObjectMapper0<S extends ObjectHandleWrapper, T>
       String cid,
       Class<S> objectHandleClass,
       Method guideMethod,
-      int channelIndex
+      int channelIndex,
+      GuideForm guideForm
   ) {
-    super(cid, objectHandleClass, guideMethod, channelIndex);
+    super(cid, objectHandleClass, guideForm, guideMethod, channelIndex);
   }
 }

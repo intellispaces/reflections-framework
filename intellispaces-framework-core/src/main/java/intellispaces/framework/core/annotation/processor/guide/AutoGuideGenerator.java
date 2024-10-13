@@ -13,7 +13,10 @@ import intellispaces.common.javastatement.reference.TypeReference;
 import intellispaces.common.javastatement.type.Types;
 import intellispaces.framework.core.action.TraverseActions;
 import intellispaces.framework.core.annotation.processor.AbstractGenerator;
+import intellispaces.framework.core.annotation.processor.GuideProcessorFunctions;
 import intellispaces.framework.core.common.NameConventionFunctions;
+import intellispaces.framework.core.guide.GuideForm;
+import intellispaces.framework.core.guide.GuideForms;
 import intellispaces.framework.core.guide.GuideFunctions;
 
 import javax.annotation.processing.RoundEnvironment;
@@ -66,8 +69,8 @@ public class AutoGuideGenerator extends AbstractGenerator {
     if (annotatedType.isNested()) {
       context.addImport(sourceClassCanonicalName());
     }
-
     context.addImport(Action.class);
+    context.addImport(GuideForms.class);
 
     analyzeTypeParams();
     analyzeGuideMethods();
@@ -148,7 +151,11 @@ public class AutoGuideGenerator extends AbstractGenerator {
     sb.append(sourceType.simpleDeclaration(context::addToImportAndGetSimpleName));
     sb.append(".class),\n    ");
     sb.append(context.addToImportAndGetSimpleName(GuideFunctions.getChannelType(method).canonicalName()));
-    sb.append(".class))");
+    sb.append(".class,\n");
+    GuideForm guideForm = GuideProcessorFunctions.getGuideForm(method);
+    sb.append("GuideForms.");
+    sb.append(guideForm.name());
+    sb.append("))");
     return sb.toString();
   }
 

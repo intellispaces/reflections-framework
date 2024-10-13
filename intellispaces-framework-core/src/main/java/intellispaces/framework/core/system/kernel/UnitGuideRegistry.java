@@ -16,11 +16,11 @@ class UnitGuideRegistry {
 
   public void addGuide(Guide<?, ?> guide) {
     if (guide.kind().isMapper()) {
-      mapperGuides.computeIfAbsent(guide.cid(), k -> newList(guide));
+      mapperGuides.computeIfAbsent(guide.cid(), k -> new ArrayList<>()).add(guide);
     } else if (guide.kind().isMover()) {
-      moverGuides.computeIfAbsent(guide.cid(), k -> newList(guide));
+      moverGuides.computeIfAbsent(guide.cid(), k -> new ArrayList<>()).add(guide);
     } else if (guide.kind().isMapperOfMoving()) {
-      mapperOfMovingGuides.computeIfAbsent(guide.cid(), k -> newList(guide));
+      mapperOfMovingGuides.computeIfAbsent(guide.cid(), k -> new ArrayList<>()).add(guide);
     }
   }
 
@@ -37,11 +37,5 @@ class UnitGuideRegistry {
       return List.of();
     }
     return Collections.unmodifiableList(guides);
-  }
-
-  private List<Guide<?, ?>> newList(Guide<?, ?> guide) {
-    List<Guide<?, ?>> list = new ArrayList<>();
-    list.add(guide);
-    return list;
   }
 }

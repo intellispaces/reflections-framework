@@ -28,7 +28,7 @@ import java.util.stream.Stream;
 public abstract class AbstractObjectHandleGenerator extends AbstractGenerator {
   protected String domainTypeParamsFull;
   protected String domainTypeParamsBrief;
-  protected final List<Map<String, String>> methods = new ArrayList<>();;
+  protected final List<Map<String, String>> methods = new ArrayList<>();
 
   public AbstractObjectHandleGenerator(CustomType initiatorType, CustomType customType) {
     super(initiatorType, customType);
@@ -48,14 +48,14 @@ public abstract class AbstractObjectHandleGenerator extends AbstractGenerator {
   }
 
   protected void analyzeObjectHandleMethods(CustomType customType, RoundEnvironment roundEnv) {
-    List<MethodStatement> input = getObjectHandleMethods(customType, roundEnv).toList();
+    List<MethodStatement> methods = getObjectHandleMethods(customType, roundEnv).toList();
     int methodIndex = 0;
-    for (MethodStatement method : input) {
+    for (MethodStatement method : methods) {
       MethodStatement effectiveMethod = convertMethodBeforeGenerate(method);
       analyzeMethod(effectiveMethod, GuideForms.Main, methodIndex++);
       if (method.returnType().orElseThrow().isCustomTypeReference()) {
-        CustomType customType2 = method.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow().targetType();
-        if (TypeFunctions.isPrimitiveWrapperClass(customType2.canonicalName())) {
+        CustomType returnType = method.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow().targetType();
+        if (TypeFunctions.isPrimitiveWrapperClass(returnType.canonicalName())) {
           analyzeMethod(effectiveMethod, GuideForms.Primitive, methodIndex++);
         }
       }
@@ -157,9 +157,9 @@ public abstract class AbstractObjectHandleGenerator extends AbstractGenerator {
 
   protected void appendMethodParameters(StringBuilder sb, MethodStatement method) {
     Runner commaAppender = TextActions.skippingFirstTimeCommaAppender(sb);
-    for (MethodParam param : method.params()) {
+    for (MethodParam param : GuideProcessorFunctions.rearrangementParams(method.params())) {
       commaAppender.run();
-      sb.append(getObjectHandleDeclaration(param.type(), ObjectHandleTypes.Common));
+      sb.append(getObjectHandleDeclaration(GuideProcessorFunctions.normalizeType(param.type()), ObjectHandleTypes.Common));
       sb.append(" ");
       sb.append(param.name());
     }

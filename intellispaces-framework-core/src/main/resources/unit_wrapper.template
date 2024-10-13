@@ -60,10 +60,14 @@ public class {{$classSimpleName}}{{$typeParamsFullDeclaration}} extends {{$sourc
     {{$method.get("body")}}
   }
 {{end}}
-{{for method : $guideMethods}}
+{{for method : $overrideGuideMethods}}
   @Override
   @Ordinal({{$method.index()}})
   {{$method.get("declaration")}}
+
+{{end}}
+{{for method : $guideActionMethods}}
+  {{$method.get("declaration")}};
 
 {{end}}
 }

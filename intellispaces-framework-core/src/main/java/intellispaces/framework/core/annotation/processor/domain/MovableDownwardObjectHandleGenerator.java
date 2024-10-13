@@ -1,7 +1,6 @@
 package intellispaces.framework.core.annotation.processor.domain;
 
 import intellispaces.common.annotationprocessor.context.AnnotationProcessingContext;
-import intellispaces.common.base.exception.UnexpectedViolationException;
 import intellispaces.common.base.text.TextFunctions;
 import intellispaces.common.base.type.Type;
 import intellispaces.common.javastatement.customtype.CustomType;
@@ -14,7 +13,6 @@ import intellispaces.framework.core.annotation.ObjectHandle;
 import intellispaces.framework.core.common.NameConventionFunctions;
 import intellispaces.framework.core.exception.TraverseException;
 import intellispaces.framework.core.guide.GuideForm;
-import intellispaces.framework.core.guide.GuideForms;
 import intellispaces.framework.core.object.ObjectFunctions;
 import intellispaces.framework.core.object.ObjectHandleTypes;
 import intellispaces.framework.core.space.channel.Channel0;

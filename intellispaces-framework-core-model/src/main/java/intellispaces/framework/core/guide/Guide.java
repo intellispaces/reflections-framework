@@ -28,6 +28,11 @@ public interface Guide<S, R> {
   String cid();
 
   /**
+   * Guide form.
+   */
+  GuideForm guideForm();
+
+  /**
    * Synchronous execution of the guide.
    *
    * @param source source object.

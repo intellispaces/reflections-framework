@@ -30,6 +30,16 @@ public class CallGuide2PlanImpl implements CallGuide2Plan {
   }
 
   @Override
+  public int executeReturnInt(Object source, TraverseExecutor executor) throws TraverseException {
+    throw UnexpectedViolationException.withMessage("Expected traverse with two channel qualifiers");
+  }
+
+  @Override
+  public double executeReturnDouble(Object source, TraverseExecutor executor) throws TraverseException {
+    throw UnexpectedViolationException.withMessage("Expected traverse with two channel qualifiers");
+  }
+
+  @Override
   public Object execute(
       Object source, Object qualifier, TraverseExecutor executor
   ) throws TraverseException {

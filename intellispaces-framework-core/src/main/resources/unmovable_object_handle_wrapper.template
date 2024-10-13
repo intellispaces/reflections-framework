@@ -69,7 +69,10 @@ public class {{$classSimpleName}}{{$typeParamsFull}} extends {{$sourceClassSimpl
     {{$method.get("body")}}
   }
 {{end}}
+{{for method : $guideActionMethods}}
+  {{$method.get("declaration")}};
 
+{{end}}
   @Override
   public <T, Q> T mapThru(Class<? extends Channel1> channelClass, Q qualifier) throws TraverseException {
     return Modules.current().mapThruChannel1(this, channelClass, qualifier);

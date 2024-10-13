@@ -2,6 +2,7 @@ package intellispaces.framework.core.guide.n2;
 
 import intellispaces.common.base.exception.UnexpectedViolationException;
 import intellispaces.framework.core.exception.TraverseException;
+import intellispaces.framework.core.guide.GuideForm;
 import intellispaces.framework.core.guide.GuideLogger;
 import intellispaces.framework.core.system.ObjectHandleWrapper;
 
@@ -12,12 +13,14 @@ abstract class ObjectGuide2<S extends ObjectHandleWrapper, R, Q1, Q2> implements
   private final String cid;
   private final Method guideMethod;
   private final int channelIndex;
+  private final GuideForm guideForm;
 
   ObjectGuide2(
       String cid,
       Class<S> objectHandleClass,
       Method guideMethod,
-      int channelIndex
+      int channelIndex,
+      GuideForm guideForm
   ) {
     if (guideMethod.getParameterCount() != 2) {
       throw UnexpectedViolationException.withMessage("Guide should have two qualifiers");
@@ -26,6 +29,7 @@ abstract class ObjectGuide2<S extends ObjectHandleWrapper, R, Q1, Q2> implements
     this.objectHandleClass = objectHandleClass;
     this.guideMethod = guideMethod;
     this.channelIndex = channelIndex;
+    this.guideForm = guideForm;
   }
 
   @Override
@@ -34,11 +38,16 @@ abstract class ObjectGuide2<S extends ObjectHandleWrapper, R, Q1, Q2> implements
   }
 
   @Override
+  public GuideForm guideForm() {
+    return guideForm;
+  }
+
+  @Override
   @SuppressWarnings("unchecked")
   public R traverse(S source, Q1 qualifier1, Q2 qualifier2) throws TraverseException {
     try {
       GuideLogger.logCallGuide(guideMethod);
-      return (R) source.$handle().getGuideAction(channelIndex).asAction2().execute(qualifier1, qualifier2);
+      return (R) source.$handle().getGuideAction(channelIndex).asAction3().execute(source, qualifier1, qualifier2);
     } catch (TraverseException e) {
       throw e;
     } catch (Exception e) {

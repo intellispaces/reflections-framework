@@ -3,7 +3,7 @@ package intellispaces.framework.core.traverse.plan;
 /**
  * Declarative plan to traverse object handle through channel.
  */
-public interface ObjectHandleTraversePlan extends DeclarativePlan {
+public interface ObjectHandleTraversePlan extends DeclarativeTraversePlan {
 
   /**
    * Source object handle class.
@@ -15,7 +15,7 @@ public interface ObjectHandleTraversePlan extends DeclarativePlan {
    */
   String cid();
 
-  ExecutionPlan getExecutionPlan(Class<?> sourceClass);
+  ExecutionTraversePlan getExecutionPlan(Class<?> sourceClass);
 
-  void addExecutionPlan(Class<?> sourceClass, ExecutionPlan traversePlan);
+  void addExecutionPlan(Class<?> sourceClass, ExecutionTraversePlan traversePlan);
 }

@@ -2,7 +2,6 @@ package intellispaces.framework.core.space.channel;
 
 import intellispaces.common.base.exception.UnexpectedViolationException;
 import intellispaces.common.base.text.TextFunctions;
-import intellispaces.common.base.type.TypeFunctions;
 import intellispaces.common.dynamicproxy.tracker.Tracker;
 import intellispaces.common.dynamicproxy.tracker.TrackerBuilder;
 import intellispaces.common.dynamicproxy.tracker.TrackerFunctions;

@@ -9,9 +9,9 @@ import java.util.Map;
 public abstract class AbstractObjectHandleTraversePlan implements ObjectHandleTraversePlan {
   private final Class<?> objectHandleClass;
   private final String cid;
-  private final Map<Class<?>, ExecutionPlan> actualPlans = new HashMap<>();
+  private final Map<Class<?>, ExecutionTraversePlan> executionPlans = new HashMap<>();
   private Class<?> lastSourceClass;
-  private ExecutionPlan lastExecutionPlan;
+  private ExecutionTraversePlan lastExecutionPlan;
 
   public AbstractObjectHandleTraversePlan(Class<?> objectHandleClass, String cid) {
     this.objectHandleClass = objectHandleClass;
@@ -29,17 +29,17 @@ public abstract class AbstractObjectHandleTraversePlan implements ObjectHandleTr
   }
 
   @Override
-  public ExecutionPlan getExecutionPlan(Class<?> sourceClass) {
+  public ExecutionTraversePlan getExecutionPlan(Class<?> sourceClass) {
     if (lastSourceClass != null && lastSourceClass == sourceClass) {
       return lastExecutionPlan;
     }
     lastSourceClass = sourceClass;
-    lastExecutionPlan = actualPlans.get(lastSourceClass);
+    lastExecutionPlan = executionPlans.get(lastSourceClass);
     return lastExecutionPlan;
   }
 
   @Override
-  public void addExecutionPlan(Class<?> sourceClass, ExecutionPlan traversePlan) {
+  public void addExecutionPlan(Class<?> sourceClass, ExecutionTraversePlan traversePlan) {
     if (!ObjectFunctions.isObjectHandleClass(sourceClass)) {
       throw UnexpectedViolationException.withMessage("Expected object handle class");
     }
@@ -47,6 +47,6 @@ public abstract class AbstractObjectHandleTraversePlan implements ObjectHandleTr
       throw UnexpectedViolationException.withMessage("Expected class {0} or its subclasses",
           this.objectHandleClass.getCanonicalName());
     }
-    actualPlans.put(sourceClass, traversePlan);
+    executionPlans.put(sourceClass, traversePlan);
   }
 }

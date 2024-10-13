@@ -16,20 +16,30 @@ public class MoveObjectHandleThruChannel2PlanImpl extends AbstractObjectHandleTr
   }
 
   @Override
-  public Object execute(Object source, TraverseExecutor traverseExecutor) {
+  public Object execute(Object source, TraverseExecutor executor) {
     throw UnexpectedViolationException.withMessage("Expected traverse with two qualifiers");
   }
 
   @Override
-  public Object execute(Object source, Object qualifier, TraverseExecutor traverseExecutor) throws TraverseException {
+  public int executeReturnInt(Object source, TraverseExecutor executor) throws TraverseException {
+    throw UnexpectedViolationException.withMessage("Invalid operation");
+  }
+
+  @Override
+  public double executeReturnDouble(Object source, TraverseExecutor executor) throws TraverseException {
+    throw UnexpectedViolationException.withMessage("Invalid operation");
+  }
+
+  @Override
+  public Object execute(Object source, Object qualifier, TraverseExecutor executor) throws TraverseException {
     throw UnexpectedViolationException.withMessage("Expected traverse with two qualifiers");
   }
 
   @Override
   public Object execute(
-      Object source, Object qualifier1, Object qualifier2, TraverseExecutor traverseExecutor
+      Object source, Object qualifier1, Object qualifier2, TraverseExecutor executor
   ) throws TraverseException {
-    return traverseExecutor.execute(this, source, qualifier1, qualifier2);
+    return executor.execute(this, source, qualifier1, qualifier2);
   }
 
   @Override

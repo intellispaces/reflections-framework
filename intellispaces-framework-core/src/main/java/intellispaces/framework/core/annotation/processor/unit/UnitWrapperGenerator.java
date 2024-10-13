@@ -7,6 +7,7 @@ import intellispaces.common.action.getter.ResettableGetter;
 import intellispaces.common.action.runner.Runner;
 import intellispaces.common.annotationprocessor.context.AnnotationProcessingContext;
 import intellispaces.common.base.exception.UnexpectedViolationException;
+import intellispaces.common.base.math.MathFunctions;
 import intellispaces.common.base.text.TextActions;
 import intellispaces.common.base.type.TypeFunctions;
 import intellispaces.common.javastatement.customtype.CustomType;
@@ -24,6 +25,7 @@ import intellispaces.framework.core.annotation.Projection;
 import intellispaces.framework.core.annotation.ProjectionDefinition;
 import intellispaces.framework.core.annotation.Wrapper;
 import intellispaces.framework.core.annotation.processor.AbstractGenerator;
+import intellispaces.framework.core.annotation.processor.GuideProcessorFunctions;
 import intellispaces.framework.core.common.NameConventionFunctions;
 import intellispaces.framework.core.exception.ConfigurationException;
 import intellispaces.framework.core.guide.GuideFunctions;
@@ -56,8 +58,9 @@ public class UnitWrapperGenerator extends AbstractGenerator {
   private final List<String> projectionDefinitions = new ArrayList<>();
   private final List<Map<String, Object>> injectionMethods = new ArrayList<>();
   private List<MethodStatement> declaredMethods;
-  private List<Map<String, Object>> guideMethods;
-  private List<String> guideActions;
+  private List<Map<String, Object>> overrideGuideMethods;
+  private final List<Map<String, String>> guideActionMethods = new ArrayList<>();
+  private final List<String> guideActions = new ArrayList<>();
   private String typeParamsFullDeclaration;
   private String typeParamsBriefDeclaration;
 
@@ -95,7 +98,8 @@ public class UnitWrapperGenerator extends AbstractGenerator {
     vars.put("injections", injections);
     vars.put("injectionMethods", injectionMethods);
     vars.put("guideActions", guideActions);
-    vars.put("guideMethods", guideMethods);
+    vars.put("overrideGuideMethods", overrideGuideMethods);
+    vars.put("guideActionMethods", guideActionMethods);
     return vars;
   }
 
@@ -125,6 +129,7 @@ public class UnitWrapperGenerator extends AbstractGenerator {
     context.addImport(ProjectionInjections.class);
     context.addImport(GuideInjections.class);
     context.addImport(AutoGuideInjections.class);
+    context.addImport(MathFunctions.class);
 
     declaredMethods = annotatedType.declaredMethods();
     analyzeTypeParams();
@@ -140,7 +145,7 @@ public class UnitWrapperGenerator extends AbstractGenerator {
   }
 
   private void analyzeGuideMethods() {
-    this.guideMethods = declaredMethods.stream()
+    this.overrideGuideMethods = declaredMethods.stream()
         .filter(GuideFunctions::isGuideMethod)
         .map(this::buildGuideMethod)
         .toList();
@@ -164,23 +169,12 @@ public class UnitWrapperGenerator extends AbstractGenerator {
   }
 
   private void analyzeGuideActions() {
-    this.guideActions = declaredMethods.stream()
+    declaredMethods.stream()
         .filter(GuideFunctions::isGuideMethod)
-        .map(this::buildGuideAction)
-        .toList();
-  }
-
-  private String buildGuideAction(MethodStatement guideMethod) {
-    var sb = new StringBuilder();
-    sb.append("FunctionActions.of(super::").append(guideMethod.name());
-    sb.append(", ");
-    sb.append(buildTypeDeclaration(guideMethod.returnType().orElseThrow())).append(".class");
-    for (MethodParam param : guideMethod.params()) {
-      sb.append(", ");
-      sb.append(buildTypeDeclaration(param.type())).append(".class");
-    }
-    sb.append(")");
-    return sb.toString();
+        .forEach(method -> {
+          guideActions.add(GuideProcessorFunctions.buildGuideAction(artifactName(), method, context));
+          guideActionMethods.add((GuideProcessorFunctions.buildGuideActionMethod(method, context)));
+      });
   }
 
   private String buildTypeDeclaration(TypeReference type) {

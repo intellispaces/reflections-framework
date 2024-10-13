@@ -1,12 +1,15 @@
 package intellispaces.framework.core.annotation.processor.objecthandle;
 
 import intellispaces.common.action.Actions;
+import intellispaces.common.action.functional.FunctionActions;
 import intellispaces.common.annotationprocessor.context.AnnotationProcessingContext;
+import intellispaces.common.base.math.MathFunctions;
 import intellispaces.common.base.type.Type;
 import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.framework.core.annotation.Ordinal;
 import intellispaces.framework.core.annotation.Wrapper;
 import intellispaces.framework.core.exception.TraverseException;
+import intellispaces.framework.core.guide.GuideForms;
 import intellispaces.framework.core.guide.n0.Mover0;
 import intellispaces.framework.core.guide.n1.Mover1;
 import intellispaces.framework.core.object.ObjectHandleTypes;
@@ -64,6 +67,7 @@ public class MovableObjectHandleWrapperGenerator extends AbstractObjectHandleWra
     vars.put("importedClasses", context.getImports());
     vars.put("methodActions", methodActions);
     vars.put("guideActions", guideActions);
+    vars.put("guideActionMethods", guideMethods);
     vars.put("domainMethods", methods);
     vars.put("injections", injections);
     vars.put("injectionMethods", injectionMethods);
@@ -83,11 +87,14 @@ public class MovableObjectHandleWrapperGenerator extends AbstractObjectHandleWra
     context.addImport(KernelFunctions.class);
     context.addImport(TraverseException.class);
     context.addImport(Actions.class);
+    context.addImport(FunctionActions.class);
     context.addImport(Type.class);
     context.addImport(Ordinal.class);
     context.addImport(Wrapper.class);
     context.addImport(ObjectHandleWrapper.class);
     context.addImport(KernelObjectHandle.class);
+    context.addImport(MathFunctions.class);
+    context.addImport(GuideForms.class);
 
     context.addImport(Mover0.class);
     context.addImport(Mover1.class);

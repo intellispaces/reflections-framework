@@ -23,12 +23,22 @@ public class CallGuide0PlanImpl implements CallGuide0Plan {
   }
 
   @Override
-  public Object execute(Object source, TraverseExecutor traverseExecutor) throws TraverseException {
-    return traverseExecutor.execute(this, source);
+  public Object execute(Object source, TraverseExecutor executor) throws TraverseException {
+    return executor.execute(this, source);
   }
 
   @Override
-  public Object execute(Object source, Object qualifier, TraverseExecutor traverseExecutor) {
+  public int executeReturnInt(Object source, TraverseExecutor executor) throws TraverseException {
+    return executor.executeReturnInt(this, source);
+  }
+
+  @Override
+  public double executeReturnDouble(Object source, TraverseExecutor executor) throws TraverseException {
+    return executor.executeReturnInt(this, source);
+  }
+
+  @Override
+  public Object execute(Object source, Object qualifier, TraverseExecutor executor) {
     throw UnexpectedViolationException.withMessage("Expected traverse without channel qualifier");
   }
 

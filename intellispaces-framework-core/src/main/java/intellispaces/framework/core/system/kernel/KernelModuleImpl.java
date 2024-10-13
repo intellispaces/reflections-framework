@@ -4,6 +4,8 @@ import intellispaces.common.action.Actions;
 import intellispaces.common.action.getter.Getter;
 import intellispaces.common.base.type.Type;
 import intellispaces.common.javastatement.type.Types;
+import intellispaces.framework.core.guide.GuideForm;
+import intellispaces.framework.core.guide.GuideForms;
 import intellispaces.framework.core.guide.n0.AutoMapper0;
 import intellispaces.framework.core.guide.n0.AutoMapperOfMoving0;
 import intellispaces.framework.core.guide.n0.AutoMover0;
@@ -36,9 +38,10 @@ import intellispaces.framework.core.space.channel.Channel3;
 import intellispaces.framework.core.space.channel.ChannelFunctions;
 import intellispaces.framework.core.system.ModuleProjection;
 import intellispaces.framework.core.system.Unit;
-import intellispaces.framework.core.traverse.plan.DeclarativePlan;
+import intellispaces.framework.core.traverse.plan.DeclarativeTraversePlan;
 import intellispaces.framework.core.traverse.plan.TraverseAnalyzer;
 import intellispaces.framework.core.traverse.plan.TraverseExecutor;
+import intellispaces.framework.core.traverse.plan.TraversePlan;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -136,8 +139,8 @@ class KernelModuleImpl implements KernelModule {
   @Override
   @SuppressWarnings("unchecked")
   public <S, T> T mapThruChannel0(S source, String cid) {
-    DeclarativePlan traversePlan = traverseAnalyzer.buildMapObjectHandleThruChannel0Plan(
-        ObjectFunctions.defineObjectHandleClass(source.getClass()), cid);
+    DeclarativeTraversePlan traversePlan = traverseAnalyzer.buildMapObjectHandleThruChannel0Plan(
+        ObjectFunctions.defineObjectHandleClass(source.getClass()), cid, GuideForms.Main);
     return (T) traversePlan.execute(source, traverseExecutor);
   }
 
@@ -150,8 +153,8 @@ class KernelModuleImpl implements KernelModule {
   @Override
   @SuppressWarnings("unchecked")
   public <S, T, Q> T mapThruChannel1(S source, String cid, Q qualifier) {
-    DeclarativePlan traversePlan = traverseAnalyzer.buildMapObjectHandleThruChannel1Plan(
-        ObjectFunctions.defineObjectHandleClass(source.getClass()), cid);
+    DeclarativeTraversePlan traversePlan = traverseAnalyzer.buildMapObjectHandleThruChannel1Plan(
+        ObjectFunctions.defineObjectHandleClass(source.getClass()), cid, GuideForms.Main);
     return (T) traversePlan.execute(source, qualifier, traverseExecutor);
   }
 
@@ -164,212 +167,212 @@ class KernelModuleImpl implements KernelModule {
   @Override
   @SuppressWarnings("unchecked")
   public <S, R> R moveThruChannel0(S source, String cid) {
-    DeclarativePlan traversePlan = traverseAnalyzer.buildMoveObjectHandleThruChannel0Plan(
-        ObjectFunctions.defineObjectHandleClass(source.getClass()), cid);
+    TraversePlan traversePlan = traverseAnalyzer.buildMoveObjectHandleThruChannel0Plan(
+        ObjectFunctions.defineObjectHandleClass(source.getClass()), cid, GuideForms.Main);
     return (R) traversePlan.execute(source, traverseExecutor);
   }
 
   @Override
   @SuppressWarnings("unchecked")
   public <S, R, Q> R moveThruChannel1(S source, String cid, Q qualifier) {
-    DeclarativePlan traversePlan = traverseAnalyzer.buildMoveObjectHandleThruChannel1Plan(
-        ObjectFunctions.defineObjectHandleClass(source.getClass()), cid);
+    TraversePlan traversePlan = traverseAnalyzer.buildMoveObjectHandleThruChannel1Plan(
+        ObjectFunctions.defineObjectHandleClass(source.getClass()), cid, GuideForms.Main);
     return (R) traversePlan.execute(source, qualifier, traverseExecutor);
   }
 
   @Override
-  public <S, T> Mapper0<S, T> autoMapperThruChannel0(Type<S> sourceType, String cid) {
-    DeclarativePlan traversePlan = traverseAnalyzer.buildMapObjectHandleThruChannel0Plan(
-        sourceType.baseClass(), cid
+  public <S, T> Mapper0<S, T> autoMapperThruChannel0(Type<S> sourceType, String cid, GuideForm guideForm) {
+    TraversePlan traversePlan = traverseAnalyzer.buildMapObjectHandleThruChannel0Plan(
+        sourceType.baseClass(), cid, guideForm
     );
-    return new AutoMapper0<>(cid, traversePlan, traverseExecutor);
+    return new AutoMapper0<>(cid, traversePlan, guideForm, traverseExecutor);
   }
 
   @Override
-  public <S, T, Q> Mapper1<S, T, Q> autoMapperThruChannel1(Type<S> sourceType, String cid) {
-    DeclarativePlan traversePlan = traverseAnalyzer.buildMapObjectHandleThruChannel1Plan(
-        sourceType.baseClass(), cid
+  public <S, T, Q> Mapper1<S, T, Q> autoMapperThruChannel1(Type<S> sourceType, String cid, GuideForm guideForm) {
+    TraversePlan traversePlan = traverseAnalyzer.buildMapObjectHandleThruChannel1Plan(
+        sourceType.baseClass(), cid, guideForm
     );
-    return new AutoMapper1<>(cid, traversePlan, traverseExecutor);
+    return new AutoMapper1<>(cid, traversePlan, guideForm, traverseExecutor);
   }
 
   @Override
-  public <S, T, Q1, Q2> Mapper2<S, T, Q1, Q2> autoMapperThruChannel2(Type<S> sourceType, String cid) {
-    DeclarativePlan traversePlan = traverseAnalyzer.buildMapObjectHandleThruChannel2Plan(
-        sourceType.baseClass(), cid
+  public <S, T, Q1, Q2> Mapper2<S, T, Q1, Q2> autoMapperThruChannel2(Type<S> sourceType, String cid, GuideForm guideForm) {
+    TraversePlan traversePlan = traverseAnalyzer.buildMapObjectHandleThruChannel2Plan(
+        sourceType.baseClass(), cid, guideForm
     );
-    return new AutoMapper2<>(cid, traversePlan, traverseExecutor);
+    return new AutoMapper2<>(cid, traversePlan, guideForm, traverseExecutor);
   }
 
   @Override
-  public <S, T, Q1, Q2, Q3> Mapper3<S, T, Q1, Q2, Q3> autoMapperThruChannel3(Type<S> sourceType, String cid) {
-    DeclarativePlan traversePlan = traverseAnalyzer.buildMapObjectHandleThruChannel3Plan(
-      sourceType.baseClass(), cid
+  public <S, T, Q1, Q2, Q3> Mapper3<S, T, Q1, Q2, Q3> autoMapperThruChannel3(Type<S> sourceType, String cid, GuideForm guideForm) {
+    TraversePlan traversePlan = traverseAnalyzer.buildMapObjectHandleThruChannel3Plan(
+      sourceType.baseClass(), cid, guideForm
     );
-    return new AutoMapper3<>(cid, traversePlan, traverseExecutor);
+    return new AutoMapper3<>(cid, traversePlan, guideForm, traverseExecutor);
   }
 
   @Override
-  public <S> Mover0<S> autoMoverThruChannel0(Type<S> sourceType, String cid) {
-    DeclarativePlan traversePlan = traverseAnalyzer.buildMoveObjectHandleThruChannel0Plan(
-        sourceType.baseClass(), cid
+  public <S> Mover0<S> autoMoverThruChannel0(Type<S> sourceType, String cid, GuideForm guideForm) {
+    TraversePlan traversePlan = traverseAnalyzer.buildMoveObjectHandleThruChannel0Plan(
+        sourceType.baseClass(), cid, guideForm
     );
-    return new AutoMover0<>(cid, traversePlan, traverseExecutor);
+    return new AutoMover0<>(cid, traversePlan, guideForm, traverseExecutor);
   }
 
   @Override
-  public <S, Q> Mover1<S, Q> autoMoverThruChannel1(Class<S> sourceClass, String cid) {
-    return autoMoverThruChannel1(Types.of(sourceClass), cid);
+  public <S, Q> Mover1<S, Q> autoMoverThruChannel1(Class<S> sourceClass, String cid, GuideForm guideForm) {
+    return autoMoverThruChannel1(Types.of(sourceClass), cid, guideForm);
   }
 
   @Override
-  public <S, Q> Mover1<S, Q> autoMoverThruChannel1(Type<S> sourceType, String cid) {
-    DeclarativePlan traversePlan = traverseAnalyzer.buildMoveObjectHandleThruChannel1Plan(
-        sourceType.baseClass(), cid
+  public <S, Q> Mover1<S, Q> autoMoverThruChannel1(Type<S> sourceType, String cid, GuideForm guideForm) {
+    TraversePlan traversePlan = traverseAnalyzer.buildMoveObjectHandleThruChannel1Plan(
+        sourceType.baseClass(), cid, guideForm
     );
-    return new AutoMover1<>(cid, traversePlan, traverseExecutor);
+    return new AutoMover1<>(cid, traversePlan, guideForm, traverseExecutor);
   }
 
   @Override
-  public <S, Q1, Q2> Mover2<S, Q1, Q2> autoMoverThruChannel2(Type<S> sourceType, String cid) {
-    DeclarativePlan traversePlan = traverseAnalyzer.buildMoveObjectHandleThruChannel2Plan(
-        sourceType.baseClass(), cid
+  public <S, Q1, Q2> Mover2<S, Q1, Q2> autoMoverThruChannel2(Type<S> sourceType, String cid, GuideForm guideForm) {
+    TraversePlan traversePlan = traverseAnalyzer.buildMoveObjectHandleThruChannel2Plan(
+        sourceType.baseClass(), cid, guideForm
     );
-    return new AutoMover2<>(cid, traversePlan, traverseExecutor);
+    return new AutoMover2<>(cid, traversePlan, guideForm, traverseExecutor);
   }
 
   @Override
-  public <S, Q1, Q2, Q3> Mover3<S, Q1, Q2, Q3> autoMoverThruChannel3(Type<S> sourceType, String cid) {
-    DeclarativePlan traversePlan = traverseAnalyzer.buildMoveObjectHandleThruChannel3Plan(
-      sourceType.baseClass(), cid
+  public <S, Q1, Q2, Q3> Mover3<S, Q1, Q2, Q3> autoMoverThruChannel3(Type<S> sourceType, String cid, GuideForm guideForm) {
+    TraversePlan traversePlan = traverseAnalyzer.buildMoveObjectHandleThruChannel3Plan(
+      sourceType.baseClass(), cid, guideForm
     );
-    return new AutoMover3<>(cid, traversePlan, traverseExecutor);
+    return new AutoMover3<>(cid, traversePlan, guideForm, traverseExecutor);
   }
 
   @Override
-  public <S, T> MapperOfMoving0<S, T> autoMapperOfMovingThruChannel0(Type<S> sourceType, String cid) {
-    DeclarativePlan traversePlan = traverseAnalyzer.buildMapOfMovingObjectHandleThruChannel0Plan(
-        sourceType.baseClass(), cid
+  public <S, T> MapperOfMoving0<S, T> autoMapperOfMovingThruChannel0(Type<S> sourceType, String cid, GuideForm guideForm) {
+    TraversePlan traversePlan = traverseAnalyzer.buildMapOfMovingObjectHandleThruChannel0Plan(
+        sourceType.baseClass(), cid, guideForm
     );
-    return new AutoMapperOfMoving0<>(cid, traversePlan, traverseExecutor);
+    return new AutoMapperOfMoving0<>(cid, traversePlan, guideForm, traverseExecutor);
   }
 
   @Override
-  public <S, T, Q> MapperOfMoving1<S, T, Q> autoMapperOfMovingThruChannel1(Type<S> sourceType, String cid) {
-    DeclarativePlan traversePlan = traverseAnalyzer.buildMapOfMovingObjectHandleThruChannel1Plan(
-        sourceType.baseClass(), cid
+  public <S, T, Q> MapperOfMoving1<S, T, Q> autoMapperOfMovingThruChannel1(Type<S> sourceType, String cid, GuideForm guideForm) {
+    TraversePlan traversePlan = traverseAnalyzer.buildMapOfMovingObjectHandleThruChannel1Plan(
+        sourceType.baseClass(), cid, guideForm
     );
-    return new AutoMapperOfMoving1<>(cid, traversePlan, traverseExecutor);
+    return new AutoMapperOfMoving1<>(cid, traversePlan, guideForm, traverseExecutor);
   }
 
   @Override
-  public <S, T, Q1, Q2> MapperOfMoving2<S, T, Q1, Q2> autoMapperOfMovingThruChannel2(Type<S> sourceType, String cid) {
-    DeclarativePlan traversePlan = traverseAnalyzer.buildMapOfMovingObjectHandleThruChannel2Plan(
-        sourceType.baseClass(), cid
+  public <S, T, Q1, Q2> MapperOfMoving2<S, T, Q1, Q2> autoMapperOfMovingThruChannel2(Type<S> sourceType, String cid, GuideForm guideForm) {
+    TraversePlan traversePlan = traverseAnalyzer.buildMapOfMovingObjectHandleThruChannel2Plan(
+        sourceType.baseClass(), cid, guideForm
     );
-    return new AutoMapperOfMoving2<>(cid, traversePlan, traverseExecutor);
+    return new AutoMapperOfMoving2<>(cid, traversePlan, guideForm, traverseExecutor);
   }
 
   @Override
-  public <S, T, Q1, Q2, Q3> MapperOfMoving3<S, T, Q1, Q2, Q3> autoMapperOfMovingThruChannel3(Type<S> sourceType, String cid) {
-    DeclarativePlan traversePlan = traverseAnalyzer.buildMapOfMovingObjectHandleThruChannel3Plan(
-        sourceType.baseClass(), cid
+  public <S, T, Q1, Q2, Q3> MapperOfMoving3<S, T, Q1, Q2, Q3> autoMapperOfMovingThruChannel3(Type<S> sourceType, String cid, GuideForm guideForm) {
+    TraversePlan traversePlan = traverseAnalyzer.buildMapOfMovingObjectHandleThruChannel3Plan(
+        sourceType.baseClass(), cid, guideForm
     );
-    return new AutoMapperOfMoving3<>(cid, traversePlan, traverseExecutor);
+    return new AutoMapperOfMoving3<>(cid, traversePlan, guideForm, traverseExecutor);
   }
 
   @Override
   public <S, T> Mapper0<S, T> autoMapperThruChannel0(
-      Type<S> sourceType, Class<? extends Channel0> channelClass
+      Type<S> sourceType, Class<? extends Channel0> channelClass, GuideForm guideForm
   ) {
-    return autoMapperThruChannel0(sourceType, ChannelFunctions.getChannelId(channelClass));
+    return autoMapperThruChannel0(sourceType, ChannelFunctions.getChannelId(channelClass), guideForm);
   }
 
   @Override
   @SuppressWarnings("rawtypes")
   public <S, T, Q> Mapper1<S, T, Q> autoMapperThruChannel1(
-      Type<S> sourceType, Class<? extends Channel1> channelClass
+      Type<S> sourceType, Class<? extends Channel1> channelClass, GuideForm guideForm
   ) {
-    return autoMapperThruChannel1(sourceType, ChannelFunctions.getChannelId(channelClass));
+    return autoMapperThruChannel1(sourceType, ChannelFunctions.getChannelId(channelClass), guideForm);
   }
 
   @Override
   @SuppressWarnings("rawtypes")
   public <S, T, Q1, Q2> Mapper2<S, T, Q1, Q2> autoMapperThruChannel2(
-      Type<S> sourceType, Class<? extends Channel2> channelClass
+      Type<S> sourceType, Class<? extends Channel2> channelClass, GuideForm guideForm
   ) {
-    return autoMapperThruChannel2(sourceType, ChannelFunctions.getChannelId(channelClass));
+    return autoMapperThruChannel2(sourceType, ChannelFunctions.getChannelId(channelClass), guideForm);
   }
 
   @Override
   @SuppressWarnings("rawtypes")
   public <S, T, Q1, Q2, Q3> Mapper3<S, T, Q1, Q2, Q3> autoMapperThruChannel3(
-    Type<S> sourceType, Class<? extends Channel3> channelClass
+    Type<S> sourceType, Class<? extends Channel3> channelClass, GuideForm guideForm
   ) {
-    return autoMapperThruChannel3(sourceType, ChannelFunctions.getChannelId(channelClass));
+    return autoMapperThruChannel3(sourceType, ChannelFunctions.getChannelId(channelClass), guideForm);
   }
 
   @Override
   @SuppressWarnings("rawtypes")
   public <S> Mover0<S> autoMoverThruChannel0(
-      Type<S> sourceType, Class<? extends Channel0> channelClass
+      Type<S> sourceType, Class<? extends Channel0> channelClass, GuideForm guideForm
   ) {
-    return autoMoverThruChannel0(sourceType, ChannelFunctions.getChannelId(channelClass));
+    return autoMoverThruChannel0(sourceType, ChannelFunctions.getChannelId(channelClass), guideForm);
   }
 
   @Override
   @SuppressWarnings("rawtypes")
   public <S, Q> Mover1<S, Q> autoMoverThruChannel1(
-      Type<S> sourceType, Class<? extends Channel1> channelClass
+      Type<S> sourceType, Class<? extends Channel1> channelClass, GuideForm guideForm
   ) {
-    return autoMoverThruChannel1(sourceType, ChannelFunctions.getChannelId(channelClass));
+    return autoMoverThruChannel1(sourceType, ChannelFunctions.getChannelId(channelClass), guideForm);
   }
 
   @Override
   @SuppressWarnings("rawtypes")
   public <S, Q1, Q2> Mover2<S, Q1, Q2> autoMoverThruChannel2(
-      Type<S> sourceType, Class<? extends Channel2> channelClass
+      Type<S> sourceType, Class<? extends Channel2> channelClass, GuideForm guideForm
   ) {
-    return autoMoverThruChannel2(sourceType, ChannelFunctions.getChannelId(channelClass));
+    return autoMoverThruChannel2(sourceType, ChannelFunctions.getChannelId(channelClass), guideForm);
   }
 
   @Override
   @SuppressWarnings("rawtypes")
   public <S, Q1, Q2, Q3> Mover3<S, Q1, Q2, Q3> autoMoverThruChannel3(
-    Type<S> sourceType, Class<? extends Channel3> channelClass
+    Type<S> sourceType, Class<? extends Channel3> channelClass, GuideForm guideForm
   ) {
-    return autoMoverThruChannel3(sourceType, ChannelFunctions.getChannelId(channelClass));
+    return autoMoverThruChannel3(sourceType, ChannelFunctions.getChannelId(channelClass), guideForm);
   }
 
   @Override
   public <S, T> MapperOfMoving0<S, T> autoMapperOfMovingThruChannel0(
-      Type<S> sourceType, Class<? extends Channel0> channelClass
+      Type<S> sourceType, Class<? extends Channel0> channelClass, GuideForm guideForm
   ) {
-    return autoMapperOfMovingThruChannel0(sourceType, ChannelFunctions.getChannelId(channelClass));
+    return autoMapperOfMovingThruChannel0(sourceType, ChannelFunctions.getChannelId(channelClass), guideForm);
   }
 
   @Override
   @SuppressWarnings("rawtypes")
   public <S, T, Q> MapperOfMoving1<S, T, Q> autoMapperOfMovingThruChannel1(
-      Type<S> sourceType, Class<? extends Channel1> channelClass
+      Type<S> sourceType, Class<? extends Channel1> channelClass, GuideForm guideForm
   ) {
-    return autoMapperOfMovingThruChannel1(sourceType, ChannelFunctions.getChannelId(channelClass));
+    return autoMapperOfMovingThruChannel1(sourceType, ChannelFunctions.getChannelId(channelClass), guideForm);
   }
 
   @Override
   @SuppressWarnings("rawtypes")
   public <S, T, Q1, Q2> MapperOfMoving2<S, T, Q1, Q2> autoMapperOfMovingThruChannel2(
-      Type<S> sourceType, Class<? extends Channel2> channelClass
+      Type<S> sourceType, Class<? extends Channel2> channelClass, GuideForm guideForm
   ) {
-    return autoMapperOfMovingThruChannel2(sourceType, ChannelFunctions.getChannelId(channelClass));
+    return autoMapperOfMovingThruChannel2(sourceType, ChannelFunctions.getChannelId(channelClass), guideForm);
   }
 
   @Override
   @SuppressWarnings("rawtypes")
   public <S, T, Q1, Q2, Q3> MapperOfMoving3<S, T, Q1, Q2, Q3> autoMapperOfMovingThruChannel3(
-      Type<S> sourceType, Class<? extends Channel3> channelClass
+      Type<S> sourceType, Class<? extends Channel3> channelClass, GuideForm guideForm
   ) {
-    return autoMapperOfMovingThruChannel3(sourceType, ChannelFunctions.getChannelId(channelClass));
+    return autoMapperOfMovingThruChannel3(sourceType, ChannelFunctions.getChannelId(channelClass), guideForm);
   }
 
   @Override

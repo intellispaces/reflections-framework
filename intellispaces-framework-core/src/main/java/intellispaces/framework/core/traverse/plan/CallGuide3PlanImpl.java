@@ -30,6 +30,16 @@ public class CallGuide3PlanImpl implements CallGuide3Plan {
   }
 
   @Override
+  public int executeReturnInt(Object source, TraverseExecutor executor) throws TraverseException {
+    throw UnexpectedViolationException.withMessage("Expected traverse with three channel qualifier");
+  }
+
+  @Override
+  public double executeReturnDouble(Object source, TraverseExecutor executor) throws TraverseException {
+    throw UnexpectedViolationException.withMessage("Expected traverse with three channel qualifier");
+  }
+
+  @Override
   public Object execute(
       Object source, Object qualifier, TraverseExecutor executor
   ) throws TraverseException {

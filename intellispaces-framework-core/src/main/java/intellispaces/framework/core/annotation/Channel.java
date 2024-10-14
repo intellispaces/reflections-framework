@@ -15,14 +15,19 @@ import java.lang.annotation.Target;
 public @interface Channel {
 
   /**
-   * Channel identifier.
+   * Channel identifier (CID).
    */
   String value();
 
   /**
-   * Channel name.
+   * Simple channel name.
    */
   String name() default "";
+
+  /**
+   * Flag of the default channel between two domains.
+   */
+  boolean isDefault() default false;
 
   /**
    * Allowed traverse types.

@@ -1,6 +1,7 @@
 package intellispaces.framework.core.validation;
 
 import intellispaces.common.annotationprocessor.validator.AnnotatedTypeValidator;
+import intellispaces.common.base.text.TextFunctions;
 import intellispaces.common.base.type.TypeFunctions;
 import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.common.javastatement.method.MethodParam;
@@ -26,8 +27,16 @@ public class DomainValidator implements AnnotatedTypeValidator {
 
   @Override
   public void validate(CustomType domainType) {
+    validateName(domainType);
     validateBaseDomains(domainType);
     validateMethods(domainType);
+  }
+
+  private void validateName(CustomType domainType) {
+    if (!domainType.simpleName().endsWith("Domain")) {
+      throw IntelliSpacesException.withMessage("Domain interface name must end with ''Domain''. Check class {0}\"",
+          domainType.canonicalName());
+    }
   }
 
   private void validateBaseDomains(CustomType domainType) {
@@ -87,8 +96,17 @@ public class DomainValidator implements AnnotatedTypeValidator {
               "Check method ''{1}'' in class {2}",
           Channel.class.getSimpleName(), method.name(), domainType.canonicalName());
     }
+    validateMethodName(method, domainType);
     validateMethodReturnType(method, domainType);
     validateMethodParameters(method, domainType);
+  }
+
+  private void validateMethodName(MethodStatement method, CustomType domainType) {
+    String name = method.selectAnnotation(Channel.class).orElseThrow().name();
+    if (TextFunctions.isNotBlank(name) && !name.endsWith("Channel")) {
+      throw IntelliSpacesException.withMessage("Channel method name must end with ''Channel''. " +
+              "Check method {0} in class {1}",  method.name(), domainType.canonicalName());
+    }
   }
 
   private void validateMethodReturnType(MethodStatement method, CustomType domainType) {
@@ -98,11 +116,11 @@ public class DomainValidator implements AnnotatedTypeValidator {
           "Check method ''{0}'' in class 12}", method.name(), domainType.canonicalName());
     }
     if (returnType.get().isPrimitiveReference()) {
-      throw IntelliSpacesException.withMessage("Domain methods should not return a primitive value. " +
+      throw IntelliSpacesException.withMessage("Domain method cannot return a primitive value. " +
           "Check method ''{0}'' in class {1}", method.name(), domainType.canonicalName());
     }
     if (returnType.get().isArrayReference()) {
-      throw IntelliSpacesException.withMessage("Domain methods should not return an array. " +
+      throw IntelliSpacesException.withMessage("Domain methods cannot return an array. " +
           "Check method ''{0}'' in class {1}", method.name(), domainType.canonicalName());
     }
     if (returnType.get().isCustomTypeReference()) {

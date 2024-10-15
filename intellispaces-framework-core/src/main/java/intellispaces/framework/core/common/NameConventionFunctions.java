@@ -50,19 +50,19 @@ public interface NameConventionFunctions {
   }
 
   static String getObjectHandleWrapperCanonicalName(CustomType objectHandleType) {
-    Optional<ObjectHandle> a = objectHandleType.selectAnnotation(ObjectHandle.class);
-    if (a.isPresent()) {
-      return TypeFunctions.replaceSimpleName(objectHandleType.canonicalName(), a.get().name());
+    Optional<ObjectHandle> oha = objectHandleType.selectAnnotation(ObjectHandle.class);
+    if (oha.isPresent() && TextFunctions.isNotBlank(oha.get().name())) {
+      return TypeFunctions.replaceSimpleName(objectHandleType.canonicalName(), oha.get().name());
     }
-    return objectHandleType.canonicalName() + "Wrapper";
+    return objectHandleType.canonicalName() + "Impl";
   }
 
   static String getObjectHandleWrapperCanonicalName(Class<?> objectHandleClass) {
-    ObjectHandle a = objectHandleClass.getAnnotation(ObjectHandle.class);
-    if (a != null) {
-      return TypeFunctions.replaceSimpleName(objectHandleClass.getCanonicalName(), a.name());
+    ObjectHandle oha = objectHandleClass.getAnnotation(ObjectHandle.class);
+    if (oha != null && TextFunctions.isNotBlank(oha.name())) {
+      return TypeFunctions.replaceSimpleName(objectHandleClass.getCanonicalName(), oha.name());
     }
-    return objectHandleClass.getCanonicalName() + "Wrapper";
+    return objectHandleClass.getCanonicalName() + "Impl";
   }
 
   static String getUnitWrapperCanonicalName(String unitClassName) {

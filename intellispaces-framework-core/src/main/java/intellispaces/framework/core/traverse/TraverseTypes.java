@@ -2,31 +2,30 @@ package intellispaces.framework.core.traverse;
 
 public enum TraverseTypes implements TraverseType {
 
-  /**
-   * Mapping traverse.
-   */
-  Mapping(false),
+  Mapping,
 
-  /**
-   * Moving traverse.
-   */
-  Moving(true),
+  Moving,
 
-  /**
-   * Mapping related to a specific movement.<p/>
-   *
-   * Combined channel that sequentially combines movement and then directly related mapping traverses.
-   */
-  MappingOfMoving(true);
+  MappingOfMoving;
 
-  private final boolean movingBased;
 
-  TraverseTypes(boolean movingBased) {
-    this.movingBased = movingBased;
+  @Override
+  public boolean isMapping() {
+    return this == TraverseTypes.Mapping;
+  }
+
+  @Override
+  public boolean isMoving() {
+    return this == TraverseTypes.Moving;
+  }
+
+  @Override
+  public boolean isMappingOfMoving() {
+    return this == TraverseTypes.MappingOfMoving;
   }
 
   @Override
   public boolean isMovingBased() {
-    return movingBased;
+    return (this == TraverseTypes.Moving || this == TraverseTypes.MappingOfMoving);
   }
 }

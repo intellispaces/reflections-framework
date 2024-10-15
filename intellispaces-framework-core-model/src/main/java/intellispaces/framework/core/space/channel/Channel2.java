@@ -1,4 +1,7 @@
 package intellispaces.framework.core.space.channel;
 
-public interface Channel2<S, R, Q1, Q2> {
+/**
+ * Marker interface of the channel 2.
+ */
+public interface Channel2 {
 }

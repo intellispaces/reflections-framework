@@ -76,39 +76,27 @@ public interface Module {
 
   <S, T, Q1, Q2, Q3> MapperOfMoving3<S, T, Q1, Q2, Q3> autoMapperOfMovingThruChannel3(Type<S> sourceType, String cid, GuideForm guideForm);
 
-  @SuppressWarnings("rawtypes")
   <S, T> Mapper0<S, T> autoMapperThruChannel0(Type<S> sourceType, Class<? extends Channel0> channelClass, GuideForm guideForm);
 
-  @SuppressWarnings("rawtypes")
   <S, T, Q> Mapper1<S, T, Q> autoMapperThruChannel1(Type<S> sourceType, Class<? extends Channel1> channelClass, GuideForm guideForm);
 
-  @SuppressWarnings("rawtypes")
   <S, T, Q1, Q2> Mapper2<S, T, Q1, Q2> autoMapperThruChannel2(Type<S> sourceType, Class<? extends Channel2> channelClass, GuideForm guideForm);
 
-  @SuppressWarnings("rawtypes")
   <S, T, Q1, Q2, Q3> Mapper3<S, T, Q1, Q2, Q3> autoMapperThruChannel3(Type<S> sourceType, Class<? extends Channel3> channelClass, GuideForm guideForm);
 
-  @SuppressWarnings("rawtypes")
   <S> Mover0<S> autoMoverThruChannel0(Type<S> sourceType, Class<? extends Channel0> channelClass, GuideForm guideForm);
 
-  @SuppressWarnings("rawtypes")
   <S, Q> Mover1<S, Q> autoMoverThruChannel1(Type<S> sourceType, Class<? extends Channel1> channelClass, GuideForm guideForm);
 
-  @SuppressWarnings("rawtypes")
   <S, Q1, Q2> Mover2<S, Q1, Q2> autoMoverThruChannel2(Type<S> sourceType, Class<? extends Channel2> channelClass, GuideForm guideForm);
 
-  @SuppressWarnings("rawtypes")
   <S, Q1, Q2, Q3> Mover3<S, Q1, Q2, Q3> autoMoverThruChannel3(Type<S> sourceType, Class<? extends Channel3> channelClass, GuideForm guideForm);
 
-  @SuppressWarnings("rawtypes")
   <S, T> MapperOfMoving0<S, T> autoMapperOfMovingThruChannel0(Type<S> sourceType, Class<? extends Channel0> channelClass, GuideForm guideForm);
 
-  @SuppressWarnings("rawtypes")
   <S, T, Q> MapperOfMoving1<S, T, Q> autoMapperOfMovingThruChannel1(Type<S> sourceType, Class<? extends Channel1> channelClass, GuideForm guideForm);
 
-  @SuppressWarnings("rawtypes")
   <S, T, Q1, Q2> MapperOfMoving2<S, T, Q1, Q2> autoMapperOfMovingThruChannel2(Type<S> sourceType, Class<? extends Channel2> channelClass, GuideForm guideForm);
 
-  @SuppressWarnings("rawtypes")
   <S, T, Q1, Q2, Q3> MapperOfMoving3<S, T, Q1, Q2, Q3> autoMapperOfMovingThruChannel3(Type<S> sourceType, Class<? extends Channel3> channelClass, GuideForm guideForm);
 }

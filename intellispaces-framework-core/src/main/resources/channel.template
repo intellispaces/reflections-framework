@@ -12,7 +12,7 @@ import {{$importedClass}};
 @Channel("{{$cid}}")
 @FunctionalInterface
 {{$generatedAnnotation}}
-public interface {{$classSimpleName}}{{$channelTypeParamsFull}} extends {{$channelClass}}{{$channelTypeParamsBrief}} {
+public interface {{$classSimpleName}}{{$channelTypeParamsFull}} extends {{$channelClass}} {
 
   {{$channelMethod}};
 }

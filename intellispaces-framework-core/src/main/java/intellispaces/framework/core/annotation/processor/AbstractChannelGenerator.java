@@ -20,7 +20,6 @@ public abstract class AbstractChannelGenerator extends AbstractGenerator {
   private String channelMethodSignature;
   private String channelClass;
   private String channelTypeParamsFull;
-  private String channelTypeParamsBrief;
 
   public AbstractChannelGenerator(
       CustomType initiatorType, CustomType annotatedType, MethodStatement channelMethod
@@ -64,7 +63,6 @@ public abstract class AbstractChannelGenerator extends AbstractGenerator {
     vars.put("channelMethod", channelMethodSignature);
     vars.put("channelClass", channelClass);
     vars.put("channelTypeParamsFull", channelTypeParamsFull);
-    vars.put("channelTypeParamsBrief", channelTypeParamsBrief);
     vars.put("channelMethodName", channelMethod.name());
     vars.put("cid", getTid());
     return vars;
@@ -80,7 +78,6 @@ public abstract class AbstractChannelGenerator extends AbstractGenerator {
 
     channelClass = getChannelClass();
     channelTypeParamsFull = getChannelClassTypeParams();
-    channelTypeParamsBrief = getChannelTypeParamsBrief();
     channelMethodSignature = getChannelMethodSignature();
     return true;
   }
@@ -89,20 +86,6 @@ public abstract class AbstractChannelGenerator extends AbstractGenerator {
     return context.addToImportAndGetSimpleName(
         ChannelFunctions.getChannelClass(getQualifierTypes().size())
     );
-  }
-
-  private String getChannelTypeParamsBrief() {
-    var sb = new StringBuilder();
-    sb.append("<");
-    appendTypeDeclaration(sb, getSourceType());
-    sb.append(", ");
-    appendTypeDeclaration(sb, getResultType());
-    for (TypeReference qualifierType : getQualifierTypes()) {
-      sb.append(", ");
-      appendTypeDeclaration(sb, qualifierType);
-    }
-    sb.append(">");
-    return sb.toString();
   }
 
   private void appendTypeDeclaration(StringBuilder sb, Statement type) {

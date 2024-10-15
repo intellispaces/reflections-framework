@@ -3,7 +3,7 @@ package intellispaces.framework.core.system.action;
 import intellispaces.common.action.AbstractAction0;
 import intellispaces.common.base.exception.UnexpectedViolationException;
 import intellispaces.framework.core.exception.ConfigurationException;
-import intellispaces.framework.core.system.Modules;
+import intellispaces.framework.core.system.kernel.KernelFunctions;
 import intellispaces.framework.core.system.UnitWrapper;
 
 import java.lang.reflect.Method;
@@ -38,7 +38,9 @@ public class InvokeUnitMethodAction<R> extends AbstractAction0<R> {
   private Object[] makeMethodArguments() {
     var arguments = new ArrayList<>();
     for (Parameter param : unitMethod.getParameters()) {
-      Object projection = Modules.current().getProjection(param.getName(), param.getType());
+      Object projection = KernelFunctions.currentModule()
+          .projectionRegistry()
+          .getProjection(param.getName(), param.getType());
       if (projection == null) {
         throw ConfigurationException.withMessage("Cannot to resolve parameter ''{0}'' in method ''{1}'' in unit {2}",
             param.getName(), unitMethod.getName(), unitMethod.getDeclaringClass().getCanonicalName());

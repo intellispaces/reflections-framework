@@ -2,7 +2,7 @@ package intellispaces.framework.core.system.injection;
 
 import intellispaces.common.base.exception.UnexpectedViolationException;
 import intellispaces.framework.core.system.InjectionKind;
-import intellispaces.framework.core.system.Modules;
+import intellispaces.framework.core.system.kernel.KernelFunctions;
 import intellispaces.framework.core.system.ProjectionInjection;
 
 class ProjectionInjectionImpl implements ProjectionInjection {
@@ -45,7 +45,7 @@ class ProjectionInjectionImpl implements ProjectionInjection {
   @Override
   public Object value() {
     if (projectionTarget == null) {
-      projectionTarget = Modules.current().getProjection(name, targetClass);
+      projectionTarget = KernelFunctions.currentModule().projectionRegistry().getProjection(name, targetClass);
       if (projectionTarget == null) {
         throw UnexpectedViolationException.withMessage("Target of projection injection ''{0}'' in unit {1} " +
                 "is not defined", name(), unitClass.getCanonicalName());

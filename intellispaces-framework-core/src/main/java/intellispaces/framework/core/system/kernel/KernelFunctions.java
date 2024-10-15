@@ -1,8 +1,6 @@
 package intellispaces.framework.core.system.kernel;
 
 import intellispaces.common.base.exception.UnexpectedViolationException;
-import intellispaces.framework.core.system.Module;
-import intellispaces.framework.core.system.Modules;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,7 +8,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public final class KernelFunctions {
   private static final AtomicReference<KernelModule> CURRENT_MODULE = new AtomicReference<>();
-  private static final Logger LOG = LoggerFactory.getLogger(Modules.class);
+  private static final Logger LOG = LoggerFactory.getLogger(KernelFunctions.class);
 
   private KernelFunctions() {}
 
@@ -28,7 +26,7 @@ public final class KernelFunctions {
   }
 
   public static void setCurrentModule(KernelModule module) {
-    Module previous = CURRENT_MODULE.getAndSet(module);
+    KernelModule previous = CURRENT_MODULE.getAndSet(module);
     if (previous != null && module != null) {
       LOG.warn("Current module has been changed");
     }

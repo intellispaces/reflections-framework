@@ -2,6 +2,7 @@ package intellispaces.framework.core.system;
 
 import intellispaces.common.base.exception.UnexpectedViolationException;
 import intellispaces.framework.core.system.kernel.KernelFunctions;
+import intellispaces.framework.core.system.kernel.KernelModule;
 
 public interface Modules {
 
@@ -15,6 +16,7 @@ public interface Modules {
   }
 
   static Module currentSilently() {
-    return KernelFunctions.currentModuleSilently();
+    KernelModule kernelModule = KernelFunctions.currentModuleSilently();
+    return kernelModule != null ? kernelModule.module() : null;
   }
 }

@@ -1,13 +1,25 @@
 package intellispaces.framework.core.system.kernel;
 
 import intellispaces.framework.core.system.Module;
+import intellispaces.framework.core.traverse.plan.TraverseAnalyzer;
+import intellispaces.framework.core.traverse.plan.TraverseExecutor;
 
 import java.util.List;
 
 /**
  * Internal kernel module presentation.
  */
-public interface KernelModule extends Module {
+public interface KernelModule {
+
+  default void start() {
+    start(new String[] {});
+  }
+
+  void start(String[] args);
+
+  void stop();
+
+  Module module();
 
   KernelUnit mainUnit();
 
@@ -18,4 +30,8 @@ public interface KernelModule extends Module {
   GuideRegistry guideRegistry();
 
   ObjectRegistry objectRegistry();
+
+  TraverseAnalyzer traverseAnalyzer();
+
+  TraverseExecutor traverseExecutor();
 }

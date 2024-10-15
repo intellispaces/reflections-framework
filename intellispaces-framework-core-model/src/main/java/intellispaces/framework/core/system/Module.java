@@ -19,7 +19,6 @@ import intellispaces.framework.core.space.channel.Channel1;
 import intellispaces.framework.core.space.channel.Channel2;
 import intellispaces.framework.core.space.channel.Channel3;
 
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -27,9 +26,7 @@ import java.util.List;
  */
 public interface Module {
 
-  default void start() {
-    start(new String[] {});
-  }
+  void start();
 
   void start(String[] args);
 
@@ -38,8 +35,6 @@ public interface Module {
   <T> T getProjection(String name, Class<T> targetClass);
 
   <T> List<T> getProjections(Class<T> targetClass);
-
-  Collection<ModuleProjection> allProjections();
 
   <S, T> T mapThruChannel0(S source, String cid);
 

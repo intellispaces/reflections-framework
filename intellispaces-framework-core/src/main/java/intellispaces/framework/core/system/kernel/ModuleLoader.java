@@ -39,7 +39,7 @@ public class ModuleLoader {
   }
 
   public static void unloadModule() {
-    Module currentModule = KernelFunctions.currentModuleSilently();
+    KernelModule currentModule = KernelFunctions.currentModuleSilently();
     if (currentModule != null) {
       currentModule.stop();
     }

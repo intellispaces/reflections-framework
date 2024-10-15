@@ -119,7 +119,7 @@ public class ModuleFactoryTest {
 
   @Test
   public void testCreateModule_whenOneUnit_andProjectionProvidersWithSelfCyclicDependency() {
-    Module module = factory.createModule(ModuleWithProjectionProvidersWithSelfCyclicDependency.class);
+    KernelModule module = factory.createModule(ModuleWithProjectionProvidersWithSelfCyclicDependency.class);
     Assertions.assertThatThrownBy(module::start)
         .isExactlyInstanceOf(CyclicDependencyException.class)
         .hasMessage("Cyclic dependency between projections 'projection1' and 'projection1' in unit " + ModuleWithProjectionProvidersWithSelfCyclicDependency.class.getCanonicalName()
@@ -128,7 +128,7 @@ public class ModuleFactoryTest {
 
   @Test
   public void testCreateModule_whenOneUnit_andTwoProjectionProvidersWithCyclicDependency() {
-    Module module = factory.createModule(ModuleWithTwoProjectionProvidersWithCyclicDependency.class);
+    KernelModule module = factory.createModule(ModuleWithTwoProjectionProvidersWithCyclicDependency.class);
     Assertions.assertThatThrownBy(module::start)
         .isExactlyInstanceOf(CyclicDependencyException.class)
         .hasMessage("Cyclic dependency between projections 'projection1' and 'projection2' in unit " + ModuleWithTwoProjectionProvidersWithCyclicDependency.class.getCanonicalName()
@@ -137,7 +137,7 @@ public class ModuleFactoryTest {
 
   @Test
   public void testCreateModule_whenOneUnit_andThreeProjectionProvidersWithCyclicDependency() {
-    Module module = factory.createModule(ModuleWithThreeProjectionProvidersWithCyclicDependency.class);
+    KernelModule module = factory.createModule(ModuleWithThreeProjectionProvidersWithCyclicDependency.class);
     Assertions.assertThatThrownBy(module::start)
         .isExactlyInstanceOf(CyclicDependencyException.class)
         .hasMessage("Cyclic dependency between projections 'projection1' and 'projection3' in unit " + ModuleWithThreeProjectionProvidersWithCyclicDependency.class.getCanonicalName()
@@ -146,7 +146,7 @@ public class ModuleFactoryTest {
 
   @Test
   public void testCreateModule_whenTwoUnit_andTwoProjectionProvidersInDifferentUnitsWithCyclicDependency1() {
-    Module module = factory.createModule(ModuleWithTwoProjectionProvidersInDifferentUnitsWithCyclicDependency1.ModuleSample.class);
+    KernelModule module = factory.createModule(ModuleWithTwoProjectionProvidersInDifferentUnitsWithCyclicDependency1.ModuleSample.class);
     Assertions.assertThatThrownBy(module::start)
         .isExactlyInstanceOf(CyclicDependencyException.class)
         .hasMessage("Cyclic dependency between projection 'projection1' in unit " + ModuleWithTwoProjectionProvidersInDifferentUnitsWithCyclicDependency1.ModuleSample.class.getCanonicalName()
@@ -156,7 +156,7 @@ public class ModuleFactoryTest {
 
   @Test
   public void testCreateModule_whenTwoUnit_andTwoProjectionProvidersInDifferentUnitsWithCyclicDependency2() {
-    Module module = factory.createModule(ModuleWithTwoProjectionProvidersInDifferentUnitsWithCyclicDependency2.ModuleSample.class);
+    KernelModule module = factory.createModule(ModuleWithTwoProjectionProvidersInDifferentUnitsWithCyclicDependency2.ModuleSample.class);
     Assertions.assertThatThrownBy(module::start)
         .isExactlyInstanceOf(CyclicDependencyException.class)
         .hasMessage("Cyclic dependency between projections 'projection2' and 'projection2' in unit " + ModuleWithTwoProjectionProvidersInDifferentUnitsWithCyclicDependency2.UnitSample.class.getCanonicalName()
@@ -165,7 +165,7 @@ public class ModuleFactoryTest {
 
   @Test
   public void testCreateModule_whenTwoUnit_andTwoProjectionProvidersInDifferentUnitsWithCyclicDependency3() {
-    Module module = factory.createModule(ModuleWithTwoProjectionProvidersInDifferentUnitsWithCyclicDependency3.ModuleSample.class);
+    KernelModule module = factory.createModule(ModuleWithTwoProjectionProvidersInDifferentUnitsWithCyclicDependency3.ModuleSample.class);
     Assertions.assertThatThrownBy(module::start)
         .isExactlyInstanceOf(ConfigurationException.class)
         .hasMessage("Cannot to resolve required projection 'projection3' in projection definition 'projection2' of unit " + ModuleWithTwoProjectionProvidersInDifferentUnitsWithCyclicDependency3.UnitSample.class.getCanonicalName());

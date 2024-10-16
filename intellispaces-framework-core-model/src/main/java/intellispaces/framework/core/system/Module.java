@@ -18,8 +18,7 @@ import intellispaces.framework.core.space.channel.Channel0;
 import intellispaces.framework.core.space.channel.Channel1;
 import intellispaces.framework.core.space.channel.Channel2;
 import intellispaces.framework.core.space.channel.Channel3;
-
-import java.util.List;
+import intellispaces.framework.core.space.channel.MappingChannel;
 
 /**
  * System module.
@@ -32,19 +31,13 @@ public interface Module {
 
   void stop();
 
-  <T> T getProjection(String name, Class<T> targetClass);
-
-  <T> List<T> getProjections(Class<T> targetClass);
-
   <S, T> T mapThruChannel0(S source, String cid);
 
-  @SuppressWarnings("rawtypes")
-  <S, T> T mapThruChannel0(S source, Class<? extends Channel0> channelClass);
+  <S, T, C extends Channel0 & MappingChannel> T mapThruChannel0(S source, Class<C> channelClass);
 
   <S, T, Q> T mapThruChannel1(S source, String cid, Q qualifier);
 
-  @SuppressWarnings("rawtypes")
-  <S, T, Q> T mapThruChannel1(S source, Class<? extends Channel1> channelClass, Q qualifier);
+  <S, T, Q, C extends Channel1 & MappingChannel> T mapThruChannel1(S source, Class<C> channelClass, Q qualifier);
 
   <S, R> R moveThruChannel0(S source, String cid);
 

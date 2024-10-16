@@ -8,6 +8,9 @@ import intellispaces.common.javastatement.method.MethodStatement;
 import intellispaces.common.javastatement.reference.TypeReference;
 import intellispaces.framework.core.annotation.Channel;
 import intellispaces.framework.core.space.channel.ChannelFunctions;
+import intellispaces.framework.core.space.channel.MappingChannel;
+import intellispaces.framework.core.space.channel.MappingOfMoving;
+import intellispaces.framework.core.space.channel.MovingChannel;
 import intellispaces.framework.core.traverse.TraverseTypes;
 
 import javax.annotation.processing.RoundEnvironment;
@@ -18,7 +21,7 @@ import java.util.Map;
 public abstract class AbstractChannelGenerator extends AbstractGenerator {
   protected final MethodStatement channelMethod;
   private String channelMethodSignature;
-  private String channelClass;
+  private String channelClasses;
   private String channelTypeParamsFull;
 
   public AbstractChannelGenerator(
@@ -61,10 +64,10 @@ public abstract class AbstractChannelGenerator extends AbstractGenerator {
     vars.put("classSimpleName", context.generatedClassSimpleName());
     vars.put("importedClasses", context.getImports());
     vars.put("channelMethod", channelMethodSignature);
-    vars.put("channelClass", channelClass);
+    vars.put("channelClasses", channelClasses);
     vars.put("channelTypeParamsFull", channelTypeParamsFull);
     vars.put("channelMethodName", channelMethod.name());
-    vars.put("cid", getTid());
+    vars.put("cid", getCid());
     return vars;
   }
 
@@ -76,16 +79,30 @@ public abstract class AbstractChannelGenerator extends AbstractGenerator {
     }
     context.addImport(Channel.class);
 
-    channelClass = getChannelClass();
+    channelClasses = defineChannelClass();
     channelTypeParamsFull = getChannelClassTypeParams();
     channelMethodSignature = getChannelMethodSignature();
     return true;
   }
 
-  private String getChannelClass() {
-    return context.addToImportAndGetSimpleName(
+  private String defineChannelClass() {
+    var sb = new StringBuilder();
+    sb.append(context.addToImportAndGetSimpleName(
         ChannelFunctions.getChannelClass(getQualifierTypes().size())
-    );
+    ));
+    for (TraverseTypes t : getTraverseTypes()) {
+      if (t.isMapping()) {
+        sb.append(", ");
+        sb.append(context.addToImportAndGetSimpleName(MappingChannel.class));
+      } else if (t.isMoving()) {
+          sb.append(", ");
+          sb.append(context.addToImportAndGetSimpleName(MovingChannel.class));
+      } else if (t.isMappingOfMoving()) {
+        sb.append(", ");
+        sb.append(context.addToImportAndGetSimpleName(MappingOfMoving.class));
+      }
+    }
+    return sb.toString();
   }
 
   private void appendTypeDeclaration(StringBuilder sb, Statement type) {
@@ -104,11 +121,11 @@ public abstract class AbstractChannelGenerator extends AbstractGenerator {
     }
   }
 
-  private String getTid() {
+  private String getCid() {
     return channelMethod.selectAnnotation(Channel.class).orElseThrow().value();
   }
 
-  private TraverseTypes getChannelType() {
-    return ChannelFunctions.getTraverseType(channelMethod);
+  private List<TraverseTypes> getTraverseTypes() {
+    return ChannelFunctions.getTraverseTypes(channelMethod);
   }
 }

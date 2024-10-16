@@ -17,6 +17,7 @@ import intellispaces.framework.core.space.channel.Channel1;
 import intellispaces.framework.core.space.channel.ChannelFunctions;
 import intellispaces.framework.core.space.channel.ChannelMethod0;
 import intellispaces.framework.core.space.channel.ChannelMethod1;
+import intellispaces.framework.core.space.channel.MappingChannel;
 import intellispaces.framework.core.system.Modules;
 import intellispaces.framework.core.system.ObjectHandleWrapper;
 import intellispaces.framework.core.system.injection.AutoGuideInjections;
@@ -100,6 +101,7 @@ public class UnmovableObjectHandleWrapperGenerator extends AbstractObjectHandleW
     context.addImport(ChannelFunctions.class);
     context.addImport(GuideInjections.class);
     context.addImport(AutoGuideInjections.class);
+    context.addImport(MappingChannel.class);
 
     analyzeDomain();
     analyzeTypeParams(annotatedType);

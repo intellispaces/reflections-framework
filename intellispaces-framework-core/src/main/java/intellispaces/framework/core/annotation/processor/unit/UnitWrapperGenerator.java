@@ -33,7 +33,7 @@ import intellispaces.framework.core.object.ObjectFunctions;
 import intellispaces.framework.core.system.Injection;
 import intellispaces.framework.core.system.Modules;
 import intellispaces.framework.core.system.ProjectionInjection;
-import intellispaces.framework.core.system.ProjectionProvider;
+import intellispaces.framework.core.system.ProjectionTargetSupplier;
 import intellispaces.framework.core.system.UnitWrapper;
 import intellispaces.framework.core.system.injection.AutoGuideInjections;
 import intellispaces.framework.core.system.injection.GuideInjections;
@@ -249,7 +249,7 @@ public class UnitWrapperGenerator extends AbstractGenerator {
   }
 
   private static boolean isProjectionProviderDefined(Instance providerClass) {
-    return !ProjectionProvider.class.getCanonicalName().equals(
+    return !ProjectionTargetSupplier.class.getCanonicalName().equals(
         providerClass.asClass().orElseThrow().type().canonicalName()
     );
   }

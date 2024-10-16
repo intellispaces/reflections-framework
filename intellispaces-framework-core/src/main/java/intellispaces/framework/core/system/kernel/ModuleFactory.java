@@ -39,13 +39,13 @@ public class ModuleFactory {
 
   public KernelModule createModule(List<Class<?>> unitClasses) {
     List<KernelUnit> units = createUnits(unitClasses);
-    applyAdvises(units);
-    var objectRegistry = new ObjectRegistryImpl();
     ProjectionRegistry projectionRegistry = createProjectionRegistry(units);
+    applyAdvises(units, projectionRegistry);
     var guideRegistry = new GuideRegistryImpl();
     loadAttachedUnitGuides(guideRegistry, units);
     var traverseAnalyzer = new TraverseAnalyzerImpl(guideRegistry);
     var traverseExecutor = new TraverseExecutorImpl(traverseAnalyzer);
+    var objectRegistry = new ObjectRegistryImpl();
     return new KernelModuleImpl(
         units,
         objectRegistry,
@@ -177,35 +177,35 @@ public class ModuleFactory {
         .findAny();
   }
 
-  private void applyAdvises(List<KernelUnit> units) {
-    units.forEach(this::applyAdvises);
+  private void applyAdvises(List<KernelUnit> units, ProjectionRegistry projectionRegistry) {
+    units.forEach(u -> applyAdvises(u, projectionRegistry));
   }
 
-  private void applyAdvises(KernelUnit unit) {
-    applyStartupActionAdvises(unit);
-    applyGuideActionAdvises(unit);
+  private void applyAdvises(KernelUnit unit, ProjectionRegistry projectionRegistry) {
+    applyStartupActionAdvises(unit, projectionRegistry);
+    applyGuideActionAdvises(unit, projectionRegistry);
   }
 
   @SuppressWarnings("unchecked")
-  private void applyStartupActionAdvises(KernelUnit unit) {
+  private void applyStartupActionAdvises(KernelUnit unit, ProjectionRegistry projectionRegistry) {
     if (unit.startupAction().isEmpty()) {
       return;
     }
     var startupAction = (InvokeUnitMethodAction<Void>) unit.startupAction().get();
     Method startupMethod = startupAction.getUnitMethod();
-    Action chainAction = AopFunctions.buildChainAction(startupMethod, startupAction);
+    Action chainAction = AopFunctions.buildChainAction(startupMethod, startupAction, projectionRegistry);
     if (chainAction != startupAction) {
       unit.setStartupAction(chainAction);
     }
   }
 
-  private void applyGuideActionAdvises(KernelUnit unit) {
+  private void applyGuideActionAdvises(KernelUnit unit, ProjectionRegistry projectionRegistry) {
     List<UnitGuide<? ,?>> guides = unit.guides();
     for (UnitGuide<?, ?> guide : guides) {
       KernelUnitGuide<?, ?> kernelGuide = (KernelUnitGuide<?, ?>) guide;
       Method method = kernelGuide.guideMethod();
       Action originalAction = unit.getGuideAction(kernelGuide.guideOrdinal());
-      Action chainAction = AopFunctions.buildChainAction(method, originalAction);
+      Action chainAction = AopFunctions.buildChainAction(method, originalAction, projectionRegistry);
       if (chainAction != originalAction) {
         unit.setGuideAction(kernelGuide.guideOrdinal(), chainAction);
       }

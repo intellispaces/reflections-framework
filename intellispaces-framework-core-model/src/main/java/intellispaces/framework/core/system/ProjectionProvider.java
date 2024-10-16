@@ -1,7 +1,13 @@
 package intellispaces.framework.core.system;
 
-import java.util.function.Supplier;
+import java.util.List;
 
-@FunctionalInterface
-public interface ProjectionProvider extends Supplier<Object> {
+/**
+ * Module projection provider.
+ */
+public interface ProjectionProvider {
+
+  <T> T getProjection(String name, Class<T> targetClass);
+
+  <T> List<T> getProjections(Class<T> targetClass);
 }

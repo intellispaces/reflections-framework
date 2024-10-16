@@ -11,7 +11,7 @@ import intellispaces.framework.core.object.ObjectFunctions;
 import intellispaces.framework.core.system.ModuleProjection;
 import intellispaces.framework.core.system.ProjectionDefinition;
 import intellispaces.framework.core.system.ProjectionDefinitionKinds;
-import intellispaces.framework.core.system.ProjectionProvider;
+import intellispaces.framework.core.system.ProjectionTargetSupplier;
 import intellispaces.framework.core.system.ProjectionReference;
 import intellispaces.framework.core.system.UnitProjectionDefinition;
 import intellispaces.framework.core.system.projection.ModuleProjectionImpl;
@@ -224,10 +224,10 @@ class ProjectionRegistryImpl implements ProjectionRegistry {
             projectionDefinition.name(), projectionDefinition.unitClass().getCanonicalName()
         ));
 
-    final ProjectionProvider provider;
+    final ProjectionTargetSupplier provider;
     try {
       Constructor<?> providerConstructor = providerClass.getConstructor(Method.class);
-      provider = (ProjectionProvider) providerConstructor.newInstance(projectionMethod);
+      provider = (ProjectionTargetSupplier) providerConstructor.newInstance(projectionMethod);
     } catch (Exception e) {
       throw UnexpectedViolationException.withCauseAndMessage(e, "Failed to create projection provider");
     }

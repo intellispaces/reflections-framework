@@ -34,11 +34,10 @@ import intellispaces.framework.core.space.channel.Channel1;
 import intellispaces.framework.core.space.channel.Channel2;
 import intellispaces.framework.core.space.channel.Channel3;
 import intellispaces.framework.core.space.channel.ChannelFunctions;
+import intellispaces.framework.core.space.channel.MappingChannel;
 import intellispaces.framework.core.system.Module;
 import intellispaces.framework.core.traverse.plan.DeclarativeTraversePlan;
 import intellispaces.framework.core.traverse.plan.TraversePlan;
-
-import java.util.List;
 
 class ModuleImpl implements Module {
   private final KernelModule kernelModule;
@@ -63,16 +62,6 @@ class ModuleImpl implements Module {
   }
 
   @Override
-  public <T> T getProjection(String name, Class<T> targetClass) {
-    return kernelModule.projectionRegistry().getProjection(name, targetClass);
-  }
-
-  @Override
-  public <T> List<T> getProjections(Class<T> targetClass) {
-    return kernelModule.projectionRegistry().getProjections(targetClass);
-  }
-
-  @Override
   @SuppressWarnings("unchecked")
   public <S, T> T mapThruChannel0(S source, String cid) {
     DeclarativeTraversePlan traversePlan = kernelModule.traverseAnalyzer().buildMapObjectHandleThruChannel0Plan(
@@ -81,8 +70,7 @@ class ModuleImpl implements Module {
   }
 
   @Override
-  @SuppressWarnings("rawtypes")
-  public <S, T> T mapThruChannel0(S source, Class<? extends Channel0> channelClass) {
+  public <S, T, C extends Channel0 & MappingChannel> T mapThruChannel0(S source, Class<C> channelClass) {
     return mapThruChannel0(source, ChannelFunctions.getChannelId(channelClass));
   }
 
@@ -95,8 +83,7 @@ class ModuleImpl implements Module {
   }
 
   @Override
-  @SuppressWarnings("rawtypes")
-  public <S, T, Q> T mapThruChannel1(S source, Class<? extends Channel1> channelClass, Q qualifier) {
+  public <S, T, Q, C extends Channel1 & MappingChannel> T mapThruChannel1(S source, Class<C> channelClass, Q qualifier) {
     return mapThruChannel1(source, ChannelFunctions.getChannelId(channelClass), qualifier);
   }
 

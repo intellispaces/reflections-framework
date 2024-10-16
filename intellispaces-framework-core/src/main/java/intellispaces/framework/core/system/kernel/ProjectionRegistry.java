@@ -1,20 +1,16 @@
 package intellispaces.framework.core.system.kernel;
 
 import intellispaces.framework.core.system.ModuleProjection;
+import intellispaces.framework.core.system.ProjectionProvider;
 
 import java.util.Collection;
-import java.util.List;
 
 /**
  * Projection register.
  */
-public interface ProjectionRegistry {
+public interface ProjectionRegistry extends ProjectionProvider {
 
   void load();
-
-  <T> T getProjection(String name, Class<T> targetClass);
-
-  <T> List<T> getProjections(Class<T> targetClass);
 
   Collection<ModuleProjection> allProjections();
 

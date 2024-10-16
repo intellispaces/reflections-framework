@@ -12,9 +12,9 @@ import intellispaces.framework.core.system.Modules;
 
 import java.lang.reflect.Method;
 
-public class ModulePropertiesProvider extends AbstractProjectionProvider {
+public class ModulePropertiesTargetSupplier extends AbstractProjectionTargetSupplier {
 
-  public ModulePropertiesProvider(Method projectionMethod) {
+  public ModulePropertiesTargetSupplier(Method projectionMethod) {
     super(projectionMethod);
   }
 

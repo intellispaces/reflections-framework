@@ -22,12 +22,10 @@ public interface MovableObjectHandle<D> extends ObjectHandle<D> {
 
   <Q> MovableObjectHandle<D> moveThru(String cid, Q qualifier) throws TraverseException;
 
-  @SuppressWarnings("rawtypes")
   MovableObjectHandle<D> moveThru(Class<? extends Channel0> channelClass) throws TraverseException;
 
   MovableObjectHandle<D> moveThru(ChannelMethod0<? super D, ? super D> channelMethod) throws TraverseException;
 
-  @SuppressWarnings("rawtypes")
   <Q> MovableObjectHandle<D> moveThru(Class<? extends Channel1> channelClass, Q qualifier) throws TraverseException;
 
   <Q> MovableObjectHandle<D> moveThru(ChannelMethod1<? super D, ? super D, Q> channelMethod, Q qualifier) throws TraverseException;
@@ -38,9 +36,7 @@ public interface MovableObjectHandle<D> extends ObjectHandle<D> {
 
   <R, Q> R mapOfMovingThru(ChannelMethod1<? super D, R, Q> channelMethod, Q qualifier) throws TraverseException;
 
-  @SuppressWarnings("rawtypes")
   <R> R mapOfMovingThru(Class<? extends Channel0> channelClass) throws TraverseException;
 
-  @SuppressWarnings("rawtypes")
   <R, Q> R mapOfMovingThru(Class<? extends Channel1> channelClass, Q qualifier) throws TraverseException;
 }

@@ -1,6 +1,7 @@
 package intellispaces.framework.core.annotation.processor;
 
 import intellispaces.common.action.runner.Runner;
+import intellispaces.common.base.collection.ArraysFunctions;
 import intellispaces.common.base.exception.UnexpectedViolationException;
 import intellispaces.common.base.text.TextActions;
 import intellispaces.common.base.type.TypeFunctions;
@@ -10,6 +11,7 @@ import intellispaces.common.javastatement.method.MethodStatement;
 import intellispaces.common.javastatement.reference.NamedReference;
 import intellispaces.common.javastatement.reference.TypeReference;
 import intellispaces.framework.core.annotation.Channel;
+import intellispaces.framework.core.annotation.TargetSpecification;
 import intellispaces.framework.core.common.NameConventionFunctions;
 import intellispaces.framework.core.exception.TraverseException;
 import intellispaces.framework.core.guide.GuideForm;
@@ -140,7 +142,14 @@ public abstract class AbstractObjectHandleGenerator extends AbstractGenerator {
 
   protected void appendMethodReturnHandleType(StringBuilder sb, MethodStatement method) {
     TypeReference domainReturnType = method.returnType().orElseThrow();
-    sb.append(getObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.Common));
+    TargetSpecification[] targetSpecifications = method
+        .selectAnnotation(Channel.class).orElseThrow()
+        .targetSpecifications();
+    if (ArraysFunctions.contains(targetSpecifications, TargetSpecification.Movable)) {
+      sb.append(getObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.Movable));
+    } else {
+      sb.append(getObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.Common));
+    }
   }
 
   protected void appendMethodTypeParameters(StringBuilder sb, MethodStatement method) {

@@ -11,7 +11,9 @@ import intellispaces.framework.core.annotation.Channel;
 import intellispaces.framework.core.common.NameConventionFunctions;
 import intellispaces.framework.core.guide.GuideForm;
 import intellispaces.framework.core.object.ObjectHandleTypes;
+import intellispaces.framework.core.space.channel.ChannelFunctions;
 import intellispaces.framework.core.space.domain.DomainFunctions;
+import intellispaces.framework.core.traverse.TraverseType;
 
 import javax.annotation.processing.RoundEnvironment;
 import java.util.HashMap;
@@ -80,7 +82,9 @@ public class ObjectHandleBunchGenerator extends AbstractDomainObjectHandleGenera
   ) {
     return buildActualType(customType, roundEnv)
         .actualMethods().stream()
-        .filter(this::isNotDomainClassGetter);
+        .filter(this::isNotDomainClassGetter)
+        .filter(m -> !ChannelFunctions.isChannelMethod(m)
+            || ChannelFunctions.getTraverseTypes(m).stream().noneMatch(TraverseType::isMovingBased));
   }
 
   private String buildExtendDeclaration() {

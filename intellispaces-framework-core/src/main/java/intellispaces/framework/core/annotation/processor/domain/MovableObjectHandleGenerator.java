@@ -1,23 +1,31 @@
 package intellispaces.framework.core.annotation.processor.domain;
 
 import intellispaces.common.annotationprocessor.context.AnnotationProcessingContext;
+import intellispaces.common.base.collection.ArraysFunctions;
 import intellispaces.common.javastatement.customtype.CustomType;
+import intellispaces.common.javastatement.method.MethodStatement;
 import intellispaces.common.javastatement.reference.CustomTypeReference;
+import intellispaces.common.javastatement.reference.TypeReference;
+import intellispaces.framework.core.annotation.Channel;
 import intellispaces.framework.core.annotation.ObjectHandle;
+import intellispaces.framework.core.annotation.TargetSpecification;
 import intellispaces.framework.core.common.NameConventionFunctions;
 import intellispaces.framework.core.exception.TraverseException;
 import intellispaces.framework.core.object.MovableObjectHandle;
 import intellispaces.framework.core.object.ObjectHandleTypes;
 import intellispaces.framework.core.space.channel.Channel0;
 import intellispaces.framework.core.space.channel.Channel1;
+import intellispaces.framework.core.space.channel.ChannelFunctions;
 import intellispaces.framework.core.space.channel.ChannelMethod0;
 import intellispaces.framework.core.space.channel.ChannelMethod1;
 import intellispaces.framework.core.space.domain.DomainFunctions;
+import intellispaces.framework.core.traverse.TraverseType;
 
 import javax.annotation.processing.RoundEnvironment;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 public class MovableObjectHandleGenerator extends AbstractDomainObjectHandleGenerator {
   private String baseObjectHandle;
@@ -102,5 +110,23 @@ public class MovableObjectHandleGenerator extends AbstractDomainObjectHandleGene
       primaryDomainTypeArguments = nearEquivalentDomain.typeArgumentsDeclaration(context::addToImportAndGetSimpleName);
     }
     return true;
+  }
+
+  @Override
+  protected Stream<MethodStatement> getObjectHandleMethods(CustomType customType, RoundEnvironment roundEnv) {
+    return super.getObjectHandleMethods(customType, roundEnv)
+        .filter(m -> ChannelFunctions.getTraverseTypes(m).stream().anyMatch(TraverseType::isMovingBased));
+  }
+
+  @Override
+  protected void appendMethodReturnHandleType(StringBuilder sb, MethodStatement method) {
+    TypeReference domainReturnType = method.returnType().orElseThrow();
+    if (ChannelFunctions.getTraverseTypes(method).stream().anyMatch(TraverseType::isMoving)
+        || ArraysFunctions.contains(method.selectAnnotation(Channel.class).orElseThrow().targetSpecifications(), TargetSpecification.Movable)
+    ) {
+      sb.append(getObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.Movable));
+    } else {
+      sb.append(getObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.Common));
+    }
   }
 }

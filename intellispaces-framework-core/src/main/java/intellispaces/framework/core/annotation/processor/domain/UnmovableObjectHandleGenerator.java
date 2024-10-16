@@ -3,17 +3,21 @@ package intellispaces.framework.core.annotation.processor.domain;
 import intellispaces.common.annotationprocessor.context.AnnotationProcessingContext;
 import intellispaces.common.base.exception.UnexpectedViolationException;
 import intellispaces.common.javastatement.customtype.CustomType;
+import intellispaces.common.javastatement.method.MethodStatement;
 import intellispaces.common.javastatement.reference.CustomTypeReference;
 import intellispaces.framework.core.annotation.ObjectHandle;
 import intellispaces.framework.core.common.NameConventionFunctions;
 import intellispaces.framework.core.object.ObjectHandleTypes;
 import intellispaces.framework.core.object.UnmovableObjectHandle;
+import intellispaces.framework.core.space.channel.ChannelFunctions;
 import intellispaces.framework.core.space.domain.DomainFunctions;
+import intellispaces.framework.core.traverse.TraverseType;
 
 import javax.annotation.processing.RoundEnvironment;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 public class UnmovableObjectHandleGenerator extends AbstractDomainObjectHandleGenerator {
   private String baseObjectHandle;
@@ -86,5 +90,11 @@ public class UnmovableObjectHandleGenerator extends AbstractDomainObjectHandleGe
       primaryObjectHandle = getObjectHandleDeclaration(equivalentDomain.get(), ObjectHandleTypes.Unmovable);
     }
     return true;
+  }
+
+  @Override
+  protected Stream<MethodStatement> getObjectHandleMethods(CustomType customType, RoundEnvironment roundEnv) {
+    return super.getObjectHandleMethods(customType, roundEnv)
+        .filter(m -> ChannelFunctions.getTraverseTypes(m).stream().noneMatch(TraverseType::isMovingBased));
   }
 }

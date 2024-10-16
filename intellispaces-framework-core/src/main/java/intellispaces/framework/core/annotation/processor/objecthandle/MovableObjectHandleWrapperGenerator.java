@@ -3,10 +3,15 @@ package intellispaces.framework.core.annotation.processor.objecthandle;
 import intellispaces.common.action.Actions;
 import intellispaces.common.action.functional.FunctionActions;
 import intellispaces.common.annotationprocessor.context.AnnotationProcessingContext;
+import intellispaces.common.base.collection.ArraysFunctions;
 import intellispaces.common.base.math.MathFunctions;
 import intellispaces.common.base.type.Type;
 import intellispaces.common.javastatement.customtype.CustomType;
+import intellispaces.common.javastatement.method.MethodStatement;
+import intellispaces.common.javastatement.reference.TypeReference;
+import intellispaces.framework.core.annotation.Channel;
 import intellispaces.framework.core.annotation.Ordinal;
+import intellispaces.framework.core.annotation.TargetSpecification;
 import intellispaces.framework.core.annotation.Wrapper;
 import intellispaces.framework.core.exception.TraverseException;
 import intellispaces.framework.core.guide.GuideForms;
@@ -25,6 +30,7 @@ import intellispaces.framework.core.system.injection.AutoGuideInjections;
 import intellispaces.framework.core.system.injection.GuideInjections;
 import intellispaces.framework.core.system.kernel.KernelFunctions;
 import intellispaces.framework.core.system.kernel.KernelObjectHandle;
+import intellispaces.framework.core.traverse.TraverseType;
 
 import javax.annotation.processing.RoundEnvironment;
 import java.util.HashMap;
@@ -114,5 +120,17 @@ public class MovableObjectHandleWrapperGenerator extends AbstractObjectHandleWra
     analyzeInjectedGuides(annotatedType);
     analyzeObjectHandleMethods(annotatedType, roundEnv);
     return true;
+  }
+
+  protected void appendMethodReturnHandleType(StringBuilder sb, MethodStatement method) {
+    TypeReference domainReturnType = method.returnType().orElseThrow();
+    if (
+        ChannelFunctions.getTraverseTypes(method).stream().anyMatch(TraverseType::isMoving)
+          || ArraysFunctions.contains(method.selectAnnotation(Channel.class).orElseThrow().targetSpecifications(), TargetSpecification.Movable)
+    ) {
+      sb.append(getObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.Movable));
+    } else {
+      sb.append(getObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.Common));
+    }
   }
 }

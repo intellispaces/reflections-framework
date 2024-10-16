@@ -9,7 +9,9 @@ import intellispaces.common.javastatement.type.Types;
 import intellispaces.framework.core.annotation.ObjectHandle;
 import intellispaces.framework.core.common.NameConventionFunctions;
 import intellispaces.framework.core.object.ObjectHandleTypes;
+import intellispaces.framework.core.space.channel.ChannelFunctions;
 import intellispaces.framework.core.space.domain.DomainFunctions;
+import intellispaces.framework.core.traverse.TraverseType;
 
 import javax.annotation.processing.RoundEnvironment;
 import java.util.HashMap;
@@ -107,6 +109,7 @@ public class CommonObjectHandleGenerator extends AbstractDomainObjectHandleGener
   ) {
     return super.getObjectHandleMethods(customType, roundEnv)
         .filter(this::isNotDomainClassGetter)
-        .filter(m -> m.returnType().isPresent() && !m.returnType().get().isNamedReference());
+        .filter(m -> !m.returnType().orElseThrow().isNamedReference())
+        .filter(m -> ChannelFunctions.getTraverseTypes(m).stream().noneMatch(TraverseType::isMovingBased));
   }
 }

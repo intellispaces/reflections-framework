@@ -17,6 +17,11 @@ public interface {{$classSimpleName}}{{$domainTypeParamsFull}} extends {{$baseOb
 public interface {{$classSimpleName}}{{$domainTypeParamsFull}} extends {{$baseObjectHandle}}{{$domainTypeParamsBrief}}, MovableObjectHandle<{{$sourceClassSimpleName}}{{$domainTypeParamsBrief}}> {
 {{end}}
 
+{{for method : $domainMethods}}
+  {{$method.get("javadoc")}}
+  {{$method.get("declaration")}};
+
+{{end}}
   @Override
   default {{$classSimpleName}}{{$domainTypeParamsBrief}} asMovableOrElseThrow() {
     return this;

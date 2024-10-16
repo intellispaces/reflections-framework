@@ -30,6 +30,7 @@ import intellispaces.framework.core.space.channel.ChannelFunctions;
 import intellispaces.framework.core.space.domain.DomainFunctions;
 import intellispaces.framework.core.system.Modules;
 import intellispaces.framework.core.system.ProjectionInjection;
+import intellispaces.framework.core.traverse.TraverseType;
 
 import javax.annotation.processing.RoundEnvironment;
 import java.util.ArrayList;
@@ -98,16 +99,13 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
     sb.append(".cachedLazyGetter(");
     sb.append(context.addToImportAndGetSimpleName(TraverseActions.class));
     sb.append("::");
-    switch (ChannelFunctions.getTraverseType(domainMethod)) {
-      case Mapping:
-        sb.append("map");
-        break;
-      case Moving:
-        sb.append("move");
-        break;
-      case MappingOfMoving:
-        sb.append("mapOfMoving");
-        break;
+    TraverseType traverseType = ChannelFunctions.getTraverseType(domainMethod);
+    if (traverseType.isMapping()) {
+      sb.append("map");
+    } else if (traverseType.isMoving()) {
+      sb.append("move");
+    } else if (traverseType.isMovingBased()) {
+      sb.append("mapOfMoving");
     }
     sb.append("ThruChannel");
     sb.append(domainMethod.params().size());

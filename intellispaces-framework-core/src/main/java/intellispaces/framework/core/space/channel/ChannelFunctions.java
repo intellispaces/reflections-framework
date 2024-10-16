@@ -16,7 +16,7 @@ import intellispaces.framework.core.annotation.Mover;
 import intellispaces.framework.core.exception.ConfigurationException;
 import intellispaces.framework.core.object.ObjectFunctions;
 import intellispaces.framework.core.space.domain.DomainFunctions;
-import intellispaces.framework.core.traverse.TraverseTypes;
+import intellispaces.framework.core.traverse.TraverseType;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -30,6 +30,10 @@ import java.util.function.Function;
  * Channel related functions.
  */
 public interface ChannelFunctions {
+
+  static boolean isChannelMethod(MethodStatement method) {
+    return method.hasAnnotation(Channel.class);
+  }
 
   static String getChannelId(Class<?> channelClass) {
     Channel channel = channelClass.getAnnotation(Channel.class);
@@ -297,24 +301,19 @@ public interface ChannelFunctions {
     };
   }
 
-  static boolean isMovingTraverse(MethodStatement channelMethod) {
-    return getTraverseTypes(channelMethod).stream()
-      .anyMatch(type -> type == TraverseTypes.Moving || type == TraverseTypes.MappingOfMoving);
-  }
-
-  static List<TraverseTypes> getTraverseTypes(MethodStatement method) {
+  static List<TraverseType> getTraverseTypes(MethodStatement method) {
     Channel channel = method.selectAnnotation(Channel.class).orElseThrow();
     return Arrays.asList(channel.allowedTraverse());
   }
 
-  static TraverseTypes getTraverseType(Channel channel) {
+  static TraverseType getTraverseType(Channel channel) {
     if (channel.allowedTraverse().length > 1) {
       return channel.defaultTraverse();
     }
     return channel.allowedTraverse()[0];
   }
 
-  static TraverseTypes getTraverseType(MethodStatement method) {
+  static TraverseType getTraverseType(MethodStatement method) {
     Channel channel = method.selectAnnotation(Channel.class).orElseThrow(() ->
         ConfigurationException.withMessage("Could not define traverse type of method '{0}' in '{1}'",
             method.name(), method.owner().className())

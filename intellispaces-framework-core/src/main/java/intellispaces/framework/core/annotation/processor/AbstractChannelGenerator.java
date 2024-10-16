@@ -11,7 +11,7 @@ import intellispaces.framework.core.space.channel.ChannelFunctions;
 import intellispaces.framework.core.space.channel.MappingChannel;
 import intellispaces.framework.core.space.channel.MappingOfMoving;
 import intellispaces.framework.core.space.channel.MovingChannel;
-import intellispaces.framework.core.traverse.TraverseTypes;
+import intellispaces.framework.core.traverse.TraverseType;
 
 import javax.annotation.processing.RoundEnvironment;
 import java.util.HashMap;
@@ -90,14 +90,14 @@ public abstract class AbstractChannelGenerator extends AbstractGenerator {
     sb.append(context.addToImportAndGetSimpleName(
         ChannelFunctions.getChannelClass(getQualifierTypes().size())
     ));
-    for (TraverseTypes t : getTraverseTypes()) {
-      if (t.isMapping()) {
+    for (TraverseType traverseType : getTraverseTypes()) {
+      if (traverseType.isMapping()) {
         sb.append(", ");
         sb.append(context.addToImportAndGetSimpleName(MappingChannel.class));
-      } else if (t.isMoving()) {
+      } else if (traverseType.isMoving()) {
           sb.append(", ");
           sb.append(context.addToImportAndGetSimpleName(MovingChannel.class));
-      } else if (t.isMappingOfMoving()) {
+      } else if (traverseType.isMappingOfMoving()) {
         sb.append(", ");
         sb.append(context.addToImportAndGetSimpleName(MappingOfMoving.class));
       }
@@ -125,7 +125,7 @@ public abstract class AbstractChannelGenerator extends AbstractGenerator {
     return channelMethod.selectAnnotation(Channel.class).orElseThrow().value();
   }
 
-  private List<TraverseTypes> getTraverseTypes() {
+  private List<TraverseType> getTraverseTypes() {
     return ChannelFunctions.getTraverseTypes(channelMethod);
   }
 }

@@ -57,16 +57,23 @@ class ProjectionRegistryImpl implements ProjectionRegistry {
   }
 
   @Override
-  public <T> T getProjection(String name, Class<T> targetClass) {
-    return getProjection(name, targetClass, new LinkedHashSet<>());
+  public <T> T getProjection(String name, Class<T> targetObjectHandleClass) {
+    if (!ObjectFunctions.isObjectHandleClass(targetObjectHandleClass)) {
+      throw UnexpectedViolationException.withMessage("Expected target object handle class");
+    }
+    return getProjection(name, targetObjectHandleClass, new LinkedHashSet<>());
   }
 
   @Override
   @SuppressWarnings("unchecked")
-  public <T> List<T> getProjections(Class<T> targetClass) {
+  public <T> List<T> getProjections(Class<T> targetObjectHandleClass) {
+    if (!ObjectFunctions.isObjectHandleClass(targetObjectHandleClass)) {
+      throw UnexpectedViolationException.withMessage("Expected target object handle class");
+    }
+
     List<T> projections = new ArrayList<>();
     for (ProjectionDefinition projectionDefinition : projectionDefinitions.values()) {
-      if (projectionDefinition.type() == targetClass || targetClass.isAssignableFrom(projectionDefinition.type())) {
+      if (projectionDefinition.type() == targetObjectHandleClass || targetObjectHandleClass.isAssignableFrom(projectionDefinition.type())) {
         T projection = (T) getProjection(projectionDefinition.name(), projectionDefinition.type());
         projections.add(projection);
       }
@@ -75,7 +82,7 @@ class ProjectionRegistryImpl implements ProjectionRegistry {
     Map<ModuleProjection, Object> contextProjections = this.contextProjections.get();
     if (contextProjections != null) {
       for (ModuleProjection projection : contextProjections.keySet()) {
-        if (projection.type() == targetClass || targetClass.isAssignableFrom(projection.type())) {
+        if (projection.type() == targetObjectHandleClass || targetObjectHandleClass.isAssignableFrom(projection.type())) {
           projections.add((T) projection.target());
         }
       }
@@ -100,8 +107,12 @@ class ProjectionRegistryImpl implements ProjectionRegistry {
   }
 
   @Override
-  public <T> void addContextProjection(String name, Class<T> type, T target) {
-    ModuleProjection projection = new ModuleProjectionImpl(name, type, null, target);
+  public <T> void addContextProjection(String name, Class<T> targetObjectHandleClass, T target) {
+    if (!ObjectFunctions.isObjectHandleClass(targetObjectHandleClass)) {
+      throw UnexpectedViolationException.withMessage("Expected target object handle class");
+    }
+
+    ModuleProjection projection = new ModuleProjectionImpl(name, targetObjectHandleClass, null, target);
 
     Map<String, ModuleProjection> mapByName = contextProjectionsByName.get();
     if (mapByName == null) {
@@ -133,13 +144,13 @@ class ProjectionRegistryImpl implements ProjectionRegistry {
   }
 
   @SuppressWarnings("unchecked")
-  private <T> T getProjection(String name, Class<T> targetClass, Set<String> dependencyPath) {
+  private <T> T getProjection(String name, Class<T> targetObjectHandleClass, Set<String> dependencyPath) {
     ModuleProjection projection = getProjection(name, dependencyPath);
     if (projection == null) {
       return null;
     }
-    if (!ObjectFunctions.isCompatibleObjectType(targetClass, projection.type())) {
-      T downgradedProjection = ObjectFunctions.tryDowngrade(projection.target(), targetClass);
+    if (!ObjectFunctions.isCompatibleObjectType(targetObjectHandleClass, projection.type())) {
+      T downgradedProjection = ObjectFunctions.tryDowngrade(projection.target(), targetObjectHandleClass);
       if (downgradedProjection != null) {
         return downgradedProjection;
       }

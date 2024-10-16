@@ -7,7 +7,7 @@ import java.util.List;
  */
 public interface ProjectionProvider {
 
-  <T> T getProjection(String name, Class<T> targetClass);
+  <T> T getProjection(String name, Class<T> targetObjectHandleClass);
 
-  <T> List<T> getProjections(Class<T> targetClass);
+  <T> List<T> getProjections(Class<T> targetObjectHandleClass);
 }

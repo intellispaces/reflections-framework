@@ -14,7 +14,7 @@ public interface ProjectionRegistry extends ProjectionProvider {
 
   Collection<ModuleProjection> allProjections();
 
-  <T> void addContextProjection(String name, Class<T> type, T target);
+  <T> void addContextProjection(String name, Class<T> targetObjectHandleClass, T target);
 
   void removeContextProjection(String name);
 }

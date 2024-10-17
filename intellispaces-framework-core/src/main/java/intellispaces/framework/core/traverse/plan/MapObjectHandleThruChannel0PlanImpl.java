@@ -48,4 +48,11 @@ public class MapObjectHandleThruChannel0PlanImpl extends AbstractObjectHandleTra
   ) throws TraverseException {
     throw UnexpectedViolationException.withMessage("Expected traverse with no qualifier");
   }
+
+  @Override
+  public Object execute(
+      Object source, Object qualifier1, Object qualifier2, Object qualifier3, Object qualifier4, TraverseExecutor executor
+  ) throws TraverseException {
+    throw UnexpectedViolationException.withMessage("Expected traverse with no qualifier");
+  }
 }

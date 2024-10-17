@@ -48,4 +48,5 @@ public interface TraverseExecutor {
 
   Object execute(MapOfMovingObjectHandleThruChannel3Plan plan, Object source, Object qualifier1, Object qualifier2, Object qualifier3) throws TraverseException;
 
+  Object execute(MapOfMovingObjectHandleThruChannel4Plan plan, Object source, Object qualifier1, Object qualifier2, Object qualifier3, Object qualifier4) throws TraverseException;
 }

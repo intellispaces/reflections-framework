@@ -53,4 +53,11 @@ public class CallGuide0PlanImpl implements CallGuide0Plan {
   ) throws TraverseException {
     throw UnexpectedViolationException.withMessage("Expected traverse without channel qualifier");
   }
+
+  @Override
+  public Object execute(
+      Object source, Object qualifier1, Object qualifier2, Object qualifier3, Object qualifier4, TraverseExecutor executor
+  ) throws TraverseException {
+    throw UnexpectedViolationException.withMessage("Expected traverse without channel qualifier");
+  }
 }

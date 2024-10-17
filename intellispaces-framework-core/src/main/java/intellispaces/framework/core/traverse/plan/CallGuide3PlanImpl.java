@@ -59,4 +59,11 @@ public class CallGuide3PlanImpl implements CallGuide3Plan {
   ) throws TraverseException {
     return executor.execute(this, source, qualifier1, qualifier2, qualifier3);
   }
+
+  @Override
+  public Object execute(
+      Object source, Object qualifier1, Object qualifier2, Object qualifier3, Object qualifier4, TraverseExecutor executor
+  ) throws TraverseException {
+    throw UnexpectedViolationException.withMessage("Expected traverse with three channel qualifiers");
+  }
 }

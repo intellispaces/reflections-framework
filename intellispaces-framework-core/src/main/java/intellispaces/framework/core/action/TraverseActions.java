@@ -4,12 +4,14 @@ import intellispaces.common.action.Action1;
 import intellispaces.common.action.Action2;
 import intellispaces.common.action.Action3;
 import intellispaces.common.action.Action4;
+import intellispaces.common.action.Action5;
 import intellispaces.common.base.type.Type;
 import intellispaces.framework.core.guide.GuideForm;
 import intellispaces.framework.core.space.channel.Channel0;
 import intellispaces.framework.core.space.channel.Channel1;
 import intellispaces.framework.core.space.channel.Channel2;
 import intellispaces.framework.core.space.channel.Channel3;
+import intellispaces.framework.core.space.channel.Channel4;
 
 public interface TraverseActions {
 
@@ -83,5 +85,11 @@ public interface TraverseActions {
       Type<S> sourceType, Class<? extends Channel3> channelClass, GuideForm guideForm
   ) {
     return new MapOfMovingThruChannel3Action<>(sourceType, channelClass, guideForm);
+  }
+
+  static <S, T, Q1, Q2, Q3, Q4> Action5<T, S, Q1, Q2, Q3, Q4> mapOfMovingThruChannel4(
+      Type<S> sourceType, Class<? extends Channel4> channelClass, GuideForm guideForm
+  ) {
+    return new MapOfMovingThruChannel4Action<>(sourceType, channelClass, guideForm);
   }
 }

@@ -28,5 +28,7 @@ public interface TraverseAnalyzer {
 
   MapOfMovingObjectHandleThruChannel3Plan buildMapOfMovingObjectHandleThruChannel3Plan(Class<?> sourceClass, String cid, GuideForm guideForm);
 
+  MapOfMovingObjectHandleThruChannel4Plan buildMapOfMovingObjectHandleThruChannel4Plan(Class<?> sourceClass, String cid, GuideForm guideForm);
+
   ExecutionTraversePlan getExecutionPlan(ObjectHandleTraversePlan declarativePlan, Class<?> sourceClass, GuideForm guideForm);
 }

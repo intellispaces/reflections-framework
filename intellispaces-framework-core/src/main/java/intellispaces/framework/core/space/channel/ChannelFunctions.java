@@ -297,6 +297,7 @@ public interface ChannelFunctions {
       case 1 -> Channel1.class;
       case 2 -> Channel2.class;
       case 3 -> Channel3.class;
+      case 4 -> Channel4.class;
       default -> throw UnexpectedViolationException.withMessage("Not implemented");
     };
   }

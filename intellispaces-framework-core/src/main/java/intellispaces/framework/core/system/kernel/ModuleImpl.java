@@ -28,11 +28,14 @@ import intellispaces.framework.core.guide.n3.AutoMover3;
 import intellispaces.framework.core.guide.n3.Mapper3;
 import intellispaces.framework.core.guide.n3.MapperOfMoving3;
 import intellispaces.framework.core.guide.n3.Mover3;
+import intellispaces.framework.core.guide.n4.AutoMapperOfMoving4;
+import intellispaces.framework.core.guide.n4.MapperOfMoving4;
 import intellispaces.framework.core.object.ObjectFunctions;
 import intellispaces.framework.core.space.channel.Channel0;
 import intellispaces.framework.core.space.channel.Channel1;
 import intellispaces.framework.core.space.channel.Channel2;
 import intellispaces.framework.core.space.channel.Channel3;
+import intellispaces.framework.core.space.channel.Channel4;
 import intellispaces.framework.core.space.channel.ChannelFunctions;
 import intellispaces.framework.core.space.channel.MappingChannel;
 import intellispaces.framework.core.system.Module;
@@ -197,11 +200,23 @@ class ModuleImpl implements Module {
   }
 
   @Override
-  public <S, T, Q1, Q2, Q3> MapperOfMoving3<S, T, Q1, Q2, Q3> autoMapperOfMovingThruChannel3(Type<S> sourceType, String cid, GuideForm guideForm) {
+  public <S, T, Q1, Q2, Q3> MapperOfMoving3<S, T, Q1, Q2, Q3> autoMapperOfMovingThruChannel3(
+      Type<S> sourceType, String cid, GuideForm guideForm
+  ) {
     TraversePlan traversePlan = kernelModule.traverseAnalyzer().buildMapOfMovingObjectHandleThruChannel3Plan(
         sourceType.baseClass(), cid, guideForm
     );
     return new AutoMapperOfMoving3<>(cid, traversePlan, guideForm, kernelModule.traverseExecutor());
+  }
+
+  @Override
+  public <S, T, Q1, Q2, Q3, Q4> MapperOfMoving4<S, T, Q1, Q2, Q3, Q4> autoMapperOfMovingThruChannel4(
+      Type<S> sourceType, String cid, GuideForm guideForm
+  ) {
+    TraversePlan traversePlan = kernelModule.traverseAnalyzer().buildMapOfMovingObjectHandleThruChannel4Plan(
+        sourceType.baseClass(), cid, guideForm
+    );
+    return new AutoMapperOfMoving4<>(cid, traversePlan, guideForm, kernelModule.traverseExecutor());
   }
 
   @Override
@@ -286,5 +301,12 @@ class ModuleImpl implements Module {
       Type<S> sourceType, Class<? extends Channel3> channelClass, GuideForm guideForm
   ) {
     return autoMapperOfMovingThruChannel3(sourceType, ChannelFunctions.getChannelId(channelClass), guideForm);
+  }
+
+  @Override
+  public <S, T, Q1, Q2, Q3, Q4> MapperOfMoving4<S, T, Q1, Q2, Q3, Q4> autoMapperOfMovingThruChannel4(
+      Type<S> sourceType, Class<? extends Channel4> channelClass, GuideForm guideForm
+  ) {
+    return autoMapperOfMovingThruChannel4(sourceType, ChannelFunctions.getChannelId(channelClass), guideForm);
   }
 }

@@ -14,10 +14,12 @@ import intellispaces.framework.core.guide.n2.Mover2;
 import intellispaces.framework.core.guide.n3.Mapper3;
 import intellispaces.framework.core.guide.n3.MapperOfMoving3;
 import intellispaces.framework.core.guide.n3.Mover3;
+import intellispaces.framework.core.guide.n4.MapperOfMoving4;
 import intellispaces.framework.core.space.channel.Channel0;
 import intellispaces.framework.core.space.channel.Channel1;
 import intellispaces.framework.core.space.channel.Channel2;
 import intellispaces.framework.core.space.channel.Channel3;
+import intellispaces.framework.core.space.channel.Channel4;
 import intellispaces.framework.core.space.channel.MappingChannel;
 
 /**
@@ -69,6 +71,8 @@ public interface Module {
 
   <S, T, Q1, Q2, Q3> MapperOfMoving3<S, T, Q1, Q2, Q3> autoMapperOfMovingThruChannel3(Type<S> sourceType, String cid, GuideForm guideForm);
 
+  <S, T, Q1, Q2, Q3, Q4> MapperOfMoving4<S, T, Q1, Q2, Q3, Q4> autoMapperOfMovingThruChannel4(Type<S> sourceType, String cid, GuideForm guideForm);
+
   <S, T> Mapper0<S, T> autoMapperThruChannel0(Type<S> sourceType, Class<? extends Channel0> channelClass, GuideForm guideForm);
 
   <S, T, Q> Mapper1<S, T, Q> autoMapperThruChannel1(Type<S> sourceType, Class<? extends Channel1> channelClass, GuideForm guideForm);
@@ -92,4 +96,6 @@ public interface Module {
   <S, T, Q1, Q2> MapperOfMoving2<S, T, Q1, Q2> autoMapperOfMovingThruChannel2(Type<S> sourceType, Class<? extends Channel2> channelClass, GuideForm guideForm);
 
   <S, T, Q1, Q2, Q3> MapperOfMoving3<S, T, Q1, Q2, Q3> autoMapperOfMovingThruChannel3(Type<S> sourceType, Class<? extends Channel3> channelClass, GuideForm guideForm);
+
+  <S, T, Q1, Q2, Q3, Q4> MapperOfMoving4<S, T, Q1, Q2, Q3, Q4> autoMapperOfMovingThruChannel4(Type<S> sourceType, Class<? extends Channel4> channelClass, GuideForm guideForm);
 }

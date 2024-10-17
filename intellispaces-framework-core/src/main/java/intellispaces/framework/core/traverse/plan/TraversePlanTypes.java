@@ -81,4 +81,9 @@ public enum TraversePlanTypes implements TraversePlanType {
    * Declarative traverse plan to map of moving object handle through three times parametrized channel.
    */
   MapOfMovingObjectHandleThruChannel3,
+
+  /**
+   * Declarative traverse plan to map of moving object handle through four times parametrized channel.
+   */
+  MapOfMovingObjectHandleThruChannel4
 }

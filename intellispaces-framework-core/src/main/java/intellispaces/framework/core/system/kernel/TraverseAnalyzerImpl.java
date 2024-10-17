@@ -31,6 +31,8 @@ import intellispaces.framework.core.traverse.plan.MapOfMovingObjectHandleThruCha
 import intellispaces.framework.core.traverse.plan.MapOfMovingObjectHandleThruChannel2PlanImpl;
 import intellispaces.framework.core.traverse.plan.MapOfMovingObjectHandleThruChannel3Plan;
 import intellispaces.framework.core.traverse.plan.MapOfMovingObjectHandleThruChannel3PlanImpl;
+import intellispaces.framework.core.traverse.plan.MapOfMovingObjectHandleThruChannel4Plan;
+import intellispaces.framework.core.traverse.plan.MapOfMovingObjectHandleThruChannel4PlanImpl;
 import intellispaces.framework.core.traverse.plan.MoveObjectHandleThruChannel0Plan;
 import intellispaces.framework.core.traverse.plan.MoveObjectHandleThruChannel0PlanImpl;
 import intellispaces.framework.core.traverse.plan.MoveObjectHandleThruChannel1Plan;
@@ -156,6 +158,15 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
       Class<?> sourceClass, String cid, GuideForm guideForm
   ) {
     MapOfMovingObjectHandleThruChannel3Plan declarativePlan = new MapOfMovingObjectHandleThruChannel3PlanImpl(sourceClass, cid);
+    defineExecutionPlan(declarativePlan, sourceClass, guideForm);
+    return declarativePlan;
+  }
+
+  @Override
+  public MapOfMovingObjectHandleThruChannel4Plan buildMapOfMovingObjectHandleThruChannel4Plan(
+      Class<?> sourceClass, String cid, GuideForm guideForm
+  ) {
+    MapOfMovingObjectHandleThruChannel4Plan declarativePlan = new MapOfMovingObjectHandleThruChannel4PlanImpl(sourceClass, cid);
     defineExecutionPlan(declarativePlan, sourceClass, guideForm);
     return declarativePlan;
   }

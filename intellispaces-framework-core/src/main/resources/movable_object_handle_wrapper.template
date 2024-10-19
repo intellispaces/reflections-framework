@@ -54,6 +54,10 @@ public class {{$classSimpleName}}{{$typeParamsFull}} extends {{$sourceClassSimpl
     return this.$handle;
   }
 
+{{for method : $conversionMethods}}
+  {{$method.get("declaration")}};
+
+{{end}}
 {{for method : $domainMethods}}
   @Override
   {{$method.get("declaration")}};

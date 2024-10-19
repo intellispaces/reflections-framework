@@ -1,6 +1,7 @@
 package intellispaces.framework.core.annotation.processor.domain;
 
 import intellispaces.common.annotationprocessor.context.AnnotationProcessingContext;
+import intellispaces.common.base.collection.ArraysFunctions;
 import intellispaces.common.base.text.TextFunctions;
 import intellispaces.common.base.type.Type;
 import intellispaces.common.javastatement.customtype.CustomType;
@@ -21,6 +22,7 @@ import intellispaces.framework.core.space.channel.ChannelMethod0;
 import intellispaces.framework.core.space.channel.ChannelMethod1;
 import intellispaces.framework.core.space.channel.MappingChannel;
 import intellispaces.framework.core.space.domain.DomainFunctions;
+import intellispaces.framework.core.traverse.TraverseTypes;
 
 import javax.annotation.processing.RoundEnvironment;
 import java.util.HashMap;
@@ -29,10 +31,10 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-public class MovableDownwardObjectHandleGenerator extends AbstractConversionDomainObjectHandleGenerator {
+public class UnmovableDownwardObjectHandleGenerator extends AbstractConversionDomainObjectHandleGenerator {
   private String classTypeParams;
   private String classTypeParamsBrief;
-  private String movableObjectHandleName;
+  private String unmovableObjectHandleName;
   private String childDomainClassSimpleName;
   private String childObjectHandleType;
   private String parentDomainClassSimpleName;
@@ -45,7 +47,7 @@ public class MovableDownwardObjectHandleGenerator extends AbstractConversionDoma
   private String primaryDomainTypeArguments;
   private String domainType;
 
-  public MovableDownwardObjectHandleGenerator(
+  public UnmovableDownwardObjectHandleGenerator(
       CustomType initiatorType, CustomType annotatedType, CustomTypeReference parentDomainType
   ) {
     super(initiatorType, annotatedType, parentDomainType);
@@ -58,17 +60,17 @@ public class MovableDownwardObjectHandleGenerator extends AbstractConversionDoma
 
   @Override
   protected ObjectHandleTypes getObjectHandleType() {
-    return ObjectHandleTypes.Movable;
+    return ObjectHandleTypes.Unmovable;
   }
 
   @Override
   public String artifactName() {
-    return NameConventionFunctions.getMovableDownwardObjectHandleTypename(annotatedType, parentDomainType.targetType());
+    return NameConventionFunctions.getUnmovableDownwardObjectHandleTypename(annotatedType, parentDomainType.targetType());
   }
 
   @Override
   protected String templateName() {
-    return "/movable_downward_object_handle.template";
+    return "/unmovable_downward_object_handle.template";
   }
 
   @Override
@@ -90,7 +92,7 @@ public class MovableDownwardObjectHandleGenerator extends AbstractConversionDoma
     vars.put("childField", childFieldName);
     vars.put("methods", methods);
     vars.put("importedClasses", context.getImports());
-    vars.put("movableObjectHandleName", movableObjectHandleName);
+    vars.put("unmovableObjectHandleName", unmovableObjectHandleName);
     vars.put("domainClassSimpleName", domainClassSimpleName);
     vars.put("isAlias", isAlias);
     vars.put("primaryDomainSimpleName", primaryDomainSimpleName);
@@ -113,8 +115,8 @@ public class MovableDownwardObjectHandleGenerator extends AbstractConversionDoma
     context.addImport(ChannelMethod1.class);
     context.addImport(MappingChannel.class);
 
-    movableObjectHandleName = context.addToImportAndGetSimpleName(
-        NameConventionFunctions.getMovableObjectHandleTypename(parentDomainType.targetType().className()));
+    unmovableObjectHandleName = context.addToImportAndGetSimpleName(
+        NameConventionFunctions.getUnmovableObjectHandleTypename(parentDomainType.targetType().className()));
     domainClassSimpleName = context.addToImportAndGetSimpleName(parentDomainType.targetType().canonicalName());
 
     domainTypeParams = parentDomainType.targetType().typeParametersFullDeclaration();
@@ -156,7 +158,18 @@ public class MovableDownwardObjectHandleGenerator extends AbstractConversionDoma
   ) {
     return buildActualType(parentDomainType.targetType(), roundEnv).actualMethods().stream()
         .filter(m -> excludeDeepConversionMethods(m, customType))
+        .filter(this::isNotMovingMethod)
         .filter(this::isNotDomainClassGetter);
+  }
+
+  private boolean isNotMovingMethod(MethodStatement method) {
+    Optional<Channel> channel = method.selectAnnotation(Channel.class);
+    if (channel.isEmpty()) {
+      return true;
+    }
+    return !ArraysFunctions.containsAny(
+        channel.orElseThrow().allowedTraverse(), TraverseTypes.Moving, TraverseTypes.MappingOfMoving
+    );
   }
 
   @Override
@@ -215,7 +228,7 @@ public class MovableDownwardObjectHandleGenerator extends AbstractConversionDoma
 
   private String getChildObjectHandleType() {
     return context.addToImportAndGetSimpleName(
-        NameConventionFunctions.getMovableObjectHandleTypename(annotatedType.className())
+        NameConventionFunctions.getUnmovableObjectHandleTypename(annotatedType.className())
     );
   }
 }

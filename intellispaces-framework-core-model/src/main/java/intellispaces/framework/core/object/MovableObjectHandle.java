@@ -32,11 +32,11 @@ public interface MovableObjectHandle<D> extends ObjectHandle<D> {
 
   <R, Q> R mapOfMovingThru(String cid, Q qualifier) throws TraverseException;
 
+  <R> R mapOfMovingThru(Class<? extends Channel0> channelClass) throws TraverseException;
+
   <R> R mapOfMovingThru(ChannelMethod0<? super D, R> channelMethod) throws TraverseException;
 
   <R, Q> R mapOfMovingThru(ChannelMethod1<? super D, R, Q> channelMethod, Q qualifier) throws TraverseException;
-
-  <R> R mapOfMovingThru(Class<? extends Channel0> channelClass) throws TraverseException;
 
   <R, Q> R mapOfMovingThru(Class<? extends Channel1> channelClass, Q qualifier) throws TraverseException;
 }

@@ -23,7 +23,6 @@ public interface NameConventionFunctions {
 
   static String getObjectHandleTypename(String domainClassName, ObjectHandleTypes handleType) {
     return switch (handleType) {
-      case Bunch -> getBunchObjectHandleTypename(domainClassName);
       case Common -> getCommonObjectHandleTypename(domainClassName);
       case Movable -> getMovableObjectHandleTypename(domainClassName);
       case Unmovable -> getUnmovableObjectHandleTypename(domainClassName);
@@ -111,7 +110,6 @@ public interface NameConventionFunctions {
       CustomType domainType, CustomType baseDomainType, ObjectHandleTypes handleType
   ) {
     return switch (handleType) {
-      case Bunch -> throw new RuntimeException();
       case Common -> getBaseDownwardObjectHandleTypename(domainType, baseDomainType);
       case Movable -> getMovableDownwardObjectHandleTypename(domainType, baseDomainType);
       case Unmovable -> getUnmovableDownwardObjectHandleTypename(domainType, baseDomainType);
@@ -183,7 +181,7 @@ public interface NameConventionFunctions {
         TypeFunctions.getSimpleName(domainType.canonicalName()), "Domain"
     );
     if (isMappingTraverseType(channelMethod)) {
-      if (isTransformChannel(channelMethod)) {
+      if (isConversionChannel(channelMethod)) {
         simpleName = TextFunctions.capitalizeFirstLetter(simpleName) + "To" +
             channelMethod.name().substring(2) + "Channel";
       } else {
@@ -215,7 +213,7 @@ public interface NameConventionFunctions {
     return sb.toString();
   }
 
-  private static boolean isTransformChannel(MethodStatement channelMethod) {
+  private static boolean isConversionChannel(MethodStatement channelMethod) {
     String name = channelMethod.name();
     return (name.length() > 3 && name.startsWith("as") && Character.isUpperCase(name.charAt(2)));
   }

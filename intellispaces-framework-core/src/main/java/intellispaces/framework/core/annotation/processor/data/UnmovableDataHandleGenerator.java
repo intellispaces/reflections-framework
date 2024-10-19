@@ -27,8 +27,8 @@ import java.util.Map;
 import java.util.Objects;
 
 public class UnmovableDataHandleGenerator extends AbstractGenerator {
-  private final List<Map<String, String>> projectionProperties = new ArrayList<>();
   protected String typeParamsBrief;
+  private final List<Map<String, String>> projectionProperties = new ArrayList<>();
 
   public UnmovableDataHandleGenerator(CustomType initiatorType, CustomType dataType) {
     super(initiatorType, dataType);

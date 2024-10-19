@@ -15,6 +15,9 @@ class ObjectGuideRegistry {
   private final Map<Class<?>, HandleDescription> handleDescriptions = new WeakHashMap<>();
 
   public List<Guide<?, ?>> getGuides(GuideKind kind, Class<?> objectHandleClass, String cid) {
+    if (!ObjectFunctions.isCustomObjectHandleClass(objectHandleClass) || objectHandleClass.isInterface()) {
+      return List.of();
+    }
     HandleDescription description = handleDescriptions.computeIfAbsent(
         objectHandleClass, this::createHandleDescription);
     return description.getGuides(kind, cid);

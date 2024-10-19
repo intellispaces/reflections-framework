@@ -40,6 +40,4 @@ public @interface Channel {
    * This parameter is used only if parameter allowedTraverse has multiple values.
    */
   TraverseTypes defaultTraverse() default TraverseTypes.Mapping;
-
-  TargetSpecification[] targetSpecifications() default {};
 }

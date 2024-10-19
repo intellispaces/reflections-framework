@@ -30,7 +30,7 @@ import intellispaces.framework.core.annotation.processor.domain.DomainChannelGen
 import intellispaces.framework.core.annotation.processor.domain.DomainGuideGenerator;
 import intellispaces.framework.core.annotation.processor.domain.MovableDownwardObjectHandleGenerator;
 import intellispaces.framework.core.annotation.processor.domain.MovableObjectHandleGenerator;
-import intellispaces.framework.core.annotation.processor.domain.ObjectHandleBunchGenerator;
+import intellispaces.framework.core.annotation.processor.domain.UnmovableDownwardObjectHandleGenerator;
 import intellispaces.framework.core.annotation.processor.domain.UnmovableObjectHandleGenerator;
 import intellispaces.framework.core.annotation.processor.guide.AutoGuideGenerator;
 import intellispaces.framework.core.annotation.processor.objecthandle.MovableObjectHandleWrapperGenerator;
@@ -41,6 +41,7 @@ import intellispaces.framework.core.annotation.processor.unit.UnitWrapperGenerat
 import intellispaces.framework.core.guide.GuideForm;
 import intellispaces.framework.core.guide.GuideForms;
 import intellispaces.framework.core.object.MovableObjectHandle;
+import intellispaces.framework.core.object.ObjectFunctions;
 import intellispaces.framework.core.object.UnmovableObjectHandle;
 import intellispaces.framework.core.system.ModuleFunctions;
 import intellispaces.framework.core.system.UnitFunctions;
@@ -80,7 +81,6 @@ public interface AnnotationProcessorFunctions {
         }
       }
     }
-    addObjectHandleBunchGenerator(initiatorType, domainType, generators, roundEnv);
     addBasicObjectHandleGenerators(initiatorType, domainType, generators, roundEnv);
     addDownwardObjectHandleGenerators(initiatorType, domainType, generators);
     addIncludedGenerators(initiatorType, domainType, generators, roundEnv);
@@ -108,14 +108,6 @@ public interface AnnotationProcessorFunctions {
     }
   }
 
-  private static void addObjectHandleBunchGenerator(
-      CustomType initiatorType, CustomType domainType, List<Generator> generators, RoundEnvironment roundEnv
-  ) {
-    if (isAutoGenerationEnabled(domainType, ArtifactTypes.ObjectHandleBranch, roundEnv)) {
-      generators.add(new ObjectHandleBunchGenerator(initiatorType, domainType));
-    }
-  }
-
   private static void addBasicObjectHandleGenerators(
       CustomType initiatorType, CustomType domainType, List<Generator> generators, RoundEnvironment roundEnv
   ) {
@@ -138,6 +130,7 @@ public interface AnnotationProcessorFunctions {
       return;
     }
     CustomTypeReference parentDomainType = parents.get(0);
+    generators.add(new UnmovableDownwardObjectHandleGenerator(initiatorType, domainType, parentDomainType));
     generators.add(new MovableDownwardObjectHandleGenerator(initiatorType, domainType, parentDomainType));
   }
 
@@ -204,9 +197,9 @@ public interface AnnotationProcessorFunctions {
   static List<Generator> makeObjectHandleArtifactGenerators(
       CustomType initiatorType, CustomType objectHandleType
   ) {
-    if (objectHandleType.hasParent(UnmovableObjectHandle.class)) {
+    if (ObjectFunctions.isUnmovableObjectHandle(objectHandleType)) {
       return List.of(new UnmovableObjectHandleWrapperGenerator(initiatorType, objectHandleType));
-    } else if (objectHandleType.hasParent(MovableObjectHandle.class)) {
+    } else if (ObjectFunctions.isMovableObjectHandle(objectHandleType)) {
       return List.of(new MovableObjectHandleWrapperGenerator(initiatorType, objectHandleType));
     } else {
       throw UnexpectedViolationException.withMessage("Could not define movable type of the object handle {0}",

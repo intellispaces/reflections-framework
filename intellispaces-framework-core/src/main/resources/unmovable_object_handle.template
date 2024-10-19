@@ -9,14 +9,20 @@ import {{$importedClass}};
  *
  * This class was generated automatically. Don't try to change it.
  */
+@Unmovable
 @ObjectHandle({{$sourceClassSimpleName}}.class)
 {{$generatedAnnotation}}
 {{when $isAlias}}
 public interface {{$classSimpleName}}{{$domainTypeParamsFull}} extends {{$baseObjectHandle}}{{$domainTypeParamsBrief}}, {{$primaryObjectHandle}} {
 {{else}}
-public interface {{$classSimpleName}}{{$domainTypeParamsFull}} extends {{$baseObjectHandle}}{{$domainTypeParamsBrief}}, UnmovableObjectHandle<{{$sourceClassSimpleName}}{{$domainTypeParamsBrief}}> {
+public interface {{$classSimpleName}}{{$domainTypeParamsFull}} extends {{$baseObjectHandle}}{{$domainTypeParamsBrief}} {
 {{end}}
 
+{{for method : $conversionMethods}}
+  @Override
+  {{$method.get("declaration")}};
+
+{{end}}
   @Override
   default {{$movableClassSimpleName}}{{$domainTypeParamsBrief}} asMovableOrElseThrow() {
     throw UnexpectedViolationException.withMessage("Unmovable object");

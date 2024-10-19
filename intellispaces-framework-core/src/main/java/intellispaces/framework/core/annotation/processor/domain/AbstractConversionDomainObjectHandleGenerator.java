@@ -1,5 +1,8 @@
 package intellispaces.framework.core.annotation.processor.domain;
 
+import intellispaces.common.action.runner.Runner;
+import intellispaces.common.base.exception.UnexpectedViolationException;
+import intellispaces.common.base.text.TextActions;
 import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.common.javastatement.method.MethodParam;
 import intellispaces.common.javastatement.method.MethodStatement;
@@ -10,6 +13,7 @@ import intellispaces.common.javastatement.reference.TypeReferenceFunctions;
 import intellispaces.framework.core.common.NameConventionFunctions;
 import intellispaces.framework.core.guide.GuideForm;
 import intellispaces.framework.core.object.ObjectFunctions;
+import intellispaces.framework.core.space.domain.DomainFunctions;
 
 import javax.annotation.processing.RoundEnvironment;
 import java.util.Map;
@@ -27,20 +31,17 @@ abstract class AbstractConversionDomainObjectHandleGenerator extends AbstractDom
     this.parentDomainType = parentDomainType;
   }
 
-  @Override
-  protected Stream<MethodStatement> getObjectHandleMethods(
-      CustomType customType, RoundEnvironment roundEnv
-  ) {
-    return buildActualType(parentDomainType.targetType(), roundEnv).actualMethods().stream()
-        .filter(this::isNotDomainClassGetter);
-  }
-
   protected MethodStatement convertMethodBeforeGenerate(MethodStatement method) {
     Map<String, NotPrimitiveReference> typeMapping = parentDomainType.typeArgumentMapping();
     return method.effective(typeMapping);
   }
 
   protected void buildReturnStatement(StringBuilder sb, MethodStatement method, GuideForm guideForm) {
+    if (NameConventionFunctions.isConversionMethod(method)) {
+      buildConversionChainReturnStatement(sb, method, guideForm);
+      return;
+    }
+
     MethodStatement actualParentMethod = parentDomainType.asCustomTypeReferenceOrElseThrow().targetType().actualMethod(
         method.name(), method.parameterTypes()
     ).orElseThrow();
@@ -69,6 +70,15 @@ abstract class AbstractConversionDomainObjectHandleGenerator extends AbstractDom
         buildCastReturnStatement(sb, method, guideForm);
       }
     }
+  }
+
+  private void buildConversionChainReturnStatement(StringBuilder sb, MethodStatement method, GuideForm guideForm) {
+    CustomType targetDomain = method.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow().targetType();
+
+    sb.append("return ");
+    sb.append("this.").append(childFieldName);
+    sb.append(DomainFunctions.buildConversionMethodsChain(annotatedType, targetDomain));
+    sb.append(";");
   }
 
   private void buildDirectReturnStatement(StringBuilder sb, MethodStatement method, GuideForm guideForm) {
@@ -103,19 +113,22 @@ abstract class AbstractConversionDomainObjectHandleGenerator extends AbstractDom
     sb.append(childFieldName);
     sb.append(".");
     sb.append(method.name());
-    sb.append("();\n");
-    sb.append("   if (ObjectFunctions.isMovableObjectHandle(value)) {\n");
-    sb.append("      return new ");
-    sb.append(context.addToImportAndGetSimpleName(NameConventionFunctions.getMovableDownwardObjectHandleTypename(
-        actualReturnType, expectedReturnType))
-    );
-    sb.append("((");
-    sb.append(context.addToImportAndGetSimpleName(NameConventionFunctions.getMovableObjectHandleTypename(
-        actualReturnType.className()))
-    );
-    sb.append(") value);\n");
-    sb.append("} else {\n");
-    sb.append("  throw new RuntimeException(\"Not implemented\");\n");
-    sb.append("}");
+    sb.append("(");
+    Runner commaAppender = TextActions.skippingFirstTimeCommaAppender(sb);
+    for (MethodParam param : method.params()) {
+      commaAppender.run();
+      sb.append(param.name());
+    }
+    sb.append(");\n");
+    sb.append("  return value");
+
+    String conversionChain = DomainFunctions.buildConversionMethodsChain(actualReturnType, expectedReturnType);
+    if (conversionChain == null) {
+      throw UnexpectedViolationException.withMessage("Could not build conversion methods chain from {0} to {1}",
+          actualReturnType.canonicalName(), expectedReturnType.canonicalName()
+      );
+    }
+    sb.append(conversionChain);
+    sb.append(";");
   }
 }

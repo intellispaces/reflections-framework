@@ -6,10 +6,15 @@ import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.common.javastatement.method.MethodStatement;
 import intellispaces.common.javastatement.reference.CustomTypeReference;
 import intellispaces.common.javastatement.type.Types;
+import intellispaces.framework.core.annotation.Channel;
 import intellispaces.framework.core.annotation.ObjectHandle;
 import intellispaces.framework.core.common.NameConventionFunctions;
+import intellispaces.framework.core.exception.TraverseException;
+import intellispaces.framework.core.guide.GuideForm;
 import intellispaces.framework.core.object.ObjectHandleTypes;
+import intellispaces.framework.core.space.channel.Channel1;
 import intellispaces.framework.core.space.channel.ChannelFunctions;
+import intellispaces.framework.core.space.channel.MappingChannel;
 import intellispaces.framework.core.space.domain.DomainFunctions;
 import intellispaces.framework.core.traverse.TraverseType;
 
@@ -20,7 +25,6 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 public class CommonObjectHandleGenerator extends AbstractDomainObjectHandleGenerator {
-  private String objectHandleBunch;
   private boolean isAlias;
   private String primaryObjectHandle;
   private String primaryDomainSimpleName;
@@ -62,7 +66,6 @@ public class CommonObjectHandleGenerator extends AbstractDomainObjectHandleGener
     vars.put("movableClassSimpleName", movableClassSimpleName());
     vars.put("domainTypeParamsFull", domainTypeParamsFull);
     vars.put("domainTypeParamsBrief", domainTypeParamsBrief);
-    vars.put("objectHandleBunch", objectHandleBunch);
     vars.put("domainType", domainType);
     vars.put("domainMethods", methods);
     vars.put("isAlias", isAlias);
@@ -79,12 +82,12 @@ public class CommonObjectHandleGenerator extends AbstractDomainObjectHandleGener
     context.addImport(Type.class);
     context.addImport(Types.class);
     context.addImport(ObjectHandle.class);
+    context.addImport(Channel1.class);
+    context.addImport(MappingChannel.class);
+    context.addImport(TraverseException.class);
 
     domainTypeParamsFull = annotatedType.typeParametersFullDeclaration();
     domainTypeParamsBrief = annotatedType.typeParametersBriefDeclaration();
-    objectHandleBunch = context.addToImportAndGetSimpleName(
-        NameConventionFunctions.getBunchObjectHandleTypename(annotatedType.className())
-    );
     analyzeObjectHandleMethods(annotatedType, roundEnv);
 
     List<CustomTypeReference> equivalentDomains = DomainFunctions.getEquivalentDomains(annotatedType);
@@ -107,9 +110,36 @@ public class CommonObjectHandleGenerator extends AbstractDomainObjectHandleGener
   protected Stream<MethodStatement> getObjectHandleMethods(
       CustomType customType, RoundEnvironment roundEnv
   ) {
-    return super.getObjectHandleMethods(customType, roundEnv)
+    return buildActualType(customType, roundEnv)
+        .actualMethods().stream()
         .filter(this::isNotDomainClassGetter)
-        .filter(m -> !m.returnType().orElseThrow().isNamedReference())
-        .filter(m -> ChannelFunctions.getTraverseTypes(m).stream().noneMatch(TraverseType::isMovingBased));
+        .filter(m -> excludeDeepConversionMethods(m, customType))
+        .filter(m -> !ChannelFunctions.isChannelMethod(m)
+            || ChannelFunctions.getTraverseTypes(m).stream().noneMatch(TraverseType::isMovingBased));
+  }
+
+  @Override
+  protected Map<String, String> generateMethod(MethodStatement method, GuideForm guideForm, int methodIndex) {
+    if (method.hasAnnotation(Channel.class)) {
+      return super.generateMethod(method, guideForm, methodIndex);
+    } else {
+      return buildAdditionalMethod(method);
+    }
+  }
+
+  private Map<String, String> buildAdditionalMethod(MethodStatement method) {
+    var sb = new StringBuilder();
+    appendMethodTypeParameters(sb, method);
+    appendMethodReturnType(sb, method);
+    sb.append(" ");
+    sb.append(method.name());
+    sb.append("(");
+    appendMethodParameters(sb, method);
+    sb.append(")");
+    appendMethodExceptions(sb, method);
+    return Map.of(
+        "javadoc", buildGeneratedMethodJavadoc(method.owner().canonicalName(), method),
+        "declaration", sb.toString()
+    );
   }
 }

@@ -6,13 +6,17 @@ import intellispaces.common.base.text.TextActions;
 import intellispaces.common.base.type.Type;
 import intellispaces.common.base.type.TypeFunctions;
 import intellispaces.common.javastatement.JavaStatements;
+import intellispaces.common.javastatement.customtype.AnnotationFunctions;
 import intellispaces.common.javastatement.customtype.CustomType;
+import intellispaces.common.javastatement.customtype.CustomTypes;
 import intellispaces.common.javastatement.instance.AnnotationInstance;
 import intellispaces.common.javastatement.reference.CustomTypeReference;
 import intellispaces.common.javastatement.reference.NotPrimitiveReference;
 import intellispaces.common.javastatement.reference.TypeReference;
 import intellispaces.common.javastatement.reference.WildcardReference;
+import intellispaces.framework.core.annotation.Movable;
 import intellispaces.framework.core.annotation.ObjectHandle;
+import intellispaces.framework.core.annotation.Unmovable;
 import intellispaces.framework.core.annotation.Wrapper;
 import intellispaces.framework.core.common.NameConventionFunctions;
 import intellispaces.framework.core.space.domain.DomainFunctions;
@@ -31,7 +35,6 @@ public class ObjectFunctions {
       case Common -> intellispaces.framework.core.object.ObjectHandle.class;
       case Movable -> MovableObjectHandle.class;
       case Unmovable -> UnmovableObjectHandle.class;
-      case Bunch -> throw UnexpectedViolationException.withMessage("Bunch object handle class is not defined");
     };
   }
 
@@ -65,11 +68,15 @@ public class ObjectFunctions {
   }
 
   public static boolean isMovableObjectHandle(Class<?> objectHandleClass) {
-    return MovableObjectHandle.class.isAssignableFrom(objectHandleClass);
+    return isMovableObjectHandle(CustomTypes.of(objectHandleClass));
   }
 
   public static boolean isMovableObjectHandle(CustomType objectHandleType) {
-    return objectHandleType.hasParent(MovableObjectHandle.class.getCanonicalName());
+    return AnnotationFunctions.isAssignableAnnotatedType(objectHandleType, Movable.class);
+  }
+
+  public static boolean isUnmovableObjectHandle(CustomType objectHandleType) {
+    return AnnotationFunctions.isAssignableAnnotatedType(objectHandleType, Unmovable.class);
   }
 
   public static String getCommonObjectHandleTypename(TypeReference domainType) {
@@ -127,9 +134,11 @@ public class ObjectFunctions {
   }
 
   public static boolean isCustomObjectHandleType(TypeReference type) {
-    return type.isCustomTypeReference() && type.asCustomTypeReferenceOrElseThrow().targetType().hasParent(
-      intellispaces.framework.core.object.ObjectHandle.class
-    );
+    if (!type.isCustomTypeReference()) {
+      return false;
+    }
+    CustomType customType = type.asCustomTypeReferenceOrElseThrow().targetType();
+    return AnnotationFunctions.isAssignableAnnotatedType(customType, ObjectHandle.class);
   }
 
   public static Class<?> defineObjectHandleClass(Class<?> aClass) {

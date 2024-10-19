@@ -1,9 +1,8 @@
 package intellispaces.framework.core.guide.n0;
 
+import intellispaces.common.javastatement.method.MethodStatement;
 import intellispaces.framework.core.guide.GuideForm;
 import intellispaces.framework.core.system.ObjectHandleWrapper;
-
-import java.lang.reflect.Method;
 
 /**
  * Attached to object handle mover guide.<p/>
@@ -19,7 +18,7 @@ public class ObjectMover0<S extends ObjectHandleWrapper>
   public ObjectMover0(
       String cid,
       Class<S> objectHandleClass,
-      Method guideMethod,
+      MethodStatement guideMethod,
       int channelIndex,
       GuideForm guideForm
   ) {

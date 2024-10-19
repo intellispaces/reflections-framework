@@ -5,12 +5,14 @@ import intellispaces.common.action.runner.Runner;
 import intellispaces.common.base.exception.UnexpectedViolationException;
 import intellispaces.common.base.object.ObjectInstanceFunctions;
 import intellispaces.common.base.text.TextActions;
+import intellispaces.common.base.text.TextFunctions;
 import intellispaces.common.base.type.Primitives;
 import intellispaces.common.base.type.TypeFunctions;
 import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.common.javastatement.method.MethodParam;
 import intellispaces.common.javastatement.method.MethodStatement;
 import intellispaces.common.javastatement.reference.CustomTypeReference;
+import intellispaces.common.javastatement.reference.CustomTypeReferences;
 import intellispaces.common.javastatement.reference.NamedReference;
 import intellispaces.common.javastatement.reference.TypeReference;
 import intellispaces.common.javastatement.type.Types;
@@ -37,6 +39,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Stream;
@@ -49,6 +52,7 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
   protected String primaryDomainSimpleName;
   protected String primaryDomainTypeArguments;
   private final List<MethodStatement> domainMethods;
+  protected final CustomType domainType;
   protected final List<Object> constructors = new ArrayList<>();
   protected final List<String> methodActions = new ArrayList<>();
   protected final List<String> guideActions = new ArrayList<>();
@@ -59,9 +63,10 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
   AbstractObjectHandleWrapperGenerator(CustomType initiatorType, CustomType objectHandleType) {
     super(initiatorType, objectHandleType);
 
-    CustomType domainType = ObjectFunctions.getDomainTypeOfObjectHandle(objectHandleType);
+    this.domainType = ObjectFunctions.getDomainTypeOfObjectHandle(objectHandleType);
     this.domainMethods = domainType.actualMethods().stream()
         .filter(m -> !m.isDefault())
+        .filter(m -> excludeDeepConversionMethods(m, domainType))
         .filter(this::isNotDomainClassGetter)
         .toList();
   }
@@ -303,6 +308,11 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
     if (method.isDefault()) {
       return;
     }
+    if (NameConventionFunctions.isConversionMethod(method)) {
+      this.guideActions.add(buildConversionGuideAction(method));
+      return;
+    }
+
     List<MethodStatement> objectHandleMethods = annotatedType.actualMethods();
     MethodStatement objectHandleMethod = findObjectHandleMethods(method, objectHandleMethods, guideForm);
     if (objectHandleMethod == null || objectHandleMethod.isAbstract()) {
@@ -313,6 +323,23 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
       );
       this.guideMethods.add(GuideProcessorFunctions.buildGuideActionMethod(objectHandleMethod, context));
     }
+  }
+
+  private String buildConversionGuideAction(MethodStatement method) {
+    CustomTypeReference parentType = method.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow();
+    CustomTypeReference rawParentType = CustomTypeReferences.get(parentType.targetType());
+
+    var sb = new StringBuilder();
+    sb.append("FunctionActions.ofFunction(");
+    sb.append(context.addToImportAndGetSimpleName(getGeneratedClassCanonicalName()));
+    sb.append("::_as");
+    sb.append(TextFunctions.capitalizeFirstLetter(TextFunctions.removeTailOrElseThrow(parentType.targetType().simpleName(), "Domain")));
+    sb.append(", ");
+    sb.append(getObjectHandleDeclaration(rawParentType, getObjectHandleType()));
+    sb.append(".class, ");
+    sb.append(context.addToImportAndGetSimpleName(getGeneratedClassCanonicalName()));
+    sb.append(".class)");
+    return sb.toString();
   }
 
   protected Map<String, String> generateMethod(
@@ -418,6 +445,28 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
     } else {
       throw UnexpectedViolationException.withMessage("Unsupported guide form - {0}", guideForm);
     }
+  }
+
+  @Override
+  protected Map<String, String> buildConversionMethod(CustomTypeReference parent) {
+    var sb = new StringBuilder();
+    sb.append("private ");
+    sb.append(getObjectHandleDeclaration(parent, getObjectHandleType()));
+    sb.append(" _");
+    sb.append(NameConventionFunctions.getConversionMethodName(parent));
+    sb.append("() {\n");
+    sb.append("  return new ");
+
+    Optional<CustomTypeReference> aliasBaseDomain = DomainFunctions.getAliasBaseDomain(domainType);
+    CustomType actualDomain = aliasBaseDomain.isPresent() ? aliasBaseDomain.get().targetType() : domainType;
+    sb.append(context.addToImportAndGetSimpleName(
+        NameConventionFunctions.getDownwardObjectHandleTypename(actualDomain, parent.targetType(), getObjectHandleType())
+    ));
+    sb.append("(this);\n");
+    sb.append("}");
+    return Map.of(
+        "declaration", sb.toString()
+    );
   }
 
   private boolean isInjectionMethod(MethodStatement method) {

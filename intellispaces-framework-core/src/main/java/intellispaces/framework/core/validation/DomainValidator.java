@@ -28,7 +28,7 @@ public class DomainValidator implements AnnotatedTypeValidator {
   @Override
   public void validate(CustomType domainType) {
     validateName(domainType);
-    validateBaseDomains(domainType);
+    validateParentDomains(domainType);
     validateMethods(domainType);
   }
 
@@ -39,17 +39,26 @@ public class DomainValidator implements AnnotatedTypeValidator {
     }
   }
 
-  private void validateBaseDomains(CustomType domainType) {
+  private void validateParentDomains(CustomType domainType) {
     boolean isAlias = false;
-    for (CustomTypeReference baseDomain : domainType.parentTypes()) {
+    for (CustomTypeReference parentDomain : domainType.parentTypes()) {
       if (isAlias) {
         throw IntelliSpacesException.withMessage("Alias domain must have a single base domain. Check class {0}",
             domainType.canonicalName());
       }
-      if (isAliasDomain(baseDomain)) {
+      if (isAliasDomain(parentDomain)) {
         isAlias = true;
+        if (domainType.declaredMethod(NameConventionFunctions.getConversionMethodName(parentDomain), List.of()).isPresent()) {
+          throw IntelliSpacesException.withMessage("Alias domain could not contain channel to base domain. See domain {0}",
+              domainType.canonicalName());
+        }
+      } else {
+        if (domainType.declaredMethod(NameConventionFunctions.getConversionMethodName(parentDomain), List.of()).isEmpty()) {
+          throw IntelliSpacesException.withMessage("Could not find conversion channel to domain {0}. See domain {1}",
+              parentDomain.targetType().canonicalName(), domainType.canonicalName());
+        }
       }
-      validateBaseDomain(baseDomain, domainType);
+      validateParentDomain(parentDomain, domainType);
     }
   }
 
@@ -69,7 +78,7 @@ public class DomainValidator implements AnnotatedTypeValidator {
     return false;
   }
 
-  private void validateBaseDomain(CustomTypeReference baseDomain, CustomType domainType) {
+  private void validateParentDomain(CustomTypeReference baseDomain, CustomType domainType) {
     for (NotPrimitiveReference typeArgument : baseDomain.typeArguments()) {
       if (typeArgument.isCustomTypeReference()) {
         CustomType argumentType = typeArgument.asCustomTypeReferenceOrElseThrow().targetType();

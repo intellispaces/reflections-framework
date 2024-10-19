@@ -3,16 +3,16 @@ package intellispaces.framework.core.annotation.processor.objecthandle;
 import intellispaces.common.action.Actions;
 import intellispaces.common.action.functional.FunctionActions;
 import intellispaces.common.annotationprocessor.context.AnnotationProcessingContext;
-import intellispaces.common.base.collection.ArraysFunctions;
 import intellispaces.common.base.math.MathFunctions;
 import intellispaces.common.base.type.Type;
 import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.common.javastatement.method.MethodStatement;
 import intellispaces.common.javastatement.reference.TypeReference;
-import intellispaces.framework.core.annotation.Channel;
+import intellispaces.framework.core.annotation.Movable;
 import intellispaces.framework.core.annotation.Ordinal;
-import intellispaces.framework.core.annotation.TargetSpecification;
+import intellispaces.framework.core.annotation.Unmovable;
 import intellispaces.framework.core.annotation.Wrapper;
+import intellispaces.framework.core.common.NameConventionFunctions;
 import intellispaces.framework.core.exception.TraverseException;
 import intellispaces.framework.core.guide.GuideForms;
 import intellispaces.framework.core.guide.n0.Mover0;
@@ -78,6 +78,7 @@ public class MovableObjectHandleWrapperGenerator extends AbstractObjectHandleWra
     vars.put("domainMethods", methods);
     vars.put("injections", injections);
     vars.put("injectionMethods", injectionMethods);
+    vars.put("conversionMethods", conversionMethods);
     return vars;
   }
 
@@ -119,6 +120,7 @@ public class MovableObjectHandleWrapperGenerator extends AbstractObjectHandleWra
     analyzeConstructors(annotatedType);
     analyzeInjectedGuides(annotatedType);
     analyzeObjectHandleMethods(annotatedType, roundEnv);
+    analyzeConversionMethods(domainType, roundEnv);
     return true;
   }
 
@@ -126,9 +128,12 @@ public class MovableObjectHandleWrapperGenerator extends AbstractObjectHandleWra
     TypeReference domainReturnType = method.returnType().orElseThrow();
     if (
         ChannelFunctions.getTraverseTypes(method).stream().anyMatch(TraverseType::isMoving)
-          || ArraysFunctions.contains(method.selectAnnotation(Channel.class).orElseThrow().targetSpecifications(), TargetSpecification.Movable)
+          || method.hasAnnotation(Movable.class)
+          || NameConventionFunctions.isConversionMethod(method)
     ) {
       sb.append(getObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.Movable));
+    } else if (method.hasAnnotation(Unmovable.class)) {
+      sb.append(getObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.Unmovable));
     } else {
       sb.append(getObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.Common));
     }

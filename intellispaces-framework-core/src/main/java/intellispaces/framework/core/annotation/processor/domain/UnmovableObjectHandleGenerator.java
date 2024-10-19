@@ -6,6 +6,7 @@ import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.common.javastatement.method.MethodStatement;
 import intellispaces.common.javastatement.reference.CustomTypeReference;
 import intellispaces.framework.core.annotation.ObjectHandle;
+import intellispaces.framework.core.annotation.Unmovable;
 import intellispaces.framework.core.common.NameConventionFunctions;
 import intellispaces.framework.core.object.ObjectHandleTypes;
 import intellispaces.framework.core.object.UnmovableObjectHandle;
@@ -60,6 +61,7 @@ public class UnmovableObjectHandleGenerator extends AbstractDomainObjectHandleGe
     vars.put("domainTypeParamsFull", domainTypeParamsFull);
     vars.put("domainTypeParamsBrief", domainTypeParamsBrief);
     vars.put("baseObjectHandle", baseObjectHandle);
+    vars.put("conversionMethods", conversionMethods);
     vars.put("domainMethods", methods);
     vars.put("unmovableObjectHandleName", context.addToImportAndGetSimpleName(UnmovableObjectHandle.class));
     vars.put("isAlias", isAlias);
@@ -76,6 +78,7 @@ public class UnmovableObjectHandleGenerator extends AbstractDomainObjectHandleGe
     context.addImport(UnexpectedViolationException.class);
     context.addImport(UnmovableObjectHandle.class);
     context.addImport(ObjectHandle.class);
+    context.addImport(Unmovable.class);
 
     domainTypeParamsFull = annotatedType.typeParametersFullDeclaration();
     domainTypeParamsBrief = annotatedType.typeParametersBriefDeclaration();
@@ -83,8 +86,9 @@ public class UnmovableObjectHandleGenerator extends AbstractDomainObjectHandleGe
         NameConventionFunctions.getCommonObjectHandleTypename(annotatedType.className())
     );
     analyzeObjectHandleMethods(annotatedType, roundEnv);
+    analyzeConversionMethods(annotatedType, roundEnv);
 
-    Optional<CustomTypeReference> equivalentDomain = DomainFunctions.getNearEquivalentDomain(annotatedType);
+    Optional<CustomTypeReference> equivalentDomain = DomainFunctions.getAliasNearNeighbourDomain(annotatedType);
     isAlias = equivalentDomain.isPresent();
     if (isAlias) {
       primaryObjectHandle = getObjectHandleDeclaration(equivalentDomain.get(), ObjectHandleTypes.Unmovable);

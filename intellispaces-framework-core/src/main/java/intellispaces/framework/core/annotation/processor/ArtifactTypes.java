@@ -4,8 +4,6 @@ public enum ArtifactTypes {
 
   Channel,
 
-  ObjectHandleBranch,
-
   ObjectHandle,
 
   MovableObjectHandle,

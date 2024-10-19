@@ -7,8 +7,9 @@ import intellispaces.common.javastatement.method.MethodStatement;
 import intellispaces.common.javastatement.reference.CustomTypeReference;
 import intellispaces.common.javastatement.reference.TypeReference;
 import intellispaces.framework.core.annotation.Channel;
+import intellispaces.framework.core.annotation.Movable;
 import intellispaces.framework.core.annotation.ObjectHandle;
-import intellispaces.framework.core.annotation.TargetSpecification;
+import intellispaces.framework.core.annotation.Unmovable;
 import intellispaces.framework.core.common.NameConventionFunctions;
 import intellispaces.framework.core.exception.TraverseException;
 import intellispaces.framework.core.object.MovableObjectHandle;
@@ -69,6 +70,7 @@ public class MovableObjectHandleGenerator extends AbstractDomainObjectHandleGene
     vars.put("domainTypeParamsFull", domainTypeParamsFull);
     vars.put("domainTypeParamsBrief", domainTypeParamsBrief);
     vars.put("baseObjectHandle", baseObjectHandle);
+    vars.put("conversionMethods", conversionMethods);
     vars.put("domainMethods", methods);
     vars.put("movableObjectHandleName", context.addToImportAndGetSimpleName(MovableObjectHandle.class));
     vars.put("isAlias", isAlias);
@@ -91,6 +93,7 @@ public class MovableObjectHandleGenerator extends AbstractDomainObjectHandleGene
     context.addImport(ChannelMethod0.class);
     context.addImport(ChannelMethod1.class);
     context.addImport(TraverseException.class);
+    context.addImport(Movable.class);
 
     domainTypeParamsFull = annotatedType.typeParametersFullDeclaration();
     domainTypeParamsBrief = annotatedType.typeParametersBriefDeclaration();
@@ -98,6 +101,7 @@ public class MovableObjectHandleGenerator extends AbstractDomainObjectHandleGene
         NameConventionFunctions.getCommonObjectHandleTypename(annotatedType.className())
     );
     analyzeObjectHandleMethods(annotatedType, roundEnv);
+    analyzeConversionMethods(annotatedType, roundEnv);
 
     List<CustomTypeReference> equivalentDomains = DomainFunctions.getEquivalentDomains(annotatedType);
     isAlias = !equivalentDomains.isEmpty();
@@ -121,10 +125,13 @@ public class MovableObjectHandleGenerator extends AbstractDomainObjectHandleGene
   @Override
   protected void appendMethodReturnHandleType(StringBuilder sb, MethodStatement method) {
     TypeReference domainReturnType = method.returnType().orElseThrow();
-    if (ChannelFunctions.getTraverseTypes(method).stream().anyMatch(TraverseType::isMoving)
-        || ArraysFunctions.contains(method.selectAnnotation(Channel.class).orElseThrow().targetSpecifications(), TargetSpecification.Movable)
+    if (
+        ChannelFunctions.getTraverseTypes(method).stream().anyMatch(TraverseType::isMoving)
+            || method.hasAnnotation(Movable.class)
     ) {
       sb.append(getObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.Movable));
+    } else if (method.hasAnnotation(Unmovable.class)) {
+      sb.append(getObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.Unmovable));
     } else {
       sb.append(getObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.Common));
     }

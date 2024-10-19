@@ -1,6 +1,7 @@
 package intellispaces.framework.core.guide.n0;
 
 import intellispaces.common.base.exception.UnexpectedViolationException;
+import intellispaces.common.javastatement.method.MethodStatement;
 import intellispaces.framework.core.exception.TraverseException;
 import intellispaces.framework.core.guide.GuideForm;
 import intellispaces.framework.core.guide.GuideLogger;
@@ -12,17 +13,17 @@ abstract class ObjectGuide0<S extends ObjectHandleWrapper, R> implements Guide0<
   private final Class<S> objectHandleClass;
   private final String cid;
   private final GuideForm guideForm;
-  private final Method guideMethod;
+  private final MethodStatement guideMethod;
   private final int channelIndex;
 
   ObjectGuide0(
     String cid,
     Class<S> objectHandleClass,
     GuideForm guideForm,
-    Method guideMethod,
+    MethodStatement guideMethod,
     int channelIndex
   ) {
-    if (guideMethod.getParameterCount() != 0) {
+    if (!guideMethod.params().isEmpty()) {
       throw UnexpectedViolationException.withMessage("Guide should not have parameters");
     }
     this.cid = cid;
@@ -52,7 +53,7 @@ abstract class ObjectGuide0<S extends ObjectHandleWrapper, R> implements Guide0<
       throw e;
     } catch (Exception e) {
       throw TraverseException.withCauseAndMessage(e, "Failed to invoke guide method ''{0}'' of object handle {1}",
-        guideMethod.getName(), objectHandleClass.getCanonicalName());
+        guideMethod.name(), objectHandleClass.getCanonicalName());
     }
   }
 
@@ -65,7 +66,7 @@ abstract class ObjectGuide0<S extends ObjectHandleWrapper, R> implements Guide0<
       throw e;
     } catch (Exception e) {
       throw TraverseException.withCauseAndMessage(e, "Failed to invoke guide method ''{0}'' of object handle {1}",
-          guideMethod.getName(), objectHandleClass.getCanonicalName());
+          guideMethod.name(), objectHandleClass.getCanonicalName());
     }
   }
 
@@ -78,7 +79,7 @@ abstract class ObjectGuide0<S extends ObjectHandleWrapper, R> implements Guide0<
       throw e;
     } catch (Exception e) {
       throw TraverseException.withCauseAndMessage(e, "Failed to invoke guide method ''{0}'' of object handle {1}",
-          guideMethod.getName(), objectHandleClass.getCanonicalName());
+          guideMethod.name(), objectHandleClass.getCanonicalName());
     }
   }
 }

@@ -1,17 +1,19 @@
 package intellispaces.framework.core.annotation.processor;
 
 import intellispaces.common.action.runner.Runner;
-import intellispaces.common.base.collection.ArraysFunctions;
 import intellispaces.common.base.exception.UnexpectedViolationException;
 import intellispaces.common.base.text.TextActions;
 import intellispaces.common.base.type.TypeFunctions;
 import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.common.javastatement.method.MethodParam;
 import intellispaces.common.javastatement.method.MethodStatement;
+import intellispaces.common.javastatement.reference.CustomTypeReference;
+import intellispaces.common.javastatement.reference.CustomTypeReferences;
 import intellispaces.common.javastatement.reference.NamedReference;
 import intellispaces.common.javastatement.reference.TypeReference;
 import intellispaces.framework.core.annotation.Channel;
-import intellispaces.framework.core.annotation.TargetSpecification;
+import intellispaces.framework.core.annotation.Movable;
+import intellispaces.framework.core.annotation.Unmovable;
 import intellispaces.framework.core.common.NameConventionFunctions;
 import intellispaces.framework.core.exception.TraverseException;
 import intellispaces.framework.core.guide.GuideForm;
@@ -19,9 +21,11 @@ import intellispaces.framework.core.guide.GuideForms;
 import intellispaces.framework.core.object.ObjectHandleTypes;
 import intellispaces.framework.core.space.SpaceConstants;
 import intellispaces.framework.core.space.channel.ChannelFunctions;
+import intellispaces.framework.core.space.domain.DomainFunctions;
 
 import javax.annotation.processing.RoundEnvironment;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -30,6 +34,7 @@ import java.util.stream.Stream;
 public abstract class AbstractObjectHandleGenerator extends AbstractGenerator {
   protected String domainTypeParamsFull;
   protected String domainTypeParamsBrief;
+  protected final List<Map<String, String>> conversionMethods = new ArrayList<>();
   protected final List<Map<String, String>> methods = new ArrayList<>();
 
   public AbstractObjectHandleGenerator(CustomType initiatorType, CustomType customType) {
@@ -62,6 +67,37 @@ public abstract class AbstractObjectHandleGenerator extends AbstractGenerator {
         }
       }
     }
+  }
+
+  protected void analyzeConversionMethods(CustomType customType, RoundEnvironment roundEnv) {
+    analyzeConversionMethods(customType, customType, roundEnv);
+  }
+
+  private void analyzeConversionMethods(
+      CustomType customType, CustomType effectiveCustomType, RoundEnvironment roundEnv
+  ) {
+    Iterator<CustomTypeReference> parents = customType.parentTypes().iterator();
+    Iterator<CustomTypeReference> effectiveParents = effectiveCustomType.parentTypes().iterator();
+    while (parents.hasNext() && effectiveParents.hasNext()) {
+      CustomTypeReference parent = parents.next();
+      CustomTypeReference effectiveParent = effectiveParents.next();
+      if (DomainFunctions.isAliasOf(parent, customType)) {
+        analyzeConversionMethods(parent.targetType(), effectiveParent.effectiveTargetType(), roundEnv);
+      } else {
+        conversionMethods.add(buildConversionMethod(CustomTypeReferences.get(effectiveParent.effectiveTargetType())));
+      }
+    }
+  }
+
+  protected Map<String, String> buildConversionMethod(CustomTypeReference parent) {
+    var sb = new StringBuilder();
+    sb.append(getObjectHandleDeclaration(parent, getObjectHandleType()));
+    sb.append(" ");
+    sb.append(NameConventionFunctions.getConversionMethodName(parent));
+    sb.append("()");
+    return Map.of(
+        "declaration", sb.toString()
+    );
   }
 
   abstract protected Stream<MethodStatement> getObjectHandleMethods(
@@ -142,13 +178,16 @@ public abstract class AbstractObjectHandleGenerator extends AbstractGenerator {
 
   protected void appendMethodReturnHandleType(StringBuilder sb, MethodStatement method) {
     TypeReference domainReturnType = method.returnType().orElseThrow();
-    TargetSpecification[] targetSpecifications = method
-        .selectAnnotation(Channel.class).orElseThrow()
-        .targetSpecifications();
-    if (ArraysFunctions.contains(targetSpecifications, TargetSpecification.Movable)) {
-      sb.append(getObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.Movable));
+    if (NameConventionFunctions.isConversionMethod(method)) {
+      sb.append(getObjectHandleDeclaration(domainReturnType, getObjectHandleType()));
     } else {
-      sb.append(getObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.Common));
+      if (method.hasAnnotation(Movable.class)) {
+        sb.append(getObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.Movable));
+      } else if (method.hasAnnotation(Unmovable.class)) {
+        sb.append(getObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.Unmovable));
+      } else {
+        sb.append(getObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.Common));
+      }
     }
   }
 
@@ -183,5 +222,22 @@ public abstract class AbstractObjectHandleGenerator extends AbstractGenerator {
     if (!exceptions.isEmpty()) {
       sb.append(" throws ").append(exceptions);
     }
+  }
+
+  protected boolean excludeDeepConversionMethods(MethodStatement method, CustomType customType) {
+    if (!NameConventionFunctions.isConversionMethod(method)) {
+      return true;
+    }
+    for (CustomTypeReference parent : customType.parentTypes()) {
+      if (DomainFunctions.isAliasOf(parent, customType)) {
+        if (excludeDeepConversionMethods(method, parent.targetType())) {
+          return true;
+        }
+      }
+      if (NameConventionFunctions.getConversionMethodName(parent).equals(method.name())) {
+        return true;
+      }
+    }
+    return false;
   }
 }

@@ -2,14 +2,17 @@ package intellispaces.framework.core.guide;
 
 import intellispaces.common.base.exception.UnexpectedViolationException;
 import intellispaces.common.base.type.TypeFunctions;
+import intellispaces.common.javastatement.customtype.Classes;
 import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.common.javastatement.customtype.CustomTypes;
+import intellispaces.common.javastatement.customtype.Interfaces;
 import intellispaces.common.javastatement.instance.AnnotationInstance;
 import intellispaces.common.javastatement.instance.ClassInstance;
 import intellispaces.common.javastatement.instance.Instance;
 import intellispaces.common.javastatement.method.MethodFunctions;
 import intellispaces.common.javastatement.method.MethodStatement;
 import intellispaces.common.javastatement.method.Methods;
+import intellispaces.common.javastatement.reference.CustomTypeReference;
 import intellispaces.common.javastatement.reference.TypeReference;
 import intellispaces.framework.core.annotation.Channel;
 import intellispaces.framework.core.annotation.Mapper;
@@ -49,6 +52,8 @@ import intellispaces.framework.core.guide.n4.Mapper4;
 import intellispaces.framework.core.guide.n4.Mover4;
 import intellispaces.framework.core.guide.n5.Mapper5;
 import intellispaces.framework.core.guide.n5.Mover5;
+import intellispaces.framework.core.object.DataFunctions;
+import intellispaces.framework.core.object.ObjectFunctions;
 import intellispaces.framework.core.space.channel.ChannelFunctions;
 import intellispaces.framework.core.system.UnitGuide;
 import intellispaces.framework.core.system.UnitWrapper;
@@ -168,7 +173,41 @@ public final class GuideFunctions {
         }
       }
     }
+    addConversionGuides(objectHandleClass, guides);
     return guides;
+  }
+
+  private static void addConversionGuides(Class<?> objectHandleClass, List<Guide<?, ?>> guides) {
+    String implClassCanonicalName = NameConventionFunctions.getObjectHandleWrapperCanonicalName(
+        objectHandleClass
+    );
+    Optional<Class<?>> objectHandleImplClass = TypeFunctions.getClass(implClassCanonicalName);
+    if (objectHandleImplClass.isEmpty()) {
+      throw UnexpectedViolationException.withMessage("Could not get object handle implementation class {0}",
+          implClassCanonicalName);
+    }
+    CustomType objectHandleWrapperType = Interfaces.of(objectHandleImplClass.get());
+
+    Class<?> domainClass = ObjectFunctions.getDomainClassOfObjectHandle(objectHandleClass);
+    CustomType domainType = Interfaces.of(domainClass);
+
+    for (MethodStatement method : domainType.declaredMethods()) {
+      if (NameConventionFunctions.isConversionMethod(method)) {
+        String cid = method.selectAnnotation(Channel.class).orElseThrow().value();
+
+        Optional<MethodStatement> wrapperMethod = objectHandleWrapperType.declaredMethod(method.name(), List.of());
+        int channelOrdinal = wrapperMethod.orElseThrow().selectAnnotation(Ordinal.class).orElseThrow().value();
+
+        Guide<?, ?> guide = new ObjectMapper0<>(
+            cid,
+            (Class) objectHandleClass,
+            method,
+            channelOrdinal,
+            GuideForms.Main
+        );
+        guides.add(guide);
+      }
+    }
   }
 
   public static List<UnitGuide<?, ?>> readUnitGuides(Class<?> unitClass, UnitWrapper unitInstance) {
@@ -236,13 +275,13 @@ public final class GuideFunctions {
       Class<S> objectHandleClass, String cid, Method guideMethod
   ) {
     GuideForm guideForm = getGuideForm(guideMethod);
-    int channelIndex = getChannelOrdinal(objectHandleClass, guideMethod);
+    int channelOrdinal = getChannelOrdinal(objectHandleClass, guideMethod);
     int qualifiersCount = guideMethod.getParameterCount();
     return switch (qualifiersCount) {
-      case 0 -> new ObjectMapper0<>(cid, (Class) objectHandleClass, guideMethod, channelIndex, guideForm);
-      case 1 -> new ObjectMapper1<>(cid, (Class) objectHandleClass, guideMethod, channelIndex, guideForm);
-      case 2 -> new ObjectMapper2<>(cid, (Class) objectHandleClass, guideMethod, channelIndex, guideForm);
-      case 3 -> new ObjectMapper3<>(cid, (Class) objectHandleClass, guideMethod, channelIndex, guideForm);
+      case 0 -> new ObjectMapper0<>(cid, (Class) objectHandleClass, Methods.of(guideMethod), channelOrdinal, guideForm);
+      case 1 -> new ObjectMapper1<>(cid, (Class) objectHandleClass, guideMethod, channelOrdinal, guideForm);
+      case 2 -> new ObjectMapper2<>(cid, (Class) objectHandleClass, guideMethod, channelOrdinal, guideForm);
+      case 3 -> new ObjectMapper3<>(cid, (Class) objectHandleClass, guideMethod, channelOrdinal, guideForm);
       default -> throw UnexpectedViolationException.withMessage("Unsupported number of guide qualifiers: {0}",
           qualifiersCount);
     };
@@ -253,13 +292,13 @@ public final class GuideFunctions {
       Class<S> objectHandleClass, String cid, Method guideMethod
   ) {
     GuideForm guideForm = getGuideForm(guideMethod);
-    int channelIndex = getChannelOrdinal(objectHandleClass, guideMethod);
+    int channelOrdinal = getChannelOrdinal(objectHandleClass, guideMethod);
     int qualifiersCount = guideMethod.getParameterCount();
     return switch (qualifiersCount) {
-      case 0 -> new ObjectMover0<>(cid, (Class) objectHandleClass, guideMethod, channelIndex, guideForm);
-      case 1 -> new ObjectMover1<>(cid, (Class) objectHandleClass, guideMethod, channelIndex, guideForm);
-      case 2 -> new ObjectMover2<>(cid, (Class) objectHandleClass, guideMethod, channelIndex, guideForm);
-      case 3 -> new ObjectMover3<>(cid, (Class) objectHandleClass, guideMethod, channelIndex, guideForm);
+      case 0 -> new ObjectMover0<>(cid, (Class) objectHandleClass, Methods.of(guideMethod), channelOrdinal, guideForm);
+      case 1 -> new ObjectMover1<>(cid, (Class) objectHandleClass, guideMethod, channelOrdinal, guideForm);
+      case 2 -> new ObjectMover2<>(cid, (Class) objectHandleClass, guideMethod, channelOrdinal, guideForm);
+      case 3 -> new ObjectMover3<>(cid, (Class) objectHandleClass, guideMethod, channelOrdinal, guideForm);
       default -> throw UnexpectedViolationException.withMessage("Unsupported number of guide qualifiers: {0}",
           qualifiersCount);
     };
@@ -270,13 +309,13 @@ public final class GuideFunctions {
       Class<S> objectHandleClass, String cid, Method guideMethod
   ) {
     GuideForm guideForm = getGuideForm(guideMethod);
-    int channelIndex = getChannelOrdinal(objectHandleClass, guideMethod);
+    int channelOrdinal = getChannelOrdinal(objectHandleClass, guideMethod);
     int qualifiersCount = guideMethod.getParameterCount();
     return switch (qualifiersCount) {
-      case 0 -> new ObjectMapperOfMoving0<>(cid, (Class) objectHandleClass, guideMethod, channelIndex, guideForm);
-      case 1 -> new ObjectMapperOfMoving1<>(cid, (Class) objectHandleClass, guideMethod, channelIndex, guideForm);
-      case 2 -> new ObjectMapperOfMoving2<>(cid, (Class) objectHandleClass, guideMethod, channelIndex, guideForm);
-      case 3 -> new ObjectMapperOfMoving3<>(cid, (Class) objectHandleClass, guideMethod, channelIndex, guideForm);
+      case 0 -> new ObjectMapperOfMoving0<>(cid, (Class) objectHandleClass, Methods.of(guideMethod), channelOrdinal, guideForm);
+      case 1 -> new ObjectMapperOfMoving1<>(cid, (Class) objectHandleClass, guideMethod, channelOrdinal, guideForm);
+      case 2 -> new ObjectMapperOfMoving2<>(cid, (Class) objectHandleClass, guideMethod, channelOrdinal, guideForm);
+      case 3 -> new ObjectMapperOfMoving3<>(cid, (Class) objectHandleClass, guideMethod, channelOrdinal, guideForm);
       default -> throw UnexpectedViolationException.withMessage("Unsupported number of guide qualifiers: {0}",
           qualifiersCount);
     };

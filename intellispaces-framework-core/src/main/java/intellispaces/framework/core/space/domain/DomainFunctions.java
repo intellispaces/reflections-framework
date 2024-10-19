@@ -11,6 +11,7 @@ import intellispaces.common.javastatement.reference.NotPrimitiveReference;
 import intellispaces.common.javastatement.reference.TypeReference;
 import intellispaces.common.javastatement.reference.TypeReferenceFunctions;
 import intellispaces.framework.core.annotation.Domain;
+import intellispaces.framework.core.common.NameConventionFunctions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,21 +62,21 @@ public final class DomainFunctions {
   public static List<CustomType> getDomainTypeAndParents(CustomType domainType) {
     List<CustomType> result = new ArrayList<>();
     result.add(domainType);
-    getParentDomains(domainType, result::add);
+    allParentDomains(domainType, result::add);
     return result;
   }
 
-  public static List<CustomType> getParentDomains(CustomType domainType) {
+  public static List<CustomType> allParentDomains(CustomType domainType) {
     List<CustomType> parents = new ArrayList<>();
-    getParentDomains(domainType, parents::add);
+    allParentDomains(domainType, parents::add);
     return parents;
   }
 
-  private static void getParentDomains(CustomType domainType, Consumer<CustomType> consumer) {
+  private static void allParentDomains(CustomType domainType, Consumer<CustomType> consumer) {
     for (CustomTypeReference parent : domainType.parentTypes()) {
       if (DomainFunctions.isDomainType(domainType)) {
         consumer.accept(parent.targetType());
-        getParentDomains(parent.targetType(), consumer);
+        allParentDomains(parent.targetType(), consumer);
       }
     }
   }
@@ -121,7 +122,7 @@ public final class DomainFunctions {
         } else if (typeArgument.isNamedReference()) {
           String typeArgumentName = typeArgument.asNamedReferenceOrElseThrow().name();
           NamedReference domainTypeParam = aliasDomainTypeParameters.get(typeArgumentName);
-          if (!domainTypeParam.extendedBounds().isEmpty()) {
+          if (domainTypeParam != null && !domainTypeParam.extendedBounds().isEmpty()) {
             isAlias = true;
 
             if (arguments.isEmpty()) {
@@ -152,7 +153,7 @@ public final class DomainFunctions {
    * @param domain the domain.
    * @return near equivalent domain definition or empty optional when domain is not alias.
    */
-  public static Optional<CustomTypeReference> getNearEquivalentDomain(CustomType domain) {
+  public static Optional<CustomTypeReference> getAliasNearNeighbourDomain(CustomType domain) {
     List<CustomTypeReference> equivalentDomains = getEquivalentDomains(domain);
     if (equivalentDomains.isEmpty()) {
       return Optional.empty();
@@ -166,7 +167,7 @@ public final class DomainFunctions {
    * @param domain the domain.
    * @return primary equivalent domain definition or empty optional when domain is not alias.
    */
-  public static Optional<CustomTypeReference> getMainEquivalentDomain(CustomType domain) {
+  public static Optional<CustomTypeReference> getAliasBaseDomain(CustomType domain) {
     List<CustomTypeReference> equivalentDomains = getEquivalentDomains(domain);
     if (equivalentDomains.isEmpty()) {
       return Optional.empty();
@@ -193,4 +194,27 @@ public final class DomainFunctions {
       Class.class.getCanonicalName(),
       Void.class.getCanonicalName()
   );
+
+  public static String buildConversionMethodsChain(CustomType sourceDomain, CustomType targetDomain) {
+    return buildConversionMethodsChain("", sourceDomain, targetDomain);
+  }
+
+  private static String buildConversionMethodsChain(
+      String prevChain, CustomType sourceDomain, CustomType targetDomain
+  ) {
+    if (sourceDomain.canonicalName().equals(targetDomain.canonicalName())) {
+      return prevChain;
+    }
+
+    for (CustomTypeReference parent : sourceDomain.parentTypes()) {
+      String chain = isAliasOf(parent, sourceDomain)
+          ? prevChain
+          : prevChain + "." + NameConventionFunctions.getConversionMethodName(parent.targetType()) + "()";
+      String next = buildConversionMethodsChain(chain, parent.targetType(), targetDomain);
+      if (next != null) {
+        return next;
+      }
+    }
+    return null;
+  }
 }

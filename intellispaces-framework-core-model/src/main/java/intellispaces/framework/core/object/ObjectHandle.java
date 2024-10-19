@@ -8,21 +8,22 @@ import intellispaces.framework.core.space.channel.MappingChannel;
 /**
  * Handle of object.<p/>
  *
- * The handle implements interaction with the object.<p/>
+ * Object handle binds an object to a semantic domain.<p/>
  *
- * The interaction of the system with the object is performed through the object handle.<p/>
+ * The handle implements interaction with the object.
+ * Any interaction of the system with the object is performed through the object handle.<p/>
  *
- * @param <D> object domain type.
+ * @param <D> related domain type.
  */
 public interface ObjectHandle<D> {
 
   /**
-   * Returns the type of the primary domain declaration.
+   * Type of the domain related to this handle.
    */
   Type<D> domain();
 
   /**
-   * Returns the class declaring the domain.
+   * Class of the domain related to this handle.
    */
   Class<?> domainClass();
 

@@ -51,6 +51,7 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
   protected boolean isAlias;
   protected String primaryDomainSimpleName;
   protected String primaryDomainTypeArguments;
+  protected boolean implRelease;
   private final List<MethodStatement> domainMethods;
   protected final CustomType domainType;
   protected final List<Object> constructors = new ArrayList<>();
@@ -69,6 +70,11 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
         .filter(m -> excludeDeepConversionMethods(m, domainType))
         .filter(this::isNotDomainClassGetter)
         .toList();
+  }
+
+  protected void analyzeReleaseMethod(CustomType objectHandleType) {
+    Optional<MethodStatement> releaseMethod = objectHandleType.declaredMethod("release", List.of());
+    implRelease = releaseMethod.isPresent() && !releaseMethod.get().isAbstract();
   }
 
   @Override

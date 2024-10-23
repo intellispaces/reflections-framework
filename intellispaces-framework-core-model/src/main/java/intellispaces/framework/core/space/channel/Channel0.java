@@ -1,7 +1,7 @@
 package intellispaces.framework.core.space.channel;
 
 /**
- * Marker interface of the channel 0.
+ * Marker interface of the not parametrized channel.
  */
 public interface Channel0 {
 }

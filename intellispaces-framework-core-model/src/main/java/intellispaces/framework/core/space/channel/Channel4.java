@@ -1,7 +1,7 @@
 package intellispaces.framework.core.space.channel;
 
 /**
- * Marker interface of the channel 4.
+ * Marker interface of the four times parameterized channel.
  */
 public interface Channel4 {
 }

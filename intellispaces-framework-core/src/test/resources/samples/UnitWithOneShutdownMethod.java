@@ -8,7 +8,7 @@ import intellispaces.framework.core.annotation.validator.Sample;
 public interface UnitWithOneShutdownMethod {
 
   @Sample
-  @Module(include = IncludedUnit.class)
+  @Module(IncludedUnit.class)
   public class MainUnit {
   }
 

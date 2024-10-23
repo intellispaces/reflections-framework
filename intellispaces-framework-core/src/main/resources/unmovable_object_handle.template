@@ -15,7 +15,7 @@ import {{$importedClass}};
 {{when $isAlias}}
 public interface {{$classSimpleName}}{{$domainTypeParamsFull}} extends {{$baseObjectHandle}}{{$domainTypeParamsBrief}}, {{$primaryObjectHandle}} {
 {{else}}
-public interface {{$classSimpleName}}{{$domainTypeParamsFull}} extends {{$baseObjectHandle}}{{$domainTypeParamsBrief}} {
+public interface {{$classSimpleName}}{{$domainTypeParamsFull}} extends {{$baseObjectHandle}}{{$domainTypeParamsBrief}}, UnmovableObjectHandle<{{$sourceClassSimpleName}}{{$domainTypeParamsBrief}}> {
 {{end}}
 
 {{for method : $conversionMethods}}

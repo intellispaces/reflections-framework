@@ -31,5 +31,21 @@ public interface ObjectHandle<D> {
 
   MovableObjectHandle<D> asMovableOrElseThrow();
 
+  /**
+   * Releases all direct links to the actual object, if any.
+   */
+  void release();
+
+  /**
+   * Maps object through not parametrized channel.
+   *
+   * @param channelClass channel class.
+   * @param qualifier channel qualifier.
+   * @return target object handle.
+   * @param <T> target object handle type.
+   * @param <Q> channel qualifier type.
+   * @param <C> channel type.
+   * @throws TraverseException throws if object cannot be traversed.
+   */
   <T, Q, C extends Channel1 & MappingChannel> T mapThru(Class<C> channelClass, Q qualifier) throws TraverseException;
 }

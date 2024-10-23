@@ -6,7 +6,7 @@ import intellispaces.framework.core.annotation.Projection;
 
 public class ModuleWithTwoProjectionProvidersInDifferentUnitsWithCyclicDependency2 {
 
-  @Module(include = UnitSample.class)
+  @Module(UnitSample.class)
   public static class ModuleSample {
     @Projection(lazy = false)
     public String projection1(String projection2) {

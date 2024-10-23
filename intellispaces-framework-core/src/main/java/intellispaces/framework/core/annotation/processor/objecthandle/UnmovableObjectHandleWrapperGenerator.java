@@ -69,6 +69,7 @@ public class UnmovableObjectHandleWrapperGenerator extends AbstractObjectHandleW
     vars.put("injections", injections);
     vars.put("injectionMethods", injectionMethods);
     vars.put("conversionMethods", conversionMethods);
+    vars.put("notImplRelease", !implRelease);
     return vars;
   }
 
@@ -110,6 +111,7 @@ public class UnmovableObjectHandleWrapperGenerator extends AbstractObjectHandleW
     analyzeInjectedGuides(annotatedType);
     analyzeObjectHandleMethods(annotatedType, roundEnv);
     analyzeConversionMethods(domainType, roundEnv);
+    analyzeReleaseMethod(annotatedType);
     return true;
   }
 }

@@ -79,6 +79,7 @@ public class MovableObjectHandleWrapperGenerator extends AbstractObjectHandleWra
     vars.put("injections", injections);
     vars.put("injectionMethods", injectionMethods);
     vars.put("conversionMethods", conversionMethods);
+    vars.put("notImplRelease", !implRelease);
     return vars;
   }
 
@@ -121,6 +122,7 @@ public class MovableObjectHandleWrapperGenerator extends AbstractObjectHandleWra
     analyzeInjectedGuides(annotatedType);
     analyzeObjectHandleMethods(annotatedType, roundEnv);
     analyzeConversionMethods(domainType, roundEnv);
+    analyzeReleaseMethod(annotatedType);
     return true;
   }
 

@@ -18,7 +18,7 @@ public interface ModuleFunctions {
 
   static Iterable<Class<?>> getIncludedUnits(Class<?> moduleClass) {
     Set<Class<?>> unitClasses = new HashSet<>();
-    ArraysFunctions.foreach(moduleClass.getAnnotation(Module.class).include(),
+    ArraysFunctions.foreach(moduleClass.getAnnotation(Module.class).value(),
       u -> addUnitClass(u, unitClasses)
     );
     return unitClasses;
@@ -28,7 +28,7 @@ public interface ModuleFunctions {
     unitClasses.add(unitClass);
     Configuration configuration = unitClass.getAnnotation(Configuration.class);
     if (configuration != null) {
-      ArraysFunctions.foreach(configuration.include(),
+      ArraysFunctions.foreach(configuration.value(),
         u -> addUnitClass(u, unitClasses)
       );
     }
@@ -37,7 +37,7 @@ public interface ModuleFunctions {
   static Iterable<CustomType> getIncludedUnits(CustomType moduleType) {
     Map<String, CustomType> unitTypes = new HashMap<>();
     AnnotationInstance moduleAnnotation = moduleType.selectAnnotation(Module.class.getCanonicalName()).orElseThrow();
-    Optional<Instance> unitsAttr = moduleAnnotation.elementValue("include");
+    Optional<Instance> unitsAttr = moduleAnnotation.elementValue("value");
     if (unitsAttr.isPresent()) {
       List<Instance> units = unitsAttr.get().asArray().orElseThrow().elements();
       for (Instance unit : units) {
@@ -56,7 +56,7 @@ public interface ModuleFunctions {
         Configuration.class.getCanonicalName()
       );
       if (configurationAnnotation.isPresent()) {
-        Optional<Instance> includeAttr = configurationAnnotation.get().elementValue("include");
+        Optional<Instance> includeAttr = configurationAnnotation.get().elementValue("value");
         if (includeAttr.isPresent()) {
           List<Instance> units = includeAttr.get().asArray().orElseThrow().elements();
           for (Instance unit : units) {

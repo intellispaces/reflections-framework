@@ -20,15 +20,18 @@ import intellispaces.framework.core.annotation.Unmovable;
 import intellispaces.framework.core.annotation.Wrapper;
 import intellispaces.framework.core.common.NameConventionFunctions;
 import intellispaces.framework.core.space.domain.DomainFunctions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Constructor;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 
 public class ObjectFunctions {
-
-  private ObjectFunctions() {}
+  private static final Logger LOG = LoggerFactory.getLogger(ObjectFunctions.class);
 
   public static Class<?> getObjectHandleClass(ObjectHandleTypes objectHandleType) {
     return switch (objectHandleType) {
@@ -325,6 +328,38 @@ public class ObjectFunctions {
     }
     return propertiesHandleClass;
   }
+
+  public static void releaseSilently(intellispaces.framework.core.object.ObjectHandle<?> objectHandle) {
+    if (objectHandle == null) {
+      return;
+    }
+    try {
+      objectHandle.release();
+    } catch (Exception e) {
+      LOG.error("Could not release object handle", e);
+    }
+  }
+
+  public static void releaseEach(List<intellispaces.framework.core.object.ObjectHandle<?>> objectHandles) {
+    List<Exception> exceptions = null;
+    for (var objectHandle : objectHandles) {
+      try {
+        objectHandle.release();
+      } catch (Exception e) {
+        if (exceptions == null) {
+          exceptions = new ArrayList<>();
+          exceptions.add(e);
+        }
+      }
+    }
+    if (exceptions != null) {
+      UnexpectedViolationException uve = UnexpectedViolationException.withMessage("Could not release object handles");
+      exceptions.forEach(uve::addSuppressed);
+      throw uve;
+    }
+  }
+
+  private ObjectFunctions() {}
 
   private final static Set<String> DEFAULT_OBJECT_HANDLE_CLASSES = Set.of(
       boolean.class.getCanonicalName(),

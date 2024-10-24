@@ -1,12 +1,10 @@
 package intellispaces.framework.core.annotation.processor.domain;
 
 import intellispaces.common.annotationprocessor.context.AnnotationProcessingContext;
-import intellispaces.common.base.collection.ArraysFunctions;
 import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.common.javastatement.method.MethodStatement;
 import intellispaces.common.javastatement.reference.CustomTypeReference;
 import intellispaces.common.javastatement.reference.TypeReference;
-import intellispaces.framework.core.annotation.Channel;
 import intellispaces.framework.core.annotation.Movable;
 import intellispaces.framework.core.annotation.ObjectHandle;
 import intellispaces.framework.core.annotation.Unmovable;
@@ -19,6 +17,7 @@ import intellispaces.framework.core.space.channel.Channel1;
 import intellispaces.framework.core.space.channel.ChannelFunctions;
 import intellispaces.framework.core.space.channel.ChannelMethod0;
 import intellispaces.framework.core.space.channel.ChannelMethod1;
+import intellispaces.framework.core.space.channel.MappingOfMovingChannel;
 import intellispaces.framework.core.space.domain.DomainFunctions;
 import intellispaces.framework.core.traverse.TraverseType;
 
@@ -94,6 +93,7 @@ public class MovableObjectHandleGenerator extends AbstractDomainObjectHandleGene
     context.addImport(ChannelMethod1.class);
     context.addImport(TraverseException.class);
     context.addImport(Movable.class);
+    context.addImport(MappingOfMovingChannel.class);
 
     domainTypeParamsFull = annotatedType.typeParametersFullDeclaration();
     domainTypeParamsBrief = annotatedType.typeParametersBriefDeclaration();

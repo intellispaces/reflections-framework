@@ -10,10 +10,15 @@ import intellispaces.common.javastatement.reference.CustomTypeReference;
 import intellispaces.common.javastatement.reference.NotPrimitiveReference;
 import intellispaces.common.javastatement.reference.TypeReference;
 import intellispaces.common.javastatement.reference.TypeReferenceFunctions;
+import intellispaces.framework.core.annotation.Movable;
+import intellispaces.framework.core.annotation.Unmovable;
 import intellispaces.framework.core.common.NameConventionFunctions;
 import intellispaces.framework.core.guide.GuideForm;
 import intellispaces.framework.core.object.ObjectFunctions;
+import intellispaces.framework.core.object.ObjectHandleTypes;
+import intellispaces.framework.core.space.channel.ChannelFunctions;
 import intellispaces.framework.core.space.domain.DomainFunctions;
+import intellispaces.framework.core.traverse.TraverseType;
 
 import javax.annotation.processing.RoundEnvironment;
 import java.util.Map;
@@ -130,5 +135,24 @@ abstract class AbstractConversionDomainObjectHandleGenerator extends AbstractDom
     }
     sb.append(conversionChain);
     sb.append(";");
+  }
+
+  @Override
+  protected void appendMethodReturnHandleType(StringBuilder sb, MethodStatement method) {
+    TypeReference domainReturnType = method.returnType().orElseThrow();
+    if (NameConventionFunctions.isConversionMethod(method)) {
+      sb.append(getObjectHandleDeclaration(domainReturnType, getObjectHandleType()));
+    } else {
+      if (
+          ChannelFunctions.getTraverseTypes(method).stream().anyMatch(TraverseType::isMoving)
+              || method.hasAnnotation(Movable.class)
+      ) {
+        sb.append(getObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.Movable));
+      } else if (method.hasAnnotation(Unmovable.class)) {
+        sb.append(getObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.Unmovable));
+      } else {
+        sb.append(getObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.Common));
+      }
+    }
   }
 }

@@ -108,6 +108,9 @@ public class DomainValidator implements AnnotatedTypeValidator {
     validateMethodName(method, domainType);
     validateMethodReturnType(method, domainType);
     validateMethodParameters(method, domainType);
+    if (NameConventionFunctions.isConversionMethod(method)) {
+      validateConversionMethod(method, domainType);
+    }
   }
 
   private void validateMethodName(MethodStatement method, CustomType domainType) {
@@ -139,11 +142,22 @@ public class DomainValidator implements AnnotatedTypeValidator {
         throw IntelliSpacesException.withMessage("Domain method returns unacceptable type. " +
             "Check method ''{0}'' in class {1}", method.name(), domainType.canonicalName());
       }
-      if (NameConventionFunctions.isConversionMethod(method)) {
-        if (DomainFunctions.isAliasOf(customTypeReference, domainType)) {
-          throw IntelliSpacesException.withMessage("Domain conversion method should not return equivalent domain. " +
-              "Check method ''{0}'' in class {1}", method.name(), domainType.canonicalName());
-        }
+    }
+  }
+
+  private static void validateConversionMethod(MethodStatement method, CustomType domainType) {
+    CustomTypeReference returnType = method.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow();
+    if (DomainFunctions.isAliasOf(returnType, domainType)) {
+      throw IntelliSpacesException.withMessage("Domain conversion method should not return equivalent domain. " +
+          "Check method ''{0}'' in class {1}", method.name(), domainType.canonicalName());
+    }
+
+    if (returnType.typeArguments().isEmpty()) {
+      String expectedMethodName = NameConventionFunctions.getConversionMethodName(returnType);
+      if (!method.name().equals(expectedMethodName)) {
+        throw IntelliSpacesException.withMessage("Invalid name of the domain conversion method. " +
+            "Check method ''{0}'' in class {1}. Expected name ''{2}''",
+            method.name(), domainType.canonicalName(), expectedMethodName);
       }
     }
   }

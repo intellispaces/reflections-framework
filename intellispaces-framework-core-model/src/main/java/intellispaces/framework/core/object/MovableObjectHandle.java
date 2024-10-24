@@ -5,6 +5,7 @@ import intellispaces.framework.core.space.channel.Channel0;
 import intellispaces.framework.core.space.channel.Channel1;
 import intellispaces.framework.core.space.channel.ChannelMethod0;
 import intellispaces.framework.core.space.channel.ChannelMethod1;
+import intellispaces.framework.core.space.channel.MappingOfMovingChannel;
 
 /**
  * The handle of the movable object.<p/>
@@ -38,5 +39,5 @@ public interface MovableObjectHandle<D> extends ObjectHandle<D> {
 
   <R, Q> R mapOfMovingThru(ChannelMethod1<? super D, R, Q> channelMethod, Q qualifier) throws TraverseException;
 
-  <R, Q> R mapOfMovingThru(Class<? extends Channel1> channelClass, Q qualifier) throws TraverseException;
+  <R, Q, C extends Channel1 & MappingOfMovingChannel> R mapOfMovingThru(Class<C> channelClass, Q qualifier) throws TraverseException;
 }

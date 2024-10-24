@@ -53,7 +53,7 @@ public interface {{$classSimpleName}}{{$domainTypeParamsFull}} extends {{$baseOb
 
   <R> R mapOfMovingThru(Class<? extends Channel0> channelClass) throws TraverseException;
 
-  <R, Q> R mapOfMovingThru(Class<? extends Channel1> channelClass, Q qualifier) throws TraverseException;
+  <R, Q, C extends Channel1 & MappingOfMovingChannel> R mapOfMovingThru(Class<C> channelClass, Q qualifier) throws TraverseException;
 
 {{when $isAlias}}
   <R> R mapOfMovingThru(ChannelMethod0<? super {{$primaryDomainSimpleName}}{{$primaryDomainTypeArguments}}, R> channelMethod) throws TraverseException;

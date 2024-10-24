@@ -21,6 +21,7 @@ import intellispaces.framework.core.space.channel.Channel2;
 import intellispaces.framework.core.space.channel.Channel3;
 import intellispaces.framework.core.space.channel.Channel4;
 import intellispaces.framework.core.space.channel.MappingChannel;
+import intellispaces.framework.core.space.channel.MappingOfMovingChannel;
 
 /**
  * System module.
@@ -44,6 +45,10 @@ public interface Module {
   <S, R> R moveThruChannel0(S source, String cid);
 
   <S, R, Q> R moveThruChannel1(S source, String cid, Q qualifier);
+
+  <S, R, Q, C extends Channel1 & MappingOfMovingChannel> R mapOfMovingThruChannel1(S source, Class<C> channelClass, Q qualifier);
+
+  <S, R, Q> R mapOfMovingThruChannel1(S source, String cid, Q qualifier);
 
   <S, T> Mapper0<S, T> autoMapperThruChannel0(Type<S> sourceType, String cid, GuideForm guideForm);
 

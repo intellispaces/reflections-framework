@@ -20,6 +20,7 @@ import intellispaces.framework.core.space.channel.Channel1;
 import intellispaces.framework.core.space.channel.ChannelMethod0;
 import intellispaces.framework.core.space.channel.ChannelMethod1;
 import intellispaces.framework.core.space.channel.MappingChannel;
+import intellispaces.framework.core.space.channel.MappingOfMovingChannel;
 import intellispaces.framework.core.space.domain.DomainFunctions;
 
 import javax.annotation.processing.RoundEnvironment;
@@ -112,6 +113,7 @@ public class MovableDownwardObjectHandleGenerator extends AbstractConversionDoma
     context.addImport(ChannelMethod0.class);
     context.addImport(ChannelMethod1.class);
     context.addImport(MappingChannel.class);
+    context.addImport(MappingOfMovingChannel.class);
 
     movableObjectHandleName = context.addToImportAndGetSimpleName(
         NameConventionFunctions.getMovableObjectHandleTypename(parentDomainType.targetType().className()));
@@ -164,7 +166,7 @@ public class MovableDownwardObjectHandleGenerator extends AbstractConversionDoma
     if (method.hasAnnotation(Channel.class)) {
       return generateMethodNormal(method, guideForm, methodIndex);
     } else {
-      return generateAdditionalMethod(convertMethodBeforeGenerate(method));
+      return generatePrototypeMethod(convertMethodBeforeGenerate(method));
     }
   }
 
@@ -189,7 +191,7 @@ public class MovableDownwardObjectHandleGenerator extends AbstractConversionDoma
     );
   }
 
-  private Map<String, String> generateAdditionalMethod(MethodStatement method) {
+  private Map<String, String> generatePrototypeMethod(MethodStatement method) {
     var sb = new StringBuilder();
     sb.append("public ");
     appendMethodTypeParameters(sb, method);

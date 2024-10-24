@@ -131,6 +131,7 @@ public interface GuideProcessorFunctions {
         case 2 -> "FunctionActions.ofBiFunction";
         case 3 -> "FunctionActions.ofTriFunction";
         case 4 -> "FunctionActions.ofQuadFunction";
+        case 5 -> "FunctionActions.ofQuinFunction";
         default -> throw UnexpectedViolationException.withMessage("Not supported number of params");
       };
     } else {

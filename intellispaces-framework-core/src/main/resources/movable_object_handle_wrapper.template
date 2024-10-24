@@ -155,8 +155,8 @@ public class {{$classSimpleName}}{{$typeParamsFull}} extends {{$sourceClassSimpl
   }
 
   @Override
-  public <R, Q> R mapOfMovingThru(Class<? extends Channel1> channelClass, Q qualifier) throws TraverseException {
-    throw new RuntimeException("Not implemented");
+  public <R, Q, C extends Channel1 & MappingOfMovingChannel> R mapOfMovingThru(Class<C> channelClass, Q qualifier) throws TraverseException {
+    return Modules.current().mapOfMovingThruChannel1(this, channelClass, qualifier);
   }
 {{for method : $injectionMethods}}
   {{$method.get("javadoc")}}

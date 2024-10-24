@@ -38,6 +38,7 @@ import intellispaces.framework.core.space.channel.Channel3;
 import intellispaces.framework.core.space.channel.Channel4;
 import intellispaces.framework.core.space.channel.ChannelFunctions;
 import intellispaces.framework.core.space.channel.MappingChannel;
+import intellispaces.framework.core.space.channel.MappingOfMovingChannel;
 import intellispaces.framework.core.system.Module;
 import intellispaces.framework.core.traverse.plan.DeclarativeTraversePlan;
 import intellispaces.framework.core.traverse.plan.TraversePlan;
@@ -102,6 +103,21 @@ class ModuleImpl implements Module {
   @SuppressWarnings("unchecked")
   public <S, R, Q> R moveThruChannel1(S source, String cid, Q qualifier) {
     TraversePlan traversePlan = kernelModule.traverseAnalyzer().buildMoveObjectHandleThruChannel1Plan(
+        ObjectFunctions.defineObjectHandleClass(source.getClass()), cid, GuideForms.Main);
+    return (R) traversePlan.execute(source, qualifier, kernelModule.traverseExecutor());
+  }
+
+  @Override
+  public <S, R, Q, C extends Channel1 & MappingOfMovingChannel> R mapOfMovingThruChannel1(
+      S source, Class<C> channelClass, Q qualifier
+  ) {
+    return mapOfMovingThruChannel1(source, ChannelFunctions.getChannelId(channelClass), qualifier);
+  }
+
+  @Override
+  @SuppressWarnings("unchecked")
+  public <S, R, Q> R mapOfMovingThruChannel1(S source, String cid, Q qualifier) {
+    TraversePlan traversePlan = kernelModule.traverseAnalyzer().buildMapOfMovingObjectHandleThruChannel1Plan(
         ObjectFunctions.defineObjectHandleClass(source.getClass()), cid, GuideForms.Main);
     return (R) traversePlan.execute(source, qualifier, kernelModule.traverseExecutor());
   }

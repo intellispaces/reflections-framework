@@ -143,7 +143,7 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
       if (method.isAbstract()) {
         if (isInjectionMethod(method)) {
           if (!isReturnGuide(method)) {
-            throw ConfigurationException.withMessage("Guide injection method '{}' in class {} must return guide",
+            throw ConfigurationException.withMessage("Guide injection method ''{0}'' in class {1} must return guide",
                 method.name(), annotatedType.className()
             );
           }
@@ -153,7 +153,7 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
             addGuideInjectionAndImplementationMethod(method);
           }
         } else {
-          throw ConfigurationException.withMessage("Undefined abstract method '{}' in class {}",
+          throw ConfigurationException.withMessage("Undefined abstract method ''{0}'' in class {1}",
               method.name(), annotatedType.className()
           );
         }
@@ -476,7 +476,7 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
   }
 
   private boolean isInjectionMethod(MethodStatement method) {
-    return method.hasAnnotation(Inject.class);
+    return method.hasAnnotation(Inject.class) || method.hasAnnotation(AutoGuide.class);
   }
 
   private boolean isAutoGuideMethod(MethodStatement method) {

@@ -198,7 +198,7 @@ public class UnitWrapperGenerator extends AbstractGenerator {
       if (method.isAbstract()) {
         if (isProjectionMethod(method)) {
           if (!isReturnObjectHandle(method)) {
-            throw ConfigurationException.withMessage("Projection method '{}' in class {} must return object handle",
+            throw ConfigurationException.withMessage("Projection method ''{0}'' in class {1} must return object handle",
                 method.name(), annotatedType.className()
             );
           }
@@ -207,7 +207,7 @@ public class UnitWrapperGenerator extends AbstractGenerator {
         } else if (isInjectionMethod(method)) {
           if (isAutoGuideMethod(method)) {
             if (!isReturnGuide(method)) {
-              throw ConfigurationException.withMessage("Guide injection method '{}' in class {} must return guide",
+              throw ConfigurationException.withMessage("Guide injection method ''{0}'' in class {1} must return guide",
                   method.name(), annotatedType.className()
               );
             }
@@ -218,7 +218,7 @@ public class UnitWrapperGenerator extends AbstractGenerator {
             addProjectionInjectionAndImplementationMethod(method);
           }
         } else {
-          throw ConfigurationException.withMessage("Undefined abstract method '{}' in class {}",
+          throw ConfigurationException.withMessage("Undefined abstract method ''{0}'' in class {1}",
               method.name(), annotatedType.className()
           );
         }

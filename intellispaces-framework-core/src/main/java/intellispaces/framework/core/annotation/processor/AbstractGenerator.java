@@ -80,7 +80,7 @@ public abstract class AbstractGenerator extends TemplatedGenerator {
   }
 
   protected String buildMethodSignature(MethodStatement method, List<String> additionalParams) {
-    return buildMethodSignature(method, method.name(), true, false, additionalParams);
+    return buildMethodSignature(method, method.name(), true, true, additionalParams);
   }
 
   protected String buildMethodSignature(

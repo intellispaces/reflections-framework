@@ -1,6 +1,7 @@
-package intellispaces.framework.core.annotation.processor;
+package intellispaces.framework.core.annotation.processor.channel;
 
 import intellispaces.common.action.runner.Runner;
+import intellispaces.common.annotationprocessor.context.AnnotationProcessingContext;
 import intellispaces.common.base.exception.UnexpectedViolationException;
 import intellispaces.common.base.math.MathFunctions;
 import intellispaces.common.base.text.TextActions;
@@ -8,12 +9,18 @@ import intellispaces.common.base.type.TypeFunctions;
 import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.common.javastatement.method.MethodParam;
 import intellispaces.common.javastatement.method.MethodStatement;
+import intellispaces.common.javastatement.reference.CustomTypeReferences;
+import intellispaces.common.javastatement.reference.NamedReference;
 import intellispaces.common.javastatement.reference.NotPrimitiveReference;
+import intellispaces.common.javastatement.reference.ReferenceBound;
 import intellispaces.common.javastatement.reference.TypeReference;
+import intellispaces.common.javastatement.reference.Wildcards;
 import intellispaces.framework.core.annotation.Guide;
 import intellispaces.framework.core.annotation.Mapper;
 import intellispaces.framework.core.annotation.MapperOfMoving;
 import intellispaces.framework.core.annotation.Mover;
+import intellispaces.framework.core.annotation.processor.AbstractGenerator;
+import intellispaces.framework.core.annotation.processor.AnnotationProcessorFunctions;
 import intellispaces.framework.core.common.NameConventionFunctions;
 import intellispaces.framework.core.guide.GuideForm;
 import intellispaces.framework.core.guide.GuideForms;
@@ -47,38 +54,34 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
 
-public abstract class AbstractGuideGenerator extends AbstractGenerator {
-  protected final GuideForm guideForm;
-  protected final TraverseType traverseType;
-  protected final MethodStatement channelMethod;
+public class ChannelGuideGenerator extends AbstractGenerator {
+  private final GuideForm guideForm;
+  private final TraverseType traverseType;
+  private final MethodStatement channelMethod;
   private String guideClassSimpleName;
   private String guideAnnotation;
   private String guideMethod;
-  private String baseMethod;
-  private String longPrimitiveMethod;
-  private String doublePrimitiveMethod;
-  private String guideTypeParamsFull;
+  private String traverseMethodMainForm;
+  private String traverseMethodPrimitiveFormLong;
+  private String traverseMethodPrimitiveFormDouble;
 
-  public AbstractGuideGenerator(
+  public ChannelGuideGenerator(
       GuideForm guideForm,
       TraverseType traverseType,
       CustomType initiatorType,
-      CustomType annotatedType,
+      CustomType domainType,
       MethodStatement channelMethod
   ) {
-    super(initiatorType, annotatedType);
+    super(initiatorType, domainType);
     this.guideForm = guideForm;
     this.traverseType = traverseType;
     this.channelMethod = channelMethod;
   }
 
-  protected abstract CustomType getDomainType();
-
-  abstract protected String getGuideTypeParamDeclaration();
-
-  protected abstract List<MethodParam> getQualifierMethodParams();
-
-  protected abstract String getGuideClassCanonicalName();
+  @Override
+  public boolean isRelevant(AnnotationProcessingContext context) {
+    return true;
+  }
 
   @Override
   public String artifactName() {
@@ -99,15 +102,14 @@ public abstract class AbstractGuideGenerator extends AbstractGenerator {
     vars.put("sourceClassSimpleName", sourceClassSimpleName());
     vars.put("classSimpleName", context.generatedClassSimpleName());
     vars.put("channelClassSimpleName", channelClassSimpleName());
-    vars.put("guideTypeParamsFull", guideTypeParamsFull);
     vars.put("guideClassSimpleName", guideClassSimpleName);
-    vars.put("guideTypeParams", buildGuideTypeParams(Function.identity()));
+    vars.put("guideTypeParams", buildGuideTypeParams());
     vars.put("guideAnnotation", guideAnnotation);
     vars.put("guideMethod", guideMethod);
-    vars.put("baseMethod", baseMethod);
+    vars.put("traverseMethodMainForm", traverseMethodMainForm);
     vars.put("guideForm", guideForm.name());
-    vars.put("longPrimitiveMethod", longPrimitiveMethod);
-    vars.put("doublePrimitiveMethod", doublePrimitiveMethod);
+    vars.put("traverseMethodPrimitiveFormLong", traverseMethodPrimitiveFormLong);
+    vars.put("traverseMethodPrimitiveFormDouble", traverseMethodPrimitiveFormDouble);
     vars.put("importedClasses", context.getImports());
     return vars;
   }
@@ -130,23 +132,34 @@ public abstract class AbstractGuideGenerator extends AbstractGenerator {
   }
 
   protected String buildGuideMethod() {
-    return buildGuideMethod(Function.identity());
-  }
-
-  protected String buildGuideMethod(Function<TypeReference, TypeReference> typeReplacer) {
     var sb = new StringBuilder();
-    sb.append(buildTargetObjectHandleFormDeclaration(typeReplacer));
+    if (!channelMethod.typeParameters().isEmpty()) {
+      sb.append("<");
+      Runner commaAppender = TextActions.skippingFirstTimeCommaAppender(sb);
+      for (NamedReference typeParam : channelMethod.typeParameters()) {
+        commaAppender.run();
+        sb.append(typeParam.name());
+        if (!typeParam.extendedBounds().isEmpty()) {
+          sb.append(" extends ");
+          for (ReferenceBound bound : typeParam.extendedBounds()) {
+            sb.append(ObjectFunctions.getCommonObjectHandleTypename(bound));
+          }
+        }
+      }
+      sb.append("> ");
+    }
+    sb.append(buildTargetObjectHandleFormDeclaration());
     sb.append(" ");
     sb.append(channelMethod.name());
     sb.append("(");
-    sb.append(buildSourceObjectHandleDeclaration(typeReplacer));
+    sb.append(buildSourceObjectHandleDeclaration(false));
     sb.append(" source");
     for (MethodParam param : getQualifierMethodParams()) {
       sb.append(", ");
       if (param.type().isPrimitiveReference()) {
         sb.append(param.type().asPrimitiveReferenceOrElseThrow().typename());
       } else {
-        sb.append(buildObjectHandleDeclaration(param.type(), typeReplacer));
+        sb.append(buildObjectHandleDeclaration(param.type(), Function.identity()));
       }
       sb.append(" ");
       sb.append(param.name());
@@ -158,10 +171,9 @@ public abstract class AbstractGuideGenerator extends AbstractGenerator {
   private void analyzeGuideType() {
     Class<?> guideClass = getGuideClass();
     guideClassSimpleName = getGuideClassSimpleName(guideClass);
-    guideTypeParamsFull = getGuideTypeParamDeclaration();
-    baseMethod = buildBaseMethod();
-    longPrimitiveMethod = buildLongPrimitiveMethod();
-    doublePrimitiveMethod = buildDoublePrimitiveMethod();
+    traverseMethodMainForm = buildTraverseMethodMainForm();
+    traverseMethodPrimitiveFormLong = buildTraverseMethodPrimitiveFormLong();
+    traverseMethodPrimitiveFormDouble = buildTraverseMethodPrimitiveFormDouble();
     analyzeGuideMethod();
   }
 
@@ -194,7 +206,7 @@ public abstract class AbstractGuideGenerator extends AbstractGenerator {
         case 4 -> Mover4.class;
         case 5 -> Mover5.class;
         default -> throw UnexpectedViolationException.withMessage("Unsupported number of guide qualifies: {0}",
-          qualifierCount);
+            qualifierCount);
       };
     } else if (traverseType == TraverseTypes.MappingOfMoving) {
       return switch (qualifierCount) {
@@ -212,17 +224,17 @@ public abstract class AbstractGuideGenerator extends AbstractGenerator {
     }
   }
 
-  protected String buildGuideTypeParams(Function<TypeReference, TypeReference> typeReplacer) {
+  protected String buildGuideTypeParams() {
     var sb = new StringBuilder();
     sb.append("<");
-    sb.append(buildSourceObjectHandleDeclaration(typeReplacer));
+    sb.append(buildSourceObjectHandleDeclaration(this::replaceNamedReference, true));
     if (traverseType == TraverseTypes.Mapping || traverseType == TraverseTypes.MappingOfMoving) {
       sb.append(", ");
-      sb.append(buildTargetObjectHandleDeclaration(typeReplacer));
+      sb.append(buildTargetObjectHandleDeclaration(this::replaceNamedReference, true));
     }
     for (MethodParam param : getQualifierMethodParams()) {
       sb.append(", ");
-      sb.append(buildObjectHandleDeclaration(param.type(), typeReplacer));
+      sb.append(buildObjectHandleDeclaration(param.type(), this::replaceNamedReference));
     }
     sb.append(">");
     return sb.toString();
@@ -243,16 +255,16 @@ public abstract class AbstractGuideGenerator extends AbstractGenerator {
     guideMethod = buildGuideMethod();
   }
 
-  private String buildBaseMethod() {
+  private String buildTraverseMethodMainForm() {
     var sb = new StringBuilder();
     sb.append("default ");
-    sb.append(buildTargetObjectHandleDeclaration(Function.identity()));
+    sb.append(buildTargetObjectHandleDeclaration(this::replaceNamedReference, true));
     sb.append(" traverse(");
-    sb.append(buildSourceObjectHandleDeclaration(Function.identity()));
+    sb.append(buildSourceObjectHandleDeclaration(this::replaceNamedReference, true));
     sb.append(" ").append("source");
     for (MethodParam param : getQualifierMethodParams()) {
       sb.append(", ");
-      sb.append(buildObjectHandleDeclaration(param.type(), Function.identity()));
+      sb.append(buildObjectHandleDeclaration(param.type(), this::replaceNamedReference));
       sb.append(" ");
       sb.append(param.name());
     }
@@ -278,14 +290,14 @@ public abstract class AbstractGuideGenerator extends AbstractGenerator {
     return sb.toString();
   }
 
-  private String buildLongPrimitiveMethod() {
+  private String buildTraverseMethodPrimitiveFormLong() {
     var sb = new StringBuilder();
     sb.append("default int traverseToInt(");
-    sb.append(buildSourceObjectHandleDeclaration(Function.identity()));
+    sb.append(buildSourceObjectHandleDeclaration(this::replaceNamedReference, true));
     sb.append(" ").append("source");
     for (MethodParam param : getQualifierMethodParams()) {
       sb.append(", ");
-      sb.append(buildObjectHandleDeclaration(param.type(), Function.identity()));
+      sb.append(buildObjectHandleDeclaration(param.type(), this::replaceNamedReference));
       sb.append(" ");
       sb.append(param.name());
     }
@@ -295,14 +307,14 @@ public abstract class AbstractGuideGenerator extends AbstractGenerator {
     return sb.toString();
   }
 
-  private String buildDoublePrimitiveMethod() {
+  private String buildTraverseMethodPrimitiveFormDouble() {
     var sb = new StringBuilder();
     sb.append("default double traverseToDouble(");
-    sb.append(buildSourceObjectHandleDeclaration(Function.identity()));
+    sb.append(buildSourceObjectHandleDeclaration(this::replaceNamedReference, true));
     sb.append(" ").append("source");
     for (MethodParam param : getQualifierMethodParams()) {
       sb.append(", ");
-      sb.append(buildObjectHandleDeclaration(param.type(), Function.identity()));
+      sb.append(buildObjectHandleDeclaration(param.type(), this::replaceNamedReference));
       sb.append(" ");
       sb.append(param.name());
     }
@@ -348,15 +360,28 @@ public abstract class AbstractGuideGenerator extends AbstractGenerator {
     }
   }
 
-  protected String buildSourceObjectHandleDeclaration(
-      Function<TypeReference, TypeReference> typeReplacer
-  ) {
-    return buildObjectHandleDeclaration(getDomainType());
+  protected String buildSourceObjectHandleDeclaration(boolean full) {
+    return buildSourceObjectHandleDeclaration(Function.identity(), full);
   }
 
-  private String buildTargetObjectHandleFormDeclaration(Function<TypeReference, TypeReference> typeReplacer) {
+  protected String buildSourceObjectHandleDeclaration(
+      Function<TypeReference, TypeReference> typeReplacer, boolean full
+  ) {
+    return buildObjectHandleDeclaration(
+        channelMethod.params().get(0).type().asCustomTypeReferenceOrElseThrow(), typeReplacer, full
+    );
+  }
+
+  protected String buildTargetObjectHandleDeclaration(
+      Function<TypeReference, TypeReference> typeReplacer, boolean full
+  ) {
+    TypeReference returnType = channelMethod.returnType().orElseThrow();
+    return buildObjectHandleDeclaration(returnType, typeReplacer, full);
+  }
+
+  private String buildTargetObjectHandleFormDeclaration() {
     if (guideForm == GuideForms.Main) {
-      return buildTargetObjectHandleDeclaration(typeReplacer);
+      return buildTargetObjectHandleDeclaration(Function.identity(), false);
     } else if (guideForm == GuideForms.Primitive) {
       return TypeFunctions.getPrimitiveTypeOfWrapper(
           channelMethod.returnType().orElseThrow()
@@ -367,17 +392,30 @@ public abstract class AbstractGuideGenerator extends AbstractGenerator {
     throw UnexpectedViolationException.withMessage("Not supported guide form - {0}", guideForm.name());
   }
 
-  protected String buildTargetObjectHandleDeclaration(Function<TypeReference, TypeReference> typeReplacer) {
-    TypeReference returnType = channelMethod.returnType().orElseThrow();
-    return buildObjectHandleDeclaration(returnType, typeReplacer);
-  }
-
   protected String buildObjectHandleDeclaration(
       TypeReference type, Function<TypeReference, TypeReference> typeReplacer
   ) {
+    return buildObjectHandleDeclaration(type, typeReplacer, true);
+  }
+
+  protected String buildObjectHandleDeclaration(
+      TypeReference type, Function<TypeReference, TypeReference> typeReplacer, boolean full
+  ) {
     type = typeReplacer.apply(type);
     if (type.isNamedReference()) {
-      return type.asNamedReferenceOrElseThrow().name();
+      NamedReference namedReference = type.asNamedReferenceOrElseThrow();
+      if (!full || namedReference.extendedBounds().isEmpty()) {
+        return type.asNamedReferenceOrElseThrow().name();
+      }
+      var sb = new StringBuilder();
+      sb.append(type.asNamedReferenceOrElseThrow().name());
+      sb.append(" extends ");
+      Runner commaAppender = TextActions.skippingFirstTimeCommaAppender(sb);
+      for (ReferenceBound bound : namedReference.extendedBounds()) {
+        commaAppender.run();
+        sb.append(buildObjectHandleDeclaration(bound, typeReplacer));
+      }
+      return sb.toString();
     } else if (type.isPrimitiveReference()) {
       return TypeFunctions.getPrimitiveWrapperClass(type.asPrimitiveReferenceOrElseThrow().typename()).getSimpleName();
     } else {
@@ -390,7 +428,7 @@ public abstract class AbstractGuideGenerator extends AbstractGenerator {
         Runner commaAppender = TextActions.skippingFirstTimeCommaAppender(sb);
         for (NotPrimitiveReference typeArg : type.asCustomTypeReferenceOrElseThrow().typeArguments()) {
           commaAppender.run();
-          sb.append(buildObjectHandleDeclaration(typeArg, typeReplacer));
+          sb.append(buildObjectHandleDeclaration(typeArg, typeReplacer, full));
         }
         sb.append(">");
         return sb.toString();
@@ -399,52 +437,31 @@ public abstract class AbstractGuideGenerator extends AbstractGenerator {
     }
   }
 
-  private String buildObjectHandleDeclaration(TypeReference type, boolean nested) {
-    if (type.isWildcard() && nested) {
-      return "?";
-    } else if (type.isNamedReference()) {
-      return type.asNamedReferenceOrElseThrow().name();
-    } else {
-      String canonicalName = ObjectFunctions.getCommonObjectHandleTypename(type);
-      String simpleName = context.addToImportAndGetSimpleName(canonicalName);
-      if (type.isCustomTypeReference() && !type.asCustomTypeReferenceOrElseThrow().typeArguments().isEmpty()) {
-        var sb = new StringBuilder();
-        sb.append(simpleName);
-        sb.append("<");
-        Runner commaAppender = TextActions.skippingFirstTimeCommaAppender(sb);
-        for (NotPrimitiveReference typeArg : type.asCustomTypeReferenceOrElseThrow().typeArguments()) {
-          commaAppender.run();
-          sb.append(typeArg.actualDeclaration());
-        }
-        sb.append(">");
-        return sb.toString();
+  private TypeReference replaceNamedReference(TypeReference type) {
+    if (type.isNamedReference()) {
+      NamedReference namedReference = type.asNamedReferenceOrElseThrow();
+      if (namedReference.extendedBounds().isEmpty()) {
+        return CustomTypeReferences.get(Object.class);
       }
-      return simpleName;
-    }
-  }
-
-  private String buildObjectHandleDeclaration(CustomType type) {
-    String canonicalName = ObjectFunctions.getCommonObjectHandleTypename(type);
-    String simpleName = context.addToImportAndGetSimpleName(canonicalName);
-    if (!type.typeParameters().isEmpty()) {
-      var sb = new StringBuilder();
-      sb.append(simpleName);
-      sb.append("<");
-      Runner commaAppender = TextActions.skippingFirstTimeCommaAppender(sb);
-      for (NotPrimitiveReference typeParam : type.typeParameters()) {
-        commaAppender.run();
-        sb.append(buildObjectHandleDeclaration(typeParam, true));
+      ReferenceBound bound = namedReference.extendedBounds().get(0);
+      if (bound.isCustomTypeReference()) {
+        return Wildcards.get(bound);
       }
-      sb.append(">");
-      return sb.toString();
     }
-    return simpleName;
+    return type;
   }
 
   private String channelClassSimpleName() {
-    String canonicalName = NameConventionFunctions.getChannelClassCanonicalName(
-        annotatedType.packageName(), getDomainType(), channelMethod
+    return context.addToImportAndGetSimpleName(annotatedType.canonicalName());
+  }
+
+  private List<MethodParam> getQualifierMethodParams() {
+    return channelMethod.params().subList(1, channelMethod.params().size());
+  }
+
+  private String getGuideClassCanonicalName() {
+    return NameConventionFunctions.getGuideClassCanonicalName(
+        guideForm, annotatedType.packageName(), annotatedType, channelMethod
     );
-    return context.addToImportAndGetSimpleName(canonicalName);
   }
 }

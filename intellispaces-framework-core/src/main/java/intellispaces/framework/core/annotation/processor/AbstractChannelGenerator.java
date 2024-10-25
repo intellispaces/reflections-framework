@@ -1,15 +1,12 @@
 package intellispaces.framework.core.annotation.processor;
 
-import intellispaces.common.base.exception.UnexpectedViolationException;
-import intellispaces.common.base.type.TypeFunctions;
-import intellispaces.common.javastatement.Statement;
 import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.common.javastatement.method.MethodStatement;
 import intellispaces.common.javastatement.reference.TypeReference;
 import intellispaces.framework.core.annotation.Channel;
 import intellispaces.framework.core.space.channel.ChannelFunctions;
 import intellispaces.framework.core.space.channel.MappingChannel;
-import intellispaces.framework.core.space.channel.MappingOfMoving;
+import intellispaces.framework.core.space.channel.MappingOfMovingChannel;
 import intellispaces.framework.core.space.channel.MovingChannel;
 import intellispaces.framework.core.traverse.TraverseType;
 
@@ -22,7 +19,6 @@ public abstract class AbstractChannelGenerator extends AbstractGenerator {
   protected final MethodStatement channelMethod;
   private String channelMethodSignature;
   private String channelClasses;
-  private String channelTypeParamsFull;
 
   public AbstractChannelGenerator(
       CustomType initiatorType, CustomType annotatedType, MethodStatement channelMethod
@@ -33,13 +29,7 @@ public abstract class AbstractChannelGenerator extends AbstractGenerator {
 
   protected abstract String getChannelClassCanonicalName();
 
-  protected abstract String getChannelClassTypeParams();
-
   protected abstract String getChannelMethodSignature();
-
-  protected abstract Statement getSourceType();
-
-  protected abstract TypeReference getResultType();
 
   protected abstract List<TypeReference> getQualifierTypes();
 
@@ -65,7 +55,6 @@ public abstract class AbstractChannelGenerator extends AbstractGenerator {
     vars.put("importedClasses", context.getImports());
     vars.put("channelMethod", channelMethodSignature);
     vars.put("channelClasses", channelClasses);
-    vars.put("channelTypeParamsFull", channelTypeParamsFull);
     vars.put("channelMethodName", channelMethod.name());
     vars.put("cid", getCid());
     return vars;
@@ -80,7 +69,6 @@ public abstract class AbstractChannelGenerator extends AbstractGenerator {
     context.addImport(Channel.class);
 
     channelClasses = defineChannelClass();
-    channelTypeParamsFull = getChannelClassTypeParams();
     channelMethodSignature = getChannelMethodSignature();
     return true;
   }
@@ -99,26 +87,10 @@ public abstract class AbstractChannelGenerator extends AbstractGenerator {
           sb.append(context.addToImportAndGetSimpleName(MovingChannel.class));
       } else if (traverseType.isMappingOfMoving()) {
         sb.append(", ");
-        sb.append(context.addToImportAndGetSimpleName(MappingOfMoving.class));
+        sb.append(context.addToImportAndGetSimpleName(MappingOfMovingChannel.class));
       }
     }
     return sb.toString();
-  }
-
-  private void appendTypeDeclaration(StringBuilder sb, Statement type) {
-    if (type instanceof CustomType customType) {
-      sb.append(customType.simpleName());
-      sb.append(customType.typeParametersBriefDeclaration());
-    } else if (type instanceof TypeReference typeReference) {
-      if (typeReference.isPrimitiveReference()) {
-        Class<?> wrapperClass = TypeFunctions.getPrimitiveWrapperClass(typeReference.asPrimitiveReferenceOrElseThrow().typename());
-        sb.append(wrapperClass.getSimpleName());
-      } else {
-        sb.append(typeReference.actualDeclaration(context::addToImportAndGetSimpleName));
-      }
-    } else {
-      throw UnexpectedViolationException.withMessage("Unexpected statement type {0}", type.statementType());
-    }
   }
 
   private String getCid() {

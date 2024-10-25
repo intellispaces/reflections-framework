@@ -223,10 +223,10 @@ public interface NameConventionFunctions {
   }
 
   static String getGuideClassCanonicalName(
-      GuideForm guideForm, String spaceName, CustomType domainType, MethodStatement channelMethod
+      GuideForm guideForm, String spaceName, CustomType channelType, MethodStatement channelMethod
   ) {
-    String channelCanonicalName = getChannelClassCanonicalName(spaceName, domainType, channelMethod);
-    String name = TextFunctions.replaceLast(channelCanonicalName, "Channel", "Guide");
+//    String channelCanonicalName = getChannelClassCanonicalName(spaceName, channelType, channelMethod);
+    String name = TextFunctions.replaceLast(channelType.canonicalName(), "Channel", "Guide");
     if (guideForm == GuideForms.Primitive) {
       name = name + "Primitive";
     }

@@ -27,7 +27,7 @@ import intellispaces.framework.core.annotation.Preprocessing;
 import intellispaces.framework.core.annotation.processor.data.UnmovableDataHandleGenerator;
 import intellispaces.framework.core.annotation.processor.domain.CommonObjectHandleGenerator;
 import intellispaces.framework.core.annotation.processor.domain.DomainChannelGenerator;
-import intellispaces.framework.core.annotation.processor.domain.DomainGuideGenerator;
+import intellispaces.framework.core.annotation.processor.channel.ChannelGuideGenerator;
 import intellispaces.framework.core.annotation.processor.domain.MovableDownwardObjectHandleGenerator;
 import intellispaces.framework.core.annotation.processor.domain.MovableObjectHandleGenerator;
 import intellispaces.framework.core.annotation.processor.domain.UnmovableDownwardObjectHandleGenerator;
@@ -36,13 +36,14 @@ import intellispaces.framework.core.annotation.processor.guide.AutoGuideGenerato
 import intellispaces.framework.core.annotation.processor.objecthandle.MovableObjectHandleWrapperGenerator;
 import intellispaces.framework.core.annotation.processor.objecthandle.UnmovableObjectHandleWrapperGenerator;
 import intellispaces.framework.core.annotation.processor.ontology.OntologyChannelGenerator;
-import intellispaces.framework.core.annotation.processor.ontology.OntologyGuideGenerator;
 import intellispaces.framework.core.annotation.processor.unit.UnitWrapperGenerator;
+import intellispaces.framework.core.exception.ConfigurationException;
 import intellispaces.framework.core.guide.GuideForm;
 import intellispaces.framework.core.guide.GuideForms;
-import intellispaces.framework.core.object.MovableObjectHandle;
 import intellispaces.framework.core.object.ObjectFunctions;
-import intellispaces.framework.core.object.UnmovableObjectHandle;
+import intellispaces.framework.core.space.channel.MappingChannel;
+import intellispaces.framework.core.space.channel.MappingOfMovingChannel;
+import intellispaces.framework.core.space.channel.MovingChannel;
 import intellispaces.framework.core.system.ModuleFunctions;
 import intellispaces.framework.core.system.UnitFunctions;
 import intellispaces.framework.core.traverse.TraverseType;
@@ -61,6 +62,30 @@ public interface AnnotationProcessorFunctions {
     return generators;
   }
 
+  static List<Generator> makeChannelArtifactGenerators(
+      CustomType initiatorType, CustomType channelType, RoundEnvironment roundEnv
+  ) {
+    List<Generator> generators = new ArrayList<>();
+
+    List<MethodStatement> methods = channelType.declaredMethods();
+    if (methods.size() != 1) {
+      throw ConfigurationException.withMessage("Channel class should contain one method only. Check class {0}",
+          channelType.canonicalName());
+    }
+    MethodStatement method = methods.get(0);
+
+    if (isEnableMapperGuideGeneration(channelType, roundEnv)) {
+      generators.addAll(makeGuideGenerators(TraverseTypes.Mapping, initiatorType, channelType, method));
+    }
+    if (isEnableMoverGuideGeneration(channelType, roundEnv)) {
+      generators.addAll(makeGuideGenerators(TraverseTypes.Moving, initiatorType, channelType, method));
+    }
+    if (isEnableMapperOfMovingGuideGeneration(channelType, roundEnv)) {
+      generators.addAll(makeGuideGenerators(TraverseTypes.MappingOfMoving, initiatorType, channelType, method));
+    }
+    return generators;
+  }
+
   static List<Generator> makeDomainArtifactGenerators(
       CustomType initiatorType, CustomType domainType, RoundEnvironment roundEnv
   ) {
@@ -69,15 +94,6 @@ public interface AnnotationProcessorFunctions {
       if (method.hasAnnotation(Channel.class)) {
         if (isAutoGenerationEnabled(domainType, ArtifactTypes.Channel, roundEnv)) {
           generators.add(new DomainChannelGenerator(initiatorType, domainType, method));
-        }
-        if (isEnableMapperGuideGeneration(domainType, method, roundEnv)) {
-          generators.addAll(makeGuideGenerators(true, TraverseTypes.Mapping, initiatorType, domainType, method));
-        }
-        if (isEnableMoverGuideGeneration(domainType, method, roundEnv)) {
-          generators.addAll(makeGuideGenerators(true, TraverseTypes.Moving, initiatorType, domainType, method));
-        }
-        if (isEnableMapperOfMovingGuideGeneration(domainType, method, roundEnv)) {
-          generators.addAll(makeGuideGenerators(true, TraverseTypes.MappingOfMoving, initiatorType, domainType, method));
         }
       }
     }
@@ -143,19 +159,12 @@ public interface AnnotationProcessorFunctions {
         if (isAutoGenerationEnabled(ontologyType, ArtifactTypes.Channel, roundEnv)) {
           generators.add(new OntologyChannelGenerator(initiatorType, ontologyType, method));
         }
-        if (isEnableMapperGuideGeneration(ontologyType, method, roundEnv)) {
-          generators.addAll(makeGuideGenerators(false, TraverseTypes.Mapping, initiatorType, ontologyType, method));
-        }
-        if (isEnableMoverGuideGeneration(ontologyType, method, roundEnv)) {
-          generators.addAll(makeGuideGenerators(false, TraverseTypes.Moving, initiatorType, ontologyType, method));
-        }
       }
     }
     return generators;
   }
 
   private static List<Generator> makeGuideGenerators(
-      boolean isDomainGenerator,
       TraverseType traverseType,
       CustomType initiatorType,
       CustomType domainType,
@@ -163,7 +172,7 @@ public interface AnnotationProcessorFunctions {
   ) {
     List<Generator> generators = new ArrayList<>();
     generators.add(
-        makeGuideGenerator(isDomainGenerator, GuideForms.Main, traverseType, initiatorType, domainType, channelMethod)
+        makeGuideGenerator(GuideForms.Main, traverseType, initiatorType, domainType, channelMethod)
     );
     if (channelMethod.returnType().isPresent()) {
       TypeReference returnType = channelMethod.returnType().get();
@@ -171,7 +180,7 @@ public interface AnnotationProcessorFunctions {
         CustomTypeReference customTypeReference = returnType.asCustomTypeReferenceOrElseThrow();
         if (TypeFunctions.isPrimitiveWrapperClass(customTypeReference.targetType().canonicalName())) {
           generators.add(makeGuideGenerator(
-              isDomainGenerator, GuideForms.Primitive, traverseType, initiatorType, domainType, channelMethod
+              GuideForms.Primitive, traverseType, initiatorType, domainType, channelMethod
           ));
         }
       }
@@ -180,17 +189,16 @@ public interface AnnotationProcessorFunctions {
   }
 
   private static Generator makeGuideGenerator(
-      boolean isDomainGenerator,
       GuideForm guideForm,
       TraverseType traverseType,
       CustomType initiatorType,
       CustomType domainType,
       MethodStatement channelMethod
   ) {
-    if (isDomainGenerator) {
-      return new DomainGuideGenerator(guideForm, traverseType, initiatorType, domainType, channelMethod);
+    if (initiatorType.hasAnnotation(Channel.class)) {
+      return new ChannelGuideGenerator(guideForm, traverseType, initiatorType, domainType, channelMethod);
     } else {
-      return new OntologyGuideGenerator(guideForm, traverseType, initiatorType, domainType, channelMethod);
+      throw new RuntimeException();
     }
   }
 
@@ -270,6 +278,18 @@ public interface AnnotationProcessorFunctions {
     return isAutoGenerationEnabled(domainType, ArtifactTypes.MapperOfMoving, roundEnv) &&
         ArraysFunctions.contains(method.selectAnnotation(Channel.class).orElseThrow().allowedTraverse(),
             TraverseTypes.MappingOfMoving);
+  }
+
+  static boolean isEnableMapperGuideGeneration(CustomType channelType, RoundEnvironment roundEnv) {
+    return channelType.hasParent(MappingChannel.class);
+  }
+
+  static boolean isEnableMoverGuideGeneration(CustomType channelType, RoundEnvironment roundEnv) {
+    return channelType.hasParent(MovingChannel.class);
+  }
+
+  static boolean isEnableMapperOfMovingGuideGeneration(CustomType channelType, RoundEnvironment roundEnv) {
+    return channelType.hasParent(MappingOfMovingChannel.class);
   }
 
   static boolean isAutoGenerationEnabled(CustomType annotatedType) {

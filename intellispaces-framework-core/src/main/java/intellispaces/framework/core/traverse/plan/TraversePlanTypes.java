@@ -23,6 +23,11 @@ public enum TraversePlanTypes implements TraversePlanType {
   CallGuide3,
 
   /**
+   * Actual traverse plan to call four times parametrized guide.
+   */
+  CallGuide4,
+
+  /**
    * Declarative traverse plan to map object handle through not-parametrized channel.
    */
   MapObjectHandleThruChannel0,

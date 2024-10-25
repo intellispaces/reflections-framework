@@ -3,7 +3,6 @@ package intellispaces.framework.core.annotation.processor.domain;
 import intellispaces.common.action.runner.Runner;
 import intellispaces.common.annotationprocessor.context.AnnotationProcessingContext;
 import intellispaces.common.base.text.TextActions;
-import intellispaces.common.javastatement.Statement;
 import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.common.javastatement.method.MethodParam;
 import intellispaces.common.javastatement.method.MethodStatement;
@@ -33,11 +32,6 @@ public class DomainChannelGenerator extends AbstractChannelGenerator {
   }
 
   @Override
-  protected String getChannelClassTypeParams() {
-    return DomainGenerationFunctions.getChannelTypeParams(annotatedType, channelMethod);
-  }
-
-  @Override
   protected String getChannelMethodSignature() {
     return buildMethodSignature(channelMethod, List.of(getSourceParamDeclaration()));
   }
@@ -56,16 +50,6 @@ public class DomainChannelGenerator extends AbstractChannelGenerator {
     }
     sb.append(" source");
     return sb.toString();
-  }
-
-  @Override
-  protected Statement getSourceType() {
-    return annotatedType;
-  }
-
-  @Override
-  protected TypeReference getResultType() {
-    return channelMethod.returnType().orElseThrow();
   }
 
   @Override

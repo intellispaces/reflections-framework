@@ -6,10 +6,12 @@ import intellispaces.framework.core.guide.n0.Guide0;
 import intellispaces.framework.core.guide.n1.Guide1;
 import intellispaces.framework.core.guide.n2.Guide2;
 import intellispaces.framework.core.guide.n3.Guide3;
+import intellispaces.framework.core.guide.n4.Guide4;
 import intellispaces.framework.core.traverse.plan.CallGuide0Plan;
 import intellispaces.framework.core.traverse.plan.CallGuide1Plan;
 import intellispaces.framework.core.traverse.plan.CallGuide2Plan;
 import intellispaces.framework.core.traverse.plan.CallGuide3Plan;
+import intellispaces.framework.core.traverse.plan.CallGuide4Plan;
 import intellispaces.framework.core.traverse.plan.ExecutionTraversePlan;
 import intellispaces.framework.core.traverse.plan.MapObjectHandleThruChannel0Plan;
 import intellispaces.framework.core.traverse.plan.MapObjectHandleThruChannel1Plan;
@@ -80,7 +82,15 @@ class TraverseExecutorImpl implements TraverseExecutor {
   ) throws TraverseException {
     var guide = (Guide3<Object, Object, Object, Object, Object>) plan.guide();
     return guide.traverse(source, qualifier1, qualifier2, qualifier3);
+  }
 
+  @Override
+  @SuppressWarnings("unchecked")
+  public Object execute(
+      CallGuide4Plan plan, Object source, Object qualifier1, Object qualifier2, Object qualifier3, Object qualifier4
+  ) throws TraverseException {
+    var guide = (Guide4<Object, Object, Object, Object, Object, Object>) plan.guide();
+    return guide.traverse(source, qualifier1, qualifier2, qualifier3, qualifier4);
   }
 
   @Override

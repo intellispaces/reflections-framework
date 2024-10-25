@@ -9,11 +9,13 @@ import intellispaces.framework.core.guide.n0.Guide0;
 import intellispaces.framework.core.guide.n1.Guide1;
 import intellispaces.framework.core.guide.n2.Guide2;
 import intellispaces.framework.core.guide.n3.Guide3;
+import intellispaces.framework.core.guide.n4.Guide4;
 import intellispaces.framework.core.object.ObjectFunctions;
 import intellispaces.framework.core.traverse.plan.CallGuide0PlanImpl;
 import intellispaces.framework.core.traverse.plan.CallGuide1PlanImpl;
 import intellispaces.framework.core.traverse.plan.CallGuide2PlanImpl;
 import intellispaces.framework.core.traverse.plan.CallGuide3PlanImpl;
+import intellispaces.framework.core.traverse.plan.CallGuide4PlanImpl;
 import intellispaces.framework.core.traverse.plan.ExecutionTraversePlan;
 import intellispaces.framework.core.traverse.plan.MapObjectHandleThruChannel0Plan;
 import intellispaces.framework.core.traverse.plan.MapObjectHandleThruChannel0PlanImpl;
@@ -237,6 +239,7 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
       case Mapper1, Mover1, MapperOfMoving1 -> new CallGuide1PlanImpl((Guide1<?, ?, ?>) guides.get(0));
       case Mapper2, Mover2, MapperOfMoving2 -> new CallGuide2PlanImpl((Guide2<?, ?, ?, ?>) guides.get(0));
       case Mapper3, Mover3, MapperOfMoving3 -> new CallGuide3PlanImpl((Guide3<?, ?, ?, ?, ?>) guides.get(0));
+      case Mapper4, Mover4, MapperOfMoving4 -> new CallGuide4PlanImpl((Guide4<?, ?, ?, ?, ?, ?>) guides.get(0));
       default -> throw new UnsupportedOperationException("Not implemented");
     };
   }
@@ -259,6 +262,7 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
       case MapOfMovingObjectHandleThruChannel1 -> GuideKinds.MapperOfMoving1;
       case MapOfMovingObjectHandleThruChannel2 -> GuideKinds.MapperOfMoving2;
       case MapOfMovingObjectHandleThruChannel3 -> GuideKinds.MapperOfMoving3;
+      case MapOfMovingObjectHandleThruChannel4 -> GuideKinds.MapperOfMoving4;
       default -> throw new UnsupportedOperationException("Not implemented");
     };
   }

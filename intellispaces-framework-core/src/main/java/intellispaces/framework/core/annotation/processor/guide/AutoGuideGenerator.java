@@ -144,7 +144,7 @@ public class AutoGuideGenerator extends AbstractGenerator {
     sb.append("    ");
     sb.append(context.addToImportAndGetSimpleName(Types.class));
     sb.append(".<");
-    sb.append(sourceType.actualDeclaration(context::addToImportAndGetSimpleName));
+    sb.append(sourceType.actualBlindDeclaration(context::addToImportAndGetSimpleName));
     sb.append(", ");
     sb.append(sourceType.simpleDeclaration(context::addToImportAndGetSimpleName));
     sb.append("> of(");
@@ -153,7 +153,7 @@ public class AutoGuideGenerator extends AbstractGenerator {
     sb.append(context.addToImportAndGetSimpleName(GuideFunctions.getChannelType(method).canonicalName()));
     sb.append(".class,\n");
     GuideForm guideForm = GuideProcessorFunctions.getGuideForm(method);
-    sb.append("GuideForms.");
+    sb.append("    GuideForms.");
     sb.append(guideForm.name());
     sb.append("))");
     return sb.toString();

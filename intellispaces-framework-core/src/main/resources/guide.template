@@ -12,7 +12,7 @@ import {{$importedClass}};
 @Guide
 @FunctionalInterface
 {{$generatedAnnotation}}
-public interface {{$classSimpleName}}{{$guideTypeParamsFull}} extends {{$guideClassSimpleName}}{{$guideTypeParams}} {
+public interface {{$classSimpleName}} extends {{$guideClassSimpleName}}{{$guideTypeParams}} {
 
   @Override
   default String cid() {
@@ -25,15 +25,16 @@ public interface {{$classSimpleName}}{{$guideTypeParamsFull}} extends {{$guideCl
   }
 
   @Override
-  {{$baseMethod}}
-{{when $guideClassSimpleName.eqAnyOf("AbstractMapper0", "AbstractMapperOfMoving0")}}
-  @Override
-  {{$longPrimitiveMethod}}
-
-  @Override
-  {{$doublePrimitiveMethod}}
-{{end}}
+  {{$traverseMethodMainForm}}
 
   {{$guideAnnotation}}({{$channelClassSimpleName}}.class)
   {{$guideMethod}}
+
+{{when $guideClassSimpleName.eqAnyOf("AbstractMapper0", "AbstractMapperOfMoving0")}}
+  @Override
+  {{$traverseMethodPrimitiveFormLong}}
+
+  @Override
+  {{$traverseMethodPrimitiveFormDouble}}
+{{end}}
 }

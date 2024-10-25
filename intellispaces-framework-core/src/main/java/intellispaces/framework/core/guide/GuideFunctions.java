@@ -50,6 +50,7 @@ import intellispaces.framework.core.guide.n3.UnitMapper3;
 import intellispaces.framework.core.guide.n3.UnitMapperOfMoving3;
 import intellispaces.framework.core.guide.n4.Mapper4;
 import intellispaces.framework.core.guide.n4.Mover4;
+import intellispaces.framework.core.guide.n4.ObjectMapperOfMoving4;
 import intellispaces.framework.core.guide.n5.Mapper5;
 import intellispaces.framework.core.guide.n5.Mover5;
 import intellispaces.framework.core.object.DataFunctions;
@@ -316,6 +317,7 @@ public final class GuideFunctions {
       case 1 -> new ObjectMapperOfMoving1<>(cid, (Class) objectHandleClass, guideMethod, channelOrdinal, guideForm);
       case 2 -> new ObjectMapperOfMoving2<>(cid, (Class) objectHandleClass, guideMethod, channelOrdinal, guideForm);
       case 3 -> new ObjectMapperOfMoving3<>(cid, (Class) objectHandleClass, guideMethod, channelOrdinal, guideForm);
+      case 4 -> new ObjectMapperOfMoving4<>(cid, (Class) objectHandleClass, guideMethod, channelOrdinal, guideForm);
       default -> throw UnexpectedViolationException.withMessage("Unsupported number of guide qualifiers: {0}",
           qualifiersCount);
     };

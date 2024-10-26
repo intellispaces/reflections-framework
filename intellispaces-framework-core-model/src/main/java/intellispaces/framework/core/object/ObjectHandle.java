@@ -37,6 +37,26 @@ public interface ObjectHandle<D> {
   void release();
 
   /**
+   * Add projection.
+   *
+   * @param targetDomain target domain class.
+   * @param target target object handle.
+   * @param <TD> target domain type.
+   * @param <TH> target object handle type.
+   */
+  <TD, TH> void addProjection(Class<TD> targetDomain, TH target);
+
+  /**
+   * Maps object handle to given domain.
+   *
+   * @param targetDomain target domain class.
+   * @return projection target object handle or <code>null</code>.
+   * @param <TD> target domain type.
+   * @param <TH> target object handle type.
+   */
+  <TD, TH> TH mapTo(Class<TD> targetDomain);
+
+  /**
    * Maps object through not parametrized channel.
    *
    * @param channelClass channel class.

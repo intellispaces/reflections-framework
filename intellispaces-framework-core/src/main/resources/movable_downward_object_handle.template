@@ -137,6 +137,16 @@ public class {{$classSimpleName}}{{$classTypeParams}} implements {{$movableObjec
 {{end}}
 
   @Override
+  public <TD, TH> void addProjection(Class<TD> targetDomain, TH target) {
+    {{$childField}}.addProjection(targetDomain, target);
+  }
+
+  @Override
+  public <TD, TH> TH mapTo(Class<TD> targetDomain) {
+    return {{$childField}}.mapTo(targetDomain);
+  }
+
+  @Override
   public <R> R mapOfMovingThru(Class<? extends Channel0> channelClass) throws TraverseException {
     return (R) {{$childField}}.mapOfMovingThru(channelClass);
   }

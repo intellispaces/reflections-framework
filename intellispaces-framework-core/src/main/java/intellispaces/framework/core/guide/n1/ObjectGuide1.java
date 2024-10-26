@@ -47,7 +47,7 @@ abstract class ObjectGuide1<S extends ObjectHandleWrapper, R, Q> implements Guid
   public R traverse(S source, Q qualifier) throws TraverseException {
     try {
       GuideLogger.logCallGuide(guideMethod);
-      return (R) source.$handle().getGuideAction(channelIndex).asAction2().execute(source, qualifier);
+      return (R) source.$innerHandle().getGuideAction(channelIndex).asAction2().execute(source, qualifier);
     } catch (TraverseException e) {
       throw e;
     } catch (Exception e) {

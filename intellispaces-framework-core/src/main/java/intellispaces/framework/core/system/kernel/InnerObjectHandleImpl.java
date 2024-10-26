@@ -7,12 +7,15 @@ import intellispaces.common.base.exception.UnexpectedViolationException;
 import intellispaces.framework.core.system.Injection;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-class ObjectHandleImpl implements KernelObjectHandle {
+class InnerObjectHandleImpl implements InnerObjectHandle {
   private List<ResettableGetter<Action>> methodActions = List.of();
   private List<Action> guideActions = List.of();
   private List<Injection> injections = List.of();
+  private final Map<Class<?>, Object> projections = new HashMap<>();
 
   @Override
   public Action getMethodAction(int index) {
@@ -65,5 +68,16 @@ class ObjectHandleImpl implements KernelObjectHandle {
     } else {
       this.injections = Arrays.stream(projectionInjections).toList();
     }
+  }
+
+  @Override
+  public <TD, TH> void addProjection(Class<TD> targetDomain, TH target) {
+    projections.put(targetDomain, target);
+  }
+
+  @Override
+  @SuppressWarnings("unchecked")
+  public <TD, TH> TH mapTo(Class<TD> targetDomain) {
+    return (TH) projections.get(targetDomain);
   }
 }

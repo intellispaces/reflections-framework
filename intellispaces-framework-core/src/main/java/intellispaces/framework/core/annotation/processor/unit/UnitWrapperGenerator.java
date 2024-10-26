@@ -366,7 +366,7 @@ public class UnitWrapperGenerator extends AbstractGenerator {
   }
 
   private boolean isInjectionMethod(MethodStatement method) {
-    return method.hasAnnotation(Inject.class);
+    return method.hasAnnotation(Inject.class) || method.hasAnnotation(AutoGuide.class);
   }
 
   private boolean isAutoGuideMethod(MethodStatement method) {

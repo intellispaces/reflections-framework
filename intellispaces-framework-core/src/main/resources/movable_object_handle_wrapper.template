@@ -10,7 +10,7 @@ import {{$importedClass}};
 @Wrapper({{$sourceClassSimpleName}}.class)
 {{$generatedAnnotation}}
 public class {{$classSimpleName}}{{$typeParamsFull}} extends {{$sourceClassSimpleName}}{{$typeParamsBrief}} implements ObjectHandleWrapper {
-  private KernelObjectHandle $handle;
+  private InnerObjectHandle $innerHandle;
 
 {{for constructor : $constructors}}
   public {{$classSimpleName}}({{for param : $constructor.get("params")}}{{$param.get("type")}} {{$param.get("name")}}{{when $param.isNotLast()}}, {{end}}{{end}}) {
@@ -20,10 +20,10 @@ public class {{$classSimpleName}}{{$typeParamsFull}} extends {{$sourceClassSimpl
 {{end}}
 
   @Override
-  public void $init(KernelObjectHandle handle) {
-    this.$handle = handle;
+  public void $init(InnerObjectHandle innerHandle) {
+    this.$innerHandle = innerHandle;
 {{when $injections.isNotEmpty()}}
-    this.$handle.setInjections(
+    this.$innerHandle.setInjections(
 {{for injection : $injections}}
 {{when $injection.get("kind").eq("guide")}}
       GuideInjections.get({{$sourceClassSimpleName}}.class, "{{$injection.get("name")}}", {{$injection.get("type")}}.class){{when $injection.isNotLast()}},{{end}}
@@ -34,14 +34,14 @@ public class {{$classSimpleName}}{{$typeParamsFull}} extends {{$sourceClassSimpl
     );
 {{end}}
 {{when $methodActions.isNotEmpty()}}
-    this.$handle.setMethodActions(
+    this.$innerHandle.setMethodActions(
 {{for methodAction : $methodActions}}
       {{$methodAction}}{{when $methodAction.isNotLast()}},{{end}}
 {{end}}
     );
 {{end}}
 {{when $guideActions.isNotEmpty()}}
-    this.$handle.setGuideActions(
+    this.$innerHandle.setGuideActions(
 {{for guideAction : $guideActions}}
       {{$guideAction}}{{when $guideAction.isNotLast()}},{{end}}
 {{end}}
@@ -50,8 +50,8 @@ public class {{$classSimpleName}}{{$typeParamsFull}} extends {{$sourceClassSimpl
   }
 
   @Override
-  public KernelObjectHandle $handle() {
-    return this.$handle;
+  public InnerObjectHandle $innerHandle() {
+    return this.$innerHandle;
   }
 
 {{for method : $conversionMethods}}
@@ -73,6 +73,16 @@ public class {{$classSimpleName}}{{$typeParamsFull}} extends {{$sourceClassSimpl
     // do nothing
   }
 {{end}}
+
+  @Override
+  public <TD, TH> void addProjection(Class<TD> targetDomain, TH target) {
+    $innerHandle.addProjection(targetDomain, target);
+  }
+
+  @Override
+  public <TD, TH> TH mapTo(Class<TD> targetDomain) {
+    return $innerHandle.mapTo(targetDomain);
+  }
 
   @Override
   public <T, Q, C extends Channel1 & MappingChannel> T mapThru(Class<C> channelClass, Q qualifier) throws TraverseException {

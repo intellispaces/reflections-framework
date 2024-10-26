@@ -7,8 +7,6 @@ import intellispaces.framework.core.guide.GuideForm;
 import intellispaces.framework.core.guide.GuideLogger;
 import intellispaces.framework.core.system.ObjectHandleWrapper;
 
-import java.lang.reflect.Method;
-
 abstract class ObjectGuide0<S extends ObjectHandleWrapper, R> implements Guide0<S, R> {
   private final Class<S> objectHandleClass;
   private final String cid;
@@ -48,7 +46,7 @@ abstract class ObjectGuide0<S extends ObjectHandleWrapper, R> implements Guide0<
   public R traverse(S source) throws TraverseException {
     try {
       GuideLogger.logCallGuide(guideMethod);
-      return (R) source.$handle().getGuideAction(channelIndex).asAction1().execute(source);
+      return (R) source.$innerHandle().getGuideAction(channelIndex).asAction1().execute(source);
     } catch (TraverseException e) {
       throw e;
     } catch (Exception e) {
@@ -61,7 +59,7 @@ abstract class ObjectGuide0<S extends ObjectHandleWrapper, R> implements Guide0<
   public int traverseToInt(S source) throws TraverseException {
     try {
       GuideLogger.logCallGuide(guideMethod);
-      return source.$handle().getGuideAction(channelIndex).asAction1().executeReturnInt(source);
+      return source.$innerHandle().getGuideAction(channelIndex).asAction1().executeReturnInt(source);
     } catch (TraverseException e) {
       throw e;
     } catch (Exception e) {
@@ -74,7 +72,7 @@ abstract class ObjectGuide0<S extends ObjectHandleWrapper, R> implements Guide0<
   public double traverseToDouble(S source) throws TraverseException {
     try {
       GuideLogger.logCallGuide(guideMethod);
-      return source.$handle().getGuideAction(channelIndex).asAction1().executeReturnDouble(source);
+      return source.$innerHandle().getGuideAction(channelIndex).asAction1().executeReturnDouble(source);
     } catch (TraverseException e) {
       throw e;
     } catch (Exception e) {

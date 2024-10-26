@@ -6,6 +6,9 @@ import intellispaces.common.dynamicproxy.tracker.Tracker;
 import intellispaces.common.dynamicproxy.tracker.TrackerBuilder;
 import intellispaces.common.dynamicproxy.tracker.TrackerFunctions;
 import intellispaces.common.javastatement.customtype.CustomType;
+import intellispaces.common.javastatement.method.MethodParam;
+import intellispaces.common.javastatement.method.MethodSignature;
+import intellispaces.common.javastatement.method.MethodSignatures;
 import intellispaces.common.javastatement.method.MethodStatement;
 import intellispaces.common.javastatement.method.Methods;
 import intellispaces.framework.core.annotation.Channel;
@@ -30,6 +33,23 @@ import java.util.function.Function;
  * Channel related functions.
  */
 public interface ChannelFunctions {
+
+  static boolean isChannelClass(Class<?> aClass) {
+    return aClass.isAnnotationPresent(Channel.class);
+  }
+
+  static MethodSignature getChannelMethod(Class<?> channelClass) {
+    if (!isChannelClass(channelClass)) {
+      throw UnexpectedViolationException.withMessage("Expected channel class. Actual class {0} is not channel class",
+          channelClass.getCanonicalName());
+    }
+    Method[] methods = channelClass.getDeclaredMethods();
+    if (methods.length != 1) {
+      throw UnexpectedViolationException.withMessage("Expected one channel method. Check channel class {0}",
+          channelClass.getCanonicalName());
+    }
+    return MethodSignatures.get(methods[0]);
+  }
 
   static boolean isChannelMethod(MethodStatement method) {
     return method.hasAnnotation(Channel.class);
@@ -320,5 +340,11 @@ public interface ChannelFunctions {
             method.name(), method.owner().className())
         );
     return getTraverseType(channel);
+  }
+
+  static Class<?> getChannelSourceDomainClass(Class<?> channelClass) {
+    MethodSignature channelMethod = getChannelMethod(channelClass);
+    List<MethodParam> params = channelMethod.params();
+    return params.get(0).type().asCustomTypeReferenceOrElseThrow().targetClass();
   }
 }

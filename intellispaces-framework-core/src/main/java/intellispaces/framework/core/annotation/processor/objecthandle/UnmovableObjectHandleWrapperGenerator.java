@@ -23,7 +23,7 @@ import intellispaces.framework.core.system.ObjectHandleWrapper;
 import intellispaces.framework.core.system.injection.AutoGuideInjections;
 import intellispaces.framework.core.system.injection.GuideInjections;
 import intellispaces.framework.core.system.kernel.KernelFunctions;
-import intellispaces.framework.core.system.kernel.KernelObjectHandle;
+import intellispaces.framework.core.system.kernel.InnerObjectHandle;
 
 import javax.annotation.processing.RoundEnvironment;
 import java.util.HashMap;
@@ -91,7 +91,7 @@ public class UnmovableObjectHandleWrapperGenerator extends AbstractObjectHandleW
     context.addImport(Ordinal.class);
     context.addImport(Wrapper.class);
     context.addImport(ObjectHandleWrapper.class);
-    context.addImport(KernelObjectHandle.class);
+    context.addImport(InnerObjectHandle.class);
     context.addImport(MathFunctions.class);
     context.addImport(GuideForms.class);
 

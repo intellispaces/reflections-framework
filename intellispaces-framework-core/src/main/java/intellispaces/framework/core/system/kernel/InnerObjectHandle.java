@@ -6,9 +6,9 @@ import intellispaces.framework.core.system.Injection;
 import java.util.List;
 
 /**
- * Internal kernel representation of the object handle.
+ * Internal object handle.
  */
-public interface KernelObjectHandle {
+public interface InnerObjectHandle {
 
   Action getMethodAction(int index);
 
@@ -23,4 +23,8 @@ public interface KernelObjectHandle {
   List<Injection> injections();
 
   void setInjections(Injection... injections);
+
+  <TD, TH> void addProjection(Class<TD> targetDomain, TH target);
+
+  <TD, TH> TH mapTo(Class<TD> targetDomain);
 }

@@ -204,7 +204,7 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
   }
 
   private String buildInjectionMethodBody(String injectionType, int injectionIndex) {
-    return "return (" + injectionType + ") this.$handle.injection(" + injectionIndex + ").value();";
+    return "return (" + injectionType + ") this.$innerHandle.injection(" + injectionIndex + ").value();";
   }
 
   private MethodStatement findObjectHandleMethods(
@@ -394,7 +394,7 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
   private void buildInvokeMethodAction(
       MethodStatement domainMethod, GuideForm guideForm, int methodIndex, StringBuilder sb
   ) {
-    sb.append("$handle.getMethodAction(");
+    sb.append("$innerHandle.getMethodAction(");
     sb.append(methodIndex);
     sb.append(").asAction");
     sb.append(domainMethod.params().size() + 1);

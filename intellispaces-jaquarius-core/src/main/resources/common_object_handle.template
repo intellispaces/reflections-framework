@@ -1,0 +1,40 @@
+package {{$packageName}};
+
+{{for importedClass : $importedClasses}}
+import {{$importedClass}};
+{{end}}
+
+/**
+ * Common handle of the object of domain {@link {{$sourceClassName}}}.<p/>
+ *
+ * This class was generated automatically. Don't try to change it.
+ */
+@ObjectHandle({{$sourceClassSimpleName}}.class)
+{{$generatedAnnotation}}
+{{when $isAlias}}
+public interface {{$classSimpleName}}{{$domainTypeParamsFull}} extends {{$primaryObjectHandle}} {
+
+  default Type<{{$primaryDomainSimpleName}}{{$primaryDomainTypeArguments}}> domain() {
+    return {{$domainType}}
+  }
+{{else}}
+public interface {{$classSimpleName}}{{$domainTypeParamsFull}} extends intellispaces.jaquarius.object.ObjectHandle<{{$sourceClassSimpleName}}{{$domainTypeParamsBrief}}> {
+
+  default Type<{{$sourceClassSimpleName}}{{$domainTypeParamsBrief}}> domain() {
+    return {{$domainType}}
+  }
+{{end}}
+
+  default Class<?> domainClass() {
+    return {{$primaryDomainSimpleName}}.class;
+  }
+
+{{for method : $domainMethods}}
+  {{$method.get("javadoc")}}
+  {{$method.get("declaration")}};
+
+{{end}}
+  {{$movableClassSimpleName}}{{$domainTypeParamsBrief}} asMovableOrElseThrow();
+
+  <T, Q, C extends Channel1 & MappingChannel> T mapThru(Class<C> channelClass, Q qualifier) throws TraverseException;
+}

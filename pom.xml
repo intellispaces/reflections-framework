@@ -7,21 +7,27 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <groupId>intellispaces-framework</groupId>
-    <artifactId>intellispaces-framework-core-parent</artifactId>
+    <groupId>intellispaces-jaquarius</groupId>
+    <artifactId>intellispaces-jaquarius-parent</artifactId>
     <packaging>pom</packaging>
 
     <modules>
-        <module>intellispaces-framework-core-model</module>
-        <module>intellispaces-framework-core</module>
+        <module>intellispaces-jaquarius-core</module>
+        <module>intellispaces-jaquarius-model</module>
+        <module>intellispaces-jaquarius-engine</module>
     </modules>
 
     <dependencyManagement>
         <dependencies>
             <!-- Intellispaces-->
             <dependency>
-                <groupId>intellispaces-framework</groupId>
-                <artifactId>intellispaces-framework-core-model</artifactId>
+                <groupId>intellispaces-jaquarius</groupId>
+                <artifactId>intellispaces-jaquarius-model</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>intellispaces-jaquarius</groupId>
+                <artifactId>intellispaces-jaquarius-core</artifactId>
                 <version>0.0.1-SNAPSHOT</version>
             </dependency>
             <dependency>

@@ -2,7 +2,10 @@ package intellispaces.framework.core.validation;
 
 import intellispaces.common.annotationprocessor.validator.AnnotatedTypeValidator;
 import intellispaces.common.javastatement.customtype.CustomType;
+import intellispaces.framework.core.annotation.Ontology;
 import intellispaces.framework.core.exception.IntelliSpacesException;
+
+import java.util.Optional;
 
 /**
  * Channel type validator.
@@ -12,6 +15,7 @@ public class ChannelValidator implements AnnotatedTypeValidator {
   @Override
   public void validate(CustomType channelType) {
     validateName(channelType);
+    validateEnclosingType(channelType);
     validateMethods(channelType);
   }
 
@@ -19,6 +23,14 @@ public class ChannelValidator implements AnnotatedTypeValidator {
     if (!channelType.simpleName().endsWith("Channel")) {
       throw IntelliSpacesException.withMessage("Channel interface name must end with ''Channel''. Check class {0}\"",
           channelType.canonicalName());
+    }
+  }
+
+  private void validateEnclosingType(CustomType channelType) {
+    Optional<CustomType> enclosingType = channelType.enclosingType();
+    if (enclosingType.isPresent() && !enclosingType.get().hasAnnotation(Ontology.class)) {
+      throw IntelliSpacesException.withMessage("Channel interface can only be nested to ontology interface. " +
+          "Check class {0}", channelType.canonicalName());
     }
   }
 

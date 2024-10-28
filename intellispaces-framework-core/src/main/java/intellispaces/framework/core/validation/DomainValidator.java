@@ -12,6 +12,7 @@ import intellispaces.common.javastatement.reference.ReferenceBound;
 import intellispaces.common.javastatement.reference.TypeReference;
 import intellispaces.framework.core.annotation.Channel;
 import intellispaces.framework.core.annotation.Domain;
+import intellispaces.framework.core.annotation.Ontology;
 import intellispaces.framework.core.common.NameConventionFunctions;
 import intellispaces.framework.core.exception.IntelliSpacesException;
 import intellispaces.framework.core.space.domain.DomainFunctions;
@@ -28,6 +29,7 @@ public class DomainValidator implements AnnotatedTypeValidator {
   @Override
   public void validate(CustomType domainType) {
     validateName(domainType);
+    validateEnclosingType(domainType);
     validateParentDomains(domainType);
     validateMethods(domainType);
   }
@@ -36,6 +38,14 @@ public class DomainValidator implements AnnotatedTypeValidator {
     if (!domainType.simpleName().endsWith("Domain")) {
       throw IntelliSpacesException.withMessage("Domain interface name must end with ''Domain''. Check class {0}\"",
           domainType.canonicalName());
+    }
+  }
+
+  private void validateEnclosingType(CustomType domainType) {
+    Optional<CustomType> enclosingType = domainType.enclosingType();
+    if (enclosingType.isPresent() && !enclosingType.get().hasAnnotation(Ontology.class)) {
+      throw IntelliSpacesException.withMessage("Domain interface can only be nested to ontology interface. " +
+          "Check class {0}", domainType.canonicalName());
     }
   }
 

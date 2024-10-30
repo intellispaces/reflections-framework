@@ -25,7 +25,7 @@ class ObjectGuideRegistry {
 
   private HandleDescription createHandleDescription(Class<?> objectHandleClass) {
     HandleDescription handleDescription = new HandleDescription(objectHandleClass);
-    Class<?> actualObjectHandleClass = ObjectFunctions.defineObjectHandleClass(objectHandleClass);
+    Class<?> actualObjectHandleClass = ObjectFunctions.getObjectHandleClass(objectHandleClass);
     if (actualObjectHandleClass == null) {
       return handleDescription;
     }

@@ -1,5 +1,7 @@
 package intellispaces.jaquarius.processor;
 
+import intellispaces.common.action.runner.Runner;
+import intellispaces.common.base.text.TextActions;
 import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.common.javastatement.method.MethodStatement;
 import intellispaces.common.javastatement.reference.TypeReference;
@@ -7,6 +9,7 @@ import intellispaces.jaquarius.annotation.Channel;
 import intellispaces.jaquarius.channel.MappingChannel;
 import intellispaces.jaquarius.channel.MappingOfMovingChannel;
 import intellispaces.jaquarius.channel.MovingChannel;
+import intellispaces.jaquarius.common.NameConventionFunctions;
 import intellispaces.jaquarius.space.channel.ChannelFunctions;
 import intellispaces.jaquarius.traverse.TraverseType;
 
@@ -68,26 +71,36 @@ public abstract class AbstractChannelGenerator extends AbstractGenerator {
     }
     context.addImport(Channel.class);
 
-    channelClasses = defineChannelClass();
+    channelClasses = defineChannelClasses();
     channelMethodSignature = getChannelMethodSignature();
     return true;
   }
 
-  private String defineChannelClass() {
+  private String defineChannelClasses() {
     var sb = new StringBuilder();
-    sb.append(context.addToImportAndGetSimpleName(
-        ChannelFunctions.getChannelClass(getQualifierTypes().size())
-    ));
-    for (TraverseType traverseType : getTraverseTypes()) {
-      if (traverseType.isMapping()) {
-        sb.append(", ");
-        sb.append(context.addToImportAndGetSimpleName(MappingChannel.class));
-      } else if (traverseType.isMoving()) {
+
+    List<MethodStatement> superChannels = channelMethod.overrideMethods();
+    if (!superChannels.isEmpty()) {
+      Runner commaAppender = TextActions.skippingFirstTimeCommaAppender(sb);
+      for (MethodStatement superChannel : superChannels) {
+        commaAppender.run();
+        sb.append(
+            context.addToImportAndGetSimpleName(NameConventionFunctions.getChannelClassCanonicalName(superChannel))
+        );
+      }
+    } else {
+      sb.append(context.addToImportAndGetSimpleName(ChannelFunctions.getChannelClass(getQualifierTypes().size())));
+      for (TraverseType traverseType : getTraverseTypes()) {
+        if (traverseType.isMapping()) {
+          sb.append(", ");
+          sb.append(context.addToImportAndGetSimpleName(MappingChannel.class));
+        } else if (traverseType.isMoving()) {
           sb.append(", ");
           sb.append(context.addToImportAndGetSimpleName(MovingChannel.class));
-      } else if (traverseType.isMappingOfMoving()) {
-        sb.append(", ");
-        sb.append(context.addToImportAndGetSimpleName(MappingOfMovingChannel.class));
+        } else if (traverseType.isMappingOfMoving()) {
+          sb.append(", ");
+          sb.append(context.addToImportAndGetSimpleName(MappingOfMovingChannel.class));
+        }
       }
     }
     return sb.toString();

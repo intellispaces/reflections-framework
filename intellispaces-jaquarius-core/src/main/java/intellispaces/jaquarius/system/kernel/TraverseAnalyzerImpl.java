@@ -195,7 +195,7 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
       throw UnexpectedViolationException.withMessage("Traverse plan of type {0} expected object handle to input",
           plan.type());
     }
-    Class<?> objectHandleClass = ObjectFunctions.defineObjectHandleClass(sourceClass);
+    Class<?> objectHandleClass = ObjectFunctions.getObjectHandleClass(sourceClass);
     executionPlan = plan.getExecutionPlan(objectHandleClass);
     if (executionPlan != null) {
       return executionPlan;

@@ -81,13 +81,13 @@ public interface NameConventionFunctions {
   }
 
   static String getChannelClassCanonicalName(
-      String spaceName, CustomType domainType, MethodStatement channelMethod
+      String spaceName, CustomType domain, MethodStatement channelMethod
   ) {
     String channelSimpleName = channelMethod.selectAnnotation(Channel.class).orElseThrow().name();
     if (!channelSimpleName.isBlank()) {
       return TypeFunctions.joinPackageAndSimpleName(spaceName, channelSimpleName);
     }
-    return assignChannelClassCanonicalName(spaceName, domainType, channelMethod);
+    return assignChannelClassCanonicalName(spaceName, domain, channelMethod);
   }
 
   static String getUnmovableUpwardObjectHandleTypename(CustomType domainType, CustomType baseDomainType) {

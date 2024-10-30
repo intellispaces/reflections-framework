@@ -64,7 +64,7 @@ class ModuleImpl implements Module {
   @SuppressWarnings("unchecked")
   public <S, T> T mapThruChannel0(S source, String cid) {
     DeclarativeTraversePlan traversePlan = kernelModule.traverseAnalyzer().buildMapObjectHandleThruChannel0Plan(
-        ObjectFunctions.defineObjectHandleClass(source.getClass()), cid, GuideForms.Main);
+        ObjectFunctions.getObjectHandleClass(source.getClass()), cid, GuideForms.Main);
     return (T) traversePlan.execute(source, kernelModule.traverseExecutor());
   }
 
@@ -77,7 +77,7 @@ class ModuleImpl implements Module {
   @SuppressWarnings("unchecked")
   public <S, T, Q> T mapThruChannel1(S source, String cid, Q qualifier) {
     DeclarativeTraversePlan traversePlan = kernelModule.traverseAnalyzer().buildMapObjectHandleThruChannel1Plan(
-        ObjectFunctions.defineObjectHandleClass(source.getClass()), cid, GuideForms.Main);
+        ObjectFunctions.getObjectHandleClass(source.getClass()), cid, GuideForms.Main);
     return (T) traversePlan.execute(source, qualifier, kernelModule.traverseExecutor());
   }
 
@@ -90,7 +90,7 @@ class ModuleImpl implements Module {
   @SuppressWarnings("unchecked")
   public <S, R> R moveThruChannel0(S source, String cid) {
     TraversePlan traversePlan = kernelModule.traverseAnalyzer().buildMoveObjectHandleThruChannel0Plan(
-        ObjectFunctions.defineObjectHandleClass(source.getClass()), cid, GuideForms.Main);
+        ObjectFunctions.getObjectHandleClass(source.getClass()), cid, GuideForms.Main);
     return (R) traversePlan.execute(source, kernelModule.traverseExecutor());
   }
 
@@ -98,7 +98,7 @@ class ModuleImpl implements Module {
   @SuppressWarnings("unchecked")
   public <S, R, Q> R moveThruChannel1(S source, String cid, Q qualifier) {
     TraversePlan traversePlan = kernelModule.traverseAnalyzer().buildMoveObjectHandleThruChannel1Plan(
-        ObjectFunctions.defineObjectHandleClass(source.getClass()), cid, GuideForms.Main);
+        ObjectFunctions.getObjectHandleClass(source.getClass()), cid, GuideForms.Main);
     return (R) traversePlan.execute(source, qualifier, kernelModule.traverseExecutor());
   }
 
@@ -113,7 +113,7 @@ class ModuleImpl implements Module {
   @SuppressWarnings("unchecked")
   public <S, R, Q> R mapOfMovingThruChannel1(S source, String cid, Q qualifier) {
     TraversePlan traversePlan = kernelModule.traverseAnalyzer().buildMapOfMovingObjectHandleThruChannel1Plan(
-        ObjectFunctions.defineObjectHandleClass(source.getClass()), cid, GuideForms.Main);
+        ObjectFunctions.getObjectHandleClass(source.getClass()), cid, GuideForms.Main);
     return (R) traversePlan.execute(source, qualifier, kernelModule.traverseExecutor());
   }
 

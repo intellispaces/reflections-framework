@@ -57,7 +57,7 @@ public class UnitWrapperGenerator extends AbstractGenerator {
   private final List<Map<String, Object>> injections = new ArrayList<>();
   private final List<String> projectionDefinitions = new ArrayList<>();
   private final List<Map<String, Object>> injectionMethods = new ArrayList<>();
-  private List<MethodStatement> declaredMethods;
+  private List<MethodStatement> methods;
   private List<Map<String, Object>> overrideGuideMethods;
   private final List<Map<String, String>> guideActionMethods = new ArrayList<>();
   private final List<String> guideActions = new ArrayList<>();
@@ -131,7 +131,7 @@ public class UnitWrapperGenerator extends AbstractGenerator {
     context.addImport(AutoGuideInjections.class);
     context.addImport(MathFunctions.class);
 
-    declaredMethods = annotatedType.declaredMethods();
+    methods = annotatedType.actualMethods();
     analyzeTypeParams();
     analyzeMethods();
     analyzeGuideMethods();
@@ -145,7 +145,7 @@ public class UnitWrapperGenerator extends AbstractGenerator {
   }
 
   private void analyzeGuideMethods() {
-    this.overrideGuideMethods = declaredMethods.stream()
+    this.overrideGuideMethods = methods.stream()
         .filter(GuideFunctions::isGuideMethod)
         .map(this::buildGuideMethod)
         .toList();
@@ -169,7 +169,7 @@ public class UnitWrapperGenerator extends AbstractGenerator {
   }
 
   private void analyzeGuideActions() {
-    declaredMethods.stream()
+    methods.stream()
         .filter(GuideFunctions::isGuideMethod)
         .forEach(method -> {
           guideActions.add(GuideProcessorFunctions.buildGuideAction(artifactName(), method, context));
@@ -194,8 +194,8 @@ public class UnitWrapperGenerator extends AbstractGenerator {
   }
 
   private void analyzeMethods() {
-    for (MethodStatement method : declaredMethods) {
-      if (method.isAbstract()) {
+    for (MethodStatement method : methods) {
+      if (method.isAbstract() && !method.isDefault()) {
         if (isProjectionMethod(method)) {
           if (!isReturnObjectHandle(method)) {
             throw ConfigurationException.withMessage("Projection method ''{0}'' in class {1} must return object handle",

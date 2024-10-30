@@ -144,7 +144,7 @@ public class ObjectFunctions {
     return AnnotationFunctions.isAssignableAnnotatedType(customType, ObjectHandle.class);
   }
 
-  public static Class<?> defineObjectHandleClass(Class<?> aClass) {
+  public static Class<?> getObjectHandleClass(Class<?> aClass) {
     return defineObjectHandleClassInternal(aClass);
   }
 

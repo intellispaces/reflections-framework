@@ -10,7 +10,6 @@ import {{$importedClass}};
  * This class was generated automatically. Don't try to change it.
  */
 @Channel("{{$cid}}")
-@FunctionalInterface
 {{$generatedAnnotation}}
 public interface {{$classSimpleName}} extends {{$channelClasses}} {
 

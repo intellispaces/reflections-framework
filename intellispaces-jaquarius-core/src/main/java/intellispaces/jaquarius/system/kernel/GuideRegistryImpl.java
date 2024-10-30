@@ -18,7 +18,6 @@ class GuideRegistryImpl implements GuideRegistry {
   private final Map<Class<?>, Object> guideUnits = new WeakHashMap<>();
   private final Map<String, Object> name2guideMap = new HashMap<>();
 
-
   @Override
   public <G> G getAutoGuide(Class<G> guideClass) {
     return autoGuideRegistry.getAutoGuide(guideClass);

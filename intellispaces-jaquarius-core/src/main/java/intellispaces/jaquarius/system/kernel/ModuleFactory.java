@@ -166,13 +166,13 @@ public class ModuleFactory {
   }
 
   private Optional<Method> findStartupMethod(Class<?> unitClass) {
-    return Arrays.stream(unitClass.getDeclaredMethods())
+    return Arrays.stream(unitClass.getMethods())
         .filter(m -> m.isAnnotationPresent(Startup.class))
         .findAny();
   }
 
   private Optional<Method> findShutdownMethod(Class<?> unitClass) {
-    return Arrays.stream(unitClass.getDeclaredMethods())
+    return Arrays.stream(unitClass.getMethods())
         .filter(m -> m.isAnnotationPresent(Shutdown.class))
         .findAny();
   }

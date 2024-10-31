@@ -1,6 +1,6 @@
 package intellispaces.jaquarius.annotation;
 
-import intellispaces.jaquarius.processor.data.DataAnnotationProcessor;
+import intellispaces.jaquarius.annotation.processor.data.DataAnnotationProcessor;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

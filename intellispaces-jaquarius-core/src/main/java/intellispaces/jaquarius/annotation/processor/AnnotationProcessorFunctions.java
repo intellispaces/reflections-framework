@@ -386,7 +386,7 @@ public interface AnnotationProcessorFunctions {
   }
 
   static List<CustomType> getPreprocessingTargets(AnnotationInstance preprocessingAnnotation) {
-    return preprocessingAnnotation.elementValue("value").orElseThrow()
+    return preprocessingAnnotation.value().orElseThrow()
         .asArray().orElseThrow()
         .elements().stream()
         .map(Instance::asClass)
@@ -396,7 +396,7 @@ public interface AnnotationProcessorFunctions {
   }
 
   static List<CustomType> getPreprocessingAddOnTargets(AnnotationInstance preprocessingAnnotation) {
-    return preprocessingAnnotation.elementValue("addOnFor").orElseThrow()
+    return preprocessingAnnotation.valueOf("addOnFor").orElseThrow()
         .asArray().orElseThrow()
         .elements().stream()
         .map(Instance::asClass)
@@ -406,14 +406,14 @@ public interface AnnotationProcessorFunctions {
   }
 
   static boolean isPreprocessingEnabled(AnnotationInstance preprocessingAnnotation) {
-    Object enabled = preprocessingAnnotation.elementValue("enable").orElseThrow()
+    Object enabled = preprocessingAnnotation.valueOf("enable").orElseThrow()
         .asPrimitive().orElseThrow()
         .value();
     return Boolean.TRUE == enabled;
   }
 
   static String getPreprocessingArtifactName(AnnotationInstance preprocessingAnnotation) {
-    return preprocessingAnnotation.elementValue("artifact").orElseThrow()
+    return preprocessingAnnotation.valueOf("artifact").orElseThrow()
         .asString().orElseThrow()
         .value();
   }

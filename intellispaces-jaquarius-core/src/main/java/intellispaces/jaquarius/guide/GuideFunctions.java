@@ -120,7 +120,7 @@ public final class GuideFunctions {
   public static CustomType getChannelType(MethodStatement guideMethod) {
     Optional<AnnotationInstance> mapper = guideMethod.selectAnnotation(Mapper.class.getCanonicalName());
     if (mapper.isPresent()) {
-      Optional<Instance> value = mapper.get().elementValue("value");
+      Optional<Instance> value = mapper.get().value();
       if (value.isPresent()) {
         return value.get().asClass().orElseThrow().type();
       }
@@ -129,7 +129,7 @@ public final class GuideFunctions {
     Optional<AnnotationInstance> mover = guideMethod.selectAnnotation(Mover.class.getCanonicalName());
     if (mover.isPresent()) {
       return mover.get()
-          .elementValue("value")
+          .value()
           .flatMap(Instance::asClass)
           .map(ClassInstance::type)
           .orElseThrow(() -> new RuntimeException("Not implemented"));
@@ -140,7 +140,7 @@ public final class GuideFunctions {
     );
     if (mapperRelatedToMoving.isPresent()) {
       return mapperRelatedToMoving.get()
-        .elementValue("value")
+        .value()
         .flatMap(Instance::asClass)
         .map(ClassInstance::type)
         .orElseThrow(() -> new RuntimeException("Not implemented"));

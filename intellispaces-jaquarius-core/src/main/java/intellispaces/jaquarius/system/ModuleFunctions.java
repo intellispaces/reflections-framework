@@ -37,7 +37,7 @@ public interface ModuleFunctions {
   static Iterable<CustomType> getIncludedUnits(CustomType moduleType) {
     Map<String, CustomType> unitTypes = new HashMap<>();
     AnnotationInstance moduleAnnotation = moduleType.selectAnnotation(Module.class.getCanonicalName()).orElseThrow();
-    Optional<Instance> unitsAttr = moduleAnnotation.elementValue("value");
+    Optional<Instance> unitsAttr = moduleAnnotation.value();
     if (unitsAttr.isPresent()) {
       List<Instance> units = unitsAttr.get().asArray().orElseThrow().elements();
       for (Instance unit : units) {
@@ -56,7 +56,7 @@ public interface ModuleFunctions {
         Configuration.class.getCanonicalName()
       );
       if (configurationAnnotation.isPresent()) {
-        Optional<Instance> includeAttr = configurationAnnotation.get().elementValue("value");
+        Optional<Instance> includeAttr = configurationAnnotation.get().value();
         if (includeAttr.isPresent()) {
           List<Instance> units = includeAttr.get().asArray().orElseThrow().elements();
           for (Instance unit : units) {

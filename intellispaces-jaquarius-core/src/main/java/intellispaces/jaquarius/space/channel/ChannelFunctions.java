@@ -22,6 +22,7 @@ import intellispaces.jaquarius.channel.Channel2;
 import intellispaces.jaquarius.channel.Channel3;
 import intellispaces.jaquarius.channel.Channel4;
 import intellispaces.jaquarius.exception.ConfigurationException;
+import intellispaces.jaquarius.id.RepetableUuidIdentifierGenerator;
 import intellispaces.jaquarius.object.ObjectFunctions;
 import intellispaces.jaquarius.space.domain.DomainFunctions;
 import intellispaces.jaquarius.traverse.TraverseType;
@@ -78,6 +79,10 @@ public interface ChannelFunctions {
   ) {
     return findChannelId(sourceDomain, channelMethod,
         (trackedObject) -> channelMethod.apply(trackedObject, qualifierAnyValidValue));
+  }
+
+  static String computedChannelId(String channelClassCanonicalName) {
+    return new RepetableUuidIdentifierGenerator(channelClassCanonicalName).next();
   }
 
   private static <S> String findChannelId(

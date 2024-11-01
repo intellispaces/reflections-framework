@@ -237,7 +237,7 @@ public class UnitWrapperGenerator extends AbstractGenerator {
           ProjectionDefinition.class.getCanonicalName());
       if (projectionDefinitionAnnotation.isPresent()) {
         AnnotationInstance projectionDefinition = projectionDefinitionAnnotation.get();
-        Optional<Instance> providerClass = projectionDefinition.elementValue("provider");
+        Optional<Instance> providerClass = projectionDefinition.valueOf("provider");
         if (providerClass.isPresent() && isProjectionProviderDefined(providerClass.get())) {
           addProjectionDefinitionBasedOnProviderClass(method, providerClass.get().asClass().orElseThrow());
           return;

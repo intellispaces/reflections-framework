@@ -192,7 +192,7 @@ public class ObjectFunctions {
     Optional<AnnotationInstance> wrapper = objectHandleType.selectAnnotation(Wrapper.class.getCanonicalName());
     if (wrapper.isPresent()) {
       objectHandleType = wrapper.get()
-          .elementValue("value").orElseThrow()
+          .value().orElseThrow()
           .asClass().orElseThrow()
           .type();
     }
@@ -202,7 +202,7 @@ public class ObjectFunctions {
     );
     if (objectHandle.isPresent()) {
       return objectHandle.get()
-          .elementValue("value").orElseThrow()
+          .value().orElseThrow()
           .asClass().orElseThrow()
           .type();
     }

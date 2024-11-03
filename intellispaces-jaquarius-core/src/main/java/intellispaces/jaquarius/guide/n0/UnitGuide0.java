@@ -1,23 +1,22 @@
 package intellispaces.jaquarius.guide.n0;
 
 import intellispaces.common.base.exception.UnexpectedViolationException;
+import intellispaces.common.javastatement.method.MethodStatement;
 import intellispaces.jaquarius.exception.TraverseException;
 import intellispaces.jaquarius.guide.GuideForm;
 import intellispaces.jaquarius.guide.GuideLogger;
 import intellispaces.jaquarius.system.UnitWrapper;
 import intellispaces.jaquarius.system.kernel.KernelUnitGuide;
 
-import java.lang.reflect.Method;
-
 abstract class UnitGuide0<S, R> implements Guide0<S, R>, KernelUnitGuide<S, R> {
   private final String cid;
   private final UnitWrapper unitInstance;
-  private final Method guideMethod;
+  private final MethodStatement guideMethod;
   private final int guideOrdinal;
   private final GuideForm guideForm;
 
-  UnitGuide0(String cid, UnitWrapper unitInstance, Method guideMethod, int guideOrdinal, GuideForm guideForm) {
-    if (guideMethod.getParameterCount() != 1) {
+  UnitGuide0(String cid, UnitWrapper unitInstance, MethodStatement guideMethod, int guideOrdinal, GuideForm guideForm) {
+    if (guideMethod.params().size() != 1) {
       throw UnexpectedViolationException.withMessage("Guide method should have one parameter: source");
     }
     this.cid = cid;
@@ -28,7 +27,7 @@ abstract class UnitGuide0<S, R> implements Guide0<S, R>, KernelUnitGuide<S, R> {
   }
 
   @Override
-  public Method guideMethod() {
+  public MethodStatement guideMethod() {
     return guideMethod;
   }
 
@@ -57,7 +56,7 @@ abstract class UnitGuide0<S, R> implements Guide0<S, R>, KernelUnitGuide<S, R> {
       throw e;
     } catch (Exception e) {
       throw TraverseException.withCauseAndMessage(e, "Failed to invoke unit guide {0} in unit {1}",
-        guideMethod.getName(), guideMethod.getDeclaringClass().getCanonicalName());
+        guideMethod.name(), guideMethod.owner().canonicalName());
     }
   }
 
@@ -70,7 +69,7 @@ abstract class UnitGuide0<S, R> implements Guide0<S, R>, KernelUnitGuide<S, R> {
       throw e;
     } catch (Exception e) {
       throw TraverseException.withCauseAndMessage(e, "Failed to invoke unit guide {0} in unit {1}",
-          guideMethod.getName(), guideMethod.getDeclaringClass().getCanonicalName());
+          guideMethod.name(), guideMethod.owner().canonicalName());
     }
   }
 
@@ -83,7 +82,7 @@ abstract class UnitGuide0<S, R> implements Guide0<S, R>, KernelUnitGuide<S, R> {
       throw e;
     } catch (Exception e) {
       throw TraverseException.withCauseAndMessage(e, "Failed to invoke unit guide {0} in unit {1}",
-          guideMethod.getName(), guideMethod.getDeclaringClass().getCanonicalName());
+          guideMethod.name(), guideMethod.owner().canonicalName());
     }
   }
 }

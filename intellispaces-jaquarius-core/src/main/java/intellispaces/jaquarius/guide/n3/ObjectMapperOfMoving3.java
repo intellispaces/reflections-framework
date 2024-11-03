@@ -1,9 +1,8 @@
 package intellispaces.jaquarius.guide.n3;
 
+import intellispaces.common.javastatement.method.MethodStatement;
 import intellispaces.jaquarius.guide.GuideForm;
 import intellispaces.jaquarius.system.ObjectHandleWrapper;
-
-import java.lang.reflect.Method;
 
 /**
  * Attached to object handle mapper related to moving.<p/>
@@ -23,7 +22,7 @@ public class ObjectMapperOfMoving3<S extends ObjectHandleWrapper, T, Q1, Q2, Q3>
   public ObjectMapperOfMoving3(
       String cid,
       Class<S> objectHandleClass,
-      Method guideMethod,
+      MethodStatement guideMethod,
       int channelIndex,
       GuideForm guideForm
   ) {

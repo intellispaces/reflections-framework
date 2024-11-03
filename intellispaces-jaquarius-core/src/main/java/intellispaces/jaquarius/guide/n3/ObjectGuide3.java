@@ -1,28 +1,30 @@
 package intellispaces.jaquarius.guide.n3;
 
 import intellispaces.common.base.exception.UnexpectedViolationException;
+import intellispaces.common.javastatement.method.MethodParam;
+import intellispaces.common.javastatement.method.MethodStatement;
 import intellispaces.jaquarius.exception.TraverseException;
 import intellispaces.jaquarius.guide.GuideForm;
 import intellispaces.jaquarius.guide.GuideLogger;
 import intellispaces.jaquarius.system.ObjectHandleWrapper;
 
-import java.lang.reflect.Method;
+import java.util.stream.Collectors;
 
 abstract class ObjectGuide3<S extends ObjectHandleWrapper, R, Q1, Q2, Q3> implements Guide3<S, R, Q1, Q2, Q3> {
   private final Class<S> objectHandleClass;
   private final String cid;
-  private final Method guideMethod;
+  private final MethodStatement guideMethod;
   private final int channelIndex;
   private final GuideForm guideForm;
 
   ObjectGuide3(
       String cid,
       Class<S> objectHandleClass,
-      Method guideMethod,
+      MethodStatement guideMethod,
       int channelIndex,
       GuideForm guideForm
   ) {
-    if (guideMethod.getParameterCount() != 3) {
+    if (guideMethod.params().size() != 3) {
       throw UnexpectedViolationException.withMessage("Guide should have three qualifiers");
     }
     this.cid = cid;
@@ -54,7 +56,17 @@ abstract class ObjectGuide3<S extends ObjectHandleWrapper, R, Q1, Q2, Q3> implem
       throw e;
     } catch (Exception e) {
       throw TraverseException.withCauseAndMessage(e, "Failed to invoke guide method ''{0}'' of object handle {1}",
-          guideMethod.getName(), objectHandleClass.getCanonicalName());
+          guideMethod.name(), objectHandleClass.getCanonicalName());
     }
+  }
+
+  @Override
+  public String toString() {
+    return "ObjectGuide3{" +
+        "objectHandleClass=" + objectHandleClass +
+        ", cid='" + cid + '\'' +
+        ", guideMethod=" + guideMethod.name() + "(" + guideMethod.params().stream().map(MethodParam::name).collect(Collectors.joining(", ")) + ")" +
+        ", guideForm=" + guideForm +
+        '}';
   }
 }

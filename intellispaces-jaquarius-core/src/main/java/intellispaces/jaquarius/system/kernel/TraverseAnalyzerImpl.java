@@ -1,5 +1,6 @@
 package intellispaces.jaquarius.system.kernel;
 
+import intellispaces.common.base.exception.NotImplementedException;
 import intellispaces.common.base.exception.UnexpectedViolationException;
 import intellispaces.jaquarius.guide.Guide;
 import intellispaces.jaquarius.guide.GuideForm;
@@ -48,6 +49,7 @@ import intellispaces.jaquarius.traverse.plan.TraverseAnalyzer;
 import intellispaces.jaquarius.traverse.plan.TraversePlanTypes;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 class TraverseAnalyzerImpl implements TraverseAnalyzer {
   private final GuideRegistry guideRegistry;
@@ -232,7 +234,9 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
       return null;
     }
     if (guides.size() > 1) {
-      throw new UnsupportedOperationException("Not implemented");
+      throw NotImplementedException.withCodeAndMessage("e9iXkw", "Multiple guides are found:\n{0}",
+          guides.stream().map(Object::toString).collect(Collectors.joining("\n"))
+      );
     }
     return switch (guideKind) {
       case Mapper0, Mover0, MapperOfMoving0 -> new CallGuide0PlanImpl((Guide0<?, ?>) guides.get(0));
@@ -240,12 +244,12 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
       case Mapper2, Mover2, MapperOfMoving2 -> new CallGuide2PlanImpl((Guide2<?, ?, ?, ?>) guides.get(0));
       case Mapper3, Mover3, MapperOfMoving3 -> new CallGuide3PlanImpl((Guide3<?, ?, ?, ?, ?>) guides.get(0));
       case Mapper4, Mover4, MapperOfMoving4 -> new CallGuide4PlanImpl((Guide4<?, ?, ?, ?, ?, ?>) guides.get(0));
-      default -> throw new UnsupportedOperationException("Not implemented");
+      default -> throw NotImplementedException.withCode("MlgXfQ");
     };
   }
 
-  private List<Guide<?, ?>> findGuides(GuideKind kind, Class<?> objectHandleClass, String cid, GuideForm guideForm) {
-    return guideRegistry.findGuides(kind, objectHandleClass, cid, guideForm);
+  private List<Guide<?, ?>> findGuides(GuideKind kind, Class<?> objectHandleClass, String cid, GuideForm form) {
+    return guideRegistry.findGuides(kind, objectHandleClass, cid, form);
   }
 
   private GuideKinds getGuideKind(TraversePlanTypes planType) {
@@ -263,7 +267,7 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
       case MapOfMovingObjectHandleThruChannel2 -> GuideKinds.MapperOfMoving2;
       case MapOfMovingObjectHandleThruChannel3 -> GuideKinds.MapperOfMoving3;
       case MapOfMovingObjectHandleThruChannel4 -> GuideKinds.MapperOfMoving4;
-      default -> throw new UnsupportedOperationException("Not implemented");
+      default -> throw NotImplementedException.withCode("5cYSWA");
     };
   }
 }

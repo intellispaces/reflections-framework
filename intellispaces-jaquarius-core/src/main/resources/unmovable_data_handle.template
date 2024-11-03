@@ -56,12 +56,12 @@ public class {{$classSimpleName}} implements {{$objectHandleClassName}} {
 
   @Override
   public <TD, TH> void addProjection(Class<TD> targetDomain, TH target) {
-    throw new RuntimeException("Not implemented");
+    throw NotImplementedException.withCode("5mEyvQ");
   }
 
   @Override
   public <TD, TH> TH mapTo(Class<TD> targetDomain) {
-    throw new RuntimeException("Not implemented");
+    throw NotImplementedException.withCode("zGRjYw");
   }
 
   @Override

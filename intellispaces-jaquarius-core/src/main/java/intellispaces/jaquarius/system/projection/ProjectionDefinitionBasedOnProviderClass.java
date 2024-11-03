@@ -1,5 +1,6 @@
 package intellispaces.jaquarius.system.projection;
 
+import intellispaces.common.base.exception.NotImplementedException;
 import intellispaces.jaquarius.system.ProjectionDefinitionKind;
 import intellispaces.jaquarius.system.ProjectionDefinitionKinds;
 import intellispaces.jaquarius.system.UnitProjectionDefinition;
@@ -54,7 +55,7 @@ public class ProjectionDefinitionBasedOnProviderClass implements UnitProjectionD
 
   @Override
   public Method projectionMethod() {
-    throw new RuntimeException("Not implemented");
+    throw NotImplementedException.withCode("5Xui0Q");
   }
 
   public String providerClassCanonicalName() {

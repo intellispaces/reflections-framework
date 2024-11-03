@@ -1,7 +1,9 @@
 package intellispaces.jaquarius.guide;
 
+import intellispaces.common.base.exception.NotImplementedException;
 import intellispaces.common.base.exception.UnexpectedViolationException;
 import intellispaces.common.base.type.TypeFunctions;
+import intellispaces.common.javastatement.customtype.Classes;
 import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.common.javastatement.customtype.CustomTypes;
 import intellispaces.common.javastatement.customtype.Interfaces;
@@ -132,7 +134,7 @@ public final class GuideFunctions {
           .value()
           .flatMap(Instance::asClass)
           .map(ClassInstance::type)
-          .orElseThrow(() -> new RuntimeException("Not implemented"));
+          .orElseThrow(() -> NotImplementedException.withCode("MrjpVg"));
     }
 
     Optional<AnnotationInstance> mapperRelatedToMoving = guideMethod.selectAnnotation(
@@ -143,25 +145,26 @@ public final class GuideFunctions {
         .value()
         .flatMap(Instance::asClass)
         .map(ClassInstance::type)
-        .orElseThrow(() -> new RuntimeException("Not implemented"));
+        .orElseThrow(() -> NotImplementedException.withCode("6wSmRQ"));
     }
 
-    throw new RuntimeException("Not implemented");
+    throw NotImplementedException.withCode("ATFwew");
   }
 
-  public static Channel getObjectChannelAnnotation(Method objectHandleMethod) {
-    return ChannelFunctions.getObjectGuideChannelAnnotation(objectHandleMethod);
+  public static Channel findObjectChannelAnnotation(MethodStatement objectHandleMethod) {
+    return ChannelFunctions.findObjectGuideChannelAnnotation(objectHandleMethod);
   }
 
-  public static String getUnitGuideTid(Object unitInstance, Method guideMethod) {
+  public static String getUnitGuideTid(Object unitInstance, MethodStatement guideMethod) {
     return ChannelFunctions.getUnitGuideCid(unitInstance, guideMethod);
   }
 
   public static List<Guide<?, ?>> loadObjectGuides(Class<?> objectHandleClass) {
     List<Guide<?, ?>> guides = new ArrayList<>();
-    for (Method method : objectHandleClass.getDeclaredMethods()) {
-      if (!method.isBridge() && isGuideMethod(method)) {
-        Channel channel = getObjectChannelAnnotation(method);
+    CustomType objectHandleType = Classes.of(objectHandleClass);
+    for (MethodStatement method : objectHandleType.actualMethods()) {
+      if (isGuideMethod(method)) {
+        Channel channel = findObjectChannelAnnotation(method);
         if (ChannelFunctions.getTraverseType(channel) == TraverseTypes.Mapping) {
           guides.add(createObjectMapper(objectHandleClass, channel.value(), method));
         } else if (ChannelFunctions.getTraverseType(channel) == TraverseTypes.Moving) {
@@ -175,6 +178,7 @@ public final class GuideFunctions {
     return guides;
   }
 
+  @SuppressWarnings("unchecked,rawtypes")
   private static void addConversionGuides(Class<?> objectHandleClass, List<Guide<?, ?>> guides) {
     String implClassCanonicalName = NameConventionFunctions.getObjectHandleWrapperCanonicalName(
         objectHandleClass
@@ -186,8 +190,7 @@ public final class GuideFunctions {
     }
     CustomType objectHandleWrapperType = Interfaces.of(objectHandleImplClass.get());
 
-    Class<?> domainClass = ObjectFunctions.getDomainClassOfObjectHandle(objectHandleClass);
-    CustomType domainType = Interfaces.of(domainClass);
+    CustomType domainType = ObjectFunctions.getDomainTypeOfObjectHandle(Classes.of(objectHandleClass));
 
     for (MethodStatement method : domainType.declaredMethods()) {
       if (NameConventionFunctions.isConversionMethod(method)) {
@@ -210,7 +213,7 @@ public final class GuideFunctions {
 
   public static List<UnitGuide<?, ?>> readUnitGuides(Class<?> unitClass, UnitWrapper unitInstance) {
     List<UnitGuide<?, ?>> guides = new ArrayList<>();
-    for (Method method : unitClass.getDeclaredMethods()) {
+    for (MethodStatement method : Classes.of(unitClass).actualMethods()) {
       if (isMapperMethod(method)) {
         UnitGuide<?, ?> mapper = createUnitMapper(unitInstance, method);
         guides.add(mapper);
@@ -233,11 +236,11 @@ public final class GuideFunctions {
     return guideKind;
   }
 
-  private static UnitGuide<?, ?> createUnitMapper(UnitWrapper unitInstance, Method guideMethod) {
+  private static UnitGuide<?, ?> createUnitMapper(UnitWrapper unitInstance, MethodStatement guideMethod) {
     GuideForm guideForm = getGuideForm(guideMethod);
     String cid = getUnitGuideTid(unitInstance, guideMethod);
     int guideOrdinal = getUnitGuideOrdinal(unitInstance, guideMethod);
-    int qualifiersCount = guideMethod.getParameterCount();
+    int qualifiersCount = guideMethod.params().size();
     return switch (qualifiersCount) {
       case 1 -> new UnitMapper0<>(cid, unitInstance, guideMethod, guideOrdinal, guideForm);
       case 2 -> new UnitMapper1<>(cid, unitInstance, guideMethod, guideOrdinal, guideForm);
@@ -248,16 +251,16 @@ public final class GuideFunctions {
     };
   }
 
-  private static UnitGuide<?, ?> createMover(Object unitInstance, Method guideMethod) {
+  private static UnitGuide<?, ?> createMover(Object unitInstance, MethodStatement guideMethod) {
     String cid = getUnitGuideTid(unitInstance, guideMethod);
-    throw new UnsupportedOperationException("Not implemented");
+    throw NotImplementedException.withCode("4GL2+g");
   }
 
-  private static UnitGuide<?, ?> createUnitMapperOfMoving(UnitWrapper unitInstance, Method guideMethod) {
+  private static UnitGuide<?, ?> createUnitMapperOfMoving(UnitWrapper unitInstance, MethodStatement guideMethod) {
     GuideForm guideForm = getGuideForm(guideMethod);
     String cid = getUnitGuideTid(unitInstance, guideMethod);
     int guideOrdinal = getUnitGuideOrdinal(unitInstance, guideMethod);
-    int qualifiersCount = guideMethod.getParameterCount();
+    int qualifiersCount = guideMethod.params().size();
     return switch (qualifiersCount) {
       case 1 -> new UnitMapperOfMoving0<>(cid, unitInstance, guideMethod, guideOrdinal, guideForm);
       case 2 -> new UnitMapperOfMoving1<>(cid, unitInstance, guideMethod, guideOrdinal, guideForm);
@@ -270,13 +273,13 @@ public final class GuideFunctions {
 
   @SuppressWarnings("unchecked, rawtypes")
   private static <S, T> Guide<S, T> createObjectMapper(
-      Class<S> objectHandleClass, String cid, Method guideMethod
+      Class<S> objectHandleClass, String cid, MethodStatement guideMethod
   ) {
     GuideForm guideForm = getGuideForm(guideMethod);
     int channelOrdinal = getChannelOrdinal(objectHandleClass, guideMethod);
-    int qualifiersCount = guideMethod.getParameterCount();
+    int qualifiersCount = guideMethod.params().size();
     return switch (qualifiersCount) {
-      case 0 -> new ObjectMapper0<>(cid, (Class) objectHandleClass, Methods.of(guideMethod), channelOrdinal, guideForm);
+      case 0 -> new ObjectMapper0<>(cid, (Class) objectHandleClass, guideMethod, channelOrdinal, guideForm);
       case 1 -> new ObjectMapper1<>(cid, (Class) objectHandleClass, guideMethod, channelOrdinal, guideForm);
       case 2 -> new ObjectMapper2<>(cid, (Class) objectHandleClass, guideMethod, channelOrdinal, guideForm);
       case 3 -> new ObjectMapper3<>(cid, (Class) objectHandleClass, guideMethod, channelOrdinal, guideForm);
@@ -287,13 +290,13 @@ public final class GuideFunctions {
 
   @SuppressWarnings("unchecked, rawtypes")
   private static <S, T> Guide<S, T> createObjectMover(
-      Class<S> objectHandleClass, String cid, Method guideMethod
+      Class<S> objectHandleClass, String cid, MethodStatement guideMethod
   ) {
     GuideForm guideForm = getGuideForm(guideMethod);
     int channelOrdinal = getChannelOrdinal(objectHandleClass, guideMethod);
-    int qualifiersCount = guideMethod.getParameterCount();
+    int qualifiersCount = guideMethod.params().size();
     return switch (qualifiersCount) {
-      case 0 -> new ObjectMover0<>(cid, (Class) objectHandleClass, Methods.of(guideMethod), channelOrdinal, guideForm);
+      case 0 -> new ObjectMover0<>(cid, (Class) objectHandleClass, guideMethod, channelOrdinal, guideForm);
       case 1 -> new ObjectMover1<>(cid, (Class) objectHandleClass, guideMethod, channelOrdinal, guideForm);
       case 2 -> new ObjectMover2<>(cid, (Class) objectHandleClass, guideMethod, channelOrdinal, guideForm);
       case 3 -> new ObjectMover3<>(cid, (Class) objectHandleClass, guideMethod, channelOrdinal, guideForm);
@@ -304,13 +307,13 @@ public final class GuideFunctions {
 
   @SuppressWarnings("unchecked, rawtypes")
   private static <S, T> Guide<S, T> createObjectMapperOfMoving(
-      Class<S> objectHandleClass, String cid, Method guideMethod
+      Class<S> objectHandleClass, String cid, MethodStatement guideMethod
   ) {
     GuideForm guideForm = getGuideForm(guideMethod);
     int channelOrdinal = getChannelOrdinal(objectHandleClass, guideMethod);
-    int qualifiersCount = guideMethod.getParameterCount();
+    int qualifiersCount = guideMethod.params().size();
     return switch (qualifiersCount) {
-      case 0 -> new ObjectMapperOfMoving0<>(cid, (Class) objectHandleClass, Methods.of(guideMethod), channelOrdinal, guideForm);
+      case 0 -> new ObjectMapperOfMoving0<>(cid, (Class) objectHandleClass, guideMethod, channelOrdinal, guideForm);
       case 1 -> new ObjectMapperOfMoving1<>(cid, (Class) objectHandleClass, guideMethod, channelOrdinal, guideForm);
       case 2 -> new ObjectMapperOfMoving2<>(cid, (Class) objectHandleClass, guideMethod, channelOrdinal, guideForm);
       case 3 -> new ObjectMapperOfMoving3<>(cid, (Class) objectHandleClass, guideMethod, channelOrdinal, guideForm);
@@ -320,14 +323,14 @@ public final class GuideFunctions {
     };
   }
 
-  private static GuideForm getGuideForm(Method guideMethod) {
-    if (guideMethod.getReturnType().isPrimitive()) {
+  private static GuideForm getGuideForm(MethodStatement guideMethod) {
+    if (guideMethod.returnType().orElseThrow().isPrimitiveReference()) {
       return GuideForms.Primitive;
     }
     return GuideForms.Main;
   }
 
-  public static int getChannelOrdinal(Class<?> objectHandleClass, Method guideMethod) {
+  public static int getChannelOrdinal(Class<?> objectHandleClass, MethodStatement guideMethod) {
     String implClassCanonicalName = NameConventionFunctions.getObjectHandleWrapperCanonicalName(
         objectHandleClass
     );
@@ -339,34 +342,34 @@ public final class GuideFunctions {
 
     Optional<MethodStatement> objectHandleImplGuideMethod = MethodFunctions.getOverrideMethod(
         CustomTypes.of(objectHandleImplClass.get()),
-        Methods.of(guideMethod)
+        guideMethod
     );
     if (objectHandleImplGuideMethod.isEmpty()) {
       throw UnexpectedViolationException.withMessage("Could not find override method in object handle " +
-          "implementation class {0}. Method {1}", objectHandleImplClass.get(), guideMethod.getName());
+          "implementation class {0}. Method {1}", objectHandleImplClass.get(), guideMethod.name());
     }
     Optional<Ordinal> indexAnnotation = objectHandleImplGuideMethod.get().selectAnnotation(Ordinal.class);
     if (indexAnnotation.isEmpty()) {
       throw UnexpectedViolationException.withMessage("Method {0} does not contain annotation {1}",
-          guideMethod.getName(), Ordinal.class.getCanonicalName());
+          guideMethod.name(), Ordinal.class.getCanonicalName());
     }
     return indexAnnotation.get().value();
   }
 
-  private static int getUnitGuideOrdinal(UnitWrapper unitInstance, Method guideMethod) {
+  private static int getUnitGuideOrdinal(UnitWrapper unitInstance, MethodStatement guideMethod) {
     Class<?> unitWrapperClass = unitInstance.getClass();
     Optional<MethodStatement> overrideGuideMethod = MethodFunctions.getOverrideMethod(
         CustomTypes.of(unitWrapperClass),
-        Methods.of(guideMethod)
+        guideMethod
     );
     if (overrideGuideMethod.isEmpty()) {
       throw UnexpectedViolationException.withMessage("Could not find override method in unit wrapper " +
-          "class {0}. Method {1}", unitWrapperClass, guideMethod.getName());
+          "class {0}. Method {1}", unitWrapperClass, guideMethod.name());
     }
     Optional<Ordinal> indexAnnotation = overrideGuideMethod.get().selectAnnotation(Ordinal.class);
     if (indexAnnotation.isEmpty()) {
       throw UnexpectedViolationException.withMessage("Method {0} does not contain annotation {1}",
-          guideMethod.getName(), Ordinal.class.getCanonicalName());
+          guideMethod.name(), Ordinal.class.getCanonicalName());
     }
     return indexAnnotation.get().value();
   }

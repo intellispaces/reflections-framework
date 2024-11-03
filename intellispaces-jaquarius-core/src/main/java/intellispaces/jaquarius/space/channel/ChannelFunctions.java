@@ -1,5 +1,6 @@
 package intellispaces.jaquarius.space.channel;
 
+import intellispaces.common.base.exception.NotImplementedException;
 import intellispaces.common.base.exception.UnexpectedViolationException;
 import intellispaces.common.base.text.TextFunctions;
 import intellispaces.common.dynamicproxy.tracker.Tracker;
@@ -10,7 +11,10 @@ import intellispaces.common.javastatement.method.MethodParam;
 import intellispaces.common.javastatement.method.MethodSignature;
 import intellispaces.common.javastatement.method.MethodSignatures;
 import intellispaces.common.javastatement.method.MethodStatement;
-import intellispaces.common.javastatement.method.Methods;
+import intellispaces.common.javastatement.reference.CustomTypeReference;
+import intellispaces.common.javastatement.reference.CustomTypeReferences;
+import intellispaces.common.javastatement.reference.TypeReference;
+import intellispaces.common.javastatement.reference.TypeReferenceFunctions;
 import intellispaces.jaquarius.annotation.Channel;
 import intellispaces.jaquarius.annotation.Guide;
 import intellispaces.jaquarius.annotation.Mapper;
@@ -103,17 +107,17 @@ public interface ChannelFunctions {
                 "in class {0}", channelType.canonicalName());});
   }
 
-  static String getUnitGuideCid(Object unitInstance, Method guideMethod) {
-    Mapper mapper = guideMethod.getAnnotation(Mapper.class);
-    if (mapper == null) {
-      mapper = Methods.of(guideMethod).overrideMethods().stream()
+  static String getUnitGuideCid(Object unitInstance, MethodStatement guideMethod) {
+    Optional<Mapper> mapper = guideMethod.selectAnnotation(Mapper.class);
+    if (mapper.isEmpty()) {
+      mapper = guideMethod.overrideMethods().stream()
           .map(m -> m.selectAnnotation(Mapper.class))
           .filter(Optional::isPresent)
           .map(Optional::get)
-          .findFirst().orElse(null);
+          .findFirst();
     }
-    if (mapper != null) {
-      Class<?> channelClass = mapper.value();
+    if (mapper.isPresent()) {
+      Class<?> channelClass = mapper.get().value();
       if (channelClass != null) {
         Channel channel = channelClass.getAnnotation(Channel.class);
         if (channel != null) {
@@ -122,16 +126,16 @@ public interface ChannelFunctions {
       }
     }
 
-    Mover mover = guideMethod.getAnnotation(Mover.class);
-    if (mover == null) {
-      mover = Methods.of(guideMethod).overrideMethods().stream()
+    Optional<Mover> mover = guideMethod.selectAnnotation(Mover.class);
+    if (mover.isEmpty()) {
+      mover = guideMethod.overrideMethods().stream()
           .map(m -> m.selectAnnotation(Mover.class))
           .filter(Optional::isPresent)
           .map(Optional::get)
-          .findFirst().orElse(null);
+          .findFirst();
     }
-    if (mover != null) {
-      Class<?> channelClass = mover.value();
+    if (mover.isPresent()) {
+      Class<?> channelClass = mover.get().value();
       if (channelClass != null) {
         Channel channel = channelClass.getAnnotation(Channel.class);
         if (channel != null) {
@@ -140,16 +144,16 @@ public interface ChannelFunctions {
       }
     }
 
-    MapperOfMoving mapperOfMoving = guideMethod.getAnnotation(MapperOfMoving.class);
-    if (mapperOfMoving == null) {
-      mapperOfMoving = Methods.of(guideMethod).overrideMethods().stream()
+    Optional<MapperOfMoving> mapperOfMoving = guideMethod.selectAnnotation(MapperOfMoving.class);
+    if (mapperOfMoving.isEmpty()) {
+      mapperOfMoving = guideMethod.overrideMethods().stream()
         .map(m -> m.selectAnnotation(MapperOfMoving.class))
         .filter(Optional::isPresent)
         .map(Optional::get)
-        .findFirst().orElse(null);
+        .findFirst();
     }
-    if (mapperOfMoving != null) {
-      Class<?> chanelClass = mapperOfMoving.value();
+    if (mapperOfMoving.isPresent()) {
+      Class<?> chanelClass = mapperOfMoving.get().value();
       if (chanelClass != null) {
         Channel channel = chanelClass.getAnnotation(Channel.class);
         if (channel != null) {
@@ -158,37 +162,31 @@ public interface ChannelFunctions {
       }
     }
 
-    Class<?> declaringClass = guideMethod.getDeclaringClass();
-    if (!declaringClass.isAnnotationPresent(Guide.class)) {
+    CustomType declaringType = guideMethod.owner();
+    if (!declaringType.hasAnnotation(Guide.class)) {
       throw UnexpectedViolationException.withMessage("Expected guide unit class {0}",
-          declaringClass.getCanonicalName());
+          declaringType.canonicalName());
     }
     if (unitInstance instanceof intellispaces.jaquarius.guide.Guide) {
       var guide = (intellispaces.jaquarius.guide.Guide<?, ?>) unitInstance;
       return guide.cid();
     } else {
-      Channel channel = findOverrideChannelRecursive(guideMethod, guideMethod.getDeclaringClass());
+      Channel channel = findOverrideChannelRecursive(guideMethod, guideMethod.owner());
       if (channel == null) {
         throw UnexpectedViolationException.withMessage("Could not get unit guide annotation @Channel. Unit {0}, " +
-                "guide method ''{1}''", guideMethod.getDeclaringClass().getCanonicalName(), guideMethod.getName());
+                "guide method ''{1}''", guideMethod.owner().canonicalName(), guideMethod.name());
       }
       return channel.value();
     }
   }
 
-  private static Channel findOverrideChannelRecursive(Method guideMethod, Class<?> aClass) {
+  private static Channel findOverrideChannelRecursive(MethodStatement guideMethod, CustomType aClass) {
     Channel t = getUnitGuideChannel(guideMethod, aClass);
     if (t != null) {
       return t;
     }
-    if (aClass.getSuperclass() != null) {
-      t = findOverrideChannelRecursive(guideMethod, aClass.getSuperclass());
-      if (t != null) {
-        return t;
-      }
-    }
-    for (Class<?> aInterface : aClass.getInterfaces()) {
-      t = findOverrideChannelRecursive(guideMethod, aInterface);
+    for (CustomTypeReference parent : aClass.parentTypes()) {
+      t = findOverrideChannelRecursive(guideMethod, parent.targetType());
       if (t != null) {
         return t;
       }
@@ -196,20 +194,16 @@ public interface ChannelFunctions {
     return null;
   }
 
-  private static Channel getUnitGuideChannel(Method guideMethod, Class<?> aClass) {
-    Channel channel = aClass.getAnnotation(Channel.class);
-    if (channel == null) {
+  private static Channel getUnitGuideChannel(MethodStatement guideMethod, CustomType aClass) {
+    Optional<Channel> channel = aClass.selectAnnotation(Channel.class);
+    if (channel.isEmpty()) {
       return null;
     }
-    try {
-      Method method = aClass.getDeclaredMethod(guideMethod.getName(), guideMethod.getParameterTypes());
-      if (method == null) {
-        return null;
-      }
-      return channel;
-    } catch (NoSuchMethodException e) {
+    Optional<MethodStatement> method = aClass.declaredMethod(guideMethod.name(), guideMethod.parameterTypes());
+    if (method.isEmpty()) {
       return null;
     }
+    return channel.get();
   }
 
   static Channel getDomainMainChannelAnnotation(MethodStatement domainMethod) {
@@ -229,41 +223,29 @@ public interface ChannelFunctions {
     return channel.get();
   }
 
-  static Channel getObjectHandleMethodChannelAnnotation(MethodStatement objectHandleMethod) {
-    CustomType objectHandleType = objectHandleMethod.owner();
-    CustomType domainType = ObjectFunctions.getDomainTypeOfObjectHandle(objectHandleType);
-    for (MethodStatement domainMethod : domainType.declaredMethods()) {
-      if (domainMethod.name().equals(objectHandleMethod.name())) {
-        return domainMethod.selectAnnotation(Channel.class).orElseThrow();
-      }
-    }
-    throw UnexpectedViolationException.withMessage("Failed to find related channel annotation " +
-            "of method ''{0}'' in {1}", objectHandleMethod.name(), objectHandleType.canonicalName());
-  }
-
-  static Channel getObjectHandleMethodChannelAnnotation(Method objectHandleMethod) {
-    Class<?> objectHandleClass = objectHandleMethod.getDeclaringClass();
-    Class<?> domainClass = ObjectFunctions.getDomainClassOfObjectHandle(objectHandleClass);
-    Channel channel = getObjectHandleMethodChannelAnnotation(domainClass, objectHandleMethod);
+  static Channel findObjectHandleMethodChannelAnnotation(MethodStatement objectHandleMethod) {
+    CustomType objectHandleClass = objectHandleMethod.owner();
+    CustomType domainClass = ObjectFunctions.getDomainTypeOfObjectHandle(objectHandleClass);
+    Channel channel = findObjectHandleMethodChannelAnnotation(domainClass, objectHandleMethod);
     if (channel == null) {
       throw UnexpectedViolationException.withMessage("Failed to find related channel annotation " +
           "of method ''{0}'' in {1}. Domain class {2}",
-          objectHandleMethod.getName(), objectHandleClass.getCanonicalName(), domainClass.getCanonicalName());
+          objectHandleMethod.name(), objectHandleClass.canonicalName(), domainClass.canonicalName());
     }
     return channel;
   }
 
-  private static Channel getObjectHandleMethodChannelAnnotation(
-      Class<?> domainClass, Method objectHandleMethod
+  private static Channel findObjectHandleMethodChannelAnnotation(
+      CustomType domainClass, MethodStatement objectHandleMethod
   ) {
-    for (Method domainMethod : domainClass.getDeclaredMethods()) {
+    for (MethodStatement domainMethod : domainClass.declaredMethods()) {
       if (isEquivalentMethods(domainMethod, objectHandleMethod)) {
-        return domainMethod.getAnnotation(Channel.class);
+        return domainMethod.selectAnnotation(Channel.class).orElseThrow();
       }
     }
-    for (Class<?> parent : domainClass.getInterfaces()) {
-      if (DomainFunctions.isDomainClass(parent)) {
-        Channel channel = getObjectHandleMethodChannelAnnotation(parent, objectHandleMethod);
+    for (CustomTypeReference parent : domainClass.parentTypes()) {
+      if (DomainFunctions.isDomainType(parent.targetType())) {
+        Channel channel = findObjectHandleMethodChannelAnnotation(parent.targetType(), objectHandleMethod);
         if (channel != null) {
           return channel;
         }
@@ -272,17 +254,19 @@ public interface ChannelFunctions {
     return null;
   }
 
-  private static boolean isEquivalentMethods(Method domainMethod, Method objectHandleMethod) {
-    if (!domainMethod.getName().equals(getMainName(objectHandleMethod))) {
+  private static boolean isEquivalentMethods(MethodStatement domainMethod, MethodStatement objectHandleMethod) {
+    if (!domainMethod.name().equals(getMethodMainFormName(objectHandleMethod))) {
       return false;
-    } else if (domainMethod.getParameterCount() != objectHandleMethod.getParameterCount()) {
+    } else if (domainMethod.params().size() != objectHandleMethod.params().size()) {
       return false;
     } else {
-      for (int i = 0; i < domainMethod.getParameterCount(); ++i) {
-        Class<?> domainParamType1 = domainMethod.getParameters()[i].getType();
-        Class<?> objectHandleParamType = objectHandleMethod.getParameters()[i].getType();
-        Class<?> domainParamType2 = ObjectFunctions.getDomainClassOfObjectHandle(objectHandleParamType);
-        if (domainParamType1 != domainParamType2) {
+      for (int i = 0; i < domainMethod.params().size(); ++i) {
+        TypeReference domainParamType1 = domainMethod.params().get(i).type();
+        TypeReference objectHandleParamType = objectHandleMethod.params().get(i).type();
+        CustomType domainParamType2 = ObjectFunctions.getDomainTypeOfObjectHandle(
+            objectHandleParamType.asCustomTypeReferenceOrElseThrow().targetType()
+        );
+        if (!TypeReferenceFunctions.isEqualTypes(domainParamType1, CustomTypeReferences.get(domainParamType2))) {
           return false;
         }
       }
@@ -290,15 +274,16 @@ public interface ChannelFunctions {
     }
   }
 
-  private static String getMainName(Method objectHandleMethod) {
-    if (objectHandleMethod.getReturnType().isPrimitive()) {
-      return TextFunctions.removeTailOrElseThrow(objectHandleMethod.getName(), "Primitive");
+  private static String getMethodMainFormName(MethodStatement objectHandleMethod) {
+    Optional<TypeReference> returnType = objectHandleMethod.returnType();
+    if (returnType.isPresent() && returnType.get().isPrimitiveReference()) {
+      return TextFunctions.removeTailOrElseThrow(objectHandleMethod.name(), "Primitive");
     }
-    return objectHandleMethod.getName();
+    return objectHandleMethod.name();
   }
 
-  static Channel getObjectGuideChannelAnnotation(Method objectHandleMethod) {
-    return getObjectHandleMethodChannelAnnotation(objectHandleMethod);
+  static Channel findObjectGuideChannelAnnotation(MethodStatement objectHandleMethod) {
+    return findObjectHandleMethodChannelAnnotation(objectHandleMethod);
   }
 
   private static String extractChannelId(
@@ -328,7 +313,7 @@ public interface ChannelFunctions {
       case 2 -> Channel2.class;
       case 3 -> Channel3.class;
       case 4 -> Channel4.class;
-      default -> throw UnexpectedViolationException.withMessage("Not implemented");
+      default -> throw NotImplementedException.withCode("+oyPNA");
     };
   }
 

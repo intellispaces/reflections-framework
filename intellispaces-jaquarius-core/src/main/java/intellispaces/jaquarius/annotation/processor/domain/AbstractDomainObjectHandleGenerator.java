@@ -9,10 +9,10 @@ import intellispaces.common.javastatement.reference.CustomTypeReferences;
 import intellispaces.common.javastatement.reference.NamedReference;
 import intellispaces.common.javastatement.reference.NotPrimitiveReference;
 import intellispaces.common.javastatement.reference.ReferenceBound;
-import intellispaces.jaquarius.object.ObjectFunctions;
 import intellispaces.jaquarius.annotation.processor.AbstractObjectHandleGenerator;
 import intellispaces.jaquarius.annotation.processor.AnnotationProcessorFunctions;
 import intellispaces.jaquarius.annotation.processor.ArtifactTypes;
+import intellispaces.jaquarius.object.ObjectFunctions;
 import intellispaces.jaquarius.space.domain.DomainFunctions;
 
 import javax.annotation.processing.RoundEnvironment;

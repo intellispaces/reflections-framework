@@ -4,6 +4,7 @@ import intellispaces.common.action.Action;
 import intellispaces.common.action.Actions;
 import intellispaces.common.action.runner.Runner;
 import intellispaces.common.annotationprocessor.context.AnnotationProcessingContext;
+import intellispaces.common.base.exception.NotImplementedException;
 import intellispaces.common.base.text.TextActions;
 import intellispaces.common.base.text.TextFunctions;
 import intellispaces.common.javastatement.customtype.CustomType;
@@ -12,12 +13,12 @@ import intellispaces.common.javastatement.method.MethodStatement;
 import intellispaces.common.javastatement.reference.TypeReference;
 import intellispaces.common.javastatement.type.Types;
 import intellispaces.jaquarius.action.TraverseActions;
+import intellispaces.jaquarius.annotation.processor.AbstractGenerator;
+import intellispaces.jaquarius.annotation.processor.GuideProcessorFunctions;
 import intellispaces.jaquarius.common.NameConventionFunctions;
 import intellispaces.jaquarius.guide.GuideForm;
 import intellispaces.jaquarius.guide.GuideForms;
 import intellispaces.jaquarius.guide.GuideFunctions;
-import intellispaces.jaquarius.annotation.processor.AbstractGenerator;
-import intellispaces.jaquarius.annotation.processor.GuideProcessorFunctions;
 
 import javax.annotation.processing.RoundEnvironment;
 import java.util.HashMap;
@@ -112,7 +113,7 @@ public class AutoGuideGenerator extends AbstractGenerator {
       } else if (param.type().isCustomTypeReference()) {
         sb.append(TextFunctions.capitalizeFirstLetter(param.type().asCustomTypeReferenceOrElseThrow().targetType().simpleName()));
       } else {
-        throw new RuntimeException("Not implemented");
+        throw NotImplementedException.withCode("MaJAcQ");
       }
     }
     sb.append("Action");

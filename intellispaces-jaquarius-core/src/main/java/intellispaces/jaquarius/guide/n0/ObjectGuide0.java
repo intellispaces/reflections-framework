@@ -1,11 +1,14 @@
 package intellispaces.jaquarius.guide.n0;
 
 import intellispaces.common.base.exception.UnexpectedViolationException;
+import intellispaces.common.javastatement.method.MethodParam;
 import intellispaces.common.javastatement.method.MethodStatement;
 import intellispaces.jaquarius.exception.TraverseException;
 import intellispaces.jaquarius.guide.GuideForm;
 import intellispaces.jaquarius.guide.GuideLogger;
 import intellispaces.jaquarius.system.ObjectHandleWrapper;
+
+import java.util.stream.Collectors;
 
 abstract class ObjectGuide0<S extends ObjectHandleWrapper, R> implements Guide0<S, R> {
   private final Class<S> objectHandleClass;
@@ -79,5 +82,15 @@ abstract class ObjectGuide0<S extends ObjectHandleWrapper, R> implements Guide0<
       throw TraverseException.withCauseAndMessage(e, "Failed to invoke guide method ''{0}'' of object handle {1}",
           guideMethod.name(), objectHandleClass.getCanonicalName());
     }
+  }
+
+  @Override
+  public String toString() {
+    return "ObjectGuide0{" +
+        "objectHandleClass=" + objectHandleClass +
+        ", cid='" + cid + '\'' +
+        ", guideMethod=" + guideMethod.name() + "(" + guideMethod.params().stream().map(MethodParam::name).collect(Collectors.joining(", ")) + ")" +
+        ", guideForm=" + guideForm +
+        '}';
   }
 }

@@ -13,7 +13,6 @@ import intellispaces.jaquarius.annotation.ObjectHandle;
 import intellispaces.jaquarius.annotation.Ontology;
 import intellispaces.jaquarius.guide.GuideForm;
 import intellispaces.jaquarius.guide.GuideForms;
-import intellispaces.jaquarius.object.ObjectFunctions;
 import intellispaces.jaquarius.object.ObjectHandleTypes;
 import intellispaces.jaquarius.space.channel.ChannelFunctions;
 

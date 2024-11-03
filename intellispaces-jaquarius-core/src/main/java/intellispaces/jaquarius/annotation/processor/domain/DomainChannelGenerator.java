@@ -8,8 +8,8 @@ import intellispaces.common.javastatement.method.MethodParam;
 import intellispaces.common.javastatement.method.MethodStatement;
 import intellispaces.common.javastatement.reference.NamedReference;
 import intellispaces.common.javastatement.reference.TypeReference;
-import intellispaces.jaquarius.common.NameConventionFunctions;
 import intellispaces.jaquarius.annotation.processor.AbstractChannelGenerator;
+import intellispaces.jaquarius.common.NameConventionFunctions;
 
 import java.util.List;
 

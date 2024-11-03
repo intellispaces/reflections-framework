@@ -12,7 +12,7 @@ public interface GuideRegistry {
 
   <G> G getAutoGuide(Class<G> guideClass);
 
-  List<Guide<?, ?>> findGuides(GuideKind kind, Class<?> objectHandleClass, String cid, GuideForm guideForm);
+  List<Guide<?, ?>> findGuides(GuideKind kind, Class<?> objectHandleClass, String cid, GuideForm form);
 
   void addGuideUnit(KernelUnit guideUnit);
 }

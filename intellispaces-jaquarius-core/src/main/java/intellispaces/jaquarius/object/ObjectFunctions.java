@@ -1,12 +1,14 @@
 package intellispaces.jaquarius.object;
 
 import intellispaces.common.action.runner.Runner;
+import intellispaces.common.base.exception.NotImplementedException;
 import intellispaces.common.base.exception.UnexpectedViolationException;
 import intellispaces.common.base.text.TextActions;
 import intellispaces.common.base.type.Type;
 import intellispaces.common.base.type.TypeFunctions;
 import intellispaces.common.javastatement.JavaStatements;
 import intellispaces.common.javastatement.customtype.AnnotationFunctions;
+import intellispaces.common.javastatement.customtype.Classes;
 import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.common.javastatement.customtype.CustomTypes;
 import intellispaces.common.javastatement.instance.AnnotationInstance;
@@ -51,6 +53,10 @@ public class ObjectFunctions {
 
   public static boolean isDefaultObjectHandleClass(Class<?> aClass) {
     return DEFAULT_OBJECT_HANDLE_CLASSES.contains(aClass.getCanonicalName());
+  }
+
+  public static boolean isDefaultObjectHandleClass(CustomType aClass) {
+    return DEFAULT_OBJECT_HANDLE_CLASSES.contains(aClass.canonicalName());
   }
 
   public static boolean isDefaultObjectHandleType(TypeReference type) {
@@ -184,11 +190,15 @@ public class ObjectFunctions {
     } else if (objectHandleType.isCustomTypeReference()) {
       return getDomainTypeOfObjectHandle(objectHandleType.asCustomTypeReferenceOrElseThrow().targetType());
     } else {
-      throw UnexpectedViolationException.withMessage("Not implemented");
+      throw NotImplementedException.withCode("yZJg8A");
     }
   }
 
   public static CustomType getDomainTypeOfObjectHandle(CustomType objectHandleType) {
+    if (isDefaultObjectHandleType(objectHandleType)) {
+      return objectHandleType;
+    }
+
     Optional<AnnotationInstance> wrapper = objectHandleType.selectAnnotation(Wrapper.class.getCanonicalName());
     if (wrapper.isPresent()) {
       objectHandleType = wrapper.get()
@@ -219,9 +229,7 @@ public class ObjectFunctions {
       objectHandleClass = wrapper.value();
     }
 
-    ObjectHandle objectHandle = objectHandleClass.getAnnotation(
-      ObjectHandle.class
-    );
+    ObjectHandle objectHandle = objectHandleClass.getAnnotation(ObjectHandle.class);
     if (objectHandle != null) {
       return objectHandle.value();
     }
@@ -233,9 +241,9 @@ public class ObjectFunctions {
   public static <T> T tryDowngrade(Object sourceObjectHandle, Class<T> targetObjectHandleClass) {
     Class<?> sourceObjectHandleClass = sourceObjectHandle.getClass();
     if (isCustomObjectHandleClass(sourceObjectHandleClass) && isCustomObjectHandleClass(targetObjectHandleClass)) {
-      Class<?> sourceObjectHandleDomain = getDomainClassOfObjectHandle(sourceObjectHandleClass);
-      Class<?> targetObjectHandleDomain = getDomainClassOfObjectHandle(targetObjectHandleClass);
-      if (targetObjectHandleDomain.isAssignableFrom(sourceObjectHandleDomain)) {
+      CustomType sourceObjectHandleDomain = getDomainTypeOfObjectHandle(CustomTypes.of(sourceObjectHandleClass));
+      CustomType targetObjectHandleDomain = getDomainTypeOfObjectHandle(CustomTypes.of(targetObjectHandleClass));
+      if (sourceObjectHandleDomain.hasParent(targetObjectHandleDomain)) {
         if (isMovableObjectHandle(targetObjectHandleClass)) {
           return (T) tryCreateDowngradeObjectHandle(sourceObjectHandle, sourceObjectHandleDomain, targetObjectHandleDomain);
         }
@@ -245,7 +253,7 @@ public class ObjectFunctions {
   }
 
   private static Object tryCreateDowngradeObjectHandle(
-      Object sourceObjectHandle, Class<?> sourceObjectHandleDomain, Class<?> targetObjectHandleDomain
+      Object sourceObjectHandle, CustomType sourceObjectHandleDomain, CustomType targetObjectHandleDomain
   ) {
     String downgradeObjectHandleCanonicalName = NameConventionFunctions.getMovableDownwardObjectHandleTypename(
         sourceObjectHandleDomain, targetObjectHandleDomain);

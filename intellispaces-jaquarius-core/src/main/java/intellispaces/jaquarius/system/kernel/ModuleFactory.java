@@ -2,7 +2,9 @@ package intellispaces.jaquarius.system.kernel;
 
 import intellispaces.common.action.Action;
 import intellispaces.common.base.collection.Streams;
+import intellispaces.common.base.exception.NotImplementedException;
 import intellispaces.common.base.exception.UnexpectedViolationException;
+import intellispaces.common.javastatement.method.MethodStatement;
 import intellispaces.jaquarius.annotation.Configuration;
 import intellispaces.jaquarius.annotation.Guide;
 import intellispaces.jaquarius.annotation.Module;
@@ -109,7 +111,7 @@ public class ModuleFactory {
     if (unitClass != Void.class) {
       return createUnit(unitClass, false);
     }
-    throw new UnsupportedOperationException("Not implemented yet");
+    throw NotImplementedException.withCode("3fHY1g");
   }
 
   private KernelUnit createUnit(Class<?> unitClass, boolean main) {
@@ -203,7 +205,7 @@ public class ModuleFactory {
     List<UnitGuide<? ,?>> guides = unit.guides();
     for (UnitGuide<?, ?> guide : guides) {
       KernelUnitGuide<?, ?> kernelGuide = (KernelUnitGuide<?, ?>) guide;
-      Method method = kernelGuide.guideMethod();
+      MethodStatement method = kernelGuide.guideMethod();
       Action originalAction = unit.getGuideAction(kernelGuide.guideOrdinal());
       Action chainAction = AopFunctions.buildChainAction(method, originalAction, projectionRegistry);
       if (chainAction != originalAction) {

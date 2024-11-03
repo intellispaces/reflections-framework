@@ -1,9 +1,8 @@
 package intellispaces.jaquarius.guide.n2;
 
+import intellispaces.common.javastatement.method.MethodStatement;
 import intellispaces.jaquarius.guide.GuideForm;
 import intellispaces.jaquarius.system.UnitWrapper;
-
-import java.lang.reflect.Method;
 
 /**
  * Unit method mapper with two qualifier.
@@ -17,7 +16,7 @@ public class UnitMapper2<S, T, Q1, Q2>
     extends UnitGuide2<S, T, Q1, Q2>
     implements AbstractMapper2<S, T, Q1, Q2>
 {
-  public UnitMapper2(String cid, UnitWrapper unitInstance, Method guideMethod, int guideOrdinal, GuideForm guideForm) {
+  public UnitMapper2(String cid, UnitWrapper unitInstance, MethodStatement guideMethod, int guideOrdinal, GuideForm guideForm) {
     super(cid, unitInstance, guideMethod, guideOrdinal, guideForm);
   }
 }

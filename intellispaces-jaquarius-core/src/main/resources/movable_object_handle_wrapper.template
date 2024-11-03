@@ -134,34 +134,34 @@ public class {{$classSimpleName}}{{$typeParamsFull}} extends {{$sourceClassSimpl
 
   @Override
   public <R, Q> R mapOfMovingThru(String cid, Q qualifier) throws TraverseException {
-    throw new RuntimeException("Not implemented");
+    throw NotImplementedException.withCode("MzYmFw");
   }
 
 {{when $isAlias}}
   @Override
   public <R> R mapOfMovingThru(ChannelMethod0<? super {{$primaryDomainSimpleName}}{{$primaryDomainTypeArguments}}, R> channelMethod) throws TraverseException {
-    throw new RuntimeException("Not implemented");
+    throw NotImplementedException.withCode("UjtmNg");
   }
 
   @Override
   public <R, Q> R mapOfMovingThru(ChannelMethod1<? super {{$primaryDomainSimpleName}}{{$primaryDomainTypeArguments}}, R, Q> channelMethod, Q qualifier) throws TraverseException {
-    throw new RuntimeException("Not implemented");
+    throw NotImplementedException.withCode("8htd3Q");
   }
 {{else}}
   @Override
   public <R> R mapOfMovingThru(ChannelMethod0<? super {{$domainClassSimpleName}}{{$typeParamsBrief}}, R> channelMethod) throws TraverseException {
-    throw new RuntimeException("Not implemented");
+    throw NotImplementedException.withCode("cuDSAA");
   }
 
   @Override
   public <R, Q> R mapOfMovingThru(ChannelMethod1<? super {{$domainClassSimpleName}}{{$typeParamsBrief}}, R, Q> channelMethod, Q qualifier) throws TraverseException {
-    throw new RuntimeException("Not implemented");
+    throw NotImplementedException.withCode("PZX5vA");
   }
 {{end}}
 
   @Override
   public <R> R mapOfMovingThru(Class<? extends Channel0> channelClass) throws TraverseException {
-    throw new RuntimeException("Not implemented");
+    throw NotImplementedException.withCode("z0PzzQ");
   }
 
   @Override

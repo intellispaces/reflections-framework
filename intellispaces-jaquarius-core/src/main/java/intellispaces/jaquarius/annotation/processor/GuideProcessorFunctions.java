@@ -15,6 +15,7 @@ import intellispaces.common.javastatement.method.MethodParam;
 import intellispaces.common.javastatement.method.MethodStatement;
 import intellispaces.common.javastatement.reference.CustomTypeReferences;
 import intellispaces.common.javastatement.reference.NamedReference;
+import intellispaces.common.javastatement.reference.PrimitiveReference;
 import intellispaces.common.javastatement.reference.PrimitiveReferences;
 import intellispaces.common.javastatement.reference.TypeReference;
 import intellispaces.jaquarius.guide.GuideForm;
@@ -292,7 +293,7 @@ public interface GuideProcessorFunctions {
           result.add(param);
         }
       } else if (param.type().isPrimitiveReference()) {
-        if (param.type().asPrimitiveReferenceOrElseThrow().asPrimitive().isLong()) {
+        if (param.type().asPrimitiveReferenceOrElseThrow().isLong()) {
           result.add(param);
         }
       }
@@ -313,7 +314,7 @@ public interface GuideProcessorFunctions {
           result.add(param);
         }
       } else if (param.type().isPrimitiveReference()) {
-        Primitive primitive = param.type().asPrimitiveReferenceOrElseThrow().asPrimitive();
+        PrimitiveReference primitive = param.type().asPrimitiveReferenceOrElseThrow();
         if (primitive.isBoolean()
             || primitive.isChar()
             || primitive.isByte()
@@ -334,7 +335,7 @@ public interface GuideProcessorFunctions {
           result.add(param);
         }
       } else if (param.type().isPrimitiveReference()) {
-        Primitive primitive = param.type().asPrimitiveReferenceOrElseThrow().asPrimitive();
+        PrimitiveReference primitive = param.type().asPrimitiveReferenceOrElseThrow();
         if (primitive.isFloat() || primitive.isDouble()) {
           result.add(param);
         }

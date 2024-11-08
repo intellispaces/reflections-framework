@@ -1,11 +1,11 @@
 package intellispaces.jaquarius.aop;
 
 import intellispaces.common.action.Action;
-import intellispaces.common.action.wrapper.AbstractWrapper;
+import intellispaces.common.action.wrapper.AbstractWrapperAction;
 import intellispaces.common.javastatement.method.MethodStatement;
 import intellispaces.jaquarius.system.ProjectionProvider;
 
-public abstract class AbstractMethodAdvice extends AbstractWrapper implements MethodAdvice {
+public abstract class AbstractMethodAdvice extends AbstractWrapperAction implements MethodAdvice {
   protected final MethodStatement joinMethod;
   protected final ProjectionProvider projectionProvider;
 

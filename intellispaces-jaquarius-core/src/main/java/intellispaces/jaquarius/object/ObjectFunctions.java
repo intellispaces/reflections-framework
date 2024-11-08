@@ -1,14 +1,14 @@
 package intellispaces.jaquarius.object;
 
 import intellispaces.common.action.runner.Runner;
-import intellispaces.common.base.exception.NotImplementedException;
-import intellispaces.common.base.exception.UnexpectedViolationException;
+import intellispaces.common.base.exception.NotImplementedExceptions;
+import intellispaces.common.base.exception.UnexpectedException;
+import intellispaces.common.base.exception.UnexpectedExceptions;
 import intellispaces.common.base.text.TextActions;
+import intellispaces.common.base.type.ClassFunctions;
 import intellispaces.common.base.type.Type;
-import intellispaces.common.base.type.TypeFunctions;
 import intellispaces.common.javastatement.JavaStatements;
 import intellispaces.common.javastatement.customtype.AnnotationFunctions;
-import intellispaces.common.javastatement.customtype.Classes;
 import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.common.javastatement.customtype.CustomTypes;
 import intellispaces.common.javastatement.instance.AnnotationInstance;
@@ -97,7 +97,7 @@ public class ObjectFunctions {
   ) {
     type = typeReplacer.apply(type);
     if (type.isPrimitiveReference()) {
-      return TypeFunctions.getPrimitiveWrapperClass(
+      return ClassFunctions.getPrimitiveWrapperClass(
           type.asPrimitiveReferenceOrElseThrow().typename()).getCanonicalName();
     } else if (type.isNamedReference()) {
       return type.asNamedReferenceOrElseThrow().name();
@@ -176,21 +176,21 @@ public class ObjectFunctions {
   }
 
   public static boolean isCompatibleObjectType(Class<?> type1, Class<?> type2) {
-    Class<?> actualType1 = TypeFunctions.getObjectClass(type1);
-    Class<?> actualType2 = TypeFunctions.getObjectClass(type2);
+    Class<?> actualType1 = ClassFunctions.getObjectClass(type1);
+    Class<?> actualType2 = ClassFunctions.getObjectClass(type2);
     return actualType2 == actualType1 || actualType1.isAssignableFrom(actualType2);
   }
 
   public static CustomType getDomainTypeOfObjectHandle(TypeReference objectHandleType) {
     if (objectHandleType.isPrimitiveReference()) {
-      Class<?> wrapperClass = TypeFunctions.getPrimitiveWrapperClass(
+      Class<?> wrapperClass = ClassFunctions.getPrimitiveWrapperClass(
         objectHandleType.asPrimitiveReferenceOrElseThrow().typename()
       );
       return JavaStatements.customTypeStatement(wrapperClass);
     } else if (objectHandleType.isCustomTypeReference()) {
       return getDomainTypeOfObjectHandle(objectHandleType.asCustomTypeReferenceOrElseThrow().targetType());
     } else {
-      throw NotImplementedException.withCode("yZJg8A");
+      throw NotImplementedExceptions.withCode("yZJg8A");
     }
   }
 
@@ -216,7 +216,7 @@ public class ObjectFunctions {
           .asClass().orElseThrow()
           .type();
     }
-    throw UnexpectedViolationException.withMessage("Object handle class {0} must be annotated with annotation {1}",
+    throw UnexpectedExceptions.withMessage("Object handle class {0} must be annotated with annotation {1}",
         objectHandleType.canonicalName(), ObjectHandle.class.getSimpleName());
   }
 
@@ -233,7 +233,7 @@ public class ObjectFunctions {
     if (objectHandle != null) {
       return objectHandle.value();
     }
-    throw UnexpectedViolationException.withMessage("Object handle class {0} must be annotated with annotation {1}",
+    throw UnexpectedExceptions.withMessage("Object handle class {0} must be annotated with annotation {1}",
         objectHandleClass.getCanonicalName(), ObjectHandle.class.getSimpleName());
   }
 
@@ -257,13 +257,13 @@ public class ObjectFunctions {
   ) {
     String downgradeObjectHandleCanonicalName = NameConventionFunctions.getMovableDownwardObjectHandleTypename(
         sourceObjectHandleDomain, targetObjectHandleDomain);
-    Optional<Class<?>> downgradeObjectHandleClass = TypeFunctions.getClass(downgradeObjectHandleCanonicalName);
+    Optional<Class<?>> downgradeObjectHandleClass = ClassFunctions.getClass(downgradeObjectHandleCanonicalName);
     if (downgradeObjectHandleClass.isPresent()) {
       try {
         Constructor<?> constructor = downgradeObjectHandleClass.get().getConstructors()[0];
         return constructor.newInstance(sourceObjectHandle);
       } catch (Exception e) {
-        throw UnexpectedViolationException.withCauseAndMessage(e, "Could not create downgrade object handle");
+        throw UnexpectedExceptions.withCauseAndMessage(e, "Could not create downgrade object handle");
       }
     }
     return null;
@@ -329,8 +329,8 @@ public class ObjectFunctions {
 
   public static Class<?> propertiesHandleClass() {
     if (propertiesHandleClass == null) {
-      propertiesHandleClass = TypeFunctions.getClass(ObjectHandleConstants.PROPERTIES_HANDLE_CLASSNAME).orElseThrow(
-          () -> UnexpectedViolationException.withMessage("Could not get class {0}",
+      propertiesHandleClass = ClassFunctions.getClass(ObjectHandleConstants.PROPERTIES_HANDLE_CLASSNAME).orElseThrow(
+          () -> UnexpectedExceptions.withMessage("Could not get class {0}",
               ObjectHandleConstants.PROPERTIES_HANDLE_CLASSNAME)
       );
     }
@@ -361,9 +361,9 @@ public class ObjectFunctions {
       }
     }
     if (exceptions != null) {
-      UnexpectedViolationException uve = UnexpectedViolationException.withMessage("Could not release object handles");
-      exceptions.forEach(uve::addSuppressed);
-      throw uve;
+      UnexpectedException ue = UnexpectedExceptions.withMessage("Could not release object handles");
+      exceptions.forEach(ue::addSuppressed);
+      throw ue;
     }
   }
 

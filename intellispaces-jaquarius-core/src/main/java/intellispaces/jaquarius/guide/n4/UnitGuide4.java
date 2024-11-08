@@ -1,8 +1,9 @@
 package intellispaces.jaquarius.guide.n4;
 
-import intellispaces.common.base.exception.UnexpectedViolationException;
+import intellispaces.common.base.exception.UnexpectedExceptions;
 import intellispaces.common.javastatement.method.MethodStatement;
 import intellispaces.jaquarius.exception.TraverseException;
+import intellispaces.jaquarius.exception.TraverseExceptions;
 import intellispaces.jaquarius.guide.GuideForm;
 import intellispaces.jaquarius.guide.GuideLogger;
 import intellispaces.jaquarius.system.UnitWrapper;
@@ -17,7 +18,7 @@ abstract class UnitGuide4<S, R, Q1, Q2, Q3, Q4> implements Guide4<S, R, Q1, Q2, 
 
   UnitGuide4(String cid, UnitWrapper unitInstance, MethodStatement guideMethod, int guideOrdinal, GuideForm guideForm) {
     if (guideMethod.params().size() != 5) {
-      throw UnexpectedViolationException.withMessage("Guide method should have four parameters: source and four qualifiers");
+      throw UnexpectedExceptions.withMessage("Guide method should have four parameters: source and four qualifiers");
     }
     this.cid = cid;
     this.unitInstance = unitInstance;
@@ -57,7 +58,7 @@ abstract class UnitGuide4<S, R, Q1, Q2, Q3, Q4> implements Guide4<S, R, Q1, Q2, 
     } catch (TraverseException e) {
       throw e;
     } catch (Exception e) {
-      throw TraverseException.withCauseAndMessage(e, "Failed to invoke unit guide {0} in unit {1}",
+      throw TraverseExceptions.withCauseAndMessage(e, "Failed to invoke unit guide {0} in unit {1}",
           guideMethod.name(), guideMethod.owner().canonicalName());
     }
   }

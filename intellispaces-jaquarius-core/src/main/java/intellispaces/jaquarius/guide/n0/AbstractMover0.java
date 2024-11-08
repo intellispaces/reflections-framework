@@ -1,7 +1,8 @@
 package intellispaces.jaquarius.guide.n0;
 
-import intellispaces.common.base.exception.CoveredCheckedException;
+import intellispaces.common.base.exception.WrappedExceptions;
 import intellispaces.jaquarius.exception.TraverseException;
+import intellispaces.jaquarius.exception.TraverseExceptions;
 import intellispaces.jaquarius.guide.GuideKind;
 import intellispaces.jaquarius.guide.GuideKinds;
 
@@ -21,7 +22,7 @@ public interface AbstractMover0<S> extends Mover0<S> {
       try {
         move(source);
       } catch (TraverseException e) {
-        throw CoveredCheckedException.withCause(e);
+        throw WrappedExceptions.ofChecked(e);
       }
     };
   }
@@ -33,11 +34,11 @@ public interface AbstractMover0<S> extends Mover0<S> {
 
   @Override
   default int traverseToInt(S source) throws TraverseException {
-    throw TraverseException.withMessage("Invalid operation");
+    throw TraverseExceptions.withMessage("Invalid operation");
   }
 
   @Override
   default double traverseToDouble(S source) throws TraverseException {
-    throw TraverseException.withMessage("Invalid operation");
+    throw TraverseExceptions.withMessage("Invalid operation");
   }
 }

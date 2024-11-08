@@ -2,13 +2,13 @@ package intellispaces.jaquarius.annotation.processor;
 
 import intellispaces.common.action.runner.Runner;
 import intellispaces.common.annotationprocessor.context.JavaArtifactContext;
-import intellispaces.common.base.exception.UnexpectedViolationException;
-import intellispaces.common.base.object.ObjectInstanceFunctions;
+import intellispaces.common.base.exception.UnexpectedExceptions;
+import intellispaces.common.base.object.ObjectFunctions;
+import intellispaces.common.base.text.StringFunctions;
 import intellispaces.common.base.text.TextActions;
-import intellispaces.common.base.text.TextFunctions;
+import intellispaces.common.base.type.ClassFunctions;
 import intellispaces.common.base.type.Primitive;
 import intellispaces.common.base.type.Primitives;
-import intellispaces.common.base.type.TypeFunctions;
 import intellispaces.common.javastatement.customtype.Classes;
 import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.common.javastatement.method.MethodParam;
@@ -41,7 +41,7 @@ public interface GuideProcessorFunctions {
   static TypeReference normalizeType(TypeReference type) {
     if (type.isPrimitiveReference()) {
       String typename = type.asPrimitiveReferenceOrElseThrow().typename();
-      if (ObjectInstanceFunctions.equalsAnyOf(typename,
+      if (ObjectFunctions.equalsAnyOf(typename,
           Primitives.Boolean.typename(),
           Primitives.Char.typename(),
           Primitives.Byte.typename(),
@@ -100,7 +100,7 @@ public interface GuideProcessorFunctions {
     } else if (guideForm == GuideForms.Primitive) {
       return type.asPrimitiveReferenceOrElseThrow().typename();
     } else {
-      throw UnexpectedViolationException.withMessage("Not supported guide form: {0}", guideForm.name());
+      throw UnexpectedExceptions.withMessage("Not supported guide form: {0}", guideForm.name());
     }
   }
 
@@ -133,7 +133,7 @@ public interface GuideProcessorFunctions {
         case 3 -> "FunctionActions.ofTriFunction";
         case 4 -> "FunctionActions.ofQuadFunction";
         case 5 -> "FunctionActions.ofQuinFunction";
-        default -> throw UnexpectedViolationException.withMessage("Not supported number of params");
+        default -> throw UnexpectedExceptions.withMessage("Not supported number of params");
       };
     } else {
       var sb = new StringBuilder();
@@ -159,7 +159,7 @@ public interface GuideProcessorFunctions {
         appendParameterTypename(sb, curParamTypename, counter, first);
       }
       sb.append("To");
-      sb.append(TextFunctions.capitalizeFirstLetter(returnTypeName));
+      sb.append(StringFunctions.capitalizeFirstLetter(returnTypeName));
       sb.append("Function");
       return sb.toString();
     }
@@ -177,7 +177,7 @@ public interface GuideProcessorFunctions {
       default -> "";
     };
     sb.append(prefix);
-    sb.append(TextFunctions.capitalizeFirstLetter(paramTypename));
+    sb.append(StringFunctions.capitalizeFirstLetter(paramTypename));
     if (counter > 1) {
       sb.append("s");
     }
@@ -222,7 +222,7 @@ public interface GuideProcessorFunctions {
     String actualReturnType = guideMethod.returnType().orElseThrow().actualDeclaration(context::addToImportAndGetSimpleName);
     if (!actualReturnType.equals(returnType)) {
       if (Primitives.Boolean.typename().equals(actualReturnType)) {
-        sb.append("MathFunctions.booleanToInt(");
+        sb.append("PrimitiveFunctions.booleanToInt(");
         buildInvokeSuperMethod(guideMethod, sb, context);
         sb.append(")");
       } else {
@@ -249,7 +249,7 @@ public interface GuideProcessorFunctions {
       String actualType = param.type().actualDeclaration(context::addToImportAndGetSimpleName);
       if (!buildGuideTypeDeclaration(param.type(), context).equals(actualType)) {
         if (Primitives.Boolean.typename().equals(actualType)) {
-          sb.append("MathFunctions.booleanToInt(").append(param.name());
+          sb.append("PrimitiveFunctions.booleanToInt(").append(param.name());
         } else {
           sb.append("(");
           sb.append(actualType);
@@ -277,7 +277,7 @@ public interface GuideProcessorFunctions {
       }
       if (param.type().isCustomTypeReference()) {
         CustomType type = param.type().asCustomTypeReferenceOrElseThrow().targetType();
-        Optional<Primitive> primitive = TypeFunctions.primitiveByWrapperClassName(type.canonicalName());
+        Optional<Primitive> primitive = ClassFunctions.primitiveByWrapperClassName(type.canonicalName());
         if (primitive.isEmpty()) {
           result.add(param);
         }
@@ -288,7 +288,7 @@ public interface GuideProcessorFunctions {
     for (MethodParam param : params) {
       if (param.type().isCustomTypeReference()) {
         CustomType type = param.type().asCustomTypeReferenceOrElseThrow().targetType();
-        Optional<Primitive> primitive = TypeFunctions.primitiveByWrapperClassName(type.canonicalName());
+        Optional<Primitive> primitive = ClassFunctions.primitiveByWrapperClassName(type.canonicalName());
         if (primitive.isPresent() && primitive.get().isLong()) {
           result.add(param);
         }
@@ -303,7 +303,7 @@ public interface GuideProcessorFunctions {
     for (MethodParam param : params) {
       if (param.type().isCustomTypeReference()) {
         CustomType type = param.type().asCustomTypeReferenceOrElseThrow().targetType();
-        Optional<Primitive> primitive = TypeFunctions.primitiveByWrapperClassName(type.canonicalName());
+        Optional<Primitive> primitive = ClassFunctions.primitiveByWrapperClassName(type.canonicalName());
         if (primitive.isPresent()
             && (primitive.get().isBoolean()
                 || primitive.get().isChar()
@@ -330,7 +330,7 @@ public interface GuideProcessorFunctions {
     for (MethodParam param : params) {
       if (param.type().isCustomTypeReference()) {
         CustomType type = param.type().asCustomTypeReferenceOrElseThrow().targetType();
-        Optional<Primitive> primitive = TypeFunctions.primitiveByWrapperClassName(type.canonicalName());
+        Optional<Primitive> primitive = ClassFunctions.primitiveByWrapperClassName(type.canonicalName());
         if (primitive.isPresent() && (primitive.get().isFloat() || primitive.get().isDouble())) {
           result.add(param);
         }
@@ -343,7 +343,7 @@ public interface GuideProcessorFunctions {
     }
 
     if (result.size() != params.size()) {
-      throw UnexpectedViolationException.withMessage("Invalid state");
+      throw UnexpectedExceptions.withMessage("Invalid state");
     }
     return result;
   }

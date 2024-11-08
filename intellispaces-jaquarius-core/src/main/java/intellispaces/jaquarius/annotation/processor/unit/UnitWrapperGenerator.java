@@ -6,10 +6,8 @@ import intellispaces.common.action.functional.FunctionActions;
 import intellispaces.common.action.getter.ResettableGetter;
 import intellispaces.common.action.runner.Runner;
 import intellispaces.common.annotationprocessor.context.AnnotationProcessingContext;
-import intellispaces.common.base.exception.UnexpectedViolationException;
-import intellispaces.common.base.math.MathFunctions;
+import intellispaces.common.base.exception.UnexpectedExceptions;
 import intellispaces.common.base.text.TextActions;
-import intellispaces.common.base.type.TypeFunctions;
 import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.common.javastatement.instance.AnnotationInstance;
 import intellispaces.common.javastatement.instance.ClassInstance;
@@ -27,7 +25,7 @@ import intellispaces.jaquarius.annotation.Wrapper;
 import intellispaces.jaquarius.annotation.processor.AbstractGenerator;
 import intellispaces.jaquarius.annotation.processor.GuideProcessorFunctions;
 import intellispaces.jaquarius.common.NameConventionFunctions;
-import intellispaces.jaquarius.exception.ConfigurationException;
+import intellispaces.jaquarius.exception.ConfigurationExceptions;
 import intellispaces.jaquarius.guide.GuideFunctions;
 import intellispaces.jaquarius.object.ObjectFunctions;
 import intellispaces.jaquarius.system.Injection;
@@ -123,13 +121,11 @@ public class UnitWrapperGenerator extends AbstractGenerator {
     context.addImport(Modules.class);
     context.addImport(Injection.class);
     context.addImport(ProjectionRegistry.class);
-    context.addImport(TypeFunctions.class);
     context.addImport(UnitWrapper.class);
     context.addImport(ProjectionReferences.class);
     context.addImport(ProjectionInjections.class);
     context.addImport(GuideInjections.class);
     context.addImport(AutoGuideInjections.class);
-    context.addImport(MathFunctions.class);
 
     methods = annotatedType.actualMethods();
     analyzeTypeParams();
@@ -198,7 +194,7 @@ public class UnitWrapperGenerator extends AbstractGenerator {
       if (method.isAbstract() && !method.isDefault()) {
         if (isProjectionMethod(method)) {
           if (!isReturnObjectHandle(method)) {
-            throw ConfigurationException.withMessage("Projection method ''{0}'' in class {1} must return object handle",
+            throw ConfigurationExceptions.withMessage("Projection method '{0}' in class {1} must return object handle",
                 method.name(), annotatedType.className()
             );
           }
@@ -207,7 +203,7 @@ public class UnitWrapperGenerator extends AbstractGenerator {
         } else if (isInjectionMethod(method)) {
           if (isAutoGuideMethod(method)) {
             if (!isReturnGuide(method)) {
-              throw ConfigurationException.withMessage("Guide injection method ''{0}'' in class {1} must return guide",
+              throw ConfigurationExceptions.withMessage("Guide injection method '{0}' in class {1} must return guide",
                   method.name(), annotatedType.className()
               );
             }
@@ -218,7 +214,7 @@ public class UnitWrapperGenerator extends AbstractGenerator {
             addProjectionInjectionAndImplementationMethod(method);
           }
         } else {
-          throw ConfigurationException.withMessage("Undefined abstract method ''{0}'' in class {1}",
+          throw ConfigurationExceptions.withMessage("Undefined abstract method '{0}' in class {1}",
               method.name(), annotatedType.className()
           );
         }
@@ -244,7 +240,7 @@ public class UnitWrapperGenerator extends AbstractGenerator {
         }
       }
     }
-    throw UnexpectedViolationException.withMessage("Projection definition is not found. See method {0} in unit {1}",
+    throw UnexpectedExceptions.withMessage("Projection definition is not found. See method {0} in unit {1}",
         method.name(), method.owner().canonicalName());
   }
 

@@ -26,7 +26,7 @@ public interface TraverseActions {
   static <S, T> Action1<T, S> mapThruChannel0(
       Class<S> sourceClass, Class<? extends Channel0> channelClass
   ) {
-    return new MapThruChannel0Action<>(Types.of(sourceClass), channelClass, GuideForms.Main);
+    return new MapThruChannel0Action<>(Types.get(sourceClass), channelClass, GuideForms.Main);
   }
 
   static <S, T, Q> Action2<T, S, Q> mapThruChannel1(
@@ -38,7 +38,7 @@ public interface TraverseActions {
   static <S, T, Q> Action2<T, S, Q> mapThruChannel1(
       Class<S> sourceClass, Class<? extends Channel1> channelClass
   ) {
-    return new MapThruChannel1Action<>(Types.of(sourceClass), channelClass, GuideForms.Main);
+    return new MapThruChannel1Action<>(Types.get(sourceClass), channelClass, GuideForms.Main);
   }
 
   static <S, T, Q1, Q2> Action3<T, S, Q1, Q2> mapThruChannel2(
@@ -92,7 +92,7 @@ public interface TraverseActions {
   static <S, T, Q> Action2<T, S, Q> mapOfMovingThruChannel1(
       Class<S> sourceClass, Class<? extends Channel1> channelClass
   ) {
-    return new MapOfMovingThruChannel1Action<>(Types.of(sourceClass), channelClass, GuideForms.Main);
+    return new MapOfMovingThruChannel1Action<>(Types.get(sourceClass), channelClass, GuideForms.Main);
   }
 
   static <S, T, Q1, Q2> Action3<T, S, Q1, Q2> mapOfMovingThruChannel2(

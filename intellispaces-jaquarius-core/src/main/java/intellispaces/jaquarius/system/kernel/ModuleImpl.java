@@ -159,7 +159,7 @@ class ModuleImpl implements Module {
 
   @Override
   public <S, Q> Mover1<S, Q> autoMoverThruChannel1(Class<S> sourceClass, String cid, GuideForm guideForm) {
-    return autoMoverThruChannel1(Types.of(sourceClass), cid, guideForm);
+    return autoMoverThruChannel1(Types.get(sourceClass), cid, guideForm);
   }
 
   @Override

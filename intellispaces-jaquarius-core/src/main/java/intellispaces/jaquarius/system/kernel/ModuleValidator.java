@@ -1,6 +1,6 @@
 package intellispaces.jaquarius.system.kernel;
 
-import intellispaces.jaquarius.exception.ConfigurationException;
+import intellispaces.jaquarius.exception.ConfigurationExceptions;
 import intellispaces.jaquarius.object.ObjectFunctions;
 import intellispaces.jaquarius.system.ProjectionInjection;
 import intellispaces.jaquarius.system.Unit;
@@ -28,10 +28,10 @@ public class ModuleValidator {
         .filter(Unit::isMain)
         .toList();
     if (mainUnits.isEmpty()) {
-      throw ConfigurationException.withMessage("Main unit is not found");
+      throw ConfigurationExceptions.withMessage("Main unit is not found");
     }
     if (mainUnits.size() > 1) {
-      throw ConfigurationException.withMessage("Multiple main units found: {0}",
+      throw ConfigurationExceptions.withMessage("Multiple main units found: {0}",
           mainUnits.stream().map(Unit::unitClass).map(Class::getSimpleName).collect(Collectors.joining(", ")));
     }
   }
@@ -46,7 +46,7 @@ public class ModuleValidator {
         .map(e -> makeSameProjectionsInfo(e.getKey(), e.getValue()))
         .collect(Collectors.joining("; "));
     if (!message.isEmpty()) {
-      throw ConfigurationException.withMessage("Found multiple projections with same name: {0}", message);
+      throw ConfigurationExceptions.withMessage("Found multiple projections with same name: {0}", message);
     }
   }
 
@@ -71,11 +71,11 @@ public class ModuleValidator {
     for (ProjectionInjection injection : injections) {
       UnitProjectionDefinition provider = projectionProviders.get(injection.name());
       if (provider == null) {
-        throw ConfigurationException.withMessage("Projection injection by name ''{0}'' declared in unit {1} is not found",
+        throw ConfigurationExceptions.withMessage("Projection injection by name '{0}' declared in unit {1} is not found",
             injection.name(), injection.unitClass().getCanonicalName());
       }
       if (!ObjectFunctions.isCompatibleObjectType(injection.targetClass(), provider.type())) {
-        throw ConfigurationException.withMessage("Projection injection ''{0}'' declared in unit {1} has an incompatible " +
+        throw ConfigurationExceptions.withMessage("Projection injection '{0}' declared in unit {1} has an incompatible " +
                 "target type. Expected type {2}, actual type {3}",
             injection.name(), injection.unitClass().getCanonicalName(),
             injection.targetClass().getCanonicalName(), provider.type().getCanonicalName());

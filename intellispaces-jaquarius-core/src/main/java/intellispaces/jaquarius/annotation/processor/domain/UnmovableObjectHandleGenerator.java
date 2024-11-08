@@ -1,7 +1,7 @@
 package intellispaces.jaquarius.annotation.processor.domain;
 
 import intellispaces.common.annotationprocessor.context.AnnotationProcessingContext;
-import intellispaces.common.base.exception.UnexpectedViolationException;
+import intellispaces.common.base.exception.UnexpectedExceptions;
 import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.common.javastatement.method.MethodStatement;
 import intellispaces.common.javastatement.reference.CustomTypeReference;
@@ -75,7 +75,7 @@ public class UnmovableObjectHandleGenerator extends AbstractDomainObjectHandleGe
     if (annotatedType.isNested()) {
       context.addImport(sourceClassCanonicalName());
     }
-    context.addImport(UnexpectedViolationException.class);
+    context.addImport(UnexpectedExceptions.class);
     context.addImport(UnmovableObjectHandle.class);
     context.addImport(ObjectHandle.class);
     context.addImport(Unmovable.class);

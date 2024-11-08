@@ -1,8 +1,9 @@
 package intellispaces.jaquarius.guide.n1;
 
-import intellispaces.common.base.exception.UnexpectedViolationException;
+import intellispaces.common.base.exception.UnexpectedExceptions;
 import intellispaces.common.javastatement.method.MethodStatement;
 import intellispaces.jaquarius.exception.TraverseException;
+import intellispaces.jaquarius.exception.TraverseExceptions;
 import intellispaces.jaquarius.guide.GuideForm;
 import intellispaces.jaquarius.guide.GuideLogger;
 import intellispaces.jaquarius.system.UnitWrapper;
@@ -17,7 +18,7 @@ abstract class UnitGuide1<S, R, Q> implements Guide1<S, R, Q>, KernelUnitGuide<S
 
   UnitGuide1(String cid, UnitWrapper unitInstance, MethodStatement guideMethod, int guideOrdinal, GuideForm guideForm) {
     if (guideMethod.params().size() != 2) {
-      throw UnexpectedViolationException.withMessage("Guide method should have two parameters: source and qualifier");
+      throw UnexpectedExceptions.withMessage("Guide method should have two parameters: source and qualifier");
     }
     this.cid = cid;
     this.unitInstance = unitInstance;
@@ -55,7 +56,7 @@ abstract class UnitGuide1<S, R, Q> implements Guide1<S, R, Q>, KernelUnitGuide<S
     } catch (TraverseException e) {
       throw e;
     } catch (Exception e) {
-      throw TraverseException.withCauseAndMessage(e, "Failed to invoke unit guide {0} in unit {1}",
+      throw TraverseExceptions.withCauseAndMessage(e, "Failed to invoke unit guide {0} in unit {1}",
           guideMethod.name(), guideMethod.owner().canonicalName());
     }
   }

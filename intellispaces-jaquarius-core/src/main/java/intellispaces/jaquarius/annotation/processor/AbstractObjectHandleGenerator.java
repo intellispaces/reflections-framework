@@ -1,9 +1,9 @@
 package intellispaces.jaquarius.annotation.processor;
 
 import intellispaces.common.action.runner.Runner;
-import intellispaces.common.base.exception.UnexpectedViolationException;
+import intellispaces.common.base.exception.UnexpectedExceptions;
 import intellispaces.common.base.text.TextActions;
-import intellispaces.common.base.type.TypeFunctions;
+import intellispaces.common.base.type.ClassFunctions;
 import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.common.javastatement.method.MethodParam;
 import intellispaces.common.javastatement.method.MethodStatement;
@@ -62,7 +62,7 @@ public abstract class AbstractObjectHandleGenerator extends AbstractGenerator {
       analyzeMethod(effectiveMethod, GuideForms.Main, methodIndex++);
       if (method.returnType().orElseThrow().isCustomTypeReference()) {
         CustomType returnType = method.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow().targetType();
-        if (TypeFunctions.isPrimitiveWrapperClass(returnType.canonicalName())) {
+        if (ClassFunctions.isPrimitiveWrapperClass(returnType.canonicalName())) {
           analyzeMethod(effectiveMethod, GuideForms.Primitive, methodIndex++);
         }
       }
@@ -147,7 +147,7 @@ public abstract class AbstractObjectHandleGenerator extends AbstractGenerator {
     } else if (guideForm == GuideForms.Primitive) {
       return method.name() + "Primitive";
     } else {
-      throw UnexpectedViolationException.withMessage("Unsupported guide form - {0}", guideForm);
+      throw UnexpectedExceptions.withMessage("Unsupported guide form - {0}", guideForm);
     }
   }
 
@@ -170,9 +170,9 @@ public abstract class AbstractObjectHandleGenerator extends AbstractGenerator {
       appendMethodReturnHandleType(sb, method);
     } else if (guideForm == GuideForms.Primitive) {
       CustomType ct = method.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow().targetType();
-      sb.append(TypeFunctions.getPrimitiveTypeOfWrapper(ct.canonicalName()));
+      sb.append(ClassFunctions.getPrimitiveTypeOfWrapper(ct.canonicalName()));
     } else {
-      throw UnexpectedViolationException.withMessage("Unsupported guide form - {0}", guideForm);
+      throw UnexpectedExceptions.withMessage("Unsupported guide form - {0}", guideForm);
     }
   }
 

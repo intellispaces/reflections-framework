@@ -1,6 +1,6 @@
 package intellispaces.jaquarius.id;
 
-import intellispaces.common.base.math.MathFunctions;
+import intellispaces.common.base.data.UuidFunctions;
 
 import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
@@ -15,7 +15,7 @@ public class RepetableUuidIdentifierGenerator implements IdentifierGenerator {
   }
 
   public RepetableUuidIdentifierGenerator(UUID seed) {
-    random = new SecureRandom(MathFunctions.uuidToBytes(seed));
+    random = new SecureRandom(UuidFunctions.uuidToBytes(seed));
   }
 
   @Override

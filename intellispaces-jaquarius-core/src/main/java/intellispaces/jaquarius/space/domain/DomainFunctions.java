@@ -1,7 +1,7 @@
 package intellispaces.jaquarius.space.domain;
 
-import intellispaces.common.base.exception.UnexpectedViolationException;
-import intellispaces.common.base.type.TypeFunctions;
+import intellispaces.common.base.exception.UnexpectedExceptions;
+import intellispaces.common.base.type.ClassFunctions;
 import intellispaces.common.javastatement.JavaStatements;
 import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.common.javastatement.reference.CustomTypeReference;
@@ -45,17 +45,17 @@ public final class DomainFunctions {
 
   public static CustomType getDomainType(TypeReference type) {
     if (type.isPrimitiveReference()) {
-      Class<?> wrapperClass = TypeFunctions.getPrimitiveWrapperClass(type.asPrimitiveReferenceOrElseThrow().typename());
+      Class<?> wrapperClass = ClassFunctions.getPrimitiveWrapperClass(type.asPrimitiveReferenceOrElseThrow().typename());
       return JavaStatements.customTypeStatement(wrapperClass);
     } else if (type.isCustomTypeReference()) {
       CustomType domainType = type.asCustomTypeReferenceOrElseThrow().targetType();
       if (!isDefaultDomainType(domainType) && !domainType.hasAnnotation(Domain.class)) {
-        throw UnexpectedViolationException.withMessage("Unexpected type reference. Class {0} is not domain class",
+        throw UnexpectedExceptions.withMessage("Unexpected type reference. Class {0} is not domain class",
             domainType.canonicalName());
       }
       return domainType;
     } else {
-      throw UnexpectedViolationException.withMessage("Unexpected type reference: {0}", type);
+      throw UnexpectedExceptions.withMessage("Unexpected type reference: {0}", type);
     }
   }
 

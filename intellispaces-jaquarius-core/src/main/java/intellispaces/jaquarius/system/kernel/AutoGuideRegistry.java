@@ -1,7 +1,8 @@
 package intellispaces.jaquarius.system.kernel;
 
-import intellispaces.common.base.exception.UnexpectedViolationException;
-import intellispaces.common.base.type.TypeFunctions;
+import intellispaces.common.base.exception.UnexpectedExceptions;
+import intellispaces.common.base.object.ObjectFunctions;
+import intellispaces.common.base.type.ClassFunctions;
 import intellispaces.jaquarius.common.NameConventionFunctions;
 
 import java.util.Map;
@@ -23,10 +24,10 @@ class AutoGuideRegistry {
   @SuppressWarnings("unchecked")
   private <G> G createAutoGuide(Class<G> guideClass) {
     String autoGuideCanonicalName = NameConventionFunctions.getAutoGuiderCanonicalName(guideClass.getName());
-    Class<G> autoGuideClass = (Class<G>) TypeFunctions.getClass(autoGuideCanonicalName)
-        .orElseThrow(() -> UnexpectedViolationException.withMessage("Could not load auto guide class by name {0}",
+    Class<G> autoGuideClass = (Class<G>) ClassFunctions.getClass(autoGuideCanonicalName)
+        .orElseThrow(() -> UnexpectedExceptions.withMessage("Could not load auto guide class by name {0}",
             autoGuideCanonicalName)
         );
-    return TypeFunctions.newInstance(autoGuideClass);
+    return ObjectFunctions.newInstance(autoGuideClass);
   }
 }

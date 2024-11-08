@@ -67,7 +67,7 @@ abstract class AbstractDomainObjectHandleGenerator extends AbstractObjectHandleG
 
   protected String buildDomainType(CustomType domainType, List<NotPrimitiveReference> typeQualifiers) {
     StringBuilder sb = new StringBuilder();
-    sb.append("Types.of(");
+    sb.append("Types.get(");
     sb.append(context.addToImportAndGetSimpleName(domainType.canonicalName())).append(".class");
     for (NotPrimitiveReference typeQualifier : typeQualifiers) {
       sb.append(", ");
@@ -80,7 +80,7 @@ abstract class AbstractDomainObjectHandleGenerator extends AbstractObjectHandleG
   private void analyzeDomainType(NotPrimitiveReference typeReference, StringBuilder sb) {
     if (typeReference.isCustomTypeReference()) {
       CustomTypeReference customTypeReference = typeReference.asCustomTypeReferenceOrElseThrow();
-      sb.append("Types.of(");
+      sb.append("Types.get(");
       sb.append(context.addToImportAndGetSimpleName(customTypeReference.targetType().canonicalName())).append(".class");
       for (NotPrimitiveReference typeArg : customTypeReference.typeArguments()) {
         sb.append(", ");
@@ -90,7 +90,7 @@ abstract class AbstractDomainObjectHandleGenerator extends AbstractObjectHandleG
     } else if (typeReference.isNamedReference()) {
       NamedReference namedReference = typeReference.asNamedReferenceOrElseThrow();
       if (namedReference.extendedBounds().isEmpty()) {
-        sb.append("Types.of(");
+        sb.append("Types.get(");
         sb.append(context.addToImportAndGetSimpleName(Object.class)).append(".class");
         sb.append(")");
       } else {

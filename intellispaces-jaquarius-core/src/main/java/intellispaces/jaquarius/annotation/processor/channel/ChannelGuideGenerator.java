@@ -2,10 +2,11 @@ package intellispaces.jaquarius.annotation.processor.channel;
 
 import intellispaces.common.action.runner.Runner;
 import intellispaces.common.annotationprocessor.context.AnnotationProcessingContext;
-import intellispaces.common.base.exception.UnexpectedViolationException;
-import intellispaces.common.base.math.MathFunctions;
+import intellispaces.common.base.exception.UnexpectedExceptions;
 import intellispaces.common.base.text.TextActions;
-import intellispaces.common.base.type.TypeFunctions;
+import intellispaces.common.base.type.ClassFunctions;
+import intellispaces.common.base.type.ClassNameFunctions;
+import intellispaces.common.base.type.PrimitiveFunctions;
 import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.common.javastatement.method.MethodParam;
 import intellispaces.common.javastatement.method.MethodStatement;
@@ -125,8 +126,8 @@ public class ChannelGuideGenerator extends AbstractGenerator {
     context.addImport(Objects.class);
     context.addImport(GuideForm.class);
     context.addImport(GuideForms.class);
-    context.addImport(UnexpectedViolationException.class);
-    context.addImport(MathFunctions.class);
+    context.addImport(UnexpectedExceptions.class);
+    context.addImport(PrimitiveFunctions.class);
     analyzeGuideType();
     return true;
   }
@@ -178,7 +179,7 @@ public class ChannelGuideGenerator extends AbstractGenerator {
   }
 
   private String getGuideClassSimpleName(Class<?> guideClass) {
-    String abstractGuideCanonicalName = TypeFunctions.addPrefixToSimpleName(
+    String abstractGuideCanonicalName = ClassNameFunctions.addPrefixToSimpleName(
         "Abstract", guideClass.getCanonicalName()
     );
     return context.addToImportAndGetSimpleName(abstractGuideCanonicalName);
@@ -194,7 +195,7 @@ public class ChannelGuideGenerator extends AbstractGenerator {
         case 3 -> Mapper3.class;
         case 4 -> Mapper4.class;
         case 5 -> Mapper5.class;
-        default -> throw UnexpectedViolationException.withMessage("Unsupported number of guide qualifies: {0}",
+        default -> throw UnexpectedExceptions.withMessage("Unsupported number of guide qualifies: {0}",
             qualifierCount);
       };
     } else if (traverseType == TraverseTypes.Moving) {
@@ -205,7 +206,7 @@ public class ChannelGuideGenerator extends AbstractGenerator {
         case 3 -> Mover3.class;
         case 4 -> Mover4.class;
         case 5 -> Mover5.class;
-        default -> throw UnexpectedViolationException.withMessage("Unsupported number of guide qualifies: {0}",
+        default -> throw UnexpectedExceptions.withMessage("Unsupported number of guide qualifies: {0}",
             qualifierCount);
       };
     } else if (traverseType == TraverseTypes.MappingOfMoving) {
@@ -216,11 +217,11 @@ public class ChannelGuideGenerator extends AbstractGenerator {
         case 3 -> MapperOfMoving3.class;
         case 4 -> MapperOfMoving4.class;
         case 5 -> MapperOfMoving5.class;
-        default -> throw UnexpectedViolationException.withMessage("Unsupported number of guide qualifies: {0}",
+        default -> throw UnexpectedExceptions.withMessage("Unsupported number of guide qualifies: {0}",
             qualifierCount);
       };
     } else {
-      throw UnexpectedViolationException.withMessage("Unsupported traverse type: {0}", traverseType);
+      throw UnexpectedExceptions.withMessage("Unsupported traverse type: {0}", traverseType);
     }
   }
 
@@ -327,10 +328,10 @@ public class ChannelGuideGenerator extends AbstractGenerator {
   private void buildPrimitiveMethodBody(StringBuilder sb, boolean longForm) {
     TypeReference returnType = channelMethod.returnType().orElseThrow();
     if (returnType.isNamedReference()
-        || !TypeFunctions.isPrimitiveWrapperClass(returnType.asCustomTypeReferenceOrElseThrow().targetType().canonicalName())
-        || (TypeFunctions.isDoubleClass(returnType.asCustomTypeReferenceOrElseThrow().targetType().canonicalName()) && longForm)
+        || !ClassFunctions.isPrimitiveWrapperClass(returnType.asCustomTypeReferenceOrElseThrow().targetType().canonicalName())
+        || (ClassFunctions.isDoubleClass(returnType.asCustomTypeReferenceOrElseThrow().targetType().canonicalName()) && longForm)
     ) {
-      sb.append("  throw UnexpectedViolationException.withMessage(\"Invalid operation\");\n");
+      sb.append("  throw UnexpectedExceptions.withMessage(\"Invalid operation\");\n");
     } else {
       sb.append("  Objects.requireNonNull(source);\n");
       for (MethodParam param : getQualifierMethodParams()) {
@@ -339,12 +340,12 @@ public class ChannelGuideGenerator extends AbstractGenerator {
       sb.append("  return ");
 
       String returnTypeCanonicalName = returnType.asCustomTypeReferenceOrElseThrow().targetType().canonicalName();
-      boolean isBooleanReturnType = TypeFunctions.isBooleanClass(returnTypeCanonicalName);
+      boolean isBooleanReturnType = ClassFunctions.isBooleanClass(returnTypeCanonicalName);
       if (isBooleanReturnType) {
         if (longForm) {
-          sb.append("MathFunctions.booleanToInt(");
+          sb.append("PrimitiveFunctions.booleanToInt(");
         } else {
-          sb.append("MathFunctions.booleanToDouble(");
+          sb.append("PrimitiveFunctions.booleanToDouble(");
         }
       }
       sb.append(channelMethod.name());
@@ -383,13 +384,13 @@ public class ChannelGuideGenerator extends AbstractGenerator {
     if (guideForm == GuideForms.Main) {
       return buildTargetObjectHandleDeclaration(Function.identity(), false);
     } else if (guideForm == GuideForms.Primitive) {
-      return TypeFunctions.getPrimitiveTypeOfWrapper(
+      return ClassFunctions.getPrimitiveTypeOfWrapper(
           channelMethod.returnType().orElseThrow()
               .asCustomTypeReferenceOrElseThrow()
               .targetType()
               .canonicalName());
     }
-    throw UnexpectedViolationException.withMessage("Not supported guide form - {0}", guideForm.name());
+    throw UnexpectedExceptions.withMessage("Not supported guide form - {0}", guideForm.name());
   }
 
   protected String buildObjectHandleDeclaration(
@@ -417,7 +418,7 @@ public class ChannelGuideGenerator extends AbstractGenerator {
       }
       return sb.toString();
     } else if (type.isPrimitiveReference()) {
-      return TypeFunctions.getPrimitiveWrapperClass(type.asPrimitiveReferenceOrElseThrow().typename()).getSimpleName();
+      return ClassFunctions.getPrimitiveWrapperClass(type.asPrimitiveReferenceOrElseThrow().typename()).getSimpleName();
     } else {
       String canonicalName = ObjectFunctions.getCommonObjectHandleTypename(type, typeReplacer);
       String name = type.isCustomTypeReference() ? context.addToImportAndGetSimpleName(canonicalName) : canonicalName;

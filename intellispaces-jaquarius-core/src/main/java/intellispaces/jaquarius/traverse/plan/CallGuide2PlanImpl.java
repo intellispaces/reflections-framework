@@ -1,6 +1,6 @@
 package intellispaces.jaquarius.traverse.plan;
 
-import intellispaces.common.base.exception.UnexpectedViolationException;
+import intellispaces.common.base.exception.UnexpectedExceptions;
 import intellispaces.jaquarius.exception.TraverseException;
 import intellispaces.jaquarius.guide.n2.Guide2;
 
@@ -25,25 +25,25 @@ public class CallGuide2PlanImpl implements CallGuide2Plan {
   @Override
   public Object execute(
       Object source, TraverseExecutor executor
-  ) {
-    throw UnexpectedViolationException.withMessage("Expected traverse with two channel qualifiers");
+  ) throws TraverseException {
+    throw UnexpectedExceptions.withMessage("Expected traverse with two channel qualifiers");
   }
 
   @Override
   public int executeReturnInt(Object source, TraverseExecutor executor) throws TraverseException {
-    throw UnexpectedViolationException.withMessage("Expected traverse with two channel qualifiers");
+    throw UnexpectedExceptions.withMessage("Expected traverse with two channel qualifiers");
   }
 
   @Override
   public double executeReturnDouble(Object source, TraverseExecutor executor) throws TraverseException {
-    throw UnexpectedViolationException.withMessage("Expected traverse with two channel qualifiers");
+    throw UnexpectedExceptions.withMessage("Expected traverse with two channel qualifiers");
   }
 
   @Override
   public Object execute(
       Object source, Object qualifier, TraverseExecutor executor
   ) throws TraverseException {
-    throw UnexpectedViolationException.withMessage("Expected traverse with two channel qualifiers");
+    throw UnexpectedExceptions.withMessage("Expected traverse with two channel qualifiers");
   }
 
   @Override
@@ -57,13 +57,13 @@ public class CallGuide2PlanImpl implements CallGuide2Plan {
   public Object execute(
     Object source, Object qualifier1, Object qualifier2, Object qualifier3, TraverseExecutor executor
   ) throws TraverseException {
-    throw UnexpectedViolationException.withMessage("Expected traverse with two channel qualifiers");
+    throw UnexpectedExceptions.withMessage("Expected traverse with two channel qualifiers");
   }
 
   @Override
   public Object execute(
       Object source, Object qualifier1, Object qualifier2, Object qualifier3, Object qualifier4, TraverseExecutor executor
   ) throws TraverseException {
-    throw UnexpectedViolationException.withMessage("Expected traverse with two channel qualifiers");
+    throw UnexpectedExceptions.withMessage("Expected traverse with two channel qualifiers");
   }
 }

@@ -1,6 +1,6 @@
 package intellispaces.jaquarius.system.projection;
 
-import intellispaces.common.base.exception.UnexpectedViolationException;
+import intellispaces.common.base.exception.UnexpectedExceptions;
 import intellispaces.jaquarius.annotation.Properties;
 import intellispaces.jaquarius.object.DataFunctions;
 import intellispaces.jaquarius.object.ObjectFunctions;
@@ -34,7 +34,7 @@ public class ModulePropertiesTargetSupplier extends AbstractProjectionTargetSupp
     }
     if (ObjectHandleConstants.PROPERTIES_HANDLE_CLASSNAME.equals(expectedReturnType.getCanonicalName())) {
       if (!ObjectFunctions.propertiesHandleClass().isAssignableFrom(target.getClass())) {
-        throw UnexpectedViolationException.withMessage("Invalid return type of method ''{0}'' in class {1}",
+        throw UnexpectedExceptions.withMessage("Invalid return type of method '{0}' in class {1}",
             projectionMethod.getName(), projectionMethod.getDeclaringClass().getCanonicalName());
       }
       return target;
@@ -44,7 +44,7 @@ public class ModulePropertiesTargetSupplier extends AbstractProjectionTargetSupp
         return module.mapThruChannel1(target, SpaceConstants.PROPERTIES_TO_DATA_TID, expectedReturnType);
       }
     }
-    throw UnexpectedViolationException.withMessage("Invalid return type of method ''{0}'' in class {1}",
+    throw UnexpectedExceptions.withMessage("Invalid return type of method '{0}' in class {1}",
         projectionMethod.getName(), projectionMethod.getDeclaringClass().getCanonicalName());
   }
 }

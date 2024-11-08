@@ -3,8 +3,8 @@ package intellispaces.jaquarius.annotation.processor.objecthandle;
 import intellispaces.common.action.Actions;
 import intellispaces.common.action.functional.FunctionActions;
 import intellispaces.common.annotationprocessor.context.AnnotationProcessingContext;
-import intellispaces.common.base.exception.NotImplementedException;
-import intellispaces.common.base.math.MathFunctions;
+import intellispaces.common.base.exception.NotImplementedExceptions;
+import intellispaces.common.base.type.PrimitiveFunctions;
 import intellispaces.common.base.type.Type;
 import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.common.javastatement.method.MethodStatement;
@@ -97,7 +97,6 @@ public class MovableObjectHandleWrapperGenerator extends AbstractObjectHandleWra
     context.addImport(Modules.class);
     context.addImport(KernelFunctions.class);
     context.addImport(TraverseException.class);
-    context.addImport(NotImplementedException.class);
     context.addImport(Actions.class);
     context.addImport(FunctionActions.class);
     context.addImport(Type.class);
@@ -105,7 +104,6 @@ public class MovableObjectHandleWrapperGenerator extends AbstractObjectHandleWra
     context.addImport(Wrapper.class);
     context.addImport(ObjectHandleWrapper.class);
     context.addImport(InnerObjectHandle.class);
-    context.addImport(MathFunctions.class);
     context.addImport(GuideForms.class);
 
     context.addImport(Mover0.class);
@@ -119,6 +117,8 @@ public class MovableObjectHandleWrapperGenerator extends AbstractObjectHandleWra
     context.addImport(AutoGuideInjections.class);
     context.addImport(MappingChannel.class);
     context.addImport(MappingOfMovingChannel.class);
+    context.addImport(NotImplementedExceptions.class);
+    context.addImport(PrimitiveFunctions.class);
 
     analyzeDomain();
     analyzeTypeParams(annotatedType);

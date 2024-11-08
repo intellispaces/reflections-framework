@@ -4,9 +4,9 @@ import intellispaces.common.action.Action;
 import intellispaces.common.action.Actions;
 import intellispaces.common.action.runner.Runner;
 import intellispaces.common.annotationprocessor.context.AnnotationProcessingContext;
-import intellispaces.common.base.exception.NotImplementedException;
+import intellispaces.common.base.exception.NotImplementedExceptions;
+import intellispaces.common.base.text.StringFunctions;
 import intellispaces.common.base.text.TextActions;
-import intellispaces.common.base.text.TextFunctions;
 import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.common.javastatement.method.MethodParam;
 import intellispaces.common.javastatement.method.MethodStatement;
@@ -107,13 +107,13 @@ public class AutoGuideGenerator extends AbstractGenerator {
     sb.append(method.name());
     for (MethodParam param : method.params()) {
       if (param.type().isPrimitiveReference()) {
-        sb.append(TextFunctions.capitalizeFirstLetter(param.type().asPrimitiveReferenceOrElseThrow().typename()));
+        sb.append(StringFunctions.capitalizeFirstLetter(param.type().asPrimitiveReferenceOrElseThrow().typename()));
       } else if (param.type().isNamedReference()) {
-        sb.append(TextFunctions.capitalizeFirstLetter(param.type().asNamedReferenceOrElseThrow().name()));
+        sb.append(StringFunctions.capitalizeFirstLetter(param.type().asNamedReferenceOrElseThrow().name()));
       } else if (param.type().isCustomTypeReference()) {
-        sb.append(TextFunctions.capitalizeFirstLetter(param.type().asCustomTypeReferenceOrElseThrow().targetType().simpleName()));
+        sb.append(StringFunctions.capitalizeFirstLetter(param.type().asCustomTypeReferenceOrElseThrow().targetType().simpleName()));
       } else {
-        throw NotImplementedException.withCode("MaJAcQ");
+        throw NotImplementedExceptions.withCode("MaJAcQ");
       }
     }
     sb.append("Action");
@@ -148,7 +148,7 @@ public class AutoGuideGenerator extends AbstractGenerator {
     sb.append(sourceType.actualBlindDeclaration(context::addToImportAndGetSimpleName));
     sb.append(", ");
     sb.append(sourceType.simpleDeclaration(context::addToImportAndGetSimpleName));
-    sb.append("> of(");
+    sb.append("> get(");
     sb.append(sourceType.simpleDeclaration(context::addToImportAndGetSimpleName));
     sb.append(".class),\n    ");
     sb.append(context.addToImportAndGetSimpleName(GuideFunctions.getChannelType(method).canonicalName()));

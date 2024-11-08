@@ -32,7 +32,7 @@ public class {{$classSimpleName}}{{$classTypeParams}} implements {{$movableObjec
 {{when $domainTypeParamsBrief.isEmpty()}}
   @Override
   public Type<{{$parentDomainClassSimpleName}}> domain() {
-    return Types.of({{$parentDomainClassSimpleName}}.class);
+    return Types.get({{$parentDomainClassSimpleName}}.class);
   }
 
   @Override

@@ -1,7 +1,7 @@
 package intellispaces.jaquarius.annotation.processor.domain;
 
 import intellispaces.common.action.runner.Runner;
-import intellispaces.common.base.exception.UnexpectedViolationException;
+import intellispaces.common.base.exception.UnexpectedExceptions;
 import intellispaces.common.base.text.TextActions;
 import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.common.javastatement.method.MethodParam;
@@ -127,7 +127,7 @@ abstract class AbstractConversionDomainObjectHandleGenerator extends AbstractDom
 
     String conversionChain = DomainFunctions.buildConversionMethodsChain(actualReturnType, expectedReturnType);
     if (conversionChain == null) {
-      throw UnexpectedViolationException.withMessage("Could not build conversion methods chain from {0} to {1}",
+      throw UnexpectedExceptions.withMessage("Could not build conversion methods chain from {0} to {1}",
           actualReturnType.canonicalName(), expectedReturnType.canonicalName()
       );
     }

@@ -3,7 +3,7 @@ package intellispaces.jaquarius.system.kernel;
 import intellispaces.common.action.Action;
 import intellispaces.common.action.Actions;
 import intellispaces.common.action.getter.ResettableGetter;
-import intellispaces.common.base.exception.UnexpectedViolationException;
+import intellispaces.common.base.exception.UnexpectedExceptions;
 import intellispaces.jaquarius.system.Injection;
 
 import java.util.Arrays;
@@ -26,7 +26,7 @@ class InnerObjectHandleImpl implements InnerObjectHandle {
   public Action getGuideAction(int index) {
     Action action = guideActions.get(index);
     if (action == null) {
-      throw UnexpectedViolationException.withMessage("Guide action os not defined");
+      throw UnexpectedExceptions.withMessage("Guide action os not defined");
     }
     return action;
   }

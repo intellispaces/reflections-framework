@@ -1,6 +1,6 @@
 package intellispaces.jaquarius.system.injection;
 
-import intellispaces.common.base.exception.UnexpectedViolationException;
+import intellispaces.common.base.exception.UnexpectedExceptions;
 import intellispaces.jaquarius.system.GuideInjection;
 import intellispaces.jaquarius.system.InjectionKind;
 import intellispaces.jaquarius.system.kernel.KernelFunctions;
@@ -42,7 +42,7 @@ class GuideInjectionImpl implements GuideInjection {
     if (guide == null) {
       guide = KernelFunctions.currentModuleSilently().guideRegistry().getGuide(name, guideClass);
       if (guide == null) {
-        throw UnexpectedViolationException.withMessage("Value of guide injection ''{0}'' in unit {1} is not defined",
+        throw UnexpectedExceptions.withMessage("Value of guide injection '{0}' in unit {1} is not defined",
             name(), unitClass.getCanonicalName());
       }
     }

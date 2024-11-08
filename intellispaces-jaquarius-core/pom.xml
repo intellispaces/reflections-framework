@@ -35,6 +35,10 @@
         </dependency>
         <dependency>
             <groupId>intellispaces-common</groupId>
+            <artifactId>intellispaces-base</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>intellispaces-common</groupId>
             <artifactId>intellispaces-dynamicproxy</artifactId>
         </dependency>
         <dependency>

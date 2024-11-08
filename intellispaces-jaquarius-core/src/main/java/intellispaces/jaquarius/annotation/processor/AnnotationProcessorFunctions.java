@@ -4,8 +4,8 @@ import intellispaces.common.annotationprocessor.AnnotatedTypeProcessor;
 import intellispaces.common.annotationprocessor.generator.Generator;
 import intellispaces.common.annotationprocessor.validator.AnnotatedTypeValidator;
 import intellispaces.common.base.collection.ArraysFunctions;
-import intellispaces.common.base.exception.UnexpectedViolationException;
-import intellispaces.common.base.type.TypeFunctions;
+import intellispaces.common.base.exception.UnexpectedExceptions;
+import intellispaces.common.base.type.ClassFunctions;
 import intellispaces.common.javastatement.AnnotatedStatement;
 import intellispaces.common.javastatement.JavaStatements;
 import intellispaces.common.javastatement.customtype.AnnotationFunctions;
@@ -40,7 +40,7 @@ import intellispaces.jaquarius.annotation.processor.unit.UnitWrapperGenerator;
 import intellispaces.jaquarius.channel.MappingChannel;
 import intellispaces.jaquarius.channel.MappingOfMovingChannel;
 import intellispaces.jaquarius.channel.MovingChannel;
-import intellispaces.jaquarius.exception.ConfigurationException;
+import intellispaces.jaquarius.exception.ConfigurationExceptions;
 import intellispaces.jaquarius.guide.GuideForm;
 import intellispaces.jaquarius.guide.GuideForms;
 import intellispaces.jaquarius.object.ObjectFunctions;
@@ -69,7 +69,7 @@ public interface AnnotationProcessorFunctions {
 
     List<MethodStatement> methods = channelType.declaredMethods();
     if (methods.size() != 1) {
-      throw ConfigurationException.withMessage("Channel class should contain one method only. Check class {0}",
+      throw ConfigurationExceptions.withMessage("Channel class should contain one method only. Check class {0}",
           channelType.canonicalName());
     }
     MethodStatement method = methods.get(0);
@@ -111,7 +111,7 @@ public interface AnnotationProcessorFunctions {
     ).stream()
         .map(AnnotationProcessor::value)
         .distinct()
-        .map(c -> (AnnotatedTypeProcessor) TypeFunctions.newInstance(c))
+        .map(c -> (AnnotatedTypeProcessor) intellispaces.common.base.object.ObjectFunctions.newInstance(c))
         .toList();
     for (AnnotatedTypeProcessor processor : processors) {
       if (processor.isApplicable(annotatedType)) {
@@ -178,7 +178,7 @@ public interface AnnotationProcessorFunctions {
       TypeReference returnType = channelMethod.returnType().get();
       if (returnType.isCustomTypeReference()) {
         CustomTypeReference customTypeReference = returnType.asCustomTypeReferenceOrElseThrow();
-        if (TypeFunctions.isPrimitiveWrapperClass(customTypeReference.targetType().canonicalName())) {
+        if (ClassFunctions.isPrimitiveWrapperClass(customTypeReference.targetType().canonicalName())) {
           generators.add(makeGuideGenerator(
               GuideForms.Primitive, traverseType, initiatorType, domainType, channelMethod
           ));
@@ -210,7 +210,7 @@ public interface AnnotationProcessorFunctions {
     } else if (ObjectFunctions.isMovableObjectHandle(objectHandleType)) {
       return List.of(new MovableObjectHandleWrapperGenerator(initiatorType, objectHandleType));
     } else {
-      throw UnexpectedViolationException.withMessage("Could not define movable type of the object handle {0}",
+      throw UnexpectedExceptions.withMessage("Could not define movable type of the object handle {0}",
           objectHandleType.canonicalName());
     }
   }
@@ -317,7 +317,7 @@ public interface AnnotationProcessorFunctions {
   static String getDomainClassLink(TypeReference type) {
     if (type.isPrimitiveReference()) {
       return "{@link " +
-          TypeFunctions.getPrimitiveWrapperClass(type.asPrimitiveReferenceOrElseThrow().typename()).getSimpleName() +
+          ClassFunctions.getPrimitiveWrapperClass(type.asPrimitiveReferenceOrElseThrow().typename()).getSimpleName() +
           "}";
     } else if (type.isCustomTypeReference()) {
       return "{@link " + type.asCustomTypeReferenceOrElseThrow().targetType().simpleName() + "}";

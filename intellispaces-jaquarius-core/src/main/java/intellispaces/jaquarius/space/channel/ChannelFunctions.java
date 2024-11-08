@@ -1,11 +1,11 @@
 package intellispaces.jaquarius.space.channel;
 
-import intellispaces.common.base.exception.NotImplementedException;
-import intellispaces.common.base.exception.UnexpectedViolationException;
-import intellispaces.common.base.text.TextFunctions;
+import intellispaces.common.base.exception.NotImplementedExceptions;
+import intellispaces.common.base.exception.UnexpectedExceptions;
+import intellispaces.common.base.text.StringFunctions;
 import intellispaces.common.dynamicproxy.tracker.Tracker;
-import intellispaces.common.dynamicproxy.tracker.TrackerBuilder;
 import intellispaces.common.dynamicproxy.tracker.TrackerFunctions;
+import intellispaces.common.dynamicproxy.tracker.Trackers;
 import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.common.javastatement.method.MethodParam;
 import intellispaces.common.javastatement.method.MethodSignature;
@@ -25,7 +25,7 @@ import intellispaces.jaquarius.channel.Channel1;
 import intellispaces.jaquarius.channel.Channel2;
 import intellispaces.jaquarius.channel.Channel3;
 import intellispaces.jaquarius.channel.Channel4;
-import intellispaces.jaquarius.exception.ConfigurationException;
+import intellispaces.jaquarius.exception.ConfigurationExceptions;
 import intellispaces.jaquarius.id.RepetableUuidIdentifierGenerator;
 import intellispaces.jaquarius.object.ObjectFunctions;
 import intellispaces.jaquarius.space.domain.DomainFunctions;
@@ -50,12 +50,12 @@ public interface ChannelFunctions {
 
   static MethodSignature getChannelMethod(Class<?> channelClass) {
     if (!isChannelClass(channelClass)) {
-      throw UnexpectedViolationException.withMessage("Expected channel class. Actual class {0} is not channel class",
+      throw UnexpectedExceptions.withMessage("Expected channel class. Actual class {0} is not channel class",
           channelClass.getCanonicalName());
     }
     Method[] methods = channelClass.getDeclaredMethods();
     if (methods.length != 1) {
-      throw UnexpectedViolationException.withMessage("Expected one channel method. Check channel class {0}",
+      throw UnexpectedExceptions.withMessage("Expected one channel method. Check channel class {0}",
           channelClass.getCanonicalName());
     }
     return MethodSignatures.get(methods[0]);
@@ -68,7 +68,7 @@ public interface ChannelFunctions {
   static String getChannelId(Class<?> channelClass) {
     Channel channel = channelClass.getAnnotation(Channel.class);
     if (channel == null) {
-      throw UnexpectedViolationException.withMessage("Class {0} does not contain annotation {1}",
+      throw UnexpectedExceptions.withMessage("Class {0} does not contain annotation {1}",
           channelClass.getCanonicalName(), Channel.class.getSimpleName());
     }
     return channel.value();
@@ -92,7 +92,7 @@ public interface ChannelFunctions {
   private static <S> String findChannelId(
       Class<S> sourceDomain, Object channelMethod, Consumer<S> trackedObjectProcessor
   ) {
-    Tracker tracker = TrackerBuilder.build();
+    Tracker tracker = Trackers.get();
     S trackedObject = TrackerFunctions.createTrackedObject(sourceDomain, tracker);
     trackedObjectProcessor.accept(trackedObject);
     List<Method> trackedMethods = tracker.getInvokedMethods();
@@ -103,7 +103,7 @@ public interface ChannelFunctions {
     return channelType.declaredMethods().stream()
         .filter(m -> m.isPublic() && !m.isDefault() && !m.isStatic())
         .findFirst()
-        .orElseThrow(() -> {throw UnexpectedViolationException.withMessage("Could not find channel method " +
+        .orElseThrow(() -> {throw UnexpectedExceptions.withMessage("Could not find channel method " +
                 "in class {0}", channelType.canonicalName());});
   }
 
@@ -164,7 +164,7 @@ public interface ChannelFunctions {
 
     CustomType declaringType = guideMethod.owner();
     if (!declaringType.hasAnnotation(Guide.class)) {
-      throw UnexpectedViolationException.withMessage("Expected guide unit class {0}",
+      throw UnexpectedExceptions.withMessage("Expected guide unit class {0}",
           declaringType.canonicalName());
     }
     if (unitInstance instanceof intellispaces.jaquarius.guide.Guide) {
@@ -173,8 +173,8 @@ public interface ChannelFunctions {
     } else {
       Channel channel = findOverrideChannelRecursive(guideMethod, guideMethod.owner());
       if (channel == null) {
-        throw UnexpectedViolationException.withMessage("Could not get unit guide annotation @Channel. Unit {0}, " +
-                "guide method ''{1}''", guideMethod.owner().canonicalName(), guideMethod.name());
+        throw UnexpectedExceptions.withMessage("Could not get unit guide annotation @Channel. Unit {0}, " +
+                "guide method '{1}'", guideMethod.owner().canonicalName(), guideMethod.name());
       }
       return channel.value();
     }
@@ -217,7 +217,7 @@ public interface ChannelFunctions {
         .map(Optional::get)
         .findAny();
     if (channel.isEmpty()) {
-      throw UnexpectedViolationException.withMessage("Could not find annotation @{0} of method ''{1}'' in domain {2}",
+      throw UnexpectedExceptions.withMessage("Could not find annotation @{0} of method '{1}' in domain {2}",
         Channel.class.getSimpleName(), domainMethod.name(), domainMethod.owner().canonicalName());
     }
     return channel.get();
@@ -228,8 +228,8 @@ public interface ChannelFunctions {
     CustomType domainClass = ObjectFunctions.getDomainTypeOfObjectHandle(objectHandleClass);
     Channel channel = findObjectHandleMethodChannelAnnotation(domainClass, objectHandleMethod);
     if (channel == null) {
-      throw UnexpectedViolationException.withMessage("Failed to find related channel annotation " +
-          "of method ''{0}'' in {1}. Domain class {2}",
+      throw UnexpectedExceptions.withMessage("Failed to find related channel annotation " +
+          "of method '{0}' in {1}. Domain class {2}",
           objectHandleMethod.name(), objectHandleClass.canonicalName(), domainClass.canonicalName());
     }
     return channel;
@@ -277,7 +277,7 @@ public interface ChannelFunctions {
   private static String getMethodMainFormName(MethodStatement objectHandleMethod) {
     Optional<TypeReference> returnType = objectHandleMethod.returnType();
     if (returnType.isPresent() && returnType.get().isPrimitiveReference()) {
-      return TextFunctions.removeTailOrElseThrow(objectHandleMethod.name(), "Primitive");
+      return StringFunctions.removeTailOrElseThrow(objectHandleMethod.name(), "Primitive");
     }
     return objectHandleMethod.name();
   }
@@ -290,17 +290,17 @@ public interface ChannelFunctions {
       List<Method> trackedMethods, Class<?> sourceDomain, Object channelMethod
   ) {
     if (trackedMethods.isEmpty()) {
-      throw UnexpectedViolationException.withMessage("Several methods of the domain class {0} were " +
+      throw UnexpectedExceptions.withMessage("Several methods of the domain class {0} were " +
               "invoked while channel method '{1}' was being testing",
           sourceDomain.getCanonicalName(), channelMethod);
     }
     if (trackedMethods.size() > 1) {
-      throw UnexpectedViolationException.withMessage("No method of the domain class {0} was invoked " +
+      throw UnexpectedExceptions.withMessage("No method of the domain class {0} was invoked " +
               "while channel {1} was being testing", sourceDomain.getCanonicalName(), channelMethod);
     }
     Channel ta = trackedMethods.get(0).getAnnotation(Channel.class);
     if (ta == null) {
-      throw UnexpectedViolationException.withMessage("Method ''{0}'' of the domain class {1} hasn't annotation {2}",
+      throw UnexpectedExceptions.withMessage("Method '{0}' of the domain class {1} hasn't annotation {2}",
           channelMethod, sourceDomain.getCanonicalName(), Channel.class.getCanonicalName());
     }
     return ta.value();
@@ -313,7 +313,7 @@ public interface ChannelFunctions {
       case 2 -> Channel2.class;
       case 3 -> Channel3.class;
       case 4 -> Channel4.class;
-      default -> throw NotImplementedException.withCode("+oyPNA");
+      default -> throw NotImplementedExceptions.withCode("+oyPNA");
     };
   }
 
@@ -331,7 +331,7 @@ public interface ChannelFunctions {
 
   static TraverseType getTraverseType(MethodStatement method) {
     Channel channel = method.selectAnnotation(Channel.class).orElseThrow(() ->
-        ConfigurationException.withMessage("Could not define traverse type of method '{0}' in '{1}'",
+        ConfigurationExceptions.withMessage("Could not define traverse type of method '{0}' in '{1}'",
             method.name(), method.owner().className())
         );
     return getTraverseType(channel);

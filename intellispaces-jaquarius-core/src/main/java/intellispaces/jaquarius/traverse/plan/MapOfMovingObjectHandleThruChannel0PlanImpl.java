@@ -1,6 +1,6 @@
 package intellispaces.jaquarius.traverse.plan;
 
-import intellispaces.common.base.exception.UnexpectedViolationException;
+import intellispaces.common.base.exception.UnexpectedExceptions;
 import intellispaces.jaquarius.exception.TraverseException;
 
 public class MapOfMovingObjectHandleThruChannel0PlanImpl extends AbstractObjectHandleTraversePlan
@@ -31,28 +31,28 @@ public class MapOfMovingObjectHandleThruChannel0PlanImpl extends AbstractObjectH
   }
 
   @Override
-  public Object execute(Object source, Object qualifier, TraverseExecutor executor) {
-    throw UnexpectedViolationException.withMessage("Expected traverse with no qualifier");
+  public Object execute(Object source, Object qualifier, TraverseExecutor executor) throws TraverseException {
+    throw UnexpectedExceptions.withMessage("Expected traverse with no qualifier");
   }
 
   @Override
   public Object execute(
       Object source, Object qualifier1, Object qualifier2, TraverseExecutor executor
   ) throws TraverseException {
-    throw UnexpectedViolationException.withMessage("Expected traverse with no qualifier");
+    throw UnexpectedExceptions.withMessage("Expected traverse with no qualifier");
   }
 
   @Override
   public Object execute(
     Object source, Object qualifier1, Object qualifier2, Object qualifier3, TraverseExecutor executor
   ) throws TraverseException {
-    throw UnexpectedViolationException.withMessage("Expected traverse with no qualifier");
+    throw UnexpectedExceptions.withMessage("Expected traverse with no qualifier");
   }
 
   @Override
   public Object execute(
       Object source, Object qualifier1, Object qualifier2, Object qualifier3, Object qualifier4, TraverseExecutor executor
   ) throws TraverseException {
-    throw UnexpectedViolationException.withMessage("Expected traverse with no qualifier");
+    throw UnexpectedExceptions.withMessage("Expected traverse with no qualifier");
   }
 }

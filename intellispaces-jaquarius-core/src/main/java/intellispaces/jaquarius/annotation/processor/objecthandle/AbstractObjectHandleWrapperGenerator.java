@@ -2,12 +2,12 @@ package intellispaces.jaquarius.annotation.processor.objecthandle;
 
 import intellispaces.common.action.Actions;
 import intellispaces.common.action.runner.Runner;
-import intellispaces.common.base.exception.UnexpectedViolationException;
-import intellispaces.common.base.object.ObjectInstanceFunctions;
+import intellispaces.common.base.exception.UnexpectedExceptions;
+import intellispaces.common.base.text.StringFunctions;
 import intellispaces.common.base.text.TextActions;
-import intellispaces.common.base.text.TextFunctions;
+import intellispaces.common.base.type.ClassFunctions;
+import intellispaces.common.base.type.ClassNameFunctions;
 import intellispaces.common.base.type.Primitives;
-import intellispaces.common.base.type.TypeFunctions;
 import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.common.javastatement.method.MethodParam;
 import intellispaces.common.javastatement.method.MethodStatement;
@@ -22,7 +22,7 @@ import intellispaces.jaquarius.annotation.Inject;
 import intellispaces.jaquarius.annotation.processor.AbstractObjectHandleGenerator;
 import intellispaces.jaquarius.annotation.processor.GuideProcessorFunctions;
 import intellispaces.jaquarius.common.NameConventionFunctions;
-import intellispaces.jaquarius.exception.ConfigurationException;
+import intellispaces.jaquarius.exception.ConfigurationExceptions;
 import intellispaces.jaquarius.guide.GuideForm;
 import intellispaces.jaquarius.guide.GuideForms;
 import intellispaces.jaquarius.guide.GuideFunctions;
@@ -128,7 +128,7 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
     sb.append(annotatedType.typeParametersFullDeclaration());
     sb.append(", ");
     sb.append(annotatedType.simpleName());
-    sb.append("> of(");
+    sb.append("> get(");
     sb.append(annotatedType.simpleName());
     sb.append(".class),\n  ");
     sb.append(context.addToImportAndGetSimpleName(NameConventionFunctions.getChannelClassCanonicalName(domainMethod)));
@@ -143,7 +143,7 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
       if (method.isAbstract()) {
         if (isInjectionMethod(method)) {
           if (!isReturnGuide(method)) {
-            throw ConfigurationException.withMessage("Guide injection method ''{0}'' in class {1} must return guide",
+            throw ConfigurationExceptions.withMessage("Guide injection method '{0}' in class {1} must return guide",
                 method.name(), annotatedType.className()
             );
           }
@@ -153,7 +153,7 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
             addGuideInjectionAndImplementationMethod(method);
           }
         } else {
-          throw ConfigurationException.withMessage("Undefined abstract method ''{0}'' in class {1}",
+          throw ConfigurationExceptions.withMessage("Undefined abstract method '{0}' in class {1}",
               method.name(), annotatedType.className()
           );
         }
@@ -237,7 +237,7 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
       );
 
       MethodParam guideMethodParam = guideMethodParams.get(i);
-      String guideMethodParamDeclaration = guideMethodParam.type().actualDeclaration(TypeFunctions::shortenName);
+      String guideMethodParamDeclaration = guideMethodParam.type().actualDeclaration(ClassNameFunctions::getShortenName);
       if (!domainMethodParamDeclaration.equals(guideMethodParamDeclaration)) {
         paramMatches = false;
         break;
@@ -339,7 +339,7 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
     sb.append("FunctionActions.ofFunction(");
     sb.append(context.addToImportAndGetSimpleName(getGeneratedClassCanonicalName()));
     sb.append("::_as");
-    sb.append(TextFunctions.capitalizeFirstLetter(TextFunctions.removeTailOrElseThrow(parentType.targetType().simpleName(), "Domain")));
+    sb.append(StringFunctions.capitalizeFirstLetter(StringFunctions.removeTailOrElseThrow(parentType.targetType().simpleName(), "Domain")));
     sb.append(", ");
     sb.append(getObjectHandleDeclaration(rawParentType, getObjectHandleType()));
     sb.append(".class, ");
@@ -370,9 +370,9 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
     sb.append("  return ");
     if (guideForm == GuideForms.Primitive) {
       CustomType ct = domainMethod.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow().targetType();
-      String typename = TypeFunctions.getPrimitiveTypeOfWrapper(ct.canonicalName());
+      String typename = ClassFunctions.getPrimitiveTypeOfWrapper(ct.canonicalName());
       if (Primitives.Boolean.typename().equals(typename)) {
-        sb.append("MathFunctions.longToBoolean(");
+        sb.append("PrimitiveFunctions.longToBoolean(");
         buildInvokeMethodAction(domainMethod, guideForm, methodIndex, sb);
         sb.append(")");
       } else {
@@ -412,7 +412,7 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
     if (param.type().isPrimitiveReference()) {
       String typename = param.type().asPrimitiveReferenceOrElseThrow().typename();
       if (Primitives.Boolean.typename().equals(typename)) {
-        sb.append("MathFunctions.booleanToInt(").append(param.name()).append(")");
+        sb.append("PrimitiveFunctions.booleanToInt(").append(param.name()).append(")");
       } else if (Primitives.Char.typename().equals(typename)) {
         sb.append("(int) ").append(param.name());
       } else if (Primitives.Byte.typename().equals(typename)) {
@@ -432,8 +432,8 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
       return "execute";
     } else if (guideForm == GuideForms.Primitive) {
       CustomType ct = domainMethod.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow().targetType();
-      String typename = TypeFunctions.getPrimitiveTypeOfWrapper(ct.canonicalName());
-      if (ObjectInstanceFunctions.equalsAnyOf(
+      String typename = ClassFunctions.getPrimitiveTypeOfWrapper(ct.canonicalName());
+      if (intellispaces.common.base.object.ObjectFunctions.equalsAnyOf(
           typename,
           Primitives.Boolean.typename(),
           Primitives.Char.typename(),
@@ -449,7 +449,7 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
         return "execute";
       }
     } else {
-      throw UnexpectedViolationException.withMessage("Unsupported guide form - {0}", guideForm);
+      throw UnexpectedExceptions.withMessage("Unsupported guide form - {0}", guideForm);
     }
   }
 

@@ -1,7 +1,7 @@
 package intellispaces.jaquarius.system.kernel;
 
-import intellispaces.common.base.exception.NotImplementedException;
-import intellispaces.common.base.exception.UnexpectedViolationException;
+import intellispaces.common.base.exception.NotImplementedExceptions;
+import intellispaces.common.base.exception.UnexpectedExceptions;
 import intellispaces.jaquarius.guide.Guide;
 import intellispaces.jaquarius.guide.GuideForm;
 import intellispaces.jaquarius.guide.GuideKind;
@@ -194,7 +194,7 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
     }
 
     if (!ObjectFunctions.isObjectHandleClass(sourceClass)) {
-      throw UnexpectedViolationException.withMessage("Traverse plan of type {0} expected object handle to input",
+      throw UnexpectedExceptions.withMessage("Traverse plan of type {0} expected object handle to input",
           plan.type());
     }
     Class<?> objectHandleClass = ObjectFunctions.getObjectHandleClass(sourceClass);
@@ -204,7 +204,7 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
     }
 
     if (sourceClass != plan.objectHandleClass() && !plan.objectHandleClass().isAssignableFrom(sourceClass)) {
-      throw UnexpectedViolationException.withMessage("Traverse plan of type {0} expected object handle of class {1} " +
+      throw UnexpectedExceptions.withMessage("Traverse plan of type {0} expected object handle of class {1} " +
           "or it subclass", plan.objectHandleClass());
     }
     executionPlan = plan.getExecutionPlan(plan.objectHandleClass());
@@ -234,7 +234,7 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
       return null;
     }
     if (guides.size() > 1) {
-      throw NotImplementedException.withCodeAndMessage("e9iXkw", "Multiple guides are found:\n{0}",
+      throw NotImplementedExceptions.withCodeAndMessage("e9iXkw", "Multiple guides are found:\n{0}",
           guides.stream().map(Object::toString).collect(Collectors.joining("\n"))
       );
     }
@@ -244,7 +244,7 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
       case Mapper2, Mover2, MapperOfMoving2 -> new CallGuide2PlanImpl((Guide2<?, ?, ?, ?>) guides.get(0));
       case Mapper3, Mover3, MapperOfMoving3 -> new CallGuide3PlanImpl((Guide3<?, ?, ?, ?, ?>) guides.get(0));
       case Mapper4, Mover4, MapperOfMoving4 -> new CallGuide4PlanImpl((Guide4<?, ?, ?, ?, ?, ?>) guides.get(0));
-      default -> throw NotImplementedException.withCode("MlgXfQ");
+      default -> throw NotImplementedExceptions.withCode("MlgXfQ");
     };
   }
 
@@ -267,7 +267,7 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
       case MapOfMovingObjectHandleThruChannel2 -> GuideKinds.MapperOfMoving2;
       case MapOfMovingObjectHandleThruChannel3 -> GuideKinds.MapperOfMoving3;
       case MapOfMovingObjectHandleThruChannel4 -> GuideKinds.MapperOfMoving4;
-      default -> throw NotImplementedException.withCode("5cYSWA");
+      default -> throw NotImplementedExceptions.withCode("5cYSWA");
     };
   }
 }

@@ -2,7 +2,7 @@ package intellispaces.jaquarius.annotation.processor.domain;
 
 import intellispaces.common.annotationprocessor.context.AnnotationProcessingContext;
 import intellispaces.common.base.collection.ArraysFunctions;
-import intellispaces.common.base.text.TextFunctions;
+import intellispaces.common.base.text.StringFunctions;
 import intellispaces.common.base.type.Type;
 import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.common.javastatement.method.MethodStatement;
@@ -125,7 +125,7 @@ public class UnmovableDownwardObjectHandleGenerator extends AbstractConversionDo
     classTypeParams = annotatedType.typeParametersFullDeclaration();
     classTypeParamsBrief = annotatedType.typeParametersBriefDeclaration();
     domainTypeArguments = parentDomainType.typeArgumentsDeclaration(context::addToImportAndGetSimpleName);
-    childFieldName = TextFunctions.lowercaseFirstLetter(TextFunctions.removeTailOrElseThrow(annotatedType.simpleName(), "Domain"));
+    childFieldName = StringFunctions.lowercaseFirstLetter(StringFunctions.removeTailOrElseThrow(annotatedType.simpleName(), "Domain"));
     childObjectHandleType = getChildObjectHandleType();
     childDomainClassSimpleName = annotatedType.simpleName();
     parentDomainClassSimpleName = context.addToImportAndGetSimpleName(parentDomainType.targetType().canonicalName());

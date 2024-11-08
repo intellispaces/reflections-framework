@@ -1,6 +1,6 @@
 package intellispaces.jaquarius.traverse.plan;
 
-import intellispaces.common.base.exception.UnexpectedViolationException;
+import intellispaces.common.base.exception.UnexpectedExceptions;
 import intellispaces.jaquarius.exception.TraverseException;
 import intellispaces.jaquarius.guide.n1.Guide1;
 
@@ -23,18 +23,18 @@ public class CallGuide1PlanImpl implements CallGuide1Plan {
   }
 
   @Override
-  public Object execute(Object source, TraverseExecutor executor) {
-    throw UnexpectedViolationException.withMessage("Expected traverse with one channel qualifier");
+  public Object execute(Object source, TraverseExecutor executor) throws TraverseException {
+    throw UnexpectedExceptions.withMessage("Expected traverse with one channel qualifier");
   }
 
   @Override
   public int executeReturnInt(Object source, TraverseExecutor executor) throws TraverseException {
-    throw UnexpectedViolationException.withMessage("Expected traverse with one channel qualifier");
+    throw UnexpectedExceptions.withMessage("Expected traverse with one channel qualifier");
   }
 
   @Override
   public double executeReturnDouble(Object source, TraverseExecutor executor) throws TraverseException {
-    throw UnexpectedViolationException.withMessage("Expected traverse with one channel qualifier");
+    throw UnexpectedExceptions.withMessage("Expected traverse with one channel qualifier");
   }
 
   @Override
@@ -44,20 +44,20 @@ public class CallGuide1PlanImpl implements CallGuide1Plan {
 
   @Override
   public Object execute(Object source, Object qualifier1, Object qualifier2, TraverseExecutor executor) throws TraverseException {
-    throw UnexpectedViolationException.withMessage("Expected traverse with one channel qualifier");
+    throw UnexpectedExceptions.withMessage("Expected traverse with one channel qualifier");
   }
 
   @Override
   public Object execute(
     Object source, Object qualifier1, Object qualifier2, Object qualifier3, TraverseExecutor executor
   ) throws TraverseException {
-    throw UnexpectedViolationException.withMessage("Expected traverse with one channel qualifier");
+    throw UnexpectedExceptions.withMessage("Expected traverse with one channel qualifier");
   }
 
   @Override
   public Object execute(
       Object source, Object qualifier1, Object qualifier2, Object qualifier3, Object qualifier4, TraverseExecutor executor
   ) throws TraverseException {
-    throw UnexpectedViolationException.withMessage("Expected traverse with one channel qualifier");
+    throw UnexpectedExceptions.withMessage("Expected traverse with one channel qualifier");
   }
 }

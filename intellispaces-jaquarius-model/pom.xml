@@ -29,13 +29,5 @@
             <groupId>intellispaces-common</groupId>
             <artifactId>intellispaces-base-model</artifactId>
         </dependency>
-        <dependency>
-            <groupId>intellispaces-common</groupId>
-            <artifactId>intellispaces-action</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>intellispaces-common</groupId>
-            <artifactId>intellispaces-javastatement-model</artifactId>
-        </dependency>
     </dependencies>
 </project>

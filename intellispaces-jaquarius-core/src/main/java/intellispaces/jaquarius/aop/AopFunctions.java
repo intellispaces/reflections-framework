@@ -1,7 +1,7 @@
 package intellispaces.jaquarius.aop;
 
 import intellispaces.common.action.Action;
-import intellispaces.common.base.exception.UnexpectedViolationException;
+import intellispaces.common.base.exception.UnexpectedExceptions;
 import intellispaces.common.javastatement.method.MethodStatement;
 import intellispaces.common.javastatement.method.Methods;
 import intellispaces.jaquarius.annotation.ApplyAdvice;
@@ -44,7 +44,7 @@ public interface AopFunctions {
             projectionRegistry
         );
       } catch (Exception e) {
-        throw UnexpectedViolationException.withCauseAndMessage(e, "Could not create AOP advice");
+        throw UnexpectedExceptions.withCauseAndMessage(e, "Could not create AOP advice");
       }
     }
     return currentAction;

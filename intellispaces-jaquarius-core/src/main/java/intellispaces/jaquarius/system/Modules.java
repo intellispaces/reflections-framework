@@ -1,6 +1,6 @@
 package intellispaces.jaquarius.system;
 
-import intellispaces.common.base.exception.UnexpectedViolationException;
+import intellispaces.common.base.exception.UnexpectedExceptions;
 import intellispaces.jaquarius.engine.JaquariusEngines;
 
 import java.util.Arrays;
@@ -60,7 +60,7 @@ public interface Modules {
   static Module current() {
     Module module = JaquariusEngines.get().getCurrentModule();
     if (module == null) {
-      throw UnexpectedViolationException.withMessage("Current module is not defined. " +
+      throw UnexpectedExceptions.withMessage("Current module is not defined. " +
           "It is possible that the module is not loaded yet");
     }
     return module;

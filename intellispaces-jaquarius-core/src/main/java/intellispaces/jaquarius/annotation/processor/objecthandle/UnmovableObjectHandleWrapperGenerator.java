@@ -4,7 +4,7 @@ import intellispaces.common.action.Actions;
 import intellispaces.common.action.functional.FunctionActions;
 import intellispaces.common.action.getter.ResettableGetter;
 import intellispaces.common.annotationprocessor.context.AnnotationProcessingContext;
-import intellispaces.common.base.math.MathFunctions;
+import intellispaces.common.base.type.PrimitiveFunctions;
 import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.jaquarius.annotation.Ordinal;
 import intellispaces.jaquarius.annotation.Wrapper;
@@ -92,7 +92,6 @@ public class UnmovableObjectHandleWrapperGenerator extends AbstractObjectHandleW
     context.addImport(Wrapper.class);
     context.addImport(ObjectHandleWrapper.class);
     context.addImport(InnerObjectHandle.class);
-    context.addImport(MathFunctions.class);
     context.addImport(GuideForms.class);
 
     context.addImport(Mapper0.class);
@@ -104,6 +103,7 @@ public class UnmovableObjectHandleWrapperGenerator extends AbstractObjectHandleW
     context.addImport(GuideInjections.class);
     context.addImport(AutoGuideInjections.class);
     context.addImport(MappingChannel.class);
+    context.addImport(PrimitiveFunctions.class);
 
     analyzeDomain();
     analyzeTypeParams(annotatedType);

@@ -2,7 +2,7 @@ package intellispaces.jaquarius.annotation.processor.data;
 
 import intellispaces.common.action.runner.Runner;
 import intellispaces.common.annotationprocessor.context.AnnotationProcessingContext;
-import intellispaces.common.base.exception.NotImplementedException;
+import intellispaces.common.base.exception.NotImplementedExceptions;
 import intellispaces.common.base.text.TextActions;
 import intellispaces.common.base.type.Type;
 import intellispaces.common.base.type.Types;
@@ -78,7 +78,7 @@ public class UnmovableDataHandleGenerator extends AbstractGenerator {
     context.addImport(Types.class);
     context.addImport(Channel1.class);
     context.addImport(TraverseException.class);
-    context.addImport(NotImplementedException.class);
+    context.addImport(NotImplementedExceptions.class);
     context.addImport(Objects.class);
     context.addImport(MappingChannel.class);
 

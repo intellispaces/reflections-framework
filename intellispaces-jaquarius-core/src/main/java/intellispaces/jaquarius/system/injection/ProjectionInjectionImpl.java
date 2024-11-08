@@ -1,6 +1,6 @@
 package intellispaces.jaquarius.system.injection;
 
-import intellispaces.common.base.exception.UnexpectedViolationException;
+import intellispaces.common.base.exception.UnexpectedExceptions;
 import intellispaces.jaquarius.system.InjectionKind;
 import intellispaces.jaquarius.system.ProjectionInjection;
 import intellispaces.jaquarius.system.kernel.KernelFunctions;
@@ -47,7 +47,7 @@ class ProjectionInjectionImpl implements ProjectionInjection {
     if (projectionTarget == null) {
       projectionTarget = KernelFunctions.currentModule().projectionRegistry().getProjection(name, targetClass);
       if (projectionTarget == null) {
-        throw UnexpectedViolationException.withMessage("Target of projection injection ''{0}'' in unit {1} " +
+        throw UnexpectedExceptions.withMessage("Target of projection injection '{0}' in unit {1} " +
                 "is not defined", name(), unitClass.getCanonicalName());
       }
     }

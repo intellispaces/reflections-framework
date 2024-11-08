@@ -1,6 +1,6 @@
 package intellispaces.jaquarius.system.kernel;
 
-import intellispaces.jaquarius.exception.ConfigurationException;
+import intellispaces.jaquarius.exception.ConfigurationExceptions;
 import intellispaces.jaquarius.guide.Guide;
 import intellispaces.jaquarius.guide.GuideForm;
 import intellispaces.jaquarius.guide.GuideKind;
@@ -29,7 +29,7 @@ class GuideRegistryImpl implements GuideRegistry {
     G guide = (G) name2guideMap.get(name);
     if (guide != null) {
       if (guideClass != guide.getClass() && !guideClass.isAssignableFrom(guide.getClass())) {
-        throw ConfigurationException.withMessage("Guide with name ''{0}'' but another class " +
+        throw ConfigurationExceptions.withMessage("Guide with name '{0}' but another class " +
             "already registered in module");
       }
       return guide;

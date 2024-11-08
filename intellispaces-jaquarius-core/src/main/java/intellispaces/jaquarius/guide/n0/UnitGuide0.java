@@ -1,8 +1,9 @@
 package intellispaces.jaquarius.guide.n0;
 
-import intellispaces.common.base.exception.UnexpectedViolationException;
+import intellispaces.common.base.exception.UnexpectedExceptions;
 import intellispaces.common.javastatement.method.MethodStatement;
 import intellispaces.jaquarius.exception.TraverseException;
+import intellispaces.jaquarius.exception.TraverseExceptions;
 import intellispaces.jaquarius.guide.GuideForm;
 import intellispaces.jaquarius.guide.GuideLogger;
 import intellispaces.jaquarius.system.UnitWrapper;
@@ -17,7 +18,7 @@ abstract class UnitGuide0<S, R> implements Guide0<S, R>, KernelUnitGuide<S, R> {
 
   UnitGuide0(String cid, UnitWrapper unitInstance, MethodStatement guideMethod, int guideOrdinal, GuideForm guideForm) {
     if (guideMethod.params().size() != 1) {
-      throw UnexpectedViolationException.withMessage("Guide method should have one parameter: source");
+      throw UnexpectedExceptions.withMessage("Guide method should have one parameter: source");
     }
     this.cid = cid;
     this.unitInstance = unitInstance;
@@ -55,7 +56,7 @@ abstract class UnitGuide0<S, R> implements Guide0<S, R>, KernelUnitGuide<S, R> {
     } catch (TraverseException e) {
       throw e;
     } catch (Exception e) {
-      throw TraverseException.withCauseAndMessage(e, "Failed to invoke unit guide {0} in unit {1}",
+      throw TraverseExceptions.withCauseAndMessage(e, "Failed to invoke unit guide {0} in unit {1}",
         guideMethod.name(), guideMethod.owner().canonicalName());
     }
   }
@@ -68,7 +69,7 @@ abstract class UnitGuide0<S, R> implements Guide0<S, R>, KernelUnitGuide<S, R> {
     } catch (TraverseException e) {
       throw e;
     } catch (Exception e) {
-      throw TraverseException.withCauseAndMessage(e, "Failed to invoke unit guide {0} in unit {1}",
+      throw TraverseExceptions.withCauseAndMessage(e, "Failed to invoke unit guide {0} in unit {1}",
           guideMethod.name(), guideMethod.owner().canonicalName());
     }
   }
@@ -81,7 +82,7 @@ abstract class UnitGuide0<S, R> implements Guide0<S, R>, KernelUnitGuide<S, R> {
     } catch (TraverseException e) {
       throw e;
     } catch (Exception e) {
-      throw TraverseException.withCauseAndMessage(e, "Failed to invoke unit guide {0} in unit {1}",
+      throw TraverseExceptions.withCauseAndMessage(e, "Failed to invoke unit guide {0} in unit {1}",
           guideMethod.name(), guideMethod.owner().canonicalName());
     }
   }

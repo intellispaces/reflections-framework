@@ -1,9 +1,9 @@
 package intellispaces.jaquarius.system.kernel;
 
 import intellispaces.common.action.Action;
-import intellispaces.common.base.collection.Streams;
-import intellispaces.common.base.exception.NotImplementedException;
-import intellispaces.common.base.exception.UnexpectedViolationException;
+import intellispaces.common.base.exception.NotImplementedExceptions;
+import intellispaces.common.base.exception.UnexpectedExceptions;
+import intellispaces.common.base.stream.Streams;
 import intellispaces.common.javastatement.method.MethodStatement;
 import intellispaces.jaquarius.annotation.Configuration;
 import intellispaces.jaquarius.annotation.Guide;
@@ -68,7 +68,7 @@ public class ModuleFactory {
       } else if (unitclass.isAnnotationPresent(Configuration.class) || unitclass.isAnnotationPresent(Guide.class)) {
         return createEmptyMainUnitAndIncludedUnits(List.of(unitclass));
       } else {
-        throw UnexpectedViolationException.withMessage("Expected module, configuration or guide class");
+        throw UnexpectedExceptions.withMessage("Expected module, configuration or guide class");
       }
     } else {
       return createEmptyMainUnitAndIncludedUnits(unitClasses);
@@ -111,7 +111,7 @@ public class ModuleFactory {
     if (unitClass != Void.class) {
       return createUnit(unitClass, false);
     }
-    throw NotImplementedException.withCode("3fHY1g");
+    throw NotImplementedExceptions.withCode("3fHY1g");
   }
 
   private KernelUnit createUnit(Class<?> unitClass, boolean main) {
@@ -138,7 +138,7 @@ public class ModuleFactory {
       String wrapperClassName = NameConventionFunctions.getUnitWrapperCanonicalName(unitClass.getName());
       return Class.forName(wrapperClassName);
     } catch (Exception e) {
-      throw UnexpectedViolationException.withCauseAndMessage(e, "Could not get wrapper class of module unit {0}",
+      throw UnexpectedExceptions.withCauseAndMessage(e, "Could not get wrapper class of module unit {0}",
           unitClass.getCanonicalName());
     }
   }
@@ -147,7 +147,7 @@ public class ModuleFactory {
     try {
       return (UnitWrapper) wrapperClass.getConstructor().newInstance();
     } catch (Exception e) {
-      throw UnexpectedViolationException.withCauseAndMessage(e, "Error creating module unit {0}",
+      throw UnexpectedExceptions.withCauseAndMessage(e, "Error creating module unit {0}",
           unitClass.getCanonicalName());
     }
   }

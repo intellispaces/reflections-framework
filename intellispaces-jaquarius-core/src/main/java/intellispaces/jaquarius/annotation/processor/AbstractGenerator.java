@@ -2,7 +2,7 @@ package intellispaces.jaquarius.annotation.processor;
 
 import intellispaces.common.annotationprocessor.context.JavaArtifactContext;
 import intellispaces.common.annotationprocessor.generator.TemplatedGenerator;
-import intellispaces.common.base.type.TypeFunctions;
+import intellispaces.common.base.type.ClassFunctions;
 import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.common.javastatement.method.MethodParam;
 import intellispaces.common.javastatement.method.MethodSignatureDeclarations;
@@ -48,7 +48,7 @@ public abstract class AbstractGenerator extends TemplatedGenerator {
           date = "%s"
         )""".formatted(
           annotatedType.canonicalName(),
-          TypeFunctions.getJavaLibraryName(this.getClass()),
+          ClassFunctions.getJavaLibraryName(this.getClass()),
           this.getClass().getCanonicalName(),
           ZonedDateTime.now().format(ISO_OFFSET_DATE_TIME)
       );

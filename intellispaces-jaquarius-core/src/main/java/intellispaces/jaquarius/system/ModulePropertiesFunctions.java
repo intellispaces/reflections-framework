@@ -1,6 +1,6 @@
 package intellispaces.jaquarius.system;
 
-import intellispaces.common.base.exception.UnexpectedViolationException;
+import intellispaces.common.base.exception.UnexpectedExceptions;
 import intellispaces.common.base.resource.ResourceFunctions;
 
 import java.util.HashMap;
@@ -32,10 +32,10 @@ public class ModulePropertiesFunctions {
     try {
       content = ResourceFunctions.readResourceAsString(module.getClass(), resourceName);
     } catch (Exception e) {
-      throw UnexpectedViolationException.withCauseAndMessage(e, "Failed to read resource ''{0}''", resourceName);
+      throw UnexpectedExceptions.withCauseAndMessage(e, "Failed to read resource '{0}'", resourceName);
     }
     if (content.isEmpty()) {
-      throw UnexpectedViolationException.withMessage("Failed to read resource file ''{0}''", resourceName);
+      throw UnexpectedExceptions.withMessage("Failed to read resource file '{0}'", resourceName);
     }
     return content.get();
   }

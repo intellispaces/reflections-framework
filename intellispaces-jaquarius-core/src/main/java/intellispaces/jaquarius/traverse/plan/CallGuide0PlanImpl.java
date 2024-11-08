@@ -1,6 +1,6 @@
 package intellispaces.jaquarius.traverse.plan;
 
-import intellispaces.common.base.exception.UnexpectedViolationException;
+import intellispaces.common.base.exception.UnexpectedExceptions;
 import intellispaces.jaquarius.exception.TraverseException;
 import intellispaces.jaquarius.guide.n0.Guide0;
 
@@ -39,25 +39,25 @@ public class CallGuide0PlanImpl implements CallGuide0Plan {
 
   @Override
   public Object execute(Object source, Object qualifier, TraverseExecutor executor) {
-    throw UnexpectedViolationException.withMessage("Expected traverse without channel qualifier");
+    throw UnexpectedExceptions.withMessage("Expected traverse without channel qualifier");
   }
 
   @Override
   public Object execute(Object source, Object qualifier1, Object qualifier2, TraverseExecutor executor) throws TraverseException {
-    throw UnexpectedViolationException.withMessage("Expected traverse without channel qualifier");
+    throw UnexpectedExceptions.withMessage("Expected traverse without channel qualifier");
   }
 
   @Override
   public Object execute(
     Object source, Object qualifier1, Object qualifier2, Object qualifier3, TraverseExecutor executor
   ) throws TraverseException {
-    throw UnexpectedViolationException.withMessage("Expected traverse without channel qualifier");
+    throw UnexpectedExceptions.withMessage("Expected traverse without channel qualifier");
   }
 
   @Override
   public Object execute(
       Object source, Object qualifier1, Object qualifier2, Object qualifier3, Object qualifier4, TraverseExecutor executor
   ) throws TraverseException {
-    throw UnexpectedViolationException.withMessage("Expected traverse without channel qualifier");
+    throw UnexpectedExceptions.withMessage("Expected traverse without channel qualifier");
   }
 }

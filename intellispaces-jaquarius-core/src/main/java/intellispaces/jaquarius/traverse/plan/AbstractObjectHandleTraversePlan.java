@@ -1,6 +1,6 @@
 package intellispaces.jaquarius.traverse.plan;
 
-import intellispaces.common.base.exception.UnexpectedViolationException;
+import intellispaces.common.base.exception.UnexpectedExceptions;
 import intellispaces.jaquarius.object.ObjectFunctions;
 
 import java.util.HashMap;
@@ -41,10 +41,10 @@ public abstract class AbstractObjectHandleTraversePlan implements ObjectHandleTr
   @Override
   public void addExecutionPlan(Class<?> sourceClass, ExecutionTraversePlan traversePlan) {
     if (!ObjectFunctions.isObjectHandleClass(sourceClass)) {
-      throw UnexpectedViolationException.withMessage("Expected object handle class");
+      throw UnexpectedExceptions.withMessage("Expected object handle class");
     }
     if (this.objectHandleClass != sourceClass && !this.objectHandleClass.isAssignableFrom(sourceClass)) {
-      throw UnexpectedViolationException.withMessage("Expected class {0} or its subclasses",
+      throw UnexpectedExceptions.withMessage("Expected class {0} or its subclasses",
           this.objectHandleClass.getCanonicalName());
     }
     executionPlans.put(sourceClass, traversePlan);

@@ -1,8 +1,8 @@
 package intellispaces.jaquarius.guide;
 
-import intellispaces.common.base.exception.NotImplementedException;
-import intellispaces.common.base.exception.UnexpectedViolationException;
-import intellispaces.common.base.type.TypeFunctions;
+import intellispaces.common.base.exception.NotImplementedExceptions;
+import intellispaces.common.base.exception.UnexpectedExceptions;
+import intellispaces.common.base.type.ClassFunctions;
 import intellispaces.common.javastatement.customtype.Classes;
 import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.common.javastatement.customtype.CustomTypes;
@@ -134,7 +134,7 @@ public final class GuideFunctions {
           .value()
           .flatMap(Instance::asClass)
           .map(ClassInstance::type)
-          .orElseThrow(() -> NotImplementedException.withCode("MrjpVg"));
+          .orElseThrow(() -> NotImplementedExceptions.withCode("MrjpVg"));
     }
 
     Optional<AnnotationInstance> mapperRelatedToMoving = guideMethod.selectAnnotation(
@@ -145,10 +145,10 @@ public final class GuideFunctions {
         .value()
         .flatMap(Instance::asClass)
         .map(ClassInstance::type)
-        .orElseThrow(() -> NotImplementedException.withCode("6wSmRQ"));
+        .orElseThrow(() -> NotImplementedExceptions.withCode("6wSmRQ"));
     }
 
-    throw NotImplementedException.withCode("ATFwew");
+    throw NotImplementedExceptions.withCode("ATFwew");
   }
 
   public static Channel findObjectChannelAnnotation(MethodStatement objectHandleMethod) {
@@ -183,9 +183,9 @@ public final class GuideFunctions {
     String implClassCanonicalName = NameConventionFunctions.getObjectHandleWrapperCanonicalName(
         objectHandleClass
     );
-    Optional<Class<?>> objectHandleImplClass = TypeFunctions.getClass(implClassCanonicalName);
+    Optional<Class<?>> objectHandleImplClass = ClassFunctions.getClass(implClassCanonicalName);
     if (objectHandleImplClass.isEmpty()) {
-      throw UnexpectedViolationException.withMessage("Could not get object handle implementation class {0}",
+      throw UnexpectedExceptions.withMessage("Could not get object handle implementation class {0}",
           implClassCanonicalName);
     }
     CustomType objectHandleWrapperType = Interfaces.of(objectHandleImplClass.get());
@@ -231,7 +231,7 @@ public final class GuideFunctions {
   public static GuideKind getGuideKind(Class<?> guideClass) {
     GuideKind guideKind = GUIDE_CLASS_TO_KIND.get(guideClass);
     if (guideKind == null) {
-      throw UnexpectedViolationException.withMessage("Unsupported guide class: " + guideClass.getCanonicalName());
+      throw UnexpectedExceptions.withMessage("Unsupported guide class: " + guideClass.getCanonicalName());
     }
     return guideKind;
   }
@@ -246,14 +246,14 @@ public final class GuideFunctions {
       case 2 -> new UnitMapper1<>(cid, unitInstance, guideMethod, guideOrdinal, guideForm);
       case 3 -> new UnitMapper2<>(cid, unitInstance, guideMethod, guideOrdinal, guideForm);
       case 4 -> new UnitMapper3<>(cid, unitInstance, guideMethod, guideOrdinal, guideForm);
-      default -> throw UnexpectedViolationException.withMessage("Unsupported number of guide qualifiers: {0}",
+      default -> throw UnexpectedExceptions.withMessage("Unsupported number of guide qualifiers: {0}",
           qualifiersCount);
     };
   }
 
   private static UnitGuide<?, ?> createMover(Object unitInstance, MethodStatement guideMethod) {
     String cid = getUnitGuideTid(unitInstance, guideMethod);
-    throw NotImplementedException.withCode("4GL2+g");
+    throw NotImplementedExceptions.withCode("4GL2+g");
   }
 
   private static UnitGuide<?, ?> createUnitMapperOfMoving(UnitWrapper unitInstance, MethodStatement guideMethod) {
@@ -266,7 +266,7 @@ public final class GuideFunctions {
       case 2 -> new UnitMapperOfMoving1<>(cid, unitInstance, guideMethod, guideOrdinal, guideForm);
       case 3 -> new UnitMapperOfMoving2<>(cid, unitInstance, guideMethod, guideOrdinal, guideForm);
       case 4 -> new UnitMapperOfMoving3<>(cid, unitInstance, guideMethod, guideOrdinal, guideForm);
-      default -> throw UnexpectedViolationException.withMessage("Unsupported number of guide qualifiers: {0}",
+      default -> throw UnexpectedExceptions.withMessage("Unsupported number of guide qualifiers: {0}",
           qualifiersCount);
     };
   }
@@ -283,7 +283,7 @@ public final class GuideFunctions {
       case 1 -> new ObjectMapper1<>(cid, (Class) objectHandleClass, guideMethod, channelOrdinal, guideForm);
       case 2 -> new ObjectMapper2<>(cid, (Class) objectHandleClass, guideMethod, channelOrdinal, guideForm);
       case 3 -> new ObjectMapper3<>(cid, (Class) objectHandleClass, guideMethod, channelOrdinal, guideForm);
-      default -> throw UnexpectedViolationException.withMessage("Unsupported number of guide qualifiers: {0}",
+      default -> throw UnexpectedExceptions.withMessage("Unsupported number of guide qualifiers: {0}",
           qualifiersCount);
     };
   }
@@ -300,7 +300,7 @@ public final class GuideFunctions {
       case 1 -> new ObjectMover1<>(cid, (Class) objectHandleClass, guideMethod, channelOrdinal, guideForm);
       case 2 -> new ObjectMover2<>(cid, (Class) objectHandleClass, guideMethod, channelOrdinal, guideForm);
       case 3 -> new ObjectMover3<>(cid, (Class) objectHandleClass, guideMethod, channelOrdinal, guideForm);
-      default -> throw UnexpectedViolationException.withMessage("Unsupported number of guide qualifiers: {0}",
+      default -> throw UnexpectedExceptions.withMessage("Unsupported number of guide qualifiers: {0}",
           qualifiersCount);
     };
   }
@@ -318,7 +318,7 @@ public final class GuideFunctions {
       case 2 -> new ObjectMapperOfMoving2<>(cid, (Class) objectHandleClass, guideMethod, channelOrdinal, guideForm);
       case 3 -> new ObjectMapperOfMoving3<>(cid, (Class) objectHandleClass, guideMethod, channelOrdinal, guideForm);
       case 4 -> new ObjectMapperOfMoving4<>(cid, (Class) objectHandleClass, guideMethod, channelOrdinal, guideForm);
-      default -> throw UnexpectedViolationException.withMessage("Unsupported number of guide qualifiers: {0}",
+      default -> throw UnexpectedExceptions.withMessage("Unsupported number of guide qualifiers: {0}",
           qualifiersCount);
     };
   }
@@ -334,9 +334,9 @@ public final class GuideFunctions {
     String implClassCanonicalName = NameConventionFunctions.getObjectHandleWrapperCanonicalName(
         objectHandleClass
     );
-    Optional<Class<?>> objectHandleImplClass = TypeFunctions.getClass(implClassCanonicalName);
+    Optional<Class<?>> objectHandleImplClass = ClassFunctions.getClass(implClassCanonicalName);
     if (objectHandleImplClass.isEmpty()) {
-      throw UnexpectedViolationException.withMessage("Could not get object handle implementation class {0}",
+      throw UnexpectedExceptions.withMessage("Could not get object handle implementation class {0}",
           implClassCanonicalName);
     }
 
@@ -345,12 +345,12 @@ public final class GuideFunctions {
         guideMethod
     );
     if (objectHandleImplGuideMethod.isEmpty()) {
-      throw UnexpectedViolationException.withMessage("Could not find override method in object handle " +
+      throw UnexpectedExceptions.withMessage("Could not find override method in object handle " +
           "implementation class {0}. Method {1}", objectHandleImplClass.get(), guideMethod.name());
     }
     Optional<Ordinal> indexAnnotation = objectHandleImplGuideMethod.get().selectAnnotation(Ordinal.class);
     if (indexAnnotation.isEmpty()) {
-      throw UnexpectedViolationException.withMessage("Method {0} does not contain annotation {1}",
+      throw UnexpectedExceptions.withMessage("Method {0} does not contain annotation {1}",
           guideMethod.name(), Ordinal.class.getCanonicalName());
     }
     return indexAnnotation.get().value();
@@ -363,12 +363,12 @@ public final class GuideFunctions {
         guideMethod
     );
     if (overrideGuideMethod.isEmpty()) {
-      throw UnexpectedViolationException.withMessage("Could not find override method in unit wrapper " +
+      throw UnexpectedExceptions.withMessage("Could not find override method in unit wrapper " +
           "class {0}. Method {1}", unitWrapperClass, guideMethod.name());
     }
     Optional<Ordinal> indexAnnotation = overrideGuideMethod.get().selectAnnotation(Ordinal.class);
     if (indexAnnotation.isEmpty()) {
-      throw UnexpectedViolationException.withMessage("Method {0} does not contain annotation {1}",
+      throw UnexpectedExceptions.withMessage("Method {0} does not contain annotation {1}",
           guideMethod.name(), Ordinal.class.getCanonicalName());
     }
     return indexAnnotation.get().value();

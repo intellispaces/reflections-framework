@@ -1,7 +1,7 @@
 package intellispaces.jaquarius.system.projection;
 
 import intellispaces.common.action.Action;
-import intellispaces.common.base.exception.NotImplementedException;
+import intellispaces.common.base.exception.NotImplementedExceptions;
 import intellispaces.jaquarius.system.ProjectionDefinitionKind;
 import intellispaces.jaquarius.system.ProjectionDefinitionKinds;
 import intellispaces.jaquarius.system.ProjectionReference;
@@ -69,6 +69,6 @@ public class ProjectionDefinitionBasedOnMethodAction implements UnitProjectionDe
 
   @Override
   public Method projectionMethod() {
-    throw NotImplementedException.withCode("p3QJww");
+    throw NotImplementedExceptions.withCode("p3QJww");
   }
 }

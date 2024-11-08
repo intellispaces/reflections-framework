@@ -1,6 +1,6 @@
 package intellispaces.jaquarius.system.kernel;
 
-import intellispaces.common.base.exception.UnexpectedViolationException;
+import intellispaces.common.base.exception.UnexpectedExceptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,7 +15,7 @@ public final class KernelFunctions {
   public static KernelModule currentModule() {
     KernelModule module = currentModuleSilently();
     if (module == null) {
-      throw UnexpectedViolationException.withMessage("Current module is not defined. " +
+      throw UnexpectedExceptions.withMessage("Current module is not defined. " +
           "It is possible that the module is not loaded yet");
     }
     return module;

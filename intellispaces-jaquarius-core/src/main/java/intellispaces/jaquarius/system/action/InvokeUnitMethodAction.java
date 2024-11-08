@@ -1,8 +1,8 @@
 package intellispaces.jaquarius.system.action;
 
 import intellispaces.common.action.AbstractAction0;
-import intellispaces.common.base.exception.UnexpectedViolationException;
-import intellispaces.jaquarius.exception.ConfigurationException;
+import intellispaces.common.base.exception.UnexpectedExceptions;
+import intellispaces.jaquarius.exception.ConfigurationExceptions;
 import intellispaces.jaquarius.system.UnitWrapper;
 import intellispaces.jaquarius.system.kernel.KernelFunctions;
 
@@ -30,7 +30,7 @@ public class InvokeUnitMethodAction<R> extends AbstractAction0<R> {
     try {
       return (R) unitMethod.invoke(unitInstance, arguments);
     } catch (Exception e) {
-      throw UnexpectedViolationException.withCauseAndMessage(e, "Could not to invoke unit method ''{0}''",
+      throw UnexpectedExceptions.withCauseAndMessage(e, "Could not to invoke unit method '{0}'",
           unitMethod.getName());
     }
   }
@@ -42,7 +42,7 @@ public class InvokeUnitMethodAction<R> extends AbstractAction0<R> {
           .projectionRegistry()
           .getProjection(param.getName(), param.getType());
       if (projection == null) {
-        throw ConfigurationException.withMessage("Cannot to resolve parameter ''{0}'' in method ''{1}'' in unit {2}",
+        throw ConfigurationExceptions.withMessage("Cannot to resolve parameter '{0}' in method '{1}' in unit {2}",
             param.getName(), unitMethod.getName(), unitMethod.getDeclaringClass().getCanonicalName());
       }
       arguments.add(projection);

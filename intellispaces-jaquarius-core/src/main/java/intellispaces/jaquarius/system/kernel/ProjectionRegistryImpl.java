@@ -2,11 +2,12 @@ package intellispaces.jaquarius.system.kernel;
 
 import intellispaces.common.action.Action;
 import intellispaces.common.base.exception.ExceptionFunctions;
-import intellispaces.common.base.exception.UnexpectedViolationException;
-import intellispaces.common.base.type.TypeFunctions;
+import intellispaces.common.base.exception.UnexpectedExceptions;
+import intellispaces.common.base.type.ClassFunctions;
 import intellispaces.jaquarius.annotation.Projection;
 import intellispaces.jaquarius.exception.ConfigurationException;
-import intellispaces.jaquarius.exception.CyclicDependencyException;
+import intellispaces.jaquarius.exception.ConfigurationExceptions;
+import intellispaces.jaquarius.exception.CyclicDependencyExceptions;
 import intellispaces.jaquarius.object.ObjectFunctions;
 import intellispaces.jaquarius.system.ModuleProjection;
 import intellispaces.jaquarius.system.ProjectionDefinition;
@@ -59,7 +60,7 @@ class ProjectionRegistryImpl implements ProjectionRegistry {
   @Override
   public <T> T getProjection(String name, Class<T> targetObjectHandleClass) {
     if (!ObjectFunctions.isObjectHandleClass(targetObjectHandleClass)) {
-      throw UnexpectedViolationException.withMessage("Expected target object handle class");
+      throw UnexpectedExceptions.withMessage("Expected target object handle class");
     }
     return getProjection(name, targetObjectHandleClass, new LinkedHashSet<>());
   }
@@ -68,7 +69,7 @@ class ProjectionRegistryImpl implements ProjectionRegistry {
   @SuppressWarnings("unchecked")
   public <T> List<T> getProjections(Class<T> targetObjectHandleClass) {
     if (!ObjectFunctions.isObjectHandleClass(targetObjectHandleClass)) {
-      throw UnexpectedViolationException.withMessage("Expected target object handle class");
+      throw UnexpectedExceptions.withMessage("Expected target object handle class");
     }
 
     List<T> projections = new ArrayList<>();
@@ -109,7 +110,7 @@ class ProjectionRegistryImpl implements ProjectionRegistry {
   @Override
   public <T> void addContextProjection(String name, Class<T> targetObjectHandleClass, T target) {
     if (!ObjectFunctions.isObjectHandleClass(targetObjectHandleClass)) {
-      throw UnexpectedViolationException.withMessage("Expected target object handle class");
+      throw UnexpectedExceptions.withMessage("Expected target object handle class");
     }
 
     ModuleProjection projection = new ModuleProjectionImpl(name, targetObjectHandleClass, null, target);
@@ -209,7 +210,7 @@ class ProjectionRegistryImpl implements ProjectionRegistry {
       Object[] actionArguments = getProjectionArguments(projectionDefinition, dependencyPath);
       target = action.execute(actionArguments);
     } catch (Exception e) {
-      throw ExceptionFunctions.coverIfChecked(e);
+      throw ExceptionFunctions.wrapIfChecked(e);
     }
     ModuleProjection projection = new ModuleProjectionImpl(
         projectionDefinition.name(), projectionDefinition.type(), projectionDefinition, target
@@ -221,8 +222,8 @@ class ProjectionRegistryImpl implements ProjectionRegistry {
   private ModuleProjection createProjection(
       ProjectionDefinitionBasedOnProviderClass projectionDefinition, Set<String> dependencyPath
   ) {
-    Class<?> providerClass = TypeFunctions.getClass(projectionDefinition.providerClassCanonicalName())
-        .orElseThrow(() -> UnexpectedViolationException.withMessage(
+    Class<?> providerClass = ClassFunctions.getClass(projectionDefinition.providerClassCanonicalName())
+        .orElseThrow(() -> UnexpectedExceptions.withMessage(
             "Could not find projection provider class be name {0}",
             projectionDefinition.providerClassCanonicalName()));
 
@@ -230,7 +231,7 @@ class ProjectionRegistryImpl implements ProjectionRegistry {
         .filter(m -> m.isAnnotationPresent(Projection.class))
         .filter(m -> projectionDefinition.name().equals(ProjectionFunctions.getProjectionName(m)))
         .findAny()
-        .orElseThrow(() -> UnexpectedViolationException.withMessage(
+        .orElseThrow(() -> UnexpectedExceptions.withMessage(
             "Could not find projection method {0} in unit {1}",
             projectionDefinition.name(), projectionDefinition.unitClass().getCanonicalName()
         ));
@@ -240,14 +241,14 @@ class ProjectionRegistryImpl implements ProjectionRegistry {
       Constructor<?> providerConstructor = providerClass.getConstructor(Method.class);
       provider = (ProjectionTargetSupplier) providerConstructor.newInstance(projectionMethod);
     } catch (Exception e) {
-      throw UnexpectedViolationException.withCauseAndMessage(e, "Failed to create projection provider");
+      throw UnexpectedExceptions.withCauseAndMessage(e, "Failed to create projection provider");
     }
 
     final Object target;
     try {
       target = provider.get();
     } catch (Exception e) {
-      throw UnexpectedViolationException.withCauseAndMessage(e, "Failed to call projection provider");
+      throw UnexpectedExceptions.withCauseAndMessage(e, "Failed to call projection provider");
     }
 
     ModuleProjection projection = new ModuleProjectionImpl(
@@ -269,8 +270,8 @@ class ProjectionRegistryImpl implements ProjectionRegistry {
       }
       Object target = getProjection(requiredProjection.name(), requiredProjection.targetClass(), dependencyPath);
       if (target == null) {
-        throw ConfigurationException.withMessage("Cannot to resolve required projection ''{0}'' " +
-                "in projection definition ''{1}'' of unit {2}",
+        throw ConfigurationExceptions.withMessage("Cannot to resolve required projection '{0}' " +
+                "in projection definition '{1}' of unit {2}",
             requiredProjection.name(), definition.name(), definition.unitClass().getCanonicalName());
       }
       arguments[ind++] = target;
@@ -299,14 +300,14 @@ class ProjectionRegistryImpl implements ProjectionRegistry {
     UnitProjectionDefinition cycleFirstUnitDefinition = (UnitProjectionDefinition) cycleFirstDefinition;
     UnitProjectionDefinition cycleLastUnitDefinition = (UnitProjectionDefinition) cycleLastDefinition;
     if (cycleFirstUnitDefinition.unitClass() == cycleLastUnitDefinition.unitClass()) {
-      throw CyclicDependencyException.withMessage(
-          "Cyclic dependency between projections ''{0}'' and ''{1}'' in unit {2}. Dependency path: {3}",
+      throw CyclicDependencyExceptions.withMessage(
+          "Cyclic dependency between projections '{0}' and '{1}' in unit {2}. Dependency path: {3}",
           cycleFirstUnitDefinition.name(), cycleLastUnitDefinition.name(),
           cycleFirstUnitDefinition.unitClass().getCanonicalName(),
           buildDependencyPathExpression(projections.subList(cycleBeginIndex, cycleEndIndex + 2)));
     } else {
-      throw CyclicDependencyException.withMessage(
-          "Cyclic dependency between projection ''{0}'' in unit {1} and projection ''{2}'' in unit {3}. " +
+      throw CyclicDependencyExceptions.withMessage(
+          "Cyclic dependency between projection '{0}' in unit {1} and projection '{2}' in unit {3}. " +
               "Dependency path: {4}",
           cycleFirstUnitDefinition.name(), cycleFirstUnitDefinition.unitClass().getCanonicalName(),
           cycleLastUnitDefinition.name(), cycleLastUnitDefinition.unitClass().getCanonicalName(),

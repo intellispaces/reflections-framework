@@ -1,6 +1,6 @@
 package intellispaces.jaquarius.exception;
 
-import intellispaces.common.base.text.StringFunctions;
+import tech.intellispaces.entity.text.StringFunctions;
 
 /**
  * Provider of the exception {@link CyclicDependencyException}.

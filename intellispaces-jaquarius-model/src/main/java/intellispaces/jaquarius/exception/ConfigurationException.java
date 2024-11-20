@@ -1,6 +1,6 @@
 package intellispaces.jaquarius.exception;
 
-import intellispaces.common.base.exception.UnexpectedException;
+import tech.intellispaces.entity.exception.UnexpectedException;
 
 public class ConfigurationException extends UnexpectedException {
 

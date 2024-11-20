@@ -1,7 +1,6 @@
 package intellispaces.jaquarius.annotation.processor.domain;
 
 import intellispaces.common.annotationprocessor.context.AnnotationProcessingContext;
-import intellispaces.common.base.exception.UnexpectedExceptions;
 import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.common.javastatement.method.MethodStatement;
 import intellispaces.common.javastatement.reference.CustomTypeReference;
@@ -13,6 +12,7 @@ import intellispaces.jaquarius.object.UnmovableObjectHandle;
 import intellispaces.jaquarius.space.channel.ChannelFunctions;
 import intellispaces.jaquarius.space.domain.DomainFunctions;
 import intellispaces.jaquarius.traverse.TraverseType;
+import tech.intellispaces.entity.exception.UnexpectedExceptions;
 
 import javax.annotation.processing.RoundEnvironment;
 import java.util.HashMap;

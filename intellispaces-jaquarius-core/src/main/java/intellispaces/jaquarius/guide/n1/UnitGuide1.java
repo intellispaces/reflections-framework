@@ -1,6 +1,5 @@
 package intellispaces.jaquarius.guide.n1;
 
-import intellispaces.common.base.exception.UnexpectedExceptions;
 import intellispaces.common.javastatement.method.MethodStatement;
 import intellispaces.jaquarius.exception.TraverseException;
 import intellispaces.jaquarius.exception.TraverseExceptions;
@@ -8,6 +7,7 @@ import intellispaces.jaquarius.guide.GuideForm;
 import intellispaces.jaquarius.guide.GuideLogger;
 import intellispaces.jaquarius.system.UnitWrapper;
 import intellispaces.jaquarius.system.kernel.KernelUnitGuide;
+import tech.intellispaces.entity.exception.UnexpectedExceptions;
 
 abstract class UnitGuide1<S, R, Q> implements Guide1<S, R, Q>, KernelUnitGuide<S, R> {
   private final String cid;
@@ -52,7 +52,7 @@ abstract class UnitGuide1<S, R, Q> implements Guide1<S, R, Q>, KernelUnitGuide<S
   public R traverse(S source, Q qualifier) throws TraverseException {
     try {
       GuideLogger.logCallGuide(guideMethod);
-      return (R) unitInstance.$unit().getGuideAction(guideOrdinal).asAction3().execute(unitInstance, source, qualifier);
+      return (R) unitInstance.$unit().getGuideAction(guideOrdinal).castToAction3().execute(unitInstance, source, qualifier);
     } catch (TraverseException e) {
       throw e;
     } catch (Exception e) {

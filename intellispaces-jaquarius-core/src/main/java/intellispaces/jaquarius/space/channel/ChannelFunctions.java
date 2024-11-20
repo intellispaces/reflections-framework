@@ -1,8 +1,5 @@
 package intellispaces.jaquarius.space.channel;
 
-import intellispaces.common.base.exception.NotImplementedExceptions;
-import intellispaces.common.base.exception.UnexpectedExceptions;
-import intellispaces.common.base.text.StringFunctions;
 import intellispaces.common.dynamicproxy.tracker.Tracker;
 import intellispaces.common.dynamicproxy.tracker.TrackerFunctions;
 import intellispaces.common.dynamicproxy.tracker.Trackers;
@@ -30,6 +27,9 @@ import intellispaces.jaquarius.id.RepetableUuidIdentifierGenerator;
 import intellispaces.jaquarius.object.ObjectFunctions;
 import intellispaces.jaquarius.space.domain.DomainFunctions;
 import intellispaces.jaquarius.traverse.TraverseType;
+import tech.intellispaces.entity.exception.NotImplementedExceptions;
+import tech.intellispaces.entity.exception.UnexpectedExceptions;
+import tech.intellispaces.entity.text.StringFunctions;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;

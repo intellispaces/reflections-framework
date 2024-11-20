@@ -1,8 +1,6 @@
 package intellispaces.jaquarius.annotation.processor.domain;
 
-import intellispaces.common.action.runner.Runner;
 import intellispaces.common.annotationprocessor.context.AnnotationProcessingContext;
-import intellispaces.common.base.text.TextActions;
 import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.common.javastatement.method.MethodParam;
 import intellispaces.common.javastatement.method.MethodStatement;
@@ -10,6 +8,8 @@ import intellispaces.common.javastatement.reference.NamedReference;
 import intellispaces.common.javastatement.reference.TypeReference;
 import intellispaces.jaquarius.annotation.processor.AbstractChannelGenerator;
 import intellispaces.jaquarius.common.NameConventionFunctions;
+import tech.intellispaces.action.runnable.RunnableAction;
+import tech.intellispaces.action.text.StringActions;
 
 import java.util.List;
 
@@ -41,7 +41,7 @@ public class DomainChannelGenerator extends AbstractChannelGenerator {
     sb.append(annotatedType.simpleName());
     if (!annotatedType.typeParameters().isEmpty()) {
       sb.append("<");
-      Runner commaAppender = TextActions.skippingFirstTimeCommaAppender(sb);
+      RunnableAction commaAppender = StringActions.skipFirstTimeCommaAppender(sb);
       for (NamedReference typeParam : annotatedType.typeParameters()) {
         commaAppender.run();
         sb.append(typeParam.formalBriefDeclaration());

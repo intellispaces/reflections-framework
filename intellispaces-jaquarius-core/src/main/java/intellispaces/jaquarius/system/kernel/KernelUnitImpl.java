@@ -1,13 +1,13 @@
 package intellispaces.jaquarius.system.kernel;
 
-import intellispaces.common.action.Action;
-import intellispaces.common.action.Actions;
-import intellispaces.common.action.getter.ResettableGetter;
 import intellispaces.jaquarius.system.Injection;
 import intellispaces.jaquarius.system.UnitGuide;
 import intellispaces.jaquarius.system.UnitProjectionDefinition;
 import intellispaces.jaquarius.system.UnitWrapper;
 import intellispaces.jaquarius.system.action.InvokeUnitMethodAction;
+import tech.intellispaces.action.Action;
+import tech.intellispaces.action.Actions;
+import tech.intellispaces.action.supplier.ResettableSupplierAction;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -17,7 +17,7 @@ import java.util.Optional;
 class KernelUnitImpl implements KernelUnit {
   private final boolean main;
   private final Class<?> unitClass;
-  private List<ResettableGetter<Action>> guideActions = List.of();
+  private List<ResettableSupplierAction<Action>> guideActions = List.of();
   private UnitWrapper instance;
   private List<Injection> injections = List.of();
   private List<UnitProjectionDefinition> projectionDefinitions = List.of();
@@ -144,7 +144,7 @@ class KernelUnitImpl implements KernelUnit {
       return;
     }
     guideActions = Arrays.stream(actions)
-        .map(Actions::resettableGetter)
+        .map(Actions::resettableSupplierAction)
         .toList();
   }
 

@@ -1,13 +1,13 @@
 package intellispaces.jaquarius.system.kernel;
 
-import intellispaces.common.action.Actions;
-import intellispaces.common.action.getter.Getter;
 import intellispaces.jaquarius.system.Module;
 import intellispaces.jaquarius.system.Unit;
 import intellispaces.jaquarius.traverse.plan.TraverseAnalyzer;
 import intellispaces.jaquarius.traverse.plan.TraverseExecutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import tech.intellispaces.action.cache.CachedSupplierActions;
+import tech.intellispaces.action.supplier.SupplierAction;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -25,7 +25,9 @@ class KernelModuleImpl implements KernelModule {
   private final TraverseExecutor traverseExecutor;
 
   private final AtomicBoolean started = new AtomicBoolean(false);
-  private final Getter<KernelUnit> mainUnitGetter = Actions.cachedLazyGetter(this::mainUnitSupplier);
+  private final SupplierAction<KernelUnit> mainUnitGetter = CachedSupplierActions.get(
+      this::mainUnitSupplier
+  );
 
   private static final Logger LOG = LoggerFactory.getLogger(KernelModuleImpl.class);
 

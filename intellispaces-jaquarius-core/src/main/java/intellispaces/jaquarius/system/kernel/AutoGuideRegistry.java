@@ -1,9 +1,9 @@
 package intellispaces.jaquarius.system.kernel;
 
-import intellispaces.common.base.exception.UnexpectedExceptions;
-import intellispaces.common.base.object.ObjectFunctions;
-import intellispaces.common.base.type.ClassFunctions;
 import intellispaces.jaquarius.common.NameConventionFunctions;
+import tech.intellispaces.entity.exception.UnexpectedExceptions;
+import tech.intellispaces.entity.object.ObjectFunctions;
+import tech.intellispaces.entity.type.ClassFunctions;
 
 import java.util.Map;
 import java.util.WeakHashMap;

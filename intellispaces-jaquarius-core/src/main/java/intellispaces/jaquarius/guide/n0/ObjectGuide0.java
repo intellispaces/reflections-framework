@@ -1,6 +1,5 @@
 package intellispaces.jaquarius.guide.n0;
 
-import intellispaces.common.base.exception.UnexpectedExceptions;
 import intellispaces.common.javastatement.method.MethodParam;
 import intellispaces.common.javastatement.method.MethodStatement;
 import intellispaces.jaquarius.exception.TraverseException;
@@ -8,6 +7,7 @@ import intellispaces.jaquarius.exception.TraverseExceptions;
 import intellispaces.jaquarius.guide.GuideForm;
 import intellispaces.jaquarius.guide.GuideLogger;
 import intellispaces.jaquarius.system.ObjectHandleWrapper;
+import tech.intellispaces.entity.exception.UnexpectedExceptions;
 
 import java.util.stream.Collectors;
 
@@ -50,7 +50,7 @@ abstract class ObjectGuide0<S extends ObjectHandleWrapper, R> implements Guide0<
   public R traverse(S source) throws TraverseException {
     try {
       GuideLogger.logCallGuide(guideMethod);
-      return (R) source.$innerHandle().getGuideAction(channelIndex).asAction1().execute(source);
+      return (R) source.$innerHandle().getGuideAction(channelIndex).castToAction1().execute(source);
     } catch (TraverseException e) {
       throw e;
     } catch (Exception e) {
@@ -63,7 +63,7 @@ abstract class ObjectGuide0<S extends ObjectHandleWrapper, R> implements Guide0<
   public int traverseToInt(S source) throws TraverseException {
     try {
       GuideLogger.logCallGuide(guideMethod);
-      return source.$innerHandle().getGuideAction(channelIndex).asAction1().executeReturnInt(source);
+      return source.$innerHandle().getGuideAction(channelIndex).castToAction1().executeReturnInt(source);
     } catch (TraverseException e) {
       throw e;
     } catch (Exception e) {
@@ -76,7 +76,7 @@ abstract class ObjectGuide0<S extends ObjectHandleWrapper, R> implements Guide0<
   public double traverseToDouble(S source) throws TraverseException {
     try {
       GuideLogger.logCallGuide(guideMethod);
-      return source.$innerHandle().getGuideAction(channelIndex).asAction1().executeReturnDouble(source);
+      return source.$innerHandle().getGuideAction(channelIndex).castToAction1().executeReturnDouble(source);
     } catch (TraverseException e) {
       throw e;
     } catch (Exception e) {

@@ -1,11 +1,12 @@
 package intellispaces.jaquarius.aop;
 
-import intellispaces.common.action.Action;
-import intellispaces.common.action.wrapper.AbstractWrapperAction;
 import intellispaces.common.javastatement.method.MethodStatement;
 import intellispaces.jaquarius.system.ProjectionProvider;
+import tech.intellispaces.action.AbstractAction;
+import tech.intellispaces.action.Action;
 
-public abstract class AbstractMethodAdvice extends AbstractWrapperAction implements MethodAdvice {
+public abstract class AbstractMethodAdvice extends AbstractAction implements MethodAdvice {
+  private final Action joinAction;
   protected final MethodStatement joinMethod;
   protected final ProjectionProvider projectionProvider;
 
@@ -15,7 +16,7 @@ public abstract class AbstractMethodAdvice extends AbstractWrapperAction impleme
    * Join method and join action represents advice join point.
    */
   public AbstractMethodAdvice(MethodStatement joinMethod, Action joinAction, ProjectionProvider projectionProvider) {
-    super(joinAction);
+    this.joinAction = joinAction;
     this.joinMethod = joinMethod;
     this.projectionProvider = projectionProvider;
   }
@@ -27,6 +28,11 @@ public abstract class AbstractMethodAdvice extends AbstractWrapperAction impleme
 
   @Override
   public Action joinAction() {
-    return wrappedAction();
+    return joinAction;
+  }
+
+  @Override
+  public Action wrappedAction() {
+    return joinAction;
   }
 }

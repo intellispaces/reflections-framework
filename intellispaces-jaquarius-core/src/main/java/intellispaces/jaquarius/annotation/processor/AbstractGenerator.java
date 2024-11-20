@@ -2,7 +2,6 @@ package intellispaces.jaquarius.annotation.processor;
 
 import intellispaces.common.annotationprocessor.context.JavaArtifactContext;
 import intellispaces.common.annotationprocessor.generator.TemplatedGenerator;
-import intellispaces.common.base.type.ClassFunctions;
 import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.common.javastatement.method.MethodParam;
 import intellispaces.common.javastatement.method.MethodSignatureDeclarations;
@@ -11,6 +10,7 @@ import intellispaces.common.javastatement.reference.TypeReference;
 import intellispaces.jaquarius.annotation.Generated;
 import intellispaces.jaquarius.object.ObjectFunctions;
 import intellispaces.jaquarius.object.ObjectHandleTypes;
+import tech.intellispaces.entity.type.ClassFunctions;
 
 import java.time.ZonedDateTime;
 import java.util.List;

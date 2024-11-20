@@ -1,9 +1,6 @@
 package intellispaces.jaquarius.annotation.processor.domain;
 
 import intellispaces.common.annotationprocessor.context.AnnotationProcessingContext;
-import intellispaces.common.base.collection.ArraysFunctions;
-import intellispaces.common.base.text.StringFunctions;
-import intellispaces.common.base.type.Type;
 import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.common.javastatement.method.MethodStatement;
 import intellispaces.common.javastatement.reference.CustomTypeReference;
@@ -23,6 +20,9 @@ import intellispaces.jaquarius.object.ObjectFunctions;
 import intellispaces.jaquarius.object.ObjectHandleTypes;
 import intellispaces.jaquarius.space.domain.DomainFunctions;
 import intellispaces.jaquarius.traverse.TraverseTypes;
+import tech.intellispaces.entity.collection.ArraysFunctions;
+import tech.intellispaces.entity.text.StringFunctions;
+import tech.intellispaces.entity.type.Type;
 
 import javax.annotation.processing.RoundEnvironment;
 import java.util.HashMap;

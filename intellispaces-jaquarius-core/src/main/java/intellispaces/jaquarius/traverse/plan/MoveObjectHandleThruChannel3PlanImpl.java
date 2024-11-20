@@ -1,7 +1,7 @@
 package intellispaces.jaquarius.traverse.plan;
 
-import intellispaces.common.base.exception.UnexpectedExceptions;
 import intellispaces.jaquarius.exception.TraverseException;
+import tech.intellispaces.entity.exception.UnexpectedExceptions;
 
 public class MoveObjectHandleThruChannel3PlanImpl extends AbstractObjectHandleTraversePlan
     implements MoveObjectHandleThruChannel3Plan

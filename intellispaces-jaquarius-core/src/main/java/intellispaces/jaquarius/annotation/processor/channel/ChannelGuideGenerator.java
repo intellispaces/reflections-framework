@@ -1,12 +1,6 @@
 package intellispaces.jaquarius.annotation.processor.channel;
 
-import intellispaces.common.action.runner.Runner;
 import intellispaces.common.annotationprocessor.context.AnnotationProcessingContext;
-import intellispaces.common.base.exception.UnexpectedExceptions;
-import intellispaces.common.base.text.TextActions;
-import intellispaces.common.base.type.ClassFunctions;
-import intellispaces.common.base.type.ClassNameFunctions;
-import intellispaces.common.base.type.PrimitiveFunctions;
 import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.common.javastatement.method.MethodParam;
 import intellispaces.common.javastatement.method.MethodStatement;
@@ -47,6 +41,12 @@ import intellispaces.jaquarius.object.ObjectFunctions;
 import intellispaces.jaquarius.space.channel.ChannelFunctions;
 import intellispaces.jaquarius.traverse.TraverseType;
 import intellispaces.jaquarius.traverse.TraverseTypes;
+import tech.intellispaces.action.runnable.RunnableAction;
+import tech.intellispaces.action.text.StringActions;
+import tech.intellispaces.entity.exception.UnexpectedExceptions;
+import tech.intellispaces.entity.type.ClassFunctions;
+import tech.intellispaces.entity.type.ClassNameFunctions;
+import tech.intellispaces.entity.type.PrimitiveFunctions;
 
 import javax.annotation.processing.RoundEnvironment;
 import java.util.HashMap;
@@ -136,7 +136,7 @@ public class ChannelGuideGenerator extends AbstractGenerator {
     var sb = new StringBuilder();
     if (!channelMethod.typeParameters().isEmpty()) {
       sb.append("<");
-      Runner commaAppender = TextActions.skippingFirstTimeCommaAppender(sb);
+      RunnableAction commaAppender = StringActions.skipFirstTimeCommaAppender(sb);
       for (NamedReference typeParam : channelMethod.typeParameters()) {
         commaAppender.run();
         sb.append(typeParam.name());
@@ -383,7 +383,7 @@ public class ChannelGuideGenerator extends AbstractGenerator {
   private String buildTargetObjectHandleFormDeclaration() {
     if (guideForm == GuideForms.Main) {
       return buildTargetObjectHandleDeclaration(Function.identity(), false);
-    } else if (guideForm == GuideForms.Primitive) {
+    } else if (guideForm == GuideForms.PrimitiveType) {
       return ClassFunctions.getPrimitiveTypeOfWrapper(
           channelMethod.returnType().orElseThrow()
               .asCustomTypeReferenceOrElseThrow()
@@ -411,7 +411,7 @@ public class ChannelGuideGenerator extends AbstractGenerator {
       var sb = new StringBuilder();
       sb.append(type.asNamedReferenceOrElseThrow().name());
       sb.append(" extends ");
-      Runner commaAppender = TextActions.skippingFirstTimeCommaAppender(sb);
+      RunnableAction commaAppender = StringActions.skipFirstTimeCommaAppender(sb);
       for (ReferenceBound bound : namedReference.extendedBounds()) {
         commaAppender.run();
         sb.append(buildObjectHandleDeclaration(bound, typeReplacer));
@@ -426,7 +426,7 @@ public class ChannelGuideGenerator extends AbstractGenerator {
         var sb = new StringBuilder();
         sb.append(name);
         sb.append("<");
-        Runner commaAppender = TextActions.skippingFirstTimeCommaAppender(sb);
+        RunnableAction commaAppender = StringActions.skipFirstTimeCommaAppender(sb);
         for (NotPrimitiveReference typeArg : type.asCustomTypeReferenceOrElseThrow().typeArguments()) {
           commaAppender.run();
           sb.append(buildObjectHandleDeclaration(typeArg, typeReplacer, full));

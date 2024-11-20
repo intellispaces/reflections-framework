@@ -1,7 +1,5 @@
 package intellispaces.jaquarius.system.kernel;
 
-import intellispaces.common.base.exception.NotImplementedExceptions;
-import intellispaces.common.base.exception.UnexpectedExceptions;
 import intellispaces.jaquarius.guide.Guide;
 import intellispaces.jaquarius.guide.GuideForm;
 import intellispaces.jaquarius.guide.GuideKind;
@@ -47,6 +45,8 @@ import intellispaces.jaquarius.traverse.plan.MoveObjectHandleThruChannel3PlanImp
 import intellispaces.jaquarius.traverse.plan.ObjectHandleTraversePlan;
 import intellispaces.jaquarius.traverse.plan.TraverseAnalyzer;
 import intellispaces.jaquarius.traverse.plan.TraversePlanTypes;
+import tech.intellispaces.entity.exception.NotImplementedExceptions;
+import tech.intellispaces.entity.exception.UnexpectedExceptions;
 
 import java.util.List;
 import java.util.stream.Collectors;

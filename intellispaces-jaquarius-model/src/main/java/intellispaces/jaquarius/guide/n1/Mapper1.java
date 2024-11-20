@@ -1,13 +1,13 @@
 package intellispaces.jaquarius.guide.n1;
 
-import intellispaces.common.base.function.QuadFunction;
-import intellispaces.common.base.function.TriFunction;
 import intellispaces.jaquarius.exception.TraverseException;
 import intellispaces.jaquarius.guide.Mapper;
 import intellispaces.jaquarius.guide.n2.Mapper2;
 import intellispaces.jaquarius.guide.n3.Mapper3;
 import intellispaces.jaquarius.guide.n4.Mapper4;
 import intellispaces.jaquarius.guide.n5.Mapper5;
+import tech.intellispaces.entity.function.QuadriFunction;
+import tech.intellispaces.entity.function.TriFunction;
 
 import java.util.function.BiFunction;
 
@@ -34,7 +34,7 @@ public interface Mapper1<S, T, Q> extends
   }
 
   @Override
-  default QuadFunction<S, Q, Void, Void, T> asQuadFunction() {
+  default QuadriFunction<S, Q, Void, Void, T> asQuadFunction() {
     return (source, qualifier1, qualifier2, qualifier3) -> map(source, qualifier1);
   }
 

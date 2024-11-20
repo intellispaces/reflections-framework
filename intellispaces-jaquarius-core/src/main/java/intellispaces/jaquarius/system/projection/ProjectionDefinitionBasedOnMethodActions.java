@@ -1,6 +1,6 @@
 package intellispaces.jaquarius.system.projection;
 
-import intellispaces.common.action.Action;
+import tech.intellispaces.action.Action;
 
 import java.util.List;
 

@@ -26,8 +26,8 @@
     <dependencies>
         <!-- Intellispaces -->
         <dependency>
-            <groupId>intellispaces-common</groupId>
-            <artifactId>intellispaces-base-model</artifactId>
+            <groupId>tech.intellispaces.common</groupId>
+            <artifactId>intellispaces-entities-model</artifactId>
         </dependency>
     </dependencies>
 </project>

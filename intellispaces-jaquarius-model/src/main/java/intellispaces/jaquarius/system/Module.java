@@ -1,6 +1,6 @@
 package intellispaces.jaquarius.system;
 
-import intellispaces.common.base.type.Type;
+import tech.intellispaces.entity.type.Type;
 import intellispaces.jaquarius.channel.Channel0;
 import intellispaces.jaquarius.channel.Channel1;
 import intellispaces.jaquarius.channel.Channel2;

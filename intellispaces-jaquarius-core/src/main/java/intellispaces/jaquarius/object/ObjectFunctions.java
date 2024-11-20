@@ -1,12 +1,5 @@
 package intellispaces.jaquarius.object;
 
-import intellispaces.common.action.runner.Runner;
-import intellispaces.common.base.exception.NotImplementedExceptions;
-import intellispaces.common.base.exception.UnexpectedException;
-import intellispaces.common.base.exception.UnexpectedExceptions;
-import intellispaces.common.base.text.TextActions;
-import intellispaces.common.base.type.ClassFunctions;
-import intellispaces.common.base.type.Type;
 import intellispaces.common.javastatement.JavaStatements;
 import intellispaces.common.javastatement.customtype.AnnotationFunctions;
 import intellispaces.common.javastatement.customtype.CustomType;
@@ -24,6 +17,13 @@ import intellispaces.jaquarius.common.NameConventionFunctions;
 import intellispaces.jaquarius.space.domain.DomainFunctions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import tech.intellispaces.action.runnable.RunnableAction;
+import tech.intellispaces.action.text.StringActions;
+import tech.intellispaces.entity.exception.NotImplementedExceptions;
+import tech.intellispaces.entity.exception.UnexpectedException;
+import tech.intellispaces.entity.exception.UnexpectedExceptions;
+import tech.intellispaces.entity.type.ClassFunctions;
+import tech.intellispaces.entity.type.Type;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
@@ -284,7 +284,7 @@ public class ObjectFunctions {
         sb.append(Class.class.getSimpleName());
         if (!customTypeReference.typeArguments().isEmpty()) {
           sb.append("<");
-          Runner commaAppender = TextActions.skippingFirstTimeCommaAppender(sb);
+          RunnableAction commaAppender = StringActions.skipFirstTimeCommaAppender(sb);
           for (NotPrimitiveReference argType : customTypeReference.typeArguments()) {
             commaAppender.run();
             sb.append(argType.actualDeclaration());
@@ -301,7 +301,7 @@ public class ObjectFunctions {
         sb.append(simpleName);
         if (!customTypeReference.typeArguments().isEmpty()) {
           sb.append("<");
-          Runner commaAppender = TextActions.skippingFirstTimeCommaAppender(sb);
+          RunnableAction commaAppender = StringActions.skipFirstTimeCommaAppender(sb);
           for (NotPrimitiveReference argType : customTypeReference.typeArguments()) {
             commaAppender.run();
             sb.append(getObjectHandleDeclaration(argType, ObjectHandleTypes.Common, simpleNameMapping));

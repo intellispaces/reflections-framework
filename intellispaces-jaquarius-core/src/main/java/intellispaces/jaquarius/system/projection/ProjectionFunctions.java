@@ -1,8 +1,8 @@
 package intellispaces.jaquarius.system.projection;
 
-import intellispaces.common.base.exception.UnexpectedExceptions;
 import intellispaces.common.javastatement.method.MethodStatement;
 import intellispaces.jaquarius.annotation.Projection;
+import tech.intellispaces.entity.exception.UnexpectedExceptions;
 
 import java.lang.reflect.Method;
 

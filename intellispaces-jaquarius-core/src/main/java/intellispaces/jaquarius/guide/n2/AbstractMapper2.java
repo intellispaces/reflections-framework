@@ -1,9 +1,9 @@
 package intellispaces.jaquarius.guide.n2;
 
-import intellispaces.common.base.function.QuadFunction;
-import intellispaces.common.base.function.TriFunction;
 import intellispaces.jaquarius.guide.GuideKind;
 import intellispaces.jaquarius.guide.GuideKinds;
+import tech.intellispaces.entity.function.QuadriFunction;
+import tech.intellispaces.entity.function.TriFunction;
 
 public interface AbstractMapper2<S, T, Q1, Q2> extends Mapper2<S, T, Q1, Q2> {
 
@@ -18,7 +18,7 @@ public interface AbstractMapper2<S, T, Q1, Q2> extends Mapper2<S, T, Q1, Q2> {
   }
 
   @Override
-  default QuadFunction<S, Q1, Q2, Void, T> asQuadFunction() {
+  default QuadriFunction<S, Q1, Q2, Void, T> asQuadFunction() {
     return this::map;
   }
 }

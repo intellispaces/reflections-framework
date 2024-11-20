@@ -34,8 +34,8 @@
             <artifactId>intellispaces-jaquarius-model</artifactId>
         </dependency>
         <dependency>
-            <groupId>intellispaces-common</groupId>
-            <artifactId>intellispaces-base</artifactId>
+            <groupId>tech.intellispaces.common</groupId>
+            <artifactId>intellispaces-entities</artifactId>
         </dependency>
         <dependency>
             <groupId>intellispaces-common</groupId>
@@ -46,12 +46,12 @@
             <artifactId>intellispaces-annotationprocessor</artifactId>
         </dependency>
         <dependency>
-            <groupId>intellispaces-common</groupId>
-            <artifactId>intellispaces-action</artifactId>
+            <groupId>tech.intellispaces.common</groupId>
+            <artifactId>intellispaces-actions</artifactId>
         </dependency>
         <dependency>
-            <groupId>intellispaces-common</groupId>
-            <artifactId>intellispaces-base-action</artifactId>
+            <groupId>tech.intellispaces.common</groupId>
+            <artifactId>intellispaces-common-actions</artifactId>
         </dependency>
 
         <!-- Auto-service library -->

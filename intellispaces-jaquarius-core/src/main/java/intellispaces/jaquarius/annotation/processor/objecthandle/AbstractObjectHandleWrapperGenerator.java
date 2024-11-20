@@ -1,13 +1,5 @@
 package intellispaces.jaquarius.annotation.processor.objecthandle;
 
-import intellispaces.common.action.Actions;
-import intellispaces.common.action.runner.Runner;
-import intellispaces.common.base.exception.UnexpectedExceptions;
-import intellispaces.common.base.text.StringFunctions;
-import intellispaces.common.base.text.TextActions;
-import intellispaces.common.base.type.ClassFunctions;
-import intellispaces.common.base.type.ClassNameFunctions;
-import intellispaces.common.base.type.Primitives;
 import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.common.javastatement.method.MethodParam;
 import intellispaces.common.javastatement.method.MethodStatement;
@@ -33,6 +25,15 @@ import intellispaces.jaquarius.space.domain.DomainFunctions;
 import intellispaces.jaquarius.system.Modules;
 import intellispaces.jaquarius.system.ProjectionInjection;
 import intellispaces.jaquarius.traverse.TraverseType;
+import tech.intellispaces.action.cache.CachedSupplierActions;
+import tech.intellispaces.action.delegate.DelegateActions;
+import tech.intellispaces.action.runnable.RunnableAction;
+import tech.intellispaces.action.text.StringActions;
+import tech.intellispaces.entity.exception.UnexpectedExceptions;
+import tech.intellispaces.entity.text.StringFunctions;
+import tech.intellispaces.entity.type.ClassFunctions;
+import tech.intellispaces.entity.type.ClassNameFunctions;
+import tech.intellispaces.entity.type.PrimitiveTypes;
 
 import javax.annotation.processing.RoundEnvironment;
 import java.util.ArrayList;
@@ -102,12 +103,12 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
 
   private String buildMethodAction(MethodStatement domainMethod, GuideForm guideForm) {
     var sb = new StringBuilder();
-    sb.append(context.addToImportAndGetSimpleName(Actions.class));
-    sb.append(".delegate");
+    sb.append(context.addToImportAndGetSimpleName(DelegateActions.class));
+    sb.append(".delegateAction");
     sb.append(domainMethod.params().size() + 1);
     sb.append("(");
-    sb.append(context.addToImportAndGetSimpleName(Actions.class));
-    sb.append(".cachedLazyGetter(");
+    sb.append(context.addToImportAndGetSimpleName(CachedSupplierActions.class));
+    sb.append(".get(");
     sb.append(context.addToImportAndGetSimpleName(TraverseActions.class));
     sb.append("::");
     TraverseType traverseType = ChannelFunctions.getTraverseType(domainMethod);
@@ -258,7 +259,7 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
 
     var typeParamsFullBuilder = new StringBuilder();
     var typeParamsBriefBuilder = new StringBuilder();
-    Runner commaAppender = TextActions.skippingFirstTimeCommaAppender(typeParamsFullBuilder, typeParamsBriefBuilder);
+    RunnableAction commaAppender = StringActions.skipFirstTimeCommaAppender(typeParamsFullBuilder, typeParamsBriefBuilder);
 
     typeParamsFullBuilder.append("<");
     typeParamsBriefBuilder.append("<");
@@ -368,10 +369,10 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
     appendMethodExceptions(sb, domainMethod);
     sb.append(" {\n");
     sb.append("  return ");
-    if (guideForm == GuideForms.Primitive) {
+    if (guideForm == GuideForms.PrimitiveType) {
       CustomType ct = domainMethod.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow().targetType();
       String typename = ClassFunctions.getPrimitiveTypeOfWrapper(ct.canonicalName());
-      if (Primitives.Boolean.typename().equals(typename)) {
+      if (PrimitiveTypes.Boolean.typename().equals(typename)) {
         sb.append("PrimitiveFunctions.longToBoolean(");
         buildInvokeMethodAction(domainMethod, guideForm, methodIndex, sb);
         sb.append(")");
@@ -396,7 +397,7 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
   ) {
     sb.append("$innerHandle.getMethodAction(");
     sb.append(methodIndex);
-    sb.append(").asAction");
+    sb.append(").castToAction");
     sb.append(domainMethod.params().size() + 1);
     sb.append("().");
     sb.append(buildExecuteMethod(domainMethod, guideForm));
@@ -411,13 +412,13 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
   private void addMethodParam(StringBuilder sb, MethodParam param) {
     if (param.type().isPrimitiveReference()) {
       String typename = param.type().asPrimitiveReferenceOrElseThrow().typename();
-      if (Primitives.Boolean.typename().equals(typename)) {
+      if (PrimitiveTypes.Boolean.typename().equals(typename)) {
         sb.append("PrimitiveFunctions.booleanToInt(").append(param.name()).append(")");
-      } else if (Primitives.Char.typename().equals(typename)) {
+      } else if (PrimitiveTypes.Char.typename().equals(typename)) {
         sb.append("(int) ").append(param.name());
-      } else if (Primitives.Byte.typename().equals(typename)) {
+      } else if (PrimitiveTypes.Byte.typename().equals(typename)) {
         sb.append("(int) ").append(param.name());
-      } else if (Primitives.Short.typename().equals(typename)) {
+      } else if (PrimitiveTypes.Short.typename().equals(typename)) {
         sb.append("(int) ").append(param.name());
       } else {
         sb.append(param.name());
@@ -430,20 +431,20 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
   private String buildExecuteMethod(MethodStatement domainMethod, GuideForm guideForm) {
     if (guideForm == GuideForms.Main) {
       return "execute";
-    } else if (guideForm == GuideForms.Primitive) {
+    } else if (guideForm == GuideForms.PrimitiveType) {
       CustomType ct = domainMethod.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow().targetType();
       String typename = ClassFunctions.getPrimitiveTypeOfWrapper(ct.canonicalName());
-      if (intellispaces.common.base.object.ObjectFunctions.equalsAnyOf(
+      if (tech.intellispaces.entity.object.ObjectFunctions.equalsAnyOf(
           typename,
-          Primitives.Boolean.typename(),
-          Primitives.Char.typename(),
-          Primitives.Byte.typename(),
-          Primitives.Short.typename(),
-          Primitives.Int.typename(),
-          Primitives.Long.typename()
+          PrimitiveTypes.Boolean.typename(),
+          PrimitiveTypes.Char.typename(),
+          PrimitiveTypes.Byte.typename(),
+          PrimitiveTypes.Short.typename(),
+          PrimitiveTypes.Int.typename(),
+          PrimitiveTypes.Long.typename()
       )) {
         return "executeReturnInt";
-      } else if (Primitives.Float.typename().equals(typename) || Primitives.Double.typename().equals(typename)) {
+      } else if (PrimitiveTypes.Float.typename().equals(typename) || PrimitiveTypes.Double.typename().equals(typename)) {
         return "executeReturnDouble";
       } else {
         return "execute";

@@ -1,9 +1,5 @@
 package intellispaces.jaquarius.annotation.processor;
 
-import intellispaces.common.action.runner.Runner;
-import intellispaces.common.base.exception.UnexpectedExceptions;
-import intellispaces.common.base.text.TextActions;
-import intellispaces.common.base.type.ClassFunctions;
 import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.common.javastatement.method.MethodParam;
 import intellispaces.common.javastatement.method.MethodStatement;
@@ -22,6 +18,10 @@ import intellispaces.jaquarius.object.ObjectHandleTypes;
 import intellispaces.jaquarius.space.SpaceConstants;
 import intellispaces.jaquarius.space.channel.ChannelFunctions;
 import intellispaces.jaquarius.space.domain.DomainFunctions;
+import tech.intellispaces.action.runnable.RunnableAction;
+import tech.intellispaces.action.text.StringActions;
+import tech.intellispaces.entity.exception.UnexpectedExceptions;
+import tech.intellispaces.entity.type.ClassFunctions;
 
 import javax.annotation.processing.RoundEnvironment;
 import java.util.ArrayList;
@@ -63,7 +63,7 @@ public abstract class AbstractObjectHandleGenerator extends AbstractGenerator {
       if (method.returnType().orElseThrow().isCustomTypeReference()) {
         CustomType returnType = method.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow().targetType();
         if (ClassFunctions.isPrimitiveWrapperClass(returnType.canonicalName())) {
-          analyzeMethod(effectiveMethod, GuideForms.Primitive, methodIndex++);
+          analyzeMethod(effectiveMethod, GuideForms.PrimitiveType, methodIndex++);
         }
       }
     }
@@ -144,7 +144,7 @@ public abstract class AbstractObjectHandleGenerator extends AbstractGenerator {
   protected String getMethodName(MethodStatement method, GuideForm guideForm) {
     if (guideForm == GuideForms.Main) {
       return method.name();
-    } else if (guideForm == GuideForms.Primitive) {
+    } else if (guideForm == GuideForms.PrimitiveType) {
       return method.name() + "Primitive";
     } else {
       throw UnexpectedExceptions.withMessage("Unsupported guide form - {0}", guideForm);
@@ -168,7 +168,7 @@ public abstract class AbstractObjectHandleGenerator extends AbstractGenerator {
   protected void appendMethodReturnHandleType(StringBuilder sb, MethodStatement method, GuideForm guideForm) {
     if (guideForm == GuideForms.Main) {
       appendMethodReturnHandleType(sb, method);
-    } else if (guideForm == GuideForms.Primitive) {
+    } else if (guideForm == GuideForms.PrimitiveType) {
       CustomType ct = method.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow().targetType();
       sb.append(ClassFunctions.getPrimitiveTypeOfWrapper(ct.canonicalName()));
     } else {
@@ -194,7 +194,7 @@ public abstract class AbstractObjectHandleGenerator extends AbstractGenerator {
   protected void appendMethodTypeParameters(StringBuilder sb, MethodStatement method) {
     if (!method.typeParameters().isEmpty()) {
       sb.append("<");
-      Runner commaAppender = TextActions.skippingFirstTimeCommaAppender(sb);
+      RunnableAction commaAppender = StringActions.skipFirstTimeCommaAppender(sb);
       for (NamedReference namedTypeReference : method.typeParameters()) {
         commaAppender.run();
         sb.append(namedTypeReference.actualDeclaration());
@@ -204,7 +204,7 @@ public abstract class AbstractObjectHandleGenerator extends AbstractGenerator {
   }
 
   protected void appendMethodParameters(StringBuilder sb, MethodStatement method) {
-    Runner commaAppender = TextActions.skippingFirstTimeCommaAppender(sb);
+    RunnableAction commaAppender = StringActions.skipFirstTimeCommaAppender(sb);
     for (MethodParam param : GuideProcessorFunctions.rearrangementParams(method.params())) {
       commaAppender.run();
       sb.append(getObjectHandleDeclaration(GuideProcessorFunctions.normalizeType(param.type()), ObjectHandleTypes.Common));

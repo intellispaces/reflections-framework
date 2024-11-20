@@ -1,6 +1,5 @@
 package intellispaces.jaquarius.system.kernel;
 
-import intellispaces.common.base.type.Type;
 import intellispaces.common.javastatement.type.Types;
 import intellispaces.jaquarius.channel.Channel0;
 import intellispaces.jaquarius.channel.Channel1;
@@ -42,6 +41,7 @@ import intellispaces.jaquarius.space.channel.ChannelFunctions;
 import intellispaces.jaquarius.system.Module;
 import intellispaces.jaquarius.traverse.plan.DeclarativeTraversePlan;
 import intellispaces.jaquarius.traverse.plan.TraversePlan;
+import tech.intellispaces.entity.type.Type;
 
 class ModuleImpl implements Module {
   private final KernelModule kernelModule;

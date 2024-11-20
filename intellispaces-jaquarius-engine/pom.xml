@@ -38,12 +38,12 @@
             <artifactId>intellispaces-jaquarius-core</artifactId>
         </dependency>
         <dependency>
-            <groupId>intellispaces-common</groupId>
-            <artifactId>intellispaces-action</artifactId>
+            <groupId>tech.intellispaces.common</groupId>
+            <artifactId>intellispaces-actions</artifactId>
         </dependency>
         <dependency>
-            <groupId>intellispaces-common</groupId>
-            <artifactId>intellispaces-base-action</artifactId>
+            <groupId>tech.intellispaces.common</groupId>
+            <artifactId>intellispaces-common-actions</artifactId>
         </dependency>
 
         <!-- Auto-service library -->

@@ -1,12 +1,5 @@
 package intellispaces.jaquarius.action;
 
-import intellispaces.common.action.Action1;
-import intellispaces.common.action.Action2;
-import intellispaces.common.action.Action3;
-import intellispaces.common.action.Action4;
-import intellispaces.common.action.Action5;
-import intellispaces.common.base.type.Type;
-import intellispaces.common.base.type.Types;
 import intellispaces.jaquarius.channel.Channel0;
 import intellispaces.jaquarius.channel.Channel1;
 import intellispaces.jaquarius.channel.Channel2;
@@ -14,6 +7,13 @@ import intellispaces.jaquarius.channel.Channel3;
 import intellispaces.jaquarius.channel.Channel4;
 import intellispaces.jaquarius.guide.GuideForm;
 import intellispaces.jaquarius.guide.GuideForms;
+import tech.intellispaces.action.Action1;
+import tech.intellispaces.action.Action2;
+import tech.intellispaces.action.Action3;
+import tech.intellispaces.action.Action4;
+import tech.intellispaces.action.Action5;
+import tech.intellispaces.entity.type.Type;
+import tech.intellispaces.entity.type.Types;
 
 public interface TraverseActions {
 

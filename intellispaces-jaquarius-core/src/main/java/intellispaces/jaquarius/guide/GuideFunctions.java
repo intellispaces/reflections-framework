@@ -1,8 +1,5 @@
 package intellispaces.jaquarius.guide;
 
-import intellispaces.common.base.exception.NotImplementedExceptions;
-import intellispaces.common.base.exception.UnexpectedExceptions;
-import intellispaces.common.base.type.ClassFunctions;
 import intellispaces.common.javastatement.customtype.Classes;
 import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.common.javastatement.customtype.CustomTypes;
@@ -58,6 +55,9 @@ import intellispaces.jaquarius.space.channel.ChannelFunctions;
 import intellispaces.jaquarius.system.UnitGuide;
 import intellispaces.jaquarius.system.UnitWrapper;
 import intellispaces.jaquarius.traverse.TraverseTypes;
+import tech.intellispaces.entity.exception.NotImplementedExceptions;
+import tech.intellispaces.entity.exception.UnexpectedExceptions;
+import tech.intellispaces.entity.type.ClassFunctions;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -325,7 +325,7 @@ public final class GuideFunctions {
 
   private static GuideForm getGuideForm(MethodStatement guideMethod) {
     if (guideMethod.returnType().orElseThrow().isPrimitiveReference()) {
-      return GuideForms.Primitive;
+      return GuideForms.PrimitiveType;
     }
     return GuideForms.Main;
   }

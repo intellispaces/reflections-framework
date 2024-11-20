@@ -1,10 +1,10 @@
 package intellispaces.jaquarius.system.kernel;
 
-import intellispaces.common.action.Action;
-import intellispaces.common.action.Actions;
-import intellispaces.common.action.getter.ResettableGetter;
-import intellispaces.common.base.exception.UnexpectedExceptions;
 import intellispaces.jaquarius.system.Injection;
+import tech.intellispaces.action.Action;
+import tech.intellispaces.action.Actions;
+import tech.intellispaces.action.supplier.ResettableSupplierAction;
+import tech.intellispaces.entity.exception.UnexpectedExceptions;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 class InnerObjectHandleImpl implements InnerObjectHandle {
-  private List<ResettableGetter<Action>> methodActions = List.of();
+  private List<ResettableSupplierAction<Action>> methodActions = List.of();
   private List<Action> guideActions = List.of();
   private List<Injection> injections = List.of();
   private final Map<Class<?>, Object> projections = new HashMap<>();
@@ -38,7 +38,7 @@ class InnerObjectHandleImpl implements InnerObjectHandle {
       return;
     }
     methodActions = Arrays.stream(actions)
-        .map(Actions::resettableGetter)
+        .map(Actions::resettableSupplierAction)
         .toList();
   }
 

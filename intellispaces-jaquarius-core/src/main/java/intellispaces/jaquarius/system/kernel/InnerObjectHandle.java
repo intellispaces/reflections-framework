@@ -1,7 +1,7 @@
 package intellispaces.jaquarius.system.kernel;
 
-import intellispaces.common.action.Action;
 import intellispaces.jaquarius.system.Injection;
+import tech.intellispaces.action.Action;
 
 import java.util.List;
 

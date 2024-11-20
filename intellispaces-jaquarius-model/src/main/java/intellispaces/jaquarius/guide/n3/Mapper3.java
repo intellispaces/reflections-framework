@@ -1,10 +1,10 @@
 package intellispaces.jaquarius.guide.n3;
 
-import intellispaces.common.base.function.QuadFunction;
 import intellispaces.jaquarius.exception.TraverseException;
 import intellispaces.jaquarius.guide.Mapper;
 import intellispaces.jaquarius.guide.n4.Mapper4;
 import intellispaces.jaquarius.guide.n5.Mapper5;
+import tech.intellispaces.entity.function.QuadriFunction;
 
 /**
  * Mapper guide with three qualifiers.
@@ -21,7 +21,7 @@ public interface Mapper3<S, T, Q1, Q2, Q3> extends
     Mapper4<S, T, Q1, Q2, Q3, Void>,
     Mapper5<S, T, Q1, Q2, Q3, Void, Void>
 {
-  QuadFunction<S, Q1, Q2, Q3, T> asQuadFunction();
+  QuadriFunction<S, Q1, Q2, Q3, T> asQuadFunction();
 
   default T map(S source, Q1 qualifier1, Q2 qualifier2, Q3 qualifier3) throws TraverseException {
     return traverse(source, qualifier1, qualifier2, qualifier3);

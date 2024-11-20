@@ -1,11 +1,6 @@
 package intellispaces.jaquarius.annotation.processor.objecthandle;
 
-import intellispaces.common.action.Actions;
-import intellispaces.common.action.functional.FunctionActions;
 import intellispaces.common.annotationprocessor.context.AnnotationProcessingContext;
-import intellispaces.common.base.exception.NotImplementedExceptions;
-import intellispaces.common.base.type.PrimitiveFunctions;
-import intellispaces.common.base.type.Type;
 import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.common.javastatement.method.MethodStatement;
 import intellispaces.common.javastatement.reference.TypeReference;
@@ -33,6 +28,11 @@ import intellispaces.jaquarius.system.injection.GuideInjections;
 import intellispaces.jaquarius.system.kernel.InnerObjectHandle;
 import intellispaces.jaquarius.system.kernel.KernelFunctions;
 import intellispaces.jaquarius.traverse.TraverseType;
+import tech.intellispaces.action.Actions;
+import tech.intellispaces.action.functional.FunctionActions;
+import tech.intellispaces.entity.exception.NotImplementedExceptions;
+import tech.intellispaces.entity.type.PrimitiveFunctions;
+import tech.intellispaces.entity.type.Type;
 
 import javax.annotation.processing.RoundEnvironment;
 import java.util.HashMap;

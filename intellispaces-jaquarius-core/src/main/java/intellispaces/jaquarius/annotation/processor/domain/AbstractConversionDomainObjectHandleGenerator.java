@@ -1,8 +1,5 @@
 package intellispaces.jaquarius.annotation.processor.domain;
 
-import intellispaces.common.action.runner.Runner;
-import intellispaces.common.base.exception.UnexpectedExceptions;
-import intellispaces.common.base.text.TextActions;
 import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.common.javastatement.method.MethodParam;
 import intellispaces.common.javastatement.method.MethodStatement;
@@ -19,6 +16,9 @@ import intellispaces.jaquarius.object.ObjectHandleTypes;
 import intellispaces.jaquarius.space.channel.ChannelFunctions;
 import intellispaces.jaquarius.space.domain.DomainFunctions;
 import intellispaces.jaquarius.traverse.TraverseType;
+import tech.intellispaces.action.runnable.RunnableAction;
+import tech.intellispaces.action.text.StringActions;
+import tech.intellispaces.entity.exception.UnexpectedExceptions;
 
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -117,7 +117,7 @@ abstract class AbstractConversionDomainObjectHandleGenerator extends AbstractDom
     sb.append(".");
     sb.append(method.name());
     sb.append("(");
-    Runner commaAppender = TextActions.skippingFirstTimeCommaAppender(sb);
+    RunnableAction commaAppender = StringActions.skipFirstTimeCommaAppender(sb);
     for (MethodParam param : method.params()) {
       commaAppender.run();
       sb.append(param.name());

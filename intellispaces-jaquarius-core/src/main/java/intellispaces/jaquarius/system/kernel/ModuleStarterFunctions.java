@@ -17,7 +17,7 @@ public interface ModuleStarterFunctions {
   private static void invokeStartupAction(KernelModule module) {
     KernelUnit mainUnit = module.mainUnit();
     if (mainUnit.startupAction().isPresent()) {
-      mainUnit.startupAction().get().execute();
+      mainUnit.startupAction().get().castToAction0().execute();
     }
   }
 }

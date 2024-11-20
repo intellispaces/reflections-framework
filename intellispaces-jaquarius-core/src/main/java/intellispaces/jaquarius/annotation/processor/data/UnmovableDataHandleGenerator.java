@@ -1,11 +1,6 @@
 package intellispaces.jaquarius.annotation.processor.data;
 
-import intellispaces.common.action.runner.Runner;
 import intellispaces.common.annotationprocessor.context.AnnotationProcessingContext;
-import intellispaces.common.base.exception.NotImplementedExceptions;
-import intellispaces.common.base.text.TextActions;
-import intellispaces.common.base.type.Type;
-import intellispaces.common.base.type.Types;
 import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.common.javastatement.method.MethodStatement;
 import intellispaces.common.javastatement.reference.NamedReference;
@@ -19,6 +14,11 @@ import intellispaces.jaquarius.common.NameConventionFunctions;
 import intellispaces.jaquarius.exception.TraverseException;
 import intellispaces.jaquarius.object.ObjectHandleTypes;
 import intellispaces.jaquarius.system.Modules;
+import tech.intellispaces.action.runnable.RunnableAction;
+import tech.intellispaces.action.text.StringActions;
+import tech.intellispaces.entity.exception.NotImplementedExceptions;
+import tech.intellispaces.entity.type.Type;
+import tech.intellispaces.entity.type.Types;
 
 import javax.annotation.processing.RoundEnvironment;
 import java.util.ArrayList;
@@ -107,7 +107,7 @@ public class UnmovableDataHandleGenerator extends AbstractGenerator {
 
     var typeParamsFullBuilder = new StringBuilder();
     var typeParamsBriefBuilder = new StringBuilder();
-    Runner commaAppender = TextActions.skippingFirstTimeCommaAppender(typeParamsFullBuilder, typeParamsBriefBuilder);
+    RunnableAction commaAppender = StringActions.skipFirstTimeCommaAppender(typeParamsFullBuilder, typeParamsBriefBuilder);
 
     typeParamsFullBuilder.append("<");
     typeParamsBriefBuilder.append("<");

@@ -1,11 +1,11 @@
 package intellispaces.jaquarius.guide.n2;
 
-import intellispaces.common.base.function.TriFunction;
 import intellispaces.jaquarius.exception.TraverseException;
 import intellispaces.jaquarius.guide.MapperOfMoving;
 import intellispaces.jaquarius.guide.n3.MapperOfMoving3;
 import intellispaces.jaquarius.guide.n4.MapperOfMoving4;
 import intellispaces.jaquarius.guide.n5.MapperOfMoving5;
+import tech.intellispaces.entity.function.TriFunction;
 
 /**
  * Mapper related to moving guide with two qualifiers.

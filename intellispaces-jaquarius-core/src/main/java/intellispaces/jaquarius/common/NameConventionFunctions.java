@@ -1,8 +1,5 @@
 package intellispaces.jaquarius.common;
 
-import intellispaces.common.base.exception.UnexpectedExceptions;
-import intellispaces.common.base.text.StringFunctions;
-import intellispaces.common.base.type.ClassNameFunctions;
 import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.common.javastatement.method.MethodParam;
 import intellispaces.common.javastatement.method.MethodStatement;
@@ -15,6 +12,9 @@ import intellispaces.jaquarius.guide.GuideForm;
 import intellispaces.jaquarius.guide.GuideForms;
 import intellispaces.jaquarius.object.ObjectHandleTypes;
 import intellispaces.jaquarius.space.channel.ChannelFunctions;
+import tech.intellispaces.entity.exception.UnexpectedExceptions;
+import tech.intellispaces.entity.text.StringFunctions;
+import tech.intellispaces.entity.type.ClassNameFunctions;
 
 import java.util.Optional;
 
@@ -218,7 +218,7 @@ public interface NameConventionFunctions {
       GuideForm guideForm, String spaceName, CustomType channelType, MethodStatement channelMethod
   ) {
     String name = StringFunctions.replaceLast(channelType.canonicalName(), "Channel", "Guide");
-    if (guideForm == GuideForms.Primitive) {
+    if (guideForm == GuideForms.PrimitiveType) {
       name = name + "Primitive";
     }
     return name;

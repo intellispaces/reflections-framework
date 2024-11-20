@@ -1,11 +1,11 @@
 package intellispaces.jaquarius.action;
 
-import intellispaces.common.action.AbstractAction4;
-import intellispaces.common.base.type.Type;
 import intellispaces.jaquarius.channel.Channel3;
 import intellispaces.jaquarius.guide.GuideForm;
 import intellispaces.jaquarius.guide.n3.Mover3;
 import intellispaces.jaquarius.system.Modules;
+import tech.intellispaces.action.AbstractAction4;
+import tech.intellispaces.entity.type.Type;
 
 class MoveThruChannel3Action<S, Q1, Q2, Q3> extends AbstractAction4<S, S, Q1, Q2, Q3> {
   private final Type<S> sourceType;

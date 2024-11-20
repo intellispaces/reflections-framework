@@ -1,6 +1,5 @@
 package intellispaces.jaquarius.system.projection;
 
-import intellispaces.common.base.exception.UnexpectedExceptions;
 import intellispaces.jaquarius.annotation.Properties;
 import intellispaces.jaquarius.object.DataFunctions;
 import intellispaces.jaquarius.object.ObjectFunctions;
@@ -9,6 +8,7 @@ import intellispaces.jaquarius.space.SpaceConstants;
 import intellispaces.jaquarius.system.Module;
 import intellispaces.jaquarius.system.ModulePropertiesFunctions;
 import intellispaces.jaquarius.system.Modules;
+import tech.intellispaces.entity.exception.UnexpectedExceptions;
 
 import java.lang.reflect.Method;
 

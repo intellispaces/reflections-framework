@@ -1,10 +1,10 @@
 package intellispaces.jaquarius.system.action;
 
-import intellispaces.common.action.AbstractAction0;
-import intellispaces.common.base.exception.UnexpectedExceptions;
 import intellispaces.jaquarius.exception.ConfigurationExceptions;
 import intellispaces.jaquarius.system.UnitWrapper;
 import intellispaces.jaquarius.system.kernel.KernelFunctions;
+import tech.intellispaces.action.AbstractAction0;
+import tech.intellispaces.entity.exception.UnexpectedExceptions;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;

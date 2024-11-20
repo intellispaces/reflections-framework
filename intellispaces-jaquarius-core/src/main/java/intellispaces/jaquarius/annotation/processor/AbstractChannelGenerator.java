@@ -1,7 +1,5 @@
 package intellispaces.jaquarius.annotation.processor;
 
-import intellispaces.common.action.runner.Runner;
-import intellispaces.common.base.text.TextActions;
 import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.common.javastatement.method.MethodStatement;
 import intellispaces.common.javastatement.reference.TypeReference;
@@ -12,6 +10,8 @@ import intellispaces.jaquarius.channel.MovingChannel;
 import intellispaces.jaquarius.common.NameConventionFunctions;
 import intellispaces.jaquarius.space.channel.ChannelFunctions;
 import intellispaces.jaquarius.traverse.TraverseType;
+import tech.intellispaces.action.runnable.RunnableAction;
+import tech.intellispaces.action.text.StringActions;
 
 import javax.annotation.processing.RoundEnvironment;
 import java.util.HashMap;
@@ -81,7 +81,7 @@ public abstract class AbstractChannelGenerator extends AbstractGenerator {
 
     List<MethodStatement> superChannels = channelMethod.overrideMethods();
     if (!superChannels.isEmpty()) {
-      Runner commaAppender = TextActions.skippingFirstTimeCommaAppender(sb);
+      RunnableAction commaAppender = StringActions.skipFirstTimeCommaAppender(sb);
       for (MethodStatement superChannel : superChannels) {
         commaAppender.run();
         sb.append(

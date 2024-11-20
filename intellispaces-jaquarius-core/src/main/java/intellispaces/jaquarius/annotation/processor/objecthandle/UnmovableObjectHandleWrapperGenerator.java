@@ -1,10 +1,6 @@
 package intellispaces.jaquarius.annotation.processor.objecthandle;
 
-import intellispaces.common.action.Actions;
-import intellispaces.common.action.functional.FunctionActions;
-import intellispaces.common.action.getter.ResettableGetter;
 import intellispaces.common.annotationprocessor.context.AnnotationProcessingContext;
-import intellispaces.common.base.type.PrimitiveFunctions;
 import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.jaquarius.annotation.Ordinal;
 import intellispaces.jaquarius.annotation.Wrapper;
@@ -24,6 +20,10 @@ import intellispaces.jaquarius.system.injection.AutoGuideInjections;
 import intellispaces.jaquarius.system.injection.GuideInjections;
 import intellispaces.jaquarius.system.kernel.InnerObjectHandle;
 import intellispaces.jaquarius.system.kernel.KernelFunctions;
+import tech.intellispaces.action.Actions;
+import tech.intellispaces.action.functional.FunctionActions;
+import tech.intellispaces.action.supplier.ResettableSupplierAction;
+import tech.intellispaces.entity.type.PrimitiveFunctions;
 
 import javax.annotation.processing.RoundEnvironment;
 import java.util.HashMap;
@@ -85,7 +85,7 @@ public class UnmovableObjectHandleWrapperGenerator extends AbstractObjectHandleW
     context.addImport(Modules.class);
     context.addImport(KernelFunctions.class);
     context.addImport(TraverseException.class);
-    context.addImport(ResettableGetter.class);
+    context.addImport(ResettableSupplierAction.class);
     context.addImport(Actions.class);
     context.addImport(FunctionActions.class);
     context.addImport(Ordinal.class);

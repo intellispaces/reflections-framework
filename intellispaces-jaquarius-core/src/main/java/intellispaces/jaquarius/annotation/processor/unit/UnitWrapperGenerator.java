@@ -1,13 +1,6 @@
 package intellispaces.jaquarius.annotation.processor.unit;
 
-import intellispaces.common.action.Action;
-import intellispaces.common.action.Actions;
-import intellispaces.common.action.functional.FunctionActions;
-import intellispaces.common.action.getter.ResettableGetter;
-import intellispaces.common.action.runner.Runner;
 import intellispaces.common.annotationprocessor.context.AnnotationProcessingContext;
-import intellispaces.common.base.exception.UnexpectedExceptions;
-import intellispaces.common.base.text.TextActions;
 import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.common.javastatement.instance.AnnotationInstance;
 import intellispaces.common.javastatement.instance.ClassInstance;
@@ -42,6 +35,13 @@ import intellispaces.jaquarius.system.projection.ProjectionDefinitionBasedOnMeth
 import intellispaces.jaquarius.system.projection.ProjectionDefinitionBasedOnProviderClasses;
 import intellispaces.jaquarius.system.projection.ProjectionFunctions;
 import intellispaces.jaquarius.system.projection.ProjectionReferences;
+import tech.intellispaces.action.Action;
+import tech.intellispaces.action.Actions;
+import tech.intellispaces.action.functional.FunctionActions;
+import tech.intellispaces.action.runnable.RunnableAction;
+import tech.intellispaces.action.supplier.ResettableSupplierAction;
+import tech.intellispaces.action.text.StringActions;
+import tech.intellispaces.entity.exception.UnexpectedExceptions;
 
 import javax.annotation.processing.RoundEnvironment;
 import java.util.ArrayList;
@@ -114,7 +114,7 @@ public class UnitWrapperGenerator extends AbstractGenerator {
     context.addImport(Action.class);
     context.addImport(Actions.class);
     context.addImport(FunctionActions.class);
-    context.addImport(ResettableGetter.class);
+    context.addImport(ResettableSupplierAction.class);
     context.addImport(KernelUnit.class);
     context.addImport(Wrapper.class);
     context.addImport(Ordinal.class);
@@ -155,7 +155,7 @@ public class UnitWrapperGenerator extends AbstractGenerator {
     sb.append("  return super.");
     sb.append(guideMethod.name());
     sb.append("(");
-    Runner commaAppender = TextActions.skippingFirstTimeCommaAppender(sb);
+    RunnableAction commaAppender = StringActions.skipFirstTimeCommaAppender(sb);
     for (MethodParam param : guideMethod.params()) {
       commaAppender.run();
       sb.append(param.name());
@@ -271,7 +271,7 @@ public class UnitWrapperGenerator extends AbstractGenerator {
     sb.append("  \"").append(ProjectionFunctions.getProjectionName(method)).append("\",\n");
     sb.append("  ").append(buildTypeDeclaration(method.returnType().orElseThrow())).append(".class,\n");
     sb.append("  ").append(method.selectAnnotation(Projection.class).orElseThrow().lazy()).append(",\n");
-    sb.append("  ").append("Actions.of(super::").append(method.name()).append(", ");
+    sb.append("  ").append("Actions.get(super::").append(method.name()).append(", ");
     sb.append(buildTypeDeclaration(method.returnType().orElseThrow())).append(".class");
 
     for (MethodParam param : method.params()) {

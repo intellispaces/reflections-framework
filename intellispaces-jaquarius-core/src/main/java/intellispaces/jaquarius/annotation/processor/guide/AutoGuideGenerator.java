@@ -1,12 +1,6 @@
 package intellispaces.jaquarius.annotation.processor.guide;
 
-import intellispaces.common.action.Action;
-import intellispaces.common.action.Actions;
-import intellispaces.common.action.runner.Runner;
 import intellispaces.common.annotationprocessor.context.AnnotationProcessingContext;
-import intellispaces.common.base.exception.NotImplementedExceptions;
-import intellispaces.common.base.text.StringFunctions;
-import intellispaces.common.base.text.TextActions;
 import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.common.javastatement.method.MethodParam;
 import intellispaces.common.javastatement.method.MethodStatement;
@@ -19,6 +13,13 @@ import intellispaces.jaquarius.common.NameConventionFunctions;
 import intellispaces.jaquarius.guide.GuideForm;
 import intellispaces.jaquarius.guide.GuideForms;
 import intellispaces.jaquarius.guide.GuideFunctions;
+import tech.intellispaces.action.Action;
+import tech.intellispaces.action.cache.CachedSupplierActions;
+import tech.intellispaces.action.delegate.DelegateActions;
+import tech.intellispaces.action.runnable.RunnableAction;
+import tech.intellispaces.action.text.StringActions;
+import tech.intellispaces.entity.exception.NotImplementedExceptions;
+import tech.intellispaces.entity.text.StringFunctions;
 
 import javax.annotation.processing.RoundEnvironment;
 import java.util.HashMap;
@@ -95,10 +96,9 @@ public class AutoGuideGenerator extends AbstractGenerator {
     map.put("signature", buildMethodSignature(method));
 
     String actionName = buildActionName(method);
-    map.put("actionName", buildActionName(method));
-
-    map.put("body", buildMethodBody(method, actionName));
+    map.put("actionName", actionName);
     map.put("actionDeclaration", buildActionDeclaration(method));
+    map.put("body", buildMethodBody(method, actionName));
     return map;
   }
 
@@ -124,12 +124,12 @@ public class AutoGuideGenerator extends AbstractGenerator {
     TypeReference sourceType = method.params().get(0).type();
 
     var sb = new StringBuilder();
-    sb.append(context.addToImportAndGetSimpleName(Actions.class));
-    sb.append(".delegate");
+    sb.append(context.addToImportAndGetSimpleName(DelegateActions.class));
+    sb.append(".delegateAction");
     sb.append(method.params().size());
     sb.append("(");
-    sb.append(context.addToImportAndGetSimpleName(Actions.class));
-    sb.append(".cachedLazyGetter(");
+    sb.append(context.addToImportAndGetSimpleName(CachedSupplierActions.class));
+    sb.append(".get(");
     sb.append(context.addToImportAndGetSimpleName(TraverseActions.class));
     sb.append("::");
     if (GuideFunctions.isMapperMethod(method)) {
@@ -169,10 +169,10 @@ public class AutoGuideGenerator extends AbstractGenerator {
       sb.append(") ");
     }
     sb.append(actionName);
-    sb.append(".asAction");
+    sb.append(".castToAction");
     sb.append(method.params().size());
     sb.append("().execute(");
-    Runner commaAppender = TextActions.skippingFirstTimeCommaAppender(sb);
+    RunnableAction commaAppender = StringActions.skipFirstTimeCommaAppender(sb);
     for (MethodParam param : method.params()) {
       commaAppender.run();
       sb.append(param.name());

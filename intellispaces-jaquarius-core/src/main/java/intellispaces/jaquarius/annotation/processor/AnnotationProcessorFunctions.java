@@ -3,9 +3,6 @@ package intellispaces.jaquarius.annotation.processor;
 import intellispaces.common.annotationprocessor.AnnotatedTypeProcessor;
 import intellispaces.common.annotationprocessor.generator.Generator;
 import intellispaces.common.annotationprocessor.validator.AnnotatedTypeValidator;
-import intellispaces.common.base.collection.ArraysFunctions;
-import intellispaces.common.base.exception.UnexpectedExceptions;
-import intellispaces.common.base.type.ClassFunctions;
 import intellispaces.common.javastatement.AnnotatedStatement;
 import intellispaces.common.javastatement.JavaStatements;
 import intellispaces.common.javastatement.customtype.AnnotationFunctions;
@@ -48,6 +45,9 @@ import intellispaces.jaquarius.system.ModuleFunctions;
 import intellispaces.jaquarius.system.UnitFunctions;
 import intellispaces.jaquarius.traverse.TraverseType;
 import intellispaces.jaquarius.traverse.TraverseTypes;
+import tech.intellispaces.entity.collection.ArraysFunctions;
+import tech.intellispaces.entity.exception.UnexpectedExceptions;
+import tech.intellispaces.entity.type.ClassFunctions;
 
 import javax.annotation.processing.RoundEnvironment;
 import java.util.ArrayList;
@@ -111,7 +111,7 @@ public interface AnnotationProcessorFunctions {
     ).stream()
         .map(AnnotationProcessor::value)
         .distinct()
-        .map(c -> (AnnotatedTypeProcessor) intellispaces.common.base.object.ObjectFunctions.newInstance(c))
+        .map(c -> (AnnotatedTypeProcessor) tech.intellispaces.entity.object.ObjectFunctions.newInstance(c))
         .toList();
     for (AnnotatedTypeProcessor processor : processors) {
       if (processor.isApplicable(annotatedType)) {
@@ -180,7 +180,7 @@ public interface AnnotationProcessorFunctions {
         CustomTypeReference customTypeReference = returnType.asCustomTypeReferenceOrElseThrow();
         if (ClassFunctions.isPrimitiveWrapperClass(customTypeReference.targetType().canonicalName())) {
           generators.add(makeGuideGenerator(
-              GuideForms.Primitive, traverseType, initiatorType, domainType, channelMethod
+              GuideForms.PrimitiveType, traverseType, initiatorType, domainType, channelMethod
           ));
         }
       }

@@ -106,7 +106,7 @@ class TraverseExecutorImpl implements TraverseExecutor {
 
   @Override
   public int executeReturnInt(MapObjectHandleThruChannel0Plan plan, Object source) throws TraverseException {
-    ExecutionTraversePlan executionPlan = traverseAnalyzer.getExecutionPlan(plan, source.getClass(), GuideForms.Primitive);
+    ExecutionTraversePlan executionPlan = traverseAnalyzer.getExecutionPlan(plan, source.getClass(), GuideForms.PrimitiveType);
     if (executionPlan == null) {
       throw TraverseExceptions.withMessage("Cannot to build traverse plan to map object of class {0} through " +
           "channel {1}. Suitable guide has not been found", source.getClass().getCanonicalName(), plan.cid());
@@ -116,7 +116,7 @@ class TraverseExecutorImpl implements TraverseExecutor {
 
   @Override
   public double executeReturnDouble(MapObjectHandleThruChannel0Plan plan, Object source) throws TraverseException {
-    ExecutionTraversePlan executionPlan = traverseAnalyzer.getExecutionPlan(plan, source.getClass(), GuideForms.Primitive);
+    ExecutionTraversePlan executionPlan = traverseAnalyzer.getExecutionPlan(plan, source.getClass(), GuideForms.PrimitiveType);
     if (executionPlan == null) {
       throw TraverseExceptions.withMessage("Cannot to build traverse plan to map object of class {0} through " +
           "channel {1}. Suitable guide has not been found", source.getClass().getCanonicalName(), plan.cid());

@@ -1,10 +1,10 @@
 package intellispaces.jaquarius.guide.n0;
 
-import intellispaces.common.base.exception.WrappedExceptions;
 import intellispaces.jaquarius.exception.TraverseException;
 import intellispaces.jaquarius.exception.TraverseExceptions;
 import intellispaces.jaquarius.guide.GuideKind;
 import intellispaces.jaquarius.guide.GuideKinds;
+import tech.intellispaces.entity.exception.WrappedExceptions;
 
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -22,7 +22,7 @@ public interface AbstractMover0<S> extends Mover0<S> {
       try {
         move(source);
       } catch (TraverseException e) {
-        throw WrappedExceptions.ofChecked(e);
+        throw WrappedExceptions.of(e);
       }
     };
   }

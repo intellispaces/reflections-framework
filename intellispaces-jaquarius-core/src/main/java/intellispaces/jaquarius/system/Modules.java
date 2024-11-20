@@ -1,7 +1,7 @@
 package intellispaces.jaquarius.system;
 
-import intellispaces.common.base.exception.UnexpectedExceptions;
 import intellispaces.jaquarius.engine.JaquariusEngines;
+import tech.intellispaces.entity.exception.UnexpectedExceptions;
 
 import java.util.Arrays;
 import java.util.List;

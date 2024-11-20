@@ -1,9 +1,9 @@
 package intellispaces.jaquarius.system.projection;
 
-import intellispaces.common.base.exception.NotImplementedExceptions;
 import intellispaces.jaquarius.system.ProjectionDefinitionKind;
 import intellispaces.jaquarius.system.ProjectionDefinitionKinds;
 import intellispaces.jaquarius.system.UnitProjectionDefinition;
+import tech.intellispaces.entity.exception.NotImplementedExceptions;
 
 import java.lang.reflect.Method;
 

@@ -1,8 +1,8 @@
 package intellispaces.jaquarius.system.kernel;
 
-import intellispaces.common.base.exception.UnexpectedExceptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import tech.intellispaces.entity.exception.UnexpectedExceptions;
 
 import java.util.concurrent.atomic.AtomicReference;
 

@@ -1,7 +1,5 @@
 package intellispaces.jaquarius.space.domain;
 
-import intellispaces.common.base.exception.UnexpectedExceptions;
-import intellispaces.common.base.type.ClassFunctions;
 import intellispaces.common.javastatement.JavaStatements;
 import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.common.javastatement.reference.CustomTypeReference;
@@ -12,6 +10,8 @@ import intellispaces.common.javastatement.reference.TypeReference;
 import intellispaces.common.javastatement.reference.TypeReferenceFunctions;
 import intellispaces.jaquarius.annotation.Domain;
 import intellispaces.jaquarius.common.NameConventionFunctions;
+import tech.intellispaces.entity.exception.UnexpectedExceptions;
+import tech.intellispaces.entity.type.ClassFunctions;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,6 +1,5 @@
 package intellispaces.jaquarius.guide.n0;
 
-import intellispaces.common.base.exception.UnexpectedExceptions;
 import intellispaces.common.javastatement.method.MethodStatement;
 import intellispaces.jaquarius.exception.TraverseException;
 import intellispaces.jaquarius.exception.TraverseExceptions;
@@ -8,6 +7,7 @@ import intellispaces.jaquarius.guide.GuideForm;
 import intellispaces.jaquarius.guide.GuideLogger;
 import intellispaces.jaquarius.system.UnitWrapper;
 import intellispaces.jaquarius.system.kernel.KernelUnitGuide;
+import tech.intellispaces.entity.exception.UnexpectedExceptions;
 
 abstract class UnitGuide0<S, R> implements Guide0<S, R>, KernelUnitGuide<S, R> {
   private final String cid;
@@ -52,7 +52,7 @@ abstract class UnitGuide0<S, R> implements Guide0<S, R>, KernelUnitGuide<S, R> {
   public R traverse(S source) throws TraverseException {
     try {
       GuideLogger.logCallGuide(guideMethod);
-      return (R) unitInstance.$unit().getGuideAction(guideOrdinal).asAction2().execute(unitInstance, source);
+      return (R) unitInstance.$unit().getGuideAction(guideOrdinal).castToAction2().execute(unitInstance, source);
     } catch (TraverseException e) {
       throw e;
     } catch (Exception e) {
@@ -65,7 +65,7 @@ abstract class UnitGuide0<S, R> implements Guide0<S, R>, KernelUnitGuide<S, R> {
   public int traverseToInt(S source) throws TraverseException {
     try {
       GuideLogger.logCallGuide(guideMethod);
-      return unitInstance.$unit().getGuideAction(guideOrdinal).asAction2().executeReturnInt(unitInstance, source);
+      return unitInstance.$unit().getGuideAction(guideOrdinal).castToAction2().executeReturnInt(unitInstance, source);
     } catch (TraverseException e) {
       throw e;
     } catch (Exception e) {
@@ -78,7 +78,7 @@ abstract class UnitGuide0<S, R> implements Guide0<S, R>, KernelUnitGuide<S, R> {
   public double traverseToDouble(S source) throws TraverseException {
     try {
       GuideLogger.logCallGuide(guideMethod);
-      return unitInstance.$unit().getGuideAction(guideOrdinal).asAction2().executeReturnDouble(unitInstance, source);
+      return unitInstance.$unit().getGuideAction(guideOrdinal).castToAction2().executeReturnDouble(unitInstance, source);
     } catch (TraverseException e) {
       throw e;
     } catch (Exception e) {

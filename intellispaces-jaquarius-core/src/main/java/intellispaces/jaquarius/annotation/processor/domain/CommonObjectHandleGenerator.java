@@ -4,7 +4,6 @@ import intellispaces.common.annotationprocessor.context.AnnotationProcessingCont
 import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.common.javastatement.method.MethodStatement;
 import intellispaces.common.javastatement.reference.CustomTypeReference;
-import intellispaces.common.javastatement.type.Types;
 import intellispaces.jaquarius.annotation.Channel;
 import intellispaces.jaquarius.annotation.ObjectHandle;
 import intellispaces.jaquarius.channel.Channel1;
@@ -17,6 +16,7 @@ import intellispaces.jaquarius.space.channel.ChannelFunctions;
 import intellispaces.jaquarius.space.domain.DomainFunctions;
 import intellispaces.jaquarius.traverse.TraverseType;
 import tech.intellispaces.entity.type.Type;
+import tech.intellispaces.entity.type.Types;
 
 import javax.annotation.processing.RoundEnvironment;
 import java.util.HashMap;

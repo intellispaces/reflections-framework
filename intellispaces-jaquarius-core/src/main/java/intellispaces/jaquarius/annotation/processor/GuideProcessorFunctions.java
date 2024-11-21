@@ -293,7 +293,7 @@ public interface GuideProcessorFunctions {
           result.add(param);
         }
       } else if (param.type().isPrimitiveReference()) {
-        if (param.type().asPrimitiveReferenceOrElseThrow().isLong()) {
+        if (param.type().asPrimitiveReferenceOrElseThrow().primitiveType().isLong()) {
           result.add(param);
         }
       }
@@ -314,12 +314,13 @@ public interface GuideProcessorFunctions {
           result.add(param);
         }
       } else if (param.type().isPrimitiveReference()) {
-        PrimitiveReference primitive = param.type().asPrimitiveReferenceOrElseThrow();
-        if (primitive.isBoolean()
-            || primitive.isChar()
-            || primitive.isByte()
-            || primitive.isShort()
-            || primitive.isInt()
+        PrimitiveReference primitiveReference = param.type().asPrimitiveReferenceOrElseThrow();
+        PrimitiveType primitiveType = primitiveReference.primitiveType();
+        if (primitiveType.isBoolean()
+            || primitiveType.isChar()
+            || primitiveType.isByte()
+            || primitiveType.isShort()
+            || primitiveType.isInt()
         ) {
           result.add(param);
         }
@@ -335,8 +336,9 @@ public interface GuideProcessorFunctions {
           result.add(param);
         }
       } else if (param.type().isPrimitiveReference()) {
-        PrimitiveReference primitive = param.type().asPrimitiveReferenceOrElseThrow();
-        if (primitive.isFloat() || primitive.isDouble()) {
+        PrimitiveReference primitiveReference = param.type().asPrimitiveReferenceOrElseThrow();
+        PrimitiveType primitiveType = primitiveReference.primitiveType();
+        if (primitiveType.isFloat() || primitiveType.isDouble()) {
           result.add(param);
         }
       }

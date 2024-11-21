@@ -1,6 +1,5 @@
 package intellispaces.jaquarius.system;
 
-import tech.intellispaces.entity.type.Type;
 import intellispaces.jaquarius.channel.Channel0;
 import intellispaces.jaquarius.channel.Channel1;
 import intellispaces.jaquarius.channel.Channel2;
@@ -22,6 +21,7 @@ import intellispaces.jaquarius.guide.n3.Mapper3;
 import intellispaces.jaquarius.guide.n3.MapperOfMoving3;
 import intellispaces.jaquarius.guide.n3.Mover3;
 import intellispaces.jaquarius.guide.n4.MapperOfMoving4;
+import tech.intellispaces.entity.type.Type;
 
 /**
  * System module.

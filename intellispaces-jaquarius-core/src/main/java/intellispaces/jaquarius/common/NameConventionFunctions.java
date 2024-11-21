@@ -195,7 +195,7 @@ public interface NameConventionFunctions {
     sb.append(method.name());
     for (MethodParam param : method.params()) {
       if (param.type().isPrimitiveReference()) {
-        sb.append(StringFunctions.capitalizeFirstLetter(param.type().asPrimitiveReferenceOrElseThrow().typename()));
+        sb.append(StringFunctions.capitalizeFirstLetter(param.type().asPrimitiveReferenceOrElseThrow().primitiveType().typename()));
       } else if (param.type().isCustomTypeReference()) {
         sb.append(param.type().asCustomTypeReferenceOrElseThrow().targetType().simpleName());
       } else if (param.type().isNamedReference()) {

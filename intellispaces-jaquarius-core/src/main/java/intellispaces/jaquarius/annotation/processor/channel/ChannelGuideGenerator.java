@@ -158,7 +158,7 @@ public class ChannelGuideGenerator extends AbstractGenerator {
     for (MethodParam param : getQualifierMethodParams()) {
       sb.append(", ");
       if (param.type().isPrimitiveReference()) {
-        sb.append(param.type().asPrimitiveReferenceOrElseThrow().typename());
+        sb.append(param.type().asPrimitiveReferenceOrElseThrow().primitiveType().typename());
       } else {
         sb.append(buildObjectHandleDeclaration(param.type(), Function.identity()));
       }

@@ -7,7 +7,6 @@ import intellispaces.common.javastatement.reference.CustomTypeReference;
 import intellispaces.common.javastatement.reference.CustomTypeReferences;
 import intellispaces.common.javastatement.reference.NamedReference;
 import intellispaces.common.javastatement.reference.TypeReference;
-import intellispaces.common.javastatement.type.Types;
 import intellispaces.jaquarius.action.TraverseActions;
 import intellispaces.jaquarius.annotation.AutoGuide;
 import intellispaces.jaquarius.annotation.Inject;
@@ -34,6 +33,7 @@ import tech.intellispaces.entity.text.StringFunctions;
 import tech.intellispaces.entity.type.ClassFunctions;
 import tech.intellispaces.entity.type.ClassNameFunctions;
 import tech.intellispaces.entity.type.PrimitiveTypes;
+import tech.intellispaces.entity.type.Types;
 
 import javax.annotation.processing.RoundEnvironment;
 import java.util.ArrayList;

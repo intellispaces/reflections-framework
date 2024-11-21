@@ -5,7 +5,6 @@ import intellispaces.common.javastatement.customtype.CustomType;
 import intellispaces.common.javastatement.method.MethodStatement;
 import intellispaces.common.javastatement.reference.CustomTypeReference;
 import intellispaces.common.javastatement.reference.CustomTypeReferences;
-import intellispaces.common.javastatement.type.Types;
 import intellispaces.jaquarius.annotation.Channel;
 import intellispaces.jaquarius.annotation.ObjectHandle;
 import intellispaces.jaquarius.channel.Channel0;
@@ -23,6 +22,7 @@ import intellispaces.jaquarius.traverse.TraverseTypes;
 import tech.intellispaces.entity.collection.ArraysFunctions;
 import tech.intellispaces.entity.text.StringFunctions;
 import tech.intellispaces.entity.type.Type;
+import tech.intellispaces.entity.type.Types;
 
 import javax.annotation.processing.RoundEnvironment;
 import java.util.HashMap;

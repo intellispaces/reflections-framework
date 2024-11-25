@@ -1,9 +1,9 @@
 package samples;
 
-import intellispaces.jaquarius.annotation.Configuration;
-import intellispaces.jaquarius.annotation.Module;
-import intellispaces.jaquarius.annotation.Startup;
-import intellispaces.jaquarius.annotation.validator.Sample;
+import tech.intellispaces.jaquarius.annotation.Configuration;
+import tech.intellispaces.jaquarius.annotation.Module;
+import tech.intellispaces.jaquarius.annotation.Startup;
+import tech.intellispaces.jaquarius.annotation.validator.Sample;
 
 public interface UnitWithOneStartupMethod {
 

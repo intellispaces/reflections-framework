@@ -1,9 +1,9 @@
 package samples;
 
-import intellispaces.jaquarius.annotation.Module;
-import intellispaces.jaquarius.annotation.Projection;
-import intellispaces.jaquarius.annotation.validator.Sample;
-import intellispaces.jaquarius.samples.object.ObjectHandleOfDomainEmpty;
+import tech.intellispaces.jaquarius.annotation.Module;
+import tech.intellispaces.jaquarius.annotation.Projection;
+import tech.intellispaces.jaquarius.annotation.validator.Sample;
+import tech.intellispaces.jaquarius.samples.object.ObjectHandleOfDomainEmpty;
 
 @Sample
 @Module

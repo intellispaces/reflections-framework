@@ -1,9 +1,9 @@
 package samples;
 
-import intellispaces.jaquarius.annotation.Configuration;
-import intellispaces.jaquarius.annotation.Module;
-import intellispaces.jaquarius.annotation.Shutdown;
-import intellispaces.jaquarius.annotation.validator.Sample;
+import tech.intellispaces.jaquarius.annotation.Configuration;
+import tech.intellispaces.jaquarius.annotation.Module;
+import tech.intellispaces.jaquarius.annotation.Shutdown;
+import tech.intellispaces.jaquarius.annotation.validator.Sample;
 
 public interface UnitWithOneShutdownMethod {
 

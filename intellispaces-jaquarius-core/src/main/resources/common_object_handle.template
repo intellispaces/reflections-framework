@@ -18,7 +18,7 @@ public interface {{$classSimpleName}}{{$domainTypeParamsFull}} extends {{$primar
     return {{$domainType}}
   }
 {{else}}
-public interface {{$classSimpleName}}{{$domainTypeParamsFull}} extends intellispaces.jaquarius.object.ObjectHandle<{{$sourceClassSimpleName}}{{$domainTypeParamsBrief}}> {
+public interface {{$classSimpleName}}{{$domainTypeParamsFull}} extends tech.intellispaces.jaquarius.object.ObjectHandle<{{$sourceClassSimpleName}}{{$domainTypeParamsBrief}}> {
 
   default Type<{{$sourceClassSimpleName}}{{$domainTypeParamsBrief}}> domain() {
     return {{$domainType}}

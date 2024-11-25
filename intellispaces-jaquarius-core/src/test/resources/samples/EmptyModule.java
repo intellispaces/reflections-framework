@@ -1,7 +1,7 @@
 package samples;
 
-import intellispaces.jaquarius.annotation.Module;
-import intellispaces.jaquarius.annotation.validator.Sample;
+import tech.intellispaces.jaquarius.annotation.Module;
+import tech.intellispaces.jaquarius.annotation.validator.Sample;
 
 @Sample
 @Module

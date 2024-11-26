@@ -5,7 +5,7 @@ import {{$importedClass}};
 {{end}}
 
 /**
- * Common handle of the object of domain {@link {{$sourceClassName}}}.<p/>
+ * Common object handle for domain {@link {{$sourceClassName}}}.<p/>
  *
  * This class was generated automatically. Don't try to change it.
  */
@@ -18,7 +18,7 @@ public interface {{$classSimpleName}}{{$domainTypeParamsFull}} extends {{$primar
     return {{$domainType}}
   }
 {{else}}
-public interface {{$classSimpleName}}{{$domainTypeParamsFull}} extends tech.intellispaces.jaquarius.object.ObjectHandle<{{$sourceClassSimpleName}}{{$domainTypeParamsBrief}}> {
+public interface {{$classSimpleName}}{{$domainTypeParamsFull}} extends tech.intellispaces.jaquarius.object.reference.ObjectHandle<{{$sourceClassSimpleName}}{{$domainTypeParamsBrief}}> {
 
   default Type<{{$sourceClassSimpleName}}{{$domainTypeParamsBrief}}> domain() {
     return {{$domainType}}
@@ -27,6 +27,11 @@ public interface {{$classSimpleName}}{{$domainTypeParamsFull}} extends tech.inte
 
   default Class<?> domainClass() {
     return {{$primaryDomainSimpleName}}.class;
+  }
+
+  @Override
+  default boolean isFocused() {
+    return true;
   }
 
 {{for method : $domainMethods}}

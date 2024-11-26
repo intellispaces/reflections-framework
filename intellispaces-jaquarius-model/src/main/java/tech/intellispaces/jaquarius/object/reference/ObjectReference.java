@@ -1,4 +1,4 @@
-package tech.intellispaces.jaquarius.object;
+package tech.intellispaces.jaquarius.object.reference;
 
 import tech.intellispaces.jaquarius.channel.Channel1;
 import tech.intellispaces.jaquarius.channel.MappingChannel;
@@ -6,16 +6,15 @@ import tech.intellispaces.jaquarius.exception.TraverseException;
 import tech.intellispaces.entity.type.Type;
 
 /**
- * Handle of object.<p/>
+ * Object reference.<p/>
  *
- * Object handle binds an object to a semantic domain.<p/>
+ * The object reference connects the system, the object and the semantic domain.<p/>
  *
- * The handle implements interaction with the object.
- * Any interaction of the system with the object is performed through the object handle.<p/>
+ * Any interaction of the system with the object is performed through the object reference.
  *
- * @param <D> related domain type.
+ * @param <D> the related domain type.
  */
-public interface ObjectHandle<D> {
+public interface ObjectReference<D> {
 
   /**
    * Type of the domain related to this handle.
@@ -27,24 +26,10 @@ public interface ObjectHandle<D> {
    */
   Class<?> domainClass();
 
-  boolean isMovable();
-
-  MovableObjectHandle<D> asMovableOrElseThrow();
-
   /**
-   * Releases all direct links to the actual object, if any.
+   * Returns <code>true</code> if this object reference focused to specific object.
    */
-  void release();
-
-  /**
-   * Add projection.
-   *
-   * @param targetDomain target domain class.
-   * @param target target object handle.
-   * @param <TD> target domain type.
-   * @param <TH> target object handle type.
-   */
-  <TD, TH> void addProjection(Class<TD> targetDomain, TH target);
+  boolean isFocused();
 
   /**
    * Maps object handle to given domain.
@@ -68,4 +53,9 @@ public interface ObjectHandle<D> {
    * @throws TraverseException throws if object cannot be traversed.
    */
   <T, Q, C extends Channel1 & MappingChannel> T mapThru(Class<C> channelClass, Q qualifier) throws TraverseException;
+
+  /**
+   * Releases all resources associated with this object reference, if any.
+   */
+  void release();
 }

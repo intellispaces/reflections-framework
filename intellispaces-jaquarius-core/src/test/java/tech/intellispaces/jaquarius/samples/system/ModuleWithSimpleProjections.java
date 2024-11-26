@@ -2,7 +2,7 @@ package tech.intellispaces.jaquarius.samples.system;
 
 import tech.intellispaces.jaquarius.annotation.Module;
 import tech.intellispaces.jaquarius.annotation.Projection;
-import tech.intellispaces.jaquarius.samples.object.ObjectHandleOfDomainEmpty;
+import tech.intellispaces.jaquarius.samples.object.ObjectReferenceOfEmptyDomain;
 
 @Module
 public class ModuleWithSimpleProjections {
@@ -88,7 +88,7 @@ public class ModuleWithSimpleProjections {
   }
 
   @Projection
-  public ObjectHandleOfDomainEmpty objectHandleProjection() {
+  public ObjectReferenceOfEmptyDomain objectHandleProjection() {
     return null;
   }
 }

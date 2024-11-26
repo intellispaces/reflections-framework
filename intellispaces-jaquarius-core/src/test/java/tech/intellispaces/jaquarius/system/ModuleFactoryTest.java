@@ -2,7 +2,7 @@ package tech.intellispaces.jaquarius.system;
 
 import tech.intellispaces.jaquarius.exception.ConfigurationException;
 import tech.intellispaces.jaquarius.exception.CyclicDependencyException;
-import tech.intellispaces.jaquarius.samples.object.ObjectHandleOfDomainEmpty;
+import tech.intellispaces.jaquarius.samples.object.ObjectReferenceOfEmptyDomain;
 import tech.intellispaces.jaquarius.samples.system.EmptyModule;
 import tech.intellispaces.jaquarius.samples.system.ModuleWithProjectionProvidersWithSelfCyclicDependency;
 import tech.intellispaces.jaquarius.samples.system.ModuleWithSimpleProjections;
@@ -112,7 +112,7 @@ public class ModuleFactoryTest {
 
     Assertions.assertThat(module.projectionRegistry().getProjection("stringProjection", String.class)).isEqualTo("string");
 
-    Assertions.assertThat(module.projectionRegistry().getProjection("objectHandleProjection", ObjectHandleOfDomainEmpty.class)).isNull();
+    Assertions.assertThat(module.projectionRegistry().getProjection("objectHandleProjection", ObjectReferenceOfEmptyDomain.class)).isNull();
 
     Assertions.assertThat(module.projectionRegistry().allProjections()).hasSize(17);
   }

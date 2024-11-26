@@ -1,4 +1,4 @@
-package tech.intellispaces.jaquarius.object;
+package tech.intellispaces.jaquarius.object.reference;
 
 import tech.intellispaces.jaquarius.channel.Channel0;
 import tech.intellispaces.jaquarius.channel.Channel1;
@@ -12,7 +12,7 @@ import tech.intellispaces.jaquarius.exception.TraverseException;
  *
  * Movable object being moved can move in space.
  *
- * @param <D> object domain type.
+ * @param <D> the object domain type.
  */
 public interface MovableObjectHandle<D> extends ObjectHandle<D> {
 

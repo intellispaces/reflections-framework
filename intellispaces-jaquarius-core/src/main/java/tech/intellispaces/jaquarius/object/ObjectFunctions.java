@@ -5,6 +5,9 @@ import tech.intellispaces.jaquarius.annotation.ObjectHandle;
 import tech.intellispaces.jaquarius.annotation.Unmovable;
 import tech.intellispaces.jaquarius.annotation.Wrapper;
 import tech.intellispaces.jaquarius.common.NameConventionFunctions;
+import tech.intellispaces.jaquarius.object.reference.MovableObjectHandle;
+import tech.intellispaces.jaquarius.object.reference.ObjectReference;
+import tech.intellispaces.jaquarius.object.reference.UnmovableObjectHandle;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,7 +40,7 @@ public class ObjectFunctions {
 
   public static Class<?> getObjectHandleClass(ObjectHandleTypes objectHandleType) {
     return switch (objectHandleType) {
-      case Common -> tech.intellispaces.jaquarius.object.ObjectHandle.class;
+      case Common -> tech.intellispaces.jaquarius.object.reference.ObjectHandle.class;
       case Movable -> MovableObjectHandle.class;
       case Unmovable -> UnmovableObjectHandle.class;
     };
@@ -337,22 +340,22 @@ public class ObjectFunctions {
     return propertiesHandleClass;
   }
 
-  public static void releaseSilently(tech.intellispaces.jaquarius.object.ObjectHandle<?> objectHandle) {
-    if (objectHandle == null) {
+  public static void releaseSilently(ObjectReference<?> objectReference) {
+    if (objectReference == null) {
       return;
     }
     try {
-      objectHandle.release();
+      objectReference.release();
     } catch (Exception e) {
-      LOG.error("Could not release object handle", e);
+      LOG.error("Could not release object reference", e);
     }
   }
 
-  public static void releaseEach(List<tech.intellispaces.jaquarius.object.ObjectHandle<?>> objectHandles) {
+  public static void releaseEach(List<ObjectReference<?>> objectReferences) {
     List<Exception> exceptions = null;
-    for (var objectHandle : objectHandles) {
+    for (var objectReference : objectReferences) {
       try {
-        objectHandle.release();
+        objectReference.release();
       } catch (Exception e) {
         if (exceptions == null) {
           exceptions = new ArrayList<>();

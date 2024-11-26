@@ -5,7 +5,7 @@ import {{$importedClass}};
 {{end}}
 
 /**
- * Handle of the movable object of domain {@link {{$sourceClassName}}}.<p/>
+ * Movable object handle for domain {@link {{$sourceClassName}}}.<p/>
  *
  * This class was generated automatically. Don't try to change it.
  */

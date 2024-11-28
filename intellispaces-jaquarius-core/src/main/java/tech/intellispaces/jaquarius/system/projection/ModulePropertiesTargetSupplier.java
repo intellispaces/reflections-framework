@@ -2,7 +2,7 @@ package tech.intellispaces.jaquarius.system.projection;
 
 import tech.intellispaces.jaquarius.annotation.Properties;
 import tech.intellispaces.jaquarius.object.DataFunctions;
-import tech.intellispaces.jaquarius.object.ObjectFunctions;
+import tech.intellispaces.jaquarius.object.ObjectHandleFunctions;
 import tech.intellispaces.jaquarius.object.ObjectHandleConstants;
 import tech.intellispaces.jaquarius.space.SpaceConstants;
 import tech.intellispaces.jaquarius.system.Module;
@@ -33,13 +33,13 @@ public class ModulePropertiesTargetSupplier extends AbstractProjectionTargetSupp
       return target;
     }
     if (ObjectHandleConstants.PROPERTIES_HANDLE_CLASSNAME.equals(expectedReturnType.getCanonicalName())) {
-      if (!ObjectFunctions.propertiesHandleClass().isAssignableFrom(target.getClass())) {
+      if (!ObjectHandleFunctions.propertiesHandleClass().isAssignableFrom(target.getClass())) {
         throw UnexpectedExceptions.withMessage("Invalid return type of method '{0}' in class {1}",
             projectionMethod.getName(), projectionMethod.getDeclaringClass().getCanonicalName());
       }
       return target;
     }
-    if (ObjectFunctions.isCustomObjectHandleClass(expectedReturnType)) {
+    if (ObjectHandleFunctions.isCustomObjectHandleClass(expectedReturnType)) {
       if (DataFunctions.isDataObjectHandle(expectedReturnType)) {
         return module.mapThruChannel1(target, SpaceConstants.PROPERTIES_TO_DATA_TID, expectedReturnType);
       }

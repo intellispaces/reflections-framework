@@ -4,7 +4,7 @@ import tech.intellispaces.jaquarius.annotation.Movable;
 import tech.intellispaces.jaquarius.annotation.Unmovable;
 import tech.intellispaces.jaquarius.common.NameConventionFunctions;
 import tech.intellispaces.jaquarius.guide.GuideForm;
-import tech.intellispaces.jaquarius.object.ObjectFunctions;
+import tech.intellispaces.jaquarius.object.ObjectHandleFunctions;
 import tech.intellispaces.jaquarius.object.ObjectHandleTypes;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
@@ -61,8 +61,8 @@ abstract class AbstractConversionDomainObjectHandleGenerator extends AbstractDom
         CustomType expectedReturnType = parentReturnTypeRef.asCustomTypeReferenceOrElseThrow().targetType();
         CustomType actualReturnType = childReturnTypeRef.asCustomTypeReferenceOrElseThrow().targetType();
         if (
-            !ObjectFunctions.isDefaultObjectHandleType(actualReturnType)
-                && !ObjectFunctions.isDefaultObjectHandleType(expectedReturnType)
+            !ObjectHandleFunctions.isDefaultObjectHandleType(actualReturnType)
+                && !ObjectHandleFunctions.isDefaultObjectHandleType(expectedReturnType)
                 && actualReturnType.hasParent(expectedReturnType)
         ) {
           buildDownwardReturnStatement(sb, method, actualReturnType, expectedReturnType);

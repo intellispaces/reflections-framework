@@ -12,7 +12,7 @@ import tech.intellispaces.jaquarius.channel.Channel3;
 import tech.intellispaces.jaquarius.channel.Channel4;
 import tech.intellispaces.jaquarius.exception.ConfigurationExceptions;
 import tech.intellispaces.jaquarius.id.RepetableUuidIdentifierGenerator;
-import tech.intellispaces.jaquarius.object.ObjectFunctions;
+import tech.intellispaces.jaquarius.object.ObjectHandleFunctions;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
 import tech.intellispaces.jaquarius.traverse.TraverseType;
 import tech.intellispaces.entity.exception.NotImplementedExceptions;
@@ -225,7 +225,7 @@ public interface ChannelFunctions {
 
   static Channel findObjectHandleMethodChannelAnnotation(MethodStatement objectHandleMethod) {
     CustomType objectHandleClass = objectHandleMethod.owner();
-    CustomType domainClass = ObjectFunctions.getDomainTypeOfObjectHandle(objectHandleClass);
+    CustomType domainClass = ObjectHandleFunctions.getDomainTypeOfObjectHandle(objectHandleClass);
     Channel channel = findObjectHandleMethodChannelAnnotation(domainClass, objectHandleMethod);
     if (channel == null) {
       throw UnexpectedExceptions.withMessage("Failed to find related channel annotation " +
@@ -263,7 +263,7 @@ public interface ChannelFunctions {
       for (int i = 0; i < domainMethod.params().size(); ++i) {
         TypeReference domainParamType1 = domainMethod.params().get(i).type();
         TypeReference objectHandleParamType = objectHandleMethod.params().get(i).type();
-        CustomType domainParamType2 = ObjectFunctions.getDomainTypeOfObjectHandle(
+        CustomType domainParamType2 = ObjectHandleFunctions.getDomainTypeOfObjectHandle(
             objectHandleParamType.asCustomTypeReferenceOrElseThrow().targetType()
         );
         if (!TypeReferenceFunctions.isEqualTypes(domainParamType1, CustomTypeReferences.get(domainParamType2))) {

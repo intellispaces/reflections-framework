@@ -10,7 +10,7 @@ import tech.intellispaces.jaquarius.channel.MappingChannel;
 import tech.intellispaces.jaquarius.common.NameConventionFunctions;
 import tech.intellispaces.jaquarius.exception.TraverseException;
 import tech.intellispaces.jaquarius.guide.GuideForm;
-import tech.intellispaces.jaquarius.object.ObjectFunctions;
+import tech.intellispaces.jaquarius.object.ObjectHandleFunctions;
 import tech.intellispaces.jaquarius.object.ObjectHandleTypes;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
 import tech.intellispaces.jaquarius.traverse.TraverseTypes;
@@ -107,7 +107,7 @@ public class UnmovableDownwardObjectHandleGenerator extends AbstractConversionDo
     context.addImport(Type.class);
     context.addImport(Types.class);
     context.addImport(ObjectHandle.class);
-    context.addImport(ObjectFunctions.class);
+    context.addImport(ObjectHandleFunctions.class);
     context.addImport(TraverseException.class);
     context.addImport(Channel0.class);
     context.addImport(Channel1.class);

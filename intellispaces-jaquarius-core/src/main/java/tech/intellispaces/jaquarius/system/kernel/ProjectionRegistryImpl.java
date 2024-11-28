@@ -4,7 +4,7 @@ import tech.intellispaces.jaquarius.annotation.Projection;
 import tech.intellispaces.jaquarius.exception.ConfigurationException;
 import tech.intellispaces.jaquarius.exception.ConfigurationExceptions;
 import tech.intellispaces.jaquarius.exception.CyclicDependencyExceptions;
-import tech.intellispaces.jaquarius.object.ObjectFunctions;
+import tech.intellispaces.jaquarius.object.ObjectHandleFunctions;
 import tech.intellispaces.jaquarius.system.ModuleProjection;
 import tech.intellispaces.jaquarius.system.ProjectionDefinition;
 import tech.intellispaces.jaquarius.system.ProjectionDefinitionKinds;
@@ -59,7 +59,7 @@ class ProjectionRegistryImpl implements ProjectionRegistry {
 
   @Override
   public <T> T getProjection(String name, Class<T> targetObjectHandleClass) {
-    if (!ObjectFunctions.isObjectHandleClass(targetObjectHandleClass)) {
+    if (!ObjectHandleFunctions.isObjectHandleClass(targetObjectHandleClass)) {
       throw UnexpectedExceptions.withMessage("Expected target object handle class");
     }
     return getProjection(name, targetObjectHandleClass, new LinkedHashSet<>());
@@ -68,7 +68,7 @@ class ProjectionRegistryImpl implements ProjectionRegistry {
   @Override
   @SuppressWarnings("unchecked")
   public <T> List<T> getProjections(Class<T> targetObjectHandleClass) {
-    if (!ObjectFunctions.isObjectHandleClass(targetObjectHandleClass)) {
+    if (!ObjectHandleFunctions.isObjectHandleClass(targetObjectHandleClass)) {
       throw UnexpectedExceptions.withMessage("Expected target object handle class");
     }
 
@@ -109,7 +109,7 @@ class ProjectionRegistryImpl implements ProjectionRegistry {
 
   @Override
   public <T> void addContextProjection(String name, Class<T> targetObjectHandleClass, T target) {
-    if (!ObjectFunctions.isObjectHandleClass(targetObjectHandleClass)) {
+    if (!ObjectHandleFunctions.isObjectHandleClass(targetObjectHandleClass)) {
       throw UnexpectedExceptions.withMessage("Expected target object handle class");
     }
 
@@ -150,8 +150,8 @@ class ProjectionRegistryImpl implements ProjectionRegistry {
     if (projection == null) {
       return null;
     }
-    if (!ObjectFunctions.isCompatibleObjectType(targetObjectHandleClass, projection.type())) {
-      T downgradedProjection = ObjectFunctions.tryDowngrade(projection.target(), targetObjectHandleClass);
+    if (!ObjectHandleFunctions.isCompatibleObjectType(targetObjectHandleClass, projection.type())) {
+      T downgradedProjection = ObjectHandleFunctions.tryDowngrade(projection.target(), targetObjectHandleClass);
       if (downgradedProjection != null) {
         return downgradedProjection;
       }

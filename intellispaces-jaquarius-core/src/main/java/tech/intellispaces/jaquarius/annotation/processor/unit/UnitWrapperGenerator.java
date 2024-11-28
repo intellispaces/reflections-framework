@@ -11,7 +11,7 @@ import tech.intellispaces.jaquarius.annotation.processor.GuideProcessorFunctions
 import tech.intellispaces.jaquarius.common.NameConventionFunctions;
 import tech.intellispaces.jaquarius.exception.ConfigurationExceptions;
 import tech.intellispaces.jaquarius.guide.GuideFunctions;
-import tech.intellispaces.jaquarius.object.ObjectFunctions;
+import tech.intellispaces.jaquarius.object.ObjectHandleFunctions;
 import tech.intellispaces.jaquarius.system.Injection;
 import tech.intellispaces.jaquarius.system.Modules;
 import tech.intellispaces.jaquarius.system.ProjectionInjection;
@@ -370,7 +370,7 @@ public class UnitWrapperGenerator extends AbstractGenerator {
   }
 
   private boolean isReturnObjectHandle(MethodStatement method) {
-    return ObjectFunctions.isObjectHandleType(method.returnType().orElseThrow());
+    return ObjectHandleFunctions.isObjectHandleType(method.returnType().orElseThrow());
   }
 
   private boolean isReturnGuide(MethodStatement method) {

@@ -39,7 +39,7 @@ import tech.intellispaces.jaquarius.guide.n4.Mover4;
 import tech.intellispaces.jaquarius.guide.n4.ObjectMapperOfMoving4;
 import tech.intellispaces.jaquarius.guide.n5.Mapper5;
 import tech.intellispaces.jaquarius.guide.n5.Mover5;
-import tech.intellispaces.jaquarius.object.ObjectFunctions;
+import tech.intellispaces.jaquarius.object.ObjectHandleFunctions;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.system.UnitGuide;
 import tech.intellispaces.jaquarius.system.UnitWrapper;
@@ -190,7 +190,7 @@ public final class GuideFunctions {
     }
     CustomType objectHandleWrapperType = Interfaces.of(objectHandleImplClass.get());
 
-    CustomType domainType = ObjectFunctions.getDomainTypeOfObjectHandle(Classes.of(objectHandleClass));
+    CustomType domainType = ObjectHandleFunctions.getDomainTypeOfObjectHandle(Classes.of(objectHandleClass));
 
     for (MethodStatement method : domainType.declaredMethods()) {
       if (NameConventionFunctions.isConversionMethod(method)) {

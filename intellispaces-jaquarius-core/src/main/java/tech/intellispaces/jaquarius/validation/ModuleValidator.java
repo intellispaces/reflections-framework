@@ -9,7 +9,7 @@ import tech.intellispaces.jaquarius.annotation.Shutdown;
 import tech.intellispaces.jaquarius.annotation.Startup;
 import tech.intellispaces.jaquarius.exception.JaquariusExceptions;
 import tech.intellispaces.jaquarius.guide.GuideFunctions;
-import tech.intellispaces.jaquarius.object.ObjectFunctions;
+import tech.intellispaces.jaquarius.object.ObjectHandleFunctions;
 import tech.intellispaces.jaquarius.system.ModuleFunctions;
 import tech.intellispaces.java.annotation.validator.AnnotatedTypeValidator;
 import tech.intellispaces.java.reflection.customtype.CustomType;
@@ -121,7 +121,7 @@ public class ModuleValidator implements AnnotatedTypeValidator {
       throw JaquariusExceptions.withMessage("Method of the projection '{0}' in unit {1} should " +
               "return value", method.name(), method.owner().canonicalName());
     }
-    if (!ObjectFunctions.isObjectHandleType(returnType.get())) {
+    if (!ObjectHandleFunctions.isObjectHandleType(returnType.get())) {
       throw JaquariusExceptions.withMessage("Method of the projection '{0}' in unit {1} should " +
               "return object handle class", method.name(), method.owner().canonicalName());
     }
@@ -142,7 +142,7 @@ public class ModuleValidator implements AnnotatedTypeValidator {
       throw JaquariusExceptions.withMessage("Abstract method '{0}' in unit {1} should have no parameters",
           method.name(), method.owner().canonicalName());
     }
-    if (!ObjectFunctions.isObjectHandleType(returnType.get()) && !GuideFunctions.isGuideType(returnType.get())) {
+    if (!ObjectHandleFunctions.isObjectHandleType(returnType.get()) && !GuideFunctions.isGuideType(returnType.get())) {
       throw JaquariusExceptions.withMessage("Injection '{0}' in unit {1} should return " +
               "object handle or guide class", method.name(), method.owner().canonicalName());
     }
@@ -165,7 +165,7 @@ public class ModuleValidator implements AnnotatedTypeValidator {
   private void checkMethodParams(MethodStatement method) {
     for (MethodParam param : method.params()) {
       TypeReference paramType = param.type();
-      if (!ObjectFunctions.isObjectHandleType(paramType)) {
+      if (!ObjectHandleFunctions.isObjectHandleType(paramType)) {
         throw JaquariusExceptions.withMessage("Parameter '{0}' of method '{1}' in unit {2} should be " +
             "object handle class", param.name(), method.name(), method.owner().canonicalName());
       }

@@ -1,7 +1,7 @@
 package tech.intellispaces.jaquarius.system.kernel;
 
 import tech.intellispaces.jaquarius.exception.ConfigurationExceptions;
-import tech.intellispaces.jaquarius.object.ObjectFunctions;
+import tech.intellispaces.jaquarius.object.ObjectHandleFunctions;
 import tech.intellispaces.jaquarius.system.ProjectionInjection;
 import tech.intellispaces.jaquarius.system.Unit;
 import tech.intellispaces.jaquarius.system.UnitProjectionDefinition;
@@ -74,7 +74,7 @@ public class ModuleValidator {
         throw ConfigurationExceptions.withMessage("Projection injection by name '{0}' declared in unit {1} is not found",
             injection.name(), injection.unitClass().getCanonicalName());
       }
-      if (!ObjectFunctions.isCompatibleObjectType(injection.targetClass(), provider.type())) {
+      if (!ObjectHandleFunctions.isCompatibleObjectType(injection.targetClass(), provider.type())) {
         throw ConfigurationExceptions.withMessage("Projection injection '{0}' declared in unit {1} has an incompatible " +
                 "target type. Expected type {2}, actual type {3}",
             injection.name(), injection.unitClass().getCanonicalName(),

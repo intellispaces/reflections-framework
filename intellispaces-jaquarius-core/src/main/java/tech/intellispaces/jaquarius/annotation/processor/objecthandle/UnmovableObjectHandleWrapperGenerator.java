@@ -6,6 +6,9 @@ import tech.intellispaces.jaquarius.channel.Channel1;
 import tech.intellispaces.jaquarius.channel.ChannelMethod0;
 import tech.intellispaces.jaquarius.channel.ChannelMethod1;
 import tech.intellispaces.jaquarius.channel.MappingChannel;
+import tech.intellispaces.jaquarius.engine.JaquariusEngines;
+import tech.intellispaces.jaquarius.engine.descriptor.ObjectHandleInstance;
+import tech.intellispaces.jaquarius.engine.descriptor.ObjectHandleType;
 import tech.intellispaces.jaquarius.exception.TraverseException;
 import tech.intellispaces.jaquarius.guide.GuideForms;
 import tech.intellispaces.jaquarius.guide.n0.Mapper0;
@@ -27,6 +30,7 @@ import tech.intellispaces.java.reflection.customtype.CustomType;
 
 import javax.annotation.processing.RoundEnvironment;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class UnmovableObjectHandleWrapperGenerator extends AbstractObjectHandleWrapperGenerator {
@@ -64,6 +68,7 @@ public class UnmovableObjectHandleWrapperGenerator extends AbstractObjectHandleW
     vars.put("importedClasses", context.getImports());
     vars.put("methodActions", methodActions);
     vars.put("guideActions", guideActions);
+    vars.put("objectHandleMethods", objectHandleMethods);
     vars.put("guideActionMethods", guideMethods);
     vars.put("domainMethods", methods);
     vars.put("injections", injections);
@@ -81,6 +86,8 @@ public class UnmovableObjectHandleWrapperGenerator extends AbstractObjectHandleW
   @Override
   protected boolean analyzeAnnotatedType(RoundEnvironment roundEnv) {
     context.generatedClassCanonicalName(artifactName());
+
+    context.addImport(List.class);
 
     context.addImport(Modules.class);
     context.addImport(KernelFunctions.class);
@@ -104,6 +111,9 @@ public class UnmovableObjectHandleWrapperGenerator extends AbstractObjectHandleW
     context.addImport(AutoGuideInjections.class);
     context.addImport(MappingChannel.class);
     context.addImport(PrimitiveFunctions.class);
+    context.addImport(ObjectHandleType.class);
+    context.addImport(ObjectHandleInstance.class);
+    context.addImport(JaquariusEngines.class);
 
     analyzeDomain();
     analyzeTypeParams(annotatedType);

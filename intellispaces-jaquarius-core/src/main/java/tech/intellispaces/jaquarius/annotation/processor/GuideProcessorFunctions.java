@@ -10,6 +10,8 @@ import tech.intellispaces.entity.text.StringFunctions;
 import tech.intellispaces.entity.type.ClassFunctions;
 import tech.intellispaces.entity.type.PrimitiveType;
 import tech.intellispaces.entity.type.PrimitiveTypes;
+import tech.intellispaces.jaquarius.object.ObjectHandleFunctions;
+import tech.intellispaces.jaquarius.object.ObjectHandleTypes;
 import tech.intellispaces.java.annotation.context.JavaArtifactContext;
 import tech.intellispaces.java.reflection.customtype.Classes;
 import tech.intellispaces.java.reflection.customtype.CustomType;
@@ -22,6 +24,7 @@ import tech.intellispaces.java.reflection.reference.PrimitiveReferences;
 import tech.intellispaces.java.reflection.reference.TypeReference;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -78,8 +81,8 @@ public interface GuideProcessorFunctions {
     sb.append(buildGuideActionGetterName(paramTypes, guideMethod.returnType().orElseThrow()));
     sb.append("(");
     sb.append(wrapperType.simpleName());
-    sb.append("::_");
-    sb.append(guideMethod.name());
+    sb.append("::");
+    sb.append(ObjectHandleFunctions.buildObjectHandleGuideMethodName(guideMethod));
     sb.append(", ");
     sb.append(buildGuideActionReturnType(normalizeType(guideMethod.returnType().orElseThrow()), guideForm, context));
     sb.append(".class");
@@ -207,8 +210,8 @@ public interface GuideProcessorFunctions {
     }
     String returnType = buildGuideTypeDeclaration(guideMethod.returnType().orElseThrow(), context);
     sb.append(returnType);
-    sb.append(" _");
-    sb.append(guideMethod.name());
+    sb.append(" ");
+    sb.append(ObjectHandleFunctions.buildObjectHandleGuideMethodName(guideMethod));
     sb.append("(");
     commaAppender = StringActions.skipFirstTimeCommaAppender(sb);
     for (MethodParam param : rearrangementParams(guideMethod.params())) {
@@ -236,6 +239,33 @@ public interface GuideProcessorFunctions {
     return Map.of("declaration", sb.toString());
   }
 
+  static Map<String, Object> buildObjectHandleMethodDescriptor(
+      MethodStatement objectHandleMethod, MethodStatement guideMethod, JavaArtifactContext context
+  ) {
+    var map = new HashMap<String, Object>();
+    map.put("name", objectHandleMethod.name());
+
+    List<String> paramClasses = new ArrayList<>();
+    for (MethodParam param : objectHandleMethod.params()) {
+      paramClasses.add(buildGuideParamClassName(param.type(), context));
+    }
+    map.put("params", paramClasses);
+
+    if (guideMethod != null) {
+      map.put("guideName", ObjectHandleFunctions.buildObjectHandleGuideMethodName(guideMethod));
+
+      List<String> guideParamClasses = new ArrayList<>();
+      for (MethodParam param : guideMethod.params()) {
+        guideParamClasses.add(buildGuideParamClassName(param.type(), context));
+      }
+      map.put("guideParams", guideParamClasses);
+    } else {
+      map.put("guideName", "");
+      map.put("guideParams", List.of());
+    }
+    return map;
+  }
+
   private static void buildInvokeSuperMethod(
       MethodStatement objectHandleMethod, StringBuilder sb, JavaArtifactContext context
   ) {
@@ -261,6 +291,15 @@ public interface GuideProcessorFunctions {
       }
     }
     sb.append(")");
+  }
+
+  private static String buildGuideParamClassName(TypeReference type, JavaArtifactContext context) {
+    return ObjectHandleFunctions.getObjectHandleDeclaration(
+        GuideProcessorFunctions.normalizeType(type),
+        ObjectHandleTypes.Common,
+        false,
+        context::addToImportAndGetSimpleName
+    );
   }
 
   private static String buildGuideTypeDeclaration(TypeReference type, JavaArtifactContext context) {

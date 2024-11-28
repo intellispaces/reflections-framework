@@ -9,7 +9,7 @@ import tech.intellispaces.jaquarius.guide.n1.Guide1;
 import tech.intellispaces.jaquarius.guide.n2.Guide2;
 import tech.intellispaces.jaquarius.guide.n3.Guide3;
 import tech.intellispaces.jaquarius.guide.n4.Guide4;
-import tech.intellispaces.jaquarius.object.ObjectFunctions;
+import tech.intellispaces.jaquarius.object.ObjectHandleFunctions;
 import tech.intellispaces.jaquarius.traverse.plan.CallGuide0PlanImpl;
 import tech.intellispaces.jaquarius.traverse.plan.CallGuide1PlanImpl;
 import tech.intellispaces.jaquarius.traverse.plan.CallGuide2PlanImpl;
@@ -193,11 +193,11 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
       return executionPlan;
     }
 
-    if (!ObjectFunctions.isObjectHandleClass(sourceClass)) {
+    if (!ObjectHandleFunctions.isObjectHandleClass(sourceClass)) {
       throw UnexpectedExceptions.withMessage("Traverse plan of type {0} expected object handle to input",
           plan.type());
     }
-    Class<?> objectHandleClass = ObjectFunctions.getObjectHandleClass(sourceClass);
+    Class<?> objectHandleClass = ObjectHandleFunctions.getObjectHandleClass(sourceClass);
     executionPlan = plan.getExecutionPlan(objectHandleClass);
     if (executionPlan != null) {
       return executionPlan;

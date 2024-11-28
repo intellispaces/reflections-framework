@@ -1,7 +1,7 @@
 package tech.intellispaces.jaquarius.annotation.processor;
 
 import tech.intellispaces.jaquarius.annotation.Generated;
-import tech.intellispaces.jaquarius.object.ObjectFunctions;
+import tech.intellispaces.jaquarius.object.ObjectHandleFunctions;
 import tech.intellispaces.jaquarius.object.ObjectHandleTypes;
 import tech.intellispaces.entity.type.ClassFunctions;
 import tech.intellispaces.java.annotation.context.JavaArtifactContext;
@@ -99,7 +99,7 @@ public abstract class AbstractGenerator extends TemplatedGenerator {
   }
 
   protected String getObjectHandleDeclaration(TypeReference domainType, ObjectHandleTypes handleType) {
-    return ObjectFunctions.getObjectHandleDeclaration(
+    return ObjectHandleFunctions.getObjectHandleDeclaration(
         domainType, handleType, context::addToImportAndGetSimpleName
     );
   }

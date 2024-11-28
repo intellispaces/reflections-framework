@@ -9,7 +9,7 @@ import java.util.Set;
 public interface DataFunctions {
 
   static boolean isDataObjectHandle(Class<?> objectHandleClass) {
-    return isDataDomain(ObjectFunctions.getDomainClassOfObjectHandle(objectHandleClass));
+    return isDataDomain(ObjectHandleFunctions.getDomainClassOfObjectHandle(objectHandleClass));
   }
 
   static boolean isDataDomain(Class<?> domainClass) {

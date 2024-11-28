@@ -4,18 +4,22 @@ package {{$packageName}};
 import {{$importedClass}};
 {{end}}
 
+import static tech.intellispaces.jaquarius.engine.descriptor.ObjectHandleMethods.objectHandleMethod;
+
 /**
  * This class was generated automatically. Don't try to change it.
  */
 @Wrapper({{$sourceClassSimpleName}}.class)
 {{$generatedAnnotation}}
 public class {{$classSimpleName}}{{$typeParamsFull}} extends {{$sourceClassSimpleName}}{{$typeParamsBrief}} implements ObjectHandleWrapper {
+  private static ObjectHandleType $TYPE;
+  private final ObjectHandleInstance $instance;
   private InnerObjectHandle $innerHandle;
 
 {{for constructor : $constructors}}
   public {{$classSimpleName}}({{for param : $constructor.get("params")}}{{$param.get("type")}} {{$param.get("name")}}{{when $param.isNotLast()}}, {{end}}{{end}}) {
     super({{for param : $constructor.get("params")}}{{$param.get("name")}}{{when $param.isNotLast()}},{{end}}{{end}});
-    KernelFunctions.currentModule().objectRegistry().add(this);
+    $instance = $registerObjectHandleInstance();
   }
 {{end}}
 
@@ -177,4 +181,20 @@ public class {{$classSimpleName}}{{$typeParamsFull}} extends {{$sourceClassSimpl
     {{$method.get("body")}}
   }
 {{end}}
+
+  private ObjectHandleInstance $registerObjectHandleInstance() {
+    if ($TYPE == null) {
+      $registerObjectHandleType();
+    }
+    return JaquariusEngines.current().registerObjectHandleInstance({{$classSimpleName}}.class, this, $TYPE);
+  }
+
+  private static void $registerObjectHandleType() {
+    $TYPE = JaquariusEngines.current().registerObjectHandleType(
+        {{$classSimpleName}}.class{{when $objectHandleMethods.isNotEmpty()}},{{end}}
+{{for method : $objectHandleMethods}}
+        objectHandleMethod({{$classSimpleName}}.class, "{{$method.get("name")}}"{{for param : $method.get("params")}}, {{$param}}.class{{end}}){{when $method.get("guideName").isNotEmpty()}}.guideFunction({{$classSimpleName}}::{{$method.get("guideName")}}{{for param : $method.get("guideParams")}}, {{$param}}.class{{end}}){{end}}.get(){{when $method.isNotLast()}},{{end}}
+{{end}}
+    );
+  }
 }

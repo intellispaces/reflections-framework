@@ -1,6 +1,5 @@
 package tech.intellispaces.jaquarius.engine;
 
-
 import tech.intellispaces.entity.exception.UnexpectedExceptions;
 
 import java.util.ServiceLoader;
@@ -8,7 +7,7 @@ import java.util.ServiceLoader;
 public class JaquariusEngines {
   private static JaquariusEngine ENGINE = null;
 
-  public static JaquariusEngine get() {
+  public static JaquariusEngine current() {
     if (ENGINE == null) {
       ENGINE = findEngine();
     }

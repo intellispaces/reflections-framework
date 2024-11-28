@@ -3,7 +3,7 @@ package tech.intellispaces.jaquarius.annotation.processor.domain;
 import tech.intellispaces.jaquarius.annotation.processor.AbstractObjectHandleGenerator;
 import tech.intellispaces.jaquarius.annotation.processor.AnnotationProcessorFunctions;
 import tech.intellispaces.jaquarius.annotation.processor.ArtifactTypes;
-import tech.intellispaces.jaquarius.object.ObjectFunctions;
+import tech.intellispaces.jaquarius.object.ObjectHandleFunctions;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
 import tech.intellispaces.java.reflection.customtype.CustomType;
 import tech.intellispaces.java.reflection.customtype.InterfaceType;
@@ -34,7 +34,7 @@ abstract class AbstractDomainObjectHandleGenerator extends AbstractObjectHandleG
   }
 
   protected String typeConverter(String className) {
-    String handleCanonicalName = ObjectFunctions.getObjectHandleTypename(className, getObjectHandleType());
+    String handleCanonicalName = ObjectHandleFunctions.getObjectHandleTypename(className, getObjectHandleType());
     return context.addToImportAndGetSimpleName(handleCanonicalName);
   }
 

@@ -2,6 +2,8 @@ package tech.intellispaces.jaquarius.system;
 
 import tech.intellispaces.jaquarius.engine.JaquariusEngines;
 import tech.intellispaces.entity.exception.UnexpectedExceptions;
+import tech.intellispaces.jaquarius.system.kernel.KernelFunctions;
+import tech.intellispaces.jaquarius.system.kernel.KernelModule;
 
 import java.util.Arrays;
 import java.util.List;
@@ -22,7 +24,7 @@ public interface Modules {
    * @return loaded module.
    */
   static Module get(Class<?> moduleClass, String[] args) {
-    return JaquariusEngines.get().loadModule(List.of(moduleClass), args);
+    return JaquariusEngines.current().createModule(List.of(moduleClass), args);
   }
 
   /**
@@ -35,7 +37,7 @@ public interface Modules {
    * @return loaded module.
    */
   static Module get(Class<?>... units) {
-    return JaquariusEngines.get().loadModule(Arrays.stream(units).toList(), new String[0]);
+    return JaquariusEngines.current().createModule(Arrays.stream(units).toList(), new String[0]);
   }
 
   /**
@@ -49,7 +51,7 @@ public interface Modules {
    * @return loaded module.
    */
   static Module get(List<Class<?>> units, String[] args) {
-    return JaquariusEngines.get().loadModule(units, new String[0]);
+    return JaquariusEngines.current().createModule(units, new String[0]);
   }
 
   /**
@@ -58,12 +60,12 @@ public interface Modules {
    * If module is not loaded to application, then exception can be thrown.
    */
   static Module current() {
-    Module module = JaquariusEngines.get().getCurrentModule();
-    if (module == null) {
+    KernelModule km = KernelFunctions.currentModuleSilently();
+    if (km == null || km.module() == null) {
       throw UnexpectedExceptions.withMessage("Current module is not defined. " +
           "It is possible that the module is not loaded yet");
     }
-    return module;
+    return km.module();
   }
 
   /**
@@ -72,6 +74,7 @@ public interface Modules {
    * @return module or <code>null</code> is module is not loaded into application.
    */
   static Module currentSilently() {
-    return JaquariusEngines.get().getCurrentModule();
+    KernelModule km = KernelFunctions.currentModuleSilently();
+    return km != null ? km.module() : null;
   }
 }

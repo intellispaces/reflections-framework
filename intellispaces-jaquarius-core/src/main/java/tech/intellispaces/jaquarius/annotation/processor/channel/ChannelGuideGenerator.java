@@ -27,7 +27,7 @@ import tech.intellispaces.jaquarius.guide.n4.Mover4;
 import tech.intellispaces.jaquarius.guide.n5.Mapper5;
 import tech.intellispaces.jaquarius.guide.n5.MapperOfMoving5;
 import tech.intellispaces.jaquarius.guide.n5.Mover5;
-import tech.intellispaces.jaquarius.object.ObjectFunctions;
+import tech.intellispaces.jaquarius.object.ObjectHandleFunctions;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.traverse.TraverseType;
 import tech.intellispaces.jaquarius.traverse.TraverseTypes;
@@ -143,7 +143,7 @@ public class ChannelGuideGenerator extends AbstractGenerator {
         if (!typeParam.extendedBounds().isEmpty()) {
           sb.append(" extends ");
           for (ReferenceBound bound : typeParam.extendedBounds()) {
-            sb.append(ObjectFunctions.getCommonObjectHandleTypename(bound));
+            sb.append(ObjectHandleFunctions.getCommonObjectHandleTypename(bound));
           }
         }
       }
@@ -420,7 +420,7 @@ public class ChannelGuideGenerator extends AbstractGenerator {
     } else if (type.isPrimitiveReference()) {
       return ClassFunctions.getPrimitiveWrapperClass(type.asPrimitiveReferenceOrElseThrow().typename()).getSimpleName();
     } else {
-      String canonicalName = ObjectFunctions.getCommonObjectHandleTypename(type, typeReplacer);
+      String canonicalName = ObjectHandleFunctions.getCommonObjectHandleTypename(type, typeReplacer);
       String name = type.isCustomTypeReference() ? context.addToImportAndGetSimpleName(canonicalName) : canonicalName;
       if (type.isCustomTypeReference() && !type.asCustomTypeReferenceOrElseThrow().typeArguments().isEmpty()) {
         var sb = new StringBuilder();

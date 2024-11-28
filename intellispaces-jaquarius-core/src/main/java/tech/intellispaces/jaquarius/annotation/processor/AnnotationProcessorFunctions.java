@@ -27,7 +27,7 @@ import tech.intellispaces.jaquarius.channel.MovingChannel;
 import tech.intellispaces.jaquarius.exception.ConfigurationExceptions;
 import tech.intellispaces.jaquarius.guide.GuideForm;
 import tech.intellispaces.jaquarius.guide.GuideForms;
-import tech.intellispaces.jaquarius.object.ObjectFunctions;
+import tech.intellispaces.jaquarius.object.ObjectHandleFunctions;
 import tech.intellispaces.jaquarius.system.ModuleFunctions;
 import tech.intellispaces.jaquarius.system.UnitFunctions;
 import tech.intellispaces.jaquarius.traverse.TraverseType;
@@ -205,9 +205,9 @@ public interface AnnotationProcessorFunctions {
   static List<Generator> makeObjectHandleArtifactGenerators(
       CustomType initiatorType, CustomType objectHandleType
   ) {
-    if (ObjectFunctions.isUnmovableObjectHandle(objectHandleType)) {
+    if (ObjectHandleFunctions.isUnmovableObjectHandle(objectHandleType)) {
       return List.of(new UnmovableObjectHandleWrapperGenerator(initiatorType, objectHandleType));
-    } else if (ObjectFunctions.isMovableObjectHandle(objectHandleType)) {
+    } else if (ObjectHandleFunctions.isMovableObjectHandle(objectHandleType)) {
       return List.of(new MovableObjectHandleWrapperGenerator(initiatorType, objectHandleType));
     } else {
       throw UnexpectedExceptions.withMessage("Could not define movable type of the object handle {0}",

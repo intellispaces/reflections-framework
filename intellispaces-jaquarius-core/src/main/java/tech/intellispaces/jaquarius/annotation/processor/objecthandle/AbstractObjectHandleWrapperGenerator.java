@@ -10,7 +10,7 @@ import tech.intellispaces.jaquarius.exception.ConfigurationExceptions;
 import tech.intellispaces.jaquarius.guide.GuideForm;
 import tech.intellispaces.jaquarius.guide.GuideForms;
 import tech.intellispaces.jaquarius.guide.GuideFunctions;
-import tech.intellispaces.jaquarius.object.ObjectFunctions;
+import tech.intellispaces.jaquarius.object.ObjectHandleFunctions;
 import tech.intellispaces.jaquarius.object.ObjectHandleTypes;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
@@ -58,6 +58,7 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
   protected final List<Object> constructors = new ArrayList<>();
   protected final List<String> methodActions = new ArrayList<>();
   protected final List<String> guideActions = new ArrayList<>();
+  protected final List<Map<String, Object>> objectHandleMethods = new ArrayList<>();
   protected final List<Map<String, String>> guideMethods = new ArrayList<>();
   protected final List<Map<String, Object>> injections = new ArrayList<>();
   protected final List<Map<String, Object>> injectionMethods = new ArrayList<>();
@@ -65,7 +66,7 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
   AbstractObjectHandleWrapperGenerator(CustomType initiatorType, CustomType objectHandleType) {
     super(initiatorType, objectHandleType);
 
-    this.domainType = ObjectFunctions.getDomainTypeOfObjectHandle(objectHandleType);
+    this.domainType = ObjectHandleFunctions.getDomainTypeOfObjectHandle(objectHandleType);
     this.domainMethods = domainType.actualMethods().stream()
         .filter(m -> !m.isDefault())
         .filter(m -> excludeDeepConversionMethods(m, domainType))
@@ -86,7 +87,7 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
   }
 
   protected void analyzeDomain() {
-    CustomType domainType = ObjectFunctions.getDomainTypeOfObjectHandle(annotatedType);
+    CustomType domainType = ObjectHandleFunctions.getDomainTypeOfObjectHandle(annotatedType);
     context.addImport(domainType.canonicalName());
     domainSimpleClassName = context.simpleNameOf(domainType.canonicalName());
 
@@ -208,7 +209,7 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
     return "return (" + injectionType + ") this.$innerHandle.injection(" + injectionIndex + ").value();";
   }
 
-  private MethodStatement findObjectHandleMethods(
+  private MethodStatement findGuideMethod(
       MethodStatement domainMethod, List<MethodStatement> objectHandleMethods, GuideForm guideForm
   ) {
     for (MethodStatement objectHandleMethod : objectHandleMethods) {
@@ -233,7 +234,7 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
     boolean paramMatches = true;
     for (int i = 0; i < domainMethodParams.size(); i++) {
       MethodParam domainMethodParam = domainMethodParams.get(i);
-      String domainMethodParamDeclaration = ObjectFunctions.getObjectHandleDeclaration(
+      String domainMethodParamDeclaration = ObjectHandleFunctions.getObjectHandleDeclaration(
           domainMethodParam.type(), ObjectHandleTypes.Common, Function.identity()
       );
 
@@ -303,7 +304,7 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
   @Override
   protected void analyzeMethod(MethodStatement method, GuideForm guideForm, int methodIndex) {
     super.analyzeMethod(method, guideForm, methodIndex);
-    analyzeGuideAction(method, guideForm, methodIndex);
+    analyzeGuideMethod(method, guideForm, methodIndex);
     analyzeChannelAction(method, guideForm);
   }
 
@@ -311,7 +312,7 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
     methodActions.add(buildMethodAction(method, guideForm));
   }
 
-  protected void analyzeGuideAction(MethodStatement method, GuideForm guideForm, int methodIndex) {
+  protected void analyzeGuideMethod(MethodStatement method, GuideForm guideForm, int methodIndex) {
     if (method.isDefault()) {
       return;
     }
@@ -321,14 +322,15 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
     }
 
     List<MethodStatement> objectHandleMethods = annotatedType.actualMethods();
-    MethodStatement objectHandleMethod = findObjectHandleMethods(method, objectHandleMethods, guideForm);
-    if (objectHandleMethod == null || objectHandleMethod.isAbstract()) {
+    MethodStatement guideMethod = findGuideMethod(method, objectHandleMethods, guideForm);
+    this.objectHandleMethods.add(GuideProcessorFunctions.buildObjectHandleMethodDescriptor(method, guideMethod, context));
+    if (guideMethod == null || guideMethod.isAbstract()) {
       this.guideActions.add("null");
     } else {
       this.guideActions.add(
-          GuideProcessorFunctions.buildGuideAction(getGeneratedClassCanonicalName(), objectHandleMethod, context)
+          GuideProcessorFunctions.buildGuideAction(getGeneratedClassCanonicalName(), guideMethod, context)
       );
-      this.guideMethods.add(GuideProcessorFunctions.buildGuideActionMethod(objectHandleMethod, context));
+      this.guideMethods.add(GuideProcessorFunctions.buildGuideActionMethod(guideMethod, context));
     }
   }
 

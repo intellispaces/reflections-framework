@@ -57,6 +57,11 @@
             </dependency>
             <dependency>
                 <groupId>tech.intellispaces.common</groupId>
+                <artifactId>intellispaces-actions-model</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>tech.intellispaces.common</groupId>
                 <artifactId>intellispaces-common-actions</artifactId>
                 <version>0.0.1-SNAPSHOT</version>
             </dependency>

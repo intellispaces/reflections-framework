@@ -1,5 +1,6 @@
 package tech.intellispaces.jaquarius.object;
 
+import tech.intellispaces.entity.text.StringFunctions;
 import tech.intellispaces.jaquarius.annotation.Movable;
 import tech.intellispaces.jaquarius.annotation.ObjectHandle;
 import tech.intellispaces.jaquarius.annotation.Unmovable;
@@ -23,6 +24,8 @@ import tech.intellispaces.java.reflection.customtype.AnnotationFunctions;
 import tech.intellispaces.java.reflection.customtype.CustomType;
 import tech.intellispaces.java.reflection.customtype.CustomTypes;
 import tech.intellispaces.java.reflection.instance.AnnotationInstance;
+import tech.intellispaces.java.reflection.method.MethodParam;
+import tech.intellispaces.java.reflection.method.MethodStatement;
 import tech.intellispaces.java.reflection.reference.CustomTypeReference;
 import tech.intellispaces.java.reflection.reference.NotPrimitiveReference;
 import tech.intellispaces.java.reflection.reference.TypeReference;
@@ -35,8 +38,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 
-public class ObjectFunctions {
-  private static final Logger LOG = LoggerFactory.getLogger(ObjectFunctions.class);
+public class ObjectHandleFunctions {
+  private static final Logger LOG = LoggerFactory.getLogger(ObjectHandleFunctions.class);
 
   public static Class<?> getObjectHandleClass(ObjectHandleTypes objectHandleType) {
     return switch (objectHandleType) {
@@ -275,6 +278,12 @@ public class ObjectFunctions {
   public static String getObjectHandleDeclaration(
       TypeReference domainType, ObjectHandleTypes handleType, Function<String, String> simpleNameMapping
   ) {
+    return getObjectHandleDeclaration(domainType, handleType, true, simpleNameMapping);
+  }
+
+  public static String getObjectHandleDeclaration(
+      TypeReference domainType, ObjectHandleTypes handleType, boolean withTypeParams, Function<String, String> simpleNameMapping
+  ) {
     if (domainType.isPrimitiveReference()) {
       return domainType.asPrimitiveReferenceOrElseThrow().typename();
     } else if (domainType.asNamedReference().isPresent()) {
@@ -285,7 +294,7 @@ public class ObjectFunctions {
       if (targetType.canonicalName().equals(Class.class.getCanonicalName())) {
         var sb = new StringBuilder();
         sb.append(Class.class.getSimpleName());
-        if (!customTypeReference.typeArguments().isEmpty()) {
+        if (withTypeParams && !customTypeReference.typeArguments().isEmpty()) {
           sb.append("<");
           RunnableAction commaAppender = StringActions.skipFirstTimeCommaAppender(sb);
           for (NotPrimitiveReference argType : customTypeReference.typeArguments()) {
@@ -299,10 +308,10 @@ public class ObjectFunctions {
         return targetType.simpleName();
       } else {
         var sb = new StringBuilder();
-        String canonicalName = ObjectFunctions.getObjectHandleTypename(targetType, handleType);
+        String canonicalName = ObjectHandleFunctions.getObjectHandleTypename(targetType, handleType);
         String simpleName = simpleNameMapping.apply(canonicalName);
         sb.append(simpleName);
-        if (!customTypeReference.typeArguments().isEmpty()) {
+        if (withTypeParams && !customTypeReference.typeArguments().isEmpty()) {
           sb.append("<");
           RunnableAction commaAppender = StringActions.skipFirstTimeCommaAppender(sb);
           for (NotPrimitiveReference argType : customTypeReference.typeArguments()) {
@@ -328,6 +337,21 @@ public class ObjectFunctions {
     } else {
       throw new UnsupportedOperationException("Unsupported type - " + domainType.actualDeclaration());
     }
+  }
+
+  public static String buildObjectHandleGuideMethodName(MethodStatement method) {
+    var sb = new StringBuilder();
+    sb.append("$");
+    sb.append(method.name());
+    if (!method.params().isEmpty()) {
+      sb.append("With");
+    }
+    RunnableAction andAppender = StringActions.skipFirstTimeSeparatorAppender(sb, "And");
+    for (MethodParam param : method.params()) {
+      andAppender.run();
+      sb.append(StringFunctions.capitalizeFirstLetter(param.type().simpleDeclaration()));
+    }
+    return sb.toString();
   }
 
   public static Class<?> propertiesHandleClass() {
@@ -370,7 +394,7 @@ public class ObjectFunctions {
     }
   }
 
-  private ObjectFunctions() {}
+  private ObjectHandleFunctions() {}
 
   private final static Set<String> DEFAULT_OBJECT_HANDLE_CLASSES = Set.of(
       boolean.class.getCanonicalName(),

@@ -2,8 +2,8 @@ package tech.intellispaces.jaquarius.guide.n0;
 
 import tech.intellispaces.jaquarius.exception.TraverseException;
 import tech.intellispaces.jaquarius.exception.TraverseExceptions;
-import tech.intellispaces.jaquarius.guide.GuideForm;
 import tech.intellispaces.jaquarius.guide.GuideLogger;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.system.ObjectHandleWrapper;
 import tech.intellispaces.entity.exception.UnexpectedExceptions;
 import tech.intellispaces.java.reflection.method.MethodStatement;
@@ -14,14 +14,14 @@ import java.util.stream.Collectors;
 abstract class ObjectGuide0<S extends ObjectHandleWrapper, R> implements Guide0<S, R> {
   private final Class<S> objectHandleClass;
   private final String cid;
-  private final GuideForm guideForm;
+  private final ObjectReferenceForm targetForm;
   private final MethodStatement guideMethod;
   private final int channelIndex;
 
   ObjectGuide0(
     String cid,
     Class<S> objectHandleClass,
-    GuideForm guideForm,
+    ObjectReferenceForm targetForm,
     MethodStatement guideMethod,
     int channelIndex
   ) {
@@ -30,7 +30,7 @@ abstract class ObjectGuide0<S extends ObjectHandleWrapper, R> implements Guide0<
     }
     this.cid = cid;
     this.objectHandleClass = objectHandleClass;
-    this.guideForm = guideForm;
+    this.targetForm = targetForm;
     this.guideMethod = guideMethod;
     this.channelIndex = channelIndex;
   }
@@ -41,8 +41,8 @@ abstract class ObjectGuide0<S extends ObjectHandleWrapper, R> implements Guide0<
   }
 
   @Override
-  public GuideForm guideForm() {
-    return guideForm;
+  public ObjectReferenceForm targetForm() {
+    return targetForm;
   }
 
   @Override
@@ -91,7 +91,7 @@ abstract class ObjectGuide0<S extends ObjectHandleWrapper, R> implements Guide0<
         "objectHandleClass=" + objectHandleClass +
         ", cid='" + cid + '\'' +
         ", guideMethod=" + guideMethod.name() + "(" + guideMethod.params().stream().map(MethodParam::name).collect(Collectors.joining(", ")) + ")" +
-        ", guideForm=" + guideForm +
+        ", targetForm=" + targetForm +
         '}';
   }
 }

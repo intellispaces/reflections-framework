@@ -1,4 +1,4 @@
-package tech.intellispaces.jaquarius.object;
+package tech.intellispaces.jaquarius.object.reference;
 
 public enum ObjectHandleTypes {
 

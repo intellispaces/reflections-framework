@@ -25,9 +25,9 @@ import tech.intellispaces.jaquarius.channel.MappingChannel;
 import tech.intellispaces.jaquarius.channel.MappingOfMovingChannel;
 import tech.intellispaces.jaquarius.channel.MovingChannel;
 import tech.intellispaces.jaquarius.exception.ConfigurationExceptions;
-import tech.intellispaces.jaquarius.guide.GuideForm;
-import tech.intellispaces.jaquarius.guide.GuideForms;
 import tech.intellispaces.jaquarius.object.ObjectHandleFunctions;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
 import tech.intellispaces.jaquarius.system.ModuleFunctions;
 import tech.intellispaces.jaquarius.system.UnitFunctions;
 import tech.intellispaces.jaquarius.traverse.TraverseType;
@@ -172,7 +172,7 @@ public interface AnnotationProcessorFunctions {
   ) {
     List<Generator> generators = new ArrayList<>();
     generators.add(
-        makeGuideGenerator(GuideForms.Main, traverseType, initiatorType, domainType, channelMethod)
+        makeGuideGenerator(ObjectReferenceForms.Object, traverseType, initiatorType, domainType, channelMethod)
     );
     if (channelMethod.returnType().isPresent()) {
       TypeReference returnType = channelMethod.returnType().get();
@@ -180,7 +180,7 @@ public interface AnnotationProcessorFunctions {
         CustomTypeReference customTypeReference = returnType.asCustomTypeReferenceOrElseThrow();
         if (ClassFunctions.isPrimitiveWrapperClass(customTypeReference.targetType().canonicalName())) {
           generators.add(makeGuideGenerator(
-              GuideForms.PrimitiveType, traverseType, initiatorType, domainType, channelMethod
+              ObjectReferenceForms.Primitive, traverseType, initiatorType, domainType, channelMethod
           ));
         }
       }
@@ -189,14 +189,14 @@ public interface AnnotationProcessorFunctions {
   }
 
   private static Generator makeGuideGenerator(
-      GuideForm guideForm,
+      ObjectReferenceForm targetForm,
       TraverseType traverseType,
       CustomType initiatorType,
       CustomType domainType,
       MethodStatement channelMethod
   ) {
     if (initiatorType.hasAnnotation(Channel.class)) {
-      return new ChannelGuideGenerator(guideForm, traverseType, initiatorType, domainType, channelMethod);
+      return new ChannelGuideGenerator(targetForm, traverseType, initiatorType, domainType, channelMethod);
     } else {
       throw new RuntimeException();
     }

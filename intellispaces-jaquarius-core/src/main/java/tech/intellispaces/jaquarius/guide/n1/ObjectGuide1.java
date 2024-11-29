@@ -2,8 +2,8 @@ package tech.intellispaces.jaquarius.guide.n1;
 
 import tech.intellispaces.jaquarius.exception.TraverseException;
 import tech.intellispaces.jaquarius.exception.TraverseExceptions;
-import tech.intellispaces.jaquarius.guide.GuideForm;
 import tech.intellispaces.jaquarius.guide.GuideLogger;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.system.ObjectHandleWrapper;
 import tech.intellispaces.entity.exception.UnexpectedExceptions;
 import tech.intellispaces.java.reflection.method.MethodStatement;
@@ -16,14 +16,14 @@ abstract class ObjectGuide1<S extends ObjectHandleWrapper, R, Q> implements Guid
   private final String cid;
   private final MethodStatement guideMethod;
   private final int channelIndex;
-  private final GuideForm guideForm;
+  private final ObjectReferenceForm targetForm;
 
   ObjectGuide1(
       String cid,
       Class<S> objectHandleClass,
       MethodStatement guideMethod,
       int channelIndex,
-      GuideForm guideForm
+      ObjectReferenceForm targetForm
   ) {
     if (guideMethod.params().size() != 1) {
       throw UnexpectedExceptions.withMessage("Guide should have one parameter");
@@ -32,7 +32,7 @@ abstract class ObjectGuide1<S extends ObjectHandleWrapper, R, Q> implements Guid
     this.objectHandleClass = objectHandleClass;
     this.guideMethod = guideMethod;
     this.channelIndex = channelIndex;
-    this.guideForm = guideForm;
+    this.targetForm = targetForm;
   }
 
   @Override
@@ -41,8 +41,8 @@ abstract class ObjectGuide1<S extends ObjectHandleWrapper, R, Q> implements Guid
   }
 
   @Override
-  public GuideForm guideForm() {
-    return guideForm;
+  public ObjectReferenceForm targetForm() {
+    return targetForm;
   }
 
   @Override
@@ -65,7 +65,7 @@ abstract class ObjectGuide1<S extends ObjectHandleWrapper, R, Q> implements Guid
         "objectHandleClass=" + objectHandleClass +
         ", cid='" + cid + '\'' +
         ", guideMethod=" + guideMethod.name() + "(" + guideMethod.params().stream().map(MethodParam::name).collect(Collectors.joining(", ")) + ")" +
-        ", guideForm=" + guideForm +
+        ", targetForm=" + targetForm +
         '}';
   }
 }

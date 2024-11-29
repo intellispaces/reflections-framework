@@ -5,9 +5,9 @@ import tech.intellispaces.jaquarius.annotation.Movable;
 import tech.intellispaces.jaquarius.annotation.Unmovable;
 import tech.intellispaces.jaquarius.common.NameConventionFunctions;
 import tech.intellispaces.jaquarius.exception.TraverseException;
-import tech.intellispaces.jaquarius.guide.GuideForm;
-import tech.intellispaces.jaquarius.guide.GuideForms;
-import tech.intellispaces.jaquarius.object.ObjectHandleTypes;
+import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
 import tech.intellispaces.jaquarius.space.SpaceConstants;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
@@ -59,11 +59,11 @@ public abstract class AbstractObjectHandleGenerator extends AbstractGenerator {
     int methodIndex = 0;
     for (MethodStatement method : methods) {
       MethodStatement effectiveMethod = convertMethodBeforeGenerate(method);
-      analyzeMethod(effectiveMethod, GuideForms.Main, methodIndex++);
+      analyzeMethod(effectiveMethod, ObjectReferenceForms.Object, methodIndex++);
       if (method.returnType().orElseThrow().isCustomTypeReference()) {
         CustomType returnType = method.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow().targetType();
         if (ClassFunctions.isPrimitiveWrapperClass(returnType.canonicalName())) {
-          analyzeMethod(effectiveMethod, GuideForms.PrimitiveType, methodIndex++);
+          analyzeMethod(effectiveMethod, ObjectReferenceForms.Primitive, methodIndex++);
         }
       }
     }
@@ -108,20 +108,20 @@ public abstract class AbstractObjectHandleGenerator extends AbstractGenerator {
     return method;
   }
 
-  protected void analyzeMethod(MethodStatement method, GuideForm guideForm, int methodIndex) {
-    methods.add(generateMethod(method, guideForm, methodIndex));
+  protected void analyzeMethod(MethodStatement method, ObjectReferenceForm targetForm, int methodIndex) {
+    methods.add(generateMethod(method, targetForm, methodIndex));
   }
 
-  protected Map<String, String> generateMethod(MethodStatement method, GuideForm guideForm, int methodIndex) {
+  protected Map<String, String> generateMethod(MethodStatement method, ObjectReferenceForm targetForm, int methodIndex) {
     var sb = new StringBuilder();
     appendMethodTypeParameters(sb, method);
     boolean disableMoving = isDisableMoving(method);
     if (disableMoving) {
       sb.append("default ");
     }
-    appendMethodReturnHandleType(sb, method, guideForm);
+    appendMethodReturnHandleType(sb, method, targetForm);
     sb.append(" ");
-    sb.append(getMethodName(method, guideForm));
+    sb.append(getMethodName(method, targetForm));
     sb.append("(");
     appendMethodParameters(sb, method);
     sb.append(")");
@@ -141,13 +141,13 @@ public abstract class AbstractObjectHandleGenerator extends AbstractGenerator {
     );
   }
 
-  protected String getMethodName(MethodStatement method, GuideForm guideForm) {
-    if (guideForm == GuideForms.Main) {
+  protected String getMethodName(MethodStatement method, ObjectReferenceForm targetForm) {
+    if (targetForm == ObjectReferenceForms.Object) {
       return method.name();
-    } else if (guideForm == GuideForms.PrimitiveType) {
+    } else if (targetForm == ObjectReferenceForms.Primitive) {
       return method.name() + "Primitive";
     } else {
-      throw UnexpectedExceptions.withMessage("Unsupported guide form - {0}", guideForm);
+      throw UnexpectedExceptions.withMessage("Unsupported guide form - {0}", targetForm);
     }
   }
 
@@ -165,14 +165,14 @@ public abstract class AbstractObjectHandleGenerator extends AbstractGenerator {
     sb.append(returnType.actualDeclaration(context::addToImportAndGetSimpleName));
   }
 
-  protected void appendMethodReturnHandleType(StringBuilder sb, MethodStatement method, GuideForm guideForm) {
-    if (guideForm == GuideForms.Main) {
+  protected void appendMethodReturnHandleType(StringBuilder sb, MethodStatement method, ObjectReferenceForm targetForm) {
+    if (targetForm == ObjectReferenceForms.Object) {
       appendMethodReturnHandleType(sb, method);
-    } else if (guideForm == GuideForms.PrimitiveType) {
+    } else if (targetForm == ObjectReferenceForms.Primitive) {
       CustomType ct = method.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow().targetType();
       sb.append(ClassFunctions.getPrimitiveTypeOfWrapper(ct.canonicalName()));
     } else {
-      throw UnexpectedExceptions.withMessage("Unsupported guide form - {0}", guideForm);
+      throw UnexpectedExceptions.withMessage("Unsupported guide form - {0}", targetForm);
     }
   }
 

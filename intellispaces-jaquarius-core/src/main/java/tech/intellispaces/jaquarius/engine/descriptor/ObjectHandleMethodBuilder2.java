@@ -2,36 +2,60 @@ package tech.intellispaces.jaquarius.engine.descriptor;
 
 import tech.intellispaces.action.Action;
 import tech.intellispaces.action.functional.FunctionActions;
+import tech.intellispaces.jaquarius.traverse.TraverseType;
 
 import java.util.List;
 import java.util.function.BiFunction;
 
-public class ObjectHandleMethodBuilder2<H> {
-  private final String methodName;
-  private final Class<?> methodParamClass;
-  private Action guideAction;
-  private Class<?> guideParamClass;
+public class ObjectHandleMethodBuilder2<H, P> {
+  private final String name;
+  private final Class<P> paramClass;
 
-  public ObjectHandleMethodBuilder2(Class<H> objectHandleClass, String methodName, Class<?> methodParamClass) {
-    this.methodName = methodName;
-    this.methodParamClass = methodParamClass;
+  private Action action;
+  private String purpose;
+  private int ordinal;
+  private Class<?> channelClass;
+  private TraverseType traverseType;
+
+  public ObjectHandleMethodBuilder2(Class<H> objectHandleClass, String name, Class<P> paramClass) {
+    this.name = name;
+    this.paramClass = paramClass;
   }
 
-  public <P, R> ObjectHandleMethodBuilder2<H> guideFunction(
-      BiFunction<H, P, R> function,
-      Class<P> guideParamClass
-  ) {
-    this.guideAction = FunctionActions.ofBiFunction(function);
-    this.guideParamClass = guideParamClass;
+  public ObjectHandleMethodBuilder2<H, P> purpose(String purpose) {
+    this.purpose = purpose;
+    return this;
+  }
+
+  public ObjectHandleMethodBuilder2<H, P> ordinal(int ordinal) {
+    this.ordinal = ordinal;
+    return this;
+  }
+
+  public ObjectHandleMethodBuilder2<H, P> channelClass(Class<?> channelClass) {
+    this.channelClass = channelClass;
+    return this;
+  }
+
+  public ObjectHandleMethodBuilder2<H, P> traverseType(TraverseType traverseType) {
+    this.traverseType = traverseType;
+    return this;
+  }
+
+  public <R> ObjectHandleMethodBuilder2<H, P> function(BiFunction<H, P, R> function) {
+    this.action = FunctionActions.ofBiFunction(function);
     return this;
   }
 
   public ObjectHandleMethod get() {
     return new ObjectHandleMethodImpl(
-        methodName,
-        List.of(methodParamClass),
-        guideAction,
-        guideAction != null ? List.of(guideParamClass) : null
+        name,
+        List.of(paramClass),
+        purpose,
+        ordinal,
+        action,
+        channelClass,
+        traverseType
     );
   }
 }

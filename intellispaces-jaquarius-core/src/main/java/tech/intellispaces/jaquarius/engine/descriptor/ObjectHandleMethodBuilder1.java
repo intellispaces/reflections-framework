@@ -2,29 +2,58 @@ package tech.intellispaces.jaquarius.engine.descriptor;
 
 import tech.intellispaces.action.Action;
 import tech.intellispaces.action.functional.FunctionActions;
+import tech.intellispaces.jaquarius.traverse.TraverseType;
 
 import java.util.List;
 import java.util.function.Function;
 
 public class ObjectHandleMethodBuilder1<H> {
-  private final String methodName;
-  private Action guideAction;
+  private final String name;
 
-  public ObjectHandleMethodBuilder1(Class<H> objectHandleClass, String methodName) {
-    this.methodName = methodName;
+  private Action action;
+  private String purpose;
+  private int ordinal;
+  private Class<?> channelClass;
+  private TraverseType traverseType;
+
+  public ObjectHandleMethodBuilder1(Class<H> objectHandleClass, String name) {
+    this.name = name;
   }
 
-  public <R> ObjectHandleMethodBuilder1<H> guideFunction(Function<H, R> function) {
-    this.guideAction = FunctionActions.ofFunction(function);
+  public ObjectHandleMethodBuilder1<H> purpose(String purpose) {
+    this.purpose = purpose;
+    return this;
+  }
+
+  public ObjectHandleMethodBuilder1<H> ordinal(int ordinal) {
+    this.ordinal = ordinal;
+    return this;
+  }
+
+  public ObjectHandleMethodBuilder1<H> channelClass(Class<?> channelClass) {
+    this.channelClass = channelClass;
+    return this;
+  }
+
+  public ObjectHandleMethodBuilder1<H> traverseType(TraverseType traverseType) {
+    this.traverseType = traverseType;
+    return this;
+  }
+
+  public <R> ObjectHandleMethodBuilder1<H> function(Function<H, R> function) {
+    this.action = FunctionActions.ofFunction(function);
     return this;
   }
 
   public ObjectHandleMethod get() {
     return new ObjectHandleMethodImpl(
-        methodName,
+        name,
         List.of(),
-        guideAction,
-        guideAction != null ? List.of() : null
+        purpose,
+        ordinal,
+        action,
+        channelClass,
+        traverseType
     );
   }
 }

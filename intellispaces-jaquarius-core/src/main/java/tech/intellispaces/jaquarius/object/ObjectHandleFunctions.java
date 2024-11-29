@@ -7,6 +7,7 @@ import tech.intellispaces.jaquarius.annotation.Unmovable;
 import tech.intellispaces.jaquarius.annotation.Wrapper;
 import tech.intellispaces.jaquarius.common.NameConventionFunctions;
 import tech.intellispaces.jaquarius.object.reference.MovableObjectHandle;
+import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
 import tech.intellispaces.jaquarius.object.reference.ObjectReference;
 import tech.intellispaces.jaquarius.object.reference.UnmovableObjectHandle;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;

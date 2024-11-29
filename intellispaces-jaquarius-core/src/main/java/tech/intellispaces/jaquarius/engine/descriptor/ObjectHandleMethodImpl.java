@@ -1,22 +1,35 @@
 package tech.intellispaces.jaquarius.engine.descriptor;
 
 import tech.intellispaces.action.Action;
+import tech.intellispaces.jaquarius.traverse.TraverseType;
 
 import java.util.List;
 
 class ObjectHandleMethodImpl implements ObjectHandleMethod {
   private final String name;
   private final List<Class<?>> paramClasses;
-  private final Action guideAction;
-  private final List<Class<?>> guideParamClasses;
+  private final String purpose;
+  private final int ordinal;
+  private final Action action;
+  private final Class<?> channelClass;
+  private final TraverseType traverseType;
 
   ObjectHandleMethodImpl(
-      String name, List<Class<?>> paramClasses, Action guideAction, List<Class<?>> guideParamClasses
+      String name,
+      List<Class<?>> paramClasses,
+      String purpose,
+      int ordinal,
+      Action action,
+      Class<?> channelClass,
+      TraverseType traverseType
   ) {
     this.name = name;
     this.paramClasses = paramClasses;
-    this.guideAction = guideAction;
-    this.guideParamClasses = guideParamClasses;
+    this.purpose = purpose;
+    this.ordinal = ordinal;
+    this.action = action;
+    this.channelClass = channelClass;
+    this.traverseType = traverseType;
   }
 
   @Override
@@ -30,12 +43,27 @@ class ObjectHandleMethodImpl implements ObjectHandleMethod {
   }
 
   @Override
-  public Action guideAction() {
-    return guideAction;
+  public String purpose() {
+    return purpose;
   }
 
   @Override
-  public List<Class<?>> guideParamClasses() {
-    return guideParamClasses;
+  public int ordinal() {
+    return ordinal;
+  }
+
+  @Override
+  public Action action() {
+    return action;
+  }
+
+  @Override
+  public Class<?> channelClass() {
+    return channelClass;
+  }
+
+  @Override
+  public TraverseType traverseType() {
+    return traverseType;
   }
 }

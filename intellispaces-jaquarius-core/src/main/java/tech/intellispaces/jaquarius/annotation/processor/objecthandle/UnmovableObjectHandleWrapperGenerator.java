@@ -10,10 +10,10 @@ import tech.intellispaces.jaquarius.engine.JaquariusEngines;
 import tech.intellispaces.jaquarius.engine.descriptor.ObjectHandleInstance;
 import tech.intellispaces.jaquarius.engine.descriptor.ObjectHandleType;
 import tech.intellispaces.jaquarius.exception.TraverseException;
-import tech.intellispaces.jaquarius.guide.GuideForms;
 import tech.intellispaces.jaquarius.guide.n0.Mapper0;
 import tech.intellispaces.jaquarius.guide.n1.Mapper1;
-import tech.intellispaces.jaquarius.object.ObjectHandleTypes;
+import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.system.Modules;
 import tech.intellispaces.jaquarius.system.ObjectHandleWrapper;
@@ -25,6 +25,7 @@ import tech.intellispaces.action.Actions;
 import tech.intellispaces.action.functional.FunctionActions;
 import tech.intellispaces.action.supplier.ResettableSupplierAction;
 import tech.intellispaces.entity.type.PrimitiveFunctions;
+import tech.intellispaces.jaquarius.traverse.TraverseTypes;
 import tech.intellispaces.java.annotation.context.AnnotationProcessingContext;
 import tech.intellispaces.java.reflection.customtype.CustomType;
 
@@ -66,7 +67,6 @@ public class UnmovableObjectHandleWrapperGenerator extends AbstractObjectHandleW
     vars.put("domainClassSimpleName", domainSimpleClassName);
     vars.put("constructors", constructors);
     vars.put("importedClasses", context.getImports());
-    vars.put("methodActions", methodActions);
     vars.put("guideActions", guideActions);
     vars.put("objectHandleMethods", objectHandleMethods);
     vars.put("guideActionMethods", guideMethods);
@@ -99,7 +99,7 @@ public class UnmovableObjectHandleWrapperGenerator extends AbstractObjectHandleW
     context.addImport(Wrapper.class);
     context.addImport(ObjectHandleWrapper.class);
     context.addImport(InnerObjectHandle.class);
-    context.addImport(GuideForms.class);
+    context.addImport(ObjectReferenceForms.class);
 
     context.addImport(Mapper0.class);
     context.addImport(Mapper1.class);
@@ -114,6 +114,7 @@ public class UnmovableObjectHandleWrapperGenerator extends AbstractObjectHandleW
     context.addImport(ObjectHandleType.class);
     context.addImport(ObjectHandleInstance.class);
     context.addImport(JaquariusEngines.class);
+    context.addImport(TraverseTypes.class);
 
     analyzeDomain();
     analyzeTypeParams(annotatedType);

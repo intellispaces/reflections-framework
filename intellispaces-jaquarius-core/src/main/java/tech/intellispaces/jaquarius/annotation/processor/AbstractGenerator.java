@@ -2,7 +2,7 @@ package tech.intellispaces.jaquarius.annotation.processor;
 
 import tech.intellispaces.jaquarius.annotation.Generated;
 import tech.intellispaces.jaquarius.object.ObjectHandleFunctions;
-import tech.intellispaces.jaquarius.object.ObjectHandleTypes;
+import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
 import tech.intellispaces.entity.type.ClassFunctions;
 import tech.intellispaces.java.annotation.context.JavaArtifactContext;
 import tech.intellispaces.java.annotation.generator.TemplatedGenerator;

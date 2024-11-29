@@ -2,8 +2,8 @@ package tech.intellispaces.jaquarius.guide.n4;
 
 import tech.intellispaces.jaquarius.exception.TraverseException;
 import tech.intellispaces.jaquarius.exception.TraverseExceptions;
-import tech.intellispaces.jaquarius.guide.GuideForm;
 import tech.intellispaces.jaquarius.guide.GuideLogger;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.system.UnitWrapper;
 import tech.intellispaces.jaquarius.system.kernel.KernelUnitGuide;
 import tech.intellispaces.entity.exception.UnexpectedExceptions;
@@ -14,9 +14,15 @@ abstract class UnitGuide4<S, R, Q1, Q2, Q3, Q4> implements Guide4<S, R, Q1, Q2, 
   private final UnitWrapper unitInstance;
   private final MethodStatement guideMethod;
   private final int guideOrdinal;
-  private final GuideForm guideForm;
+  private final ObjectReferenceForm targetForm;
 
-  UnitGuide4(String cid, UnitWrapper unitInstance, MethodStatement guideMethod, int guideOrdinal, GuideForm guideForm) {
+  UnitGuide4(
+      String cid,
+      UnitWrapper unitInstance,
+      MethodStatement guideMethod,
+      int guideOrdinal,
+      ObjectReferenceForm targetForm
+  ) {
     if (guideMethod.params().size() != 5) {
       throw UnexpectedExceptions.withMessage("Guide method should have four parameters: source and four qualifiers");
     }
@@ -24,7 +30,7 @@ abstract class UnitGuide4<S, R, Q1, Q2, Q3, Q4> implements Guide4<S, R, Q1, Q2, 
     this.unitInstance = unitInstance;
     this.guideMethod = guideMethod;
     this.guideOrdinal = guideOrdinal;
-    this.guideForm = guideForm;
+    this.targetForm = targetForm;
   }
 
   @Override
@@ -43,8 +49,8 @@ abstract class UnitGuide4<S, R, Q1, Q2, Q3, Q4> implements Guide4<S, R, Q1, Q2, 
   }
 
   @Override
-  public GuideForm guideForm() {
-    return guideForm;
+  public ObjectReferenceForm targetForm() {
+    return targetForm;
   }
 
   @Override

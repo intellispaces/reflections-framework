@@ -1,7 +1,7 @@
 package tech.intellispaces.jaquarius.guide.n1;
 
 import tech.intellispaces.jaquarius.exception.TraverseException;
-import tech.intellispaces.jaquarius.guide.GuideForm;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.traverse.plan.TraverseExecutor;
 import tech.intellispaces.jaquarius.traverse.plan.TraversePlan;
 
@@ -16,15 +16,15 @@ import tech.intellispaces.jaquarius.traverse.plan.TraversePlan;
 public class AutoMover1<S, Q> implements AbstractMover1<S, Q> {
   private final String cid;
   private final TraversePlan traversePlan;
-  private final GuideForm guideForm;
+  private final ObjectReferenceForm targetForm;
   private final TraverseExecutor traverseExecutor;
 
   public AutoMover1(
-      String cid, TraversePlan traversePlan, GuideForm guideForm, TraverseExecutor traverseExecutor
+      String cid, TraversePlan traversePlan, ObjectReferenceForm targetForm, TraverseExecutor traverseExecutor
   ) {
     this.cid = cid;
     this.traversePlan = traversePlan;
-    this.guideForm = guideForm;
+    this.targetForm = targetForm;
     this.traverseExecutor = traverseExecutor;
   }
 
@@ -34,8 +34,8 @@ public class AutoMover1<S, Q> implements AbstractMover1<S, Q> {
   }
 
   @Override
-  public GuideForm guideForm() {
-    return guideForm;
+  public ObjectReferenceForm targetForm() {
+    return targetForm;
   }
 
   @Override

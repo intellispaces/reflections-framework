@@ -2,8 +2,8 @@ package tech.intellispaces.jaquarius.guide.n2;
 
 import tech.intellispaces.jaquarius.exception.TraverseException;
 import tech.intellispaces.jaquarius.exception.TraverseExceptions;
-import tech.intellispaces.jaquarius.guide.GuideForm;
 import tech.intellispaces.jaquarius.guide.GuideLogger;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.system.UnitWrapper;
 import tech.intellispaces.jaquarius.system.kernel.KernelUnitGuide;
 import tech.intellispaces.entity.exception.UnexpectedExceptions;
@@ -14,9 +14,9 @@ abstract class UnitGuide2<S, R, Q1, Q2> implements Guide2<S, R, Q1, Q2>, KernelU
   private final UnitWrapper unitInstance;
   private final MethodStatement guideMethod;
   private final int guideOrdinal;
-  private final GuideForm guideForm;
+  private final ObjectReferenceForm targetForm;
 
-  UnitGuide2(String cid, UnitWrapper unitInstance, MethodStatement guideMethod, int guideOrdinal, GuideForm guideForm) {
+  UnitGuide2(String cid, UnitWrapper unitInstance, MethodStatement guideMethod, int guideOrdinal, ObjectReferenceForm targetForm) {
     if (guideMethod.params().size() != 3) {
       throw UnexpectedExceptions.withMessage("Guide method should have three parameters: source and two qualifiers");
     }
@@ -24,7 +24,7 @@ abstract class UnitGuide2<S, R, Q1, Q2> implements Guide2<S, R, Q1, Q2>, KernelU
     this.unitInstance = unitInstance;
     this.guideMethod = guideMethod;
     this.guideOrdinal = guideOrdinal;
-    this.guideForm = guideForm;
+    this.targetForm = targetForm;
   }
 
   @Override
@@ -43,8 +43,8 @@ abstract class UnitGuide2<S, R, Q1, Q2> implements Guide2<S, R, Q1, Q2>, KernelU
   }
 
   @Override
-  public GuideForm guideForm() {
-    return guideForm;
+  public ObjectReferenceForm targetForm() {
+    return targetForm;
   }
 
   @Override

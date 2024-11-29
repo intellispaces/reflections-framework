@@ -4,54 +4,54 @@ public interface ObjectHandleMethods {
 
   static <H> ObjectHandleMethodBuilder1<H> objectHandleMethod(
       Class<H> objectHandleClass,
-      String methodName
+      String name
   ) {
-    return new ObjectHandleMethodBuilder1<>(objectHandleClass, methodName);
+    return new ObjectHandleMethodBuilder1<>(objectHandleClass, name);
   }
 
-  static <H> ObjectHandleMethodBuilder2<H> objectHandleMethod(
+  static <H, P> ObjectHandleMethodBuilder2<H, P> objectHandleMethod(
       Class<H> objectHandleClass,
-      String methodName,
-      Class<?> methodParamClass
+      String name,
+      Class<P> paramClass
   ) {
     return new ObjectHandleMethodBuilder2<>(
-        objectHandleClass, methodName, methodParamClass
+        objectHandleClass, name, paramClass
     );
   }
 
-  static <H> ObjectHandleMethodBuilder3<H> objectHandleMethod(
+  static <H, P1, P2> ObjectHandleMethodBuilder3<H, P1, P2> objectHandleMethod(
       Class<H> objectHandleClass,
-      String methodName,
-      Class<?> methodParamClass1,
-      Class<?> methodParamClass2
+      String name,
+      Class<P1> paramClass1,
+      Class<P2> paramClass2
   ) {
     return new ObjectHandleMethodBuilder3<>(
-        objectHandleClass, methodName, methodParamClass1, methodParamClass2
+        objectHandleClass, name, paramClass1, paramClass2
     );
   }
 
-  static <H> ObjectHandleMethodBuilder4<H> objectHandleMethod(
+  static <H, P1, P2, P3> ObjectHandleMethodBuilder4<H, P1, P2, P3> objectHandleMethod(
       Class<H> objectHandleClass,
-      String methodName,
-      Class<?> methodParamClass1,
-      Class<?> methodParamClass2,
-      Class<?> methodParamClass3
+      String name,
+      Class<P1> paramClass1,
+      Class<P2> paramClass2,
+      Class<P3> paramClass3
   ) {
     return new ObjectHandleMethodBuilder4<>(
-        objectHandleClass, methodName, methodParamClass1, methodParamClass2, methodParamClass3
+        objectHandleClass, name, paramClass1, paramClass2, paramClass3
     );
   }
 
-  static <H> ObjectHandleMethodBuilder5<H> objectHandleMethod(
+  static <H, P1, P2, P3, P4> ObjectHandleMethodBuilder5<H, P1, P2, P3, P4> objectHandleMethod(
       Class<H> objectHandleClass,
-      String methodName,
-      Class<?> methodParamClass1,
-      Class<?> methodParamClass2,
-      Class<?> methodParamClass3,
-      Class<?> methodParamClass4
+      String name,
+      Class<P1> paramClass1,
+      Class<P2> paramClass2,
+      Class<P3> paramClass3,
+      Class<P4> paramClass4
   ) {
     return new ObjectHandleMethodBuilder5<>(
-        objectHandleClass, methodName, methodParamClass1, methodParamClass2, methodParamClass3, methodParamClass4
+        objectHandleClass, name, paramClass1, paramClass2, paramClass3, paramClass4
     );
   }
 }

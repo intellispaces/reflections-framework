@@ -6,8 +6,8 @@ import tech.intellispaces.jaquarius.channel.Channel1;
 import tech.intellispaces.jaquarius.channel.MappingChannel;
 import tech.intellispaces.jaquarius.common.NameConventionFunctions;
 import tech.intellispaces.jaquarius.exception.TraverseException;
-import tech.intellispaces.jaquarius.guide.GuideForm;
-import tech.intellispaces.jaquarius.object.ObjectHandleTypes;
+import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
 import tech.intellispaces.jaquarius.traverse.TraverseType;
@@ -119,9 +119,9 @@ public class CommonObjectHandleGenerator extends AbstractDomainObjectHandleGener
   }
 
   @Override
-  protected Map<String, String> generateMethod(MethodStatement method, GuideForm guideForm, int methodIndex) {
+  protected Map<String, String> generateMethod(MethodStatement method, ObjectReferenceForm targetForm, int methodIndex) {
     if (method.hasAnnotation(Channel.class)) {
-      return super.generateMethod(method, guideForm, methodIndex);
+      return super.generateMethod(method, targetForm, methodIndex);
     } else {
       return buildAdditionalMethod(method);
     }

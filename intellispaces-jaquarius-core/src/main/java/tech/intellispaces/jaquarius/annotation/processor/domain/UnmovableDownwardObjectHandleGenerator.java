@@ -9,9 +9,9 @@ import tech.intellispaces.jaquarius.channel.ChannelMethod1;
 import tech.intellispaces.jaquarius.channel.MappingChannel;
 import tech.intellispaces.jaquarius.common.NameConventionFunctions;
 import tech.intellispaces.jaquarius.exception.TraverseException;
-import tech.intellispaces.jaquarius.guide.GuideForm;
 import tech.intellispaces.jaquarius.object.ObjectHandleFunctions;
-import tech.intellispaces.jaquarius.object.ObjectHandleTypes;
+import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
 import tech.intellispaces.jaquarius.traverse.TraverseTypes;
 import tech.intellispaces.entity.collection.ArraysFunctions;
@@ -173,28 +173,30 @@ public class UnmovableDownwardObjectHandleGenerator extends AbstractConversionDo
   }
 
   @Override
-  protected Map<String, String> generateMethod(MethodStatement method, GuideForm guideForm, int methodIndex) {
+  protected Map<String, String> generateMethod(MethodStatement method, ObjectReferenceForm targetForm, int methodIndex) {
     if (method.hasAnnotation(Channel.class)) {
-      return generateMethodNormal(method, guideForm, methodIndex);
+      return generateMethodNormal(method, targetForm, methodIndex);
     } else {
       return generateAdditionalMethod(convertMethodBeforeGenerate(method));
     }
   }
 
-  protected Map<String, String> generateMethodNormal(MethodStatement method, GuideForm guideForm, int methodIndex) {
+  protected Map<String, String> generateMethodNormal(
+      MethodStatement method, ObjectReferenceForm targetForm, int methodIndex
+  ) {
     var sb = new StringBuilder();
     sb.append("public ");
     appendMethodTypeParameters(sb, method);
-    appendMethodReturnHandleType(sb, method, guideForm);
+    appendMethodReturnHandleType(sb, method, targetForm);
     sb.append(" ");
-    sb.append(getMethodName(method, guideForm));
+    sb.append(getMethodName(method, targetForm));
     sb.append("(");
     appendMethodParameters(sb, method);
     sb.append(")");
     appendMethodExceptions(sb, method);
     sb.append(" {\n");
     sb.append("  ");
-    buildReturnStatement(sb, method, guideForm);
+    buildReturnStatement(sb, method, targetForm);
     sb.append("\n}\n");
     return Map.of(
         "javadoc", buildGeneratedMethodJavadoc(method.owner().canonicalName(), method),

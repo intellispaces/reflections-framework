@@ -3,9 +3,9 @@ package tech.intellispaces.jaquarius.annotation.processor.domain;
 import tech.intellispaces.jaquarius.annotation.Movable;
 import tech.intellispaces.jaquarius.annotation.Unmovable;
 import tech.intellispaces.jaquarius.common.NameConventionFunctions;
-import tech.intellispaces.jaquarius.guide.GuideForm;
 import tech.intellispaces.jaquarius.object.ObjectHandleFunctions;
-import tech.intellispaces.jaquarius.object.ObjectHandleTypes;
+import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
 import tech.intellispaces.jaquarius.traverse.TraverseType;
@@ -39,9 +39,9 @@ abstract class AbstractConversionDomainObjectHandleGenerator extends AbstractDom
     return method.effective(typeMapping);
   }
 
-  protected void buildReturnStatement(StringBuilder sb, MethodStatement method, GuideForm guideForm) {
+  protected void buildReturnStatement(StringBuilder sb, MethodStatement method, ObjectReferenceForm targetForm) {
     if (NameConventionFunctions.isConversionMethod(method)) {
-      buildConversionChainReturnStatement(sb, method, guideForm);
+      buildConversionChainReturnStatement(sb, method, targetForm);
       return;
     }
 
@@ -55,7 +55,7 @@ abstract class AbstractConversionDomainObjectHandleGenerator extends AbstractDom
     TypeReference childReturnTypeRef = actualChildMethod.returnType().orElseThrow();
 
     if (TypeReferenceFunctions.isEqualTypes(parentReturnTypeRef, childReturnTypeRef)) {
-      buildDirectReturnStatement(sb, method, guideForm);
+      buildDirectReturnStatement(sb, method, targetForm);
     } else {
       if (parentReturnTypeRef.isCustomTypeReference() && childReturnTypeRef.isCustomTypeReference()) {
         CustomType expectedReturnType = parentReturnTypeRef.asCustomTypeReferenceOrElseThrow().targetType();
@@ -67,15 +67,15 @@ abstract class AbstractConversionDomainObjectHandleGenerator extends AbstractDom
         ) {
           buildDownwardReturnStatement(sb, method, actualReturnType, expectedReturnType);
         } else {
-          buildCastReturnStatement(sb, method, guideForm);
+          buildCastReturnStatement(sb, method, targetForm);
         }
       } else {
-        buildCastReturnStatement(sb, method, guideForm);
+        buildCastReturnStatement(sb, method, targetForm);
       }
     }
   }
 
-  private void buildConversionChainReturnStatement(StringBuilder sb, MethodStatement method, GuideForm guideForm) {
+  private void buildConversionChainReturnStatement(StringBuilder sb, MethodStatement method, ObjectReferenceForm targetForm) {
     CustomType targetDomain = method.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow().targetType();
 
     sb.append("return ");
@@ -84,10 +84,10 @@ abstract class AbstractConversionDomainObjectHandleGenerator extends AbstractDom
     sb.append(";");
   }
 
-  private void buildDirectReturnStatement(StringBuilder sb, MethodStatement method, GuideForm guideForm) {
+  private void buildDirectReturnStatement(StringBuilder sb, MethodStatement method, ObjectReferenceForm targetForm) {
     sb.append("return ");
     sb.append("this.").append(childFieldName).append(".");
-    sb.append(getMethodName(method, guideForm));
+    sb.append(getMethodName(method, targetForm));
     sb.append("(");
     sb.append(method.params().stream()
         .map(MethodParam::name)
@@ -95,13 +95,13 @@ abstract class AbstractConversionDomainObjectHandleGenerator extends AbstractDom
     sb.append(");");
   }
 
-  private void buildCastReturnStatement(StringBuilder sb, MethodStatement method, GuideForm guideForm) {
+  private void buildCastReturnStatement(StringBuilder sb, MethodStatement method, ObjectReferenceForm targetForm) {
     sb.append("return ");
     sb.append("(");
     appendMethodReturnHandleType(sb, method);
     sb.append(") ");
     sb.append("this.").append(childFieldName).append(".");
-    sb.append(getMethodName(method, guideForm));
+    sb.append(getMethodName(method, targetForm));
     sb.append("(");
     sb.append(method.params().stream()
         .map(MethodParam::name)

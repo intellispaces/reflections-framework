@@ -1,7 +1,5 @@
 package tech.intellispaces.jaquarius.annotation.processor;
 
-import tech.intellispaces.jaquarius.guide.GuideForm;
-import tech.intellispaces.jaquarius.guide.GuideForms;
 import tech.intellispaces.action.runnable.RunnableAction;
 import tech.intellispaces.action.text.StringActions;
 import tech.intellispaces.entity.exception.UnexpectedExceptions;
@@ -11,7 +9,8 @@ import tech.intellispaces.entity.type.ClassFunctions;
 import tech.intellispaces.entity.type.PrimitiveType;
 import tech.intellispaces.entity.type.PrimitiveTypes;
 import tech.intellispaces.jaquarius.object.ObjectHandleFunctions;
-import tech.intellispaces.jaquarius.object.ObjectHandleTypes;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
 import tech.intellispaces.java.annotation.context.JavaArtifactContext;
 import tech.intellispaces.java.reflection.customtype.Classes;
 import tech.intellispaces.java.reflection.customtype.CustomType;
@@ -24,7 +23,6 @@ import tech.intellispaces.java.reflection.reference.PrimitiveReferences;
 import tech.intellispaces.java.reflection.reference.TypeReference;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -32,12 +30,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public interface GuideProcessorFunctions {
 
-  static GuideForm getGuideForm(MethodStatement guideMethod) {
+  static ObjectReferenceForm getTargetForm(MethodStatement guideMethod) {
     TypeReference returnType = guideMethod.returnType().orElseThrow();
     if (returnType.isPrimitiveReference()) {
-      return GuideForms.PrimitiveType;
+      return ObjectReferenceForms.Primitive;
     } else {
-      return GuideForms.Main;
+      return ObjectReferenceForms.Object;
     }
   }
 
@@ -75,7 +73,7 @@ public interface GuideProcessorFunctions {
   private static String buildGuideAction(
       CustomType wrapperType, MethodStatement guideMethod, List<TypeReference> paramTypes, JavaArtifactContext context
   ) {
-    GuideForm guideForm = getGuideForm(guideMethod);
+    ObjectReferenceForm targetForm = getTargetForm(guideMethod);
 
     var sb = new StringBuilder();
     sb.append(buildGuideActionGetterName(paramTypes, guideMethod.returnType().orElseThrow()));
@@ -84,7 +82,7 @@ public interface GuideProcessorFunctions {
     sb.append("::");
     sb.append(ObjectHandleFunctions.buildObjectHandleGuideMethodName(guideMethod));
     sb.append(", ");
-    sb.append(buildGuideActionReturnType(normalizeType(guideMethod.returnType().orElseThrow()), guideForm, context));
+    sb.append(buildGuideActionReturnType(normalizeType(guideMethod.returnType().orElseThrow()), targetForm, context));
     sb.append(".class");
     for (TypeReference paramType : paramTypes) {
       sb.append(", ");
@@ -96,14 +94,14 @@ public interface GuideProcessorFunctions {
   }
 
   private static String buildGuideActionReturnType(
-      TypeReference type, GuideForm guideForm, JavaArtifactContext context
+      TypeReference type, ObjectReferenceForm targetForm, JavaArtifactContext context
   ) {
-    if (guideForm == GuideForms.Main) {
+    if (targetForm == ObjectReferenceForms.Object) {
       return buildGuideActionParamType(type, context);
-    } else if (guideForm == GuideForms.PrimitiveType) {
+    } else if (targetForm == ObjectReferenceForms.Primitive) {
       return type.asPrimitiveReferenceOrElseThrow().typename();
     } else {
-      throw UnexpectedExceptions.withMessage("Not supported guide form: {0}", guideForm.name());
+      throw UnexpectedExceptions.withMessage("Not supported guide form: {0}", targetForm.name());
     }
   }
 
@@ -239,33 +237,6 @@ public interface GuideProcessorFunctions {
     return Map.of("declaration", sb.toString());
   }
 
-  static Map<String, Object> buildObjectHandleMethodDescriptor(
-      MethodStatement objectHandleMethod, MethodStatement guideMethod, JavaArtifactContext context
-  ) {
-    var map = new HashMap<String, Object>();
-    map.put("name", objectHandleMethod.name());
-
-    List<String> paramClasses = new ArrayList<>();
-    for (MethodParam param : objectHandleMethod.params()) {
-      paramClasses.add(buildGuideParamClassName(param.type(), context));
-    }
-    map.put("params", paramClasses);
-
-    if (guideMethod != null) {
-      map.put("guideName", ObjectHandleFunctions.buildObjectHandleGuideMethodName(guideMethod));
-
-      List<String> guideParamClasses = new ArrayList<>();
-      for (MethodParam param : guideMethod.params()) {
-        guideParamClasses.add(buildGuideParamClassName(param.type(), context));
-      }
-      map.put("guideParams", guideParamClasses);
-    } else {
-      map.put("guideName", "");
-      map.put("guideParams", List.of());
-    }
-    return map;
-  }
-
   private static void buildInvokeSuperMethod(
       MethodStatement objectHandleMethod, StringBuilder sb, JavaArtifactContext context
   ) {
@@ -291,15 +262,6 @@ public interface GuideProcessorFunctions {
       }
     }
     sb.append(")");
-  }
-
-  private static String buildGuideParamClassName(TypeReference type, JavaArtifactContext context) {
-    return ObjectHandleFunctions.getObjectHandleDeclaration(
-        GuideProcessorFunctions.normalizeType(type),
-        ObjectHandleTypes.Common,
-        false,
-        context::addToImportAndGetSimpleName
-    );
   }
 
   private static String buildGuideTypeDeclaration(TypeReference type, JavaArtifactContext context) {

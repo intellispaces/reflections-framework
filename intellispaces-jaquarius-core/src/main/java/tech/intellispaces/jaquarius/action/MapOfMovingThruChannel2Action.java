@@ -1,8 +1,8 @@
 package tech.intellispaces.jaquarius.action;
 
 import tech.intellispaces.jaquarius.channel.Channel2;
-import tech.intellispaces.jaquarius.guide.GuideForm;
 import tech.intellispaces.jaquarius.guide.n2.MapperOfMoving2;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.system.Modules;
 import tech.intellispaces.action.AbstractAction3;
 import tech.intellispaces.entity.type.Type;
@@ -10,18 +10,18 @@ import tech.intellispaces.entity.type.Type;
 class MapOfMovingThruChannel2Action<T, S, Q1, Q2> extends AbstractAction3<T, S, Q1, Q2> {
   private final Type<S> sourceType;
   private final Class<? extends Channel2> channelClass;
-  private final GuideForm guideForm;
+  private final ObjectReferenceForm targetForm;
   private final MapperOfMoving2<S, T, Q1, Q2> autoMapper;
 
   MapOfMovingThruChannel2Action(
       Type<S> sourceType,
       Class<? extends Channel2> channelClass,
-      GuideForm guideForm
+      ObjectReferenceForm targetForm
   ) {
     this.sourceType = sourceType;
     this.channelClass = channelClass;
-    this.guideForm = guideForm;
-    this.autoMapper = Modules.current().autoMapperOfMovingThruChannel2(sourceType, channelClass, guideForm);
+    this.targetForm = targetForm;
+    this.autoMapper = Modules.current().autoMapperOfMovingThruChannel2(sourceType, channelClass, targetForm);
   }
 
   @Override

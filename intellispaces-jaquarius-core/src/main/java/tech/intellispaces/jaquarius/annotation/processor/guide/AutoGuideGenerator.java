@@ -4,8 +4,6 @@ import tech.intellispaces.jaquarius.action.TraverseActions;
 import tech.intellispaces.jaquarius.annotation.processor.AbstractGenerator;
 import tech.intellispaces.jaquarius.annotation.processor.GuideProcessorFunctions;
 import tech.intellispaces.jaquarius.common.NameConventionFunctions;
-import tech.intellispaces.jaquarius.guide.GuideForm;
-import tech.intellispaces.jaquarius.guide.GuideForms;
 import tech.intellispaces.jaquarius.guide.GuideFunctions;
 import tech.intellispaces.action.Action;
 import tech.intellispaces.action.cache.CachedSupplierActions;
@@ -15,6 +13,8 @@ import tech.intellispaces.action.text.StringActions;
 import tech.intellispaces.entity.exception.NotImplementedExceptions;
 import tech.intellispaces.entity.text.StringFunctions;
 import tech.intellispaces.entity.type.Types;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
 import tech.intellispaces.java.annotation.context.AnnotationProcessingContext;
 import tech.intellispaces.java.reflection.customtype.CustomType;
 import tech.intellispaces.java.reflection.method.MethodParam;
@@ -72,7 +72,7 @@ public class AutoGuideGenerator extends AbstractGenerator {
       context.addImport(sourceClassCanonicalName());
     }
     context.addImport(Action.class);
-    context.addImport(GuideForms.class);
+    context.addImport(ObjectReferenceForms.class);
 
     analyzeTypeParams();
     analyzeGuideMethods();
@@ -153,9 +153,9 @@ public class AutoGuideGenerator extends AbstractGenerator {
     sb.append(".class),\n    ");
     sb.append(context.addToImportAndGetSimpleName(GuideFunctions.getChannelType(method).canonicalName()));
     sb.append(".class,\n");
-    GuideForm guideForm = GuideProcessorFunctions.getGuideForm(method);
-    sb.append("    GuideForms.");
-    sb.append(guideForm.name());
+    ObjectReferenceForm targetForm = GuideProcessorFunctions.getTargetForm(method);
+    sb.append("    ObjectReferenceForms.");
+    sb.append(targetForm.name());
     sb.append("))");
     return sb.toString();
   }

@@ -3,42 +3,63 @@ package tech.intellispaces.jaquarius.engine.descriptor;
 import tech.intellispaces.action.Action;
 import tech.intellispaces.action.functional.FunctionActions;
 import tech.intellispaces.entity.function.TriFunction;
+import tech.intellispaces.jaquarius.traverse.TraverseType;
 
 import java.util.List;
 
-public class ObjectHandleMethodBuilder3<H> {
-  private final String methodName;
-  private final Class<?> methodParamClass1;
-  private final Class<?> methodParamClass2;
-  private Action guideAction;
-  private Class<?> guideParamClass1;
-  private Class<?> guideParamClass2;
+public class ObjectHandleMethodBuilder3<H, P1, P2> {
+  private final String name;
+  private final Class<P1> paramClass1;
+  private final Class<P2> paramClass2;
+
+  private Action action;
+  private String purpose;
+  private int ordinal;
+  private Class<?> channelClass;
+  private TraverseType traverseType;
 
   public ObjectHandleMethodBuilder3(
-      Class<H> objectHandleClass, String methodName, Class<?> methodParamClass1, Class<?> methodParamClass2
+      Class<H> objectHandleClass, String name, Class<P1> paramClass1, Class<P2> paramClass2
   ) {
-    this.methodName = methodName;
-    this.methodParamClass1 = methodParamClass1;
-    this.methodParamClass2 = methodParamClass2;
+    this.name = name;
+    this.paramClass1 = paramClass1;
+    this.paramClass2 = paramClass2;
   }
 
-  public <P1, P2, R> ObjectHandleMethodBuilder3<H> guideFunction(
-      TriFunction<H, P1, P2, R> function,
-      Class<P1> guideParamClass1,
-      Class<P2> guideParamClass2
-  ) {
-    this.guideAction = FunctionActions.ofTriFunction(function);
-    this.guideParamClass1 = guideParamClass1;
-    this.guideParamClass2 = guideParamClass2;
+  public ObjectHandleMethodBuilder3<H, P1, P2> purpose(String purpose) {
+    this.purpose = purpose;
+    return this;
+  }
+
+  public ObjectHandleMethodBuilder3<H, P1, P2> ordinal(int ordinal) {
+    this.ordinal = ordinal;
+    return this;
+  }
+
+  public ObjectHandleMethodBuilder3<H, P1, P2> channelClass(Class<?> channelClass) {
+    this.channelClass = channelClass;
+    return this;
+  }
+
+  public ObjectHandleMethodBuilder3<H, P1, P2> traverseType(TraverseType traverseType) {
+    this.traverseType = traverseType;
+    return this;
+  }
+
+  public <R> ObjectHandleMethodBuilder3<H, P1, P2> function(TriFunction<H, P1, P2, R> function) {
+    this.action = FunctionActions.ofTriFunction(function);
     return this;
   }
 
   public ObjectHandleMethod get() {
     return new ObjectHandleMethodImpl(
-        methodName,
-        List.of(methodParamClass1, methodParamClass2),
-        guideAction,
-        guideAction != null ? List.of(guideParamClass1, guideParamClass2) : null
+        name,
+        List.of(paramClass1, paramClass2),
+        purpose,
+        ordinal,
+        action,
+        channelClass,
+        traverseType
     );
   }
 }

@@ -3,7 +3,7 @@ package tech.intellispaces.jaquarius.annotation.processor.domain;
 import tech.intellispaces.jaquarius.annotation.ObjectHandle;
 import tech.intellispaces.jaquarius.annotation.Unmovable;
 import tech.intellispaces.jaquarius.common.NameConventionFunctions;
-import tech.intellispaces.jaquarius.object.ObjectHandleTypes;
+import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
 import tech.intellispaces.jaquarius.object.reference.UnmovableObjectHandle;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;

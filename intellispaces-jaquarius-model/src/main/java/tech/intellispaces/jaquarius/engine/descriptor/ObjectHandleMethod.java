@@ -1,6 +1,7 @@
 package tech.intellispaces.jaquarius.engine.descriptor;
 
 import tech.intellispaces.action.Action;
+import tech.intellispaces.jaquarius.traverse.TraverseType;
 
 import java.util.List;
 
@@ -20,12 +21,27 @@ public interface ObjectHandleMethod {
   List<Class<?>> paramClasses();
 
   /**
-   * Related guide action or <code>null</code>.
+   * The method purpose.
    */
-  Action guideAction();
+  String purpose();
 
   /**
-   * Related guide method parameter classes.
+   * The method ordinal.
    */
-  List<Class<?>> guideParamClasses();
+  int ordinal();
+
+  /**
+   * Related action.
+   */
+  Action action();
+
+  /**
+   * The channel class related to this method.
+   */
+  Class<?> channelClass();
+
+  /**
+   * The traverse type related to this method.
+   */
+  TraverseType traverseType();
 }

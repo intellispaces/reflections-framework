@@ -20,8 +20,8 @@ public interface {{$classSimpleName}} extends {{$guideClassSimpleName}}{{$guideT
   }
 
   @Override
-  default GuideForm guideForm() {
-    return GuideForms.{{$guideForm}};
+  default ObjectReferenceForm targetForm() {
+    return ObjectReferenceForms.{{$targetForm}};
   }
 
   @Override

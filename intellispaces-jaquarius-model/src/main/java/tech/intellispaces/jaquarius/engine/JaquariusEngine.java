@@ -26,24 +26,27 @@ public interface JaquariusEngine {
   /**
    * Registers object handle type.
    *
+   * @param objectHandleWrapperClass the object handle wrapper class.
    * @param objectHandleClass the object handle class.
    * @param methods object handle methods.
    * @return the registered object handle type.
+   * @param <H> the object handle type.
+   * @param <W> the object handle wrapper type.
    */
-  ObjectHandleType registerObjectHandleType(
-      Class<?> objectHandleClass, ObjectHandleMethod... methods
+  <H, W extends H> ObjectHandleType registerObjectHandleType(
+      Class<W> objectHandleWrapperClass, Class<H> objectHandleClass, ObjectHandleMethod... methods
   );
 
   /**
    * Registers object handle.
    *
-   * @param objectHandleClass the object handle class.
+   * @param objectHandleWrapperClass the object handle wrapper class.
    * @param objectHandle the object handle.
    * @param type the object handle type.
    * @return the registered object handle instance.
-   * @param <H> the object handle type.
+   * @param <W> the object handle wrapper type.
    */
-  <H> ObjectHandleInstance registerObjectHandleInstance(
-      Class<H> objectHandleClass, H objectHandle, ObjectHandleType type
+  <W> ObjectHandleInstance registerObjectHandleInstance(
+      Class<W> objectHandleWrapperClass, W objectHandle, ObjectHandleType type
   );
 }

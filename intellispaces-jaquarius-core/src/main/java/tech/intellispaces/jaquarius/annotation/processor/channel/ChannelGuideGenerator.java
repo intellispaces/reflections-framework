@@ -7,8 +7,6 @@ import tech.intellispaces.jaquarius.annotation.Mover;
 import tech.intellispaces.jaquarius.annotation.processor.AbstractGenerator;
 import tech.intellispaces.jaquarius.annotation.processor.AnnotationProcessorFunctions;
 import tech.intellispaces.jaquarius.common.NameConventionFunctions;
-import tech.intellispaces.jaquarius.guide.GuideForm;
-import tech.intellispaces.jaquarius.guide.GuideForms;
 import tech.intellispaces.jaquarius.guide.n0.Mapper0;
 import tech.intellispaces.jaquarius.guide.n0.MapperOfMoving0;
 import tech.intellispaces.jaquarius.guide.n0.Mover0;
@@ -28,6 +26,8 @@ import tech.intellispaces.jaquarius.guide.n5.Mapper5;
 import tech.intellispaces.jaquarius.guide.n5.MapperOfMoving5;
 import tech.intellispaces.jaquarius.guide.n5.Mover5;
 import tech.intellispaces.jaquarius.object.ObjectHandleFunctions;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.traverse.TraverseType;
 import tech.intellispaces.jaquarius.traverse.TraverseTypes;
@@ -56,7 +56,7 @@ import java.util.Objects;
 import java.util.function.Function;
 
 public class ChannelGuideGenerator extends AbstractGenerator {
-  private final GuideForm guideForm;
+  private final ObjectReferenceForm targetForm;
   private final TraverseType traverseType;
   private final MethodStatement channelMethod;
   private String guideClassSimpleName;
@@ -67,14 +67,14 @@ public class ChannelGuideGenerator extends AbstractGenerator {
   private String traverseMethodPrimitiveFormDouble;
 
   public ChannelGuideGenerator(
-      GuideForm guideForm,
+      ObjectReferenceForm targetForm,
       TraverseType traverseType,
       CustomType initiatorType,
       CustomType domainType,
       MethodStatement channelMethod
   ) {
     super(initiatorType, domainType);
-    this.guideForm = guideForm;
+    this.targetForm = targetForm;
     this.traverseType = traverseType;
     this.channelMethod = channelMethod;
   }
@@ -108,7 +108,7 @@ public class ChannelGuideGenerator extends AbstractGenerator {
     vars.put("guideAnnotation", guideAnnotation);
     vars.put("guideMethod", guideMethod);
     vars.put("traverseMethodMainForm", traverseMethodMainForm);
-    vars.put("guideForm", guideForm.name());
+    vars.put("targetForm", targetForm.name());
     vars.put("traverseMethodPrimitiveFormLong", traverseMethodPrimitiveFormLong);
     vars.put("traverseMethodPrimitiveFormDouble", traverseMethodPrimitiveFormDouble);
     vars.put("importedClasses", context.getImports());
@@ -124,8 +124,8 @@ public class ChannelGuideGenerator extends AbstractGenerator {
     context.addImport(Guide.class);
     context.addImport(ChannelFunctions.class);
     context.addImport(Objects.class);
-    context.addImport(GuideForm.class);
-    context.addImport(GuideForms.class);
+    context.addImport(ObjectReferenceForm.class);
+    context.addImport(ObjectReferenceForms.class);
     context.addImport(UnexpectedExceptions.class);
     context.addImport(PrimitiveFunctions.class);
     analyzeGuideType();
@@ -381,16 +381,16 @@ public class ChannelGuideGenerator extends AbstractGenerator {
   }
 
   private String buildTargetObjectHandleFormDeclaration() {
-    if (guideForm == GuideForms.Main) {
+    if (targetForm == ObjectReferenceForms.Object) {
       return buildTargetObjectHandleDeclaration(Function.identity(), false);
-    } else if (guideForm == GuideForms.PrimitiveType) {
+    } else if (targetForm == ObjectReferenceForms.Primitive) {
       return ClassFunctions.getPrimitiveTypeOfWrapper(
           channelMethod.returnType().orElseThrow()
               .asCustomTypeReferenceOrElseThrow()
               .targetType()
               .canonicalName());
     }
-    throw UnexpectedExceptions.withMessage("Not supported guide form - {0}", guideForm.name());
+    throw UnexpectedExceptions.withMessage("Not supported guide form - {0}", targetForm.name());
   }
 
   protected String buildObjectHandleDeclaration(
@@ -462,7 +462,7 @@ public class ChannelGuideGenerator extends AbstractGenerator {
 
   private String getGuideClassCanonicalName() {
     return NameConventionFunctions.getGuideClassCanonicalName(
-        guideForm, annotatedType.packageName(), annotatedType, channelMethod
+        targetForm, annotatedType.packageName(), annotatedType, channelMethod
     );
   }
 }

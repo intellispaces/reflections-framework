@@ -2,8 +2,8 @@ package tech.intellispaces.jaquarius.system.kernel;
 
 import tech.intellispaces.jaquarius.exception.ConfigurationExceptions;
 import tech.intellispaces.jaquarius.guide.Guide;
-import tech.intellispaces.jaquarius.guide.GuideForm;
 import tech.intellispaces.jaquarius.guide.GuideKind;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,19 +44,21 @@ class GuideRegistryImpl implements GuideRegistry {
   }
 
   @Override
-  public List<Guide<?, ?>> findGuides(GuideKind kind, Class<?> objectHandleClass, String cid, GuideForm form) {
+  public List<Guide<?, ?>> findGuides(
+      GuideKind kind, Class<?> objectHandleClass, String cid, ObjectReferenceForm targetForm
+  ) {
     var guides = new ArrayList<Guide<?, ?>>();
 
     List<Guide<?, ?>> objectGuides = objectGuideRegistry.getGuides(kind, objectHandleClass, cid);
     for (Guide<?, ?> guide : objectGuides) {
-      if (guide.guideForm() == form) {
+      if (guide.targetForm() == targetForm) {
         guides.add(guide);
       }
     }
 
     List<Guide<?, ?>> unitGuides = unitGuideRegistry.findGuides(kind, cid);
     for (Guide<?, ?> guide : unitGuides) {
-      if (guide.guideForm() == form) {
+      if (guide.targetForm() == targetForm) {
         guides.add(guide);
       }
     }

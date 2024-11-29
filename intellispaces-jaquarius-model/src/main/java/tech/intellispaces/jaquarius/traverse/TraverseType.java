@@ -2,6 +2,8 @@ package tech.intellispaces.jaquarius.traverse;
 
 public interface TraverseType {
 
+  String name();
+
   /**
    * Mapping traverse.
    */

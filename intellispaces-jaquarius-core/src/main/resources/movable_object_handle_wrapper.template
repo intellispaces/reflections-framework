@@ -37,13 +37,6 @@ public class {{$classSimpleName}}{{$typeParamsFull}} extends {{$sourceClassSimpl
 {{end}}
     );
 {{end}}
-{{when $methodActions.isNotEmpty()}}
-    this.$innerHandle.setMethodActions(
-{{for methodAction : $methodActions}}
-      {{$methodAction}}{{when $methodAction.isNotLast()}},{{end}}
-{{end}}
-    );
-{{end}}
 {{when $guideActions.isNotEmpty()}}
     this.$innerHandle.setGuideActions(
 {{for guideAction : $guideActions}}
@@ -59,16 +52,16 @@ public class {{$classSimpleName}}{{$typeParamsFull}} extends {{$sourceClassSimpl
   }
 
 {{for method : $conversionMethods}}
-  {{$method.get("declaration")}};
+  {{$method.get("declaration")}}
 
 {{end}}
 {{for method : $domainMethods}}
   @Override
-  {{$method.get("declaration")}};
+  {{$method.get("declaration")}}
 
 {{end}}
 {{for method : $guideActionMethods}}
-  {{$method.get("declaration")}};
+  {{$method.get("declaration")}}
 
 {{end}}
 {{when $notImplRelease}}
@@ -191,9 +184,22 @@ public class {{$classSimpleName}}{{$typeParamsFull}} extends {{$sourceClassSimpl
 
   private static void $registerObjectHandleType() {
     $TYPE = JaquariusEngines.current().registerObjectHandleType(
-        {{$classSimpleName}}.class{{when $objectHandleMethods.isNotEmpty()}},{{end}}
+        {{$classSimpleName}}.class,
+        {{$sourceClassSimpleName}}.class{{when $objectHandleMethods.isNotEmpty()}},{{end}}
 {{for method : $objectHandleMethods}}
-        objectHandleMethod({{$classSimpleName}}.class, "{{$method.get("name")}}"{{for param : $method.get("params")}}, {{$param}}.class{{end}}){{when $method.get("guideName").isNotEmpty()}}.guideFunction({{$classSimpleName}}::{{$method.get("guideName")}}{{for param : $method.get("guideParams")}}, {{$param}}.class{{end}}){{end}}.get(){{when $method.isNotLast()}},{{end}}
+        objectHandleMethod({{$classSimpleName}}.class, "{{$method.get("name")}}"{{for param : $method.get("params")}}, {{$param}}.class{{end}})
+            .purpose("{{$method.get("purpose")}}")
+{{when $method.get("ordinal").isVoid().invert()}}
+            .ordinal({{$method.get("ordinal")}})
+{{end}}
+{{when $method.get("channelClass").isVoid().invert()}}
+            .channelClass({{$method.get("channelClass")}}.class)
+{{end}}
+{{when $method.get("traverseType").isVoid().invert()}}
+            .traverseType(TraverseTypes.{{$method.get("traverseType")}})
+{{end}}
+            .function({{$classSimpleName}}::{{$method.get("name")}})
+            .get(){{when $method.isNotLast()}},{{end}}
 {{end}}
     );
   }

@@ -11,7 +11,7 @@ import tech.intellispaces.jaquarius.channel.MappingOfMovingChannel;
 import tech.intellispaces.jaquarius.common.NameConventionFunctions;
 import tech.intellispaces.jaquarius.exception.TraverseException;
 import tech.intellispaces.jaquarius.object.reference.MovableObjectHandle;
-import tech.intellispaces.jaquarius.object.ObjectHandleTypes;
+import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
 import tech.intellispaces.jaquarius.traverse.TraverseType;

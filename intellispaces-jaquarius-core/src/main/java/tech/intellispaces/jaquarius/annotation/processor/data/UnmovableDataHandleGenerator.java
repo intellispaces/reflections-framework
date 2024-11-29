@@ -7,7 +7,7 @@ import tech.intellispaces.jaquarius.channel.Channel1;
 import tech.intellispaces.jaquarius.channel.MappingChannel;
 import tech.intellispaces.jaquarius.common.NameConventionFunctions;
 import tech.intellispaces.jaquarius.exception.TraverseException;
-import tech.intellispaces.jaquarius.object.ObjectHandleTypes;
+import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
 import tech.intellispaces.jaquarius.system.Modules;
 import tech.intellispaces.action.runnable.RunnableAction;
 import tech.intellispaces.action.text.StringActions;

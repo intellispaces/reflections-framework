@@ -3,51 +3,69 @@ package tech.intellispaces.jaquarius.engine.descriptor;
 import tech.intellispaces.action.Action;
 import tech.intellispaces.action.functional.FunctionActions;
 import tech.intellispaces.entity.function.QuadriFunction;
+import tech.intellispaces.jaquarius.traverse.TraverseType;
 
 import java.util.List;
 
-public class ObjectHandleMethodBuilder4<H> {
-  private final String methodName;
-  private final Class<?> methodParamClass1;
-  private final Class<?> methodParamClass2;
-  private final Class<?> methodParamClass3;
-  private Action guideAction;
-  private Class<?> guideParamClass1;
-  private Class<?> guideParamClass2;
-  private Class<?> guideParamClass3;
+public class ObjectHandleMethodBuilder4<H, P1, P2, P3> {
+  private final String name;
+  private final Class<P1> paramClass1;
+  private final Class<P2> paramClass2;
+  private final Class<P3> paramClass3;
+
+  private Action action;
+  private String purpose;
+  private int ordinal;
+  private Class<?> channelClass;
+  private TraverseType traverseType;
 
   public ObjectHandleMethodBuilder4(
       Class<H> objectHandleClass,
-      String methodName,
-      Class<?> methodParamClass1,
-      Class<?> methodParamClass2,
-      Class<?> methodParamClass3
+      String name,
+      Class<P1> paramClass1,
+      Class<P2> paramClass2,
+      Class<P3> paramClass3
   ) {
-    this.methodName = methodName;
-    this.methodParamClass1 = methodParamClass1;
-    this.methodParamClass2 = methodParamClass2;
-    this.methodParamClass3 = methodParamClass3;
+    this.name = name;
+    this.paramClass1 = paramClass1;
+    this.paramClass2 = paramClass2;
+    this.paramClass3 = paramClass3;
   }
 
-  public <P1, P2, P3, R> ObjectHandleMethodBuilder4<H> guideFunction(
-      QuadriFunction<H, P1, P2, P3, R> function,
-      Class<P1> guideParamClass1,
-      Class<P2> guideParamClass2,
-      Class<P3> guideParamClass3
-  ) {
-    this.guideAction = FunctionActions.ofQuadriFunction(function);
-    this.guideParamClass1 = guideParamClass1;
-    this.guideParamClass2 = guideParamClass1;
-    this.guideParamClass3 = guideParamClass1;
+  public ObjectHandleMethodBuilder4<H, P1, P2, P3> purpose(String purpose) {
+    this.purpose = purpose;
+    return this;
+  }
+
+  public ObjectHandleMethodBuilder4<H, P1, P2, P3> ordinal(int ordinal) {
+    this.ordinal = ordinal;
+    return this;
+  }
+
+  public ObjectHandleMethodBuilder4<H, P1, P2, P3> channelClass(Class<?> channelClass) {
+    this.channelClass = channelClass;
+    return this;
+  }
+
+  public ObjectHandleMethodBuilder4<H, P1, P2, P3> traverseType(TraverseType traverseType) {
+    this.traverseType = traverseType;
+    return this;
+  }
+
+  public <R> ObjectHandleMethodBuilder4<H, P1, P2, P3> function(QuadriFunction<H, P1, P2, P3, R> function) {
+    this.action = FunctionActions.ofQuadriFunction(function);
     return this;
   }
 
   public ObjectHandleMethod get() {
     return new ObjectHandleMethodImpl(
-        methodName,
-        List.of(methodParamClass1, methodParamClass2, methodParamClass3),
-        guideAction,
-        guideAction != null ? List.of(guideParamClass1, guideParamClass2, guideParamClass3) : null
+        name,
+        List.of(paramClass1, paramClass2, paramClass3),
+        purpose,
+        ordinal,
+        action,
+        channelClass,
+        traverseType
     );
   }
 }

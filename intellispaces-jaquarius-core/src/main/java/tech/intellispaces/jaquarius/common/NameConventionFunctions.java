@@ -4,9 +4,9 @@ import tech.intellispaces.jaquarius.annotation.Channel;
 import tech.intellispaces.jaquarius.annotation.Domain;
 import tech.intellispaces.jaquarius.annotation.ObjectHandle;
 import tech.intellispaces.jaquarius.annotation.Ontology;
-import tech.intellispaces.jaquarius.guide.GuideForm;
-import tech.intellispaces.jaquarius.guide.GuideForms;
-import tech.intellispaces.jaquarius.object.ObjectHandleTypes;
+import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.entity.exception.UnexpectedExceptions;
 import tech.intellispaces.entity.text.StringFunctions;
@@ -215,10 +215,10 @@ public interface NameConventionFunctions {
   }
 
   static String getGuideClassCanonicalName(
-      GuideForm guideForm, String spaceName, CustomType channelType, MethodStatement channelMethod
+      ObjectReferenceForm targetForm, String spaceName, CustomType channelType, MethodStatement channelMethod
   ) {
     String name = StringFunctions.replaceLast(channelType.canonicalName(), "Channel", "Guide");
-    if (guideForm == GuideForms.PrimitiveType) {
+    if (targetForm == ObjectReferenceForms.Primitive) {
       name = name + "Primitive";
     }
     return name;

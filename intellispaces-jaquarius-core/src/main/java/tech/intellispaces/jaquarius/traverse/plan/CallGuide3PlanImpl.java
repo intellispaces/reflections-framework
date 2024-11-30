@@ -1,8 +1,8 @@
 package tech.intellispaces.jaquarius.traverse.plan;
 
+import tech.intellispaces.entity.exception.UnexpectedExceptions;
 import tech.intellispaces.jaquarius.exception.TraverseException;
 import tech.intellispaces.jaquarius.guide.n3.Guide3;
-import tech.intellispaces.entity.exception.UnexpectedExceptions;
 
 public class CallGuide3PlanImpl implements CallGuide3Plan {
   private final Guide3<Object, Object, Object, Object, Object> guide;

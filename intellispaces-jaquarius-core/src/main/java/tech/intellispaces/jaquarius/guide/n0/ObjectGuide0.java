@@ -1,13 +1,13 @@
 package tech.intellispaces.jaquarius.guide.n0;
 
+import tech.intellispaces.entity.exception.UnexpectedExceptions;
 import tech.intellispaces.jaquarius.exception.TraverseException;
 import tech.intellispaces.jaquarius.exception.TraverseExceptions;
 import tech.intellispaces.jaquarius.guide.GuideLogger;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.system.ObjectHandleWrapper;
-import tech.intellispaces.entity.exception.UnexpectedExceptions;
-import tech.intellispaces.java.reflection.method.MethodStatement;
 import tech.intellispaces.java.reflection.method.MethodParam;
+import tech.intellispaces.java.reflection.method.MethodStatement;
 
 import java.util.stream.Collectors;
 
@@ -50,7 +50,7 @@ abstract class ObjectGuide0<S extends ObjectHandleWrapper, R> implements Guide0<
   public R traverse(S source) throws TraverseException {
     try {
       GuideLogger.logCallGuide(guideMethod);
-      return (R) source.$innerHandle().getGuideAction(channelIndex).castToAction1().execute(source);
+      return (R) source.$objectHandleInstance().getGuideAction(channelIndex).castToAction1().execute(source);
     } catch (TraverseException e) {
       throw e;
     } catch (Exception e) {
@@ -63,7 +63,7 @@ abstract class ObjectGuide0<S extends ObjectHandleWrapper, R> implements Guide0<
   public int traverseToInt(S source) throws TraverseException {
     try {
       GuideLogger.logCallGuide(guideMethod);
-      return source.$innerHandle().getGuideAction(channelIndex).castToAction1().executeReturnInt(source);
+      return source.$objectHandleInstance().getGuideAction(channelIndex).castToAction1().executeReturnInt(source);
     } catch (TraverseException e) {
       throw e;
     } catch (Exception e) {
@@ -76,7 +76,7 @@ abstract class ObjectGuide0<S extends ObjectHandleWrapper, R> implements Guide0<
   public double traverseToDouble(S source) throws TraverseException {
     try {
       GuideLogger.logCallGuide(guideMethod);
-      return source.$innerHandle().getGuideAction(channelIndex).castToAction1().executeReturnDouble(source);
+      return source.$objectHandleInstance().getGuideAction(channelIndex).castToAction1().executeReturnDouble(source);
     } catch (TraverseException e) {
       throw e;
     } catch (Exception e) {

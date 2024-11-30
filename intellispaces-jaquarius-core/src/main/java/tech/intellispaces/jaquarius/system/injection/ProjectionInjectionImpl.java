@@ -1,9 +1,9 @@
 package tech.intellispaces.jaquarius.system.injection;
 
+import tech.intellispaces.entity.exception.UnexpectedExceptions;
 import tech.intellispaces.jaquarius.system.InjectionKind;
 import tech.intellispaces.jaquarius.system.ProjectionInjection;
 import tech.intellispaces.jaquarius.system.kernel.KernelFunctions;
-import tech.intellispaces.entity.exception.UnexpectedExceptions;
 
 class ProjectionInjectionImpl implements ProjectionInjection {
   private final Class<?> unitClass;

@@ -14,6 +14,7 @@ import tech.intellispaces.jaquarius.channel.Channel4;
 import tech.intellispaces.jaquarius.engine.descriptor.ObjectHandleInstance;
 import tech.intellispaces.jaquarius.engine.descriptor.ObjectHandleInstanceImpl;
 import tech.intellispaces.jaquarius.engine.descriptor.ObjectHandleMethod;
+import tech.intellispaces.jaquarius.engine.descriptor.ObjectHandleMethodPurposes;
 import tech.intellispaces.jaquarius.engine.descriptor.ObjectHandleType;
 import tech.intellispaces.jaquarius.engine.descriptor.ObjectHandleTypeImpl;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
@@ -24,6 +25,7 @@ import tech.intellispaces.jaquarius.system.kernel.ModuleLoader;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 @AutoService(JaquariusEngine.class)
@@ -43,18 +45,16 @@ public class JaquariusEngineImpl implements JaquariusEngine {
         objectHandleWrapperClass,
         Arrays.asList(methods),
         buildMethodActions(objectHandleClass, methods),
-        null
+        buildGuideActions(methods)
     );
   }
 
   @Override
-  public <W> ObjectHandleInstance registerObjectHandleInstance(
-      Class<W> objectHandleWrapperClass, W objectHandle, ObjectHandleType type
-  ) {
+  public <W> ObjectHandleInstance registerObjectHandleInstance(W objectHandleWrapper, ObjectHandleType type) {
     var typeImpl = (ObjectHandleTypeImpl) type;
     var instance = new ObjectHandleInstanceImpl(type, typeImpl.getMethodActions(), typeImpl.getGuideActions());
 
-    KernelFunctions.currentModule().objectRegistry().add((ObjectHandleWrapper) objectHandle);
+    KernelFunctions.currentModule().objectRegistry().add((ObjectHandleWrapper) objectHandleWrapper);
     return instance;
   }
 
@@ -65,7 +65,7 @@ public class JaquariusEngineImpl implements JaquariusEngine {
 
     List<Action> actions = new ArrayList<>(methods.length);
     for (ObjectHandleMethod method : methods) {
-      if ("base".equals(method.purpose())) {
+      if (ObjectHandleMethodPurposes.TraverseMethod.is(method.purpose())) {
         Action action = switch (method.paramClasses().size()) {
           case 0 -> buildMethodAction0(objectHandleClass, method);
           case 1 -> buildMethodAction1(objectHandleClass, method);
@@ -185,5 +185,24 @@ public class JaquariusEngineImpl implements JaquariusEngine {
           ObjectReferenceForms.Object)
       );
     }
+  }
+
+  private Action[] buildGuideActions(ObjectHandleMethod... methods) {
+    if (methods == null || methods.length == 0) {
+      return new Action[0];
+    }
+
+    int maxOrdinal = Arrays.stream(methods)
+        .filter(m -> ObjectHandleMethodPurposes.TraverseMethod.is(m.purpose()))
+        .map(ObjectHandleMethod::traverseOrdinal)
+        .max(Comparator.naturalOrder())
+        .orElse(0);
+    Action[] actions = new Action[maxOrdinal + 1];
+    for (ObjectHandleMethod method : methods) {
+      if (ObjectHandleMethodPurposes.GuideMethod.is(method.purpose())) {
+        actions[method.traverseOrdinal()] = method.action();
+      }
+    }
+    return actions;
   }
 }

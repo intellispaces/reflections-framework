@@ -1,5 +1,6 @@
 package tech.intellispaces.jaquarius.annotation.processor.domain;
 
+import tech.intellispaces.entity.exception.UnexpectedExceptions;
 import tech.intellispaces.jaquarius.annotation.ObjectHandle;
 import tech.intellispaces.jaquarius.annotation.Unmovable;
 import tech.intellispaces.jaquarius.common.NameConventionFunctions;
@@ -8,7 +9,6 @@ import tech.intellispaces.jaquarius.object.reference.UnmovableObjectHandle;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
 import tech.intellispaces.jaquarius.traverse.TraverseType;
-import tech.intellispaces.entity.exception.UnexpectedExceptions;
 import tech.intellispaces.java.annotation.context.AnnotationProcessingContext;
 import tech.intellispaces.java.reflection.customtype.CustomType;
 import tech.intellispaces.java.reflection.method.MethodStatement;

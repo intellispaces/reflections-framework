@@ -9,7 +9,7 @@ class ObjectHandleMethodImpl implements ObjectHandleMethod {
   private final String name;
   private final List<Class<?>> paramClasses;
   private final String purpose;
-  private final int ordinal;
+  private final int traverseOrdinal;
   private final Action action;
   private final Class<?> channelClass;
   private final TraverseType traverseType;
@@ -18,7 +18,7 @@ class ObjectHandleMethodImpl implements ObjectHandleMethod {
       String name,
       List<Class<?>> paramClasses,
       String purpose,
-      int ordinal,
+      int traverseOrdinal,
       Action action,
       Class<?> channelClass,
       TraverseType traverseType
@@ -26,7 +26,7 @@ class ObjectHandleMethodImpl implements ObjectHandleMethod {
     this.name = name;
     this.paramClasses = paramClasses;
     this.purpose = purpose;
-    this.ordinal = ordinal;
+    this.traverseOrdinal = traverseOrdinal;
     this.action = action;
     this.channelClass = channelClass;
     this.traverseType = traverseType;
@@ -48,8 +48,8 @@ class ObjectHandleMethodImpl implements ObjectHandleMethod {
   }
 
   @Override
-  public int ordinal() {
-    return ordinal;
+  public int traverseOrdinal() {
+    return traverseOrdinal;
   }
 
   @Override

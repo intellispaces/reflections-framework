@@ -12,4 +12,8 @@ public interface ObjectHandleInstance {
   Action getMethodAction(int ordinal);
 
   Action getGuideAction(int ordinal);
+
+  <D, H> void addProjection(Class<D> targetDomain, H target);
+
+  <D, H> H mapTo(Class<D> targetDomain);
 }

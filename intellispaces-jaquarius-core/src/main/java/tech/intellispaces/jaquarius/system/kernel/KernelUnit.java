@@ -1,9 +1,9 @@
 package tech.intellispaces.jaquarius.system.kernel;
 
+import tech.intellispaces.action.Action;
 import tech.intellispaces.jaquarius.system.Injection;
 import tech.intellispaces.jaquarius.system.Unit;
 import tech.intellispaces.jaquarius.system.UnitProjectionDefinition;
-import tech.intellispaces.action.Action;
 
 import java.lang.reflect.Method;
 import java.util.List;

@@ -1,13 +1,13 @@
 package tech.intellispaces.jaquarius.guide.n4;
 
+import tech.intellispaces.entity.exception.UnexpectedExceptions;
 import tech.intellispaces.jaquarius.exception.TraverseException;
 import tech.intellispaces.jaquarius.exception.TraverseExceptions;
 import tech.intellispaces.jaquarius.guide.GuideLogger;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.system.ObjectHandleWrapper;
-import tech.intellispaces.entity.exception.UnexpectedExceptions;
-import tech.intellispaces.java.reflection.method.MethodStatement;
 import tech.intellispaces.java.reflection.method.MethodParam;
+import tech.intellispaces.java.reflection.method.MethodStatement;
 
 import java.util.stream.Collectors;
 
@@ -50,7 +50,7 @@ abstract class ObjectGuide4<S extends ObjectHandleWrapper, R, Q1, Q2, Q3, Q4> im
   public R traverse(S source, Q1 qualifier1, Q2 qualifier2, Q3 qualifier3, Q4 qualifier4) throws TraverseException {
     try {
       GuideLogger.logCallGuide(guideMethod);
-      return (R) source.$innerHandle().getGuideAction(channelIndex).castToAction5().execute(
+      return (R) source.$objectHandleInstance().getGuideAction(channelIndex).castToAction5().execute(
           source, qualifier1, qualifier2, qualifier3, qualifier4
       );
     } catch (TraverseException e) {

@@ -1,5 +1,8 @@
 package tech.intellispaces.jaquarius.annotation.processor.domain;
 
+import tech.intellispaces.entity.text.StringFunctions;
+import tech.intellispaces.entity.type.Type;
+import tech.intellispaces.entity.type.Types;
 import tech.intellispaces.jaquarius.annotation.Channel;
 import tech.intellispaces.jaquarius.annotation.ObjectHandle;
 import tech.intellispaces.jaquarius.channel.Channel0;
@@ -14,9 +17,6 @@ import tech.intellispaces.jaquarius.object.ObjectHandleFunctions;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
-import tech.intellispaces.entity.text.StringFunctions;
-import tech.intellispaces.entity.type.Type;
-import tech.intellispaces.entity.type.Types;
 import tech.intellispaces.java.annotation.context.AnnotationProcessingContext;
 import tech.intellispaces.java.reflection.customtype.CustomType;
 import tech.intellispaces.java.reflection.method.MethodStatement;

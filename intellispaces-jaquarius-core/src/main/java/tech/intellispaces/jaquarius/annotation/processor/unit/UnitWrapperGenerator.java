@@ -1,5 +1,12 @@
 package tech.intellispaces.jaquarius.annotation.processor.unit;
 
+import tech.intellispaces.action.Action;
+import tech.intellispaces.action.Actions;
+import tech.intellispaces.action.functional.FunctionActions;
+import tech.intellispaces.action.runnable.RunnableAction;
+import tech.intellispaces.action.supplier.ResettableSupplierAction;
+import tech.intellispaces.action.text.StringActions;
+import tech.intellispaces.entity.exception.UnexpectedExceptions;
 import tech.intellispaces.jaquarius.annotation.AutoGuide;
 import tech.intellispaces.jaquarius.annotation.Inject;
 import tech.intellispaces.jaquarius.annotation.Ordinal;
@@ -26,13 +33,6 @@ import tech.intellispaces.jaquarius.system.projection.ProjectionDefinitionBasedO
 import tech.intellispaces.jaquarius.system.projection.ProjectionDefinitionBasedOnProviderClasses;
 import tech.intellispaces.jaquarius.system.projection.ProjectionFunctions;
 import tech.intellispaces.jaquarius.system.projection.ProjectionReferences;
-import tech.intellispaces.action.Action;
-import tech.intellispaces.action.Actions;
-import tech.intellispaces.action.functional.FunctionActions;
-import tech.intellispaces.action.runnable.RunnableAction;
-import tech.intellispaces.action.supplier.ResettableSupplierAction;
-import tech.intellispaces.action.text.StringActions;
-import tech.intellispaces.entity.exception.UnexpectedExceptions;
 import tech.intellispaces.java.annotation.context.AnnotationProcessingContext;
 import tech.intellispaces.java.reflection.customtype.CustomType;
 import tech.intellispaces.java.reflection.instance.AnnotationInstance;

@@ -37,13 +37,11 @@ public class {{$classSimpleName}}{{$typeParamsFull}} extends {{$sourceClassSimpl
 {{end}}
     );
 {{end}}
-{{when $guideActions.isNotEmpty()}}
-    this.$innerHandle.setGuideActions(
-{{for guideAction : $guideActions}}
-      {{$guideAction}}{{when $guideAction.isNotLast()}},{{end}}
-{{end}}
-    );
-{{end}}
+  }
+
+  @Override
+  public ObjectHandleInstance $objectHandleInstance() {
+    return this.$instance;
   }
 
   @Override
@@ -73,12 +71,12 @@ public class {{$classSimpleName}}{{$typeParamsFull}} extends {{$sourceClassSimpl
 
   @Override
   public <TD, TH> void addProjection(Class<TD> targetDomain, TH target) {
-    $innerHandle.addProjection(targetDomain, target);
+    $instance.addProjection(targetDomain, target);
   }
 
   @Override
   public <TD, TH> TH mapTo(Class<TD> targetDomain) {
-    return $innerHandle.mapTo(targetDomain);
+    return $instance.mapTo(targetDomain);
   }
 
   @Override
@@ -177,20 +175,20 @@ public class {{$classSimpleName}}{{$typeParamsFull}} extends {{$sourceClassSimpl
 
   private ObjectHandleInstance $registerObjectHandleInstance() {
     if ($TYPE == null) {
-      $registerObjectHandleType();
+      $TYPE = $registerObjectHandleType();
     }
-    return JaquariusEngines.current().registerObjectHandleInstance({{$classSimpleName}}.class, this, $TYPE);
+    return JaquariusEngines.current().registerObjectHandleInstance(this, $TYPE);
   }
 
-  private static void $registerObjectHandleType() {
-    $TYPE = JaquariusEngines.current().registerObjectHandleType(
+  private static ObjectHandleType $registerObjectHandleType() {
+    return JaquariusEngines.current().registerObjectHandleType(
         {{$classSimpleName}}.class,
         {{$sourceClassSimpleName}}.class{{when $objectHandleMethods.isNotEmpty()}},{{end}}
 {{for method : $objectHandleMethods}}
         objectHandleMethod({{$classSimpleName}}.class, "{{$method.get("name")}}"{{for param : $method.get("params")}}, {{$param}}.class{{end}})
             .purpose("{{$method.get("purpose")}}")
 {{when $method.get("ordinal").isVoid().invert()}}
-            .ordinal({{$method.get("ordinal")}})
+            .traverseOrdinal({{$method.get("ordinal")}})
 {{end}}
 {{when $method.get("channelClass").isVoid().invert()}}
             .channelClass({{$method.get("channelClass")}}.class)

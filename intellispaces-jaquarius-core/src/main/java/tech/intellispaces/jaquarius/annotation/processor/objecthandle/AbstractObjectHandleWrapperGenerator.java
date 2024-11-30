@@ -1,10 +1,18 @@
 package tech.intellispaces.jaquarius.annotation.processor.objecthandle;
 
+import tech.intellispaces.action.runnable.RunnableAction;
+import tech.intellispaces.action.text.StringActions;
+import tech.intellispaces.entity.exception.UnexpectedExceptions;
+import tech.intellispaces.entity.text.StringFunctions;
+import tech.intellispaces.entity.type.ClassFunctions;
+import tech.intellispaces.entity.type.ClassNameFunctions;
+import tech.intellispaces.entity.type.PrimitiveTypes;
 import tech.intellispaces.jaquarius.annotation.AutoGuide;
 import tech.intellispaces.jaquarius.annotation.Inject;
 import tech.intellispaces.jaquarius.annotation.processor.AbstractObjectHandleGenerator;
 import tech.intellispaces.jaquarius.annotation.processor.GuideProcessorFunctions;
 import tech.intellispaces.jaquarius.common.NameConventionFunctions;
+import tech.intellispaces.jaquarius.engine.descriptor.ObjectHandleMethodPurposes;
 import tech.intellispaces.jaquarius.exception.ConfigurationExceptions;
 import tech.intellispaces.jaquarius.guide.GuideFunctions;
 import tech.intellispaces.jaquarius.object.ObjectHandleFunctions;
@@ -15,19 +23,11 @@ import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
 import tech.intellispaces.jaquarius.system.Modules;
 import tech.intellispaces.jaquarius.system.ProjectionInjection;
-import tech.intellispaces.action.runnable.RunnableAction;
-import tech.intellispaces.action.text.StringActions;
-import tech.intellispaces.entity.exception.UnexpectedExceptions;
-import tech.intellispaces.entity.text.StringFunctions;
-import tech.intellispaces.entity.type.ClassFunctions;
-import tech.intellispaces.entity.type.ClassNameFunctions;
-import tech.intellispaces.entity.type.PrimitiveTypes;
 import tech.intellispaces.java.annotation.context.JavaArtifactContext;
 import tech.intellispaces.java.reflection.customtype.CustomType;
 import tech.intellispaces.java.reflection.method.MethodParam;
 import tech.intellispaces.java.reflection.method.MethodStatement;
 import tech.intellispaces.java.reflection.reference.CustomTypeReference;
-import tech.intellispaces.java.reflection.reference.CustomTypeReferences;
 import tech.intellispaces.java.reflection.reference.NamedReference;
 import tech.intellispaces.java.reflection.reference.TypeReference;
 
@@ -52,7 +52,6 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
   private final List<MethodStatement> domainMethods;
   protected final CustomType domainType;
   protected final List<Object> constructors = new ArrayList<>();
-  protected final List<String> guideActions = new ArrayList<>();
   protected final List<Map<String, Object>> objectHandleMethods = new ArrayList<>();
   protected final List<Map<String, String>> guideMethods = new ArrayList<>();
   protected final List<Map<String, Object>> injections = new ArrayList<>();
@@ -269,26 +268,21 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
       return;
     }
     if (NameConventionFunctions.isConversionMethod(domainMethod)) {
-      this.guideActions.add(buildConversionGuideAction(domainMethod));
-      this.objectHandleMethods.add(buildBaseMethodDescriptor(domainMethod, methodIndex, context));
+      this.objectHandleMethods.add(buildTraverseMethodDescriptor(domainMethod, methodIndex, context));
+      this.objectHandleMethods.add(buildConversionGuideMethodDescriptor(domainMethod, methodIndex, context));
       return;
     }
 
     List<MethodStatement> objectHandleMethods = annotatedType.actualMethods();
     MethodStatement guideMethod = findGuideMethod(domainMethod, objectHandleMethods, targetForm);
-    this.objectHandleMethods.add(buildBaseMethodDescriptor(domainMethod, methodIndex, context));
-    if (guideMethod == null || guideMethod.isAbstract()) {
-      this.guideActions.add("null");
-    } else {
-      this.guideActions.add(
-          GuideProcessorFunctions.buildGuideAction(getGeneratedClassCanonicalName(), guideMethod, context)
-      );
+    this.objectHandleMethods.add(buildTraverseMethodDescriptor(domainMethod, methodIndex, context));
+    if (guideMethod != null && !guideMethod.isAbstract()) {
       this.guideMethods.add(GuideProcessorFunctions.buildGuideActionMethod(guideMethod, context));
-      this.objectHandleMethods.add(buildGuideMethodDescriptor(guideMethod, context));
+      this.objectHandleMethods.add(buildGuideMethodDescriptor(guideMethod, methodIndex, context));
     }
   }
 
-  private Map<String, Object> buildBaseMethodDescriptor(
+  private Map<String, Object> buildTraverseMethodDescriptor(
       MethodStatement domainMethod, int ordinal, JavaArtifactContext context
   ) {
     var map = new HashMap<String, Object>();
@@ -299,7 +293,7 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
       paramClasses.add(buildGuideParamClassName(param.type(), context));
     }
     map.put("params", paramClasses);
-    map.put("purpose", "base");
+    map.put("purpose", ObjectHandleMethodPurposes.TraverseMethod.name());
     map.put("ordinal", ordinal);
     map.put("channelClass", context.addToImportAndGetSimpleName(NameConventionFunctions.getChannelClassCanonicalName(domainMethod)));
     map.put("traverseType", ChannelFunctions.getTraverseType(domainMethod).name());
@@ -308,7 +302,7 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
   }
 
   private Map<String, Object> buildGuideMethodDescriptor(
-      MethodStatement guidMethod, JavaArtifactContext context
+      MethodStatement guidMethod, int ordinal, JavaArtifactContext context
   ) {
     var map = new HashMap<String, Object>();
     map.put("name", ObjectHandleFunctions.buildObjectHandleGuideMethodName(guidMethod));
@@ -318,7 +312,24 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
       paramClasses.add(buildGuideParamClassName(param.type(), context));
     }
     map.put("params", paramClasses);
-    map.put("purpose", "guide");
+    map.put("purpose", ObjectHandleMethodPurposes.GuideMethod.name());
+    map.put("ordinal", ordinal);
+    return map;
+  }
+
+  private Map<String, Object> buildConversionGuideMethodDescriptor(
+      MethodStatement domainMethod, int ordinal, JavaArtifactContext context
+  ) {
+    var map = new HashMap<String, Object>();
+
+    CustomTypeReference parentType = domainMethod.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow();
+    String methodName = "_as" +
+        StringFunctions.capitalizeFirstLetter(StringFunctions.removeTailOrElseThrow(parentType.targetType().simpleName(), "Domain"));
+    map.put("name", methodName);
+
+    map.put("params", List.of());
+    map.put("purpose", ObjectHandleMethodPurposes.GuideMethod.name());
+    map.put("ordinal", ordinal);
     return map;
   }
 
@@ -329,23 +340,6 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
         false,
         context::addToImportAndGetSimpleName
     );
-  }
-
-  private String buildConversionGuideAction(MethodStatement method) {
-    CustomTypeReference parentType = method.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow();
-    CustomTypeReference rawParentType = CustomTypeReferences.get(parentType.targetType());
-
-    var sb = new StringBuilder();
-    sb.append("FunctionActions.ofFunction(");
-    sb.append(context.addToImportAndGetSimpleName(getGeneratedClassCanonicalName()));
-    sb.append("::_as");
-    sb.append(StringFunctions.capitalizeFirstLetter(StringFunctions.removeTailOrElseThrow(parentType.targetType().simpleName(), "Domain")));
-    sb.append(", ");
-    sb.append(getObjectHandleDeclaration(rawParentType, getObjectHandleType()));
-    sb.append(".class, ");
-    sb.append(context.addToImportAndGetSimpleName(getGeneratedClassCanonicalName()));
-    sb.append(".class)");
-    return sb.toString();
   }
 
   protected Map<String, String> generateMethod(

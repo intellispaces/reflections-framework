@@ -1,14 +1,14 @@
 package tech.intellispaces.jaquarius.system.projection;
 
+import tech.intellispaces.entity.exception.UnexpectedExceptions;
 import tech.intellispaces.jaquarius.annotation.Properties;
 import tech.intellispaces.jaquarius.object.DataFunctions;
-import tech.intellispaces.jaquarius.object.ObjectHandleFunctions;
 import tech.intellispaces.jaquarius.object.ObjectHandleConstants;
+import tech.intellispaces.jaquarius.object.ObjectHandleFunctions;
 import tech.intellispaces.jaquarius.space.SpaceConstants;
 import tech.intellispaces.jaquarius.system.Module;
 import tech.intellispaces.jaquarius.system.ModulePropertiesFunctions;
 import tech.intellispaces.jaquarius.system.Modules;
-import tech.intellispaces.entity.exception.UnexpectedExceptions;
 
 import java.lang.reflect.Method;
 

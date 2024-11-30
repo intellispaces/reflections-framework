@@ -1,13 +1,13 @@
 package tech.intellispaces.jaquarius.system.kernel;
 
-import tech.intellispaces.jaquarius.system.Module;
-import tech.intellispaces.jaquarius.system.Unit;
-import tech.intellispaces.jaquarius.traverse.plan.TraverseAnalyzer;
-import tech.intellispaces.jaquarius.traverse.plan.TraverseExecutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tech.intellispaces.action.cache.CachedSupplierActions;
 import tech.intellispaces.action.supplier.SupplierAction;
+import tech.intellispaces.jaquarius.system.Module;
+import tech.intellispaces.jaquarius.system.Unit;
+import tech.intellispaces.jaquarius.traverse.plan.TraverseAnalyzer;
+import tech.intellispaces.jaquarius.traverse.plan.TraverseExecutor;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;

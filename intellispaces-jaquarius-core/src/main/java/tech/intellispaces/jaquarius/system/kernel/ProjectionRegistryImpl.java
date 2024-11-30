@@ -1,5 +1,9 @@
 package tech.intellispaces.jaquarius.system.kernel;
 
+import tech.intellispaces.action.Action;
+import tech.intellispaces.entity.exception.ExceptionFunctions;
+import tech.intellispaces.entity.exception.UnexpectedExceptions;
+import tech.intellispaces.entity.type.ClassFunctions;
 import tech.intellispaces.jaquarius.annotation.Projection;
 import tech.intellispaces.jaquarius.exception.ConfigurationException;
 import tech.intellispaces.jaquarius.exception.ConfigurationExceptions;
@@ -15,10 +19,6 @@ import tech.intellispaces.jaquarius.system.projection.ModuleProjectionImpl;
 import tech.intellispaces.jaquarius.system.projection.ProjectionDefinitionBasedOnMethodAction;
 import tech.intellispaces.jaquarius.system.projection.ProjectionDefinitionBasedOnProviderClass;
 import tech.intellispaces.jaquarius.system.projection.ProjectionFunctions;
-import tech.intellispaces.action.Action;
-import tech.intellispaces.entity.exception.ExceptionFunctions;
-import tech.intellispaces.entity.exception.UnexpectedExceptions;
-import tech.intellispaces.entity.type.ClassFunctions;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;

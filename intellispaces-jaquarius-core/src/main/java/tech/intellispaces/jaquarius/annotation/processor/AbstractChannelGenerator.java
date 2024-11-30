@@ -1,5 +1,7 @@
 package tech.intellispaces.jaquarius.annotation.processor;
 
+import tech.intellispaces.action.runnable.RunnableAction;
+import tech.intellispaces.action.text.StringActions;
 import tech.intellispaces.jaquarius.annotation.Channel;
 import tech.intellispaces.jaquarius.channel.MappingChannel;
 import tech.intellispaces.jaquarius.channel.MappingOfMovingChannel;
@@ -7,8 +9,6 @@ import tech.intellispaces.jaquarius.channel.MovingChannel;
 import tech.intellispaces.jaquarius.common.NameConventionFunctions;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.traverse.TraverseType;
-import tech.intellispaces.action.runnable.RunnableAction;
-import tech.intellispaces.action.text.StringActions;
 import tech.intellispaces.java.reflection.customtype.CustomType;
 import tech.intellispaces.java.reflection.method.MethodStatement;
 import tech.intellispaces.java.reflection.reference.TypeReference;

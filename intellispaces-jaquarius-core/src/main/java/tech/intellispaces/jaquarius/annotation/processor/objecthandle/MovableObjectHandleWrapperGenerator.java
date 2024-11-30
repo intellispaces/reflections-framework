@@ -1,5 +1,10 @@
 package tech.intellispaces.jaquarius.annotation.processor.objecthandle;
 
+import tech.intellispaces.action.Actions;
+import tech.intellispaces.action.functional.FunctionActions;
+import tech.intellispaces.entity.exception.NotImplementedExceptions;
+import tech.intellispaces.entity.type.PrimitiveFunctions;
+import tech.intellispaces.entity.type.Type;
 import tech.intellispaces.jaquarius.annotation.Movable;
 import tech.intellispaces.jaquarius.annotation.Ordinal;
 import tech.intellispaces.jaquarius.annotation.Unmovable;
@@ -27,11 +32,6 @@ import tech.intellispaces.jaquarius.system.injection.GuideInjections;
 import tech.intellispaces.jaquarius.system.kernel.InnerObjectHandle;
 import tech.intellispaces.jaquarius.system.kernel.KernelFunctions;
 import tech.intellispaces.jaquarius.traverse.TraverseType;
-import tech.intellispaces.action.Actions;
-import tech.intellispaces.action.functional.FunctionActions;
-import tech.intellispaces.entity.exception.NotImplementedExceptions;
-import tech.intellispaces.entity.type.PrimitiveFunctions;
-import tech.intellispaces.entity.type.Type;
 import tech.intellispaces.jaquarius.traverse.TraverseTypes;
 import tech.intellispaces.java.annotation.context.AnnotationProcessingContext;
 import tech.intellispaces.java.reflection.customtype.CustomType;
@@ -80,7 +80,6 @@ public class MovableObjectHandleWrapperGenerator extends AbstractObjectHandleWra
     vars.put("constructors", constructors);
     vars.put("importedClasses", context.getImports());
     vars.put("objectHandleMethods", objectHandleMethods);
-    vars.put("guideActions", guideActions);
     vars.put("guideActionMethods", guideMethods);
     vars.put("domainMethods", methods);
     vars.put("injections", injections);

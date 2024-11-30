@@ -1,13 +1,13 @@
 package tech.intellispaces.jaquarius.guide.n1;
 
+import tech.intellispaces.entity.function.QuadriFunction;
+import tech.intellispaces.entity.function.TriFunction;
 import tech.intellispaces.jaquarius.exception.TraverseException;
 import tech.intellispaces.jaquarius.guide.MapperOfMoving;
 import tech.intellispaces.jaquarius.guide.n2.MapperOfMoving2;
 import tech.intellispaces.jaquarius.guide.n3.MapperOfMoving3;
 import tech.intellispaces.jaquarius.guide.n4.MapperOfMoving4;
 import tech.intellispaces.jaquarius.guide.n5.MapperOfMoving5;
-import tech.intellispaces.entity.function.QuadriFunction;
-import tech.intellispaces.entity.function.TriFunction;
 
 import java.util.function.BiFunction;
 

@@ -1,15 +1,15 @@
 package tech.intellispaces.jaquarius.annotation.processor.domain;
 
-import tech.intellispaces.jaquarius.annotation.processor.AbstractChannelGenerator;
-import tech.intellispaces.jaquarius.common.NameConventionFunctions;
 import tech.intellispaces.action.runnable.RunnableAction;
 import tech.intellispaces.action.text.StringActions;
+import tech.intellispaces.jaquarius.annotation.processor.AbstractChannelGenerator;
+import tech.intellispaces.jaquarius.common.NameConventionFunctions;
 import tech.intellispaces.java.annotation.context.AnnotationProcessingContext;
 import tech.intellispaces.java.reflection.customtype.CustomType;
+import tech.intellispaces.java.reflection.method.MethodParam;
 import tech.intellispaces.java.reflection.method.MethodStatement;
 import tech.intellispaces.java.reflection.reference.NamedReference;
 import tech.intellispaces.java.reflection.reference.TypeReference;
-import tech.intellispaces.java.reflection.method.MethodParam;
 
 import java.util.List;
 

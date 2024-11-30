@@ -6,7 +6,7 @@ import tech.intellispaces.jaquarius.traverse.TraverseType;
 import java.util.List;
 
 /**
- * Object handle method descriptor.
+ * Object handle wrapper method descriptor.
  */
 public interface ObjectHandleMethod {
 
@@ -26,9 +26,9 @@ public interface ObjectHandleMethod {
   String purpose();
 
   /**
-   * The method ordinal.
+   * The traverse method ordinal.
    */
-  int ordinal();
+  int traverseOrdinal();
 
   /**
    * Related action.

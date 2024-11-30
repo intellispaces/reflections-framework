@@ -1,13 +1,13 @@
 package tech.intellispaces.jaquarius.validation;
 
+import tech.intellispaces.entity.text.StringFunctions;
+import tech.intellispaces.entity.type.ClassFunctions;
 import tech.intellispaces.jaquarius.annotation.Channel;
 import tech.intellispaces.jaquarius.annotation.Domain;
 import tech.intellispaces.jaquarius.annotation.Ontology;
 import tech.intellispaces.jaquarius.common.NameConventionFunctions;
 import tech.intellispaces.jaquarius.exception.JaquariusExceptions;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
-import tech.intellispaces.entity.text.StringFunctions;
-import tech.intellispaces.entity.type.ClassFunctions;
 import tech.intellispaces.java.annotation.validator.AnnotatedTypeValidator;
 import tech.intellispaces.java.reflection.customtype.CustomType;
 import tech.intellispaces.java.reflection.method.MethodParam;

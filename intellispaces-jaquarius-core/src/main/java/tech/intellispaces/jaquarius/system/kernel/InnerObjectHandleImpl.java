@@ -1,10 +1,10 @@
 package tech.intellispaces.jaquarius.system.kernel;
 
-import tech.intellispaces.jaquarius.system.Injection;
 import tech.intellispaces.action.Action;
 import tech.intellispaces.action.Actions;
 import tech.intellispaces.action.supplier.ResettableSupplierAction;
 import tech.intellispaces.entity.exception.UnexpectedExceptions;
+import tech.intellispaces.jaquarius.system.Injection;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -26,7 +26,7 @@ class InnerObjectHandleImpl implements InnerObjectHandle {
   public Action getGuideAction(int index) {
     Action action = guideActions.get(index);
     if (action == null) {
-      throw UnexpectedExceptions.withMessage("Guide action os not defined");
+      throw UnexpectedExceptions.withMessage("Guide action is not defined");
     }
     return action;
   }

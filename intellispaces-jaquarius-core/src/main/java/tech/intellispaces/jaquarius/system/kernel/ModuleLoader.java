@@ -1,9 +1,9 @@
 package tech.intellispaces.jaquarius.system.kernel;
 
-import tech.intellispaces.jaquarius.system.Module;
-import tech.intellispaces.jaquarius.system.Modules;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import tech.intellispaces.jaquarius.system.Module;
+import tech.intellispaces.jaquarius.system.Modules;
 
 import java.util.List;
 

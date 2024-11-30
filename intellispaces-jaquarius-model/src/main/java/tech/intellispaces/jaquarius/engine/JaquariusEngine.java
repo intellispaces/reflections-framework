@@ -40,13 +40,10 @@ public interface JaquariusEngine {
   /**
    * Registers object handle.
    *
-   * @param objectHandleWrapperClass the object handle wrapper class.
-   * @param objectHandle the object handle.
+   * @param objectHandleWrapper the object handle wrapper.
    * @param type the object handle type.
    * @return the registered object handle instance.
    * @param <W> the object handle wrapper type.
    */
-  <W> ObjectHandleInstance registerObjectHandleInstance(
-      Class<W> objectHandleWrapperClass, W objectHandle, ObjectHandleType type
-  );
+  <W> ObjectHandleInstance registerObjectHandleInstance(W objectHandleWrapper, ObjectHandleType type);
 }

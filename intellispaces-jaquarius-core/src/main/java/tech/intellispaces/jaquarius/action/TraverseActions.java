@@ -1,10 +1,5 @@
 package tech.intellispaces.jaquarius.action;
 
-import tech.intellispaces.jaquarius.channel.Channel0;
-import tech.intellispaces.jaquarius.channel.Channel1;
-import tech.intellispaces.jaquarius.channel.Channel2;
-import tech.intellispaces.jaquarius.channel.Channel3;
-import tech.intellispaces.jaquarius.channel.Channel4;
 import tech.intellispaces.action.Action1;
 import tech.intellispaces.action.Action2;
 import tech.intellispaces.action.Action3;
@@ -12,6 +7,11 @@ import tech.intellispaces.action.Action4;
 import tech.intellispaces.action.Action5;
 import tech.intellispaces.entity.type.Type;
 import tech.intellispaces.entity.type.Types;
+import tech.intellispaces.jaquarius.channel.Channel0;
+import tech.intellispaces.jaquarius.channel.Channel1;
+import tech.intellispaces.jaquarius.channel.Channel2;
+import tech.intellispaces.jaquarius.channel.Channel3;
+import tech.intellispaces.jaquarius.channel.Channel4;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
 

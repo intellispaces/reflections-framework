@@ -1,13 +1,13 @@
 package tech.intellispaces.jaquarius.system.kernel;
 
+import tech.intellispaces.action.Action;
+import tech.intellispaces.action.Actions;
+import tech.intellispaces.action.supplier.ResettableSupplierAction;
 import tech.intellispaces.jaquarius.system.Injection;
 import tech.intellispaces.jaquarius.system.UnitGuide;
 import tech.intellispaces.jaquarius.system.UnitProjectionDefinition;
 import tech.intellispaces.jaquarius.system.UnitWrapper;
 import tech.intellispaces.jaquarius.system.action.InvokeUnitMethodAction;
-import tech.intellispaces.action.Action;
-import tech.intellispaces.action.Actions;
-import tech.intellispaces.action.supplier.ResettableSupplierAction;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;

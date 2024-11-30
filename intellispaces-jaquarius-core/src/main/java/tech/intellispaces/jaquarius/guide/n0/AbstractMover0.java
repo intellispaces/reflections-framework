@@ -1,10 +1,10 @@
 package tech.intellispaces.jaquarius.guide.n0;
 
+import tech.intellispaces.entity.exception.WrappedExceptions;
 import tech.intellispaces.jaquarius.exception.TraverseException;
 import tech.intellispaces.jaquarius.exception.TraverseExceptions;
 import tech.intellispaces.jaquarius.guide.GuideKind;
 import tech.intellispaces.jaquarius.guide.GuideKinds;
-import tech.intellispaces.entity.exception.WrappedExceptions;
 
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;

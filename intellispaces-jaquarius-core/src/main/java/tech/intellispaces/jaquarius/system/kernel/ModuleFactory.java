@@ -1,5 +1,9 @@
 package tech.intellispaces.jaquarius.system.kernel;
 
+import tech.intellispaces.action.Action;
+import tech.intellispaces.entity.exception.NotImplementedExceptions;
+import tech.intellispaces.entity.exception.UnexpectedExceptions;
+import tech.intellispaces.entity.stream.Streams;
 import tech.intellispaces.jaquarius.annotation.Configuration;
 import tech.intellispaces.jaquarius.annotation.Guide;
 import tech.intellispaces.jaquarius.annotation.Module;
@@ -17,10 +21,6 @@ import tech.intellispaces.jaquarius.system.UnitWrapper;
 import tech.intellispaces.jaquarius.system.action.InvokeUnitMethodAction;
 import tech.intellispaces.jaquarius.system.empty.EmptyModule;
 import tech.intellispaces.jaquarius.system.empty.EmptyModuleWrapper;
-import tech.intellispaces.action.Action;
-import tech.intellispaces.entity.exception.NotImplementedExceptions;
-import tech.intellispaces.entity.exception.UnexpectedExceptions;
-import tech.intellispaces.entity.stream.Streams;
 import tech.intellispaces.java.reflection.method.MethodStatement;
 
 import java.lang.reflect.Method;

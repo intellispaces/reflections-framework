@@ -1,9 +1,9 @@
 package tech.intellispaces.jaquarius.system.injection;
 
+import tech.intellispaces.entity.exception.UnexpectedExceptions;
 import tech.intellispaces.jaquarius.system.AutoGuideInjection;
 import tech.intellispaces.jaquarius.system.InjectionKind;
 import tech.intellispaces.jaquarius.system.kernel.KernelFunctions;
-import tech.intellispaces.entity.exception.UnexpectedExceptions;
 
 class AutoGuideInjectionImpl implements AutoGuideInjection {
   private final Class<?> unitClass;

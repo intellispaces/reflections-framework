@@ -1,11 +1,11 @@
 package tech.intellispaces.jaquarius.action;
 
+import tech.intellispaces.action.AbstractAction5;
+import tech.intellispaces.entity.type.Type;
 import tech.intellispaces.jaquarius.channel.Channel4;
 import tech.intellispaces.jaquarius.guide.n4.MapperOfMoving4;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.system.Modules;
-import tech.intellispaces.action.AbstractAction5;
-import tech.intellispaces.entity.type.Type;
 
 class MapOfMovingThruChannel4Action<T, S, Q1, Q2, Q3, Q4> extends AbstractAction5<T, S, Q1, Q2, Q3, Q4> {
   private final Type<S> sourceType;

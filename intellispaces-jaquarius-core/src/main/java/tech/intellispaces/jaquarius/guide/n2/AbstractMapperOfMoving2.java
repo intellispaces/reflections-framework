@@ -1,9 +1,9 @@
 package tech.intellispaces.jaquarius.guide.n2;
 
-import tech.intellispaces.jaquarius.guide.GuideKind;
-import tech.intellispaces.jaquarius.guide.GuideKinds;
 import tech.intellispaces.entity.function.QuadriFunction;
 import tech.intellispaces.entity.function.TriFunction;
+import tech.intellispaces.jaquarius.guide.GuideKind;
+import tech.intellispaces.jaquarius.guide.GuideKinds;
 
 public interface AbstractMapperOfMoving2<S, T, Q1, Q2> extends MapperOfMoving2<S, T, Q1, Q2> {
 

@@ -15,7 +15,7 @@ public class ObjectHandleMethodBuilder4<H, P1, P2, P3> {
 
   private Action action;
   private String purpose;
-  private int ordinal;
+  private int traverseOrdinal;
   private Class<?> channelClass;
   private TraverseType traverseType;
 
@@ -37,8 +37,8 @@ public class ObjectHandleMethodBuilder4<H, P1, P2, P3> {
     return this;
   }
 
-  public ObjectHandleMethodBuilder4<H, P1, P2, P3> ordinal(int ordinal) {
-    this.ordinal = ordinal;
+  public ObjectHandleMethodBuilder4<H, P1, P2, P3> traverseOrdinal(int ordinal) {
+    this.traverseOrdinal = ordinal;
     return this;
   }
 
@@ -62,7 +62,7 @@ public class ObjectHandleMethodBuilder4<H, P1, P2, P3> {
         name,
         List.of(paramClass1, paramClass2, paramClass3),
         purpose,
-        ordinal,
+        traverseOrdinal,
         action,
         channelClass,
         traverseType

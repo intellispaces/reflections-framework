@@ -1,9 +1,9 @@
 package tech.intellispaces.jaquarius.space.domain;
 
-import tech.intellispaces.jaquarius.annotation.Domain;
-import tech.intellispaces.jaquarius.common.NameConventionFunctions;
 import tech.intellispaces.entity.exception.UnexpectedExceptions;
 import tech.intellispaces.entity.type.ClassFunctions;
+import tech.intellispaces.jaquarius.annotation.Domain;
+import tech.intellispaces.jaquarius.common.NameConventionFunctions;
 import tech.intellispaces.java.reflection.JavaStatements;
 import tech.intellispaces.java.reflection.customtype.CustomType;
 import tech.intellispaces.java.reflection.reference.CustomTypeReference;

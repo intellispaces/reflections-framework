@@ -1,5 +1,8 @@
 package tech.intellispaces.jaquarius.annotation.processor;
 
+import tech.intellispaces.entity.collection.ArraysFunctions;
+import tech.intellispaces.entity.exception.UnexpectedExceptions;
+import tech.intellispaces.entity.type.ClassFunctions;
 import tech.intellispaces.jaquarius.annotation.AnnotationProcessor;
 import tech.intellispaces.jaquarius.annotation.Channel;
 import tech.intellispaces.jaquarius.annotation.Data;
@@ -32,9 +35,6 @@ import tech.intellispaces.jaquarius.system.ModuleFunctions;
 import tech.intellispaces.jaquarius.system.UnitFunctions;
 import tech.intellispaces.jaquarius.traverse.TraverseType;
 import tech.intellispaces.jaquarius.traverse.TraverseTypes;
-import tech.intellispaces.entity.collection.ArraysFunctions;
-import tech.intellispaces.entity.exception.UnexpectedExceptions;
-import tech.intellispaces.entity.type.ClassFunctions;
 import tech.intellispaces.java.annotation.AnnotatedTypeProcessor;
 import tech.intellispaces.java.annotation.generator.Generator;
 import tech.intellispaces.java.annotation.validator.AnnotatedTypeValidator;
@@ -43,11 +43,11 @@ import tech.intellispaces.java.reflection.JavaStatements;
 import tech.intellispaces.java.reflection.customtype.AnnotationFunctions;
 import tech.intellispaces.java.reflection.customtype.CustomType;
 import tech.intellispaces.java.reflection.instance.AnnotationInstance;
+import tech.intellispaces.java.reflection.instance.ClassInstance;
+import tech.intellispaces.java.reflection.instance.Instance;
 import tech.intellispaces.java.reflection.method.MethodStatement;
 import tech.intellispaces.java.reflection.reference.CustomTypeReference;
 import tech.intellispaces.java.reflection.reference.TypeReference;
-import tech.intellispaces.java.reflection.instance.Instance;
-import tech.intellispaces.java.reflection.instance.ClassInstance;
 
 import javax.annotation.processing.RoundEnvironment;
 import java.util.ArrayList;

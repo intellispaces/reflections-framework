@@ -4,10 +4,10 @@ import com.google.testing.compile.Compilation;
 import com.google.testing.compile.CompilationSubject;
 import com.google.testing.compile.Compiler;
 import com.google.testing.compile.JavaFileObjects;
-import tech.intellispaces.jaquarius.exception.JaquariusException;
-import tech.intellispaces.jaquarius.validation.ModuleValidator;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import tech.intellispaces.jaquarius.exception.JaquariusException;
+import tech.intellispaces.jaquarius.validation.ModuleValidator;
 import tech.intellispaces.java.reflection.customtype.CustomType;
 
 import javax.tools.JavaFileObject;

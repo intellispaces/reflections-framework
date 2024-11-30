@@ -1,5 +1,6 @@
 package tech.intellispaces.jaquarius.system;
 
+import tech.intellispaces.entity.type.Type;
 import tech.intellispaces.jaquarius.channel.Channel0;
 import tech.intellispaces.jaquarius.channel.Channel1;
 import tech.intellispaces.jaquarius.channel.Channel2;
@@ -20,7 +21,6 @@ import tech.intellispaces.jaquarius.guide.n3.Mapper3;
 import tech.intellispaces.jaquarius.guide.n3.MapperOfMoving3;
 import tech.intellispaces.jaquarius.guide.n3.Mover3;
 import tech.intellispaces.jaquarius.guide.n4.MapperOfMoving4;
-import tech.intellispaces.entity.type.Type;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 
 /**

@@ -1,5 +1,7 @@
 package tech.intellispaces.jaquarius.system;
 
+import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.Test;
 import tech.intellispaces.jaquarius.exception.ConfigurationException;
 import tech.intellispaces.jaquarius.samples.system.EmptyModule;
 import tech.intellispaces.jaquarius.samples.system.EmptyUnit;
@@ -7,8 +9,6 @@ import tech.intellispaces.jaquarius.system.injection.InjectionKinds;
 import tech.intellispaces.jaquarius.system.kernel.KernelModule;
 import tech.intellispaces.jaquarius.system.kernel.KernelUnit;
 import tech.intellispaces.jaquarius.system.kernel.ModuleValidator;
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Optional;

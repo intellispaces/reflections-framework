@@ -1,10 +1,5 @@
 package tech.intellispaces.jaquarius.annotation.processor.guide;
 
-import tech.intellispaces.jaquarius.action.TraverseActions;
-import tech.intellispaces.jaquarius.annotation.processor.AbstractGenerator;
-import tech.intellispaces.jaquarius.annotation.processor.GuideProcessorFunctions;
-import tech.intellispaces.jaquarius.common.NameConventionFunctions;
-import tech.intellispaces.jaquarius.guide.GuideFunctions;
 import tech.intellispaces.action.Action;
 import tech.intellispaces.action.cache.CachedSupplierActions;
 import tech.intellispaces.action.delegate.DelegateActions;
@@ -13,6 +8,11 @@ import tech.intellispaces.action.text.StringActions;
 import tech.intellispaces.entity.exception.NotImplementedExceptions;
 import tech.intellispaces.entity.text.StringFunctions;
 import tech.intellispaces.entity.type.Types;
+import tech.intellispaces.jaquarius.action.TraverseActions;
+import tech.intellispaces.jaquarius.annotation.processor.AbstractGenerator;
+import tech.intellispaces.jaquarius.annotation.processor.GuideProcessorFunctions;
+import tech.intellispaces.jaquarius.common.NameConventionFunctions;
+import tech.intellispaces.jaquarius.guide.GuideFunctions;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
 import tech.intellispaces.java.annotation.context.AnnotationProcessingContext;

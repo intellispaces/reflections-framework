@@ -120,7 +120,7 @@ class ModuleImpl implements Module {
   @Override
   public <S, T> Mapper0<S, T> autoMapperThruChannel0(Type<S> sourceType, String cid, ObjectReferenceForm targetForm) {
     TraversePlan traversePlan = kernelModule.traverseAnalyzer().buildMapObjectHandleThruChannel0Plan(
-        sourceType.baseClass(), cid, targetForm
+        sourceType.asClassType().baseClass(), cid, targetForm
     );
     return new AutoMapper0<>(cid, traversePlan, targetForm, kernelModule.traverseExecutor());
   }
@@ -128,7 +128,7 @@ class ModuleImpl implements Module {
   @Override
   public <S, T, Q> Mapper1<S, T, Q> autoMapperThruChannel1(Type<S> sourceType, String cid, ObjectReferenceForm targetForm) {
     TraversePlan traversePlan = kernelModule.traverseAnalyzer().buildMapObjectHandleThruChannel1Plan(
-        sourceType.baseClass(), cid, targetForm
+        sourceType.asClassType().baseClass(), cid, targetForm
     );
     return new AutoMapper1<>(cid, traversePlan, targetForm, kernelModule.traverseExecutor());
   }
@@ -136,7 +136,7 @@ class ModuleImpl implements Module {
   @Override
   public <S, T, Q1, Q2> Mapper2<S, T, Q1, Q2> autoMapperThruChannel2(Type<S> sourceType, String cid, ObjectReferenceForm targetForm) {
     TraversePlan traversePlan = kernelModule.traverseAnalyzer().buildMapObjectHandleThruChannel2Plan(
-        sourceType.baseClass(), cid, targetForm
+        sourceType.asClassType().baseClass(), cid, targetForm
     );
     return new AutoMapper2<>(cid, traversePlan, targetForm, kernelModule.traverseExecutor());
   }
@@ -144,7 +144,7 @@ class ModuleImpl implements Module {
   @Override
   public <S, T, Q1, Q2, Q3> Mapper3<S, T, Q1, Q2, Q3> autoMapperThruChannel3(Type<S> sourceType, String cid, ObjectReferenceForm targetForm) {
     TraversePlan traversePlan = kernelModule.traverseAnalyzer().buildMapObjectHandleThruChannel3Plan(
-        sourceType.baseClass(), cid, targetForm
+        sourceType.asClassType().baseClass(), cid, targetForm
     );
     return new AutoMapper3<>(cid, traversePlan, targetForm, kernelModule.traverseExecutor());
   }
@@ -152,7 +152,7 @@ class ModuleImpl implements Module {
   @Override
   public <S> Mover0<S> autoMoverThruChannel0(Type<S> sourceType, String cid, ObjectReferenceForm targetForm) {
     TraversePlan traversePlan = kernelModule.traverseAnalyzer().buildMoveObjectHandleThruChannel0Plan(
-        sourceType.baseClass(), cid, targetForm
+        sourceType.asClassType().baseClass(), cid, targetForm
     );
     return new AutoMover0<>(cid, traversePlan, targetForm, kernelModule.traverseExecutor());
   }
@@ -165,7 +165,7 @@ class ModuleImpl implements Module {
   @Override
   public <S, Q> Mover1<S, Q> autoMoverThruChannel1(Type<S> sourceType, String cid, ObjectReferenceForm targetForm) {
     TraversePlan traversePlan = kernelModule.traverseAnalyzer().buildMoveObjectHandleThruChannel1Plan(
-        sourceType.baseClass(), cid, targetForm
+        sourceType.asClassType().baseClass(), cid, targetForm
     );
     return new AutoMover1<>(cid, traversePlan, targetForm, kernelModule.traverseExecutor());
   }
@@ -173,7 +173,7 @@ class ModuleImpl implements Module {
   @Override
   public <S, Q1, Q2> Mover2<S, Q1, Q2> autoMoverThruChannel2(Type<S> sourceType, String cid, ObjectReferenceForm targetForm) {
     TraversePlan traversePlan = kernelModule.traverseAnalyzer().buildMoveObjectHandleThruChannel2Plan(
-        sourceType.baseClass(), cid, targetForm
+        sourceType.asClassType().baseClass(), cid, targetForm
     );
     return new AutoMover2<>(cid, traversePlan, targetForm, kernelModule.traverseExecutor());
   }
@@ -181,7 +181,7 @@ class ModuleImpl implements Module {
   @Override
   public <S, Q1, Q2, Q3> Mover3<S, Q1, Q2, Q3> autoMoverThruChannel3(Type<S> sourceType, String cid, ObjectReferenceForm targetForm) {
     TraversePlan traversePlan = kernelModule.traverseAnalyzer().buildMoveObjectHandleThruChannel3Plan(
-        sourceType.baseClass(), cid, targetForm
+        sourceType.asClassType().baseClass(), cid, targetForm
     );
     return new AutoMover3<>(cid, traversePlan, targetForm, kernelModule.traverseExecutor());
   }
@@ -189,7 +189,7 @@ class ModuleImpl implements Module {
   @Override
   public <S, T> MapperOfMoving0<S, T> autoMapperOfMovingThruChannel0(Type<S> sourceType, String cid, ObjectReferenceForm targetForm) {
     TraversePlan traversePlan = kernelModule.traverseAnalyzer().buildMapOfMovingObjectHandleThruChannel0Plan(
-        sourceType.baseClass(), cid, targetForm
+        sourceType.asClassType().baseClass(), cid, targetForm
     );
     return new AutoMapperOfMoving0<>(cid, traversePlan, targetForm, kernelModule.traverseExecutor());
   }
@@ -197,7 +197,7 @@ class ModuleImpl implements Module {
   @Override
   public <S, T, Q> MapperOfMoving1<S, T, Q> autoMapperOfMovingThruChannel1(Type<S> sourceType, String cid, ObjectReferenceForm targetForm) {
     TraversePlan traversePlan = kernelModule.traverseAnalyzer().buildMapOfMovingObjectHandleThruChannel1Plan(
-        sourceType.baseClass(), cid, targetForm
+        sourceType.asClassType().baseClass(), cid, targetForm
     );
     return new AutoMapperOfMoving1<>(cid, traversePlan, targetForm, kernelModule.traverseExecutor());
   }
@@ -205,7 +205,7 @@ class ModuleImpl implements Module {
   @Override
   public <S, T, Q1, Q2> MapperOfMoving2<S, T, Q1, Q2> autoMapperOfMovingThruChannel2(Type<S> sourceType, String cid, ObjectReferenceForm targetForm) {
     TraversePlan traversePlan = kernelModule.traverseAnalyzer().buildMapOfMovingObjectHandleThruChannel2Plan(
-        sourceType.baseClass(), cid, targetForm
+        sourceType.asClassType().baseClass(), cid, targetForm
     );
     return new AutoMapperOfMoving2<>(cid, traversePlan, targetForm, kernelModule.traverseExecutor());
   }
@@ -215,7 +215,7 @@ class ModuleImpl implements Module {
       Type<S> sourceType, String cid, ObjectReferenceForm targetForm
   ) {
     TraversePlan traversePlan = kernelModule.traverseAnalyzer().buildMapOfMovingObjectHandleThruChannel3Plan(
-        sourceType.baseClass(), cid, targetForm
+        sourceType.asClassType().baseClass(), cid, targetForm
     );
     return new AutoMapperOfMoving3<>(cid, traversePlan, targetForm, kernelModule.traverseExecutor());
   }
@@ -225,7 +225,7 @@ class ModuleImpl implements Module {
       Type<S> sourceType, String cid, ObjectReferenceForm targetForm
   ) {
     TraversePlan traversePlan = kernelModule.traverseAnalyzer().buildMapOfMovingObjectHandleThruChannel4Plan(
-        sourceType.baseClass(), cid, targetForm
+        sourceType.asClassType().baseClass(), cid, targetForm
     );
     return new AutoMapperOfMoving4<>(cid, traversePlan, targetForm, kernelModule.traverseExecutor());
   }

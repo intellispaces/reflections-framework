@@ -2,9 +2,9 @@ package tech.intellispaces.jaquarius.annotation.processor.objecthandle;
 
 import tech.intellispaces.action.Actions;
 import tech.intellispaces.action.functional.FunctionActions;
-import tech.intellispaces.entity.exception.NotImplementedExceptions;
-import tech.intellispaces.entity.type.PrimitiveFunctions;
-import tech.intellispaces.entity.type.Type;
+import tech.intellispaces.general.exception.NotImplementedExceptions;
+import tech.intellispaces.general.type.PrimitiveFunctions;
+import tech.intellispaces.general.type.Type;
 import tech.intellispaces.jaquarius.annotation.Movable;
 import tech.intellispaces.jaquarius.annotation.Ordinal;
 import tech.intellispaces.jaquarius.annotation.Unmovable;

@@ -2,11 +2,11 @@ package tech.intellispaces.jaquarius.annotation.processor.objecthandle;
 
 import tech.intellispaces.action.runnable.RunnableAction;
 import tech.intellispaces.action.text.StringActions;
-import tech.intellispaces.entity.exception.UnexpectedExceptions;
-import tech.intellispaces.entity.text.StringFunctions;
-import tech.intellispaces.entity.type.ClassFunctions;
-import tech.intellispaces.entity.type.ClassNameFunctions;
-import tech.intellispaces.entity.type.PrimitiveTypes;
+import tech.intellispaces.general.exception.UnexpectedExceptions;
+import tech.intellispaces.general.text.StringFunctions;
+import tech.intellispaces.general.type.ClassFunctions;
+import tech.intellispaces.general.type.ClassNameFunctions;
+import tech.intellispaces.general.type.PrimitiveTypes;
 import tech.intellispaces.jaquarius.annotation.AutoGuide;
 import tech.intellispaces.jaquarius.annotation.Inject;
 import tech.intellispaces.jaquarius.annotation.processor.AbstractObjectHandleGenerator;
@@ -440,7 +440,7 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
     } else if (targetForm == ObjectReferenceForms.Primitive) {
       CustomType ct = domainMethod.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow().targetType();
       String typename = ClassFunctions.getPrimitiveTypeOfWrapper(ct.canonicalName());
-      if (tech.intellispaces.entity.object.ObjectFunctions.equalsAnyOf(
+      if (tech.intellispaces.general.object.ObjectFunctions.equalsAnyOf(
           typename,
           PrimitiveTypes.Boolean.typename(),
           PrimitiveTypes.Char.typename(),

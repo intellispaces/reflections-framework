@@ -1,7 +1,7 @@
 package tech.intellispaces.jaquarius.system.kernel;
 
-import tech.intellispaces.entity.exception.NotImplementedExceptions;
-import tech.intellispaces.entity.exception.UnexpectedExceptions;
+import tech.intellispaces.general.exception.NotImplementedExceptions;
+import tech.intellispaces.general.exception.UnexpectedExceptions;
 import tech.intellispaces.jaquarius.guide.Guide;
 import tech.intellispaces.jaquarius.guide.GuideKind;
 import tech.intellispaces.jaquarius.guide.GuideKinds;

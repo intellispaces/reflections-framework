@@ -1,6 +1,6 @@
 package tech.intellispaces.jaquarius.engine.descriptor;
 
-import tech.intellispaces.entity.entity.Enumerable;
+import tech.intellispaces.general.entity.Enumerable;
 
 public interface ObjectHandleMethodPurpose extends Enumerable<ObjectHandleMethodPurpose> {
 }

@@ -4,7 +4,7 @@ import tech.intellispaces.jaquarius.exception.TraverseException;
 import tech.intellispaces.jaquarius.guide.Mapper;
 import tech.intellispaces.jaquarius.guide.n4.Mapper4;
 import tech.intellispaces.jaquarius.guide.n5.Mapper5;
-import tech.intellispaces.entity.function.QuadriFunction;
+import tech.intellispaces.general.function.QuadriFunction;
 
 /**
  * Mapper guide with three qualifiers.

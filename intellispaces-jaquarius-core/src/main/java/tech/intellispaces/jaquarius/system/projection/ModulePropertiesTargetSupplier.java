@@ -1,6 +1,6 @@
 package tech.intellispaces.jaquarius.system.projection;
 
-import tech.intellispaces.entity.exception.UnexpectedExceptions;
+import tech.intellispaces.general.exception.UnexpectedExceptions;
 import tech.intellispaces.jaquarius.annotation.Properties;
 import tech.intellispaces.jaquarius.object.DataFunctions;
 import tech.intellispaces.jaquarius.object.ObjectHandleConstants;

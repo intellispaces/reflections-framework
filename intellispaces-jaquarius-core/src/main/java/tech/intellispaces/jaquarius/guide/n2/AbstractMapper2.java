@@ -1,7 +1,7 @@
 package tech.intellispaces.jaquarius.guide.n2;
 
-import tech.intellispaces.entity.function.QuadriFunction;
-import tech.intellispaces.entity.function.TriFunction;
+import tech.intellispaces.general.function.QuadriFunction;
+import tech.intellispaces.general.function.TriFunction;
 import tech.intellispaces.jaquarius.guide.GuideKind;
 import tech.intellispaces.jaquarius.guide.GuideKinds;
 

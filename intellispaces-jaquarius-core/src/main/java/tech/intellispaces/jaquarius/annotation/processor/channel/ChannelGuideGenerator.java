@@ -2,10 +2,10 @@ package tech.intellispaces.jaquarius.annotation.processor.channel;
 
 import tech.intellispaces.action.runnable.RunnableAction;
 import tech.intellispaces.action.text.StringActions;
-import tech.intellispaces.entity.exception.UnexpectedExceptions;
-import tech.intellispaces.entity.type.ClassFunctions;
-import tech.intellispaces.entity.type.ClassNameFunctions;
-import tech.intellispaces.entity.type.PrimitiveFunctions;
+import tech.intellispaces.general.exception.UnexpectedExceptions;
+import tech.intellispaces.general.type.ClassFunctions;
+import tech.intellispaces.general.type.ClassNameFunctions;
+import tech.intellispaces.general.type.PrimitiveFunctions;
 import tech.intellispaces.jaquarius.annotation.Guide;
 import tech.intellispaces.jaquarius.annotation.Mapper;
 import tech.intellispaces.jaquarius.annotation.MapperOfMoving;

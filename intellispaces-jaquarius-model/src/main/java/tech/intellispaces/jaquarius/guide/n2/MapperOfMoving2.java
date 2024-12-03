@@ -5,7 +5,7 @@ import tech.intellispaces.jaquarius.guide.MapperOfMoving;
 import tech.intellispaces.jaquarius.guide.n3.MapperOfMoving3;
 import tech.intellispaces.jaquarius.guide.n4.MapperOfMoving4;
 import tech.intellispaces.jaquarius.guide.n5.MapperOfMoving5;
-import tech.intellispaces.entity.function.TriFunction;
+import tech.intellispaces.general.function.TriFunction;
 
 /**
  * Mapper related to moving guide with two qualifiers.

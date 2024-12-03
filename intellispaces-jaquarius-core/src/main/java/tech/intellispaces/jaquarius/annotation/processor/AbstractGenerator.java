@@ -1,6 +1,6 @@
 package tech.intellispaces.jaquarius.annotation.processor;
 
-import tech.intellispaces.entity.type.ClassFunctions;
+import tech.intellispaces.general.type.ClassFunctions;
 import tech.intellispaces.jaquarius.annotation.Generated;
 import tech.intellispaces.jaquarius.object.ObjectHandleFunctions;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;

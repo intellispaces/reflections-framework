@@ -2,12 +2,12 @@ package tech.intellispaces.jaquarius.annotation.processor;
 
 import tech.intellispaces.action.runnable.RunnableAction;
 import tech.intellispaces.action.text.StringActions;
-import tech.intellispaces.entity.exception.UnexpectedExceptions;
-import tech.intellispaces.entity.object.ObjectFunctions;
-import tech.intellispaces.entity.text.StringFunctions;
-import tech.intellispaces.entity.type.ClassFunctions;
-import tech.intellispaces.entity.type.PrimitiveType;
-import tech.intellispaces.entity.type.PrimitiveTypes;
+import tech.intellispaces.general.exception.UnexpectedExceptions;
+import tech.intellispaces.general.object.ObjectFunctions;
+import tech.intellispaces.general.text.StringFunctions;
+import tech.intellispaces.general.type.ClassFunctions;
+import tech.intellispaces.general.type.PrimitiveType;
+import tech.intellispaces.general.type.PrimitiveTypes;
 import tech.intellispaces.jaquarius.object.ObjectHandleFunctions;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;

@@ -1,7 +1,7 @@
 package tech.intellispaces.jaquarius.engine.descriptor;
 
 import tech.intellispaces.action.Action;
-import tech.intellispaces.entity.exception.UnexpectedExceptions;
+import tech.intellispaces.general.exception.UnexpectedExceptions;
 import tech.intellispaces.jaquarius.system.Injection;
 
 import java.util.HashMap;

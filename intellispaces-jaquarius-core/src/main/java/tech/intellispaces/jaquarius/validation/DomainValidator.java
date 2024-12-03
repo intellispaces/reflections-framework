@@ -1,7 +1,7 @@
 package tech.intellispaces.jaquarius.validation;
 
-import tech.intellispaces.entity.text.StringFunctions;
-import tech.intellispaces.entity.type.ClassFunctions;
+import tech.intellispaces.general.text.StringFunctions;
+import tech.intellispaces.general.type.ClassFunctions;
 import tech.intellispaces.jaquarius.annotation.Channel;
 import tech.intellispaces.jaquarius.annotation.Domain;
 import tech.intellispaces.jaquarius.annotation.Ontology;

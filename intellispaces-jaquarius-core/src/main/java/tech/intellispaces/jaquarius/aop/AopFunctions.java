@@ -1,7 +1,7 @@
 package tech.intellispaces.jaquarius.aop;
 
 import tech.intellispaces.action.Action;
-import tech.intellispaces.entity.exception.UnexpectedExceptions;
+import tech.intellispaces.general.exception.UnexpectedExceptions;
 import tech.intellispaces.jaquarius.annotation.ApplyAdvice;
 import tech.intellispaces.jaquarius.system.ProjectionProvider;
 import tech.intellispaces.jaquarius.system.kernel.ProjectionRegistry;

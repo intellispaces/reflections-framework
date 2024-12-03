@@ -1,8 +1,8 @@
 package tech.intellispaces.jaquarius.system.kernel;
 
-import tech.intellispaces.entity.exception.UnexpectedExceptions;
-import tech.intellispaces.entity.object.ObjectFunctions;
-import tech.intellispaces.entity.type.ClassFunctions;
+import tech.intellispaces.general.exception.UnexpectedExceptions;
+import tech.intellispaces.general.object.Objects;
+import tech.intellispaces.general.type.ClassFunctions;
 import tech.intellispaces.jaquarius.common.NameConventionFunctions;
 
 import java.util.Map;
@@ -28,6 +28,6 @@ class AutoGuideRegistry {
         .orElseThrow(() -> UnexpectedExceptions.withMessage("Could not load auto guide class by name {0}",
             autoGuideCanonicalName)
         );
-    return ObjectFunctions.newInstance(autoGuideClass);
+    return Objects.get(autoGuideClass);
   }
 }

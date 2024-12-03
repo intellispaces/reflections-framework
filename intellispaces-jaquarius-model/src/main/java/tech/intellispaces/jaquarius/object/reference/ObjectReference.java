@@ -1,6 +1,6 @@
 package tech.intellispaces.jaquarius.object.reference;
 
-import tech.intellispaces.entity.type.Type;
+import tech.intellispaces.general.type.Type;
 import tech.intellispaces.jaquarius.channel.Channel1;
 import tech.intellispaces.jaquarius.channel.MappingChannel;
 import tech.intellispaces.jaquarius.exception.TraverseException;

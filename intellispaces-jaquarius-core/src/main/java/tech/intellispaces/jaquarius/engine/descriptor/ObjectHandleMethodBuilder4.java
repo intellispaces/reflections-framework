@@ -2,7 +2,7 @@ package tech.intellispaces.jaquarius.engine.descriptor;
 
 import tech.intellispaces.action.Action;
 import tech.intellispaces.action.functional.FunctionActions;
-import tech.intellispaces.entity.function.QuadriFunction;
+import tech.intellispaces.general.function.QuadriFunction;
 import tech.intellispaces.jaquarius.traverse.TraverseType;
 
 import java.util.List;

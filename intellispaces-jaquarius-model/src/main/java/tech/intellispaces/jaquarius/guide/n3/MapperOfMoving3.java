@@ -1,6 +1,6 @@
 package tech.intellispaces.jaquarius.guide.n3;
 
-import tech.intellispaces.entity.function.QuadriFunction;
+import tech.intellispaces.general.function.QuadriFunction;
 import tech.intellispaces.jaquarius.exception.TraverseException;
 import tech.intellispaces.jaquarius.guide.MapperOfMoving;
 import tech.intellispaces.jaquarius.guide.n4.MapperOfMoving4;

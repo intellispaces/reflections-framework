@@ -1,8 +1,8 @@
 package tech.intellispaces.jaquarius.common;
 
-import tech.intellispaces.entity.exception.UnexpectedExceptions;
-import tech.intellispaces.entity.text.StringFunctions;
-import tech.intellispaces.entity.type.ClassNameFunctions;
+import tech.intellispaces.general.exception.UnexpectedExceptions;
+import tech.intellispaces.general.text.StringFunctions;
+import tech.intellispaces.general.type.ClassNameFunctions;
 import tech.intellispaces.jaquarius.annotation.Channel;
 import tech.intellispaces.jaquarius.annotation.Domain;
 import tech.intellispaces.jaquarius.annotation.ObjectHandle;

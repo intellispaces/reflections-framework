@@ -1,8 +1,8 @@
 package tech.intellispaces.jaquarius.annotation.processor.domain;
 
-import tech.intellispaces.entity.text.StringFunctions;
-import tech.intellispaces.entity.type.Type;
-import tech.intellispaces.entity.type.Types;
+import tech.intellispaces.general.text.StringFunctions;
+import tech.intellispaces.general.type.Type;
+import tech.intellispaces.general.type.Types;
 import tech.intellispaces.jaquarius.annotation.Channel;
 import tech.intellispaces.jaquarius.annotation.ObjectHandle;
 import tech.intellispaces.jaquarius.channel.Channel0;

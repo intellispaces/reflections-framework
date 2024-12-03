@@ -3,7 +3,7 @@ package tech.intellispaces.jaquarius.annotation.processor.objecthandle;
 import tech.intellispaces.action.Actions;
 import tech.intellispaces.action.functional.FunctionActions;
 import tech.intellispaces.action.supplier.ResettableSupplierAction;
-import tech.intellispaces.entity.type.PrimitiveFunctions;
+import tech.intellispaces.general.type.PrimitiveFunctions;
 import tech.intellispaces.jaquarius.annotation.Ordinal;
 import tech.intellispaces.jaquarius.annotation.Wrapper;
 import tech.intellispaces.jaquarius.channel.Channel1;

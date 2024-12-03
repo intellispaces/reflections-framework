@@ -1,8 +1,8 @@
 package tech.intellispaces.jaquarius.guide;
 
-import tech.intellispaces.entity.exception.NotImplementedExceptions;
-import tech.intellispaces.entity.exception.UnexpectedExceptions;
-import tech.intellispaces.entity.type.ClassFunctions;
+import tech.intellispaces.general.exception.NotImplementedExceptions;
+import tech.intellispaces.general.exception.UnexpectedExceptions;
+import tech.intellispaces.general.type.ClassFunctions;
 import tech.intellispaces.jaquarius.annotation.Channel;
 import tech.intellispaces.jaquarius.annotation.Mapper;
 import tech.intellispaces.jaquarius.annotation.MapperOfMoving;

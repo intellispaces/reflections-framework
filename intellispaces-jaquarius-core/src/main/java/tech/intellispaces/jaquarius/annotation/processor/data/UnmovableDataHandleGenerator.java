@@ -2,9 +2,9 @@ package tech.intellispaces.jaquarius.annotation.processor.data;
 
 import tech.intellispaces.action.runnable.RunnableAction;
 import tech.intellispaces.action.text.StringActions;
-import tech.intellispaces.entity.exception.NotImplementedExceptions;
-import tech.intellispaces.entity.type.Type;
-import tech.intellispaces.entity.type.Types;
+import tech.intellispaces.general.exception.NotImplementedExceptions;
+import tech.intellispaces.general.type.Type;
+import tech.intellispaces.general.type.Types;
 import tech.intellispaces.jaquarius.annotation.Name;
 import tech.intellispaces.jaquarius.annotation.ObjectHandle;
 import tech.intellispaces.jaquarius.annotation.processor.AbstractGenerator;

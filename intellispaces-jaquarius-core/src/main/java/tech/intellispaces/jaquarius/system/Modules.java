@@ -1,6 +1,6 @@
 package tech.intellispaces.jaquarius.system;
 
-import tech.intellispaces.entity.exception.UnexpectedExceptions;
+import tech.intellispaces.general.exception.UnexpectedExceptions;
 import tech.intellispaces.jaquarius.engine.JaquariusEngines;
 import tech.intellispaces.jaquarius.system.kernel.KernelFunctions;
 import tech.intellispaces.jaquarius.system.kernel.KernelModule;

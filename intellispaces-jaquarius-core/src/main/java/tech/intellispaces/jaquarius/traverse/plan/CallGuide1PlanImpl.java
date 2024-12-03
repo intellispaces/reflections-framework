@@ -1,6 +1,6 @@
 package tech.intellispaces.jaquarius.traverse.plan;
 
-import tech.intellispaces.entity.exception.UnexpectedExceptions;
+import tech.intellispaces.general.exception.UnexpectedExceptions;
 import tech.intellispaces.jaquarius.exception.TraverseException;
 import tech.intellispaces.jaquarius.guide.n1.Guide1;
 

@@ -4,7 +4,7 @@ import com.google.auto.service.AutoService;
 import tech.intellispaces.action.Action;
 import tech.intellispaces.action.cache.CachedSupplierActions;
 import tech.intellispaces.action.delegate.DelegateActions;
-import tech.intellispaces.entity.exception.NotImplementedExceptions;
+import tech.intellispaces.general.exception.NotImplementedExceptions;
 import tech.intellispaces.jaquarius.action.TraverseActions;
 import tech.intellispaces.jaquarius.channel.Channel0;
 import tech.intellispaces.jaquarius.channel.Channel1;

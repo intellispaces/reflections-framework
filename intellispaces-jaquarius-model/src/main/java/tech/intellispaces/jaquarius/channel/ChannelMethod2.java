@@ -1,6 +1,6 @@
 package tech.intellispaces.jaquarius.channel;
 
-import tech.intellispaces.entity.function.TriFunction;
+import tech.intellispaces.general.function.TriFunction;
 
 @FunctionalInterface
 public interface ChannelMethod2<S, R, Q1, Q2> extends TriFunction<S, Q1, Q2, R> {

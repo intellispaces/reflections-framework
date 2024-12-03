@@ -5,7 +5,7 @@ import tech.intellispaces.jaquarius.guide.Mapper;
 import tech.intellispaces.jaquarius.guide.n3.Mapper3;
 import tech.intellispaces.jaquarius.guide.n4.Mapper4;
 import tech.intellispaces.jaquarius.guide.n5.Mapper5;
-import tech.intellispaces.entity.function.TriFunction;
+import tech.intellispaces.general.function.TriFunction;
 
 /**
  * Mapper guide with two qualifiers.

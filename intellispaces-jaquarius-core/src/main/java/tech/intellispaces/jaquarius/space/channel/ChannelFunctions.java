@@ -1,8 +1,8 @@
 package tech.intellispaces.jaquarius.space.channel;
 
-import tech.intellispaces.entity.exception.NotImplementedExceptions;
-import tech.intellispaces.entity.exception.UnexpectedExceptions;
-import tech.intellispaces.entity.text.StringFunctions;
+import tech.intellispaces.general.exception.NotImplementedExceptions;
+import tech.intellispaces.general.exception.UnexpectedExceptions;
+import tech.intellispaces.general.text.StringFunctions;
 import tech.intellispaces.jaquarius.annotation.Channel;
 import tech.intellispaces.jaquarius.annotation.Guide;
 import tech.intellispaces.jaquarius.annotation.Mapper;

@@ -1,6 +1,6 @@
 package tech.intellispaces.jaquarius.annotation.processor.domain;
 
-import tech.intellispaces.entity.exception.UnexpectedExceptions;
+import tech.intellispaces.general.exception.UnexpectedExceptions;
 import tech.intellispaces.jaquarius.annotation.ObjectHandle;
 import tech.intellispaces.jaquarius.annotation.Unmovable;
 import tech.intellispaces.jaquarius.common.NameConventionFunctions;

@@ -1,9 +1,9 @@
 package tech.intellispaces.jaquarius.system.kernel;
 
 import tech.intellispaces.action.Action;
-import tech.intellispaces.entity.exception.NotImplementedExceptions;
-import tech.intellispaces.entity.exception.UnexpectedExceptions;
-import tech.intellispaces.entity.stream.Streams;
+import tech.intellispaces.general.exception.NotImplementedExceptions;
+import tech.intellispaces.general.exception.UnexpectedExceptions;
+import tech.intellispaces.general.stream.Streams;
 import tech.intellispaces.jaquarius.annotation.Configuration;
 import tech.intellispaces.jaquarius.annotation.Guide;
 import tech.intellispaces.jaquarius.annotation.Module;

@@ -1,6 +1,6 @@
 package tech.intellispaces.jaquarius.system;
 
-import tech.intellispaces.entity.collection.ArraysFunctions;
+import tech.intellispaces.general.collection.ArraysFunctions;
 import tech.intellispaces.jaquarius.annotation.Configuration;
 import tech.intellispaces.jaquarius.annotation.Module;
 import tech.intellispaces.java.reflection.customtype.CustomType;

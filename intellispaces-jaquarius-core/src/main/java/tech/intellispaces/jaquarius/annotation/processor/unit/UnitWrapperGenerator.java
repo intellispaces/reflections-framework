@@ -6,7 +6,7 @@ import tech.intellispaces.action.functional.FunctionActions;
 import tech.intellispaces.action.runnable.RunnableAction;
 import tech.intellispaces.action.supplier.ResettableSupplierAction;
 import tech.intellispaces.action.text.StringActions;
-import tech.intellispaces.entity.exception.UnexpectedExceptions;
+import tech.intellispaces.general.exception.UnexpectedExceptions;
 import tech.intellispaces.jaquarius.annotation.AutoGuide;
 import tech.intellispaces.jaquarius.annotation.Inject;
 import tech.intellispaces.jaquarius.annotation.Ordinal;

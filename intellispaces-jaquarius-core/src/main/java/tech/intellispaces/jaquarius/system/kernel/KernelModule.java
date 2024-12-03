@@ -29,8 +29,6 @@ public interface KernelModule {
 
   GuideRegistry guideRegistry();
 
-  ObjectRegistry objectRegistry();
-
   TraverseAnalyzer traverseAnalyzer();
 
   TraverseExecutor traverseExecutor();

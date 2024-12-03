@@ -10,20 +10,30 @@ import java.util.function.BiFunction;
 public class ObjectHandleMethodBuilder2<H, P> {
   private final String name;
   private final Class<P> paramClass;
-
   private Action action;
-  private String purpose;
+  private ObjectHandleMethodPurpose purpose;
+
   private int traverseOrdinal;
   private Class<?> channelClass;
   private TraverseType traverseType;
+
+  private String injectionKind;
+  private int injectionOrdinal;
+  private String injectionName;
+  private Class<?> injectionType;
 
   public ObjectHandleMethodBuilder2(Class<H> objectHandleClass, String name, Class<P> paramClass) {
     this.name = name;
     this.paramClass = paramClass;
   }
 
-  public ObjectHandleMethodBuilder2<H, P> purpose(String purpose) {
+  public ObjectHandleMethodBuilder2<H, P> purpose(ObjectHandleMethodPurpose purpose) {
     this.purpose = purpose;
+    return this;
+  }
+
+  public <R> ObjectHandleMethodBuilder2<H, P> function(BiFunction<H, P, R> function) {
+    this.action = FunctionActions.ofBiFunction(function);
     return this;
   }
 
@@ -42,8 +52,23 @@ public class ObjectHandleMethodBuilder2<H, P> {
     return this;
   }
 
-  public <R> ObjectHandleMethodBuilder2<H, P> function(BiFunction<H, P, R> function) {
-    this.action = FunctionActions.ofBiFunction(function);
+  public ObjectHandleMethodBuilder2<H, P> injectionKind(String kind) {
+    this.injectionKind = kind;
+    return this;
+  }
+
+  public ObjectHandleMethodBuilder2<H, P> injectionOrdinal(int ordinal) {
+    this.injectionOrdinal = ordinal;
+    return this;
+  }
+
+  public ObjectHandleMethodBuilder2<H, P> injectionName(String injectionName) {
+    this.injectionName = injectionName;
+    return this;
+  }
+
+  public ObjectHandleMethodBuilder2<H, P> injectionType(Class<?> injectionType) {
+    this.injectionType = injectionType;
     return this;
   }
 
@@ -55,7 +80,11 @@ public class ObjectHandleMethodBuilder2<H, P> {
         traverseOrdinal,
         action,
         channelClass,
-        traverseType
+        traverseType,
+        injectionKind,
+        injectionOrdinal,
+        injectionName,
+        injectionType
     );
   }
 }

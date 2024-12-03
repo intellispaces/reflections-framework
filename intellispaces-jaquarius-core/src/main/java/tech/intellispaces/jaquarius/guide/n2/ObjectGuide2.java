@@ -15,14 +15,14 @@ abstract class ObjectGuide2<S extends ObjectHandleWrapper, R, Q1, Q2> implements
   private final Class<S> objectHandleClass;
   private final String cid;
   private final MethodStatement guideMethod;
-  private final int channelIndex;
+  private final int traverseOrdinal;
   private final ObjectReferenceForm targetForm;
 
   ObjectGuide2(
       String cid,
       Class<S> objectHandleClass,
       MethodStatement guideMethod,
-      int channelIndex,
+      int traverseOrdinal,
       ObjectReferenceForm targetForm
   ) {
     if (guideMethod.params().size() != 2) {
@@ -31,7 +31,7 @@ abstract class ObjectGuide2<S extends ObjectHandleWrapper, R, Q1, Q2> implements
     this.cid = cid;
     this.objectHandleClass = objectHandleClass;
     this.guideMethod = guideMethod;
-    this.channelIndex = channelIndex;
+    this.traverseOrdinal = traverseOrdinal;
     this.targetForm = targetForm;
   }
 
@@ -50,7 +50,7 @@ abstract class ObjectGuide2<S extends ObjectHandleWrapper, R, Q1, Q2> implements
   public R traverse(S source, Q1 qualifier1, Q2 qualifier2) throws TraverseException {
     try {
       GuideLogger.logCallGuide(guideMethod);
-      return (R) source.$objectHandleInstance().getGuideAction(channelIndex).castToAction3().execute(source, qualifier1, qualifier2);
+      return (R) source.$objectHandleInstance().guideAction(traverseOrdinal).castToAction3().execute(source, qualifier1, qualifier2);
     } catch (TraverseException e) {
       throw e;
     } catch (Exception e) {

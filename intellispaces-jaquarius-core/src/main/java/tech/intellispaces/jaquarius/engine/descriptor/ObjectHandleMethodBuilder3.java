@@ -11,12 +11,17 @@ public class ObjectHandleMethodBuilder3<H, P1, P2> {
   private final String name;
   private final Class<P1> paramClass1;
   private final Class<P2> paramClass2;
-
   private Action action;
-  private String purpose;
+  private ObjectHandleMethodPurpose purpose;
+
   private int traverseOrdinal;
   private Class<?> channelClass;
   private TraverseType traverseType;
+
+  private String injectionKind;
+  private int injectionOrdinal;
+  private String injectionName;
+  private Class<?> injectionType;
 
   public ObjectHandleMethodBuilder3(
       Class<H> objectHandleClass, String name, Class<P1> paramClass1, Class<P2> paramClass2
@@ -26,8 +31,13 @@ public class ObjectHandleMethodBuilder3<H, P1, P2> {
     this.paramClass2 = paramClass2;
   }
 
-  public ObjectHandleMethodBuilder3<H, P1, P2> purpose(String purpose) {
+  public ObjectHandleMethodBuilder3<H, P1, P2> purpose(ObjectHandleMethodPurpose purpose) {
     this.purpose = purpose;
+    return this;
+  }
+
+  public <R> ObjectHandleMethodBuilder3<H, P1, P2> function(TriFunction<H, P1, P2, R> function) {
+    this.action = FunctionActions.ofTriFunction(function);
     return this;
   }
 
@@ -46,8 +56,23 @@ public class ObjectHandleMethodBuilder3<H, P1, P2> {
     return this;
   }
 
-  public <R> ObjectHandleMethodBuilder3<H, P1, P2> function(TriFunction<H, P1, P2, R> function) {
-    this.action = FunctionActions.ofTriFunction(function);
+  public ObjectHandleMethodBuilder3<H, P1, P2> injectionKind(String kind) {
+    this.injectionKind = kind;
+    return this;
+  }
+
+  public ObjectHandleMethodBuilder3<H, P1, P2> injectionOrdinal(int ordinal) {
+    this.injectionOrdinal = ordinal;
+    return this;
+  }
+
+  public ObjectHandleMethodBuilder3<H, P1, P2> injectionName(String injectionName) {
+    this.injectionName = injectionName;
+    return this;
+  }
+
+  public ObjectHandleMethodBuilder3<H, P1, P2> injectionType(Class<?> injectionType) {
+    this.injectionType = injectionType;
     return this;
   }
 
@@ -59,7 +84,11 @@ public class ObjectHandleMethodBuilder3<H, P1, P2> {
         traverseOrdinal,
         action,
         channelClass,
-        traverseType
+        traverseType,
+        injectionKind,
+        injectionOrdinal,
+        injectionName,
+        injectionType
     );
   }
 }

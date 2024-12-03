@@ -47,10 +47,8 @@ public class ModuleFactory {
     loadAttachedUnitGuides(guideRegistry, units);
     var traverseAnalyzer = new TraverseAnalyzerImpl(guideRegistry);
     var traverseExecutor = new TraverseExecutorImpl(traverseAnalyzer);
-    var objectRegistry = new ObjectRegistryImpl();
     return new KernelModuleImpl(
         units,
-        objectRegistry,
         projectionRegistry,
         guideRegistry,
         traverseAnalyzer,

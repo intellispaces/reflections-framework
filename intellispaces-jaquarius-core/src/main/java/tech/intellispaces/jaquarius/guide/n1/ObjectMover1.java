@@ -20,9 +20,9 @@ public class ObjectMover1<S extends ObjectHandleWrapper, Q>
       String cid,
       Class<S> objectHandleClass,
       MethodStatement guideMethod,
-      int channelIndex,
+      int traverseOrdinal,
       ObjectReferenceForm targetForm
   ) {
-    super(cid, objectHandleClass, guideMethod, channelIndex, targetForm);
+    super(cid, objectHandleClass, guideMethod, traverseOrdinal, targetForm);
   }
 }

@@ -18,8 +18,11 @@ import tech.intellispaces.jaquarius.engine.descriptor.ObjectHandleMethodPurposes
 import tech.intellispaces.jaquarius.engine.descriptor.ObjectHandleType;
 import tech.intellispaces.jaquarius.engine.descriptor.ObjectHandleTypeImpl;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
+import tech.intellispaces.jaquarius.system.Injection;
 import tech.intellispaces.jaquarius.system.Module;
 import tech.intellispaces.jaquarius.system.ObjectHandleWrapper;
+import tech.intellispaces.jaquarius.system.injection.AutoGuideInjections;
+import tech.intellispaces.jaquarius.system.injection.GuideInjections;
 import tech.intellispaces.jaquarius.system.kernel.KernelFunctions;
 import tech.intellispaces.jaquarius.system.kernel.ModuleLoader;
 
@@ -45,17 +48,20 @@ public class JaquariusEngineImpl implements JaquariusEngine {
         objectHandleWrapperClass,
         Arrays.asList(methods),
         buildMethodActions(objectHandleClass, methods),
-        buildGuideActions(methods)
+        buildGuideActions(methods),
+        buildInjections(methods)
     );
   }
 
   @Override
   public <W> ObjectHandleInstance registerObjectHandleInstance(W objectHandleWrapper, ObjectHandleType type) {
     var typeImpl = (ObjectHandleTypeImpl) type;
-    var instance = new ObjectHandleInstanceImpl(type, typeImpl.getMethodActions(), typeImpl.getGuideActions());
-
-    KernelFunctions.currentModule().objectRegistry().add((ObjectHandleWrapper) objectHandleWrapper);
-    return instance;
+    return new ObjectHandleInstanceImpl(
+        type,
+        typeImpl.methodActions(),
+        typeImpl.guideActions(),
+        typeImpl.injections()
+    );
   }
 
   private Action[] buildMethodActions(Class<?> objectHandleClass, ObjectHandleMethod... methods) {
@@ -204,5 +210,34 @@ public class JaquariusEngineImpl implements JaquariusEngine {
       }
     }
     return actions;
+  }
+
+  private Injection[] buildInjections(ObjectHandleMethod... methods) {
+    if (methods == null || methods.length == 0) {
+      return new Injection[0];
+    }
+
+    int maxOrdinal = Arrays.stream(methods)
+        .filter(m -> ObjectHandleMethodPurposes.InjectionMethod.is(m.purpose()))
+        .map(ObjectHandleMethod::injectionOrdinal)
+        .max(Comparator.naturalOrder())
+        .orElse(0);
+    Injection[] injections = new Injection[maxOrdinal + 1];
+    for (ObjectHandleMethod method : methods) {
+      if (ObjectHandleMethodPurposes.InjectionMethod.is(method.purpose())) {
+        injections[method.injectionOrdinal()] = buildInjection(method);
+      }
+    }
+    return injections;
+  }
+
+  private Injection buildInjection(ObjectHandleMethod method) {
+    if ("autoguide".equals(method.injectionKind())) {
+      return AutoGuideInjections.get(null, method.injectionName(), method.injectionType());
+    } else if ("specguide".equals(method.injectionKind())) {
+      return GuideInjections.get(null, method.injectionName(), method.injectionType());
+    } else {
+      throw NotImplementedExceptions.withCode("DfsonQ==");
+    }
   }
 }

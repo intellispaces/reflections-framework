@@ -21,8 +21,6 @@ import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
-import tech.intellispaces.jaquarius.system.Modules;
-import tech.intellispaces.jaquarius.system.ProjectionInjection;
 import tech.intellispaces.java.annotation.context.JavaArtifactContext;
 import tech.intellispaces.java.reflection.customtype.CustomType;
 import tech.intellispaces.java.reflection.method.MethodParam;
@@ -52,9 +50,8 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
   private final List<MethodStatement> domainMethods;
   protected final CustomType domainType;
   protected final List<Object> constructors = new ArrayList<>();
-  protected final List<Map<String, Object>> objectHandleMethods = new ArrayList<>();
+  protected final List<Map<String, Object>> wrapperMethods = new ArrayList<>();
   protected final List<Map<String, String>> guideMethods = new ArrayList<>();
-  protected final List<Map<String, Object>> injections = new ArrayList<>();
   protected final List<Map<String, Object>> injectionMethods = new ArrayList<>();
 
   AbstractObjectHandleWrapperGenerator(CustomType initiatorType, CustomType objectHandleType) {
@@ -106,9 +103,9 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
             );
           }
           if (isAutoGuideMethod(method)) {
-            addAutoGuideInjectionAndImplementationMethod(method);
+            addAutoGuideInjectionMethod(method);
           } else {
-            addGuideInjectionAndImplementationMethod(method);
+            addSpecGuideInjectionMethod(method);
           }
         } else {
           throw ConfigurationExceptions.withMessage("Undefined abstract method '{0}' in class {1}",
@@ -119,50 +116,36 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
     }
   }
 
-  private void addAutoGuideInjectionAndImplementationMethod(MethodStatement method) {
-    context.addImport(Modules.class);
-    context.addImport(ProjectionInjection.class);
-
-    String injectionName = method.name();
+  private void addAutoGuideInjectionMethod(MethodStatement method) {
+    int injectionOrdinal = injectionMethods.size();
     String injectionType = method.returnType().orElseThrow().actualDeclaration();
-
-    Map<String, Object> injection = new HashMap<>();
-    injection.put("kind", "autoguide");
-    injection.put("name", injectionName);
-    injection.put("type", injectionType);
-    injections.add(injection);
 
     Map<String, Object> methodProperties = new HashMap<>();
     methodProperties.put("javadoc", "");
     methodProperties.put("annotations", List.of(Override.class.getSimpleName()));
     methodProperties.put("signature", buildMethodSignature(method));
-    methodProperties.put("body", buildInjectionMethodBody(injectionType, injections.size() - 1));
+    methodProperties.put("body", buildInjectionMethodBody(injectionType, injectionOrdinal));
     injectionMethods.add(methodProperties);
+
+    this.wrapperMethods.add(buildAutoGuideInjectionMethodDescriptor(method, injectionOrdinal, context));
   }
 
-  private void addGuideInjectionAndImplementationMethod(MethodStatement method) {
-    context.addImport(Modules.class);
-    context.addImport(ProjectionInjection.class);
-
-    String injectionName = method.name();
+  private void addSpecGuideInjectionMethod(MethodStatement method) {
+    int injectionOrdinal = injectionMethods.size();
     String injectionType = method.returnType().orElseThrow().actualDeclaration();
-
-    Map<String, Object> injection = new HashMap<>();
-    injection.put("kind", "guide");
-    injection.put("name", injectionName);
-    injection.put("type", injectionType);
-    injections.add(injection);
 
     Map<String, Object> methodProperties = new HashMap<>();
     methodProperties.put("javadoc", "");
     methodProperties.put("annotations", List.of(Override.class.getSimpleName()));
     methodProperties.put("signature", buildMethodSignature(method));
-    methodProperties.put("body", buildInjectionMethodBody(injectionType, injections.size() - 1));
+    methodProperties.put("body", buildInjectionMethodBody(injectionType, injectionOrdinal));
     injectionMethods.add(methodProperties);
+
+    this.wrapperMethods.add(buildSpecGuideInjectionMethodDescriptor(method, injectionOrdinal, context));
   }
 
   private String buildInjectionMethodBody(String injectionType, int injectionIndex) {
-    return "return (" + injectionType + ") this.$innerHandle.injection(" + injectionIndex + ").value();";
+    return "return (" + injectionType + ") this.$instance.injection(" + injectionIndex + ").value();";
   }
 
   private MethodStatement findGuideMethod(
@@ -268,17 +251,17 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
       return;
     }
     if (NameConventionFunctions.isConversionMethod(domainMethod)) {
-      this.objectHandleMethods.add(buildTraverseMethodDescriptor(domainMethod, methodIndex, context));
-      this.objectHandleMethods.add(buildConversionGuideMethodDescriptor(domainMethod, methodIndex, context));
+      this.wrapperMethods.add(buildTraverseMethodDescriptor(domainMethod, methodIndex, context));
+      this.wrapperMethods.add(buildConversionGuideMethodDescriptor(domainMethod, methodIndex, context));
       return;
     }
 
     List<MethodStatement> objectHandleMethods = annotatedType.actualMethods();
     MethodStatement guideMethod = findGuideMethod(domainMethod, objectHandleMethods, targetForm);
-    this.objectHandleMethods.add(buildTraverseMethodDescriptor(domainMethod, methodIndex, context));
+    this.wrapperMethods.add(buildTraverseMethodDescriptor(domainMethod, methodIndex, context));
     if (guideMethod != null && !guideMethod.isAbstract()) {
       this.guideMethods.add(GuideProcessorFunctions.buildGuideActionMethod(guideMethod, context));
-      this.objectHandleMethods.add(buildGuideMethodDescriptor(guideMethod, methodIndex, context));
+      this.wrapperMethods.add(buildGuideMethodDescriptor(guideMethod, methodIndex, context));
     }
   }
 
@@ -294,7 +277,7 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
     }
     map.put("params", paramClasses);
     map.put("purpose", ObjectHandleMethodPurposes.TraverseMethod.name());
-    map.put("ordinal", ordinal);
+    map.put("traverseOrdinal", ordinal);
     map.put("channelClass", context.addToImportAndGetSimpleName(NameConventionFunctions.getChannelClassCanonicalName(domainMethod)));
     map.put("traverseType", ChannelFunctions.getTraverseType(domainMethod).name());
 
@@ -313,7 +296,7 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
     }
     map.put("params", paramClasses);
     map.put("purpose", ObjectHandleMethodPurposes.GuideMethod.name());
-    map.put("ordinal", ordinal);
+    map.put("traverseOrdinal", ordinal);
     return map;
   }
 
@@ -329,7 +312,37 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
 
     map.put("params", List.of());
     map.put("purpose", ObjectHandleMethodPurposes.GuideMethod.name());
-    map.put("ordinal", ordinal);
+    map.put("traverseOrdinal", ordinal);
+    return map;
+  }
+
+  private Map<String, Object> buildAutoGuideInjectionMethodDescriptor(
+      MethodStatement injectionMethod, int ordinal, JavaArtifactContext context
+  ) {
+    var map = new HashMap<String, Object>();
+    map.put("name", injectionMethod.name());
+    map.put("params", List.of());
+    map.put("purpose", ObjectHandleMethodPurposes.InjectionMethod.name());
+
+    map.put("injectionKind", "autoguide");
+    map.put("injectionOrdinal", ordinal);
+    map.put("injectionName", injectionMethod.name());
+    map.put("injectionType", injectionMethod.returnType().orElseThrow().actualDeclaration(context::addToImportAndGetSimpleName));
+    return map;
+  }
+
+  private Map<String, Object> buildSpecGuideInjectionMethodDescriptor(
+      MethodStatement injectionMethod, int ordinal, JavaArtifactContext context
+  ) {
+    var map = new HashMap<String, Object>();
+    map.put("name", injectionMethod.name());
+    map.put("params", List.of());
+    map.put("purpose", ObjectHandleMethodPurposes.InjectionMethod.name());
+
+    map.put("injectionKind", "specguide");
+    map.put("injectionOrdinal", ordinal);
+    map.put("injectionName", injectionMethod.name());
+    map.put("injectionType", injectionMethod.returnType().orElseThrow().actualDeclaration(context::addToImportAndGetSimpleName));
     return map;
   }
 
@@ -388,7 +401,7 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
   private void buildInvokeMethodAction(
       MethodStatement domainMethod, ObjectReferenceForm targetForm, int methodIndex, StringBuilder sb
   ) {
-    sb.append("$instance.getMethodAction(");
+    sb.append("$instance.methodAction(");
     sb.append(methodIndex);
     sb.append(").castToAction");
     sb.append(domainMethod.params().size() + 1);

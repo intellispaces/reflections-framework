@@ -16,14 +16,14 @@ abstract class ObjectGuide0<S extends ObjectHandleWrapper, R> implements Guide0<
   private final String cid;
   private final ObjectReferenceForm targetForm;
   private final MethodStatement guideMethod;
-  private final int channelIndex;
+  private final int traverseOrdinal;
 
   ObjectGuide0(
     String cid,
     Class<S> objectHandleClass,
     ObjectReferenceForm targetForm,
     MethodStatement guideMethod,
-    int channelIndex
+    int traverseOrdinal
   ) {
     if (!guideMethod.params().isEmpty()) {
       throw UnexpectedExceptions.withMessage("Guide should not have parameters");
@@ -32,7 +32,7 @@ abstract class ObjectGuide0<S extends ObjectHandleWrapper, R> implements Guide0<
     this.objectHandleClass = objectHandleClass;
     this.targetForm = targetForm;
     this.guideMethod = guideMethod;
-    this.channelIndex = channelIndex;
+    this.traverseOrdinal = traverseOrdinal;
   }
 
   @Override
@@ -50,7 +50,7 @@ abstract class ObjectGuide0<S extends ObjectHandleWrapper, R> implements Guide0<
   public R traverse(S source) throws TraverseException {
     try {
       GuideLogger.logCallGuide(guideMethod);
-      return (R) source.$objectHandleInstance().getGuideAction(channelIndex).castToAction1().execute(source);
+      return (R) source.$objectHandleInstance().guideAction(traverseOrdinal).castToAction1().execute(source);
     } catch (TraverseException e) {
       throw e;
     } catch (Exception e) {
@@ -63,7 +63,7 @@ abstract class ObjectGuide0<S extends ObjectHandleWrapper, R> implements Guide0<
   public int traverseToInt(S source) throws TraverseException {
     try {
       GuideLogger.logCallGuide(guideMethod);
-      return source.$objectHandleInstance().getGuideAction(channelIndex).castToAction1().executeReturnInt(source);
+      return source.$objectHandleInstance().guideAction(traverseOrdinal).castToAction1().executeReturnInt(source);
     } catch (TraverseException e) {
       throw e;
     } catch (Exception e) {
@@ -76,7 +76,7 @@ abstract class ObjectGuide0<S extends ObjectHandleWrapper, R> implements Guide0<
   public double traverseToDouble(S source) throws TraverseException {
     try {
       GuideLogger.logCallGuide(guideMethod);
-      return source.$objectHandleInstance().getGuideAction(channelIndex).castToAction1().executeReturnDouble(source);
+      return source.$objectHandleInstance().guideAction(traverseOrdinal).castToAction1().executeReturnDouble(source);
     } catch (TraverseException e) {
       throw e;
     } catch (Exception e) {

@@ -23,7 +23,7 @@ public interface ObjectHandleMethod {
   /**
    * The method purpose.
    */
-  String purpose();
+  ObjectHandleMethodPurpose purpose();
 
   /**
    * The traverse method ordinal.
@@ -44,4 +44,24 @@ public interface ObjectHandleMethod {
    * The traverse type related to this method.
    */
   TraverseType traverseType();
+
+  /**
+   * The injection kind.
+   */
+  String injectionKind();
+
+  /**
+   * The injection method ordinal.
+   */
+  int injectionOrdinal();
+
+  /**
+   * The injection name.
+   */
+  String injectionName();
+
+  /**
+   * The injection type.
+   */
+  Class<?> injectionType();
 }

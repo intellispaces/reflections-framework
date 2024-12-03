@@ -8,20 +8,30 @@ import java.util.List;
 class ObjectHandleMethodImpl implements ObjectHandleMethod {
   private final String name;
   private final List<Class<?>> paramClasses;
-  private final String purpose;
+  private final ObjectHandleMethodPurpose purpose;
+
   private final int traverseOrdinal;
   private final Action action;
   private final Class<?> channelClass;
   private final TraverseType traverseType;
 
+  private final String injectionKind;
+  private final int injectionOrdinal;
+  private final String injectionName;
+  private final Class<?> injectionType;
+
   ObjectHandleMethodImpl(
       String name,
       List<Class<?>> paramClasses,
-      String purpose,
+      ObjectHandleMethodPurpose purpose,
       int traverseOrdinal,
       Action action,
       Class<?> channelClass,
-      TraverseType traverseType
+      TraverseType traverseType,
+      String injectionKind,
+      int injectionOrdinal,
+      String injectionName,
+      Class<?> injectionType
   ) {
     this.name = name;
     this.paramClasses = paramClasses;
@@ -30,6 +40,10 @@ class ObjectHandleMethodImpl implements ObjectHandleMethod {
     this.action = action;
     this.channelClass = channelClass;
     this.traverseType = traverseType;
+    this.injectionKind = injectionKind;
+    this.injectionOrdinal = injectionOrdinal;
+    this.injectionName = injectionName;
+    this.injectionType = injectionType;
   }
 
   @Override
@@ -43,7 +57,7 @@ class ObjectHandleMethodImpl implements ObjectHandleMethod {
   }
 
   @Override
-  public String purpose() {
+  public ObjectHandleMethodPurpose purpose() {
     return purpose;
   }
 
@@ -65,5 +79,25 @@ class ObjectHandleMethodImpl implements ObjectHandleMethod {
   @Override
   public TraverseType traverseType() {
     return traverseType;
+  }
+
+  @Override
+  public String injectionKind() {
+    return injectionKind;
+  }
+
+  @Override
+  public int injectionOrdinal() {
+    return injectionOrdinal;
+  }
+
+  @Override
+  public String injectionName() {
+    return injectionName;
+  }
+
+  @Override
+  public Class<?> injectionType() {
+    return injectionType;
   }
 }

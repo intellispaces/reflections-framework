@@ -1,12 +1,12 @@
 package tech.intellispaces.jaquarius.engine.descriptor;
 
-public enum ObjectHandleMethodPurposes {
+import tech.intellispaces.entity.entity.Enumeration;
+
+public enum ObjectHandleMethodPurposes implements ObjectHandleMethodPurpose, Enumeration<ObjectHandleMethodPurpose> {
 
   TraverseMethod,
 
-  GuideMethod;
+  GuideMethod,
 
-  public boolean is(String name) {
-    return this.name().equals(name);
-  }
+  InjectionMethod
 }

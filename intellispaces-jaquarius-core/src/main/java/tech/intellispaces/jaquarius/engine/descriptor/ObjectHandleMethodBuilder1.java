@@ -9,19 +9,29 @@ import java.util.function.Function;
 
 public class ObjectHandleMethodBuilder1<H> {
   private final String name;
-
   private Action action;
-  private String purpose;
+  private ObjectHandleMethodPurpose purpose;
+
   private int traverseOrdinal;
   private Class<?> channelClass;
   private TraverseType traverseType;
+
+  private String injectionKind;
+  private int injectionOrdinal;
+  private String injectionName;
+  private Class<?> injectionType;
 
   public ObjectHandleMethodBuilder1(Class<H> objectHandleClass, String name) {
     this.name = name;
   }
 
-  public ObjectHandleMethodBuilder1<H> purpose(String purpose) {
+  public ObjectHandleMethodBuilder1<H> purpose(ObjectHandleMethodPurpose purpose) {
     this.purpose = purpose;
+    return this;
+  }
+
+  public <R> ObjectHandleMethodBuilder1<H> function(Function<H, R> function) {
+    this.action = FunctionActions.ofFunction(function);
     return this;
   }
 
@@ -40,8 +50,23 @@ public class ObjectHandleMethodBuilder1<H> {
     return this;
   }
 
-  public <R> ObjectHandleMethodBuilder1<H> function(Function<H, R> function) {
-    this.action = FunctionActions.ofFunction(function);
+  public ObjectHandleMethodBuilder1<H> injectionKind(String kind) {
+    this.injectionKind = kind;
+    return this;
+  }
+
+  public ObjectHandleMethodBuilder1<H> injectionOrdinal(int ordinal) {
+    this.injectionOrdinal = ordinal;
+    return this;
+  }
+
+  public ObjectHandleMethodBuilder1<H> injectionName(String injectionName) {
+    this.injectionName = injectionName;
+    return this;
+  }
+
+  public ObjectHandleMethodBuilder1<H> injectionType(Class<?> injectionType) {
+    this.injectionType = injectionType;
     return this;
   }
 
@@ -53,7 +78,11 @@ public class ObjectHandleMethodBuilder1<H> {
         traverseOrdinal,
         action,
         channelClass,
-        traverseType
+        traverseType,
+        injectionKind,
+        injectionOrdinal,
+        injectionName,
+        injectionType
     );
   }
 }

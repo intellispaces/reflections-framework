@@ -24,7 +24,7 @@ public interface Modules {
    * @return loaded module.
    */
   static Module get(Class<?> moduleClass, String[] args) {
-    return JaquariusEngines.current().createModule(List.of(moduleClass), args);
+    return JaquariusEngines.get().createModule(List.of(moduleClass), args);
   }
 
   /**
@@ -37,7 +37,7 @@ public interface Modules {
    * @return loaded module.
    */
   static Module get(Class<?>... units) {
-    return JaquariusEngines.current().createModule(Arrays.stream(units).toList(), new String[0]);
+    return JaquariusEngines.get().createModule(Arrays.stream(units).toList(), new String[0]);
   }
 
   /**
@@ -51,7 +51,7 @@ public interface Modules {
    * @return loaded module.
    */
   static Module get(List<Class<?>> units, String[] args) {
-    return JaquariusEngines.current().createModule(units, new String[0]);
+    return JaquariusEngines.get().createModule(units, new String[0]);
   }
 
   /**

@@ -7,7 +7,7 @@ import java.util.ServiceLoader;
 public class JaquariusEngines {
   private static JaquariusEngine ENGINE = null;
 
-  public static JaquariusEngine current() {
+  public static JaquariusEngine get() {
     if (ENGINE == null) {
       ENGINE = findEngine();
     }

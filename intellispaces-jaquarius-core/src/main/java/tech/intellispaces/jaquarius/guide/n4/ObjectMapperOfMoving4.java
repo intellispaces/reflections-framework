@@ -23,9 +23,9 @@ public class ObjectMapperOfMoving4<S extends ObjectHandleWrapper, T, Q1, Q2, Q3,
       String cid,
       Class<S> objectHandleClass,
       MethodStatement guideMethod,
-      int channelIndex,
+      int traverseOrdinal,
       ObjectReferenceForm targetForm
   ) {
-    super(cid, objectHandleClass, guideMethod, channelIndex, targetForm);
+    super(cid, objectHandleClass, guideMethod, traverseOrdinal, targetForm);
   }
 }

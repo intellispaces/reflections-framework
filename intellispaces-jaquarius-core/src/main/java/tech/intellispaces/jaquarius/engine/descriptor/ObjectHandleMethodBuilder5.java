@@ -13,12 +13,17 @@ public class ObjectHandleMethodBuilder5<H, P1, P2, P3, P4> {
   private final Class<P2> paramClass2;
   private final Class<P3> paramClass3;
   private final Class<P4> paramClass4;
-
   private Action action;
-  private String purpose;
+  private ObjectHandleMethodPurpose purpose;
+
   private int traverseOrdinal;
   private Class<?> channelClass;
   private TraverseType traverseType;
+
+  private String injectionKind;
+  private int injectionOrdinal;
+  private String injectionName;
+  private Class<?> injectionType;
 
   public ObjectHandleMethodBuilder5(
       Class<H> objectHandleClass,
@@ -35,8 +40,13 @@ public class ObjectHandleMethodBuilder5<H, P1, P2, P3, P4> {
     this.paramClass4 = paramClass4;
   }
 
-  public ObjectHandleMethodBuilder5<H, P1, P2, P3, P4> purpose(String purpose) {
+  public ObjectHandleMethodBuilder5<H, P1, P2, P3, P4> purpose(ObjectHandleMethodPurpose purpose) {
     this.purpose = purpose;
+    return this;
+  }
+
+  public <R> ObjectHandleMethodBuilder5<H, P1, P2, P3, P4> function(QuintiFunction<H, P1, P2, P3, P4, R> function) {
+    this.action = FunctionActions.ofQuintiFunction(function);
     return this;
   }
 
@@ -55,8 +65,23 @@ public class ObjectHandleMethodBuilder5<H, P1, P2, P3, P4> {
     return this;
   }
 
-  public <R> ObjectHandleMethodBuilder5<H, P1, P2, P3, P4> function(QuintiFunction<H, P1, P2, P3, P4, R> function) {
-    this.action = FunctionActions.ofQuintiFunction(function);
+  public ObjectHandleMethodBuilder5<H, P1, P2, P3, P4> injectionKind(String kind) {
+    this.injectionKind = kind;
+    return this;
+  }
+
+  public ObjectHandleMethodBuilder5<H, P1, P2, P3, P4> injectionOrdinal(int ordinal) {
+    this.injectionOrdinal = ordinal;
+    return this;
+  }
+
+  public ObjectHandleMethodBuilder5<H, P1, P2, P3, P4> injectionName(String injectionName) {
+    this.injectionName = injectionName;
+    return this;
+  }
+
+  public ObjectHandleMethodBuilder5<H, P1, P2, P3, P4> injectionType(Class<?> injectionType) {
+    this.injectionType = injectionType;
     return this;
   }
 
@@ -68,7 +93,11 @@ public class ObjectHandleMethodBuilder5<H, P1, P2, P3, P4> {
         traverseOrdinal,
         action,
         channelClass,
-        traverseType
+        traverseType,
+        injectionKind,
+        injectionOrdinal,
+        injectionName,
+        injectionType
     );
   }
 }

@@ -12,12 +12,17 @@ public class ObjectHandleMethodBuilder4<H, P1, P2, P3> {
   private final Class<P1> paramClass1;
   private final Class<P2> paramClass2;
   private final Class<P3> paramClass3;
-
   private Action action;
-  private String purpose;
+  private ObjectHandleMethodPurpose purpose;
+
   private int traverseOrdinal;
   private Class<?> channelClass;
   private TraverseType traverseType;
+
+  private String injectionKind;
+  private int injectionOrdinal;
+  private String injectionName;
+  private Class<?> injectionType;
 
   public ObjectHandleMethodBuilder4(
       Class<H> objectHandleClass,
@@ -32,8 +37,13 @@ public class ObjectHandleMethodBuilder4<H, P1, P2, P3> {
     this.paramClass3 = paramClass3;
   }
 
-  public ObjectHandleMethodBuilder4<H, P1, P2, P3> purpose(String purpose) {
+  public ObjectHandleMethodBuilder4<H, P1, P2, P3> purpose(ObjectHandleMethodPurpose purpose) {
     this.purpose = purpose;
+    return this;
+  }
+
+  public <R> ObjectHandleMethodBuilder4<H, P1, P2, P3> function(QuadriFunction<H, P1, P2, P3, R> function) {
+    this.action = FunctionActions.ofQuadriFunction(function);
     return this;
   }
 
@@ -52,8 +62,23 @@ public class ObjectHandleMethodBuilder4<H, P1, P2, P3> {
     return this;
   }
 
-  public <R> ObjectHandleMethodBuilder4<H, P1, P2, P3> function(QuadriFunction<H, P1, P2, P3, R> function) {
-    this.action = FunctionActions.ofQuadriFunction(function);
+  public ObjectHandleMethodBuilder4<H, P1, P2, P3> injectionKind(String kind) {
+    this.injectionKind = kind;
+    return this;
+  }
+
+  public ObjectHandleMethodBuilder4<H, P1, P2, P3> injectionOrdinal(int ordinal) {
+    this.injectionOrdinal = ordinal;
+    return this;
+  }
+
+  public ObjectHandleMethodBuilder4<H, P1, P2, P3> injectionName(String injectionName) {
+    this.injectionName = injectionName;
+    return this;
+  }
+
+  public ObjectHandleMethodBuilder4<H, P1, P2, P3> injectionType(Class<?> injectionType) {
+    this.injectionType = injectionType;
     return this;
   }
 
@@ -65,7 +90,11 @@ public class ObjectHandleMethodBuilder4<H, P1, P2, P3> {
         traverseOrdinal,
         action,
         channelClass,
-        traverseType
+        traverseType,
+        injectionKind,
+        injectionOrdinal,
+        injectionName,
+        injectionType
     );
   }
 }

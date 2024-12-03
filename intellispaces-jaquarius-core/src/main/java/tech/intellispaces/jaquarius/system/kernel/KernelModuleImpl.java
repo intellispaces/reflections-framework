@@ -18,7 +18,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 class KernelModuleImpl implements KernelModule {
   private final Module module;
   private final List<KernelUnit> units;
-  private final ObjectRegistry objectRegistry;
   private final ProjectionRegistry projectionRegistry;
   private final GuideRegistry guideRegistry;
   private final TraverseAnalyzer traverseAnalyzer;
@@ -33,7 +32,6 @@ class KernelModuleImpl implements KernelModule {
 
   KernelModuleImpl(
       List<KernelUnit> units,
-      ObjectRegistry objectRegistry,
       ProjectionRegistry projectionRegistry,
       GuideRegistry guideRegistry,
       TraverseAnalyzer traverseAnalyzer,
@@ -41,7 +39,6 @@ class KernelModuleImpl implements KernelModule {
   ) {
     this.module = new ModuleImpl(this);
     this.units = List.copyOf(units);
-    this.objectRegistry = objectRegistry;
     this.projectionRegistry = projectionRegistry;
     this.guideRegistry = guideRegistry;
     this.traverseAnalyzer = traverseAnalyzer;
@@ -66,11 +63,6 @@ class KernelModuleImpl implements KernelModule {
   @Override
   public Module module() {
     return module;
-  }
-
-  @Override
-  public ObjectRegistry objectRegistry() {
-    return objectRegistry;
   }
 
   @Override

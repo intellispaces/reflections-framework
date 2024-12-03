@@ -14,7 +14,6 @@ import static tech.intellispaces.jaquarius.engine.descriptor.ObjectHandleMethods
 public class {{$classSimpleName}}{{$typeParamsFull}} extends {{$sourceClassSimpleName}}{{$typeParamsBrief}} implements ObjectHandleWrapper {
   private static ObjectHandleType $TYPE;
   private final ObjectHandleInstance $instance;
-  private InnerObjectHandle $innerHandle;
 
 {{for constructor : $constructors}}
   public {{$classSimpleName}}({{for param : $constructor.get("params")}}{{$param.get("type")}} {{$param.get("name")}}{{when $param.isNotLast()}}, {{end}}{{end}}) {
@@ -24,29 +23,8 @@ public class {{$classSimpleName}}{{$typeParamsFull}} extends {{$sourceClassSimpl
 {{end}}
 
   @Override
-  public void $init(InnerObjectHandle innerHandle) {
-    this.$innerHandle = innerHandle;
-{{when $injections.isNotEmpty()}}
-    this.$innerHandle.setInjections(
-{{for injection : $injections}}
-{{when $injection.get("kind").eq("guide")}}
-      GuideInjections.get({{$sourceClassSimpleName}}.class, "{{$injection.get("name")}}", {{$injection.get("type")}}.class){{when $injection.isNotLast()}},{{end}}
-{{else}}
-      AutoGuideInjections.get({{$sourceClassSimpleName}}.class, "{{$injection.get("name")}}", {{$injection.get("type")}}.class){{when $injection.isNotLast()}},{{end}}
-{{end}}
-{{end}}
-    );
-{{end}}
-  }
-
-  @Override
   public ObjectHandleInstance $objectHandleInstance() {
     return this.$instance;
-  }
-
-  @Override
-  public InnerObjectHandle $innerHandle() {
-    return this.$innerHandle;
   }
 
 {{for method : $conversionMethods}}
@@ -177,18 +155,19 @@ public class {{$classSimpleName}}{{$typeParamsFull}} extends {{$sourceClassSimpl
     if ($TYPE == null) {
       $TYPE = $registerObjectHandleType();
     }
-    return JaquariusEngines.current().registerObjectHandleInstance(this, $TYPE);
+    return JaquariusEngines.get().registerObjectHandleInstance(this, $TYPE);
   }
 
   private static ObjectHandleType $registerObjectHandleType() {
-    return JaquariusEngines.current().registerObjectHandleType(
+    return JaquariusEngines.get().registerObjectHandleType(
         {{$classSimpleName}}.class,
-        {{$sourceClassSimpleName}}.class{{when $objectHandleMethods.isNotEmpty()}},{{end}}
-{{for method : $objectHandleMethods}}
+        {{$sourceClassSimpleName}}.class{{when $wrapperMethods.isNotEmpty()}},{{end}}
+{{for method : $wrapperMethods}}
         objectHandleMethod({{$classSimpleName}}.class, "{{$method.get("name")}}"{{for param : $method.get("params")}}, {{$param}}.class{{end}})
-            .purpose("{{$method.get("purpose")}}")
-{{when $method.get("ordinal").isVoid().invert()}}
-            .traverseOrdinal({{$method.get("ordinal")}})
+            .purpose(ObjectHandleMethodPurposes.{{$method.get("purpose")}})
+            .function({{$classSimpleName}}::{{$method.get("name")}})
+{{when $method.get("traverseOrdinal").isVoid().invert()}}
+            .traverseOrdinal({{$method.get("traverseOrdinal")}})
 {{end}}
 {{when $method.get("channelClass").isVoid().invert()}}
             .channelClass({{$method.get("channelClass")}}.class)
@@ -196,7 +175,18 @@ public class {{$classSimpleName}}{{$typeParamsFull}} extends {{$sourceClassSimpl
 {{when $method.get("traverseType").isVoid().invert()}}
             .traverseType(TraverseTypes.{{$method.get("traverseType")}})
 {{end}}
-            .function({{$classSimpleName}}::{{$method.get("name")}})
+{{when $method.get("injectionKind").isVoid().invert()}}
+            .injectionKind("{{$method.get("injectionKind")}}")
+{{end}}
+{{when $method.get("injectionOrdinal").isVoid().invert()}}
+            .injectionOrdinal({{$method.get("injectionOrdinal")}})
+{{end}}
+{{when $method.get("injectionName").isVoid().invert()}}
+            .injectionName("{{$method.get("injectionName")}}")
+{{end}}
+{{when $method.get("injectionType").isVoid().invert()}}
+            .injectionType({{$method.get("injectionType")}}.class)
+{{end}}
             .get(){{when $method.isNotLast()}},{{end}}
 {{end}}
     );

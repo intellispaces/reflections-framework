@@ -4,9 +4,9 @@ import tech.intellispaces.jaquarius.system.InjectionKind;
 
 public enum InjectionKinds implements InjectionKind {
 
-  ProjectionInjection,
+  Projection,
 
-  GuideInjection,
+  SpecificGuide,
 
-  AutoGuideInjection
+  AutoGuide
 }

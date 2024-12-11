@@ -1,7 +1,5 @@
 package tech.intellispaces.jaquarius.annotation;
 
-import tech.intellispaces.java.annotation.AnnotatedTypeProcessor;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -11,5 +9,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface AnnotationProcessor {
 
-  Class<? extends AnnotatedTypeProcessor> value();
+  Class<?> value() default Void.class;
+
+  String name() default "";
 }

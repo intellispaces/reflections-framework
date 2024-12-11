@@ -3,7 +3,7 @@ package tech.intellispaces.jaquarius.system;
 import java.util.List;
 
 /**
- * Module projection provider.
+ * The module projection provider.
  */
 public interface ProjectionProvider {
 

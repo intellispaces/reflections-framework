@@ -2,8 +2,8 @@ package tech.intellispaces.jaquarius.system.injection;
 
 import tech.intellispaces.general.exception.UnexpectedExceptions;
 import tech.intellispaces.jaquarius.system.InjectionKind;
+import tech.intellispaces.jaquarius.system.Modules;
 import tech.intellispaces.jaquarius.system.ProjectionInjection;
-import tech.intellispaces.jaquarius.system.kernel.KernelFunctions;
 
 class ProjectionInjectionImpl implements ProjectionInjection {
   private final Class<?> unitClass;
@@ -19,7 +19,7 @@ class ProjectionInjectionImpl implements ProjectionInjection {
 
   @Override
   public InjectionKind kind() {
-    return InjectionKinds.ProjectionInjection;
+    return InjectionKinds.Projection;
   }
 
   @Override
@@ -45,7 +45,7 @@ class ProjectionInjectionImpl implements ProjectionInjection {
   @Override
   public Object value() {
     if (projectionTarget == null) {
-      projectionTarget = KernelFunctions.currentModule().projectionRegistry().getProjection(name, targetClass);
+      projectionTarget = Modules.current().getProjection(name, targetClass);
       if (projectionTarget == null) {
         throw UnexpectedExceptions.withMessage("Target of projection injection '{0}' in unit {1} " +
                 "is not defined", name(), unitClass.getCanonicalName());

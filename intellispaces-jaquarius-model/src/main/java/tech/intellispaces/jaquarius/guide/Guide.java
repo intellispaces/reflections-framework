@@ -4,15 +4,17 @@ import tech.intellispaces.jaquarius.exception.TraverseException;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 
 /**
- * Guide.<p/>
+ * The guide.<p/>
  *
- * Guide is a micro system designed for processing objects. Guide can map or move objects.
- * Guides splits code into lightweight systems.<p/>
+ * The guide is a microsystem designed for one specific processing of objects of the same type.
  *
- * The guide is object. Guide can be constructed from other guides.<p/>
+ * Guides splits system into lightweight subsystems.<p/>
  *
- * @param <S> source handle type. This type defines guide applicability.
- * @param <R> result handle type.
+ * The guide is object.<p/>
+ * Guide can be constructed from other guides.<p/>
+ *
+ * @param <S> the source handle type. This type defines the guide applicability.
+ * @param <R> the result handle type.
  */
 public interface Guide<S, R> {
 

@@ -3,7 +3,6 @@ package tech.intellispaces.jaquarius.system.projection;
 import tech.intellispaces.action.Action;
 import tech.intellispaces.general.exception.NotImplementedExceptions;
 import tech.intellispaces.jaquarius.system.ProjectionDefinitionKind;
-import tech.intellispaces.jaquarius.system.ProjectionDefinitionKinds;
 import tech.intellispaces.jaquarius.system.ProjectionReference;
 import tech.intellispaces.jaquarius.system.UnitProjectionDefinition;
 

@@ -2,6 +2,9 @@ package tech.intellispaces.jaquarius.traverse.plan;
 
 import tech.intellispaces.jaquarius.exception.TraverseException;
 
+/**
+ * The traverse plan executor.
+ */
 public interface TraverseExecutor {
 
   Object execute(CallGuide0Plan plan, Object source) throws TraverseException;

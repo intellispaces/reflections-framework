@@ -15,27 +15,29 @@ import java.lang.annotation.Target;
 public @interface Channel {
 
   /**
-   * Channel identifier (CID).
+   * The channel identifier (CID).
    */
   String value();
 
   /**
-   * Simple channel name.
+   * The simple channel name.
    */
   String name() default "";
 
   /**
-   * Flag of the default channel between two domains.
+   * The flag of the default channel between two domains.
    */
   boolean isDefault() default false;
 
   /**
-   * Allowed traverse types.
+   * Allowed traverse types.<p/>
+   *
+   * By default, mapping traverse type is used.
    */
   TraverseTypes[] allowedTraverse() default { TraverseTypes.Mapping };
 
   /**
-   * Default traverse type.<p/>
+   * The default traverse type.<p/>
    *
    * This parameter is used only if parameter allowedTraverse has multiple values.
    */

@@ -7,7 +7,7 @@ import java.lang.reflect.Method;
 public abstract class AbstractProjectionTargetSupplier implements ProjectionTargetSupplier {
   protected final Method projectionMethod;
 
-  AbstractProjectionTargetSupplier(Method projectionMethod) {
+  public AbstractProjectionTargetSupplier(Method projectionMethod) {
     this.projectionMethod = projectionMethod;
   }
 }

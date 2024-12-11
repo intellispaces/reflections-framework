@@ -50,7 +50,7 @@ abstract class ObjectGuide0<S extends ObjectHandleWrapper, R> implements Guide0<
   public R traverse(S source) throws TraverseException {
     try {
       GuideLogger.logCallGuide(guideMethod);
-      return (R) source.$objectHandleInstance().guideAction(traverseOrdinal).castToAction1().execute(source);
+      return (R) source.$agent().guideAction(traverseOrdinal).castToAction1().execute(source);
     } catch (TraverseException e) {
       throw e;
     } catch (Exception e) {
@@ -63,7 +63,7 @@ abstract class ObjectGuide0<S extends ObjectHandleWrapper, R> implements Guide0<
   public int traverseToInt(S source) throws TraverseException {
     try {
       GuideLogger.logCallGuide(guideMethod);
-      return source.$objectHandleInstance().guideAction(traverseOrdinal).castToAction1().executeReturnInt(source);
+      return source.$agent().guideAction(traverseOrdinal).castToAction1().executeReturnInt(source);
     } catch (TraverseException e) {
       throw e;
     } catch (Exception e) {
@@ -76,7 +76,7 @@ abstract class ObjectGuide0<S extends ObjectHandleWrapper, R> implements Guide0<
   public double traverseToDouble(S source) throws TraverseException {
     try {
       GuideLogger.logCallGuide(guideMethod);
-      return source.$objectHandleInstance().guideAction(traverseOrdinal).castToAction1().executeReturnDouble(source);
+      return source.$agent().guideAction(traverseOrdinal).castToAction1().executeReturnDouble(source);
     } catch (TraverseException e) {
       throw e;
     } catch (Exception e) {

@@ -3,7 +3,7 @@ package tech.intellispaces.jaquarius.traverse.plan;
 import tech.intellispaces.jaquarius.exception.TraverseException;
 
 /**
- * Plan to traverse (map or move) source object in semantic space.
+ * The plan to traverse source object in semantic space.
  */
 public interface TraversePlan {
 

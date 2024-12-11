@@ -1,0 +1,40 @@
+package {{$generatedArtifactPackageName}};
+
+{{for importedClass : $importedClasses}}
+import {{$importedClass}};
+{{end}}
+
+/**
+ * Guide through channel {@link {{$channelClassSimpleName}}}.<p/>
+ *
+ * This class was generated automatically. Don't try to change it.
+ */
+@Guide
+@FunctionalInterface
+{{$generatedAnnotation}}
+public interface {{$generatedArtifactSimpleName}} extends {{$guideClassSimpleName}}{{$guideTypeParams}} {
+
+  @Override
+  default String cid() {
+    return ChannelFunctions.getChannelId({{$channelClassSimpleName}}.class);
+  }
+
+  @Override
+  default ObjectReferenceForm targetForm() {
+    return ObjectReferenceForms.{{$targetForm}};
+  }
+
+  @Override
+  {{$traverseMethodMainForm}}
+
+  {{$guideAnnotation}}({{$channelClassSimpleName}}.class)
+  {{$guideMethod}}
+
+{{when $guideClassSimpleName.eqAnyOf("AbstractMapper0", "AbstractMapperOfMoving0")}}
+  @Override
+  {{$traverseMethodPrimitiveFormLong}}
+
+  @Override
+  {{$traverseMethodPrimitiveFormDouble}}
+{{end}}
+}

@@ -5,23 +5,23 @@ import tech.intellispaces.jaquarius.exception.TraverseException;
 import tech.intellispaces.jaquarius.exception.TraverseExceptions;
 import tech.intellispaces.jaquarius.guide.GuideLogger;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
+import tech.intellispaces.jaquarius.system.UnitGuide;
 import tech.intellispaces.jaquarius.system.UnitWrapper;
-import tech.intellispaces.jaquarius.system.kernel.KernelUnitGuide;
 import tech.intellispaces.java.reflection.method.MethodStatement;
 
-abstract class UnitGuide0<S, R> implements Guide0<S, R>, KernelUnitGuide<S, R> {
+abstract class UnitGuide0<S, R> implements Guide0<S, R>, UnitGuide<S, R> {
   private final String cid;
-  private final UnitWrapper unitInstance;
+  private final UnitWrapper unit;
   private final MethodStatement guideMethod;
   private final int guideOrdinal;
   private final ObjectReferenceForm targetForm;
 
-  UnitGuide0(String cid, UnitWrapper unitInstance, MethodStatement guideMethod, int guideOrdinal, ObjectReferenceForm targetForm) {
+  UnitGuide0(String cid, UnitWrapper unit, MethodStatement guideMethod, int guideOrdinal, ObjectReferenceForm targetForm) {
     if (guideMethod.params().size() != 1) {
       throw UnexpectedExceptions.withMessage("Guide method should have one parameter: source");
     }
     this.cid = cid;
-    this.unitInstance = unitInstance;
+    this.unit = unit;
     this.guideMethod = guideMethod;
     this.guideOrdinal = guideOrdinal;
     this.targetForm = targetForm;
@@ -52,7 +52,7 @@ abstract class UnitGuide0<S, R> implements Guide0<S, R>, KernelUnitGuide<S, R> {
   public R traverse(S source) throws TraverseException {
     try {
       GuideLogger.logCallGuide(guideMethod);
-      return (R) unitInstance.$unit().getGuideAction(guideOrdinal).castToAction2().execute(unitInstance, source);
+      return (R) unit.$agent().guideAction(guideOrdinal).castToAction1().execute(source);
     } catch (TraverseException e) {
       throw e;
     } catch (Exception e) {
@@ -65,7 +65,7 @@ abstract class UnitGuide0<S, R> implements Guide0<S, R>, KernelUnitGuide<S, R> {
   public int traverseToInt(S source) throws TraverseException {
     try {
       GuideLogger.logCallGuide(guideMethod);
-      return unitInstance.$unit().getGuideAction(guideOrdinal).castToAction2().executeReturnInt(unitInstance, source);
+      return unit.$agent().guideAction(guideOrdinal).castToAction1().executeReturnInt(source);
     } catch (TraverseException e) {
       throw e;
     } catch (Exception e) {
@@ -78,7 +78,7 @@ abstract class UnitGuide0<S, R> implements Guide0<S, R>, KernelUnitGuide<S, R> {
   public double traverseToDouble(S source) throws TraverseException {
     try {
       GuideLogger.logCallGuide(guideMethod);
-      return unitInstance.$unit().getGuideAction(guideOrdinal).castToAction2().executeReturnDouble(unitInstance, source);
+      return unit.$agent().guideAction(guideOrdinal).castToAction1().executeReturnDouble(source);
     } catch (TraverseException e) {
       throw e;
     } catch (Exception e) {

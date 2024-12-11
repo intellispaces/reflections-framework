@@ -23,12 +23,16 @@ import tech.intellispaces.jaquarius.guide.n3.Mover3;
 import tech.intellispaces.jaquarius.guide.n4.MapperOfMoving4;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 
+import java.util.List;
+
 /**
- * System module.
+ * The system module.
  */
 public interface Module {
 
   void start();
+
+  void start(String[] args);
 
   void stop();
 
@@ -101,4 +105,29 @@ public interface Module {
   <S, T, Q1, Q2, Q3> MapperOfMoving3<S, T, Q1, Q2, Q3> autoMapperOfMovingThruChannel3(Type<S> sourceType, Class<? extends Channel3> channelClass, ObjectReferenceForm targetForm);
 
   <S, T, Q1, Q2, Q3, Q4> MapperOfMoving4<S, T, Q1, Q2, Q3, Q4> autoMapperOfMovingThruChannel4(Type<S> sourceType, Class<? extends Channel4> channelClass, ObjectReferenceForm targetForm);
+
+  <G> G getGuide(String name, Class<G> guideClass);
+
+  <G> G getAutoGuide(Class<G> guideClass);
+
+  <T> T getProjection(String name, Class<T> targetObjectHandleClass);
+
+  <T> List<T> getProjections(Class<T> targetObjectHandleClass);
+
+  /**
+   * Adds context projection.
+   *
+   * @param name the projection name.
+   * @param targetObjectHandleClass the projection target class.
+   * @param target the projection target.
+   * @param <T> the projection target type.
+   */
+  <T> void addContextProjection(String name, Class<T> targetObjectHandleClass, T target);
+
+  /**
+   * Removes context projection.
+   *
+   * @param name the projection name.
+   */
+  void removeContextProjection(String name);
 }

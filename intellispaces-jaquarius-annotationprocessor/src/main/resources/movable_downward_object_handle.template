@@ -1,0 +1,158 @@
+package {{$generatedArtifactPackageName}};
+
+{{for importedClass : $importedClasses}}
+import {{$importedClass}};
+{{end}}
+
+/**
+ * Movable downward object handle for objects of domain {@link {{$sourceArtifactSimpleName}}}.<p/>
+ *
+ * This class was generated automatically. Don't try to change it.
+ */
+@ObjectHandle({{$sourceArtifactSimpleName}}.class)
+{{$generatedAnnotation}}
+public class {{$generatedArtifactSimpleName}}{{$classTypeParams}} implements {{$movableObjectHandleName}}{{$domainTypeArguments}} {
+  private final {{$childObjectHandleType}}{{$classTypeParamsBrief}} {{$childField}};
+
+  public {{$generatedArtifactSimpleName}}({{$childObjectHandleType}}{{$classTypeParamsBrief}} {{$childField}}) {
+    this.{{$childField}} = {{$childField}};
+  }
+
+{{when $isAlias}}
+  @Override
+  public Type<{{$primaryDomainSimpleName}}{{$domainTypeArguments}}> domain() {
+    return {{$domainType}}
+  }
+
+  @Override
+  public Class<?> domainClass() {
+    return {{$domainClassSimpleName}}.class;
+  }
+{{else}}
+{{when $domainTypeParamsBrief.isEmpty()}}
+  @Override
+  public Type<{{$parentDomainClassSimpleName}}> domain() {
+    return Types.get({{$parentDomainClassSimpleName}}.class);
+  }
+
+  @Override
+  public Class<?> domainClass() {
+    return {{$domainClassSimpleName}}.class;
+  }
+{{else}}
+  @Override
+  public Type<{{$parentDomainClassSimpleName}}{{$domainTypeParamsBrief}}> domain() {
+    return {{$domainType}}
+  }
+{{end}}
+{{end}}
+{{end}}
+
+{{for method : $methods}}
+  {{$method.get("javadoc")}}
+  @Override
+  {{$method.get("declaration")}};
+
+{{end}}
+
+  @Override
+  public void release() {
+    {{$childField}}.release();
+  }
+
+  @Override
+  public <T, Q, C extends Channel1 & MappingChannel> T mapThru(Class<C> channelClass, Q qualifier) throws TraverseException {
+    return (T) {{$childField}}.mapThru(channelClass, qualifier);
+  }
+
+  @Override
+  public <Q> {{$movableObjectHandleName}}{{$domainTypeArguments}} moveThru(String cid, Q qualifier) throws TraverseException {
+    {{$childField}}.moveThru(cid, qualifier);
+    return this;
+  }
+
+{{when $isAlias}}
+  @Override
+  public {{$movableObjectHandleName}}{{$domainTypeArguments}} moveThru(ChannelMethod0<? super {{$primaryDomainSimpleName}}{{$domainTypeArguments}}, ? super {{$primaryDomainSimpleName}}{{$domainTypeArguments}}> channelMethod) throws TraverseException {
+    {{$childField}}.moveThru(channelMethod);
+    return this;
+  }
+
+  @Override
+  public <Q> {{$movableObjectHandleName}}{{$domainTypeArguments}} moveThru(ChannelMethod1<? super {{$primaryDomainSimpleName}}{{$domainTypeArguments}}, ? super {{$primaryDomainSimpleName}}{{$domainTypeArguments}}, Q> channelMethod, Q qualifier) throws TraverseException {
+    {{$childField}}.moveThru(channelMethod, qualifier);
+    return this;
+  }
+{{else}}
+  @Override
+  public {{$movableObjectHandleName}}{{$domainTypeArguments}} moveThru(ChannelMethod0<? super {{$domainClassSimpleName}}{{$domainTypeArguments}}, ? super {{$domainClassSimpleName}}{{$domainTypeArguments}}> channelMethod) throws TraverseException {
+    {{$childField}}.moveThru(channelMethod);
+    return this;
+  }
+
+  @Override
+  public <Q> {{$movableObjectHandleName}}{{$domainTypeArguments}} moveThru(ChannelMethod1<? super {{$domainClassSimpleName}}{{$domainTypeArguments}}, ? super {{$domainClassSimpleName}}{{$domainTypeArguments}}, Q> channelMethod, Q qualifier) throws TraverseException {
+    {{$childField}}.moveThru(channelMethod, qualifier);
+    return this;
+  }
+{{end}}
+
+  @Override
+  public {{$movableObjectHandleName}}{{$domainTypeArguments}} moveThru(Class<? extends Channel0> channelClass) throws TraverseException {
+    {{$childField}}.moveThru(channelClass);
+    return this;
+  }
+
+  @Override
+  public <Q> {{$movableObjectHandleName}}{{$domainTypeArguments}} moveThru(Class<? extends Channel1> channelClass, Q qualifier) throws TraverseException {
+    {{$childField}}.moveThru(channelClass, qualifier);
+    return this;
+  }
+
+  @Override
+  public <R, Q> R mapOfMovingThru(String cid, Q qualifier) throws TraverseException {
+    return (R) {{$childField}}.mapOfMovingThru(cid, qualifier);
+  }
+
+{{when $isAlias}}
+  @Override
+  public <R> R mapOfMovingThru(ChannelMethod0<? super {{$primaryDomainSimpleName}}{{$domainTypeArguments}}, R> channelMethod) throws TraverseException {
+    return (R) {{$childField}}.mapOfMovingThru(channelMethod);
+  }
+
+  @Override
+  public <R, Q> R mapOfMovingThru(ChannelMethod1<? super {{$primaryDomainSimpleName}}{{$domainTypeArguments}}, R, Q> channelMethod, Q qualifier) throws TraverseException {
+    return (R) {{$childField}}.mapOfMovingThru(channelMethod, qualifier);
+  }
+{{else}}
+  @Override
+  public <R> R mapOfMovingThru(ChannelMethod0<? super {{$domainClassSimpleName}}{{$domainTypeArguments}}, R> channelMethod) throws TraverseException {
+    return (R) {{$childField}}.mapOfMovingThru(channelMethod);
+  }
+
+  @Override
+  public <R, Q> R mapOfMovingThru(ChannelMethod1<? super {{$domainClassSimpleName}}{{$domainTypeArguments}}, R, Q> channelMethod, Q qualifier) throws TraverseException {
+    return (R) {{$childField}}.mapOfMovingThru(channelMethod, qualifier);
+  }
+{{end}}
+
+  @Override
+  public <TD, TH> void addProjection(Class<TD> targetDomain, TH target) {
+    {{$childField}}.addProjection(targetDomain, target);
+  }
+
+  @Override
+  public <TD, TH> TH mapTo(Class<TD> targetDomain) {
+    return {{$childField}}.mapTo(targetDomain);
+  }
+
+  @Override
+  public <R> R mapOfMovingThru(Class<? extends Channel0> channelClass) throws TraverseException {
+    return (R) {{$childField}}.mapOfMovingThru(channelClass);
+  }
+
+  @Override
+  public <R, Q, C extends Channel1 & MappingOfMovingChannel> R mapOfMovingThru(Class<C> channelClass, Q qualifier) throws TraverseException {
+    return (R) {{$childField}}.mapOfMovingThru(channelClass, qualifier);
+  }
+}

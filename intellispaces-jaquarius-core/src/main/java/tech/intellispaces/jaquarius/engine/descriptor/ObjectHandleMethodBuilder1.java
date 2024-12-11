@@ -70,8 +70,8 @@ public class ObjectHandleMethodBuilder1<H> {
     return this;
   }
 
-  public ObjectHandleMethod get() {
-    return new ObjectHandleMethodImpl(
+  public ObjectHandleMethodDescriptor get() {
+    return new ObjectHandleMethodDescriptorImpl(
         name,
         List.of(),
         purpose,

@@ -1,0 +1,72 @@
+package {{$generatedArtifactPackageName}};
+
+{{for importedClass : $importedClasses}}
+import {{$importedClass}};
+{{end}}
+
+/**
+ * Unmovable object handle implementation for data object of domain {@link {{$sourceArtifactSimpleName}}}.<p/>
+ *
+ * Data objects are entirely in memory.<p/>
+ *
+ * This class was generated automatically. Don't try to change it.
+ */
+@ObjectHandle({{$sourceArtifactSimpleName}}.class)
+{{$generatedAnnotation}}
+public class {{$generatedArtifactSimpleName}} implements {{$objectHandleClassName}} {
+{{for projection : $projections}}
+  private final {{$projection.get("type")}} {{$projection.get("name")}};
+{{end}}
+
+  public {{$generatedArtifactSimpleName}}(
+{{for projection : $projections}}
+    @Name("{{$projection.get("name")}}") {{$projection.get("type")}} {{$projection.get("name")}}{{when $projection.isNotLast()}},{{end}}
+{{end}}
+  ) {
+{{for projection : $projections}}
+    this.{{$projection.get("name")}} = {{$projection.get("name")}};
+{{end}}
+  }
+
+{{for projection : $projections}}
+  @Override
+  public {{$projection.get("type")}} {{$projection.get("name")}}() {
+    return this.{{$projection.get("name")}};
+  }
+
+{{when $projection.get("type").eq("Integer")}}
+  @Override
+  public int {{$projection.get("name")}}Primitive() {
+    Objects.requireNonNull(this.{{$projection.get("name")}});
+    return this.{{$projection.get("name")}};
+  }
+{{else when $projection.get("type").eq("Double")}}
+  @Override
+  public double {{$projection.get("name")}}Primitive() {
+    Objects.requireNonNull(this.{{$projection.get("name")}});
+    return this.{{$projection.get("name")}};
+  }
+{{end}}
+{{end}}
+
+  @Override
+  public void release() {
+    // do nothing
+  }
+
+  @Override
+  public <TD, TH> void addProjection(Class<TD> targetDomain, TH target) {
+    throw NotImplementedExceptions.withCode("5mEyvQ");
+  }
+
+  @Override
+  public <TD, TH> TH mapTo(Class<TD> targetDomain) {
+    throw NotImplementedExceptions.withCode("zGRjYw");
+  }
+
+  @Override
+  public <T, Q, C extends Channel1 & MappingChannel> T mapThru(Class<C> channelClass, Q qualifier) throws TraverseException {
+    Type<{{$sourceArtifactSimpleName}}{{$typeParamsBrief}}> sourceType = Types.get({{$sourceArtifactSimpleName}}.class);
+    return Modules.current().mapThruChannel1(sourceType, channelClass, qualifier);
+  }
+}

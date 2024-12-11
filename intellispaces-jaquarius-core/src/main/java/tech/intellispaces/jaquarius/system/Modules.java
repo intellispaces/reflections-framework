@@ -1,80 +1,106 @@
 package tech.intellispaces.jaquarius.system;
 
-import tech.intellispaces.general.exception.UnexpectedExceptions;
 import tech.intellispaces.jaquarius.engine.JaquariusEngines;
-import tech.intellispaces.jaquarius.system.kernel.KernelFunctions;
-import tech.intellispaces.jaquarius.system.kernel.KernelModule;
+import tech.intellispaces.jaquarius.exception.ConfigurationExceptions;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 /**
- * Intellispaces system modules provider.
+ * System modules provider.
  */
-public interface Modules {
+public class Modules {
+  private final static List<Module> MODULES = new ArrayList<>();
 
   /**
-   * Loads Intellispaces system module into application.<p/>
+   * Creates new system module in the application.<p/>
    *
-   * Only one module can be loaded in application.
-   * If the module is already loaded in application, it will be unloaded.
-   *
-   * @param moduleClass module class.
+   * @param moduleClass the module class.
    * @param args command line arguments.
-   * @return loaded module.
+   * @return the created module.
    */
-  static Module get(Class<?> moduleClass, String[] args) {
-    return JaquariusEngines.get().createModule(List.of(moduleClass), args);
+  public static Module load(Class<?> moduleClass, String[] args) {
+    Module module = JaquariusEngines.get().createModule(List.of(moduleClass), args);
+    MODULES.add(module);
+    return module;
   }
 
   /**
-   * Loads Intellispaces system module into application.<p/>
+   * Creates new system module in the application.<p/>
    *
-   * Only one module can be loaded in application.
-   * If the module is already loaded in application, it will be unloaded.
-   *
-   * @param units module unit classes.
-   * @return loaded module.
+   * @param unitClasses unit classes.
+   * @return the created module.
    */
-  static Module get(Class<?>... units) {
-    return JaquariusEngines.get().createModule(Arrays.stream(units).toList(), new String[0]);
+  public static Module load(Class<?>... unitClasses) {
+    Module module = JaquariusEngines.get().createModule(Arrays.stream(unitClasses).toList(), new String[0]);
+    MODULES.add(module);
+    return module;
   }
 
   /**
-   * Loads Intellispaces system module into application.<p/>
+   * Creates new system module in the application.<p/>
    *
-   * Only one module can be loaded in application.
-   * If the module is already loaded in application, it will be unloaded.
-   *
-   * @param units module unit classes.
+   * @param unitClasses unit classes.
    * @param args command line arguments.
-   * @return loaded module.
+   * @return the created module.
    */
-  static Module get(List<Class<?>> units, String[] args) {
-    return JaquariusEngines.get().createModule(units, new String[0]);
+  public static Module load(List<Class<?>> unitClasses, String[] args) {
+    Module module = JaquariusEngines.get().createModule(unitClasses, new String[0]);
+    MODULES.add(module);
+    return module;
   }
 
   /**
-   * Returns current module loaded into application.<p/>
+   * Unloads current module.
+   */
+  public static void unload() {
+    unload(current());
+  }
+
+  /**
+   * Unloads given module.
+   */
+  public static void unload(Module module) {
+    module.stop();
+    MODULES.remove(module);
+  }
+
+  public static void flash(Class<?>... unitClasses) {
+    try {
+      Modules.load(unitClasses).start();
+    } finally {
+      Modules.unload();
+    }
+  }
+
+  /**
+   * Returns the current module loaded into the application.<p/>
    *
    * If module is not loaded to application, then exception can be thrown.
    */
-  static Module current() {
-    KernelModule km = KernelFunctions.currentModuleSilently();
-    if (km == null || km.module() == null) {
-      throw UnexpectedExceptions.withMessage("Current module is not defined. " +
-          "It is possible that the module is not loaded yet");
+  public static Module current() {
+    Module module = currentSilently();
+    if (module == null) {
+      throw ConfigurationExceptions.withMessage("There are no modules loaded into the application");
     }
-    return km.module();
+    return module;
   }
 
   /**
-   * Returns current module loaded into application.
+   * Returns the current module loaded into the application.
    *
-   * @return module or <code>null</code> is module is not loaded into application.
+   * @return current module or <code>null</code> is module is not loaded into the application.
    */
-  static Module currentSilently() {
-    KernelModule km = KernelFunctions.currentModuleSilently();
-    return km != null ? km.module() : null;
+  public static Module currentSilently() {
+    if (MODULES.isEmpty()) {
+      return null;
+    }
+    if (MODULES.size() > 1) {
+      throw ConfigurationExceptions.withMessage("Multiple modules are loaded into the application");
+    }
+    return MODULES.get(0);
   }
+
+  private Modules() {}
 }

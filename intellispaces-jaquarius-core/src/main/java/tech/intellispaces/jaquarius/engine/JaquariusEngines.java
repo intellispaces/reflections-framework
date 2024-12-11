@@ -9,15 +9,16 @@ public class JaquariusEngines {
 
   public static JaquariusEngine get() {
     if (ENGINE == null) {
-      ENGINE = findEngine();
+      ENGINE = find();
     }
     return ENGINE;
   }
 
-  private static JaquariusEngine findEngine() {
+  private static JaquariusEngine find() {
     ServiceLoader<JaquariusEngine> serviceLoader = ServiceLoader.load(JaquariusEngine.class);
     return serviceLoader.findFirst().orElseThrow(() -> UnexpectedExceptions.withMessage(
-        "The implementation of the factory {0} is not provided", JaquariusEngine.class.getCanonicalName()));
+        "The implementation of the Jaquarius Engine interface {0} is not found",
+        JaquariusEngine.class.getCanonicalName()));
   }
 
   private JaquariusEngines() {}

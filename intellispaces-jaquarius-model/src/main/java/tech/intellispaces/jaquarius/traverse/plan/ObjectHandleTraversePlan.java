@@ -1,7 +1,7 @@
 package tech.intellispaces.jaquarius.traverse.plan;
 
 /**
- * Declarative plan to traverse object handle through channel.
+ * The declarative plan to traverse object handle through channel.
  */
 public interface ObjectHandleTraversePlan extends DeclarativeTraversePlan {
 

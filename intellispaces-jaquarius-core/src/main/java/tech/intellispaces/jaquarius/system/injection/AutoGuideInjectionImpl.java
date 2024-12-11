@@ -3,7 +3,7 @@ package tech.intellispaces.jaquarius.system.injection;
 import tech.intellispaces.general.exception.UnexpectedExceptions;
 import tech.intellispaces.jaquarius.system.AutoGuideInjection;
 import tech.intellispaces.jaquarius.system.InjectionKind;
-import tech.intellispaces.jaquarius.system.kernel.KernelFunctions;
+import tech.intellispaces.jaquarius.system.Modules;
 
 class AutoGuideInjectionImpl implements AutoGuideInjection {
   private final Class<?> unitClass;
@@ -19,7 +19,7 @@ class AutoGuideInjectionImpl implements AutoGuideInjection {
 
   @Override
   public InjectionKind kind() {
-    return InjectionKinds.AutoGuideInjection;
+    return InjectionKinds.AutoGuide;
   }
 
   @Override
@@ -40,7 +40,7 @@ class AutoGuideInjectionImpl implements AutoGuideInjection {
   @Override
   public Object value() {
     if (guide == null) {
-      guide = KernelFunctions.currentModuleSilently().guideRegistry().getAutoGuide(guideClass);
+      guide = Modules.current().getAutoGuide(guideClass);
       if (guide == null) {
         throw UnexpectedExceptions.withMessage("Value of auto guide injection '{0}' in unit {1} is not defined",
             name(), unitClass.getCanonicalName());

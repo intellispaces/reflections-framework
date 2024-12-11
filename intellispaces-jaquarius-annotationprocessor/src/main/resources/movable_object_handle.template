@@ -1,0 +1,67 @@
+package {{$generatedArtifactPackageName}};
+
+{{for importedClass : $importedClasses}}
+import {{$importedClass}};
+{{end}}
+
+/**
+ * Movable object handle for domain {@link {{$sourceArtifactSimpleName}}}.<p/>
+ *
+ * This class was generated automatically. Don't try to change it.
+ */
+@Movable
+@ObjectHandle({{$sourceArtifactSimpleName}}.class)
+{{$generatedAnnotation}}
+{{when $isAlias}}
+public interface {{$generatedArtifactSimpleName}}{{$domainTypeParamsFull}} extends {{$baseObjectHandle}}{{$domainTypeParamsBrief}}, {{$primaryObjectHandle}} {
+{{else}}
+public interface {{$generatedArtifactSimpleName}}{{$domainTypeParamsFull}} extends {{$baseObjectHandle}}{{$domainTypeParamsBrief}}, MovableObjectHandle<{{$sourceArtifactSimpleName}}{{$domainTypeParamsBrief}}> {
+{{end}}
+
+{{for method : $conversionMethods}}
+  @Override
+  {{$method.get("declaration")}};
+
+{{end}}
+{{for method : $domainMethods}}
+  {{$method.get("javadoc")}}
+  {{$method.get("declaration")}};
+
+{{end}}
+  @Override
+  default {{$generatedArtifactSimpleName}}{{$domainTypeParamsBrief}} asMovableOrElseThrow() {
+    return this;
+  }
+
+  <Q> {{$generatedArtifactSimpleName}}{{$domainTypeParamsBrief}} moveThru(String cid, Q qualifier) throws TraverseException;
+
+{{when $isAlias}}
+  {{$generatedArtifactSimpleName}}{{$domainTypeParamsBrief}} moveThru(ChannelMethod0<? super {{$primaryDomainSimpleName}}{{$primaryDomainTypeArguments}}, ? super {{$primaryDomainSimpleName}}{{$primaryDomainTypeArguments}}> channelMethod) throws TraverseException;
+
+  <Q> {{$generatedArtifactSimpleName}}{{$domainTypeParamsBrief}} moveThru(ChannelMethod1<? super {{$primaryDomainSimpleName}}{{$primaryDomainTypeArguments}}, ? super {{$primaryDomainSimpleName}}{{$primaryDomainTypeArguments}}, Q> channelMethod, Q qualifier) throws TraverseException;
+{{else}}
+  {{$generatedArtifactSimpleName}}{{$domainTypeParamsBrief}} moveThru(ChannelMethod0<? super {{$sourceArtifactSimpleName}}{{$domainTypeParamsBrief}}, ? super {{$sourceArtifactSimpleName}}{{$domainTypeParamsBrief}}> channelMethod) throws TraverseException;
+
+  <Q> {{$generatedArtifactSimpleName}}{{$domainTypeParamsBrief}} moveThru(ChannelMethod1<? super {{$sourceArtifactSimpleName}}{{$domainTypeParamsBrief}}, ? super {{$sourceArtifactSimpleName}}{{$domainTypeParamsBrief}}, Q> channelMethod, Q qualifier) throws TraverseException;
+{{end}}
+
+  {{$generatedArtifactSimpleName}}{{$domainTypeParamsBrief}} moveThru(Class<? extends Channel0> channelClass) throws TraverseException;
+
+  <Q> {{$generatedArtifactSimpleName}}{{$domainTypeParamsBrief}} moveThru(Class<? extends Channel1> channelClass, Q qualifier) throws TraverseException;
+
+  <R, Q> R mapOfMovingThru(String cid, Q qualifier) throws TraverseException;
+
+  <R> R mapOfMovingThru(Class<? extends Channel0> channelClass) throws TraverseException;
+
+  <R, Q, C extends Channel1 & MappingOfMovingChannel> R mapOfMovingThru(Class<C> channelClass, Q qualifier) throws TraverseException;
+
+{{when $isAlias}}
+  <R> R mapOfMovingThru(ChannelMethod0<? super {{$primaryDomainSimpleName}}{{$primaryDomainTypeArguments}}, R> channelMethod) throws TraverseException;
+
+  <R, Q> R mapOfMovingThru(ChannelMethod1<? super {{$primaryDomainSimpleName}}{{$primaryDomainTypeArguments}}, R, Q> channelMethod, Q qualifier) throws TraverseException;
+{{else}}
+  <R> R mapOfMovingThru(ChannelMethod0<? super {{$sourceArtifactSimpleName}}{{$domainTypeParamsBrief}}, R> channelMethod) throws TraverseException;
+
+  <R, Q> R mapOfMovingThru(ChannelMethod1<? super {{$sourceArtifactSimpleName}}{{$domainTypeParamsBrief}}, R, Q> channelMethod, Q qualifier) throws TraverseException;
+{{end}}
+}

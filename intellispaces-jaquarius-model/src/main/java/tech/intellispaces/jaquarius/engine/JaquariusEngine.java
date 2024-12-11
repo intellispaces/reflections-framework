@@ -1,8 +1,8 @@
 package tech.intellispaces.jaquarius.engine;
 
-import tech.intellispaces.jaquarius.engine.descriptor.ObjectHandleInstance;
-import tech.intellispaces.jaquarius.engine.descriptor.ObjectHandleMethod;
-import tech.intellispaces.jaquarius.engine.descriptor.ObjectHandleType;
+import tech.intellispaces.jaquarius.engine.descriptor.ObjectHandleMethodDescriptor;
+import tech.intellispaces.jaquarius.engine.descriptor.ObjectHandleTypeDescriptor;
+import tech.intellispaces.jaquarius.engine.descriptor.UnitMethodDescriptor;
 import tech.intellispaces.jaquarius.system.Module;
 
 import java.util.List;
@@ -26,15 +26,16 @@ public interface JaquariusEngine {
   /**
    * Registers object handle type.
    *
-   * @param objectHandleWrapperClass the object handle wrapper class.
+   * @param wrapperClass the object handle wrapper class.
    * @param objectHandleClass the object handle class.
-   * @param methods object handle methods.
+   * @param methods object handle wrapper method descriptions.
    * @return the registered object handle type.
+   *
    * @param <H> the object handle type.
    * @param <W> the object handle wrapper type.
    */
-  <H, W extends H> ObjectHandleType registerObjectHandleType(
-      Class<W> objectHandleWrapperClass, Class<H> objectHandleClass, ObjectHandleMethod... methods
+  <H, W extends H> ObjectHandleTypeDescriptor registerObjectHandleType(
+      Class<W> wrapperClass, Class<H> objectHandleClass, ObjectHandleMethodDescriptor... methods
   );
 
   /**
@@ -42,8 +43,22 @@ public interface JaquariusEngine {
    *
    * @param objectHandleWrapper the object handle wrapper.
    * @param type the object handle type.
-   * @return the registered object handle instance.
+   * @return the object handle agent.
+   *
    * @param <W> the object handle wrapper type.
    */
-  <W> ObjectHandleInstance registerObjectHandleInstance(W objectHandleWrapper, ObjectHandleType type);
+  <W> ObjectHandleAgent registerObjectHandle(W objectHandleWrapper, ObjectHandleTypeDescriptor type);
+
+  /**
+   * Registers module unit.
+   *
+   * @param unitWrapper the unit wrapper instance.
+   * @param unitClass the unit class.
+   * @param methods unit wrapper method descriptions.
+   * @return the unit agent.
+   *
+   * @param <U> the unit type.
+   * @param <W> the unit wrapper type.
+   */
+  <U, W extends U> UnitAgent registerUnit(W unitWrapper, Class<U> unitClass, UnitMethodDescriptor... methods);
 }

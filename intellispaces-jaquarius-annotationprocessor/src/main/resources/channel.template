@@ -1,0 +1,17 @@
+package {{$generatedArtifactPackageName}};
+
+{{for importedClass : $importedClasses}}
+import {{$importedClass}};
+{{end}}
+
+/**
+ * Space channel '{{$channelMethodName}}' from domain {@link {{$sourceArtifactSimpleName}}} to domain {{$targetClassLink}}.<p/>
+ *
+ * This class was generated automatically. Don't try to change it.
+ */
+@Channel("{{$cid}}")
+{{$generatedAnnotation}}
+public interface {{$generatedArtifactSimpleName}} extends {{$channelClasses}} {
+
+  {{$channelMethod}};
+}

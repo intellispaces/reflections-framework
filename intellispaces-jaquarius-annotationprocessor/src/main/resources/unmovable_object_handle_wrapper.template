@@ -1,0 +1,114 @@
+package {{$generatedArtifactPackageName}};
+
+{{for importedClass : $importedClasses}}
+import {{$importedClass}};
+{{end}}
+
+import static tech.intellispaces.jaquarius.engine.descriptor.ObjectHandleMethods.objectHandleMethod;
+
+/**
+ * This class was generated automatically. Don't try to change it.
+ */
+@Wrapper({{$sourceArtifactSimpleName}}.class)
+{{$generatedAnnotation}}
+public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sourceArtifactSimpleName}}{{$typeParamsBrief}} implements ObjectHandleWrapper {
+  private static ObjectHandleTypeDescriptor $TYPE;
+  private final ObjectHandleAgent $agent;
+
+{{for constructor : $constructors}}
+  public {{$generatedArtifactSimpleName}}({{for param : $constructor.get("params")}}{{$param.get("type")}} {{$param.get("name")}}{{when $param.isNotLast()}}, {{end}}{{end}}) {
+    super({{for param : $constructor.get("params")}}{{$param.get("name")}}{{when $param.isNotLast()}},{{end}}{{end}});
+    $agent = $registerObjectHandle();
+  }
+{{end}}
+
+  @Override
+  public ObjectHandleAgent $agent() {
+    return this.$agent;
+  }
+
+{{for method : $conversionMethods}}
+  {{$method.get("declaration")}}
+
+{{end}}
+{{for method : $domainMethods}}
+  @Override
+  {{$method.get("declaration")}}
+
+{{end}}
+{{for method : $injectionMethods}}
+  {{$method.get("javadoc")}}
+{{for annotation : $method.get("annotations")}}
+  @{{$annotation}}
+{{end}}
+  public {{$method.get("signature")}} {
+    {{$method.get("body")}}
+  }
+{{end}}
+{{for method : $guideActionMethods}}
+  {{$method.get("declaration")}}
+
+{{end}}
+{{when $notImplRelease}}
+  @Override
+  public void release() {
+    // do nothing
+  }
+{{end}}
+
+  @Override
+  public <TD, TH> void addProjection(Class<TD> targetDomain, TH target) {
+    $agent.addProjection(targetDomain, target);
+  }
+
+  @Override
+  public <TD, TH> TH mapTo(Class<TD> targetDomain) {
+    return $agent.mapTo(targetDomain);
+  }
+
+  @Override
+  public <T, Q, C extends Channel1 & MappingChannel> T mapThru(Class<C> channelClass, Q qualifier) throws TraverseException {
+    return Modules.current().mapThruChannel1(this, channelClass, qualifier);
+  }
+
+  private ObjectHandleAgent $registerObjectHandle() {
+    if ($TYPE == null) {
+      $TYPE = $registerObjectHandleType();
+    }
+    return JaquariusEngines.get().registerObjectHandle(this, $TYPE);
+  }
+
+  private static ObjectHandleTypeDescriptor $registerObjectHandleType() {
+    return JaquariusEngines.get().registerObjectHandleType(
+        {{$generatedArtifactSimpleName}}.class,
+        {{$sourceArtifactSimpleName}}.class{{when $wrapperMethods.isNotEmpty()}},{{end}}
+{{for method : $wrapperMethods}}
+        objectHandleMethod({{$generatedArtifactSimpleName}}.class, "{{$method.get("name")}}"{{for param : $method.get("params")}}, {{$param}}.class{{end}})
+            .purpose(ObjectHandleMethodPurposes.{{$method.get("purpose")}})
+            .function({{$generatedArtifactSimpleName}}::{{$method.get("name")}})
+{{when $method.get("traverseOrdinal").isVoid().invert()}}
+            .traverseOrdinal({{$method.get("traverseOrdinal")}})
+{{end}}
+{{when $method.get("channelClass").isVoid().invert()}}
+            .channelClass({{$method.get("channelClass")}}.class)
+{{end}}
+{{when $method.get("traverseType").isVoid().invert()}}
+            .traverseType(TraverseTypes.{{$method.get("traverseType")}})
+{{end}}
+{{when $method.get("injectionKind").isVoid().invert()}}
+            .injectionKind("{{$method.get("injectionKind")}}")
+{{end}}
+{{when $method.get("injectionOrdinal").isVoid().invert()}}
+            .injectionOrdinal({{$method.get("injectionOrdinal")}})
+{{end}}
+{{when $method.get("injectionName").isVoid().invert()}}
+            .injectionName("{{$method.get("injectionName")}}")
+{{end}}
+{{when $method.get("injectionType").isVoid().invert()}}
+            .injectionType({{$method.get("injectionType")}}.class)
+{{end}}
+            .get(){{when $method.isNotLast()}},{{end}}
+{{end}}
+    );
+  }
+}

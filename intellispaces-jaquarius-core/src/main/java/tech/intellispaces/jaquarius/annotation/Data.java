@@ -1,7 +1,5 @@
 package tech.intellispaces.jaquarius.annotation;
 
-import tech.intellispaces.jaquarius.annotation.processor.data.DataAnnotationProcessor;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -12,6 +10,6 @@ import java.lang.annotation.Target;
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@AnnotationProcessor(DataAnnotationProcessor.class)
+@AnnotationProcessor(name = "tech.intellispaces.jaquarius.annotationprocessor.data.DataProcessor")
 public @interface Data {
 }

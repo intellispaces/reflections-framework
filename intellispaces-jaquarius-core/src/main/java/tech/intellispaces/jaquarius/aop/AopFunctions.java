@@ -4,7 +4,6 @@ import tech.intellispaces.action.Action;
 import tech.intellispaces.general.exception.UnexpectedExceptions;
 import tech.intellispaces.jaquarius.annotation.ApplyAdvice;
 import tech.intellispaces.jaquarius.system.ProjectionProvider;
-import tech.intellispaces.jaquarius.system.kernel.ProjectionRegistry;
 import tech.intellispaces.java.reflection.method.MethodStatement;
 import tech.intellispaces.java.reflection.method.Methods;
 
@@ -17,12 +16,12 @@ import java.util.stream.Collectors;
 
 public interface AopFunctions {
 
-  static Action buildChainAction(Method method, Action action, ProjectionRegistry projectionRegistry) {
-    return buildChainAction(Methods.of(method), action, projectionRegistry);
+  static Action buildChainAction(Method method, Action action, ProjectionProvider projectionProvider) {
+    return buildChainAction(Methods.of(method), action, projectionProvider);
   }
 
   @SuppressWarnings("unchecked, rawtypes")
-  static Action buildChainAction(MethodStatement method, Action action, ProjectionRegistry projectionRegistry) {
+  static Action buildChainAction(MethodStatement method, Action action, ProjectionProvider projectionProvider) {
     List<ApplyAdvice> applyAdviceAnnotations = method.annotations().stream()
         .map(a -> a.annotationStatement().selectAnnotation(ApplyAdvice.class).orElse(null))
         .filter(Objects::nonNull)
@@ -41,7 +40,7 @@ public interface AopFunctions {
         currentAction = (Action) constructor.newInstance(
             method,
             currentAction,
-            projectionRegistry
+            projectionProvider
         );
       } catch (Exception e) {
         throw UnexpectedExceptions.withCauseAndMessage(e, "Could not create AOP advice");

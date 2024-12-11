@@ -76,8 +76,8 @@ public class ObjectHandleMethodBuilder3<H, P1, P2> {
     return this;
   }
 
-  public ObjectHandleMethod get() {
-    return new ObjectHandleMethodImpl(
+  public ObjectHandleMethodDescriptor get() {
+    return new ObjectHandleMethodDescriptorImpl(
         name,
         List.of(paramClass1, paramClass2),
         purpose,

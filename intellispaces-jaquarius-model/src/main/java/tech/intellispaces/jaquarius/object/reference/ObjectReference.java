@@ -55,7 +55,7 @@ public interface ObjectReference<D> {
   <T, Q, C extends Channel1 & MappingChannel> T mapThru(Class<C> channelClass, Q qualifier) throws TraverseException;
 
   /**
-   * Releases all resources associated with this object reference, if any.
+   * Releases any system resources associated with this object reference, if any.
    */
   void release();
 }

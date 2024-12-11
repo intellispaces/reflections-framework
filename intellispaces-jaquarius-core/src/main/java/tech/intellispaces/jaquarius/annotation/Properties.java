@@ -1,6 +1,6 @@
 package tech.intellispaces.jaquarius.annotation;
 
-import tech.intellispaces.jaquarius.system.projection.ModulePropertiesTargetSupplier;
+import tech.intellispaces.jaquarius.properties.ModulePropertiesTargetSupplier;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
 public @interface Properties {
 
   /**
-   * Property path.
+   * The property path.
    */
   String value() default "";
 }

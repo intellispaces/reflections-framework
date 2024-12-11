@@ -1,7 +1,7 @@
 package tech.intellispaces.jaquarius.traverse.plan;
 
 /**
- * Execution traverse plan.
+ * The execution traverse plan.
  *
  * <p>Execution traverse plan contains instructions how traverse source object in semantic space.
  */

@@ -1,0 +1,120 @@
+package {{$generatedArtifactPackageName}};
+
+{{for importedClass : $importedClasses}}
+import {{$importedClass}};
+{{end}}
+
+import static tech.intellispaces.jaquarius.engine.descriptor.UnitMethods.unitMethod;
+
+/**
+ * Wrapper of module unit {@link {{$sourceArtifactSimpleName}}}.<p/>
+ *
+ * This class was generated automatically. Don't try to change it.
+ */
+@Wrapper({{$sourceArtifactSimpleName}}.class)
+{{$generatedAnnotation}}
+public class {{$generatedArtifactSimpleName}}{{$typeParamsFullDeclaration}} extends {{$sourceArtifactSimpleName}}{{$typeParamsBriefDeclaration}} implements UnitWrapper {
+  private final UnitAgent $agent;
+
+  public {{$generatedArtifactSimpleName}}() {
+    $agent = $registerUnit();
+  }
+
+//  @Override
+//  public void $init(KernelUnit unit) {
+//    this.$unit = unit;
+//{{when $injections.isNotEmpty()}}
+//    this.$unit.setInjections(
+//{{for injection : $injections}}
+//{{when $injection.get("kind").eq("projection")}}
+//      ProjectionInjections.get({{$sourceArtifactSimpleName}}.class, "{{$injection.get("name")}}", {{$injection.get("type")}}.class){{when $injection.isNotLast()}},{{end}}
+//{{else when $injection.get("kind").eq("guide")}}
+//      GuideInjections.get({{$sourceArtifactSimpleName}}.class, "{{$injection.get("name")}}", {{$injection.get("type")}}.class){{when $injection.isNotLast()}},{{end}}
+//{{else}}
+//      AutoGuideInjections.get({{$sourceArtifactSimpleName}}.class, "{{$injection.get("name")}}", {{$injection.get("type")}}.class){{when $injection.isNotLast()}},{{end}}
+//{{end}}
+//{{end}}
+//    );
+//{{end}}
+//{{when $projectionDefinitions.isNotEmpty()}}
+//    this.$unit.setProjectionDefinitions(
+//{{for projectionDefinition : $projectionDefinitions}}
+//      {{$projectionDefinition}}{{when $projectionDefinition.isNotLast()}},{{end}}
+//{{end}}
+//    );
+//{{end}}
+//{{when $guideActions.isNotEmpty()}}
+//    this.$unit.setGuideActions(
+//{{for guideAction : $guideActions}}
+//      {{$guideAction}}{{when $guideAction.isNotLast()}},{{end}}
+//{{end}}
+//    );
+//{{end}}
+//  }
+
+  @Override
+  public UnitAgent $agent() {
+    return this.$agent;
+  }
+
+{{for method : $injectionMethods}}
+  {{$method.get("javadoc")}}
+{{for annotation : $method.get("annotations")}}
+  @{{$annotation}}
+{{end}}
+  public {{$method.get("signature")}} {
+    {{$method.get("body")}}
+  }
+{{end}}
+{{for method : $overrideGuideMethods}}
+  @Override
+  @Ordinal({{$method.index()}})
+  {{$method.get("declaration")}}
+
+{{end}}
+{{for method : $guideActionMethods}}
+  {{$method.get("declaration")}};
+
+{{end}}
+
+{{for method : $overrideProjectionMethods}}
+  {{$method}}
+
+{{end}}
+  private UnitAgent $registerUnit() {
+    return JaquariusEngines.get().registerUnit(
+      this,
+      {{$sourceArtifactSimpleName}}.class{{when $wrapperMethods.isNotEmpty()}},{{end}}
+{{for method : $wrapperMethods}}
+      unitMethod(this, "{{$method.get("name")}}"{{for param : $method.get("params")}}, {{$param}}.class{{end}})
+        .purpose(UnitMethodPurposes.{{$method.get("purpose")}})
+        .function({{$generatedArtifactSimpleName}}::{{$method.get("name")}})
+{{when $method.get("injectionName").isVoid().invert()}}
+        .injectionName("{{$method.get("injectionName")}}")
+{{end}}
+{{when $method.get("injectionClass").isVoid().invert()}}
+        .injectionClass({{$method.get("injectionClass")}}.class)
+{{end}}
+{{when $method.get("injectionKind").isVoid().invert()}}
+        .injectionKind({{$method.get("injectionKind")}})
+{{end}}
+{{when $method.get("injectionOrdinal").isVoid().invert()}}
+        .injectionOrdinal({{$method.get("injectionOrdinal")}})
+{{end}}
+{{when $method.get("projectionName").isVoid().invert()}}
+        .projectionName("{{$method.get("projectionName")}}")
+{{end}}
+{{when $method.get("targetClass").isVoid().invert()}}
+        .targetClass({{$method.get("targetClass")}}.class)
+{{end}}
+{{when $method.get("lazyLoading").isVoid().invert()}}
+        .lazyLoading({{$method.get("lazyLoading")}})
+{{end}}
+{{when $method.get("guideOrdinal").isVoid().invert()}}
+        .guideOrdinal({{$method.get("guideOrdinal")}})
+{{end}}
+        .get(){{when $method.isNotLast()}},{{end}}
+{{end}}
+    );
+  }
+}

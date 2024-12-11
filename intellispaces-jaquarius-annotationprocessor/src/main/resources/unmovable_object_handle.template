@@ -1,0 +1,30 @@
+package {{$generatedArtifactPackageName}};
+
+{{for importedClass : $importedClasses}}
+import {{$importedClass}};
+{{end}}
+
+/**
+ * Unmovable object handle for domain {@link {{$sourceArtifactSimpleName}}}.<p/>
+ *
+ * This class was generated automatically. Don't try to change it.
+ */
+@Unmovable
+@ObjectHandle({{$sourceArtifactSimpleName}}.class)
+{{$generatedAnnotation}}
+{{when $isAlias}}
+public interface {{$generatedArtifactSimpleName}}{{$domainTypeParamsFull}} extends {{$baseObjectHandle}}{{$domainTypeParamsBrief}}, {{$primaryObjectHandle}} {
+{{else}}
+public interface {{$generatedArtifactSimpleName}}{{$domainTypeParamsFull}} extends {{$baseObjectHandle}}{{$domainTypeParamsBrief}}, UnmovableObjectHandle<{{$sourceArtifactSimpleName}}{{$domainTypeParamsBrief}}> {
+{{end}}
+
+{{for method : $conversionMethods}}
+  @Override
+  {{$method.get("declaration")}};
+
+{{end}}
+  @Override
+  default {{$movableClassSimpleName}}{{$domainTypeParamsBrief}} asMovableOrElseThrow() {
+    throw UnexpectedExceptions.withMessage("Unmovable object");
+  }
+}

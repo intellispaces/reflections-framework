@@ -3,7 +3,7 @@ package tech.intellispaces.jaquarius.system;
 import java.util.List;
 
 /**
- * Module unit.
+ * The module unit.
  */
 public interface Unit {
 

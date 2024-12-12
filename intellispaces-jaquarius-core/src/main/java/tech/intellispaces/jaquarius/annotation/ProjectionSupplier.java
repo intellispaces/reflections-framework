@@ -1,7 +1,5 @@
 package tech.intellispaces.jaquarius.annotation;
 
-import tech.intellispaces.jaquarius.system.ProjectionTargetSupplier;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -9,10 +7,11 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.ANNOTATION_TYPE)
-public @interface ProjectionDefinition {
+public @interface ProjectionSupplier {
 
   /**
-   * Class of getter action to get projection target.
+   * The projection target supplier class.
    */
-  Class<? extends ProjectionTargetSupplier> provider() default ProjectionTargetSupplier.class;
+  Class<? extends tech.intellispaces.jaquarius.system.ProjectionSupplier> supplier()
+      default tech.intellispaces.jaquarius.system.ProjectionSupplier.class;
 }

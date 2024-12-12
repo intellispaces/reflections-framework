@@ -1,41 +1,42 @@
 package tech.intellispaces.jaquarius.properties;
 
 import tech.intellispaces.general.exception.UnexpectedExceptions;
-import tech.intellispaces.jaquarius.annotation.Properties;
+import tech.intellispaces.jaquarius.annotation.Settings;
 import tech.intellispaces.jaquarius.data.DataFunctions;
 import tech.intellispaces.jaquarius.object.ObjectHandleConstants;
 import tech.intellispaces.jaquarius.object.ObjectHandleFunctions;
 import tech.intellispaces.jaquarius.space.SpaceConstants;
 import tech.intellispaces.jaquarius.system.Module;
 import tech.intellispaces.jaquarius.system.Modules;
-import tech.intellispaces.jaquarius.system.projection.AbstractProjectionTargetSupplier;
+import tech.intellispaces.jaquarius.system.projection.AbstractProjectionSupplier;
+import tech.intellispaces.java.reflection.method.MethodStatement;
 
-import java.lang.reflect.Method;
+public class ModuleSettingsSupplier extends AbstractProjectionSupplier {
 
-public class ModulePropertiesTargetSupplier extends AbstractProjectionTargetSupplier {
-
-  public ModulePropertiesTargetSupplier(Method projectionMethod) {
+  public ModuleSettingsSupplier(MethodStatement projectionMethod) {
     super(projectionMethod);
   }
 
   @Override
   public Object get() {
     Module module = Modules.current();
-    Properties annotation = projectionMethod.getAnnotation(Properties.class);
+    Settings annotation = projectionMethod.selectAnnotation(Settings.class).orElseThrow();
     String rawProperties = ModulePropertiesFunctions.getProperties(module, null);
     Object parsedProperties = module.mapThruChannel0(rawProperties, SpaceConstants.STRING_TO_PROPERTIES_TID);
 
     Object target = module.mapThruChannel1(
         parsedProperties, SpaceConstants.PROPERTIES_TO_VALUE_TID, annotation.value());
 
-    Class<?> expectedReturnType = projectionMethod.getReturnType();
+    Class<?> expectedReturnType = projectionMethod.returnType().orElseThrow()
+        .asCustomTypeReferenceOrElseThrow()
+        .targetClass();
     if (target.getClass() == expectedReturnType) {
       return target;
     }
     if (ObjectHandleConstants.PROPERTIES_HANDLE_CLASSNAME.equals(expectedReturnType.getCanonicalName())) {
       if (!ObjectHandleFunctions.propertiesHandleClass().isAssignableFrom(target.getClass())) {
         throw UnexpectedExceptions.withMessage("Invalid return type of method '{0}' in class {1}",
-            projectionMethod.getName(), projectionMethod.getDeclaringClass().getCanonicalName());
+            projectionMethod.name(), projectionMethod.owner().canonicalName());
       }
       return target;
     }
@@ -45,6 +46,6 @@ public class ModulePropertiesTargetSupplier extends AbstractProjectionTargetSupp
       }
     }
     throw UnexpectedExceptions.withMessage("Invalid return type of method '{0}' in class {1}",
-        projectionMethod.getName(), projectionMethod.getDeclaringClass().getCanonicalName());
+        projectionMethod.name(), projectionMethod.owner().canonicalName());
   }
 }

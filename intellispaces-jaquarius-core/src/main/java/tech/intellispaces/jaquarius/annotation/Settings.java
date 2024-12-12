@@ -1,6 +1,6 @@
 package tech.intellispaces.jaquarius.annotation;
 
-import tech.intellispaces.jaquarius.properties.ModulePropertiesTargetSupplier;
+import tech.intellispaces.jaquarius.properties.ModuleSettingsSupplier;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -9,11 +9,11 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-@ProjectionDefinition(provider = ModulePropertiesTargetSupplier.class)
-public @interface Properties {
+@ProjectionSupplier(supplier = ModuleSettingsSupplier.class)
+public @interface Settings {
 
   /**
-   * The property path.
+   * The path to settings file.
    */
   String value() default "";
 }

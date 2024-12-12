@@ -107,6 +107,13 @@ public class {{$generatedArtifactSimpleName}}{{$typeParamsFullDeclaration}} exte
 {{when $method.get("targetClass").isVoid().invert()}}
         .targetClass({{$method.get("targetClass")}}.class)
 {{end}}
+{{when $method.get("requiredProjections").isVoid().invert()}}
+        .requiredProjections(ProjectionReferences.list(
+{{for projection : $method.get("requiredProjections")}}
+          "{{$projection.get("name")}}", {{$projection.get("class")}}.class{{when $projection.isNotLast()}},{{end}}
+{{end}}
+        ))
+{{end}}
 {{when $method.get("lazyLoading").isVoid().invert()}}
         .lazyLoading({{$method.get("lazyLoading")}})
 {{end}}

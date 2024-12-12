@@ -5,6 +5,7 @@ import tech.intellispaces.action.Action;
 import tech.intellispaces.action.cache.CachedSupplierActions;
 import tech.intellispaces.action.delegate.DelegateActions;
 import tech.intellispaces.general.exception.NotImplementedExceptions;
+import tech.intellispaces.general.exception.UnexpectedExceptions;
 import tech.intellispaces.jaquarius.action.TraverseActions;
 import tech.intellispaces.jaquarius.channel.Channel0;
 import tech.intellispaces.jaquarius.channel.Channel1;
@@ -24,6 +25,7 @@ import tech.intellispaces.jaquarius.system.Module;
 import tech.intellispaces.jaquarius.system.UnitProjectionDefinition;
 import tech.intellispaces.jaquarius.system.injection.AutoGuideInjections;
 import tech.intellispaces.jaquarius.system.injection.GuideInjections;
+import tech.intellispaces.jaquarius.system.injection.InjectionKinds;
 import tech.intellispaces.jaquarius.system.injection.ProjectionInjections;
 import tech.intellispaces.jaquarius.system.projection.ProjectionDefinitionBasedOnMethodActions;
 
@@ -81,8 +83,21 @@ public class JaquariusEngine implements tech.intellispaces.jaquarius.engine.Jaqu
     return Arrays.stream(methods)
         .filter(m -> m.purpose().is(UnitMethodPurposes.InjectionMethod.name()))
         .sorted(Comparator.comparing(UnitMethodDescriptor::injectionOrdinal))
-        .map(m -> (Injection) ProjectionInjections.get(unitClass, m.injectionName(), m.injectionClass()))
+        .map(m -> buildUnitInjection(unitClass, m))
         .toList();
+  }
+
+  private Injection buildUnitInjection(Class<?> unitClass, UnitMethodDescriptor method) {
+    if (method.injectionKind() == InjectionKinds.Projection) {
+      return ProjectionInjections.get(unitClass, method.injectionName(), method.injectionClass());
+    }
+    if (method.injectionKind() == InjectionKinds.AutoGuide) {
+      return AutoGuideInjections.get(unitClass, method.injectionName(), method.injectionClass());
+    }
+    if (method.injectionKind() == InjectionKinds.SpecificGuide) {
+      return GuideInjections.get(unitClass, method.injectionName(), method.injectionClass());
+    }
+    throw UnexpectedExceptions.withMessage("Unsupported injection type '{0}'", method.injectionKind());
   }
 
   private List<Action> buildUnitGuideActions(UnitMethodDescriptor... methods) {
@@ -104,9 +119,83 @@ public class JaquariusEngine implements tech.intellispaces.jaquarius.engine.Jaqu
     }
     return Arrays.stream(methods)
         .filter(m -> m.purpose().is(UnitMethodPurposes.ProjectionDefinition.name()))
-        .map(m -> (UnitProjectionDefinition) ProjectionDefinitionBasedOnMethodActions.get(
-            unitClass, m.projectionName(), m.targetClass(), m.lazyLoading(), m.action()))
+        .map(m ->buildUnitProjectionDefinition(unitClass, m))
         .toList();
+  }
+
+  private UnitProjectionDefinition buildUnitProjectionDefinition(
+      Class<?> unitClass, UnitMethodDescriptor method
+  ) {
+    int numRequiredProjections = method.requiredProjections() != null ? method.requiredProjections().size() : 0;
+    return switch (numRequiredProjections) {
+      case 0 -> ProjectionDefinitionBasedOnMethodActions.get(
+          unitClass,
+          method.projectionName(),
+          method.targetClass(),
+          method.lazyLoading(),
+          method.action());
+      case 1 -> ProjectionDefinitionBasedOnMethodActions.get(
+          unitClass,
+          method.projectionName(),
+          method.targetClass(),
+          method.lazyLoading(),
+          method.action(),
+          method.requiredProjections().get(0).name(),
+          method.requiredProjections().get(0).targetClass());
+      case 2 -> ProjectionDefinitionBasedOnMethodActions.get(
+          unitClass,
+          method.projectionName(),
+          method.targetClass(),
+          method.lazyLoading(),
+          method.action(),
+          method.requiredProjections().get(0).name(),
+          method.requiredProjections().get(0).targetClass(),
+          method.requiredProjections().get(1).name(),
+          method.requiredProjections().get(1).targetClass());
+      case 3 -> ProjectionDefinitionBasedOnMethodActions.get(
+          unitClass,
+          method.projectionName(),
+          method.targetClass(),
+          method.lazyLoading(),
+          method.action(),
+          method.requiredProjections().get(0).name(),
+          method.requiredProjections().get(0).targetClass(),
+          method.requiredProjections().get(1).name(),
+          method.requiredProjections().get(1).targetClass(),
+          method.requiredProjections().get(2).name(),
+          method.requiredProjections().get(2).targetClass());
+      case 4 -> ProjectionDefinitionBasedOnMethodActions.get(
+          unitClass,
+          method.projectionName(),
+          method.targetClass(),
+          method.lazyLoading(),
+          method.action(),
+          method.requiredProjections().get(0).name(),
+          method.requiredProjections().get(0).targetClass(),
+          method.requiredProjections().get(1).name(),
+          method.requiredProjections().get(1).targetClass(),
+          method.requiredProjections().get(2).name(),
+          method.requiredProjections().get(2).targetClass(),
+          method.requiredProjections().get(3).name(),
+          method.requiredProjections().get(3).targetClass());
+      case 5 -> ProjectionDefinitionBasedOnMethodActions.get(
+          unitClass,
+          method.projectionName(),
+          method.targetClass(),
+          method.lazyLoading(),
+          method.action(),
+          method.requiredProjections().get(0).name(),
+          method.requiredProjections().get(0).targetClass(),
+          method.requiredProjections().get(1).name(),
+          method.requiredProjections().get(1).targetClass(),
+          method.requiredProjections().get(2).name(),
+          method.requiredProjections().get(2).targetClass(),
+          method.requiredProjections().get(3).name(),
+          method.requiredProjections().get(3).targetClass(),
+          method.requiredProjections().get(4).name(),
+          method.requiredProjections().get(4).targetClass());
+      default -> throw NotImplementedExceptions.withCode("uOJm+w==");
+    };
   }
 
   private Action[] buildMethodActions(Class<?> objectHandleClass, ObjectHandleMethodDescriptor... methods) {

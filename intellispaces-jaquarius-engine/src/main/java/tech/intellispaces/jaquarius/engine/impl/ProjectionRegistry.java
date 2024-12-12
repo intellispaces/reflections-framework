@@ -13,7 +13,7 @@ import tech.intellispaces.jaquarius.system.ModuleProjection;
 import tech.intellispaces.jaquarius.system.ProjectionDefinition;
 import tech.intellispaces.jaquarius.system.ProjectionProvider;
 import tech.intellispaces.jaquarius.system.ProjectionReference;
-import tech.intellispaces.jaquarius.system.ProjectionTargetSupplier;
+import tech.intellispaces.jaquarius.system.ProjectionSupplier;
 import tech.intellispaces.jaquarius.system.UnitProjectionDefinition;
 import tech.intellispaces.jaquarius.system.projection.ProjectionDefinitionKinds;
 import tech.intellispaces.jaquarius.system.projection.ModuleProjectionImpl;
@@ -233,10 +233,10 @@ class ProjectionRegistry implements ProjectionProvider {
             projectionDefinition.name(), projectionDefinition.unitClass().getCanonicalName()
         ));
 
-    final ProjectionTargetSupplier provider;
+    final ProjectionSupplier provider;
     try {
       Constructor<?> providerConstructor = providerClass.getConstructor(Method.class);
-      provider = (ProjectionTargetSupplier) providerConstructor.newInstance(projectionMethod);
+      provider = (ProjectionSupplier) providerConstructor.newInstance(projectionMethod);
     } catch (Exception e) {
       throw UnexpectedExceptions.withCauseAndMessage(e, "Failed to create projection provider");
     }

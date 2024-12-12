@@ -2,7 +2,7 @@ package samples;
 
 import tech.intellispaces.jaquarius.annotation.Module;
 import tech.intellispaces.jaquarius.annotation.Projection;
-import tech.intellispaces.jaquarius.annotation.Properties;
+import tech.intellispaces.jaquarius.annotation.Settings;
 import tech.intellispaces.jaquarius.annotationprocessor.Sample;
 
 @Sample
@@ -10,6 +10,6 @@ import tech.intellispaces.jaquarius.annotationprocessor.Sample;
 public abstract class ModuleWithAbstractProjectionAndSingleProjectionDefinitionAnnotationAndParameter {
 
   @Projection
-  @Properties
+  @Settings
   public abstract String projection(String value);
 }

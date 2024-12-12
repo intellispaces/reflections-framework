@@ -5,7 +5,7 @@ import tech.intellispaces.jaquarius.annotation.Configuration;
 import tech.intellispaces.jaquarius.annotation.Guide;
 import tech.intellispaces.jaquarius.annotation.Module;
 import tech.intellispaces.jaquarius.annotation.Projection;
-import tech.intellispaces.jaquarius.annotation.ProjectionDefinition;
+import tech.intellispaces.jaquarius.annotation.ProjectionSupplier;
 import tech.intellispaces.jaquarius.annotation.Shutdown;
 import tech.intellispaces.jaquarius.annotation.Startup;
 import tech.intellispaces.jaquarius.exception.JaquariusExceptions;
@@ -150,7 +150,7 @@ public class ModuleValidator implements ArtifactValidator {
 
   private void checkAbstractProjectionProviderAnnotation(MethodStatement method) {
     List<AnnotationInstance> projectionDefinitionAnnotations = method.annotations().stream()
-        .filter(a -> a.annotationStatement().hasAnnotation(ProjectionDefinition.class))
+        .filter(a -> a.annotationStatement().hasAnnotation(ProjectionSupplier.class))
         .toList();
     if (projectionDefinitionAnnotations.isEmpty()) {
       throw JaquariusExceptions.withMessage("Abstract projection method '{0}' in unit {1} should " +

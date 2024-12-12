@@ -157,8 +157,8 @@ public final class GuideFunctions {
     return ChannelFunctions.findObjectGuideChannelAnnotation(objectHandleMethod);
   }
 
-  public static String getUnitGuideTid(Object unitInstance, MethodStatement guideMethod) {
-    return ChannelFunctions.getUnitGuideCid(unitInstance, guideMethod);
+  public static String getUnitGuideCid(Object unit, MethodStatement guideMethod) {
+    return ChannelFunctions.getUnitGuideCid(unit, guideMethod);
   }
 
   public static List<Guide<?, ?>> loadObjectGuides(Class<?> objectHandleClass) {
@@ -213,17 +213,17 @@ public final class GuideFunctions {
     }
   }
 
-  public static List<UnitGuide<?, ?>> readUnitGuides(Class<?> unitClass, UnitWrapper unitInstance) {
+  public static List<UnitGuide<?, ?>> readUnitGuides(Class<?> unitClass, UnitWrapper unit) {
     List<UnitGuide<?, ?>> guides = new ArrayList<>();
     for (MethodStatement method : Classes.of(unitClass).actualMethods()) {
       if (isMapperMethod(method)) {
-        UnitGuide<?, ?> mapper = createUnitMapper(unitInstance, method);
+        UnitGuide<?, ?> mapper = createUnitMapper(unit, method);
         guides.add(mapper);
       } else if (isMoverMethod(method)) {
-        UnitGuide<?, ?> mover = createMover(unitInstance, method);
+        UnitGuide<?, ?> mover = createMover(unit, method);
           guides.add(mover);
       } else if (isMapperOfMovingMethod(method)) {
-        UnitGuide<?, ?> mapperOfMoving = createUnitMapperOfMoving(unitInstance, method);
+        UnitGuide<?, ?> mapperOfMoving = createUnitMapperOfMoving(unit, method);
         guides.add(mapperOfMoving);
       }
     }
@@ -238,36 +238,36 @@ public final class GuideFunctions {
     return guideKind;
   }
 
-  private static UnitGuide<?, ?> createUnitMapper(UnitWrapper unitInstance, MethodStatement guideMethod) {
+  private static UnitGuide<?, ?> createUnitMapper(UnitWrapper unit, MethodStatement guideMethod) {
     ObjectReferenceForm targetForm = getTargetForm(guideMethod);
-    String cid = getUnitGuideTid(unitInstance, guideMethod);
-    int guideOrdinal = getUnitGuideOrdinal(unitInstance, guideMethod);
+    String cid = getUnitGuideCid(unit, guideMethod);
+    int guideOrdinal = getUnitGuideOrdinal(unit, guideMethod);
     int qualifiersCount = guideMethod.params().size();
     return switch (qualifiersCount) {
-      case 1 -> new UnitMapper0<>(cid, unitInstance, guideMethod, guideOrdinal, targetForm);
-      case 2 -> new UnitMapper1<>(cid, unitInstance, guideMethod, guideOrdinal, targetForm);
-      case 3 -> new UnitMapper2<>(cid, unitInstance, guideMethod, guideOrdinal, targetForm);
-      case 4 -> new UnitMapper3<>(cid, unitInstance, guideMethod, guideOrdinal, targetForm);
+      case 1 -> new UnitMapper0<>(cid, unit, guideMethod, guideOrdinal, targetForm);
+      case 2 -> new UnitMapper1<>(cid, unit, guideMethod, guideOrdinal, targetForm);
+      case 3 -> new UnitMapper2<>(cid, unit, guideMethod, guideOrdinal, targetForm);
+      case 4 -> new UnitMapper3<>(cid, unit, guideMethod, guideOrdinal, targetForm);
       default -> throw UnexpectedExceptions.withMessage("Unsupported number of guide qualifiers: {0}",
           qualifiersCount);
     };
   }
 
-  private static UnitGuide<?, ?> createMover(Object unitInstance, MethodStatement guideMethod) {
-    String cid = getUnitGuideTid(unitInstance, guideMethod);
+  private static UnitGuide<?, ?> createMover(Object unit, MethodStatement guideMethod) {
+    String cid = getUnitGuideCid(unit, guideMethod);
     throw NotImplementedExceptions.withCode("4GL2+g");
   }
 
-  private static UnitGuide<?, ?> createUnitMapperOfMoving(UnitWrapper unitInstance, MethodStatement guideMethod) {
+  private static UnitGuide<?, ?> createUnitMapperOfMoving(UnitWrapper unit, MethodStatement guideMethod) {
     ObjectReferenceForm targetForm = getTargetForm(guideMethod);
-    String cid = getUnitGuideTid(unitInstance, guideMethod);
-    int guideOrdinal = getUnitGuideOrdinal(unitInstance, guideMethod);
+    String cid = getUnitGuideCid(unit, guideMethod);
+    int guideOrdinal = getUnitGuideOrdinal(unit, guideMethod);
     int qualifiersCount = guideMethod.params().size();
     return switch (qualifiersCount) {
-      case 1 -> new UnitMapperOfMoving0<>(cid, unitInstance, guideMethod, guideOrdinal, targetForm);
-      case 2 -> new UnitMapperOfMoving1<>(cid, unitInstance, guideMethod, guideOrdinal, targetForm);
-      case 3 -> new UnitMapperOfMoving2<>(cid, unitInstance, guideMethod, guideOrdinal, targetForm);
-      case 4 -> new UnitMapperOfMoving3<>(cid, unitInstance, guideMethod, guideOrdinal, targetForm);
+      case 1 -> new UnitMapperOfMoving0<>(cid, unit, guideMethod, guideOrdinal, targetForm);
+      case 2 -> new UnitMapperOfMoving1<>(cid, unit, guideMethod, guideOrdinal, targetForm);
+      case 3 -> new UnitMapperOfMoving2<>(cid, unit, guideMethod, guideOrdinal, targetForm);
+      case 4 -> new UnitMapperOfMoving3<>(cid, unit, guideMethod, guideOrdinal, targetForm);
       default -> throw UnexpectedExceptions.withMessage("Unsupported number of guide qualifiers: {0}",
           qualifiersCount);
     };
@@ -358,8 +358,8 @@ public final class GuideFunctions {
     return indexAnnotation.get().value();
   }
 
-  private static int getUnitGuideOrdinal(UnitWrapper unitInstance, MethodStatement guideMethod) {
-    Class<?> unitWrapperClass = unitInstance.getClass();
+  private static int getUnitGuideOrdinal(UnitWrapper unit, MethodStatement guideMethod) {
+    Class<?> unitWrapperClass = unit.getClass();
     Optional<MethodStatement> overrideGuideMethod = MethodFunctions.getOverrideMethod(
         CustomTypes.of(unitWrapperClass),
         guideMethod

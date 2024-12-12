@@ -2,6 +2,7 @@ package tech.intellispaces.jaquarius.engine.descriptor;
 
 import tech.intellispaces.action.Action;
 import tech.intellispaces.jaquarius.system.InjectionKind;
+import tech.intellispaces.jaquarius.system.ProjectionReference;
 
 import java.util.List;
 
@@ -16,6 +17,7 @@ class UnitMethodDescriptorImpl implements UnitMethodDescriptor {
   private final InjectionKind injectionKind;
   private final String projectionName;
   private final Class<?> targetClass;
+  private final List<ProjectionReference> requiredProjections;
   private final boolean lazyLoading;
   private final int guideOrdinal;
 
@@ -30,6 +32,7 @@ class UnitMethodDescriptorImpl implements UnitMethodDescriptor {
       InjectionKind injectionKind,
       String projectionName,
       Class<?> targetClass,
+      List<ProjectionReference> requiredProjections,
       boolean lazyLoading,
       int guideOrdinal
   ) {
@@ -45,6 +48,7 @@ class UnitMethodDescriptorImpl implements UnitMethodDescriptor {
 
     this.projectionName = projectionName;
     this.targetClass = targetClass;
+    this.requiredProjections = requiredProjections;
     this.lazyLoading = lazyLoading;
 
     this.guideOrdinal = guideOrdinal;
@@ -98,6 +102,11 @@ class UnitMethodDescriptorImpl implements UnitMethodDescriptor {
   @Override
   public Class<?> targetClass() {
     return targetClass;
+  }
+
+  @Override
+  public List<ProjectionReference> requiredProjections() {
+    return requiredProjections;
   }
 
   @Override

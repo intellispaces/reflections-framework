@@ -2,6 +2,7 @@ package tech.intellispaces.jaquarius.engine.descriptor;
 
 import tech.intellispaces.action.Action;
 import tech.intellispaces.jaquarius.system.InjectionKind;
+import tech.intellispaces.jaquarius.system.ProjectionReference;
 
 import java.util.List;
 
@@ -41,6 +42,8 @@ public interface UnitMethodDescriptor {
   String projectionName();
 
   Class<?> targetClass();
+
+  List<ProjectionReference> requiredProjections();
 
   boolean lazyLoading();
 

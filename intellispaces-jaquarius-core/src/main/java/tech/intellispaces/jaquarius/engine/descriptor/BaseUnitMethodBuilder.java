@@ -2,6 +2,8 @@ package tech.intellispaces.jaquarius.engine.descriptor;
 
 import tech.intellispaces.action.Action;
 import tech.intellispaces.jaquarius.system.InjectionKind;
+import tech.intellispaces.jaquarius.system.ProjectionReference;
+import tech.intellispaces.jaquarius.system.projection.ProjectionReferences;
 
 import java.util.List;
 
@@ -15,6 +17,7 @@ class BaseUnitMethodBuilder<B extends BaseUnitMethodBuilder<B>> {
   private InjectionKind injectionKind;
   private String projectionName;
   private Class<?> targetClass;
+  private List<ProjectionReference> requiredProjections;
   private boolean lazyLoading;
   private int guideOrdinal;
 
@@ -65,6 +68,12 @@ class BaseUnitMethodBuilder<B extends BaseUnitMethodBuilder<B>> {
   }
 
   @SuppressWarnings("unchecked")
+  public B requiredProjections(List<ProjectionReference> projections) {
+    this.requiredProjections = projections;
+    return (B) this;
+  }
+
+  @SuppressWarnings("unchecked")
   public B lazyLoading(boolean lazy) {
     this.lazyLoading = lazy;
     return (B) this;
@@ -88,6 +97,7 @@ class BaseUnitMethodBuilder<B extends BaseUnitMethodBuilder<B>> {
         injectionKind,
         projectionName,
         targetClass,
+        requiredProjections,
         lazyLoading,
         guideOrdinal
     );

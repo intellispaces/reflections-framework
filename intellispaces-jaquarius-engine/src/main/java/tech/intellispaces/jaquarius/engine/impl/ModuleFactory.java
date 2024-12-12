@@ -112,10 +112,13 @@ public class ModuleFactory {
     Optional<Method> startupMethod = findStartupMethod(unitClass);
     Optional<Method> shutdownMethod = findShutdownMethod(unitClass);
 
-    var unit = new Unit(main, unitClass);
+//    var unit = new Unit(main, unitClass);
 
     Class<?> unitWrapperClass = getUnitWrapperClass(unitClass);
     UnitWrapper unitWrapper = createUnitWrapper(unitClass, unitWrapperClass);
+    Unit unit = (Unit) unitWrapper.$agent();
+    unit.setMain(main);
+
 //    unitWrapper.$init(unit);
     unit.setWrapper(unitWrapper);
 
@@ -124,8 +127,6 @@ public class ModuleFactory {
 
     List<tech.intellispaces.jaquarius.system.UnitGuide<?, ?>> unitGuides = GuideFunctions.readUnitGuides(unitClass, unitWrapper);
     unit.setGuides(Collections.unmodifiableList(unitGuides));
-    unit.setGuideActions(((Unit) unitWrapper.$agent()).guideActions());
-    unit.setProjectionDefinitions(((Unit) unitWrapper.$agent()).projectionDefinitions());
     return unit;
   }
 

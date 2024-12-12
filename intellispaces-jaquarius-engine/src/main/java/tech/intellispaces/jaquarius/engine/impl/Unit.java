@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 class Unit implements tech.intellispaces.jaquarius.system.Unit, UnitAgent {
-  private final boolean main;
+  private boolean main;
   private final Class<?> unitClass;
   private List<ResettableSupplierAction<Action>> guideActions = List.of();
   private UnitWrapper wrapper;
@@ -31,6 +31,10 @@ class Unit implements tech.intellispaces.jaquarius.system.Unit, UnitAgent {
   Unit(boolean main, Class<?> unitClass) {
     this.main = main;
     this.unitClass = unitClass;
+  }
+
+  public void setMain(boolean main) {
+    this.main = main;
   }
 
   public Object wrapper() {

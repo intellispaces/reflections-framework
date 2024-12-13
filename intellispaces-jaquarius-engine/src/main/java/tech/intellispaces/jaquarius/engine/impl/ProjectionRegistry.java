@@ -15,10 +15,10 @@ import tech.intellispaces.jaquarius.system.ProjectionProvider;
 import tech.intellispaces.jaquarius.system.ProjectionReference;
 import tech.intellispaces.jaquarius.system.ProjectionSupplier;
 import tech.intellispaces.jaquarius.system.UnitProjectionDefinition;
-import tech.intellispaces.jaquarius.system.projection.ProjectionDefinitionKinds;
 import tech.intellispaces.jaquarius.system.projection.ModuleProjectionImpl;
 import tech.intellispaces.jaquarius.system.projection.ProjectionDefinitionBasedOnMethodAction;
 import tech.intellispaces.jaquarius.system.projection.ProjectionDefinitionBasedOnProviderClass;
+import tech.intellispaces.jaquarius.system.projection.ProjectionDefinitionKinds;
 import tech.intellispaces.jaquarius.system.projection.ProjectionFunctions;
 
 import java.lang.reflect.Constructor;

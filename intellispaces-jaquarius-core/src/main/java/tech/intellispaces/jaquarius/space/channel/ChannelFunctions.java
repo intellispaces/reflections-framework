@@ -19,6 +19,9 @@ import tech.intellispaces.jaquarius.object.ObjectHandleFunctions;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
 import tech.intellispaces.jaquarius.traverse.TraverseType;
 import tech.intellispaces.java.reflection.customtype.CustomType;
+import tech.intellispaces.java.reflection.instance.AnnotationInstance;
+import tech.intellispaces.java.reflection.instance.ClassInstance;
+import tech.intellispaces.java.reflection.instance.Instance;
 import tech.intellispaces.java.reflection.method.MethodParam;
 import tech.intellispaces.java.reflection.method.MethodSignature;
 import tech.intellispaces.java.reflection.method.MethodSignatures;
@@ -34,6 +37,7 @@ import tech.intellispaces.proxy.tracker.Trackers;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
@@ -103,63 +107,63 @@ public interface ChannelFunctions {
     return channelType.declaredMethods().stream()
         .filter(m -> m.isPublic() && !m.isDefault() && !m.isStatic())
         .findFirst()
-        .orElseThrow(() -> {throw UnexpectedExceptions.withMessage("Could not find channel method " +
-                "in class {0}", channelType.canonicalName());});
+        .orElseThrow(() -> UnexpectedExceptions.withMessage("Could not find channel method " +
+            "in class {0}", channelType.canonicalName()));
   }
 
-  static String getUnitGuideCid(Object unitInstance, MethodStatement guideMethod) {
-    Optional<Mapper> mapper = guideMethod.selectAnnotation(Mapper.class);
-    if (mapper.isEmpty()) {
-      mapper = guideMethod.overrideMethods().stream()
-          .map(m -> m.selectAnnotation(Mapper.class))
-          .filter(Optional::isPresent)
-          .map(Optional::get)
-          .findFirst();
+  static String getUnitGuideCid(MethodStatement guideMethod) {
+    String cid = guideMethod.selectAnnotation(Mapper.class.getCanonicalName())
+        .map(ChannelFunctions::extractCid)
+        .orElse(null);
+    if (cid != null) {
+      return cid;
     }
-    if (mapper.isPresent()) {
-      Class<?> channelClass = mapper.get().value();
-      if (channelClass != null) {
-        Channel channel = channelClass.getAnnotation(Channel.class);
-        if (channel != null) {
-          return channel.value();
-        }
-      }
-    }
-
-    Optional<Mover> mover = guideMethod.selectAnnotation(Mover.class);
-    if (mover.isEmpty()) {
-      mover = guideMethod.overrideMethods().stream()
-          .map(m -> m.selectAnnotation(Mover.class))
-          .filter(Optional::isPresent)
-          .map(Optional::get)
-          .findFirst();
-    }
-    if (mover.isPresent()) {
-      Class<?> channelClass = mover.get().value();
-      if (channelClass != null) {
-        Channel channel = channelClass.getAnnotation(Channel.class);
-        if (channel != null) {
-          return channel.value();
-        }
-      }
-    }
-
-    Optional<MapperOfMoving> mapperOfMoving = guideMethod.selectAnnotation(MapperOfMoving.class);
-    if (mapperOfMoving.isEmpty()) {
-      mapperOfMoving = guideMethod.overrideMethods().stream()
-        .map(m -> m.selectAnnotation(MapperOfMoving.class))
+    cid = guideMethod.overrideMethods().stream()
+        .map(m -> m.selectAnnotation(Mapper.class.getCanonicalName()))
         .filter(Optional::isPresent)
         .map(Optional::get)
-        .findFirst();
+        .map(ChannelFunctions::extractCid)
+        .filter(Objects::nonNull)
+        .findFirst()
+        .orElse(null);
+    if (cid != null) {
+      return cid;
     }
-    if (mapperOfMoving.isPresent()) {
-      Class<?> chanelClass = mapperOfMoving.get().value();
-      if (chanelClass != null) {
-        Channel channel = chanelClass.getAnnotation(Channel.class);
-        if (channel != null) {
-          return channel.value();
-        }
-      }
+
+    cid = guideMethod.selectAnnotation(Mover.class.getCanonicalName())
+        .map(ChannelFunctions::extractCid)
+        .orElse(null);
+    if (cid != null) {
+      return cid;
+    }
+    cid = guideMethod.overrideMethods().stream()
+        .map(m -> m.selectAnnotation(Mover.class.getCanonicalName()))
+        .filter(Optional::isPresent)
+        .map(Optional::get)
+        .map(ChannelFunctions::extractCid)
+        .filter(Objects::nonNull)
+        .findFirst()
+        .orElse(null);
+    if (cid != null) {
+      return cid;
+    }
+
+    cid = guideMethod.selectAnnotation(MapperOfMoving.class.getCanonicalName())
+        .map(ChannelFunctions::extractCid)
+        .orElse(null);
+    if (cid != null) {
+      return cid;
+    }
+    cid = guideMethod.overrideMethods().stream()
+        .map(m -> m.selectAnnotation(MapperOfMoving.class.getCanonicalName()))
+        .filter(Optional::isPresent)
+        .map(Optional::get)
+        .map(ChannelFunctions::extractCid)
+        .filter(Objects::nonNull)
+        .findFirst()
+        .orElse(null);
+    if (cid != null) {
+      return cid;
     }
 
     CustomType declaringType = guideMethod.owner();
@@ -167,17 +171,41 @@ public interface ChannelFunctions {
       throw UnexpectedExceptions.withMessage("Expected guide unit class {0}",
           declaringType.canonicalName());
     }
-    if (unitInstance instanceof tech.intellispaces.jaquarius.guide.Guide) {
-      var guide = (tech.intellispaces.jaquarius.guide.Guide<?, ?>) unitInstance;
-      return guide.cid();
-    } else {
-      Channel channel = findOverrideChannelRecursive(guideMethod, guideMethod.owner());
-      if (channel == null) {
-        throw UnexpectedExceptions.withMessage("Could not get unit guide annotation @Channel. Unit {0}, " +
-                "guide method '{1}'", guideMethod.owner().canonicalName(), guideMethod.name());
-      }
-      return channel.value();
+    Channel channel = findOverrideChannelRecursive(guideMethod, guideMethod.owner());
+    if (channel == null) {
+      throw UnexpectedExceptions.withMessage("Could not get unit guide annotation @Channel. Unit {0}, " +
+              "guide method '{1}'", guideMethod.owner().canonicalName(), guideMethod.name());
     }
+    return channel.value();
+  }
+
+  static String getUnitGuideCid(Object unit, MethodStatement guideMethod) {
+    String cid = getUnitGuideCid(guideMethod);
+    if (cid != null) {
+      return cid;
+    }
+
+    if (unit instanceof tech.intellispaces.jaquarius.guide.Guide) {
+      var guide = (tech.intellispaces.jaquarius.guide.Guide<?, ?>) unit;
+      return guide.cid();
+    }
+    throw UnexpectedExceptions.withMessage("Could not define guide channel ID");
+  }
+
+  private static String extractCid(AnnotationInstance annotation) {
+    Optional<Instance> value = annotation.value();
+    if (value.isEmpty()) {
+      return null;
+    }
+    ClassInstance valueClassInstance = value.get().asClass().orElseThrow();
+    if (Void.class.getCanonicalName().equals(valueClassInstance.type().canonicalName())) {
+      return null;
+    }
+    AnnotationInstance channelAnnotation = valueClassInstance.type()
+        .selectAnnotation(Channel.class.getCanonicalName())
+        .orElseThrow();
+    Optional<Instance> cid = channelAnnotation.value();
+    return cid.map(instance -> instance.asString().orElseThrow().value()).orElse(null);
   }
 
   private static Channel findOverrideChannelRecursive(MethodStatement guideMethod, CustomType aClass) {

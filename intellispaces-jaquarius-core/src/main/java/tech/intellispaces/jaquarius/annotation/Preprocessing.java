@@ -9,11 +9,11 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Preprocessing {
 
-  Class<?>[] value() default {};
-
-  boolean enable() default true;
+  Class<?> value() default Void.class;
 
   String artifact() default "";
 
-  Class<?>[] addOnFor() default {};
+  boolean enable() default true;
+
+  String type() default "";
 }

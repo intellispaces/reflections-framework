@@ -1,22 +1,5 @@
 package tech.intellispaces.jaquarius.system;
 
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.Test;
-import tech.intellispaces.jaquarius.exception.ConfigurationException;
-import tech.intellispaces.jaquarius.exception.CyclicDependencyException;
-import tech.intellispaces.jaquarius.samples.object.ObjectReferenceOfEmptyDomain;
-import tech.intellispaces.jaquarius.samples.system.EmptyModule;
-import tech.intellispaces.jaquarius.samples.system.ModuleWithProjectionProvidersWithSelfCyclicDependency;
-import tech.intellispaces.jaquarius.samples.system.ModuleWithSimpleProjections;
-import tech.intellispaces.jaquarius.samples.system.ModuleWithStartupAndShutdownMethods;
-import tech.intellispaces.jaquarius.samples.system.ModuleWithThreeProjectionProvidersWithCyclicDependency;
-import tech.intellispaces.jaquarius.samples.system.ModuleWithTwoProjectionProvidersInDifferentUnitsWithCyclicDependency1;
-import tech.intellispaces.jaquarius.samples.system.ModuleWithTwoProjectionProvidersInDifferentUnitsWithCyclicDependency2;
-import tech.intellispaces.jaquarius.samples.system.ModuleWithTwoProjectionProvidersInDifferentUnitsWithCyclicDependency3;
-import tech.intellispaces.jaquarius.samples.system.ModuleWithTwoProjectionProvidersWithCyclicDependency;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
 ///**
 // * Tests for {@link ModuleFactory} class.
 // */

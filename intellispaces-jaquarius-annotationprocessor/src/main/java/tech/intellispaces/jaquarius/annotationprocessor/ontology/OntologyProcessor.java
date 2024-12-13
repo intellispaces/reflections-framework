@@ -15,9 +15,9 @@ import javax.lang.model.element.ElementKind;
 import java.util.List;
 
 @AutoService(Processor.class)
-public class OntologyAnnotationProcessor extends ArtifactProcessor {
+public class OntologyProcessor extends ArtifactProcessor {
 
-  public OntologyAnnotationProcessor() {
+  public OntologyProcessor() {
     super(ElementKind.INTERFACE, Ontology.class, AnnotationProcessorConstants.SOURCE_VERSION);
   }
 

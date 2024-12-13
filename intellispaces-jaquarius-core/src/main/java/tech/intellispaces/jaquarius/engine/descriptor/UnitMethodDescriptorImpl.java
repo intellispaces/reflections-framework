@@ -1,6 +1,8 @@
 package tech.intellispaces.jaquarius.engine.descriptor;
 
 import tech.intellispaces.action.Action;
+import tech.intellispaces.jaquarius.guide.GuideKind;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.system.InjectionKind;
 import tech.intellispaces.jaquarius.system.ProjectionReference;
 
@@ -20,6 +22,9 @@ class UnitMethodDescriptorImpl implements UnitMethodDescriptor {
   private final List<ProjectionReference> requiredProjections;
   private final boolean lazyLoading;
   private final int guideOrdinal;
+  private final GuideKind guideKind;
+  private final String guideCid;
+  private final ObjectReferenceForm guideTargetForm;
 
   UnitMethodDescriptorImpl(
       String name,
@@ -34,7 +39,10 @@ class UnitMethodDescriptorImpl implements UnitMethodDescriptor {
       Class<?> targetClass,
       List<ProjectionReference> requiredProjections,
       boolean lazyLoading,
-      int guideOrdinal
+      int guideOrdinal,
+      GuideKind guideKind,
+      String guideCid,
+      ObjectReferenceForm guideTargetForm
   ) {
     this.name = name;
     this.paramClasses = paramClasses;
@@ -52,6 +60,9 @@ class UnitMethodDescriptorImpl implements UnitMethodDescriptor {
     this.lazyLoading = lazyLoading;
 
     this.guideOrdinal = guideOrdinal;
+    this.guideKind = guideKind;
+    this.guideCid = guideCid;
+    this.guideTargetForm = guideTargetForm;
   }
 
   @Override
@@ -117,5 +128,20 @@ class UnitMethodDescriptorImpl implements UnitMethodDescriptor {
   @Override
   public int guideOrdinal() {
     return guideOrdinal;
+  }
+
+  @Override
+  public GuideKind guideKind() {
+    return guideKind;
+  }
+
+  @Override
+  public String guideCid() {
+    return guideCid;
+  }
+
+  @Override
+  public ObjectReferenceForm guideTargetForm() {
+    return guideTargetForm;
   }
 }

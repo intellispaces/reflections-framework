@@ -1,9 +1,10 @@
 package tech.intellispaces.jaquarius.engine.descriptor;
 
 import tech.intellispaces.action.Action;
+import tech.intellispaces.jaquarius.guide.GuideKind;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.system.InjectionKind;
 import tech.intellispaces.jaquarius.system.ProjectionReference;
-import tech.intellispaces.jaquarius.system.projection.ProjectionReferences;
 
 import java.util.List;
 
@@ -20,6 +21,9 @@ class BaseUnitMethodBuilder<B extends BaseUnitMethodBuilder<B>> {
   private List<ProjectionReference> requiredProjections;
   private boolean lazyLoading;
   private int guideOrdinal;
+  private GuideKind guideKind;
+  private String guideCid;
+  private ObjectReferenceForm guideTargetForm;
 
   BaseUnitMethodBuilder(String name) {
     this.name = name;
@@ -85,6 +89,24 @@ class BaseUnitMethodBuilder<B extends BaseUnitMethodBuilder<B>> {
     return (B) this;
   }
 
+  @SuppressWarnings("unchecked")
+  public B guideKind(GuideKind guideKind) {
+    this.guideKind = guideKind;
+    return (B) this;
+  }
+
+  @SuppressWarnings("unchecked")
+  public B guideCid(String guideCid) {
+    this.guideCid = guideCid;
+    return (B) this;
+  }
+
+  @SuppressWarnings("unchecked")
+  public B guideTargetForm(ObjectReferenceForm guideTargetForm) {
+    this.guideTargetForm = guideTargetForm;
+    return (B) this;
+  }
+
   public UnitMethodDescriptor get() {
     return new UnitMethodDescriptorImpl(
         name,
@@ -99,7 +121,10 @@ class BaseUnitMethodBuilder<B extends BaseUnitMethodBuilder<B>> {
         targetClass,
         requiredProjections,
         lazyLoading,
-        guideOrdinal
+        guideOrdinal,
+        guideKind,
+        guideCid,
+        guideTargetForm
     );
   }
 }

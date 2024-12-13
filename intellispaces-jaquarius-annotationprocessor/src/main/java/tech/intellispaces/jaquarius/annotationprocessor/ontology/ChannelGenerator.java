@@ -12,7 +12,9 @@ import java.util.List;
 
 public class ChannelGenerator extends AbstractChannelArtifactGenerator {
 
-  public ChannelGenerator(CustomType ontologyType, MethodStatement channelMethod) {
+  public ChannelGenerator(
+      CustomType ontologyType, MethodStatement channelMethod
+  ) {
     super(ontologyType, channelMethod);
   }
 

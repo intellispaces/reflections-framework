@@ -1,4 +1,4 @@
-package tech.intellispaces.jaquarius.annotationprocessor.unit;
+package tech.intellispaces.jaquarius.annotationprocessor.module;
 
 import tech.intellispaces.action.Action;
 import tech.intellispaces.action.Actions;
@@ -15,15 +15,18 @@ import tech.intellispaces.jaquarius.annotation.Ordinal;
 import tech.intellispaces.jaquarius.annotation.Projection;
 import tech.intellispaces.jaquarius.annotation.ProjectionSupplier;
 import tech.intellispaces.jaquarius.annotation.Wrapper;
-import tech.intellispaces.jaquarius.annotationprocessor.JaquariusArtifactGenerator;
 import tech.intellispaces.jaquarius.annotationprocessor.GuideProcessorFunctions;
+import tech.intellispaces.jaquarius.annotationprocessor.JaquariusArtifactGenerator;
 import tech.intellispaces.jaquarius.engine.JaquariusEngines;
 import tech.intellispaces.jaquarius.engine.UnitAgent;
 import tech.intellispaces.jaquarius.engine.descriptor.UnitMethodPurposes;
-import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
 import tech.intellispaces.jaquarius.exception.ConfigurationExceptions;
 import tech.intellispaces.jaquarius.guide.GuideFunctions;
+import tech.intellispaces.jaquarius.guide.GuideKinds;
+import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
 import tech.intellispaces.jaquarius.object.ObjectHandleFunctions;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
+import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.system.Injection;
 import tech.intellispaces.jaquarius.system.Modules;
 import tech.intellispaces.jaquarius.system.ProjectionInjection;
@@ -113,6 +116,8 @@ public class UnitWrapperGenerator extends JaquariusArtifactGenerator {
     addImport(UnitMethodPurposes.class);
     addImport(InjectionKinds.class);
     addImport(ProjectionReferences.class);
+    addImport(GuideKinds.class);
+    addImport(ObjectReferenceForms.class);
 
     methods = sourceArtifact().actualMethods();
     analyzeTypeParams();
@@ -329,6 +334,9 @@ public class UnitWrapperGenerator extends JaquariusArtifactGenerator {
     map.put("purpose", UnitMethodPurposes.Guide.name());
 
     map.put("guideOrdinal", guideOrdinal);
+    map.put("guideKind", GuideFunctions.getGuideKind(method).name());
+    map.put("guideCid", ChannelFunctions.getUnitGuideCid(method));
+    map.put("guideTargetForm", GuideFunctions.getTargetForm(method).name());
     return map;
   }
 

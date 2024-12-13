@@ -27,7 +27,9 @@ abstract class AbstractConversionDomainObjectHandleGenerator extends AbstractDom
   protected final CustomTypeReference parentDomainType;
   protected String childFieldName;
 
-  public AbstractConversionDomainObjectHandleGenerator(CustomType customType, CustomTypeReference parentDomainType) {
+  public AbstractConversionDomainObjectHandleGenerator(
+      CustomType customType, CustomTypeReference parentDomainType
+  ) {
     super(customType);
     this.parentDomainType = parentDomainType;
   }

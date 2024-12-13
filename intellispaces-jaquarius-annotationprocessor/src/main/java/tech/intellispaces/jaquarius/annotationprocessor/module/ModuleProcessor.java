@@ -1,26 +1,24 @@
-package tech.intellispaces.jaquarius.annotationprocessor.guide;
+package tech.intellispaces.jaquarius.annotationprocessor.module;
 
 import com.google.auto.service.AutoService;
 import tech.intellispaces.annotationprocessor.ArtifactGenerator;
 import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
 import tech.intellispaces.annotationprocessor.ArtifactProcessor;
 import tech.intellispaces.annotationprocessor.ArtifactValidator;
-import tech.intellispaces.jaquarius.annotation.Guide;
+import tech.intellispaces.jaquarius.annotation.Module;
 import tech.intellispaces.jaquarius.annotationprocessor.AnnotationProcessorConstants;
 import tech.intellispaces.jaquarius.annotationprocessor.AnnotationProcessorFunctions;
-import tech.intellispaces.jaquarius.annotationprocessor.module.UnitWrapperGenerator;
 import tech.intellispaces.java.reflection.customtype.CustomType;
 
 import javax.annotation.processing.Processor;
 import javax.lang.model.element.ElementKind;
 import java.util.List;
-import java.util.Set;
 
 @AutoService(Processor.class)
-public class GuideProcessor extends ArtifactProcessor {
+public class ModuleProcessor extends ArtifactProcessor {
 
-  public GuideProcessor() {
-    super(Set.of(ElementKind.INTERFACE, ElementKind.CLASS), Guide.class, AnnotationProcessorConstants.SOURCE_VERSION);
+  public ModuleProcessor() {
+    super(ElementKind.CLASS, Module.class, AnnotationProcessorConstants.SOURCE_VERSION);
   }
 
   @Override
@@ -30,15 +28,11 @@ public class GuideProcessor extends ArtifactProcessor {
 
   @Override
   public ArtifactValidator validator() {
-    return null;
+    return new ModuleValidator();
   }
 
   @Override
-  public List<ArtifactGenerator> makeGenerators(CustomType guideType, ArtifactGeneratorContext context) {
-    if (guideType.asInterface().isPresent()) {
-      return List.of(new AutoGuideGenerator(guideType));
-    } else {
-      return List.of(new UnitWrapperGenerator(guideType));
-    }
+  public List<ArtifactGenerator> makeGenerators(CustomType moduleType, ArtifactGeneratorContext context) {
+    return List.of(new UnitWrapperGenerator(moduleType));
   }
 }

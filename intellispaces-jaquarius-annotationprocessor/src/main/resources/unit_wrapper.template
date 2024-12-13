@@ -120,6 +120,15 @@ public class {{$generatedArtifactSimpleName}}{{$typeParamsFullDeclaration}} exte
 {{when $method.get("guideOrdinal").isVoid().invert()}}
         .guideOrdinal({{$method.get("guideOrdinal")}})
 {{end}}
+{{when $method.get("guideKind").isVoid().invert()}}
+        .guideKind(GuideKinds.{{$method.get("guideKind")}})
+{{end}}
+{{when $method.get("guideCid").isVoid().invert()}}
+        .guideCid("{{$method.get("guideCid")}}")
+{{end}}
+{{when $method.get("guideTargetForm").isVoid().invert()}}
+        .guideTargetForm(ObjectReferenceForms.{{$method.get("guideTargetForm")}})
+{{end}}
         .get(){{when $method.isNotLast()}},{{end}}
 {{end}}
     );

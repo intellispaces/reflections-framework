@@ -8,7 +8,6 @@ import tech.intellispaces.jaquarius.annotation.Mapper;
 import tech.intellispaces.jaquarius.annotation.MapperOfMoving;
 import tech.intellispaces.jaquarius.annotation.Mover;
 import tech.intellispaces.jaquarius.annotation.Ordinal;
-import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
 import tech.intellispaces.jaquarius.guide.n0.Mapper0;
 import tech.intellispaces.jaquarius.guide.n0.Mover0;
 import tech.intellispaces.jaquarius.guide.n0.ObjectMapper0;
@@ -42,6 +41,7 @@ import tech.intellispaces.jaquarius.guide.n4.Mover4;
 import tech.intellispaces.jaquarius.guide.n4.ObjectMapperOfMoving4;
 import tech.intellispaces.jaquarius.guide.n5.Mapper5;
 import tech.intellispaces.jaquarius.guide.n5.Mover5;
+import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
 import tech.intellispaces.jaquarius.object.ObjectHandleFunctions;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
@@ -79,6 +79,43 @@ public final class GuideFunctions {
 
   public static boolean isGuideMethod(MethodStatement method) {
     return isMapperMethod(method) || isMoverMethod(method) || isMapperOfMovingMethod(method);
+  }
+
+  public static GuideKind getGuideKind(MethodStatement method) {
+    if (isMapperMethod(method)) {
+      return switch (method.params().size()) {
+        case 0 -> GuideKinds.Mapper0;
+        case 1 -> GuideKinds.Mapper1;
+        case 2 -> GuideKinds.Mapper2;
+        case 3 -> GuideKinds.Mapper3;
+        case 4 -> GuideKinds.Mapper4;
+        case 5 -> GuideKinds.Mapper5;
+        default -> throw NotImplementedExceptions.withCode("qRSnYQ==");
+      };
+    } else if (isMoverMethod(method)) {
+      return switch (method.params().size()) {
+        case 0 -> GuideKinds.Mover0;
+        case 1 -> GuideKinds.Mover1;
+        case 2 -> GuideKinds.Mover2;
+        case 3 -> GuideKinds.Mover3;
+        case 4 -> GuideKinds.Mover4;
+        case 5 -> GuideKinds.Mover5;
+        default -> throw NotImplementedExceptions.withCode("xXtaYA==");
+      };
+    } else if (isMapperOfMovingMethod(method)) {
+      return switch (method.params().size()) {
+        case 0 -> GuideKinds.MapperOfMoving0;
+        case 1 -> GuideKinds.MapperOfMoving1;
+        case 2 -> GuideKinds.MapperOfMoving2;
+        case 3 -> GuideKinds.MapperOfMoving3;
+        case 4 -> GuideKinds.MapperOfMoving4;
+        case 5 -> GuideKinds.MapperOfMoving5;
+        default -> throw NotImplementedExceptions.withCode("hxDz2w==");
+      };
+    } else {
+      throw UnexpectedExceptions.withMessage("Could not define guide kind of the guide method {0} in {1}",
+          method.name(), method.owner().canonicalName());
+    }
   }
 
   public static boolean isMapperMethod(MethodStatement method) {
@@ -325,7 +362,7 @@ public final class GuideFunctions {
     };
   }
 
-  private static ObjectReferenceForm getTargetForm(MethodStatement guideMethod) {
+  public static ObjectReferenceForm getTargetForm(MethodStatement guideMethod) {
     if (guideMethod.returnType().orElseThrow().isPrimitiveReference()) {
       return ObjectReferenceForms.Primitive;
     }

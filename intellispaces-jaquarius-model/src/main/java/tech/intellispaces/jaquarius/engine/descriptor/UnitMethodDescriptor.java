@@ -1,6 +1,8 @@
 package tech.intellispaces.jaquarius.engine.descriptor;
 
 import tech.intellispaces.action.Action;
+import tech.intellispaces.jaquarius.guide.GuideKind;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.system.InjectionKind;
 import tech.intellispaces.jaquarius.system.ProjectionReference;
 
@@ -48,4 +50,10 @@ public interface UnitMethodDescriptor {
   boolean lazyLoading();
 
   int guideOrdinal();
+
+  GuideKind guideKind();
+
+  String guideCid();
+
+  ObjectReferenceForm guideTargetForm();
 }

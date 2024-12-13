@@ -16,7 +16,6 @@ import tech.intellispaces.jaquarius.channel.ChannelMethod0;
 import tech.intellispaces.jaquarius.channel.ChannelMethod1;
 import tech.intellispaces.jaquarius.channel.MappingChannel;
 import tech.intellispaces.jaquarius.channel.MappingOfMovingChannel;
-import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
 import tech.intellispaces.jaquarius.engine.JaquariusEngines;
 import tech.intellispaces.jaquarius.engine.ObjectHandleAgent;
 import tech.intellispaces.jaquarius.engine.descriptor.ObjectHandleMethodPurposes;
@@ -24,6 +23,7 @@ import tech.intellispaces.jaquarius.engine.descriptor.ObjectHandleTypeDescriptor
 import tech.intellispaces.jaquarius.exception.TraverseException;
 import tech.intellispaces.jaquarius.guide.n0.Mover0;
 import tech.intellispaces.jaquarius.guide.n1.Mover1;
+import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;

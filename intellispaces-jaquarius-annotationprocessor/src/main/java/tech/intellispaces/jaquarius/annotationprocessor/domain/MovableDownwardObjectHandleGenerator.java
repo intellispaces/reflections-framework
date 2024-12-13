@@ -12,8 +12,8 @@ import tech.intellispaces.jaquarius.channel.ChannelMethod0;
 import tech.intellispaces.jaquarius.channel.ChannelMethod1;
 import tech.intellispaces.jaquarius.channel.MappingChannel;
 import tech.intellispaces.jaquarius.channel.MappingOfMovingChannel;
-import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
 import tech.intellispaces.jaquarius.exception.TraverseException;
+import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
 import tech.intellispaces.jaquarius.object.ObjectHandleFunctions;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
@@ -44,7 +44,9 @@ public class MovableDownwardObjectHandleGenerator extends AbstractConversionDoma
   private String primaryDomainTypeArguments;
   private String domainType;
 
-  public MovableDownwardObjectHandleGenerator(CustomType annotatedType, CustomTypeReference parentDomainType) {
+  public MovableDownwardObjectHandleGenerator(
+      CustomType annotatedType, CustomTypeReference parentDomainType
+  ) {
     super(annotatedType, parentDomainType);
   }
 

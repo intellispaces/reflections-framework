@@ -1,14 +1,14 @@
-package tech.intellispaces.jaquarius.annotationprocessor.unit;
+package tech.intellispaces.jaquarius.annotationprocessor.configuration;
 
 import com.google.auto.service.AutoService;
 import tech.intellispaces.annotationprocessor.ArtifactGenerator;
 import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
 import tech.intellispaces.annotationprocessor.ArtifactProcessor;
 import tech.intellispaces.annotationprocessor.ArtifactValidator;
-import tech.intellispaces.jaquarius.annotation.Module;
+import tech.intellispaces.jaquarius.annotation.Configuration;
 import tech.intellispaces.jaquarius.annotationprocessor.AnnotationProcessorConstants;
 import tech.intellispaces.jaquarius.annotationprocessor.AnnotationProcessorFunctions;
-import tech.intellispaces.jaquarius.annotationprocessor.module.ModuleValidator;
+import tech.intellispaces.jaquarius.annotationprocessor.module.UnitWrapperGenerator;
 import tech.intellispaces.java.reflection.customtype.CustomType;
 
 import javax.annotation.processing.Processor;
@@ -16,10 +16,10 @@ import javax.lang.model.element.ElementKind;
 import java.util.List;
 
 @AutoService(Processor.class)
-public class ModuleAnnotationProcessor extends ArtifactProcessor {
+public class ConfigurationProcessor extends ArtifactProcessor {
 
-  public ModuleAnnotationProcessor() {
-    super(ElementKind.CLASS, Module.class, AnnotationProcessorConstants.SOURCE_VERSION);
+  public ConfigurationProcessor() {
+    super(ElementKind.CLASS, Configuration.class, AnnotationProcessorConstants.SOURCE_VERSION);
   }
 
   @Override
@@ -29,11 +29,11 @@ public class ModuleAnnotationProcessor extends ArtifactProcessor {
 
   @Override
   public ArtifactValidator validator() {
-    return new ModuleValidator();
+    return null;
   }
 
   @Override
-  public List<ArtifactGenerator> makeGenerators(CustomType moduleType, ArtifactGeneratorContext context) {
-    return AnnotationProcessorFunctions.makeModuleArtifactGenerators(moduleType);
+  public List<ArtifactGenerator> makeGenerators(CustomType configurationType, ArtifactGeneratorContext context) {
+    return List.of(new UnitWrapperGenerator(configurationType));
   }
 }

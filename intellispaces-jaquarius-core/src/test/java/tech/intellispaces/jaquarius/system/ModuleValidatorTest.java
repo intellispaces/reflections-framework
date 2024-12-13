@@ -1,18 +1,5 @@
 package tech.intellispaces.jaquarius.system;
 
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.Test;
-import tech.intellispaces.jaquarius.exception.ConfigurationException;
-import tech.intellispaces.jaquarius.samples.system.EmptyModule;
-import tech.intellispaces.jaquarius.samples.system.EmptyUnit;
-import tech.intellispaces.jaquarius.system.injection.InjectionKinds;
-
-import java.util.List;
-import java.util.Optional;
-
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
 ///**
 // * Tests for {@link ModuleValidator} class.
 // */

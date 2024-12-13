@@ -12,24 +12,17 @@ import tech.intellispaces.general.type.ClassFunctions;
 import tech.intellispaces.general.type.Classes;
 import tech.intellispaces.jaquarius.annotation.AnnotationProcessor;
 import tech.intellispaces.jaquarius.annotation.Channel;
-import tech.intellispaces.jaquarius.annotation.Data;
-import tech.intellispaces.jaquarius.annotation.Domain;
-import tech.intellispaces.jaquarius.annotation.Module;
-import tech.intellispaces.jaquarius.annotation.ObjectHandle;
-import tech.intellispaces.jaquarius.annotation.Ontology;
 import tech.intellispaces.jaquarius.annotation.Preprocessing;
 import tech.intellispaces.jaquarius.annotationprocessor.channel.GuideGenerator;
 import tech.intellispaces.jaquarius.annotationprocessor.data.UnmovableDataHandleGenerator;
-import tech.intellispaces.jaquarius.annotationprocessor.domain.CommonObjectHandleGenerator;
 import tech.intellispaces.jaquarius.annotationprocessor.domain.ChannelGenerator;
+import tech.intellispaces.jaquarius.annotationprocessor.domain.CommonObjectHandleGenerator;
 import tech.intellispaces.jaquarius.annotationprocessor.domain.MovableDownwardObjectHandleGenerator;
 import tech.intellispaces.jaquarius.annotationprocessor.domain.MovableObjectHandleGenerator;
 import tech.intellispaces.jaquarius.annotationprocessor.domain.UnmovableDownwardObjectHandleGenerator;
 import tech.intellispaces.jaquarius.annotationprocessor.domain.UnmovableObjectHandleGenerator;
-import tech.intellispaces.jaquarius.annotationprocessor.guide.AutoGuideGenerator;
 import tech.intellispaces.jaquarius.annotationprocessor.objecthandle.MovableObjectHandleWrapperGenerator;
 import tech.intellispaces.jaquarius.annotationprocessor.objecthandle.UnmovableObjectHandleWrapperGenerator;
-import tech.intellispaces.jaquarius.annotationprocessor.unit.UnitWrapperGenerator;
 import tech.intellispaces.jaquarius.channel.MappingChannel;
 import tech.intellispaces.jaquarius.channel.MappingOfMovingChannel;
 import tech.intellispaces.jaquarius.channel.MovingChannel;
@@ -37,8 +30,6 @@ import tech.intellispaces.jaquarius.exception.ConfigurationExceptions;
 import tech.intellispaces.jaquarius.object.ObjectHandleFunctions;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
-import tech.intellispaces.jaquarius.system.ModuleFunctions;
-import tech.intellispaces.jaquarius.system.UnitFunctions;
 import tech.intellispaces.jaquarius.traverse.TraverseType;
 import tech.intellispaces.jaquarius.traverse.TraverseTypes;
 import tech.intellispaces.java.reflection.AnnotatedStatement;
@@ -65,7 +56,9 @@ public interface AnnotationProcessorFunctions {
     return generators;
   }
 
-  static List<ArtifactGenerator> makeChannelArtifactGenerators(CustomType channelType) {
+  static List<ArtifactGenerator> makeChannelArtifactGenerators(
+      CustomType channelType
+  ) {
     List<MethodStatement> methods = channelType.declaredMethods();
     if (methods.size() != 1) {
       throw ConfigurationExceptions.withMessage("Channel class should contain one method only. Check class {0}",
@@ -89,7 +82,9 @@ public interface AnnotationProcessorFunctions {
     return generators;
   }
 
-  static List<ArtifactGenerator> makeDomainArtifactGenerators(CustomType domainType, ArtifactGeneratorContext context) {
+  static List<ArtifactGenerator> makeDomainArtifactGenerators(
+      CustomType domainType, ArtifactGeneratorContext context
+  ) {
     List<ArtifactGenerator> generators = new ArrayList<>();
     for (MethodStatement method : domainType.declaredMethods()) {
       if (method.hasAnnotation(Channel.class)) {
@@ -137,7 +132,9 @@ public interface AnnotationProcessorFunctions {
   }
 
   private static void addBasicObjectHandleGenerators(
-      CustomType domainType, List<ArtifactGenerator> generators, RoundEnvironment roundEnv
+      CustomType domainType,
+      List<ArtifactGenerator> generators,
+      RoundEnvironment roundEnv
   ) {
     if (isAutoGenerationEnabled(domainType, ArtifactTypes.ObjectHandle, roundEnv)) {
       generators.add(new CommonObjectHandleGenerator(domainType));
@@ -150,7 +147,9 @@ public interface AnnotationProcessorFunctions {
     }
   }
 
-  private static void addDownwardObjectHandleGenerators(CustomType domainType, List<ArtifactGenerator> generators) {
+  private static void addDownwardObjectHandleGenerators(
+      CustomType domainType, List<ArtifactGenerator> generators
+  ) {
     List<CustomTypeReference> parents = domainType.parentTypes();
     if (parents.size() != 1) {
       return;
@@ -167,7 +166,9 @@ public interface AnnotationProcessorFunctions {
     for (MethodStatement method : ontologyType.declaredMethods()) {
       if (method.hasAnnotation(Channel.class)) {
         if (isAutoGenerationEnabled(ontologyType, ArtifactTypes.Channel, context.roundEnvironment())) {
-          generators.add(new tech.intellispaces.jaquarius.annotationprocessor.ontology.ChannelGenerator(ontologyType, method));
+          generators.add(new tech.intellispaces.jaquarius.annotationprocessor.ontology.ChannelGenerator(
+              ontologyType, method
+          ));
         }
       }
     }
@@ -175,7 +176,9 @@ public interface AnnotationProcessorFunctions {
   }
 
   private static List<ArtifactGenerator> makeGuideArtifactGenerators(
-      TraverseType traverseType, CustomType channelType, MethodStatement channelMethod
+      TraverseType traverseType,
+      CustomType channelType,
+      MethodStatement channelMethod
   ) {
     List<ArtifactGenerator> generators = new ArrayList<>();
     generators.add(
@@ -204,7 +207,9 @@ public interface AnnotationProcessorFunctions {
     return new GuideGenerator(targetForm, traverseType, channelType, channelMethod);
   }
 
-  static List<ArtifactGenerator> makeObjectHandleArtifactGenerators(CustomType objectHandleType) {
+  static List<ArtifactGenerator> makeObjectHandleArtifactGenerators(
+      CustomType objectHandleType
+  ) {
     if (ObjectHandleFunctions.isUnmovableObjectHandle(objectHandleType)) {
       return List.of(new UnmovableObjectHandleWrapperGenerator(objectHandleType));
     } else if (ObjectHandleFunctions.isMovableObjectHandle(objectHandleType)) {
@@ -213,47 +218,6 @@ public interface AnnotationProcessorFunctions {
       throw UnexpectedExceptions.withMessage("Could not define movable type of the object handle {0}",
           objectHandleType.canonicalName());
     }
-  }
-
-  static List<ArtifactGenerator> makeModuleArtifactGenerators(CustomType moduleType) {
-    List<ArtifactGenerator> generators = new ArrayList<>();
-    generators.add(new UnitWrapperGenerator(moduleType));
-    Iterable<CustomType> includedUnits = ModuleFunctions.getIncludedUnits(moduleType);
-    includedUnits.forEach(unit -> generators.add(new UnitWrapperGenerator(unit)));
-    return generators;
-  }
-
-  static List<ArtifactGenerator> makePreprocessingArtifactGenerators(
-      CustomType customType, ArtifactGeneratorContext context
-  ) {
-    AnnotationInstance preprocessingAnnotation = customType.selectAnnotation(
-        Preprocessing.class.getCanonicalName()).orElseThrow();
-    List<CustomType> preprocessingClasses = getPreprocessingTargets(preprocessingAnnotation);
-    if (preprocessingClasses.isEmpty()) {
-      return List.of();
-    }
-
-    List<ArtifactGenerator> generators = new ArrayList<>();
-    for (CustomType preprocessingClass : preprocessingClasses) {
-      if (preprocessingClass.hasAnnotation(Data.class)) {
-        generators.addAll(makeDataArtifactGenerators(preprocessingClass));
-      } else if (preprocessingClass.hasAnnotation(Domain.class)) {
-        generators.addAll(makeDomainArtifactGenerators(preprocessingClass, context));
-      } else  if (preprocessingClass.hasAnnotation(Module.class)) {
-        generators.addAll(makeModuleArtifactGenerators(preprocessingClass));
-      } else if (UnitFunctions.isUnitType(preprocessingClass)) {
-        generators.add(new UnitWrapperGenerator(preprocessingClass));
-      } else if (UnitFunctions.isGuideInterface(preprocessingClass)) {
-        generators.add(new AutoGuideGenerator(preprocessingClass));
-      } else if (preprocessingClass.hasAnnotation(ObjectHandle.class)) {
-        if (preprocessingClass.asClass().isPresent()) {
-          generators.addAll(makeObjectHandleArtifactGenerators(preprocessingClass));
-        }
-      } else if (preprocessingClass.hasAnnotation(Ontology.class)) {
-        generators.addAll(makeOntologyArtifactGenerators(preprocessingClass, context));
-      }
-    }
-    return generators;
   }
 
   static boolean isEnableMapperGuideGeneration(
@@ -306,7 +270,7 @@ public interface AnnotationProcessorFunctions {
         .map(stm -> (AnnotatedStatement) stm)
         .map(stm -> stm.selectAnnotation(Preprocessing.class.getCanonicalName()))
         .map(Optional::orElseThrow)
-        .filter(ann -> isPreprocessingAnnotationFor(ann, annotatedType.canonicalName()))
+        .filter(ann -> isPreprocessingAnnotationFor(annotatedType, ann, annotatedType.canonicalName()))
         .toList();
     if (preprocessingAnnotations.isEmpty()) {
       return true;
@@ -353,6 +317,7 @@ public interface AnnotationProcessorFunctions {
       CustomType customType, String canonicalName, ArtifactTypes artifactType
   ) {
     return isPreprocessingAnnotationFor(
+        customType,
         customType.selectAnnotation(Preprocessing.class.getCanonicalName()).orElseThrow(),
         canonicalName,
         artifactType
@@ -360,49 +325,34 @@ public interface AnnotationProcessorFunctions {
   }
 
   static boolean isPreprocessingAnnotationFor(
-      AnnotationInstance preprocessingAnnotation, String canonicalClassName
+      CustomType customType, AnnotationInstance preprocessingAnnotation, String canonicalClassName
   ) {
-    List<CustomType> preprocessingTargets = getPreprocessingAddOnTargets(preprocessingAnnotation);
-    for (CustomType target : preprocessingTargets) {
-      if (canonicalClassName.equals(target.canonicalName())) {
-        return true;
-      }
-    }
-    return false;
+    CustomType preprocessingTarget = getPreprocessingAddOnTarget(customType, preprocessingAnnotation);
+    return canonicalClassName.equals(preprocessingTarget.canonicalName());
   }
 
   static boolean isPreprocessingAnnotationFor(
-      AnnotationInstance preprocessingAnnotation, String canonicalClassName, ArtifactTypes artifact
+      CustomType customType,
+      AnnotationInstance preprocessingAnnotation,
+      String canonicalClassName,
+      ArtifactTypes artifact
   ) {
-    List<CustomType> preprocessingTargets = getPreprocessingAddOnTargets(preprocessingAnnotation);
-    for (CustomType target : preprocessingTargets) {
-      if (canonicalClassName.equals(target.canonicalName())) {
-        if (artifact.name().equals(getPreprocessingArtifactName(preprocessingAnnotation))) {
-          return true;
-        }
-      }
+    CustomType preprocessingTarget = getPreprocessingAddOnTarget(customType, preprocessingAnnotation);
+    if (canonicalClassName.equals(preprocessingTarget.canonicalName())) {
+      return artifact.name().equals(getPreprocessingArtifactName(preprocessingAnnotation));
     }
     return false;
   }
 
-  static List<CustomType> getPreprocessingTargets(AnnotationInstance preprocessingAnnotation) {
-    return preprocessingAnnotation.value().orElseThrow()
-        .asArray().orElseThrow()
-        .elements().stream()
+  static CustomType getPreprocessingAddOnTarget(CustomType customType, AnnotationInstance preprocessingAnnotation) {
+    if (preprocessingAnnotation.valueOf("value").isEmpty()) {
+      return customType;
+    }
+    return preprocessingAnnotation.valueOf("value")
         .map(Instance::asClass)
         .map(Optional::orElseThrow)
         .map(ClassInstance::type)
-        .toList();
-  }
-
-  static List<CustomType> getPreprocessingAddOnTargets(AnnotationInstance preprocessingAnnotation) {
-    return preprocessingAnnotation.valueOf("addOnFor").orElseThrow()
-        .asArray().orElseThrow()
-        .elements().stream()
-        .map(Instance::asClass)
-        .map(Optional::orElseThrow)
-        .map(ClassInstance::type)
-        .toList();
+        .orElseThrow();
   }
 
   static boolean isPreprocessingEnabled(AnnotationInstance preprocessingAnnotation) {

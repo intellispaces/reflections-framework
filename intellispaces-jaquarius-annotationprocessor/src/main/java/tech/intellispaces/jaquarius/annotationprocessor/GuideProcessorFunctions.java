@@ -5,18 +5,15 @@ import tech.intellispaces.action.text.StringActions;
 import tech.intellispaces.annotationprocessor.TemplatedJavaArtifactGenerator;
 import tech.intellispaces.general.exception.UnexpectedExceptions;
 import tech.intellispaces.general.object.ObjectFunctions;
-import tech.intellispaces.general.text.StringFunctions;
 import tech.intellispaces.general.type.ClassFunctions;
 import tech.intellispaces.general.type.PrimitiveType;
 import tech.intellispaces.general.type.PrimitiveTypes;
 import tech.intellispaces.jaquarius.object.ObjectHandleFunctions;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
-import tech.intellispaces.java.reflection.customtype.Classes;
 import tech.intellispaces.java.reflection.customtype.CustomType;
 import tech.intellispaces.java.reflection.method.MethodParam;
 import tech.intellispaces.java.reflection.method.MethodStatement;
-import tech.intellispaces.java.reflection.reference.CustomTypeReferences;
 import tech.intellispaces.java.reflection.reference.NamedReference;
 import tech.intellispaces.java.reflection.reference.PrimitiveReference;
 import tech.intellispaces.java.reflection.reference.PrimitiveReferences;
@@ -26,7 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public interface GuideProcessorFunctions {
 
@@ -56,142 +52,6 @@ public interface GuideProcessorFunctions {
       }
     }
     return type;
-  }
-
-  static String buildGuideAction(
-      String wrapperClassCanonicalName, MethodStatement guideMethod, TemplatedJavaArtifactGenerator generator
-  ) {
-    CustomType wrapperType = Classes.build().canonicalName(wrapperClassCanonicalName).get();
-
-    List<TypeReference> paramTypes = new ArrayList<>();
-    paramTypes.add(CustomTypeReferences.get(wrapperType));
-    rearrangementParams(guideMethod.params()).forEach(param -> paramTypes.add(param.type()));
-
-    return buildGuideAction(wrapperType, guideMethod, paramTypes, generator);
-  }
-
-  private static String buildGuideAction(
-      CustomType wrapperType, MethodStatement guideMethod, List<TypeReference> paramTypes, TemplatedJavaArtifactGenerator generator
-  ) {
-    ObjectReferenceForm targetForm = getTargetForm(guideMethod);
-
-    var sb = new StringBuilder();
-    sb.append(buildGuideActionGetterName(paramTypes, guideMethod.returnType().orElseThrow()));
-    sb.append("(");
-    sb.append(wrapperType.simpleName());
-    sb.append("::");
-    sb.append(ObjectHandleFunctions.buildObjectHandleGuideMethodName(guideMethod));
-    sb.append(", ");
-    sb.append(buildGuideActionReturnType(normalizeType(guideMethod.returnType().orElseThrow()), targetForm, generator));
-    sb.append(".class");
-    for (TypeReference paramType : paramTypes) {
-      sb.append(", ");
-      sb.append(buildGuideActionParamType(normalizeType(paramType), generator));
-      sb.append(".class");
-    }
-    sb.append(")");
-    return sb.toString();
-  }
-
-  private static String buildGuideActionReturnType(
-      TypeReference type, ObjectReferenceForm targetForm, TemplatedJavaArtifactGenerator generator
-  ) {
-    if (targetForm == ObjectReferenceForms.Object) {
-      return buildGuideActionParamType(type, generator);
-    } else if (targetForm == ObjectReferenceForms.Primitive) {
-      return type.asPrimitiveReferenceOrElseThrow().typename();
-    } else {
-      throw UnexpectedExceptions.withMessage("Not supported guide form: {0}", targetForm.name());
-    }
-  }
-
-  private static String buildGuideActionParamType(
-      TypeReference type, TemplatedJavaArtifactGenerator generator
-  ) {
-    if (type.isNamedReference()) {
-      return "Object";
-    } else if (type.isCustomTypeReference()) {
-      return generator.addToImportAndGetSimpleName(type.asCustomTypeReferenceOrElseThrow().targetType().canonicalName());
-    }
-    return type.actualDeclaration(generator::addToImportAndGetSimpleName);
-  }
-
-  private static String buildGuideActionGetterName(List<TypeReference> paramTypes, TypeReference returnType) {
-    var allParamsAreObject = new AtomicBoolean(true);
-    List<String> paramTypenames = new ArrayList<>();
-    paramTypes.forEach(type -> {
-      paramTypenames.add(type(type));
-      if (type.isPrimitiveReference()) {
-        allParamsAreObject.set(false);
-      }
-    });
-    String returnTypeName = type(returnType);
-
-    if (allParamsAreObject.get() && Object.class.getSimpleName().equals(returnTypeName)) {
-      return switch (paramTypes.size()) {
-        case 1 -> "FunctionActions.ofFunction";
-        case 2 -> "FunctionActions.ofBiFunction";
-        case 3 -> "FunctionActions.ofTriFunction";
-        case 4 -> "FunctionActions.ofQuadriFunction";
-        case 5 -> "FunctionActions.ofQuintiFunction";
-        default -> throw UnexpectedExceptions.withMessage("Not supported number of params");
-      };
-    } else {
-      var sb = new StringBuilder();
-      sb.append("FunctionActions.of");
-
-      String curParamTypename = null;
-      boolean first = true;
-      int counter = 0;
-      for (String paramTypename : paramTypenames) {
-        if (curParamTypename == null) {
-          curParamTypename = paramTypename;
-          counter = 1;
-        } else if (curParamTypename.equals(paramTypename)) {
-          counter++;
-        } else {
-          appendParameterTypename(sb, curParamTypename, counter, first);
-          curParamTypename = paramTypename;
-          first = false;
-          counter = 1;
-        }
-      }
-      if (curParamTypename != null) {
-        appendParameterTypename(sb, curParamTypename, counter, first);
-      }
-      sb.append("To");
-      sb.append(StringFunctions.capitalizeFirstLetter(returnTypeName));
-      sb.append("Function");
-      return sb.toString();
-    }
-  }
-
-  private static void appendParameterTypename(StringBuilder sb, String paramTypename, int counter, boolean first) {
-    if (!first) {
-      sb.append("And");
-    }
-    String prefix = switch (counter) {
-      case 2 -> "Two";
-      case 3 -> "Three";
-      case 4 -> "Four";
-      case 5 -> "Five";
-      default -> "";
-    };
-    sb.append(prefix);
-    sb.append(StringFunctions.capitalizeFirstLetter(paramTypename));
-    if (counter > 1) {
-      sb.append("s");
-    }
-  }
-
-  private static String type(TypeReference type) {
-    if (type.isNamedReference()) {
-      return Object.class.getSimpleName();
-    } else if (type.isPrimitiveReference()) {
-      return normalizeType(type).asPrimitiveReferenceOrElseThrow().typename();
-    } else {
-      return Object.class.getSimpleName();
-    }
   }
 
   static Map<String, String> buildGuideActionMethod(

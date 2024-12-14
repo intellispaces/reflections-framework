@@ -50,7 +50,7 @@ abstract class ObjectGuide2<S extends ObjectHandleWrapper, R, Q1, Q2> implements
   public R traverse(S source, Q1 qualifier1, Q2 qualifier2) throws TraverseException {
     try {
       GuideLogger.logCallGuide(guideMethod);
-      return (R) source.$agent().guideAction(traverseOrdinal).castToAction3().execute(source, qualifier1, qualifier2);
+      return (R) source.$broker().guideAction(traverseOrdinal).castToAction3().execute(source, qualifier1, qualifier2);
     } catch (TraverseException e) {
       throw e;
     } catch (Exception e) {

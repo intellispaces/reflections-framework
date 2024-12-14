@@ -11,6 +11,7 @@ import java.util.List;
 class UnitMethodDescriptorImpl implements UnitMethodDescriptor {
   private final String name;
   private final List<Class<?>> paramClasses;
+  private final String prototypeMethodName;
   private final UnitMethodPurpose purpose;
   private final Action action;
   private final String injectionName;
@@ -29,6 +30,7 @@ class UnitMethodDescriptorImpl implements UnitMethodDescriptor {
   UnitMethodDescriptorImpl(
       String name,
       List<Class<?>> paramClasses,
+      String prototypeMethodName,
       UnitMethodPurpose purpose,
       Action action,
       String injectionName,
@@ -46,6 +48,7 @@ class UnitMethodDescriptorImpl implements UnitMethodDescriptor {
   ) {
     this.name = name;
     this.paramClasses = paramClasses;
+    this.prototypeMethodName = prototypeMethodName;
     this.purpose = purpose;
     this.action = action;
 
@@ -73,6 +76,11 @@ class UnitMethodDescriptorImpl implements UnitMethodDescriptor {
   @Override
   public List<Class<?>> paramClasses() {
     return paramClasses;
+  }
+
+  @Override
+  public String prototypeMethodName() {
+    return prototypeMethodName;
   }
 
   @Override

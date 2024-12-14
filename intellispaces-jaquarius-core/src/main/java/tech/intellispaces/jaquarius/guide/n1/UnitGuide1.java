@@ -52,7 +52,7 @@ abstract class UnitGuide1<S, R, Q> implements Guide1<S, R, Q>, UnitGuide<S, R> {
   public R traverse(S source, Q qualifier) throws TraverseException {
     try {
       GuideLogger.logCallGuide(guideMethod);
-      return (R) unit.$agent().guideAction(guideOrdinal).castToAction2().execute(source, qualifier);
+      return (R) unit.$broker().guideAction(guideOrdinal).castToAction2().execute(source, qualifier);
     } catch (TraverseException e) {
       throw e;
     } catch (Exception e) {

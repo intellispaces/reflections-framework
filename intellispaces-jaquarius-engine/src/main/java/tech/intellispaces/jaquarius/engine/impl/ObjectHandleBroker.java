@@ -8,14 +8,14 @@ import tech.intellispaces.jaquarius.system.Injection;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ObjectHandleAgent implements tech.intellispaces.jaquarius.engine.ObjectHandleAgent {
+public class ObjectHandleBroker implements tech.intellispaces.jaquarius.engine.ObjectHandleBroker {
   private final ObjectHandleTypeDescriptor type;
   private final Action[] methodActions;
   private final Action[] guideActions;
   private final Injection[] injections;
   private final Map<Class<?>, Object> projections = new HashMap<>();
 
-  public ObjectHandleAgent(
+  public ObjectHandleBroker(
       ObjectHandleTypeDescriptor type,
       Action[] methodActions,
       Action[] guideActions,

@@ -1,50 +1,60 @@
 package tech.intellispaces.jaquarius.action;
 
 import tech.intellispaces.action.AbstractAction0;
+import tech.intellispaces.action.Action;
 import tech.intellispaces.general.exception.UnexpectedExceptions;
 import tech.intellispaces.jaquarius.exception.ConfigurationExceptions;
 import tech.intellispaces.jaquarius.system.Modules;
 import tech.intellispaces.jaquarius.system.UnitWrapper;
+import tech.intellispaces.java.reflection.method.MethodParam;
+import tech.intellispaces.java.reflection.method.MethodStatement;
 
-import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 
 public class InvokeUnitMethodAction<R> extends AbstractAction0<R> {
   private final UnitWrapper unit;
-  private final Method unitMethod;
+  private final MethodStatement method;
+  private final Action methodAction;
 
-  public InvokeUnitMethodAction(UnitWrapper unit, Method unitMethod) {
+  public InvokeUnitMethodAction(UnitWrapper unit, MethodStatement method, Action methodAction) {
     this.unit = unit;
-    this.unitMethod = unitMethod;
+    this.method = method;
+    this.methodAction = methodAction;
   }
 
-  public Method getUnitMethod() {
-    return unitMethod;
+  public UnitWrapper unit() {
+    return unit;
+  }
+
+  public MethodStatement getMethod() {
+    return method;
   }
 
   @Override
   @SuppressWarnings("unchecked")
   public R execute() {
-    Object[] arguments = makeMethodArguments();
+    Object[] params = makeActionParams();
     try {
-      return (R) unitMethod.invoke(unit, arguments);
+      return (R) methodAction.execute(params);
     } catch (Exception e) {
-      throw UnexpectedExceptions.withCauseAndMessage(e, "Could not to invoke unit method '{0}'",
-          unitMethod.getName());
+      throw UnexpectedExceptions.withCauseAndMessage(e, "Could not to invoke unit method '{0}' action",
+          method.name());
     }
   }
 
-  private Object[] makeMethodArguments() {
-    var arguments = new ArrayList<>();
-    for (Parameter param : unitMethod.getParameters()) {
-      Object projection = Modules.current().getProjection(param.getName(), param.getType());
+  private Object[] makeActionParams() {
+    var params = new ArrayList<>();
+
+    for (MethodParam param : method.params()) {
+      String projectionName = param.name();
+      Class<?> projectionTargerClass = param.type().asCustomTypeReferenceOrElseThrow().targetClass();
+      Object projection = Modules.current().getProjection(projectionName, projectionTargerClass);
       if (projection == null) {
         throw ConfigurationExceptions.withMessage("Cannot to resolve parameter '{0}' in method '{1}' in unit {2}",
-            param.getName(), unitMethod.getName(), unitMethod.getDeclaringClass().getCanonicalName());
+            projectionName, method.name(), method.owner().canonicalName());
       }
-      arguments.add(projection);
+      params.add(projection);
     }
-    return arguments.toArray();
+    return params.toArray();
   }
 }

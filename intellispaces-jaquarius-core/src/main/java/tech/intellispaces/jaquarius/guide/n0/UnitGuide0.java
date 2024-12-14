@@ -52,7 +52,7 @@ abstract class UnitGuide0<S, R> implements Guide0<S, R>, UnitGuide<S, R> {
   public R traverse(S source) throws TraverseException {
     try {
       GuideLogger.logCallGuide(guideMethod);
-      return (R) unit.$agent().guideAction(guideOrdinal).castToAction1().execute(source);
+      return (R) unit.$broker().guideAction(guideOrdinal).castToAction1().execute(source);
     } catch (TraverseException e) {
       throw e;
     } catch (Exception e) {
@@ -65,7 +65,7 @@ abstract class UnitGuide0<S, R> implements Guide0<S, R>, UnitGuide<S, R> {
   public int traverseToInt(S source) throws TraverseException {
     try {
       GuideLogger.logCallGuide(guideMethod);
-      return unit.$agent().guideAction(guideOrdinal).castToAction1().executeReturnInt(source);
+      return unit.$broker().guideAction(guideOrdinal).castToAction1().executeReturnInt(source);
     } catch (TraverseException e) {
       throw e;
     } catch (Exception e) {
@@ -78,7 +78,7 @@ abstract class UnitGuide0<S, R> implements Guide0<S, R>, UnitGuide<S, R> {
   public double traverseToDouble(S source) throws TraverseException {
     try {
       GuideLogger.logCallGuide(guideMethod);
-      return unit.$agent().guideAction(guideOrdinal).castToAction1().executeReturnDouble(source);
+      return unit.$broker().guideAction(guideOrdinal).castToAction1().executeReturnDouble(source);
     } catch (TraverseException e) {
       throw e;
     } catch (Exception e) {

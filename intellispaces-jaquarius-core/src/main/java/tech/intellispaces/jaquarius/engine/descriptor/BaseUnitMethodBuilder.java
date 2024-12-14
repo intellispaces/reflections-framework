@@ -10,6 +10,8 @@ import java.util.List;
 
 class BaseUnitMethodBuilder<B extends BaseUnitMethodBuilder<B>> {
   private final String name;
+  private final List<Class<?>> paramClasses;
+  private String prototypeMethodName;
   protected Action action;
   private UnitMethodPurpose purpose;
   private String injectionName;
@@ -25,8 +27,15 @@ class BaseUnitMethodBuilder<B extends BaseUnitMethodBuilder<B>> {
   private String guideCid;
   private ObjectReferenceForm guideTargetForm;
 
-  BaseUnitMethodBuilder(String name) {
+  BaseUnitMethodBuilder(String name, List<Class<?>> paramClasses) {
     this.name = name;
+    this.paramClasses = paramClasses;
+  }
+
+  @SuppressWarnings("unchecked")
+  public B prototypeMethodName(String prototypeMethodName) {
+    this.prototypeMethodName = prototypeMethodName;
+    return (B) this;
   }
 
   @SuppressWarnings("unchecked")
@@ -110,7 +119,8 @@ class BaseUnitMethodBuilder<B extends BaseUnitMethodBuilder<B>> {
   public UnitMethodDescriptor get() {
     return new UnitMethodDescriptorImpl(
         name,
-        List.of(),
+        paramClasses,
+        prototypeMethodName,
         purpose,
         action,
         injectionName,

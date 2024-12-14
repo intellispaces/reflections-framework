@@ -14,47 +14,15 @@ import static tech.intellispaces.jaquarius.engine.descriptor.UnitMethods.unitMet
 @Wrapper({{$sourceArtifactSimpleName}}.class)
 {{$generatedAnnotation}}
 public class {{$generatedArtifactSimpleName}}{{$typeParamsFullDeclaration}} extends {{$sourceArtifactSimpleName}}{{$typeParamsBriefDeclaration}} implements UnitWrapper {
-  private final UnitAgent $agent;
+  private final UnitBroker $broker;
 
   public {{$generatedArtifactSimpleName}}() {
-    $agent = $registerUnit();
+    $broker = $registerUnit();
   }
 
-//  @Override
-//  public void $init(KernelUnit unit) {
-//    this.$unit = unit;
-//{{when $injections.isNotEmpty()}}
-//    this.$unit.setInjections(
-//{{for injection : $injections}}
-//{{when $injection.get("kind").eq("projection")}}
-//      ProjectionInjections.get({{$sourceArtifactSimpleName}}.class, "{{$injection.get("name")}}", {{$injection.get("type")}}.class){{when $injection.isNotLast()}},{{end}}
-//{{else when $injection.get("kind").eq("guide")}}
-//      GuideInjections.get({{$sourceArtifactSimpleName}}.class, "{{$injection.get("name")}}", {{$injection.get("type")}}.class){{when $injection.isNotLast()}},{{end}}
-//{{else}}
-//      AutoGuideInjections.get({{$sourceArtifactSimpleName}}.class, "{{$injection.get("name")}}", {{$injection.get("type")}}.class){{when $injection.isNotLast()}},{{end}}
-//{{end}}
-//{{end}}
-//    );
-//{{end}}
-//{{when $projectionDefinitions.isNotEmpty()}}
-//    this.$unit.setProjectionDefinitions(
-//{{for projectionDefinition : $projectionDefinitions}}
-//      {{$projectionDefinition}}{{when $projectionDefinition.isNotLast()}},{{end}}
-//{{end}}
-//    );
-//{{end}}
-//{{when $guideActions.isNotEmpty()}}
-//    this.$unit.setGuideActions(
-//{{for guideAction : $guideActions}}
-//      {{$guideAction}}{{when $guideAction.isNotLast()}},{{end}}
-//{{end}}
-//    );
-//{{end}}
-//  }
-
   @Override
-  public UnitAgent $agent() {
-    return this.$agent;
+  public UnitBroker $broker() {
+    return this.$broker;
   }
 
 {{for method : $injectionMethods}}
@@ -81,14 +49,22 @@ public class {{$generatedArtifactSimpleName}}{{$typeParamsFullDeclaration}} exte
   {{$method}}
 
 {{end}}
-  private UnitAgent $registerUnit() {
+  private UnitBroker $registerUnit() {
     return JaquariusEngines.get().registerUnit(
       this,
       {{$sourceArtifactSimpleName}}.class{{when $wrapperMethods.isNotEmpty()}},{{end}}
 {{for method : $wrapperMethods}}
       unitMethod(this, "{{$method.get("name")}}"{{for param : $method.get("params")}}, {{$param}}.class{{end}})
         .purpose(UnitMethodPurposes.{{$method.get("purpose")}})
+{{when $method.get("type").eq("function")}}
         .function({{$generatedArtifactSimpleName}}::{{$method.get("name")}})
+{{end}}
+{{when $method.get("type").eq("consumer")}}
+        .consumer({{$generatedArtifactSimpleName}}::{{$method.get("name")}})
+{{end}}
+{{when $method.get("prototypeMethodName").isVoid().invert()}}
+        .prototypeMethodName("{{$method.get("prototypeMethodName")}}")
+{{end}}
 {{when $method.get("injectionName").isVoid().invert()}}
         .injectionName("{{$method.get("injectionName")}}")
 {{end}}

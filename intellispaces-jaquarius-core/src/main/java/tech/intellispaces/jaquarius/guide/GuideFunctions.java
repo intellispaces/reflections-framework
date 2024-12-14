@@ -13,29 +13,21 @@ import tech.intellispaces.jaquarius.guide.n0.Mover0;
 import tech.intellispaces.jaquarius.guide.n0.ObjectMapper0;
 import tech.intellispaces.jaquarius.guide.n0.ObjectMapperOfMoving0;
 import tech.intellispaces.jaquarius.guide.n0.ObjectMover0;
-import tech.intellispaces.jaquarius.guide.n0.UnitMapper0;
-import tech.intellispaces.jaquarius.guide.n0.UnitMapperOfMoving0;
 import tech.intellispaces.jaquarius.guide.n1.Mapper1;
 import tech.intellispaces.jaquarius.guide.n1.Mover1;
 import tech.intellispaces.jaquarius.guide.n1.ObjectMapper1;
 import tech.intellispaces.jaquarius.guide.n1.ObjectMapperOfMoving1;
 import tech.intellispaces.jaquarius.guide.n1.ObjectMover1;
-import tech.intellispaces.jaquarius.guide.n1.UnitMapper1;
-import tech.intellispaces.jaquarius.guide.n1.UnitMapperOfMoving1;
 import tech.intellispaces.jaquarius.guide.n2.Mapper2;
 import tech.intellispaces.jaquarius.guide.n2.Mover2;
 import tech.intellispaces.jaquarius.guide.n2.ObjectMapper2;
 import tech.intellispaces.jaquarius.guide.n2.ObjectMapperOfMoving2;
 import tech.intellispaces.jaquarius.guide.n2.ObjectMover2;
-import tech.intellispaces.jaquarius.guide.n2.UnitMapper2;
-import tech.intellispaces.jaquarius.guide.n2.UnitMapperOfMoving2;
 import tech.intellispaces.jaquarius.guide.n3.Mapper3;
 import tech.intellispaces.jaquarius.guide.n3.Mover3;
 import tech.intellispaces.jaquarius.guide.n3.ObjectMapper3;
 import tech.intellispaces.jaquarius.guide.n3.ObjectMapperOfMoving3;
 import tech.intellispaces.jaquarius.guide.n3.ObjectMover3;
-import tech.intellispaces.jaquarius.guide.n3.UnitMapper3;
-import tech.intellispaces.jaquarius.guide.n3.UnitMapperOfMoving3;
 import tech.intellispaces.jaquarius.guide.n4.Mapper4;
 import tech.intellispaces.jaquarius.guide.n4.Mover4;
 import tech.intellispaces.jaquarius.guide.n4.ObjectMapperOfMoving4;
@@ -46,7 +38,6 @@ import tech.intellispaces.jaquarius.object.ObjectHandleFunctions;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
-import tech.intellispaces.jaquarius.system.UnitGuide;
 import tech.intellispaces.jaquarius.system.UnitWrapper;
 import tech.intellispaces.jaquarius.traverse.TraverseTypes;
 import tech.intellispaces.java.reflection.customtype.Classes;
@@ -250,64 +241,12 @@ public final class GuideFunctions {
     }
   }
 
-  public static List<UnitGuide<?, ?>> readUnitGuides(Class<?> unitClass, UnitWrapper unit) {
-    List<UnitGuide<?, ?>> guides = new ArrayList<>();
-    for (MethodStatement method : Classes.of(unitClass).actualMethods()) {
-      if (isMapperMethod(method)) {
-        UnitGuide<?, ?> mapper = createUnitMapper(unit, method);
-        guides.add(mapper);
-      } else if (isMoverMethod(method)) {
-        UnitGuide<?, ?> mover = createMover(unit, method);
-          guides.add(mover);
-      } else if (isMapperOfMovingMethod(method)) {
-        UnitGuide<?, ?> mapperOfMoving = createUnitMapperOfMoving(unit, method);
-        guides.add(mapperOfMoving);
-      }
-    }
-    return guides;
-  }
-
   public static GuideKind getGuideKind(Class<?> guideClass) {
     GuideKind guideKind = GUIDE_CLASS_TO_KIND.get(guideClass);
     if (guideKind == null) {
       throw UnexpectedExceptions.withMessage("Unsupported guide class: " + guideClass.getCanonicalName());
     }
     return guideKind;
-  }
-
-  private static UnitGuide<?, ?> createUnitMapper(UnitWrapper unit, MethodStatement guideMethod) {
-    ObjectReferenceForm targetForm = getTargetForm(guideMethod);
-    String cid = getUnitGuideCid(unit, guideMethod);
-    int guideOrdinal = getUnitGuideOrdinal(unit, guideMethod);
-    int qualifiersCount = guideMethod.params().size();
-    return switch (qualifiersCount) {
-      case 1 -> new UnitMapper0<>(cid, unit, guideMethod, guideOrdinal, targetForm);
-      case 2 -> new UnitMapper1<>(cid, unit, guideMethod, guideOrdinal, targetForm);
-      case 3 -> new UnitMapper2<>(cid, unit, guideMethod, guideOrdinal, targetForm);
-      case 4 -> new UnitMapper3<>(cid, unit, guideMethod, guideOrdinal, targetForm);
-      default -> throw UnexpectedExceptions.withMessage("Unsupported number of guide qualifiers: {0}",
-          qualifiersCount);
-    };
-  }
-
-  private static UnitGuide<?, ?> createMover(Object unit, MethodStatement guideMethod) {
-    String cid = getUnitGuideCid(unit, guideMethod);
-    throw NotImplementedExceptions.withCode("4GL2+g");
-  }
-
-  private static UnitGuide<?, ?> createUnitMapperOfMoving(UnitWrapper unit, MethodStatement guideMethod) {
-    ObjectReferenceForm targetForm = getTargetForm(guideMethod);
-    String cid = getUnitGuideCid(unit, guideMethod);
-    int guideOrdinal = getUnitGuideOrdinal(unit, guideMethod);
-    int qualifiersCount = guideMethod.params().size();
-    return switch (qualifiersCount) {
-      case 1 -> new UnitMapperOfMoving0<>(cid, unit, guideMethod, guideOrdinal, targetForm);
-      case 2 -> new UnitMapperOfMoving1<>(cid, unit, guideMethod, guideOrdinal, targetForm);
-      case 3 -> new UnitMapperOfMoving2<>(cid, unit, guideMethod, guideOrdinal, targetForm);
-      case 4 -> new UnitMapperOfMoving3<>(cid, unit, guideMethod, guideOrdinal, targetForm);
-      default -> throw UnexpectedExceptions.withMessage("Unsupported number of guide qualifiers: {0}",
-          qualifiersCount);
-    };
   }
 
   @SuppressWarnings("unchecked, rawtypes")

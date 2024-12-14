@@ -23,6 +23,8 @@ public interface UnitMethodDescriptor {
    */
   List<Class<?>> paramClasses();
 
+  String prototypeMethodName();
+
   /**
    * The method purpose.
    */

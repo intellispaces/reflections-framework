@@ -1,8 +1,8 @@
 package tech.intellispaces.jaquarius.system;
 
-import tech.intellispaces.jaquarius.engine.UnitAgent;
+import tech.intellispaces.jaquarius.engine.UnitBroker;
 
 public interface UnitWrapper {
 
-  UnitAgent $agent();
+  UnitBroker $broker();
 }

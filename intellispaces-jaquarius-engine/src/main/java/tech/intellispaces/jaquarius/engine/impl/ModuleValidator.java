@@ -12,17 +12,17 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
- * Default module instance validator.
+ * The module validator.
  */
-public class ModuleValidator {
+class ModuleValidator {
 
-  public void validate(Module module) {
+  static void validate(Module module) {
     checkThatOneMainUnit(module);
     checkThatThereAreNoProjectionsWithSameName(module);
     checkInjections(module);
   }
 
-  private void checkThatOneMainUnit(Module module) {
+  static void checkThatOneMainUnit(Module module) {
     List<Unit> mainUnits = module.units().stream()
         .filter(tech.intellispaces.jaquarius.system.Unit::isMain)
         .toList();
@@ -31,11 +31,13 @@ public class ModuleValidator {
     }
     if (mainUnits.size() > 1) {
       throw ConfigurationExceptions.withMessage("Multiple main units found: {0}",
-          mainUnits.stream().map(tech.intellispaces.jaquarius.system.Unit::unitClass).map(Class::getSimpleName).collect(Collectors.joining(", ")));
+          mainUnits.stream().map(tech.intellispaces.jaquarius.system.Unit::unitClass)
+              .map(Class::getSimpleName)
+              .collect(Collectors.joining(", ")));
     }
   }
 
-  private void checkThatThereAreNoProjectionsWithSameName(Module module) {
+  static void checkThatThereAreNoProjectionsWithSameName(Module module) {
     String message = module.units().stream()
         .map(tech.intellispaces.jaquarius.system.Unit::projectionDefinitions)
         .flatMap(List::stream)
@@ -49,7 +51,7 @@ public class ModuleValidator {
     }
   }
 
-  private void checkInjections(Module module) {
+  static void checkInjections(Module module) {
     Map<String, UnitProjectionDefinition> projectionProviders = module.units().stream()
         .map(tech.intellispaces.jaquarius.system.Unit::projectionDefinitions)
         .flatMap(List::stream)
@@ -58,7 +60,7 @@ public class ModuleValidator {
     checkUnitInjections(module, projectionProviders);
   }
 
-  private void checkUnitInjections(
+  static void checkUnitInjections(
       Module module, Map<String, UnitProjectionDefinition> projectionProviders
   ) {
     List<ProjectionInjection> injections = module.units().stream()
@@ -70,24 +72,26 @@ public class ModuleValidator {
     for (ProjectionInjection injection : injections) {
       UnitProjectionDefinition provider = projectionProviders.get(injection.name());
       if (provider == null) {
-        throw ConfigurationExceptions.withMessage("Projection injection by name '{0}' declared in unit {1} is not found",
-            injection.name(), injection.unitClass().getCanonicalName());
+        throw ConfigurationExceptions.withMessage("Projection injection by name '{0}' declared in unit {1} " +
+                "is not found", injection.name(), injection.unitClass().getCanonicalName());
       }
       if (!ObjectHandleFunctions.isCompatibleObjectType(injection.targetClass(), provider.type())) {
-        throw ConfigurationExceptions.withMessage("Projection injection '{0}' declared in unit {1} has an incompatible " +
-                "target type. Expected type {2}, actual type {3}",
+        throw ConfigurationExceptions.withMessage("Projection injection '{0}' declared in unit {1} " +
+                "has an incompatible target type. Expected type {2}, actual type {3}",
             injection.name(), injection.unitClass().getCanonicalName(),
             injection.targetClass().getCanonicalName(), provider.type().getCanonicalName());
       }
     }
   }
 
-  private String makeSameProjectionsInfo(String projectionName, List<UnitProjectionDefinition> projectionProviders) {
+  static String makeSameProjectionsInfo(String projectionName, List<UnitProjectionDefinition> projectionProviders) {
     return "Projection name '" + projectionName +
-        "', projection providers: " + projectionProviders.stream().map(this::getProjectionProviderName).collect(Collectors.joining(", "));
+        "', projection providers: " + projectionProviders.stream()
+        .map(ModuleValidator::getProjectionProviderName)
+        .collect(Collectors.joining(", "));
   }
 
-  private String getProjectionProviderName(UnitProjectionDefinition projectionProvider) {
+  static String getProjectionProviderName(UnitProjectionDefinition projectionProvider) {
     return projectionProvider.unitClass().getCanonicalName() + "#" + projectionProvider.projectionMethod().getName();
   }
 }

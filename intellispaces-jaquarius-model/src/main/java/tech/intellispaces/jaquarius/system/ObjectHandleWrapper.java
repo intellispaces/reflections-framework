@@ -1,8 +1,8 @@
 package tech.intellispaces.jaquarius.system;
 
-import tech.intellispaces.jaquarius.engine.ObjectHandleAgent;
+import tech.intellispaces.jaquarius.engine.ObjectHandleBroker;
 
 public interface ObjectHandleWrapper {
 
-  ObjectHandleAgent $agent();
+  ObjectHandleBroker $broker();
 }

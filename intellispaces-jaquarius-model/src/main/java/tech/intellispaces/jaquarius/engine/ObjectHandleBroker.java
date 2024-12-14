@@ -7,7 +7,7 @@ import tech.intellispaces.jaquarius.system.Injection;
 /**
  * The object handle broker.
  */
-public interface ObjectHandleAgent {
+public interface ObjectHandleBroker {
 
   ObjectHandleTypeDescriptor type();
 

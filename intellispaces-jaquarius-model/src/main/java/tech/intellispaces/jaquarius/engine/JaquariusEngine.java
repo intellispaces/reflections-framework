@@ -4,6 +4,7 @@ import tech.intellispaces.jaquarius.engine.descriptor.ObjectHandleMethodDescript
 import tech.intellispaces.jaquarius.engine.descriptor.ObjectHandleTypeDescriptor;
 import tech.intellispaces.jaquarius.engine.descriptor.UnitMethodDescriptor;
 import tech.intellispaces.jaquarius.system.Module;
+import tech.intellispaces.jaquarius.system.UnitWrapper;
 
 import java.util.List;
 
@@ -43,11 +44,11 @@ public interface JaquariusEngine {
    *
    * @param objectHandleWrapper the object handle wrapper.
    * @param type the object handle type.
-   * @return the object handle agent.
+   * @return the object handle broker.
    *
    * @param <W> the object handle wrapper type.
    */
-  <W> ObjectHandleAgent registerObjectHandle(W objectHandleWrapper, ObjectHandleTypeDescriptor type);
+  <W> ObjectHandleBroker registerObjectHandle(W objectHandleWrapper, ObjectHandleTypeDescriptor type);
 
   /**
    * Registers module unit.
@@ -55,10 +56,10 @@ public interface JaquariusEngine {
    * @param unitWrapper the unit wrapper instance.
    * @param unitClass the unit class.
    * @param methods unit wrapper method descriptions.
-   * @return the unit agent.
+   * @return the unit broker.
    *
    * @param <U> the unit type.
    * @param <W> the unit wrapper type.
    */
-  <U, W extends U> UnitAgent registerUnit(W unitWrapper, Class<U> unitClass, UnitMethodDescriptor... methods);
+  <U, W extends UnitWrapper> UnitBroker registerUnit(W unitWrapper, Class<U> unitClass, UnitMethodDescriptor... methods);
 }

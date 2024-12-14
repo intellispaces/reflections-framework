@@ -13,18 +13,18 @@ import static tech.intellispaces.jaquarius.engine.descriptor.ObjectHandleMethods
 {{$generatedAnnotation}}
 public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sourceArtifactSimpleName}}{{$typeParamsBrief}} implements ObjectHandleWrapper {
   private static ObjectHandleTypeDescriptor $TYPE;
-  private final ObjectHandleAgent $agent;
+  private final ObjectHandleBroker $broker;
 
 {{for constructor : $constructors}}
   public {{$generatedArtifactSimpleName}}({{for param : $constructor.get("params")}}{{$param.get("type")}} {{$param.get("name")}}{{when $param.isNotLast()}}, {{end}}{{end}}) {
     super({{for param : $constructor.get("params")}}{{$param.get("name")}}{{when $param.isNotLast()}},{{end}}{{end}});
-    $agent = $registerObjectHandle();
+    $broker = $registerObjectHandle();
   }
 {{end}}
 
   @Override
-  public ObjectHandleAgent $agent() {
-    return this.$agent;
+  public ObjectHandleBroker $broker() {
+    return this.$broker;
   }
 
 {{for method : $conversionMethods}}
@@ -58,12 +58,12 @@ public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sour
 
   @Override
   public <TD, TH> void addProjection(Class<TD> targetDomain, TH target) {
-    $agent.addProjection(targetDomain, target);
+    $broker.addProjection(targetDomain, target);
   }
 
   @Override
   public <TD, TH> TH mapTo(Class<TD> targetDomain) {
-    return $agent.mapTo(targetDomain);
+    return $broker.mapTo(targetDomain);
   }
 
   @Override
@@ -71,7 +71,7 @@ public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sour
     return Modules.current().mapThruChannel1(this, channelClass, qualifier);
   }
 
-  private ObjectHandleAgent $registerObjectHandle() {
+  private ObjectHandleBroker $registerObjectHandle() {
     if ($TYPE == null) {
       $TYPE = $registerObjectHandleType();
     }

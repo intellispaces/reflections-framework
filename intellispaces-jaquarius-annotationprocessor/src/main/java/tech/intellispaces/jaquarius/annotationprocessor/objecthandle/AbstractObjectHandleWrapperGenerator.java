@@ -145,7 +145,7 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
   }
 
   private String buildInjectionMethodBody(String injectionType, int injectionIndex) {
-    return "return (" + injectionType + ") this.$agent.injection(" + injectionIndex + ").value();";
+    return "return (" + injectionType + ") this.$broker.injection(" + injectionIndex + ").value();";
   }
 
   private MethodStatement findGuideMethod(
@@ -401,7 +401,7 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
   private void buildInvokeMethodAction(
       MethodStatement domainMethod, ObjectReferenceForm targetForm, int methodIndex, StringBuilder sb
   ) {
-    sb.append("$agent.methodAction(");
+    sb.append("$broker.methodAction(");
     sb.append(methodIndex);
     sb.append(").castToAction");
     sb.append(domainMethod.params().size() + 1);

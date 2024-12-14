@@ -6,7 +6,7 @@ import tech.intellispaces.jaquarius.system.Injection;
 /**
  * The system unit broker.
  */
-public interface UnitAgent {
+public interface UnitBroker {
 
   Action guideAction(int guideOrdinal);
 

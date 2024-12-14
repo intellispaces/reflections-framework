@@ -66,7 +66,7 @@ public class Modules {
     MODULES.remove(module);
   }
 
-  public static void flash(Class<?>... unitClasses) {
+  public static void flare(Class<?>... unitClasses) {
     try {
       Modules.load(unitClasses).start();
     } finally {

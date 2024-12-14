@@ -17,7 +17,7 @@ import tech.intellispaces.jaquarius.channel.ChannelMethod1;
 import tech.intellispaces.jaquarius.channel.MappingChannel;
 import tech.intellispaces.jaquarius.channel.MappingOfMovingChannel;
 import tech.intellispaces.jaquarius.engine.JaquariusEngines;
-import tech.intellispaces.jaquarius.engine.ObjectHandleAgent;
+import tech.intellispaces.jaquarius.engine.ObjectHandleBroker;
 import tech.intellispaces.jaquarius.engine.descriptor.ObjectHandleMethodPurposes;
 import tech.intellispaces.jaquarius.engine.descriptor.ObjectHandleTypeDescriptor;
 import tech.intellispaces.jaquarius.exception.TraverseException;
@@ -93,7 +93,7 @@ public class MovableObjectHandleWrapperGenerator extends AbstractObjectHandleWra
     addImport(NotImplementedExceptions.class);
     addImport(PrimitiveFunctions.class);
     addImport(ObjectHandleTypeDescriptor.class);
-    addImport(ObjectHandleAgent.class);
+    addImport(ObjectHandleBroker.class);
     addImport(JaquariusEngines.class);
     addImport(TraverseTypes.class);
     addImport(ObjectHandleMethodPurposes.class);

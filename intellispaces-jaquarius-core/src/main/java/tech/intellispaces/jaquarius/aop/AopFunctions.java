@@ -5,20 +5,14 @@ import tech.intellispaces.general.exception.UnexpectedExceptions;
 import tech.intellispaces.jaquarius.annotation.ApplyAdvice;
 import tech.intellispaces.jaquarius.system.ProjectionProvider;
 import tech.intellispaces.java.reflection.method.MethodStatement;
-import tech.intellispaces.java.reflection.method.Methods;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 public interface AopFunctions {
-
-  static Action buildChainAction(Method method, Action action, ProjectionProvider projectionProvider) {
-    return buildChainAction(Methods.of(method), action, projectionProvider);
-  }
 
   @SuppressWarnings("unchecked, rawtypes")
   static Action buildChainAction(MethodStatement method, Action action, ProjectionProvider projectionProvider) {

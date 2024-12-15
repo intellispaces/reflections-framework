@@ -158,7 +158,7 @@ class ModuleFactory {
       return;
     }
     var startupAction = (InvokeUnitMethodAction<Void>) unit.startupAction().get();
-    MethodStatement startupMethod = startupAction.getMethod();
+    MethodStatement startupMethod = startupAction.method();
     Action chainAction = AopFunctions.buildChainAction(startupMethod, startupAction, projectionRegistry);
     if (chainAction != startupAction) {
       unit.setStartupAction(chainAction);

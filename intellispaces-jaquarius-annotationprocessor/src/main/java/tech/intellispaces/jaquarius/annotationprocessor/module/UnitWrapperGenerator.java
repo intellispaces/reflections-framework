@@ -318,14 +318,23 @@ public class UnitWrapperGenerator extends JaquariusArtifactGenerator {
     map.put("type", "function");
 
     map.put("projectionName", method.name());
-    map.put("targetClass", addToImportAndGetSimpleName(
-        method.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow().targetType().canonicalName())
-    );
+    map.put("targetClass", addToImportAndGetSimpleName(getTargetClassName(method)));
     if (!method.params().isEmpty()) {
       map.put("requiredProjections", buildRequiredProjections(method));
     }
     map.put("lazyLoading", method.selectAnnotation(Projection.class).orElseThrow().lazy());
     return map;
+  }
+
+  private String getTargetClassName(MethodStatement method) {
+    TypeReference returnType = method.returnType().orElseThrow();
+    if (returnType.isCustomTypeReference()) {
+      return returnType.asCustomTypeReferenceOrElseThrow().targetType().canonicalName();
+    } else if (returnType.isPrimitiveReference()) {
+      return returnType.asPrimitiveReferenceOrElseThrow().primitiveType().typename();
+    } else {
+      throw UnexpectedExceptions.withMessage("Not expected projection method target type");
+    }
   }
 
   private List<Map<String, String>> buildRequiredProjections(MethodStatement method) {

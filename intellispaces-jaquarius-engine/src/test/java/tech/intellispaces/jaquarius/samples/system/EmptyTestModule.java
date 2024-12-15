@@ -3,5 +3,5 @@ package tech.intellispaces.jaquarius.samples.system;
 import tech.intellispaces.jaquarius.annotation.Module;
 
 @Module
-public class EmptyModule {
+public class EmptyTestModule {
 }

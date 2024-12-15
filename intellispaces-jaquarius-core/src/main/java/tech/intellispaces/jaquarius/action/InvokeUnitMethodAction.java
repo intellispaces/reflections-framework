@@ -26,7 +26,7 @@ public class InvokeUnitMethodAction<R> extends AbstractAction0<R> {
     return unit;
   }
 
-  public MethodStatement getMethod() {
+  public MethodStatement method() {
     return method;
   }
 

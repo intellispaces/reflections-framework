@@ -183,7 +183,7 @@ public interface AnnotationProcessorFunctions {
     List<ArtifactGenerator> generators = new ArrayList<>();
     generators.add(
         makeGuideArtifactGenerators(
-            ObjectReferenceForms.Object, traverseType, channelType, channelMethod));
+            ObjectReferenceForms.Common, traverseType, channelType, channelMethod));
     if (channelMethod.returnType().isPresent()) {
       TypeReference returnType = channelMethod.returnType().get();
       if (returnType.isCustomTypeReference()) {

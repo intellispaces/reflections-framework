@@ -234,7 +234,7 @@ public final class GuideFunctions {
             (Class) objectHandleClass,
             method,
             channelOrdinal,
-            ObjectReferenceForms.Object
+            ObjectReferenceForms.Common
         );
         guides.add(guide);
       }
@@ -305,7 +305,7 @@ public final class GuideFunctions {
     if (guideMethod.returnType().orElseThrow().isPrimitiveReference()) {
       return ObjectReferenceForms.Primitive;
     }
-    return ObjectReferenceForms.Object;
+    return ObjectReferenceForms.Common;
   }
 
   public static int getChannelOrdinal(Class<?> objectHandleClass, MethodStatement guideMethod) {

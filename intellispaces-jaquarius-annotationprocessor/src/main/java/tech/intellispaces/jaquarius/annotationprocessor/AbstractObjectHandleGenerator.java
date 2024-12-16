@@ -60,7 +60,7 @@ public abstract class AbstractObjectHandleGenerator extends JaquariusArtifactGen
     int methodIndex = 0;
     for (MethodStatement method : methods) {
       MethodStatement effectiveMethod = convertMethodBeforeGenerate(method);
-      analyzeMethod(effectiveMethod, ObjectReferenceForms.Object, methodIndex++);
+      analyzeMethod(effectiveMethod, ObjectReferenceForms.Common, methodIndex++);
       if (method.returnType().orElseThrow().isCustomTypeReference()) {
         CustomType returnType = method.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow().targetType();
         if (ClassFunctions.isPrimitiveWrapperClass(returnType.canonicalName())) {
@@ -143,7 +143,7 @@ public abstract class AbstractObjectHandleGenerator extends JaquariusArtifactGen
   }
 
   protected String getMethodName(MethodStatement method, ObjectReferenceForm targetForm) {
-    if (targetForm == ObjectReferenceForms.Object) {
+    if (targetForm == ObjectReferenceForms.Common) {
       return method.name();
     } else if (targetForm == ObjectReferenceForms.Primitive) {
       return method.name() + "Primitive";
@@ -167,7 +167,7 @@ public abstract class AbstractObjectHandleGenerator extends JaquariusArtifactGen
   }
 
   protected void appendMethodReturnHandleType(StringBuilder sb, MethodStatement method, ObjectReferenceForm targetForm) {
-    if (targetForm == ObjectReferenceForms.Object) {
+    if (targetForm == ObjectReferenceForms.Common) {
       appendMethodReturnHandleType(sb, method);
     } else if (targetForm == ObjectReferenceForms.Primitive) {
       CustomType ct = method.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow().targetType();

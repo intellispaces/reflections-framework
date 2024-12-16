@@ -435,7 +435,7 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
   }
 
   private String buildExecuteMethod(MethodStatement domainMethod, ObjectReferenceForm targetForm) {
-    if (targetForm == ObjectReferenceForms.Object) {
+    if (targetForm == ObjectReferenceForms.Common) {
       return "execute";
     } else if (targetForm == ObjectReferenceForms.Primitive) {
       CustomType ct = domainMethod.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow().targetType();

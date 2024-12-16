@@ -127,7 +127,7 @@ class Module implements tech.intellispaces.jaquarius.system.Module {
   @SuppressWarnings("unchecked")
   public <S, T> T mapThruChannel0(S source, String cid) {
     DeclarativeTraversePlan traversePlan = traverseAnalyzer.buildMapObjectHandleThruChannel0Plan(
-        ObjectHandleFunctions.getObjectHandleClass(source.getClass()), cid, ObjectReferenceForms.Object);
+        ObjectHandleFunctions.getObjectHandleClass(source.getClass()), cid, ObjectReferenceForms.Common);
     return (T) traversePlan.execute(source, traverseExecutor);
   }
 
@@ -140,7 +140,7 @@ class Module implements tech.intellispaces.jaquarius.system.Module {
   @SuppressWarnings("unchecked")
   public <S, T, Q> T mapThruChannel1(S source, String cid, Q qualifier) {
     DeclarativeTraversePlan traversePlan = traverseAnalyzer.buildMapObjectHandleThruChannel1Plan(
-        ObjectHandleFunctions.getObjectHandleClass(source.getClass()), cid, ObjectReferenceForms.Object);
+        ObjectHandleFunctions.getObjectHandleClass(source.getClass()), cid, ObjectReferenceForms.Common);
     return (T) traversePlan.execute(source, qualifier, traverseExecutor);
   }
 
@@ -153,7 +153,7 @@ class Module implements tech.intellispaces.jaquarius.system.Module {
   @SuppressWarnings("unchecked")
   public <S, R> R moveThruChannel0(S source, String cid) {
     TraversePlan traversePlan = traverseAnalyzer.buildMoveObjectHandleThruChannel0Plan(
-        ObjectHandleFunctions.getObjectHandleClass(source.getClass()), cid, ObjectReferenceForms.Object);
+        ObjectHandleFunctions.getObjectHandleClass(source.getClass()), cid, ObjectReferenceForms.Common);
     return (R) traversePlan.execute(source, traverseExecutor);
   }
 
@@ -161,7 +161,7 @@ class Module implements tech.intellispaces.jaquarius.system.Module {
   @SuppressWarnings("unchecked")
   public <S, R, Q> R moveThruChannel1(S source, String cid, Q qualifier) {
     TraversePlan traversePlan = traverseAnalyzer.buildMoveObjectHandleThruChannel1Plan(
-        ObjectHandleFunctions.getObjectHandleClass(source.getClass()), cid, ObjectReferenceForms.Object);
+        ObjectHandleFunctions.getObjectHandleClass(source.getClass()), cid, ObjectReferenceForms.Common);
     return (R) traversePlan.execute(source, qualifier, traverseExecutor);
   }
 
@@ -176,7 +176,7 @@ class Module implements tech.intellispaces.jaquarius.system.Module {
   @SuppressWarnings("unchecked")
   public <S, R, Q> R mapOfMovingThruChannel1(S source, String cid, Q qualifier) {
     TraversePlan traversePlan = traverseAnalyzer.buildMapOfMovingObjectHandleThruChannel1Plan(
-        ObjectHandleFunctions.getObjectHandleClass(source.getClass()), cid, ObjectReferenceForms.Object);
+        ObjectHandleFunctions.getObjectHandleClass(source.getClass()), cid, ObjectReferenceForms.Common);
     return (R) traversePlan.execute(source, qualifier, traverseExecutor);
   }
 

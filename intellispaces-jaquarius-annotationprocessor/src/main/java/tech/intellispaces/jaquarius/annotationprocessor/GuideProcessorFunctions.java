@@ -31,7 +31,7 @@ public interface GuideProcessorFunctions {
     if (returnType.isPrimitiveReference()) {
       return ObjectReferenceForms.Primitive;
     } else {
-      return ObjectReferenceForms.Object;
+      return ObjectReferenceForms.Common;
     }
   }
 

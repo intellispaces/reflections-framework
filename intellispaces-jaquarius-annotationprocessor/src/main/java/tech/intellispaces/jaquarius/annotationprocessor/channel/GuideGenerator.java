@@ -367,7 +367,7 @@ public class GuideGenerator extends JaquariusArtifactGenerator {
   }
 
   private String buildTargetObjectHandleFormDeclaration() {
-    if (targetForm == ObjectReferenceForms.Object) {
+    if (targetForm == ObjectReferenceForms.Common) {
       return buildTargetObjectHandleDeclaration(Function.identity(), false);
     } else if (targetForm == ObjectReferenceForms.Primitive) {
       return ClassFunctions.getPrimitiveTypeOfWrapper(

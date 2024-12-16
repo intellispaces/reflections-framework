@@ -70,7 +70,6 @@ public class UnmovableObjectHandleGenerator extends AbstractDomainObjectHandleGe
       primaryObjectHandle = getObjectHandleDeclaration(equivalentDomain.get(), ObjectHandleTypes.Unmovable);
     }
 
-    addVariable("generatedAnnotation", makeGeneratedAnnotation());
     addVariable("movableClassSimpleName", movableClassSimpleName());
     addVariable("domainTypeParamsFull", domainTypeParamsFull);
     addVariable("domainTypeParamsBrief", domainTypeParamsBrief);

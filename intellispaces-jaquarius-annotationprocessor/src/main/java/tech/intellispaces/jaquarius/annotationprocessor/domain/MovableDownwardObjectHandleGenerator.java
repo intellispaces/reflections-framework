@@ -119,8 +119,6 @@ public class MovableDownwardObjectHandleGenerator extends AbstractConversionDoma
       domainType = buildDomainType(parentDomainType.targetType(), (List) sourceArtifact().typeParameters());
     }
 
-
-    addVariable("generatedAnnotation", makeGeneratedAnnotation());
     addVariable("classTypeParams", classTypeParams);
     addVariable("classTypeParamsBrief", classTypeParamsBrief);
     addVariable("domainTypeParams", domainTypeParams);

@@ -94,7 +94,6 @@ public class UnmovableObjectHandleWrapperGenerator extends AbstractObjectHandleW
     analyzeConversionMethods(domainType, context);
     analyzeReleaseMethod();
 
-    addVariable("generatedAnnotation", makeGeneratedAnnotation());
     addVariable("typeParamsFull", typeParamsFull);
     addVariable("typeParamsBrief", typeParamsBrief);
     addVariable("domainClassSimpleName", domainSimpleClassName);

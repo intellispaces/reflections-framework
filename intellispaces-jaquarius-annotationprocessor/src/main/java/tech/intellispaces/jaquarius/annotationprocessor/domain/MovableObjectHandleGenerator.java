@@ -89,7 +89,6 @@ public class MovableObjectHandleGenerator extends AbstractDomainObjectHandleGene
       primaryDomainTypeArguments = nearEquivalentDomain.typeArgumentsDeclaration(this::addToImportAndGetSimpleName);
     }
 
-    addVariable("generatedAnnotation", makeGeneratedAnnotation());
     addVariable("domainTypeParamsFull", domainTypeParamsFull);
     addVariable("domainTypeParamsBrief", domainTypeParamsBrief);
     addVariable("baseObjectHandle", baseObjectHandle);

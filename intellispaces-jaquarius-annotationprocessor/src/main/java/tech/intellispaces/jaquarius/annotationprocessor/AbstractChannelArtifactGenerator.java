@@ -52,7 +52,6 @@ public abstract class AbstractChannelArtifactGenerator extends JaquariusArtifact
     channelClasses = defineChannelClasses();
     channelMethodSignature = getChannelMethodSignature();
 
-    addVariable("generatedAnnotation", makeGeneratedAnnotation());
     addVariable("targetClassLink", AnnotationProcessorFunctions.getDomainClassLink(channelMethod.returnType().orElseThrow()));
     addVariable("channelMethod", channelMethodSignature);
     addVariable("channelClasses", channelClasses);

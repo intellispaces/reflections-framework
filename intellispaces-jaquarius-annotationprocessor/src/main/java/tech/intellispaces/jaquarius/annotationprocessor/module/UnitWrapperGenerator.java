@@ -121,7 +121,6 @@ public class UnitWrapperGenerator extends JaquariusArtifactGenerator {
     analyzeGuideMethods();
     analyzeGuideActions();
 
-    addVariable("generatedAnnotation", makeGeneratedAnnotation());
     addVariable("typeParamsFullDeclaration", typeParamsFullDeclaration);
     addVariable("typeParamsBriefDeclaration", typeParamsBriefDeclaration);
     addVariable("injectionMethods", injectionMethods);

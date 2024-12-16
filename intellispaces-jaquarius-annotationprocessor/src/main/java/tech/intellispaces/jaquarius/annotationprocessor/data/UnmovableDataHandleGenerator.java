@@ -68,7 +68,6 @@ public class UnmovableDataHandleGenerator extends JaquariusArtifactGenerator {
     analyzeTypeParams();
     analyzeProjections();
 
-    addVariable("generatedAnnotation", makeGeneratedAnnotation());
     addVariable("objectHandleClassName", NameConventionFunctions.getUnmovableObjectHandleTypename(sourceArtifact().className()));
     addVariable("typeParamsBrief", typeParamsBrief);
     addVariable("projections", projectionProperties);

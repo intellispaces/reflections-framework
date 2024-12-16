@@ -81,7 +81,6 @@ public class CommonObjectHandleGenerator extends AbstractDomainObjectHandleGener
       domainType = buildDomainType(sourceArtifact(), (List) sourceArtifact().typeParameters());
     }
 
-    addVariable("generatedAnnotation", makeGeneratedAnnotation());
     addVariable("movableClassSimpleName", movableClassSimpleName());
     addVariable("domainTypeParamsFull", domainTypeParamsFull);
     addVariable("domainTypeParamsBrief", domainTypeParamsBrief);

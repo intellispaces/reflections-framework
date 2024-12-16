@@ -104,7 +104,6 @@ public class GuideGenerator extends JaquariusArtifactGenerator {
     addImport(PrimitiveFunctions.class);
     analyzeGuideType();
 
-    addVariable("generatedAnnotation", makeGeneratedAnnotation());
     addVariable("channelClassSimpleName", channelClassSimpleName());
     addVariable("guideClassSimpleName", guideClassSimpleName);
     addVariable("guideTypeParams", buildGuideTypeParams());

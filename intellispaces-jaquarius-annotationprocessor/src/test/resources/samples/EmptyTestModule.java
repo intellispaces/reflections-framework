@@ -5,5 +5,5 @@ import tech.intellispaces.jaquarius.annotationprocessor.Sample;
 
 @Sample
 @Module
-public class EmptyModule {
+public class EmptyTestModule {
 }

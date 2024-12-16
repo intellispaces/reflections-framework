@@ -60,12 +60,9 @@ public class AutoGuideGenerator extends JaquariusArtifactGenerator {
     analyzeTypeParams();
     analyzeGuideMethods();
 
-
-    addVariable("generatedAnnotation", makeGeneratedAnnotation());
     addVariable("typeParamsFullDeclaration", typeParamsFullDeclaration);
     addVariable("typeParamsBriefDeclaration", typeParamsBriefDeclaration);
     addVariable("guideMethods", guideMethods);
-
     return true;
   }
 

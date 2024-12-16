@@ -21,7 +21,7 @@ public class ModuleValidatorTest {
   @Test
   public void testValidate_whenEmptyModule() {
     // Given
-    CustomType moduleType = getModuleType("samples/EmptyModule.java");
+    CustomType moduleType = getModuleType("samples/EmptyTestModule.java");
 
     // Then
     Assertions.assertThatCode(() -> moduleValidator.validate(moduleType))

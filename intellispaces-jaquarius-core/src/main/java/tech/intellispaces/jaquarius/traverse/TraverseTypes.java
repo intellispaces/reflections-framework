@@ -1,6 +1,8 @@
 package tech.intellispaces.jaquarius.traverse;
 
-public enum TraverseTypes implements TraverseType {
+import tech.intellispaces.general.entity.Enumeration;
+
+public enum TraverseTypes implements TraverseType, Enumeration<TraverseType> {
 
   Mapping,
 
@@ -11,17 +13,17 @@ public enum TraverseTypes implements TraverseType {
 
   @Override
   public boolean isMapping() {
-    return this == TraverseTypes.Mapping;
+    return (this == TraverseTypes.Mapping);
   }
 
   @Override
   public boolean isMoving() {
-    return this == TraverseTypes.Moving;
+    return (this == TraverseTypes.Moving);
   }
 
   @Override
   public boolean isMappingOfMoving() {
-    return this == TraverseTypes.MappingOfMoving;
+    return (this == TraverseTypes.MappingOfMoving);
   }
 
   @Override

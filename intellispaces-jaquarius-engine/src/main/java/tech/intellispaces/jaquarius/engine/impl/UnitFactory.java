@@ -97,13 +97,13 @@ class UnitFactory {
   }
 
   static Injection buildUnitInjection(Class<?> unitClass, UnitMethodDescriptor method) {
-    if (method.injectionKind() == InjectionKinds.Projection) {
+    if (InjectionKinds.Projection.is(method.injectionKind())) {
       return ProjectionInjections.get(unitClass, method.injectionName(), method.injectionClass());
     }
-    if (method.injectionKind() == InjectionKinds.AutoGuide) {
+    if (InjectionKinds.AutoGuide.is(method.injectionKind())) {
       return AutoGuideInjections.get(unitClass, method.injectionName(), method.injectionClass());
     }
-    if (method.injectionKind() == InjectionKinds.SpecificGuide) {
+    if (InjectionKinds.SpecificGuide.is(method.injectionKind())) {
       return GuideInjections.get(unitClass, method.injectionName(), method.injectionClass());
     }
     throw UnexpectedExceptions.withMessage("Unsupported injection type '{0}'", method.injectionKind());

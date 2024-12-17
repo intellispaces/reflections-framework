@@ -1,8 +1,8 @@
 package tech.intellispaces.jaquarius.guide;
 
-public interface GuideKind {
+import tech.intellispaces.general.entity.Enumerable;
 
-  String name();
+public interface GuideKind extends Enumerable<GuideKind> {
 
   int order();
 

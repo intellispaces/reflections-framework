@@ -7,6 +7,7 @@ import tech.intellispaces.jaquarius.annotation.Channel;
 import tech.intellispaces.jaquarius.annotation.Domain;
 import tech.intellispaces.jaquarius.annotation.ObjectHandle;
 import tech.intellispaces.jaquarius.annotation.Ontology;
+import tech.intellispaces.jaquarius.object.reference.ObjectHandleType;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
@@ -20,24 +21,24 @@ import java.util.Optional;
 
 public interface NameConventionFunctions {
 
-  static String getObjectHandleTypename(String domainClassName, ObjectHandleTypes handleType) {
-    return switch (handleType) {
-      case Common -> getCommonObjectHandleTypename(domainClassName);
+  static String getObjectHandleTypename(String domainClassName, ObjectHandleType handleType) {
+    return switch (ObjectHandleTypes.from(handleType)) {
+      case Undefined -> getUndefinedObjectHandleTypename(domainClassName);
       case Movable -> getMovableObjectHandleTypename(domainClassName);
       case Unmovable -> getUnmovableObjectHandleTypename(domainClassName);
     };
   }
 
-  static String getCommonObjectHandleTypename(String domainClassName) {
+  static String getUndefinedObjectHandleTypename(String domainClassName) {
     return StringFunctions.removeTailOrElseThrow(transformClassName(domainClassName), "Domain");
   }
 
   static String getMovableObjectHandleTypename(String domainClassName) {
-    return ClassNameFunctions.addPrefixToSimpleName("Movable", getCommonObjectHandleTypename(domainClassName));
+    return ClassNameFunctions.addPrefixToSimpleName("Movable", getUndefinedObjectHandleTypename(domainClassName));
   }
 
   static String getUnmovableObjectHandleTypename(String domainClassName) {
-    return ClassNameFunctions.addPrefixToSimpleName("Unmovable", getCommonObjectHandleTypename(domainClassName));
+    return ClassNameFunctions.addPrefixToSimpleName("Unmovable", getUndefinedObjectHandleTypename(domainClassName));
   }
 
   static String getObjectHandleWrapperCanonicalName(CustomType objectHandleType) {
@@ -102,7 +103,7 @@ public interface NameConventionFunctions {
       CustomType domainType, CustomType baseDomainType, ObjectHandleTypes handleType
   ) {
     return switch (handleType) {
-      case Common -> getBaseDownwardObjectHandleTypename(domainType, baseDomainType);
+      case Undefined -> getBaseDownwardObjectHandleTypename(domainType, baseDomainType);
       case Movable -> getMovableDownwardObjectHandleTypename(domainType, baseDomainType);
       case Unmovable -> getUnmovableDownwardObjectHandleTypename(domainType, baseDomainType);
     };
@@ -218,7 +219,7 @@ public interface NameConventionFunctions {
       ObjectReferenceForm targetForm, String spaceName, CustomType channelType, MethodStatement channelMethod
   ) {
     String name = StringFunctions.replaceLast(channelType.canonicalName(), "Channel", "Guide");
-    if (targetForm == ObjectReferenceForms.Primitive) {
+    if (ObjectReferenceForms.Primitive.is(targetForm)) {
       name = name + "Primitive";
     }
     return name;

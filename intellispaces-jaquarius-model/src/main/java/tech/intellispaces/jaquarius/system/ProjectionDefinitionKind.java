@@ -1,4 +1,6 @@
 package tech.intellispaces.jaquarius.system;
 
-public interface ProjectionDefinitionKind {
+import tech.intellispaces.general.entity.Enumerable;
+
+public interface ProjectionDefinitionKind extends Enumerable<ProjectionDefinitionKind> {
 }

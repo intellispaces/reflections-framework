@@ -189,9 +189,9 @@ class ProjectionRegistry implements ProjectionProvider {
 
   private ModuleProjection createProjection(ProjectionDefinition definition, Set<String> dependencyPath) {
     dependencyPath.add(definition.name());
-    if (ProjectionDefinitionKinds.ProjectionDefinitionBasedOnUnitMethod == definition.kind()) {
+    if (ProjectionDefinitionKinds.ProjectionDefinitionBasedOnUnitMethod.is(definition.kind())) {
       return createProjection((ProjectionDefinitionBasedOnMethodAction) definition, dependencyPath);
-    } else if (ProjectionDefinitionKinds.ProjectionDefinitionBasedOnProviderClass == definition.kind()) {
+    } else if (ProjectionDefinitionKinds.ProjectionDefinitionBasedOnProviderClass.is(definition.kind())) {
       return createProjection((ProjectionDefinitionBasedOnProviderClass) definition, dependencyPath);
     } else {
       throw new UnsupportedOperationException("Unsupported projection definition type: " + definition.type());
@@ -288,10 +288,10 @@ class ProjectionRegistry implements ProjectionProvider {
 
     ProjectionDefinition cycleFirstDefinition = projectionDefinitions.get(projections.get(cycleBeginIndex));
     ProjectionDefinition cycleLastDefinition = projectionDefinitions.get(projections.get(cycleEndIndex));
-    if (ProjectionDefinitionKinds.ProjectionDefinitionBasedOnUnitMethod != cycleFirstDefinition.kind()) {
+    if (ProjectionDefinitionKinds.ProjectionDefinitionBasedOnUnitMethod.isNot(cycleFirstDefinition.kind())) {
       throw new UnsupportedOperationException("Unsupported projection definition type: " + cycleFirstDefinition.kind());
     }
-    if (ProjectionDefinitionKinds.ProjectionDefinitionBasedOnUnitMethod != cycleLastDefinition.kind()) {
+    if (ProjectionDefinitionKinds.ProjectionDefinitionBasedOnUnitMethod.isNot(cycleLastDefinition.kind())) {
       throw new UnsupportedOperationException("Unsupported projection definition type: " + cycleLastDefinition.kind());
     }
     UnitProjectionDefinition cycleFirstUnitDefinition = (UnitProjectionDefinition) cycleFirstDefinition;

@@ -33,6 +33,6 @@ public class ObjectHandleProcessor extends ArtifactProcessor {
 
   @Override
   public List<ArtifactGenerator> makeGenerators(CustomType objectHandleType, ArtifactGeneratorContext context) {
-    return AnnotationProcessorFunctions.makeObjectHandleArtifactGenerators(objectHandleType);
+    return ObjectHandleProcessorFunctions.makeObjectHandleArtifactGenerators(objectHandleType);
   }
 }

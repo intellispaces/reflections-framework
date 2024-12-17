@@ -66,7 +66,7 @@ class ModuleValidator {
     List<ProjectionInjection> injections = module.units().stream()
         .map(Unit::injections)
         .flatMap(List::stream)
-        .filter(injection -> injection.kind() == InjectionKinds.Projection)
+        .filter(injection -> InjectionKinds.Projection.is(injection.kind()))
         .map(injection -> (ProjectionInjection) injection)
         .toList();
     for (ProjectionInjection injection : injections) {

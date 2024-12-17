@@ -30,6 +30,6 @@ public class DataProcessor extends ArtifactProcessor {
 
   @Override
   public List<ArtifactGenerator> makeGenerators(CustomType dataType, ArtifactGeneratorContext jobContext) {
-    return AnnotationProcessorFunctions.makeDataArtifactGenerators(dataType);
+    return List.of(new UnmovableDataHandleGenerator(dataType));
   }
 }

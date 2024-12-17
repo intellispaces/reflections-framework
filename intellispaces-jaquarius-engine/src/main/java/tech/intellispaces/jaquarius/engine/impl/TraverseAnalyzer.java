@@ -45,10 +45,13 @@ import tech.intellispaces.jaquarius.traverse.plan.MoveObjectHandleThruChannel2Pl
 import tech.intellispaces.jaquarius.traverse.plan.MoveObjectHandleThruChannel3Plan;
 import tech.intellispaces.jaquarius.traverse.plan.MoveObjectHandleThruChannel3PlanImpl;
 import tech.intellispaces.jaquarius.traverse.plan.ObjectHandleTraversePlan;
+import tech.intellispaces.jaquarius.traverse.plan.TraversePlanType;
 import tech.intellispaces.jaquarius.traverse.plan.TraversePlanTypes;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static tech.intellispaces.jaquarius.traverse.plan.TraversePlanTypes.MapObjectHandleThruChannel0;
 
 class TraverseAnalyzer implements tech.intellispaces.jaquarius.traverse.plan.TraverseAnalyzer {
   private final GuideRegistry guideRegistry;
@@ -227,7 +230,7 @@ class TraverseAnalyzer implements tech.intellispaces.jaquarius.traverse.plan.Tra
   private ExecutionTraversePlan buildExecutionTraversePlan(
       ObjectHandleTraversePlan plan, Class<?> objectHandleClass, ObjectReferenceForm targetForm
   ) {
-    GuideKinds guideKind = getGuideKind((TraversePlanTypes) plan.type());
+    GuideKinds guideKind = getGuideKind(plan.type());
     List<Guide<?, ?>> guides = findGuides(guideKind, objectHandleClass, plan.cid(), targetForm);
     if (guides.isEmpty()) {
       return null;
@@ -251,8 +254,8 @@ class TraverseAnalyzer implements tech.intellispaces.jaquarius.traverse.plan.Tra
     return guideRegistry.findGuides(kind, objectHandleClass, cid, form);
   }
 
-  private GuideKinds getGuideKind(TraversePlanTypes planType) {
-    return switch (planType) {
+  private GuideKinds getGuideKind(TraversePlanType planType) {
+    return switch (TraversePlanTypes.from(planType)) {
       case MapObjectHandleThruChannel0 -> GuideKinds.Mapper0;
       case MapObjectHandleThruChannel1 -> GuideKinds.Mapper1;
       case MapObjectHandleThruChannel2 -> GuideKinds.Mapper2;

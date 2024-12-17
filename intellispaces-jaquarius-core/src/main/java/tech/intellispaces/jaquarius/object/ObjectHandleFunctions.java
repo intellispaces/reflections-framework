@@ -16,6 +16,7 @@ import tech.intellispaces.jaquarius.annotation.Unmovable;
 import tech.intellispaces.jaquarius.annotation.Wrapper;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
 import tech.intellispaces.jaquarius.object.reference.MovableObjectHandle;
+import tech.intellispaces.jaquarius.object.reference.ObjectHandleType;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
 import tech.intellispaces.jaquarius.object.reference.ObjectReference;
 import tech.intellispaces.jaquarius.object.reference.UnmovableObjectHandle;
@@ -44,7 +45,7 @@ public class ObjectHandleFunctions {
 
   public static Class<?> getObjectHandleClass(ObjectHandleTypes objectHandleType) {
     return switch (objectHandleType) {
-      case Common -> tech.intellispaces.jaquarius.object.reference.ObjectHandle.class;
+      case Undefined -> tech.intellispaces.jaquarius.object.reference.ObjectHandle.class;
       case Movable -> MovableObjectHandle.class;
       case Unmovable -> UnmovableObjectHandle.class;
     };
@@ -121,10 +122,10 @@ public class ObjectHandleFunctions {
     if (isDefaultObjectHandleType(domainType)) {
       return domainType.canonicalName();
     }
-    return NameConventionFunctions.getCommonObjectHandleTypename(domainType.className());
+    return NameConventionFunctions.getUndefinedObjectHandleTypename(domainType.className());
   }
 
-  public static String getObjectHandleTypename(CustomType customType, ObjectHandleTypes type) {
+  public static String getObjectHandleTypename(CustomType customType, ObjectHandleType type) {
     if (isDefaultObjectHandleType(customType)) {
       return customType.canonicalName();
     }
@@ -134,7 +135,7 @@ public class ObjectHandleFunctions {
     return NameConventionFunctions.getObjectHandleTypename(customType.className(), type);
   }
 
-  public static String getObjectHandleTypename(String canonicalName, ObjectHandleTypes type) {
+  public static String getObjectHandleTypename(String canonicalName, ObjectHandleType type) {
     if (isDefaultObjectHandleType(canonicalName)) {
       return canonicalName;
     }
@@ -277,13 +278,13 @@ public class ObjectHandleFunctions {
   }
 
   public static String getObjectHandleDeclaration(
-      TypeReference domainType, ObjectHandleTypes handleType, Function<String, String> simpleNameMapping
+      TypeReference domainType, ObjectHandleType handleType, Function<String, String> simpleNameMapping
   ) {
     return getObjectHandleDeclaration(domainType, handleType, true, simpleNameMapping);
   }
 
   public static String getObjectHandleDeclaration(
-      TypeReference domainType, ObjectHandleTypes handleType, boolean withTypeParams, Function<String, String> simpleNameMapping
+      TypeReference domainType, ObjectHandleType handleType, boolean withTypeParams, Function<String, String> simpleNameMapping
   ) {
     if (domainType.isPrimitiveReference()) {
       return domainType.asPrimitiveReferenceOrElseThrow().typename();
@@ -317,7 +318,7 @@ public class ObjectHandleFunctions {
           RunnableAction commaAppender = StringActions.skipFirstTimeCommaAppender(sb);
           for (NotPrimitiveReference argType : customTypeReference.typeArguments()) {
             commaAppender.run();
-            sb.append(getObjectHandleDeclaration(argType, ObjectHandleTypes.Common, simpleNameMapping));
+            sb.append(getObjectHandleDeclaration(argType, ObjectHandleTypes.Undefined, simpleNameMapping));
           }
           sb.append(">");
         }

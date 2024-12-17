@@ -78,7 +78,7 @@ public class UnmovableDataHandleGenerator extends JaquariusArtifactGenerator {
   private void analyzeProjections() {
     for (MethodStatement method : sourceArtifact().actualMethods()) {
       TypeReference type = method.returnType().orElseThrow();
-      String handleType = getObjectHandleDeclaration(type, ObjectHandleTypes.Unmovable);
+      String handleType = buildObjectHandleDeclaration(type, ObjectHandleTypes.Unmovable);
 
       Map<String, String> properties = new HashMap<>();
       properties.put("type", handleType);

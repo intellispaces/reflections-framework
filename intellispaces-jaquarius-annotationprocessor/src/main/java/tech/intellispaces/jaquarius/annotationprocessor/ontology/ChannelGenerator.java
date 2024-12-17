@@ -25,13 +25,7 @@ public class ChannelGenerator extends AbstractChannelArtifactGenerator {
 
   @Override
   protected String getChannelMethodSignature() {
-    return buildMethodSignature(
-        channelMethod,
-        channelMethod.name(),
-        true,
-        true,
-        List.of()
-    );
+    return buildMethodSignatureIncludedOwnerTypeParams(channelMethod);
   }
 
   @Override

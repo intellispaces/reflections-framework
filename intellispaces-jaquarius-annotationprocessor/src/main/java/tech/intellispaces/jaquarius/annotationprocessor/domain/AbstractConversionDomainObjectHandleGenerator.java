@@ -139,17 +139,17 @@ abstract class AbstractConversionDomainObjectHandleGenerator extends AbstractDom
   protected void appendMethodReturnHandleType(StringBuilder sb, MethodStatement method) {
     TypeReference domainReturnType = method.returnType().orElseThrow();
     if (NameConventionFunctions.isConversionMethod(method)) {
-      sb.append(getObjectHandleDeclaration(domainReturnType, getObjectHandleType()));
+      sb.append(buildObjectHandleDeclaration(domainReturnType, getObjectHandleType()));
     } else {
       if (
           ChannelFunctions.getTraverseTypes(method).stream().anyMatch(TraverseType::isMoving)
               || method.hasAnnotation(Movable.class)
       ) {
-        sb.append(getObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.Movable));
+        sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.Movable));
       } else if (method.hasAnnotation(Unmovable.class)) {
-        sb.append(getObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.Unmovable));
+        sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.Unmovable));
       } else {
-        sb.append(getObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.Common));
+        sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.Undefined));
       }
     }
   }

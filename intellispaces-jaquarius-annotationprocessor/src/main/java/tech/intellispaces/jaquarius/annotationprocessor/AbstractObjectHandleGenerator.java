@@ -92,7 +92,7 @@ public abstract class AbstractObjectHandleGenerator extends JaquariusArtifactGen
 
   protected Map<String, String> buildConversionMethod(CustomTypeReference parent) {
     var sb = new StringBuilder();
-    sb.append(getObjectHandleDeclaration(parent, getObjectHandleType()));
+    sb.append(buildObjectHandleDeclaration(parent, getObjectHandleType()));
     sb.append(" ");
     sb.append(NameConventionFunctions.getConversionMethodName(parent));
     sb.append("()");
@@ -143,9 +143,9 @@ public abstract class AbstractObjectHandleGenerator extends JaquariusArtifactGen
   }
 
   protected String getMethodName(MethodStatement method, ObjectReferenceForm targetForm) {
-    if (targetForm == ObjectReferenceForms.Common) {
+    if (ObjectReferenceForms.Common.is(targetForm)) {
       return method.name();
-    } else if (targetForm == ObjectReferenceForms.Primitive) {
+    } else if (ObjectReferenceForms.Primitive.is(targetForm)) {
       return method.name() + "Primitive";
     } else {
       throw UnexpectedExceptions.withMessage("Unsupported guide form - {0}", targetForm);
@@ -155,7 +155,7 @@ public abstract class AbstractObjectHandleGenerator extends JaquariusArtifactGen
   protected boolean isDisableMoving(MethodStatement method) {
     Channel channel = ChannelFunctions.getDomainMainChannelAnnotation(method);
     return ChannelFunctions.getTraverseType(channel).isMovingBased() &&
-        getObjectHandleType() == ObjectHandleTypes.Unmovable;
+        ObjectHandleTypes.Unmovable.is(getObjectHandleType());
   }
 
   protected void appendMethodReturnType(StringBuilder sb, MethodStatement method) {
@@ -167,9 +167,9 @@ public abstract class AbstractObjectHandleGenerator extends JaquariusArtifactGen
   }
 
   protected void appendMethodReturnHandleType(StringBuilder sb, MethodStatement method, ObjectReferenceForm targetForm) {
-    if (targetForm == ObjectReferenceForms.Common) {
+    if (ObjectReferenceForms.Common.is(targetForm)) {
       appendMethodReturnHandleType(sb, method);
-    } else if (targetForm == ObjectReferenceForms.Primitive) {
+    } else if (ObjectReferenceForms.Primitive.is(targetForm)) {
       CustomType ct = method.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow().targetType();
       sb.append(ClassFunctions.getPrimitiveTypeOfWrapper(ct.canonicalName()));
     } else {
@@ -180,14 +180,14 @@ public abstract class AbstractObjectHandleGenerator extends JaquariusArtifactGen
   protected void appendMethodReturnHandleType(StringBuilder sb, MethodStatement method) {
     TypeReference domainReturnType = method.returnType().orElseThrow();
     if (NameConventionFunctions.isConversionMethod(method)) {
-      sb.append(getObjectHandleDeclaration(domainReturnType, getObjectHandleType()));
+      sb.append(buildObjectHandleDeclaration(domainReturnType, getObjectHandleType()));
     } else {
       if (method.hasAnnotation(Movable.class)) {
-        sb.append(getObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.Movable));
+        sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.Movable));
       } else if (method.hasAnnotation(Unmovable.class)) {
-        sb.append(getObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.Unmovable));
+        sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.Unmovable));
       } else {
-        sb.append(getObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.Common));
+        sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.Undefined));
       }
     }
   }
@@ -208,7 +208,7 @@ public abstract class AbstractObjectHandleGenerator extends JaquariusArtifactGen
     RunnableAction commaAppender = StringActions.skipFirstTimeCommaAppender(sb);
     for (MethodParam param : GuideProcessorFunctions.rearrangementParams(method.params())) {
       commaAppender.run();
-      sb.append(getObjectHandleDeclaration(GuideProcessorFunctions.normalizeType(param.type()), ObjectHandleTypes.Common));
+      sb.append(buildObjectHandleDeclaration(GuideProcessorFunctions.normalizeType(param.type()), ObjectHandleTypes.Undefined));
       sb.append(" ");
       sb.append(param.name());
     }

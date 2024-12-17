@@ -39,6 +39,7 @@ import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.system.UnitWrapper;
+import tech.intellispaces.jaquarius.traverse.TraverseType;
 import tech.intellispaces.jaquarius.traverse.TraverseTypes;
 import tech.intellispaces.java.reflection.customtype.Classes;
 import tech.intellispaces.java.reflection.customtype.CustomType;
@@ -195,11 +196,12 @@ public final class GuideFunctions {
     for (MethodStatement method : objectHandleType.actualMethods()) {
       if (isGuideMethod(method)) {
         Channel channel = findObjectChannelAnnotation(method);
-        if (ChannelFunctions.getTraverseType(channel) == TraverseTypes.Mapping) {
+        TraverseType traverseType = ChannelFunctions.getTraverseType(channel);
+        if (TraverseTypes.Mapping.is(traverseType)) {
           guides.add(createObjectMapper(objectHandleClass, channel.value(), method));
-        } else if (ChannelFunctions.getTraverseType(channel) == TraverseTypes.Moving) {
+        } else if (TraverseTypes.Moving.is(traverseType)) {
           guides.add(createObjectMover(objectHandleClass, channel.value(), method));
-        } else if (ChannelFunctions.getTraverseType(channel) == TraverseTypes.MappingOfMoving) {
+        } else if (TraverseTypes.MappingOfMoving.is(traverseType)) {
           guides.add(createObjectMapperOfMoving(objectHandleClass, channel.value(), method));
         }
       }

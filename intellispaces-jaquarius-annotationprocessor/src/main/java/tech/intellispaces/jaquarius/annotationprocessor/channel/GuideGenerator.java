@@ -113,7 +113,6 @@ public class GuideGenerator extends JaquariusArtifactGenerator {
     addVariable("targetForm", targetForm.name());
     addVariable("traverseMethodPrimitiveFormLong", traverseMethodPrimitiveFormLong);
     addVariable("traverseMethodPrimitiveFormDouble", traverseMethodPrimitiveFormDouble);
-
     return true;
   }
 
@@ -172,7 +171,7 @@ public class GuideGenerator extends JaquariusArtifactGenerator {
 
   private Class<?> getGuideClass() {
     int qualifierCount = getQualifierMethodParams().size();
-    if (traverseType == TraverseTypes.Mapping) {
+    if (TraverseTypes.Mapping.is(traverseType)) {
       return switch (qualifierCount) {
         case 0 -> Mapper0.class;
         case 1 -> Mapper1.class;
@@ -183,7 +182,7 @@ public class GuideGenerator extends JaquariusArtifactGenerator {
         default -> throw UnexpectedExceptions.withMessage("Unsupported number of guide qualifies: {0}",
             qualifierCount);
       };
-    } else if (traverseType == TraverseTypes.Moving) {
+    } else if (TraverseTypes.Moving.is(traverseType)) {
       return switch (qualifierCount) {
         case 0 -> Mover0.class;
         case 1 -> Mover1.class;
@@ -194,7 +193,7 @@ public class GuideGenerator extends JaquariusArtifactGenerator {
         default -> throw UnexpectedExceptions.withMessage("Unsupported number of guide qualifies: {0}",
             qualifierCount);
       };
-    } else if (traverseType == TraverseTypes.MappingOfMoving) {
+    } else if (TraverseTypes.MappingOfMoving.is(traverseType)) {
       return switch (qualifierCount) {
         case 0 -> MapperOfMoving0.class;
         case 1 -> MapperOfMoving1.class;
@@ -214,7 +213,7 @@ public class GuideGenerator extends JaquariusArtifactGenerator {
     var sb = new StringBuilder();
     sb.append("<");
     sb.append(buildSourceObjectHandleDeclaration(this::replaceNamedReference, true));
-    if (traverseType == TraverseTypes.Mapping || traverseType == TraverseTypes.MappingOfMoving) {
+    if (TraverseTypes.Mapping.is(traverseType) || TraverseTypes.MappingOfMoving.is(traverseType)) {
       sb.append(", ");
       sb.append(buildTargetObjectHandleDeclaration(this::replaceNamedReference, true));
     }
@@ -227,13 +226,13 @@ public class GuideGenerator extends JaquariusArtifactGenerator {
   }
 
   private void analyzeGuideMethod() {
-    if (traverseType == TraverseTypes.Mapping) {
+    if (TraverseTypes.Mapping.is(traverseType)) {
       addImport(Mapper.class);
       guideAnnotation = "@" + Mapper.class.getSimpleName();
-    } else if (traverseType == TraverseTypes.Moving) {
+    } else if (TraverseTypes.Moving.is(traverseType)) {
       addImport(Mover.class);
       guideAnnotation = "@" + Mover.class.getSimpleName();
-    } else if (traverseType == TraverseTypes.MappingOfMoving) {
+    } else if (TraverseTypes.MappingOfMoving.is(traverseType)) {
       addImport(MapperOfMoving.class);
       guideAnnotation = "@" + MapperOfMoving.class.getSimpleName();
     }
@@ -259,7 +258,7 @@ public class GuideGenerator extends JaquariusArtifactGenerator {
     for (MethodParam param : getQualifierMethodParams()) {
       sb.append("  Objects.requireNonNull(").append(param.name()).append(");\n");
     }
-    if (!AnnotationProcessorFunctions.isVoidType(channelMethod.returnType().orElseThrow())) {
+    if (!channelMethod.returnType().orElseThrow().isVoidType()) {
       sb.append("  return ");
     }
     sb.append(channelMethod.name());
@@ -269,7 +268,7 @@ public class GuideGenerator extends JaquariusArtifactGenerator {
       sb.append(param.name());
     }
     sb.append(");\n");
-    if (AnnotationProcessorFunctions.isVoidType(channelMethod.returnType().orElseThrow())) {
+    if (channelMethod.returnType().orElseThrow().isVoidType()) {
       sb.append("  return null;\n");
     }
     sb.append("}");
@@ -366,9 +365,9 @@ public class GuideGenerator extends JaquariusArtifactGenerator {
   }
 
   private String buildTargetObjectHandleFormDeclaration() {
-    if (targetForm == ObjectReferenceForms.Common) {
+    if (ObjectReferenceForms.Common.is(targetForm)) {
       return buildTargetObjectHandleDeclaration(Function.identity(), false);
-    } else if (targetForm == ObjectReferenceForms.Primitive) {
+    } else if (ObjectReferenceForms.Primitive.is(targetForm)) {
       return ClassFunctions.getPrimitiveTypeOfWrapper(
           channelMethod.returnType().orElseThrow()
               .asCustomTypeReferenceOrElseThrow()

@@ -33,6 +33,6 @@ public class ChannelProcessor extends ArtifactProcessor {
 
   @Override
   public List<ArtifactGenerator> makeGenerators(CustomType channelType, ArtifactGeneratorContext context) {
-    return AnnotationProcessorFunctions.makeChannelArtifactGenerators(channelType);
+    return ChannelProcessorFunctions.makeGenerators(channelType);
   }
 }

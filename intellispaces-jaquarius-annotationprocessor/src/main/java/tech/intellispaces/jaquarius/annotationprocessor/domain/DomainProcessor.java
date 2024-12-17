@@ -33,6 +33,6 @@ public class DomainProcessor extends ArtifactProcessor {
 
   @Override
   public List<ArtifactGenerator> makeGenerators(CustomType domainType, ArtifactGeneratorContext context) {
-    return AnnotationProcessorFunctions.makeDomainArtifactGenerators(domainType, context);
+    return DomainProcessorFunctions.makeDomainArtifactGenerators(domainType, context);
   }
 }

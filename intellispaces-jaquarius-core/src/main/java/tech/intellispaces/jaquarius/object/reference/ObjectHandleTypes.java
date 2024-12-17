@@ -1,10 +1,27 @@
 package tech.intellispaces.jaquarius.object.reference;
 
-public enum ObjectHandleTypes {
+import tech.intellispaces.general.entity.Enumeration;
 
-  Common,
+public enum ObjectHandleTypes implements ObjectHandleType, Enumeration<ObjectHandleType> {
 
+  /**
+   * The movable object handle.
+   */
   Movable,
 
-  Unmovable
+  /**
+   * The unmovable object handle.
+   */
+  Unmovable,
+
+  /**
+   * The undefined object handle.
+   */
+  Undefined;
+
+  public static ObjectHandleTypes from(ObjectHandleType value) {
+    return VALUES[value.ordinal()];
+  }
+
+  private static final ObjectHandleTypes[] VALUES = values();
 }

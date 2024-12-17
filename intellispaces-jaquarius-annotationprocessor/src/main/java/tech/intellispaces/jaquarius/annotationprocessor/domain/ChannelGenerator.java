@@ -33,7 +33,7 @@ public class ChannelGenerator extends AbstractChannelArtifactGenerator {
 
   @Override
   protected String getChannelMethodSignature() {
-    return buildMethodSignature(channelMethod, List.of(getSourceParamDeclaration()));
+    return buildMethodSignatureIncludedOwnerTypeParams(channelMethod, List.of(getSourceParamDeclaration()));
   }
 
   private String getSourceParamDeclaration() {

@@ -59,7 +59,7 @@ public class UnmovableObjectHandleGenerator extends AbstractDomainObjectHandleGe
     domainTypeParamsFull = sourceArtifact().typeParametersFullDeclaration();
     domainTypeParamsBrief = sourceArtifact().typeParametersBriefDeclaration();
     baseObjectHandle = addToImportAndGetSimpleName(
-        NameConventionFunctions.getCommonObjectHandleTypename(sourceArtifact().className())
+        NameConventionFunctions.getUndefinedObjectHandleTypename(sourceArtifact().className())
     );
     analyzeObjectHandleMethods(sourceArtifact(), context);
     analyzeConversionMethods(sourceArtifact(), context);
@@ -67,7 +67,7 @@ public class UnmovableObjectHandleGenerator extends AbstractDomainObjectHandleGe
     Optional<CustomTypeReference> equivalentDomain = DomainFunctions.getAliasNearNeighbourDomain(sourceArtifact());
     isAlias = equivalentDomain.isPresent();
     if (isAlias) {
-      primaryObjectHandle = getObjectHandleDeclaration(equivalentDomain.get(), ObjectHandleTypes.Unmovable);
+      primaryObjectHandle = buildObjectHandleDeclaration(equivalentDomain.get(), ObjectHandleTypes.Unmovable);
     }
 
     addVariable("movableClassSimpleName", movableClassSimpleName());

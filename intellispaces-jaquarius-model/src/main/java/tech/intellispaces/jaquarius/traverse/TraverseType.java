@@ -1,8 +1,8 @@
 package tech.intellispaces.jaquarius.traverse;
 
-public interface TraverseType {
+import tech.intellispaces.general.entity.Enumerable;
 
-  String name();
+public interface TraverseType extends Enumerable<TraverseType> {
 
   /**
    * Mapping traverse.

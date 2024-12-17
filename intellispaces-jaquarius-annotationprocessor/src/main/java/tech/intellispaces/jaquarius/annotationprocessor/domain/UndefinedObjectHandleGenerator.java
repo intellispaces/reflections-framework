@@ -22,14 +22,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
-public class CommonObjectHandleGenerator extends AbstractDomainObjectHandleGenerator {
+public class UndefinedObjectHandleGenerator extends AbstractDomainObjectHandleGenerator {
   private boolean isAlias;
   private String primaryObjectHandle;
   private String primaryDomainSimpleName;
   private String primaryDomainTypeArguments;
   private String domainType;
 
-  public CommonObjectHandleGenerator(CustomType domainType) {
+  public UndefinedObjectHandleGenerator(CustomType domainType) {
     super(domainType);
   }
 
@@ -40,17 +40,17 @@ public class CommonObjectHandleGenerator extends AbstractDomainObjectHandleGener
 
   @Override
   protected ObjectHandleTypes getObjectHandleType() {
-    return ObjectHandleTypes.Common;
+    return ObjectHandleTypes.Undefined;
   }
 
   @Override
   public String generatedArtifactName() {
-    return NameConventionFunctions.getObjectHandleTypename(sourceArtifact().className(), ObjectHandleTypes.Common);
+    return NameConventionFunctions.getObjectHandleTypename(sourceArtifact().className(), ObjectHandleTypes.Undefined);
   }
 
   @Override
   protected String templateName() {
-    return "/common_object_handle.template";
+    return "/undefined_object_handle.template";
   }
 
   @Override
@@ -73,7 +73,7 @@ public class CommonObjectHandleGenerator extends AbstractDomainObjectHandleGener
       CustomTypeReference nearEquivalentDomain = equivalentDomains.get(0);
       CustomTypeReference mainEquivalentDomain = equivalentDomains.get(equivalentDomains.size() - 1);
 
-      primaryObjectHandle = getObjectHandleDeclaration(nearEquivalentDomain, ObjectHandleTypes.Common);
+      primaryObjectHandle = buildObjectHandleDeclaration(nearEquivalentDomain, ObjectHandleTypes.Undefined);
       primaryDomainTypeArguments = nearEquivalentDomain.typeArgumentsDeclaration(this::addToImportAndGetSimpleName);
       primaryDomainSimpleName = addToImportAndGetSimpleName(mainEquivalentDomain.targetType().canonicalName());
       domainType = buildDomainType(mainEquivalentDomain.targetType(), mainEquivalentDomain.typeArguments());

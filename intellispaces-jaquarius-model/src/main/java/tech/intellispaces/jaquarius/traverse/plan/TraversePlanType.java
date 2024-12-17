@@ -1,4 +1,6 @@
 package tech.intellispaces.jaquarius.traverse.plan;
 
-public interface TraversePlanType {
+import tech.intellispaces.general.entity.Enumerable;
+
+public interface TraversePlanType extends Enumerable<TraversePlanType> {
 }

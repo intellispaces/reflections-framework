@@ -33,6 +33,6 @@ public class OntologyProcessor extends ArtifactProcessor {
 
   @Override
   public List<ArtifactGenerator> makeGenerators(CustomType ontologyType, ArtifactGeneratorContext context) {
-    return AnnotationProcessorFunctions.makeOntologyArtifactGenerators(ontologyType, context);
+    return OntologyProcessorFunctions.makeOntologyArtifactGenerators(ontologyType, context);
   }
 }

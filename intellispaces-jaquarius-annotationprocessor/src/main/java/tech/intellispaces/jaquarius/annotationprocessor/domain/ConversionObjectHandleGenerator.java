@@ -23,11 +23,11 @@ import tech.intellispaces.java.reflection.reference.TypeReferenceFunctions;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-abstract class AbstractConversionDomainObjectHandleGenerator extends AbstractDomainObjectHandleGenerator {
+abstract class ConversionObjectHandleGenerator extends ObjectHandleGenerator {
   protected final CustomTypeReference parentDomainType;
   protected String childFieldName;
 
-  public AbstractConversionDomainObjectHandleGenerator(
+  public ConversionObjectHandleGenerator(
       CustomType customType, CustomTypeReference parentDomainType
   ) {
     super(customType);
@@ -149,7 +149,7 @@ abstract class AbstractConversionDomainObjectHandleGenerator extends AbstractDom
       } else if (method.hasAnnotation(Unmovable.class)) {
         sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.Unmovable));
       } else {
-        sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.Undefined));
+        sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.General));
       }
     }
   }

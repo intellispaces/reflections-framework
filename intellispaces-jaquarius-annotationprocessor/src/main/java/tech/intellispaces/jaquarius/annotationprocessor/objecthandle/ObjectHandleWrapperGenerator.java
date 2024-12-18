@@ -11,13 +11,16 @@ import tech.intellispaces.general.type.ClassNameFunctions;
 import tech.intellispaces.general.type.PrimitiveTypes;
 import tech.intellispaces.jaquarius.annotation.AutoGuide;
 import tech.intellispaces.jaquarius.annotation.Inject;
-import tech.intellispaces.jaquarius.annotationprocessor.AbstractObjectHandleGenerator;
+import tech.intellispaces.jaquarius.annotation.Movable;
+import tech.intellispaces.jaquarius.annotation.Unmovable;
 import tech.intellispaces.jaquarius.annotationprocessor.GuideProcessorFunctions;
+import tech.intellispaces.jaquarius.annotationprocessor.JaquariusArtifactGenerator;
 import tech.intellispaces.jaquarius.engine.descriptor.ObjectHandleMethodPurposes;
 import tech.intellispaces.jaquarius.exception.ConfigurationExceptions;
 import tech.intellispaces.jaquarius.guide.GuideFunctions;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
 import tech.intellispaces.jaquarius.object.ObjectHandleFunctions;
+import tech.intellispaces.jaquarius.object.reference.ObjectHandleType;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
@@ -27,19 +30,24 @@ import tech.intellispaces.java.reflection.customtype.CustomType;
 import tech.intellispaces.java.reflection.method.MethodParam;
 import tech.intellispaces.java.reflection.method.MethodStatement;
 import tech.intellispaces.java.reflection.reference.CustomTypeReference;
+import tech.intellispaces.java.reflection.reference.CustomTypeReferences;
 import tech.intellispaces.java.reflection.reference.NamedReference;
 import tech.intellispaces.java.reflection.reference.TypeReference;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.stream.Stream;
+import java.util.stream.Collectors;
 
-abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandleGenerator {
+abstract class ObjectHandleWrapperGenerator extends JaquariusArtifactGenerator {
+  protected final List<Map<String, String>> methods = new ArrayList<>();
+  protected final List<Map<String, String>> conversionMethods = new ArrayList<>();
+
   protected String domainSimpleClassName;
   protected String typeParamsFull;
   protected String typeParamsBrief;
@@ -54,27 +62,139 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
   protected final List<Map<String, String>> guideMethods = new ArrayList<>();
   protected final List<Map<String, Object>> injectionMethods = new ArrayList<>();
 
-  AbstractObjectHandleWrapperGenerator(CustomType objectHandleType) {
+  ObjectHandleWrapperGenerator(CustomType objectHandleType) {
     super(objectHandleType);
 
     this.domainType = ObjectHandleFunctions.getDomainTypeOfObjectHandle(objectHandleType);
     this.domainMethods = domainType.actualMethods().stream()
         .filter(m -> !m.isDefault())
         .filter(m -> excludeDeepConversionMethods(m, domainType))
-        .filter(this::isNotDomainClassGetter)
+        .filter(DomainFunctions::isNotDomainClassGetter)
         .toList();
+  }
+
+  abstract protected ObjectHandleType getObjectHandleType();
+
+  protected void analyzeObjectHandleMethods(CustomType type, ArtifactGeneratorContext context) {
+    int methodOrdinal = 0;
+    for (MethodStatement method : domainMethods) {
+      analyzeMethod(method, ObjectReferenceForms.Common, methodOrdinal++);
+      if (method.returnType().orElseThrow().isCustomTypeReference()) {
+        CustomType returnType = method.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow().targetType();
+        if (ClassFunctions.isPrimitiveWrapperClass(returnType.canonicalName())) {
+          analyzeMethod(method, ObjectReferenceForms.Primitive, methodOrdinal++);
+        }
+      }
+    }
+  }
+
+  protected void analyzeConversionMethods(CustomType domainType) {
+    analyzeConversionMethods(domainType, domainType);
+  }
+
+  private void analyzeConversionMethods(CustomType customType, CustomType effectiveCustomType) {
+    Iterator<CustomTypeReference> parents = customType.parentTypes().iterator();
+    Iterator<CustomTypeReference> effectiveParents = effectiveCustomType.parentTypes().iterator();
+    while (parents.hasNext() && effectiveParents.hasNext()) {
+      CustomTypeReference parent = parents.next();
+      CustomTypeReference effectiveParent = effectiveParents.next();
+      if (DomainFunctions.isAliasOf(parent, customType)) {
+        analyzeConversionMethods(parent.targetType(), effectiveParent.effectiveTargetType());
+      } else {
+        conversionMethods.add(buildConversionMethod(CustomTypeReferences.get(effectiveParent.effectiveTargetType())));
+      }
+    }
+  }
+
+  protected String getMethodName(MethodStatement method, ObjectReferenceForm targetForm) {
+    if (ObjectReferenceForms.Common.is(targetForm)) {
+      return method.name();
+    } else if (ObjectReferenceForms.Primitive.is(targetForm)) {
+      return method.name() + "Primitive";
+    } else {
+      throw UnexpectedExceptions.withMessage("Unsupported guide form - {0}", targetForm);
+    }
+  }
+
+  private void appendMethodReturnHandleType(StringBuilder sb, MethodStatement method, ObjectReferenceForm targetForm) {
+    if (ObjectReferenceForms.Common.is(targetForm)) {
+      appendMethodReturnHandleType(sb, method);
+    } else if (ObjectReferenceForms.Primitive.is(targetForm)) {
+      CustomType ct = method.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow().targetType();
+      sb.append(ClassFunctions.getPrimitiveTypeOfWrapper(ct.canonicalName()));
+    } else {
+      throw UnexpectedExceptions.withMessage("Unsupported guide form - {0}", targetForm);
+    }
+  }
+
+  protected void appendMethodReturnHandleType(StringBuilder sb, MethodStatement method) {
+    TypeReference domainReturnType = method.returnType().orElseThrow();
+    if (NameConventionFunctions.isConversionMethod(method)) {
+      sb.append(buildObjectHandleDeclaration(domainReturnType, getObjectHandleType()));
+    } else {
+      if (method.hasAnnotation(Movable.class)) {
+        sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.Movable));
+      } else if (method.hasAnnotation(Unmovable.class)) {
+        sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.Unmovable));
+      } else {
+        sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.General));
+      }
+    }
+  }
+
+  private void appendMethodTypeParameters(StringBuilder sb, MethodStatement method) {
+    if (!method.typeParameters().isEmpty()) {
+      sb.append("<");
+      RunnableAction commaAppender = StringActions.skipFirstTimeCommaAppender(sb);
+      for (NamedReference namedTypeReference : method.typeParameters()) {
+        commaAppender.run();
+        sb.append(namedTypeReference.actualDeclaration());
+      }
+      sb.append("> ");
+    }
+  }
+
+  private void appendMethodParameters(StringBuilder sb, MethodStatement method) {
+    RunnableAction commaAppender = StringActions.skipFirstTimeCommaAppender(sb);
+    for (MethodParam param : GuideProcessorFunctions.rearrangementParams(method.params())) {
+      commaAppender.run();
+      sb.append(buildObjectHandleDeclaration(GuideProcessorFunctions.normalizeType(param.type()), ObjectHandleTypes.General));
+      sb.append(" ");
+      sb.append(param.name());
+    }
+  }
+
+  private void appendMethodExceptions(StringBuilder sb, MethodStatement method) {
+    String exceptions = method.exceptions().stream()
+        .map(e -> e.asCustomTypeReference().orElseThrow().targetType())
+        .peek(e -> addImport(e.canonicalName()))
+        .map(e -> simpleNameOf(e.canonicalName()))
+        .collect(Collectors.joining(", "));
+    if (!exceptions.isEmpty()) {
+      sb.append(" throws ").append(exceptions);
+    }
+  }
+
+  private boolean excludeDeepConversionMethods(MethodStatement method, CustomType customType) {
+    if (!NameConventionFunctions.isConversionMethod(method)) {
+      return true;
+    }
+    for (CustomTypeReference parent : customType.parentTypes()) {
+      if (DomainFunctions.isAliasOf(parent, customType)) {
+        if (excludeDeepConversionMethods(method, parent.targetType())) {
+          return true;
+        }
+      }
+      if (NameConventionFunctions.getConversionMethodName(parent).equals(method.name())) {
+        return true;
+      }
+    }
+    return false;
   }
 
   protected void analyzeReleaseMethod() {
     Optional<MethodStatement> releaseMethod = sourceArtifact().declaredMethod("release", List.of());
     implRelease = releaseMethod.isPresent() && !releaseMethod.get().isAbstract();
-  }
-
-  @Override
-  protected Stream<MethodStatement> getObjectHandleMethods(
-      CustomType objectHandleType, ArtifactGeneratorContext context
-  ) {
-    return domainMethods.stream();
   }
 
   protected void analyzeDomain() {
@@ -174,7 +294,7 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
     for (int i = 0; i < domainMethodParams.size(); i++) {
       MethodParam domainMethodParam = domainMethodParams.get(i);
       String domainMethodParamDeclaration = ObjectHandleFunctions.getObjectHandleDeclaration(
-          domainMethodParam.type(), ObjectHandleTypes.Undefined, Function.identity()
+          domainMethodParam.type(), ObjectHandleTypes.General, Function.identity()
       );
 
       MethodParam guideMethodParam = guideMethodParams.get(i);
@@ -240,13 +360,12 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
     return constructorDescriptor;
   }
 
-  @Override
-  protected void analyzeMethod(MethodStatement method, ObjectReferenceForm targetForm, int methodIndex) {
-    super.analyzeMethod(method, targetForm, methodIndex);
-    analyzeGuideMethod(method, targetForm, methodIndex);
+  private void analyzeMethod(MethodStatement method, ObjectReferenceForm targetForm, int methodOrdinal) {
+    methods.add(generateMethod(method, targetForm, methodOrdinal));
+    analyzeGuideMethod(method, targetForm, methodOrdinal);
   }
 
-  protected void analyzeGuideMethod(MethodStatement domainMethod, ObjectReferenceForm targetForm, int methodIndex) {
+  private void analyzeGuideMethod(MethodStatement domainMethod, ObjectReferenceForm targetForm, int methodIndex) {
     if (domainMethod.isDefault()) {
       return;
     }
@@ -349,21 +468,17 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
   private String buildGuideParamClassName(TypeReference type, TemplatedJavaArtifactGenerator generator) {
     return ObjectHandleFunctions.getObjectHandleDeclaration(
         GuideProcessorFunctions.normalizeType(type),
-        ObjectHandleTypes.Undefined,
+        ObjectHandleTypes.General,
         false,
         generator::addToImportAndGetSimpleName
     );
   }
 
   protected Map<String, String> generateMethod(
-      MethodStatement domainMethod, ObjectReferenceForm targetForm, int methodIndex
+      MethodStatement domainMethod, ObjectReferenceForm targetForm, int methodOrdinal
   ) {
-    if (isDisableMoving(domainMethod)) {
-      return Map.of();
-    }
-
     var sb = new StringBuilder();
-    sb.append("@Ordinal(").append(methodIndex).append(")\n");
+    sb.append("@Ordinal(").append(methodOrdinal).append(")\n");
     sb.append("public ");
     appendMethodTypeParameters(sb, domainMethod);
     appendMethodReturnHandleType(sb, domainMethod, targetForm);
@@ -380,19 +495,19 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
       String typename = ClassFunctions.getPrimitiveTypeOfWrapper(ct.canonicalName());
       if (PrimitiveTypes.Boolean.typename().equals(typename)) {
         sb.append("PrimitiveFunctions.longToBoolean(");
-        buildInvokeMethodAction(domainMethod, targetForm, methodIndex, sb);
+        buildInvokeMethodAction(domainMethod, targetForm, methodOrdinal, sb);
         sb.append(")");
       } else {
         sb.append("(");
         appendMethodReturnHandleType(sb, domainMethod, targetForm);
         sb.append(") ");
-        buildInvokeMethodAction(domainMethod, targetForm, methodIndex, sb);
+        buildInvokeMethodAction(domainMethod, targetForm, methodOrdinal, sb);
       }
     } else {
       sb.append("(");
       appendMethodReturnHandleType(sb, domainMethod, targetForm);
       sb.append(") ");
-      buildInvokeMethodAction(domainMethod, targetForm, methodIndex, sb);
+      buildInvokeMethodAction(domainMethod, targetForm, methodOrdinal, sb);
     }
     sb.append(";\n}");
     return Map.of("declaration", sb.toString());
@@ -460,8 +575,7 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
     }
   }
 
-  @Override
-  protected Map<String, String> buildConversionMethod(CustomTypeReference parent) {
+  private Map<String, String> buildConversionMethod(CustomTypeReference parent) {
     var sb = new StringBuilder();
     sb.append("private ");
     sb.append(buildObjectHandleDeclaration(parent, getObjectHandleType()));

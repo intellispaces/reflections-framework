@@ -1,27 +1,34 @@
-package tech.intellispaces.jaquarius.annotationprocessor;
+package tech.intellispaces.jaquarius.annotationprocessor.domain;
 
 import tech.intellispaces.action.runnable.RunnableAction;
 import tech.intellispaces.action.text.StringActions;
 import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
 import tech.intellispaces.general.exception.UnexpectedExceptions;
 import tech.intellispaces.general.type.ClassFunctions;
-import tech.intellispaces.jaquarius.annotation.Channel;
 import tech.intellispaces.jaquarius.annotation.Movable;
 import tech.intellispaces.jaquarius.annotation.Unmovable;
+import tech.intellispaces.jaquarius.annotationprocessor.AnnotationProcessorFunctions;
+import tech.intellispaces.jaquarius.annotationprocessor.ArtifactTypes;
+import tech.intellispaces.jaquarius.annotationprocessor.GuideProcessorFunctions;
+import tech.intellispaces.jaquarius.annotationprocessor.JaquariusArtifactGenerator;
 import tech.intellispaces.jaquarius.exception.TraverseException;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
+import tech.intellispaces.jaquarius.object.reference.ObjectHandleType;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
-import tech.intellispaces.jaquarius.space.SpaceConstants;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
 import tech.intellispaces.java.reflection.customtype.CustomType;
+import tech.intellispaces.java.reflection.customtype.InterfaceType;
+import tech.intellispaces.java.reflection.customtype.Interfaces;
 import tech.intellispaces.java.reflection.method.MethodParam;
 import tech.intellispaces.java.reflection.method.MethodStatement;
 import tech.intellispaces.java.reflection.reference.CustomTypeReference;
 import tech.intellispaces.java.reflection.reference.CustomTypeReferences;
 import tech.intellispaces.java.reflection.reference.NamedReference;
+import tech.intellispaces.java.reflection.reference.NotPrimitiveReference;
+import tech.intellispaces.java.reflection.reference.ReferenceBound;
 import tech.intellispaces.java.reflection.reference.TypeReference;
 
 import javax.annotation.processing.RoundEnvironment;
@@ -32,17 +39,17 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public abstract class AbstractObjectHandleGenerator extends JaquariusArtifactGenerator {
+abstract class ObjectHandleGenerator extends JaquariusArtifactGenerator {
   protected String domainTypeParamsFull;
   protected String domainTypeParamsBrief;
-  protected final List<Map<String, String>> conversionMethods = new ArrayList<>();
   protected final List<Map<String, String>> methods = new ArrayList<>();
+  protected final List<Map<String, String>> conversionMethods = new ArrayList<>();
 
-  public AbstractObjectHandleGenerator(CustomType customType) {
-    super(customType);
+  public ObjectHandleGenerator(CustomType domainType) {
+    super(domainType);
   }
 
-  abstract protected ObjectHandleTypes getObjectHandleType();
+  abstract protected ObjectHandleType getObjectHandleType();
 
   protected String movableClassSimpleName() {
     return addToImportAndGetSimpleName(
@@ -50,47 +57,40 @@ public abstract class AbstractObjectHandleGenerator extends JaquariusArtifactGen
     );
   }
 
-  protected boolean isNotDomainClassGetter(MethodStatement method) {
-    return !method.name().equals("domainClass") &&
-        !method.name().equals(SpaceConstants.POINT_TO_DOMAIN_CHANNEL_SIMPLE_NAME);
-  }
-
   protected void analyzeObjectHandleMethods(CustomType type, ArtifactGeneratorContext context) {
     List<MethodStatement> methods = getObjectHandleMethods(type, context).toList();
-    int methodIndex = 0;
+    int methodOrdinal = 0;
     for (MethodStatement method : methods) {
       MethodStatement effectiveMethod = convertMethodBeforeGenerate(method);
-      analyzeMethod(effectiveMethod, ObjectReferenceForms.Common, methodIndex++);
+      analyzeMethod(effectiveMethod, ObjectReferenceForms.Common, methodOrdinal++);
       if (method.returnType().orElseThrow().isCustomTypeReference()) {
         CustomType returnType = method.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow().targetType();
         if (ClassFunctions.isPrimitiveWrapperClass(returnType.canonicalName())) {
-          analyzeMethod(effectiveMethod, ObjectReferenceForms.Primitive, methodIndex++);
+          analyzeMethod(effectiveMethod, ObjectReferenceForms.Primitive, methodOrdinal++);
         }
       }
     }
   }
 
-  protected void analyzeConversionMethods(CustomType domainType, ArtifactGeneratorContext context) {
-    analyzeConversionMethods(domainType, domainType, context.roundEnvironment());
+  protected void analyzeConversionMethods(CustomType domainType) {
+    analyzeConversionMethods(domainType, domainType);
   }
 
-  private void analyzeConversionMethods(
-      CustomType customType, CustomType effectiveCustomType, RoundEnvironment roundEnv
-  ) {
+  private void analyzeConversionMethods(CustomType customType, CustomType effectiveCustomType) {
     Iterator<CustomTypeReference> parents = customType.parentTypes().iterator();
     Iterator<CustomTypeReference> effectiveParents = effectiveCustomType.parentTypes().iterator();
     while (parents.hasNext() && effectiveParents.hasNext()) {
       CustomTypeReference parent = parents.next();
       CustomTypeReference effectiveParent = effectiveParents.next();
       if (DomainFunctions.isAliasOf(parent, customType)) {
-        analyzeConversionMethods(parent.targetType(), effectiveParent.effectiveTargetType(), roundEnv);
+        analyzeConversionMethods(parent.targetType(), effectiveParent.effectiveTargetType());
       } else {
         conversionMethods.add(buildConversionMethod(CustomTypeReferences.get(effectiveParent.effectiveTargetType())));
       }
     }
   }
 
-  protected Map<String, String> buildConversionMethod(CustomTypeReference parent) {
+  private Map<String, String> buildConversionMethod(CustomTypeReference parent) {
     var sb = new StringBuilder();
     sb.append(buildObjectHandleDeclaration(parent, getObjectHandleType()));
     sb.append(" ");
@@ -101,19 +101,17 @@ public abstract class AbstractObjectHandleGenerator extends JaquariusArtifactGen
     );
   }
 
-  abstract protected Stream<MethodStatement> getObjectHandleMethods(
-      CustomType customType, ArtifactGeneratorContext context
-  );
-
   protected MethodStatement convertMethodBeforeGenerate(MethodStatement method) {
     return method;
   }
 
-  protected void analyzeMethod(MethodStatement method, ObjectReferenceForm targetForm, int methodIndex) {
-    methods.add(generateMethod(method, targetForm, methodIndex));
+  private void analyzeMethod(MethodStatement method, ObjectReferenceForm targetForm, int methodOrdinal) {
+    methods.add(generateMethod(method, targetForm, methodOrdinal));
   }
 
-  protected Map<String, String> generateMethod(MethodStatement method, ObjectReferenceForm targetForm, int methodIndex) {
+  protected Map<String, String> generateMethod(
+      MethodStatement method, ObjectReferenceForm targetForm, int methodOrdinal
+  ) {
     var sb = new StringBuilder();
     appendMethodTypeParameters(sb, method);
     boolean disableMoving = isDisableMoving(method);
@@ -152,10 +150,8 @@ public abstract class AbstractObjectHandleGenerator extends JaquariusArtifactGen
     }
   }
 
-  protected boolean isDisableMoving(MethodStatement method) {
-    Channel channel = ChannelFunctions.getDomainMainChannelAnnotation(method);
-    return ChannelFunctions.getTraverseType(channel).isMovingBased() &&
-        ObjectHandleTypes.Unmovable.is(getObjectHandleType());
+  private boolean isDisableMoving(MethodStatement method) {
+    return ChannelFunctions.isMovingBasedChannel(method) && ObjectHandleTypes.Unmovable.is(getObjectHandleType());
   }
 
   protected void appendMethodReturnType(StringBuilder sb, MethodStatement method) {
@@ -187,7 +183,7 @@ public abstract class AbstractObjectHandleGenerator extends JaquariusArtifactGen
       } else if (method.hasAnnotation(Unmovable.class)) {
         sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.Unmovable));
       } else {
-        sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.Undefined));
+        sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.General));
       }
     }
   }
@@ -208,7 +204,7 @@ public abstract class AbstractObjectHandleGenerator extends JaquariusArtifactGen
     RunnableAction commaAppender = StringActions.skipFirstTimeCommaAppender(sb);
     for (MethodParam param : GuideProcessorFunctions.rearrangementParams(method.params())) {
       commaAppender.run();
-      sb.append(buildObjectHandleDeclaration(GuideProcessorFunctions.normalizeType(param.type()), ObjectHandleTypes.Undefined));
+      sb.append(buildObjectHandleDeclaration(GuideProcessorFunctions.normalizeType(param.type()), ObjectHandleTypes.General));
       sb.append(" ");
       sb.append(param.name());
     }
@@ -240,5 +236,72 @@ public abstract class AbstractObjectHandleGenerator extends JaquariusArtifactGen
       }
     }
     return false;
+  }
+
+  protected Stream<MethodStatement> getObjectHandleMethods(CustomType customType, ArtifactGeneratorContext context) {
+    return customType.actualMethods().stream()
+        .filter(m -> DomainFunctions.isDomainType(m.owner()));
+  }
+
+  protected List<MethodStatement> getAdditionalOMethods(CustomType customType, RoundEnvironment roundEnv) {
+    List<MethodStatement> methods = new ArrayList<>();
+    List<CustomType> artifactAddOns = AnnotationProcessorFunctions.findArtifactAddOns(
+        customType, ArtifactTypes.ObjectHandle, roundEnv
+    );
+    for (CustomType artifactAddOn : artifactAddOns) {
+      methods.addAll(artifactAddOn.declaredMethods());
+    }
+    return methods;
+  }
+
+  protected CustomType buildActualType(CustomType domain, ArtifactGeneratorContext context) {
+    InterfaceType domainInterface = domain.asInterfaceOrElseThrow();
+
+    var builder = Interfaces.build(domainInterface);
+    getAdditionalOMethods(domainInterface, context.roundEnvironment()).forEach(builder::addDeclaredMethod);
+
+    var parentInterfaces = new ArrayList<CustomTypeReference>();
+    for (CustomTypeReference parent : domainInterface.extendedInterfaces()) {
+      parentInterfaces.add(
+          CustomTypeReferences.get(buildActualType(parent.targetType(), context), parent.typeArguments())
+      );
+    }
+    builder.extendedInterfaces(parentInterfaces);
+    return builder.get();
+  }
+
+  protected String buildDomainType(CustomType domainType, List<NotPrimitiveReference> typeQualifiers) {
+    StringBuilder sb = new StringBuilder();
+    sb.append("Types.get(");
+    sb.append(addToImportAndGetSimpleName(domainType.canonicalName())).append(".class");
+    for (NotPrimitiveReference typeQualifier : typeQualifiers) {
+      sb.append(", ");
+      analyzeDomainType(typeQualifier, sb);
+    }
+    sb.append(");");
+    return sb.toString();
+  }
+
+  private void analyzeDomainType(NotPrimitiveReference typeReference, StringBuilder sb) {
+    if (typeReference.isCustomTypeReference()) {
+      CustomTypeReference customTypeReference = typeReference.asCustomTypeReferenceOrElseThrow();
+      sb.append("Types.get(");
+      sb.append(addToImportAndGetSimpleName(customTypeReference.targetType().canonicalName())).append(".class");
+      for (NotPrimitiveReference typeArg : customTypeReference.typeArguments()) {
+        sb.append(", ");
+        analyzeDomainType(typeArg, sb);
+      }
+      sb.append(")");
+    } else if (typeReference.isNamedReference()) {
+      NamedReference namedReference = typeReference.asNamedReferenceOrElseThrow();
+      if (namedReference.extendedBounds().isEmpty()) {
+        sb.append("Types.get(");
+        sb.append(addToImportAndGetSimpleName(Object.class)).append(".class");
+        sb.append(")");
+      } else {
+        ReferenceBound extendedBound = namedReference.extendedBounds().get(0);
+        analyzeDomainType(extendedBound, sb);
+      }
+    }
   }
 }

@@ -6,8 +6,8 @@ import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
 import tech.intellispaces.annotationprocessor.ArtifactProcessor;
 import tech.intellispaces.annotationprocessor.ArtifactValidator;
 import tech.intellispaces.jaquarius.annotation.Ontology;
-import tech.intellispaces.jaquarius.annotationprocessor.AnnotationProcessorConstants;
 import tech.intellispaces.jaquarius.annotationprocessor.AnnotationProcessorFunctions;
+import tech.intellispaces.jaquarius.annotationprocessor.JaquariusArtifactProcessor;
 import tech.intellispaces.java.reflection.customtype.CustomType;
 
 import javax.annotation.processing.Processor;
@@ -18,7 +18,7 @@ import java.util.List;
 public class OntologyProcessor extends ArtifactProcessor {
 
   public OntologyProcessor() {
-    super(ElementKind.INTERFACE, Ontology.class, AnnotationProcessorConstants.SOURCE_VERSION);
+    super(ElementKind.INTERFACE, Ontology.class, JaquariusArtifactProcessor.SOURCE_VERSION);
   }
 
   @Override

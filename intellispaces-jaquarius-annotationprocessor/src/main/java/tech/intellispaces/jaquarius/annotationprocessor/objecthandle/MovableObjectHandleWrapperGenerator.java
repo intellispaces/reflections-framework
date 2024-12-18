@@ -24,6 +24,7 @@ import tech.intellispaces.jaquarius.exception.TraverseException;
 import tech.intellispaces.jaquarius.guide.n0.Mover0;
 import tech.intellispaces.jaquarius.guide.n1.Mover1;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
+import tech.intellispaces.jaquarius.object.reference.ObjectHandleType;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
@@ -39,7 +40,7 @@ import tech.intellispaces.java.reflection.reference.TypeReference;
 
 import java.util.List;
 
-public class MovableObjectHandleWrapperGenerator extends AbstractObjectHandleWrapperGenerator {
+public class MovableObjectHandleWrapperGenerator extends ObjectHandleWrapperGenerator {
 
   public MovableObjectHandleWrapperGenerator(CustomType objectHandleType) {
     super(objectHandleType);
@@ -61,7 +62,7 @@ public class MovableObjectHandleWrapperGenerator extends AbstractObjectHandleWra
   }
 
   @Override
-  protected ObjectHandleTypes getObjectHandleType() {
+  protected ObjectHandleType getObjectHandleType() {
     return ObjectHandleTypes.Movable;
   }
 
@@ -103,7 +104,7 @@ public class MovableObjectHandleWrapperGenerator extends AbstractObjectHandleWra
     analyzeConstructors();
     analyzeInjectedGuides();
     analyzeObjectHandleMethods(sourceArtifact(), context);
-    analyzeConversionMethods(domainType, context);
+    analyzeConversionMethods(domainType);
     analyzeReleaseMethod();
 
     addVariable("typeParamsFull", typeParamsFull);
@@ -125,15 +126,15 @@ public class MovableObjectHandleWrapperGenerator extends AbstractObjectHandleWra
   protected void appendMethodReturnHandleType(StringBuilder sb, MethodStatement method) {
     TypeReference domainReturnType = method.returnType().orElseThrow();
     if (
-        ChannelFunctions.getTraverseTypes(method).stream().anyMatch(TraverseType::isMoving)
-          || method.hasAnnotation(Movable.class)
-          || NameConventionFunctions.isConversionMethod(method)
+        ChannelFunctions.getTraverseTypes(method).stream().anyMatch(TraverseType::isMoving) ||
+            method.hasAnnotation(Movable.class) ||
+            NameConventionFunctions.isConversionMethod(method)
     ) {
       sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.Movable));
     } else if (method.hasAnnotation(Unmovable.class)) {
       sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.Unmovable));
     } else {
-      sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.Undefined));
+      sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.General));
     }
   }
 }

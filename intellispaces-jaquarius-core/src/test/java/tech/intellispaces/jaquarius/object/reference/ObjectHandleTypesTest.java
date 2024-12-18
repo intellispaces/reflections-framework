@@ -13,6 +13,6 @@ public class ObjectHandleTypesTest {
   public void testOrdinal() {
     assertThat(ObjectHandleTypes.Movable.ordinal()).isEqualTo(0);
     assertThat(ObjectHandleTypes.Unmovable.ordinal()).isEqualTo(1);
-    assertThat(ObjectHandleTypes.Undefined.ordinal()).isEqualTo(2);
+    assertThat(ObjectHandleTypes.General.ordinal()).isEqualTo(2);
   }
 }

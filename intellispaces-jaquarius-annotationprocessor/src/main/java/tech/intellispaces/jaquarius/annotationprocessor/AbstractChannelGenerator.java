@@ -16,21 +16,19 @@ import tech.intellispaces.java.reflection.reference.TypeReference;
 
 import java.util.List;
 
-public abstract class AbstractChannelArtifactGenerator extends JaquariusArtifactGenerator {
+public abstract class AbstractChannelGenerator extends JaquariusArtifactGenerator {
   protected final MethodStatement channelMethod;
-  private String channelMethodSignature;
-  private String channelClasses;
 
-  public AbstractChannelArtifactGenerator(CustomType annotatedType, MethodStatement channelMethod) {
+  public AbstractChannelGenerator(CustomType annotatedType, MethodStatement channelMethod) {
     super(annotatedType);
     this.channelMethod = channelMethod;
   }
 
   protected abstract String getChannelClassCanonicalName();
 
-  protected abstract String getChannelMethodSignature();
-
   protected abstract List<TypeReference> getQualifierTypes();
+
+  protected abstract String buildChannelMethodSignature();
 
   @Override
   public String generatedArtifactName() {
@@ -49,28 +47,22 @@ public abstract class AbstractChannelArtifactGenerator extends JaquariusArtifact
     }
     addImport(Channel.class);
 
-    channelClasses = defineChannelClasses();
-    channelMethodSignature = getChannelMethodSignature();
-
     addVariable("targetClassLink", buildDomainLink(channelMethod.returnType().orElseThrow()));
-    addVariable("channelMethod", channelMethodSignature);
-    addVariable("channelClasses", channelClasses);
+    addVariable("channelMethod", buildChannelMethodSignature());
+    addVariable("channelClasses", buildChannelClassesDeclaration());
     addVariable("channelMethodName", channelMethod.name());
     addVariable("cid", getCid());
     return true;
   }
 
-  private String defineChannelClasses() {
+  private String buildChannelClassesDeclaration() {
     var sb = new StringBuilder();
-
     List<MethodStatement> superChannels = channelMethod.overrideMethods();
     if (!superChannels.isEmpty()) {
       RunnableAction commaAppender = StringActions.skipFirstTimeCommaAppender(sb);
       for (MethodStatement superChannel : superChannels) {
         commaAppender.run();
-        sb.append(
-            addToImportAndGetSimpleName(NameConventionFunctions.getChannelClassCanonicalName(superChannel))
-        );
+        sb.append(addToImportAndGetSimpleName(NameConventionFunctions.getChannelClassCanonicalName(superChannel)));
       }
     } else {
       sb.append(addToImportAndGetSimpleName(ChannelFunctions.getChannelClass(getQualifierTypes().size())));
@@ -91,7 +83,7 @@ public abstract class AbstractChannelArtifactGenerator extends JaquariusArtifact
   }
 
   private String getCid() {
-    return channelMethod.selectAnnotation(Channel.class).orElseThrow().value();
+    return ChannelFunctions.getCid(channelMethod);
   }
 
   private List<TraverseType> getTraverseTypes() {

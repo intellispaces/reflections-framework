@@ -1,11 +1,7 @@
 package tech.intellispaces.jaquarius.annotationprocessor.channel;
 
 import tech.intellispaces.annotationprocessor.ArtifactGenerator;
-import tech.intellispaces.general.collection.ArraysFunctions;
 import tech.intellispaces.general.type.ClassFunctions;
-import tech.intellispaces.jaquarius.annotation.Channel;
-import tech.intellispaces.jaquarius.annotationprocessor.AnnotationProcessorFunctions;
-import tech.intellispaces.jaquarius.annotationprocessor.ArtifactTypes;
 import tech.intellispaces.jaquarius.channel.MappingChannel;
 import tech.intellispaces.jaquarius.channel.MappingOfMovingChannel;
 import tech.intellispaces.jaquarius.channel.MovingChannel;
@@ -19,7 +15,6 @@ import tech.intellispaces.java.reflection.method.MethodStatement;
 import tech.intellispaces.java.reflection.reference.CustomTypeReference;
 import tech.intellispaces.java.reflection.reference.TypeReference;
 
-import javax.annotation.processing.RoundEnvironment;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,30 +37,6 @@ public interface ChannelProcessorFunctions {
       generators.addAll(makeGuideArtifactGenerators(TraverseTypes.MappingOfMoving, channelType, method));
     }
     return generators;
-  }
-
-  static boolean isEnableMapperGuideGeneration(
-      CustomType domainType, MethodStatement method, RoundEnvironment roundEnv
-  ) {
-    return AnnotationProcessorFunctions.isAutoGenerationEnabled(domainType, ArtifactTypes.Mapper, roundEnv) &&
-        ArraysFunctions.contains(method.selectAnnotation(Channel.class).orElseThrow().allowedTraverse(),
-            TraverseTypes.Mapping);
-  }
-
-  static boolean isEnableMoverGuideGeneration(
-      CustomType domainType, MethodStatement method, RoundEnvironment roundEnv
-  ) {
-    return AnnotationProcessorFunctions.isAutoGenerationEnabled(domainType, ArtifactTypes.Mover, roundEnv) &&
-        ArraysFunctions.contains(method.selectAnnotation(Channel.class).orElseThrow().allowedTraverse(),
-            TraverseTypes.Moving);
-  }
-
-  static boolean isEnableMapperOfMovingGuideGeneration(
-      CustomType domainType, MethodStatement method, RoundEnvironment roundEnv
-  ) {
-    return AnnotationProcessorFunctions.isAutoGenerationEnabled(domainType, ArtifactTypes.MapperOfMoving, roundEnv) &&
-        ArraysFunctions.contains(method.selectAnnotation(Channel.class).orElseThrow().allowedTraverse(),
-            TraverseTypes.MappingOfMoving);
   }
 
   static boolean isEnableMapperGuideGeneration(CustomType channelType) {

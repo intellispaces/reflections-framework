@@ -4,8 +4,10 @@ import tech.intellispaces.general.exception.UnexpectedExceptions;
 import tech.intellispaces.general.type.ClassFunctions;
 import tech.intellispaces.jaquarius.annotation.Domain;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
+import tech.intellispaces.jaquarius.space.SpaceConstants;
 import tech.intellispaces.java.reflection.JavaStatements;
 import tech.intellispaces.java.reflection.customtype.CustomType;
+import tech.intellispaces.java.reflection.method.MethodStatement;
 import tech.intellispaces.java.reflection.reference.CustomTypeReference;
 import tech.intellispaces.java.reflection.reference.CustomTypeReferences;
 import tech.intellispaces.java.reflection.reference.NamedReference;
@@ -173,6 +175,11 @@ public final class DomainFunctions {
       return Optional.empty();
     }
     return Optional.of(equivalentDomains.get(equivalentDomains.size() - 1));
+  }
+
+  public static boolean isNotDomainClassGetter(MethodStatement method) {
+    return !method.name().equals("domainClass") &&
+        !method.name().equals(SpaceConstants.POINT_TO_DOMAIN_CHANNEL_SIMPLE_NAME);
   }
 
   public static boolean isDefaultDomainType(CustomType type) {

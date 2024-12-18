@@ -18,7 +18,9 @@ import tech.intellispaces.jaquarius.engine.descriptor.ObjectHandleTypeDescriptor
 import tech.intellispaces.jaquarius.exception.TraverseException;
 import tech.intellispaces.jaquarius.guide.n0.Mapper0;
 import tech.intellispaces.jaquarius.guide.n1.Mapper1;
+import tech.intellispaces.jaquarius.object.reference.ObjectHandleType;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.system.Modules;
@@ -27,10 +29,12 @@ import tech.intellispaces.jaquarius.system.injection.AutoGuideInjections;
 import tech.intellispaces.jaquarius.system.injection.GuideInjections;
 import tech.intellispaces.jaquarius.traverse.TraverseTypes;
 import tech.intellispaces.java.reflection.customtype.CustomType;
+import tech.intellispaces.java.reflection.method.MethodStatement;
 
 import java.util.List;
+import java.util.Map;
 
-public class UnmovableObjectHandleWrapperGenerator extends AbstractObjectHandleWrapperGenerator {
+public class UnmovableObjectHandleWrapperGenerator extends ObjectHandleWrapperGenerator {
 
   public UnmovableObjectHandleWrapperGenerator(CustomType objectHandleType) {
     super(objectHandleType);
@@ -52,7 +56,7 @@ public class UnmovableObjectHandleWrapperGenerator extends AbstractObjectHandleW
   }
 
   @Override
-  protected ObjectHandleTypes getObjectHandleType() {
+  protected ObjectHandleType getObjectHandleType() {
     return ObjectHandleTypes.Unmovable;
   }
 
@@ -91,7 +95,7 @@ public class UnmovableObjectHandleWrapperGenerator extends AbstractObjectHandleW
     analyzeConstructors();
     analyzeInjectedGuides();
     analyzeObjectHandleMethods(sourceArtifact(), context);
-    analyzeConversionMethods(domainType, context);
+    analyzeConversionMethods(domainType);
     analyzeReleaseMethod();
 
     addVariable("typeParamsFull", typeParamsFull);
@@ -105,5 +109,15 @@ public class UnmovableObjectHandleWrapperGenerator extends AbstractObjectHandleW
     addVariable("conversionMethods", conversionMethods);
     addVariable("notImplRelease", !implRelease);
     return true;
+  }
+
+  @Override
+  protected Map<String, String> generateMethod(
+      MethodStatement domainMethod, ObjectReferenceForm targetForm, int methodOrdinal
+  ) {
+    if (ChannelFunctions.isMovingBasedChannel(domainMethod)) {
+      return Map.of();
+    }
+    return super.generateMethod(domainMethod, targetForm, methodOrdinal);
   }
 }

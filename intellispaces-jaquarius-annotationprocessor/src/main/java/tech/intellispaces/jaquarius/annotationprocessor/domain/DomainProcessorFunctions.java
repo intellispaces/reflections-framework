@@ -13,7 +13,6 @@ import tech.intellispaces.java.reflection.customtype.AnnotationFunctions;
 import tech.intellispaces.java.reflection.customtype.CustomType;
 import tech.intellispaces.java.reflection.method.MethodStatement;
 import tech.intellispaces.java.reflection.reference.CustomTypeReference;
-import tech.intellispaces.java.reflection.reference.NamedReference;
 
 import javax.annotation.processing.RoundEnvironment;
 import java.util.ArrayList;
@@ -27,7 +26,9 @@ public interface DomainProcessorFunctions {
     List<ArtifactGenerator> generators = new ArrayList<>();
     for (MethodStatement method : domainType.declaredMethods()) {
       if (method.hasAnnotation(Channel.class)) {
-        if (AnnotationProcessorFunctions.isAutoGenerationEnabled(domainType, ArtifactTypes.Channel, context.roundEnvironment())) {
+        if (AnnotationProcessorFunctions.isAutoGenerationEnabled(
+            domainType, ArtifactTypes.Channel, context.roundEnvironment())
+        ) {
           generators.add(new ChannelGenerator(domainType, method));
         }
       }
@@ -64,13 +65,19 @@ public interface DomainProcessorFunctions {
       List<ArtifactGenerator> generators,
       RoundEnvironment roundEnv
   ) {
-    if (AnnotationProcessorFunctions.isAutoGenerationEnabled(domainType, ArtifactTypes.ObjectHandle, roundEnv)) {
-      generators.add(new UndefinedObjectHandleGenerator(domainType));
+    if (
+        AnnotationProcessorFunctions.isAutoGenerationEnabled(domainType, ArtifactTypes.ObjectHandle, roundEnv)
+    ) {
+      generators.add(new GeneralObjectHandleGenerator(domainType));
     }
-    if (AnnotationProcessorFunctions.isAutoGenerationEnabled(domainType, ArtifactTypes.MovableObjectHandle, roundEnv)) {
+    if (
+        AnnotationProcessorFunctions.isAutoGenerationEnabled(domainType, ArtifactTypes.MovableObjectHandle, roundEnv)
+    ) {
       generators.add(new MovableObjectHandleGenerator(domainType));
     }
-    if (AnnotationProcessorFunctions.isAutoGenerationEnabled(domainType, ArtifactTypes.UnmovableObjectHandle, roundEnv)) {
+    if (
+        AnnotationProcessorFunctions.isAutoGenerationEnabled(domainType, ArtifactTypes.UnmovableObjectHandle, roundEnv)
+    ) {
       generators.add(new UnmovableObjectHandleGenerator(domainType));
     }
   }
@@ -85,35 +92,5 @@ public interface DomainProcessorFunctions {
     CustomTypeReference parentDomainType = parents.get(0);
     generators.add(new UnmovableDownwardObjectHandleGenerator(domainType, parentDomainType));
     generators.add(new MovableDownwardObjectHandleGenerator(domainType, parentDomainType));
-  }
-
-  static String getChannelTypeParams(CustomType domain, MethodStatement channelMethod) {
-    if (domain.typeParameters().isEmpty() && channelMethod.typeParameters().isEmpty()) {
-      return "";
-    } else if (!domain.typeParameters().isEmpty() && channelMethod.typeParameters().isEmpty()) {
-      return domain.typeParametersFullDeclaration();
-    } else if (domain.typeParameters().isEmpty() && !channelMethod.typeParameters().isEmpty()) {
-      return getChannelMethodTypeParamsDeclaration(channelMethod);
-    } else {
-      String domainTypeParams = domain.typeParametersFullDeclaration();
-      String channelTypeParams = getChannelMethodTypeParamsDeclaration(channelMethod);
-      return domainTypeParams.substring(0, domainTypeParams.length() - 1) +
-          ", " + channelTypeParams.substring(1);
-    }
-  }
-
-  private static String getChannelMethodTypeParamsDeclaration(MethodStatement channelMethod) {
-    var sb = new StringBuilder();
-    sb.append("<");
-    boolean first = true;
-    for (NamedReference typeParam : channelMethod.typeParameters()) {
-      if (!first) {
-        sb.append(", ");
-      }
-      sb.append(typeParam.actualDeclaration());
-      first = false;
-    }
-    sb.append(">");
-    return sb.toString();
   }
 }

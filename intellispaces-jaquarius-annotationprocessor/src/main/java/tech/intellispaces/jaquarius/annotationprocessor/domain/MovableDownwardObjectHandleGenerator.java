@@ -15,6 +15,7 @@ import tech.intellispaces.jaquarius.channel.MappingOfMovingChannel;
 import tech.intellispaces.jaquarius.exception.TraverseException;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
 import tech.intellispaces.jaquarius.object.ObjectHandleFunctions;
+import tech.intellispaces.jaquarius.object.reference.ObjectHandleType;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
@@ -28,7 +29,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-public class MovableDownwardObjectHandleGenerator extends AbstractConversionDomainObjectHandleGenerator {
+public class MovableDownwardObjectHandleGenerator extends ConversionObjectHandleGenerator {
   private String classTypeParams;
   private String classTypeParamsBrief;
   private String movableObjectHandleName;
@@ -56,7 +57,7 @@ public class MovableDownwardObjectHandleGenerator extends AbstractConversionDoma
   }
 
   @Override
-  protected ObjectHandleTypes getObjectHandleType() {
+  protected ObjectHandleType getObjectHandleType() {
     return ObjectHandleTypes.Movable;
   }
 
@@ -144,13 +145,13 @@ public class MovableDownwardObjectHandleGenerator extends AbstractConversionDoma
   ) {
     return buildActualType(parentDomainType.targetType(), context).actualMethods().stream()
         .filter(m -> excludeDeepConversionMethods(m, customType))
-        .filter(this::isNotDomainClassGetter);
+        .filter(DomainFunctions::isNotDomainClassGetter);
   }
 
   @Override
-  protected Map<String, String> generateMethod(MethodStatement method, ObjectReferenceForm targetForm, int methodIndex) {
+  protected Map<String, String> generateMethod(MethodStatement method, ObjectReferenceForm targetForm, int methodOrdinal) {
     if (method.hasAnnotation(Channel.class)) {
-      return generateMethodNormal(method, targetForm, methodIndex);
+      return generateMethodNormal(method, targetForm, methodOrdinal);
     } else {
       return generatePrototypeMethod(convertMethodBeforeGenerate(method));
     }

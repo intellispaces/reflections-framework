@@ -1,7 +1,7 @@
 package tech.intellispaces.jaquarius.annotationprocessor.ontology;
 
 import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
-import tech.intellispaces.jaquarius.annotationprocessor.AbstractChannelArtifactGenerator;
+import tech.intellispaces.jaquarius.annotationprocessor.AbstractChannelGenerator;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
 import tech.intellispaces.java.reflection.customtype.CustomType;
 import tech.intellispaces.java.reflection.method.MethodParam;
@@ -10,7 +10,7 @@ import tech.intellispaces.java.reflection.reference.TypeReference;
 
 import java.util.List;
 
-public class ChannelGenerator extends AbstractChannelArtifactGenerator {
+public class ChannelGenerator extends AbstractChannelGenerator {
 
   public ChannelGenerator(
       CustomType ontologyType, MethodStatement channelMethod
@@ -24,7 +24,7 @@ public class ChannelGenerator extends AbstractChannelArtifactGenerator {
   }
 
   @Override
-  protected String getChannelMethodSignature() {
+  protected String buildChannelMethodSignature() {
     return buildMethodSignatureIncludedOwnerTypeParams(channelMethod);
   }
 

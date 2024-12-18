@@ -45,7 +45,7 @@ public class ObjectHandleFunctions {
 
   public static Class<?> getObjectHandleClass(ObjectHandleTypes objectHandleType) {
     return switch (objectHandleType) {
-      case Undefined -> tech.intellispaces.jaquarius.object.reference.ObjectHandle.class;
+      case General -> tech.intellispaces.jaquarius.object.reference.ObjectHandle.class;
       case Movable -> MovableObjectHandle.class;
       case Unmovable -> UnmovableObjectHandle.class;
     };
@@ -318,7 +318,7 @@ public class ObjectHandleFunctions {
           RunnableAction commaAppender = StringActions.skipFirstTimeCommaAppender(sb);
           for (NotPrimitiveReference argType : customTypeReference.typeArguments()) {
             commaAppender.run();
-            sb.append(getObjectHandleDeclaration(argType, ObjectHandleTypes.Undefined, simpleNameMapping));
+            sb.append(getObjectHandleDeclaration(argType, ObjectHandleTypes.General, simpleNameMapping));
           }
           sb.append(">");
         }

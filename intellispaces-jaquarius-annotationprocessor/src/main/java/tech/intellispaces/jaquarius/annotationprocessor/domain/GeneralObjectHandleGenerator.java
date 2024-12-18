@@ -9,6 +9,7 @@ import tech.intellispaces.jaquarius.channel.Channel1;
 import tech.intellispaces.jaquarius.channel.MappingChannel;
 import tech.intellispaces.jaquarius.exception.TraverseException;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
+import tech.intellispaces.jaquarius.object.reference.ObjectHandleType;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
@@ -22,14 +23,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
-public class UndefinedObjectHandleGenerator extends AbstractDomainObjectHandleGenerator {
+public class GeneralObjectHandleGenerator extends ObjectHandleGenerator {
   private boolean isAlias;
   private String primaryObjectHandle;
   private String primaryDomainSimpleName;
   private String primaryDomainTypeArguments;
   private String domainType;
 
-  public UndefinedObjectHandleGenerator(CustomType domainType) {
+  public GeneralObjectHandleGenerator(CustomType domainType) {
     super(domainType);
   }
 
@@ -39,18 +40,18 @@ public class UndefinedObjectHandleGenerator extends AbstractDomainObjectHandleGe
   }
 
   @Override
-  protected ObjectHandleTypes getObjectHandleType() {
-    return ObjectHandleTypes.Undefined;
+  protected ObjectHandleType getObjectHandleType() {
+    return ObjectHandleTypes.General;
   }
 
   @Override
   public String generatedArtifactName() {
-    return NameConventionFunctions.getObjectHandleTypename(sourceArtifact().className(), ObjectHandleTypes.Undefined);
+    return NameConventionFunctions.getObjectHandleTypename(sourceArtifact().className(), ObjectHandleTypes.General);
   }
 
   @Override
   protected String templateName() {
-    return "/undefined_object_handle.template";
+    return "/general_object_handle.template";
   }
 
   @Override
@@ -73,7 +74,7 @@ public class UndefinedObjectHandleGenerator extends AbstractDomainObjectHandleGe
       CustomTypeReference nearEquivalentDomain = equivalentDomains.get(0);
       CustomTypeReference mainEquivalentDomain = equivalentDomains.get(equivalentDomains.size() - 1);
 
-      primaryObjectHandle = buildObjectHandleDeclaration(nearEquivalentDomain, ObjectHandleTypes.Undefined);
+      primaryObjectHandle = buildObjectHandleDeclaration(nearEquivalentDomain, ObjectHandleTypes.General);
       primaryDomainTypeArguments = nearEquivalentDomain.typeArgumentsDeclaration(this::addToImportAndGetSimpleName);
       primaryDomainSimpleName = addToImportAndGetSimpleName(mainEquivalentDomain.targetType().canonicalName());
       domainType = buildDomainType(mainEquivalentDomain.targetType(), mainEquivalentDomain.typeArguments());
@@ -99,16 +100,16 @@ public class UndefinedObjectHandleGenerator extends AbstractDomainObjectHandleGe
   ) {
     return buildActualType(customType, context)
         .actualMethods().stream()
-        .filter(this::isNotDomainClassGetter)
+        .filter(DomainFunctions::isNotDomainClassGetter)
         .filter(m -> excludeDeepConversionMethods(m, customType))
         .filter(m -> !ChannelFunctions.isChannelMethod(m)
             || ChannelFunctions.getTraverseTypes(m).stream().noneMatch(TraverseType::isMovingBased));
   }
 
   @Override
-  protected Map<String, String> generateMethod(MethodStatement method, ObjectReferenceForm targetForm, int methodIndex) {
+  protected Map<String, String> generateMethod(MethodStatement method, ObjectReferenceForm targetForm, int methodOrdinal) {
     if (method.hasAnnotation(Channel.class)) {
-      return super.generateMethod(method, targetForm, methodIndex);
+      return super.generateMethod(method, targetForm, methodOrdinal);
     } else {
       return buildAdditionalMethod(method);
     }

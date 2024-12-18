@@ -6,8 +6,8 @@ import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
 import tech.intellispaces.annotationprocessor.ArtifactProcessor;
 import tech.intellispaces.annotationprocessor.ArtifactValidator;
 import tech.intellispaces.jaquarius.annotation.Configuration;
-import tech.intellispaces.jaquarius.annotationprocessor.AnnotationProcessorConstants;
 import tech.intellispaces.jaquarius.annotationprocessor.AnnotationProcessorFunctions;
+import tech.intellispaces.jaquarius.annotationprocessor.JaquariusArtifactProcessor;
 import tech.intellispaces.jaquarius.annotationprocessor.module.UnitWrapperGenerator;
 import tech.intellispaces.java.reflection.customtype.CustomType;
 
@@ -19,7 +19,7 @@ import java.util.List;
 public class ConfigurationProcessor extends ArtifactProcessor {
 
   public ConfigurationProcessor() {
-    super(ElementKind.CLASS, Configuration.class, AnnotationProcessorConstants.SOURCE_VERSION);
+    super(ElementKind.CLASS, Configuration.class, JaquariusArtifactProcessor.SOURCE_VERSION);
   }
 
   @Override

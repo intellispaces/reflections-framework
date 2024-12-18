@@ -16,6 +16,7 @@ import tech.intellispaces.jaquarius.channel.Channel4;
 import tech.intellispaces.jaquarius.exception.ConfigurationExceptions;
 import tech.intellispaces.jaquarius.id.RepetableUuidIdentifierGenerator;
 import tech.intellispaces.jaquarius.object.ObjectHandleFunctions;
+import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
 import tech.intellispaces.jaquarius.traverse.TraverseType;
 import tech.intellispaces.java.reflection.customtype.CustomType;
@@ -67,6 +68,10 @@ public interface ChannelFunctions {
 
   static boolean isChannelMethod(MethodStatement method) {
     return method.hasAnnotation(Channel.class);
+  }
+
+  static String getCid(MethodStatement channelMethod) {
+    return channelMethod.selectAnnotation(Channel.class).orElseThrow().value();
   }
 
   static String getChannelId(Class<?> channelClass) {
@@ -232,6 +237,11 @@ public interface ChannelFunctions {
       return null;
     }
     return channel.get();
+  }
+
+  static boolean isMovingBasedChannel(MethodStatement domainMethod) {
+    Channel channel = getDomainMainChannelAnnotation(domainMethod);
+    return ChannelFunctions.getTraverseType(channel).isMovingBased();
   }
 
   static Channel getDomainMainChannelAnnotation(MethodStatement domainMethod) {

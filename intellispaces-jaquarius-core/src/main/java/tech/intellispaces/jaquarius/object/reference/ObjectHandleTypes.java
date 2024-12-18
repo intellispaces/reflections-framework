@@ -15,9 +15,9 @@ public enum ObjectHandleTypes implements ObjectHandleType, Enumeration<ObjectHan
   Unmovable,
 
   /**
-   * The undefined object handle.
+   * The general object handle.
    */
-  Undefined;
+  General;
 
   public static ObjectHandleTypes from(ObjectHandleType value) {
     return VALUES[value.ordinal()];

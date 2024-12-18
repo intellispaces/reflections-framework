@@ -23,7 +23,7 @@ public interface NameConventionFunctions {
 
   static String getObjectHandleTypename(String domainClassName, ObjectHandleType handleType) {
     return switch (ObjectHandleTypes.from(handleType)) {
-      case Undefined -> getUndefinedObjectHandleTypename(domainClassName);
+      case General -> getUndefinedObjectHandleTypename(domainClassName);
       case Movable -> getMovableObjectHandleTypename(domainClassName);
       case Unmovable -> getUnmovableObjectHandleTypename(domainClassName);
     };
@@ -100,10 +100,10 @@ public interface NameConventionFunctions {
   }
 
   static String getDownwardObjectHandleTypename(
-      CustomType domainType, CustomType baseDomainType, ObjectHandleTypes handleType
+      CustomType domainType, CustomType baseDomainType, ObjectHandleType handleType
   ) {
-    return switch (handleType) {
-      case Undefined -> getBaseDownwardObjectHandleTypename(domainType, baseDomainType);
+    return switch (ObjectHandleTypes.from(handleType)) {
+      case General -> getBaseDownwardObjectHandleTypename(domainType, baseDomainType);
       case Movable -> getMovableDownwardObjectHandleTypename(domainType, baseDomainType);
       case Unmovable -> getUnmovableDownwardObjectHandleTypename(domainType, baseDomainType);
     };

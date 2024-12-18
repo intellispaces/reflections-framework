@@ -18,12 +18,15 @@ public interface OntologyProcessorFunctions {
   ) {
     List<ArtifactGenerator> generators = new ArrayList<>();
     for (MethodStatement method : ontologyType.declaredMethods()) {
-      if (method.hasAnnotation(Channel.class)) {
-        if (AnnotationProcessorFunctions.isAutoGenerationEnabled(ontologyType, ArtifactTypes.Channel, context.roundEnvironment())) {
-          generators.add(new ChannelGenerator(
-              ontologyType, method
-          ));
-        }
+      if (!method.hasAnnotation(Channel.class)) {
+        continue;
+      }
+      if (AnnotationProcessorFunctions.isAutoGenerationEnabled(
+          ontologyType, ArtifactTypes.Channel, context.roundEnvironment()
+      )) {
+        generators.add(new ChannelGenerator(
+            ontologyType, method
+        ));
       }
     }
     return generators;

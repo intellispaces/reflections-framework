@@ -22,7 +22,7 @@ import java.util.Optional;
 import java.util.concurrent.Future;
 
 /**
- * Domain type validator.
+ * The domain type validator.
  */
 public class DomainValidator implements ArtifactValidator {
 

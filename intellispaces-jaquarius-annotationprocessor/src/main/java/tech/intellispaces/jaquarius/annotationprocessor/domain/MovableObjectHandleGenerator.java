@@ -12,6 +12,7 @@ import tech.intellispaces.jaquarius.channel.MappingOfMovingChannel;
 import tech.intellispaces.jaquarius.exception.TraverseException;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
 import tech.intellispaces.jaquarius.object.reference.MovableObjectHandle;
+import tech.intellispaces.jaquarius.object.reference.ObjectHandleType;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
@@ -24,7 +25,7 @@ import tech.intellispaces.java.reflection.reference.TypeReference;
 import java.util.List;
 import java.util.stream.Stream;
 
-public class MovableObjectHandleGenerator extends AbstractDomainObjectHandleGenerator {
+public class MovableObjectHandleGenerator extends ObjectHandleGenerator {
   private String baseObjectHandle;
   private boolean isAlias;
   private String primaryDomainSimpleName;
@@ -41,7 +42,7 @@ public class MovableObjectHandleGenerator extends AbstractDomainObjectHandleGene
   }
 
   @Override
-  protected ObjectHandleTypes getObjectHandleType() {
+  protected ObjectHandleType getObjectHandleType() {
     return ObjectHandleTypes.Movable;
   }
 
@@ -76,7 +77,7 @@ public class MovableObjectHandleGenerator extends AbstractDomainObjectHandleGene
         NameConventionFunctions.getUndefinedObjectHandleTypename(sourceArtifact().className())
     );
     analyzeObjectHandleMethods(sourceArtifact(), context);
-    analyzeConversionMethods(sourceArtifact(), context);
+    analyzeConversionMethods(sourceArtifact());
 
     List<CustomTypeReference> equivalentDomains = DomainFunctions.getEquivalentDomains(sourceArtifact());
     isAlias = !equivalentDomains.isEmpty();
@@ -104,7 +105,7 @@ public class MovableObjectHandleGenerator extends AbstractDomainObjectHandleGene
 
   @Override
   protected Stream<MethodStatement> getObjectHandleMethods(CustomType customType, ArtifactGeneratorContext context) {
-    return super.getObjectHandleMethods(customType, context.roundEnvironment())
+    return super.getObjectHandleMethods(customType, context)
         .filter(m -> ChannelFunctions.getTraverseTypes(m).stream().anyMatch(TraverseType::isMovingBased));
   }
 
@@ -119,7 +120,7 @@ public class MovableObjectHandleGenerator extends AbstractDomainObjectHandleGene
     } else if (method.hasAnnotation(Unmovable.class)) {
       sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.Unmovable));
     } else {
-      sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.Undefined));
+      sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.General));
     }
   }
 }

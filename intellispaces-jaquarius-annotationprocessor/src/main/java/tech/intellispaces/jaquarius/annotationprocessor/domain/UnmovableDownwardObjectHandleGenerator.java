@@ -15,6 +15,7 @@ import tech.intellispaces.jaquarius.channel.MappingChannel;
 import tech.intellispaces.jaquarius.exception.TraverseException;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
 import tech.intellispaces.jaquarius.object.ObjectHandleFunctions;
+import tech.intellispaces.jaquarius.object.reference.ObjectHandleType;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
@@ -29,7 +30,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-public class UnmovableDownwardObjectHandleGenerator extends AbstractConversionDomainObjectHandleGenerator {
+public class UnmovableDownwardObjectHandleGenerator extends ConversionObjectHandleGenerator {
   private String classTypeParams;
   private String classTypeParamsBrief;
   private String unmovableObjectHandleName;
@@ -57,7 +58,7 @@ public class UnmovableDownwardObjectHandleGenerator extends AbstractConversionDo
   }
 
   @Override
-  protected ObjectHandleTypes getObjectHandleType() {
+  protected ObjectHandleType getObjectHandleType() {
     return ObjectHandleTypes.Unmovable;
   }
 
@@ -145,7 +146,7 @@ public class UnmovableDownwardObjectHandleGenerator extends AbstractConversionDo
     return buildActualType(parentDomainType.targetType(), context).actualMethods().stream()
         .filter(m -> excludeDeepConversionMethods(m, customType))
         .filter(this::isNotMovingMethod)
-        .filter(this::isNotDomainClassGetter);
+        .filter(DomainFunctions::isNotDomainClassGetter);
   }
 
   private boolean isNotMovingMethod(MethodStatement method) {
@@ -159,9 +160,9 @@ public class UnmovableDownwardObjectHandleGenerator extends AbstractConversionDo
   }
 
   @Override
-  protected Map<String, String> generateMethod(MethodStatement method, ObjectReferenceForm targetForm, int methodIndex) {
+  protected Map<String, String> generateMethod(MethodStatement method, ObjectReferenceForm targetForm, int methodOrdinal) {
     if (method.hasAnnotation(Channel.class)) {
-      return generateMethodNormal(method, targetForm, methodIndex);
+      return generateMethodNormal(method, targetForm, methodOrdinal);
     } else {
       return generateAdditionalMethod(convertMethodBeforeGenerate(method));
     }

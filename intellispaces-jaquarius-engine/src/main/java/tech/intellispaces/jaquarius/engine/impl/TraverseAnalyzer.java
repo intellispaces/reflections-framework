@@ -51,8 +51,6 @@ import tech.intellispaces.jaquarius.traverse.plan.TraversePlanTypes;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static tech.intellispaces.jaquarius.traverse.plan.TraversePlanTypes.MapObjectHandleThruChannel0;
-
 class TraverseAnalyzer implements tech.intellispaces.jaquarius.traverse.plan.TraverseAnalyzer {
   private final GuideRegistry guideRegistry;
 

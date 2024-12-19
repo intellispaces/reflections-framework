@@ -10,7 +10,6 @@ import tech.intellispaces.general.exception.NotImplementedExceptions;
 import tech.intellispaces.general.text.StringFunctions;
 import tech.intellispaces.general.type.Types;
 import tech.intellispaces.jaquarius.action.TraverseActions;
-import tech.intellispaces.jaquarius.annotationprocessor.GuideProcessorFunctions;
 import tech.intellispaces.jaquarius.annotationprocessor.JaquariusArtifactGenerator;
 import tech.intellispaces.jaquarius.guide.GuideFunctions;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
@@ -51,11 +50,10 @@ public class AutoGuideGenerator extends JaquariusArtifactGenerator {
 
   @Override
   protected boolean analyzeSourceArtifact(ArtifactGeneratorContext context) {
-    if (sourceArtifact().isNested()) {
-      addImport(sourceArtifactName());
-    }
-    addImport(Action.class);
-    addImport(ObjectReferenceForms.class);
+    addImports(
+        Action.class,
+        ObjectReferenceForms.class
+    );
 
     analyzeTypeParams();
     analyzeGuideMethods();
@@ -140,7 +138,7 @@ public class AutoGuideGenerator extends JaquariusArtifactGenerator {
     sb.append(".class),\n    ");
     sb.append(addToImportAndGetSimpleName(GuideFunctions.getChannelType(method).canonicalName()));
     sb.append(".class,\n");
-    ObjectReferenceForm targetForm = GuideProcessorFunctions.getTargetForm(method);
+    ObjectReferenceForm targetForm = GuideFunctions.getGuideTargetForm(method);
     sb.append("    ObjectReferenceForms.");
     sb.append(targetForm.name());
     sb.append("))");

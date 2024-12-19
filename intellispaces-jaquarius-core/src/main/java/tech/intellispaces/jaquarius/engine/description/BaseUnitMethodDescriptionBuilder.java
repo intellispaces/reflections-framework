@@ -1,4 +1,4 @@
-package tech.intellispaces.jaquarius.engine.descriptor;
+package tech.intellispaces.jaquarius.engine.description;
 
 import tech.intellispaces.action.Action;
 import tech.intellispaces.jaquarius.guide.GuideKind;
@@ -8,7 +8,7 @@ import tech.intellispaces.jaquarius.system.ProjectionReference;
 
 import java.util.List;
 
-class BaseUnitMethodBuilder<B extends BaseUnitMethodBuilder<B>> {
+class BaseUnitMethodDescriptionBuilder<B extends BaseUnitMethodDescriptionBuilder<B>> {
   private final String name;
   private final List<Class<?>> paramClasses;
   private String prototypeMethodName;
@@ -27,7 +27,7 @@ class BaseUnitMethodBuilder<B extends BaseUnitMethodBuilder<B>> {
   private String guideCid;
   private ObjectReferenceForm guideTargetForm;
 
-  BaseUnitMethodBuilder(String name, List<Class<?>> paramClasses) {
+  BaseUnitMethodDescriptionBuilder(String name, List<Class<?>> paramClasses) {
     this.name = name;
     this.paramClasses = paramClasses;
   }
@@ -116,8 +116,8 @@ class BaseUnitMethodBuilder<B extends BaseUnitMethodBuilder<B>> {
     return (B) this;
   }
 
-  public UnitMethodDescriptor get() {
-    return new UnitMethodDescriptorImpl(
+  public UnitMethodDescription get() {
+    return new UnitMethodDescriptionImpl(
         name,
         paramClasses,
         prototypeMethodName,

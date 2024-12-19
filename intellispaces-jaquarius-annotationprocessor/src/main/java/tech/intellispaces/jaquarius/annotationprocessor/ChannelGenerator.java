@@ -16,10 +16,10 @@ import tech.intellispaces.java.reflection.reference.TypeReference;
 
 import java.util.List;
 
-public abstract class AbstractChannelGenerator extends JaquariusArtifactGenerator {
+public abstract class ChannelGenerator extends JaquariusArtifactGenerator {
   protected final MethodStatement channelMethod;
 
-  public AbstractChannelGenerator(CustomType annotatedType, MethodStatement channelMethod) {
+  public ChannelGenerator(CustomType annotatedType, MethodStatement channelMethod) {
     super(annotatedType);
     this.channelMethod = channelMethod;
   }

@@ -1,4 +1,4 @@
-package tech.intellispaces.jaquarius.engine.descriptor;
+package tech.intellispaces.jaquarius.engine.description;
 
 import tech.intellispaces.general.entity.Enumerable;
 

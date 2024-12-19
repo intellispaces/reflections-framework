@@ -29,7 +29,7 @@ public interface DomainProcessorFunctions {
         if (AnnotationProcessorFunctions.isAutoGenerationEnabled(
             domainType, ArtifactTypes.Channel, context.roundEnvironment())
         ) {
-          generators.add(new ChannelGenerator(domainType, method));
+          generators.add(new DomainChannelGenerator(domainType, method));
         }
       }
     }

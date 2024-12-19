@@ -16,6 +16,9 @@ import javax.annotation.processing.RoundEnvironment;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Common annotation processor functions.
+ */
 public interface AnnotationProcessorFunctions {
 
   static boolean isAutoGenerationEnabled(CustomType annotatedType) {

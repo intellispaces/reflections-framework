@@ -1,11 +1,8 @@
 package tech.intellispaces.jaquarius.annotationprocessor.objecthandle;
 
-import tech.intellispaces.action.Actions;
-import tech.intellispaces.action.functional.FunctionActions;
 import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
 import tech.intellispaces.general.exception.NotImplementedExceptions;
 import tech.intellispaces.general.type.PrimitiveFunctions;
-import tech.intellispaces.general.type.Type;
 import tech.intellispaces.jaquarius.annotation.Movable;
 import tech.intellispaces.jaquarius.annotation.Ordinal;
 import tech.intellispaces.jaquarius.annotation.Unmovable;
@@ -18,27 +15,20 @@ import tech.intellispaces.jaquarius.channel.MappingChannel;
 import tech.intellispaces.jaquarius.channel.MappingOfMovingChannel;
 import tech.intellispaces.jaquarius.engine.JaquariusEngines;
 import tech.intellispaces.jaquarius.engine.ObjectHandleBroker;
-import tech.intellispaces.jaquarius.engine.descriptor.ObjectHandleMethodPurposes;
-import tech.intellispaces.jaquarius.engine.descriptor.ObjectHandleTypeDescriptor;
+import tech.intellispaces.jaquarius.engine.description.ObjectHandleMethodPurposes;
+import tech.intellispaces.jaquarius.engine.description.ObjectHandleTypeDescription;
 import tech.intellispaces.jaquarius.exception.TraverseException;
-import tech.intellispaces.jaquarius.guide.n0.Mover0;
-import tech.intellispaces.jaquarius.guide.n1.Mover1;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
+import tech.intellispaces.jaquarius.object.handle.ObjectHandleTypes;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleType;
-import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
-import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.system.Modules;
 import tech.intellispaces.jaquarius.system.ObjectHandleWrapper;
-import tech.intellispaces.jaquarius.system.injection.AutoGuideInjections;
-import tech.intellispaces.jaquarius.system.injection.GuideInjections;
 import tech.intellispaces.jaquarius.traverse.TraverseType;
 import tech.intellispaces.jaquarius.traverse.TraverseTypes;
 import tech.intellispaces.java.reflection.customtype.CustomType;
 import tech.intellispaces.java.reflection.method.MethodStatement;
 import tech.intellispaces.java.reflection.reference.TypeReference;
-
-import java.util.List;
 
 public class MovableObjectHandleWrapperGenerator extends ObjectHandleWrapperGenerator {
 
@@ -68,42 +58,33 @@ public class MovableObjectHandleWrapperGenerator extends ObjectHandleWrapperGene
 
   @Override
   protected boolean analyzeSourceArtifact(ArtifactGeneratorContext context) {
-    addImport(List.class);
-
-    addImport(Modules.class);
-    addImport(TraverseException.class);
-    addImport(Actions.class);
-    addImport(FunctionActions.class);
-    addImport(Type.class);
-    addImport(Ordinal.class);
-    addImport(Wrapper.class);
-    addImport(ObjectHandleWrapper.class);
-    addImport(ObjectReferenceForms.class);
-
-    addImport(Mover0.class);
-    addImport(Mover1.class);
-    addImport(Channel0.class);
-    addImport(Channel1.class);
-    addImport(ChannelMethod0.class);
-    addImport(ChannelMethod1.class);
-    addImport(ChannelFunctions.class);
-    addImport(GuideInjections.class);
-    addImport(AutoGuideInjections.class);
-    addImport(MappingChannel.class);
-    addImport(MappingOfMovingChannel.class);
-    addImport(NotImplementedExceptions.class);
-    addImport(PrimitiveFunctions.class);
-    addImport(ObjectHandleTypeDescriptor.class);
-    addImport(ObjectHandleBroker.class);
-    addImport(JaquariusEngines.class);
-    addImport(TraverseTypes.class);
-    addImport(ObjectHandleMethodPurposes.class);
+    addImports(
+        Ordinal.class,
+        Wrapper.class,
+        Modules.class,
+        ObjectHandleWrapper.class,
+        Channel0.class,
+        Channel1.class,
+        ChannelMethod0.class,
+        ChannelMethod1.class,
+        ChannelFunctions.class,
+        MappingChannel.class,
+        MappingOfMovingChannel.class,
+        PrimitiveFunctions.class,
+        ObjectHandleTypeDescription.class,
+        ObjectHandleBroker.class,
+        JaquariusEngines.class,
+        TraverseTypes.class,
+        ObjectHandleMethodPurposes.class,
+        TraverseException.class,
+        NotImplementedExceptions.class
+    );
 
     analyzeDomain();
     analyzeTypeParams();
     analyzeConstructors();
     analyzeInjectedGuides();
-    analyzeObjectHandleMethods(sourceArtifact(), context);
+    analyzeObjectHandleMethods();
     analyzeConversionMethods(domainType);
     analyzeReleaseMethod();
 
@@ -113,12 +94,12 @@ public class MovableObjectHandleWrapperGenerator extends ObjectHandleWrapperGene
     addVariable("isAlias", isAlias);
     addVariable("primaryDomainSimpleName", primaryDomainSimpleName);
     addVariable("primaryDomainTypeArguments", primaryDomainTypeArguments);
-    addVariable("constructors", constructors);
-    addVariable("wrapperMethods", wrapperMethods);
-    addVariable("guideActionMethods", guideMethods);
-    addVariable("domainMethods", methods);
-    addVariable("injectionMethods", injectionMethods);
-    addVariable("conversionMethods", conversionMethods);
+    addVariable("constructors", generatedConstructors);
+    addVariable("methodDescriptions", generatedMethodDescriptions);
+    addVariable("guideActionMethods", generatedGuideMethods);
+    addVariable("domainMethods", generatedDomainMethods);
+    addVariable("injectionMethods", generatedInjectionMethods);
+    addVariable("conversionMethods", generatedConversionMethods);
     addVariable("notImplRelease", !implRelease);
     return true;
   }

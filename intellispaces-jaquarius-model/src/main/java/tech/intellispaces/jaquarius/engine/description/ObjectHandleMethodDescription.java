@@ -1,4 +1,4 @@
-package tech.intellispaces.jaquarius.engine.descriptor;
+package tech.intellispaces.jaquarius.engine.description;
 
 import tech.intellispaces.action.Action;
 import tech.intellispaces.jaquarius.traverse.TraverseType;
@@ -6,9 +6,9 @@ import tech.intellispaces.jaquarius.traverse.TraverseType;
 import java.util.List;
 
 /**
- * The object handle wrapper method descriptor.
+ * The object handle wrapper method description.
  */
-public interface ObjectHandleMethodDescriptor {
+public interface ObjectHandleMethodDescription {
 
   /**
    * The method name.

@@ -1,7 +1,7 @@
 package tech.intellispaces.jaquarius.traverse.plan;
 
 import tech.intellispaces.general.exception.UnexpectedExceptions;
-import tech.intellispaces.jaquarius.object.ObjectHandleFunctions;
+import tech.intellispaces.jaquarius.object.handle.ObjectHandleFunctions;
 
 import java.util.HashMap;
 import java.util.Map;

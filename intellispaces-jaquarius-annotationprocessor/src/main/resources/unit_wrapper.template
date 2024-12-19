@@ -4,7 +4,7 @@ package {{$generatedArtifactPackageName}};
 import {{$importedClass}};
 {{end}}
 
-import static tech.intellispaces.jaquarius.engine.descriptor.UnitMethods.unitMethod;
+import static tech.intellispaces.jaquarius.engine.description.UnitMethods.unitMethod;
 
 /**
  * Wrapper of module unit {@link {{$sourceArtifactSimpleName}}}.<p/>
@@ -52,8 +52,8 @@ public class {{$generatedArtifactSimpleName}}{{$typeParamsFullDeclaration}} exte
   private UnitBroker $registerUnit() {
     return JaquariusEngines.get().registerUnit(
       this,
-      {{$sourceArtifactSimpleName}}.class{{when $wrapperMethods.isNotEmpty()}},{{end}}
-{{for method : $wrapperMethods}}
+      {{$sourceArtifactSimpleName}}.class{{when $methodDescriptions.isNotEmpty()}},{{end}}
+{{for method : $methodDescriptions}}
       unitMethod(this, "{{$method.get("name")}}"{{for param : $method.get("params")}}, {{$param}}.class{{end}})
         .purpose(UnitMethodPurposes.{{$method.get("purpose")}})
 {{when $method.get("type").eq("function")}}

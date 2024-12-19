@@ -1,41 +1,29 @@
 package tech.intellispaces.jaquarius.annotationprocessor.module;
 
-import tech.intellispaces.action.Action;
-import tech.intellispaces.action.Actions;
-import tech.intellispaces.action.functional.FunctionActions;
 import tech.intellispaces.action.runnable.RunnableAction;
-import tech.intellispaces.action.supplier.ResettableSupplierAction;
 import tech.intellispaces.action.text.StringActions;
 import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
 import tech.intellispaces.general.exception.UnexpectedExceptions;
-import tech.intellispaces.jaquarius.annotation.AutoGuide;
-import tech.intellispaces.jaquarius.annotation.Inject;
 import tech.intellispaces.jaquarius.annotation.Ordinal;
 import tech.intellispaces.jaquarius.annotation.Projection;
 import tech.intellispaces.jaquarius.annotation.ProjectionSupplier;
-import tech.intellispaces.jaquarius.annotation.Shutdown;
-import tech.intellispaces.jaquarius.annotation.Startup;
 import tech.intellispaces.jaquarius.annotation.Wrapper;
-import tech.intellispaces.jaquarius.annotationprocessor.GuideProcessorFunctions;
+import tech.intellispaces.jaquarius.annotationprocessor.AnnotationGeneratorFunctions;
 import tech.intellispaces.jaquarius.annotationprocessor.JaquariusArtifactGenerator;
 import tech.intellispaces.jaquarius.engine.JaquariusEngines;
 import tech.intellispaces.jaquarius.engine.UnitBroker;
-import tech.intellispaces.jaquarius.engine.descriptor.UnitMethodPurposes;
+import tech.intellispaces.jaquarius.engine.description.UnitMethodPurposes;
 import tech.intellispaces.jaquarius.exception.ConfigurationExceptions;
 import tech.intellispaces.jaquarius.guide.GuideFunctions;
 import tech.intellispaces.jaquarius.guide.GuideKinds;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
-import tech.intellispaces.jaquarius.object.ObjectHandleFunctions;
+import tech.intellispaces.jaquarius.object.handle.ObjectHandleFunctions;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
-import tech.intellispaces.jaquarius.system.Injection;
 import tech.intellispaces.jaquarius.system.Modules;
 import tech.intellispaces.jaquarius.system.ProjectionInjection;
 import tech.intellispaces.jaquarius.system.UnitWrapper;
-import tech.intellispaces.jaquarius.system.injection.AutoGuideInjections;
-import tech.intellispaces.jaquarius.system.injection.GuideInjections;
 import tech.intellispaces.jaquarius.system.injection.InjectionKinds;
-import tech.intellispaces.jaquarius.system.injection.ProjectionInjections;
 import tech.intellispaces.jaquarius.system.projection.ProjectionReferences;
 import tech.intellispaces.java.reflection.customtype.CustomType;
 import tech.intellispaces.java.reflection.instance.AnnotationInstance;
@@ -48,7 +36,6 @@ import tech.intellispaces.java.reflection.reference.NamedReference;
 import tech.intellispaces.java.reflection.reference.TypeReference;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,14 +43,14 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class UnitWrapperGenerator extends JaquariusArtifactGenerator {
-  private final List<Map<String, Object>> injectionMethods = new ArrayList<>();
-  private List<MethodStatement> methods;
-  private List<Map<String, Object>> overrideGuideMethods;
-  private final List<String> overrideProjectionMethods = new ArrayList<>();
-  private final List<Map<String, String>> guideActionMethods = new ArrayList<>();
-  protected final List<Map<String, Object>> wrapperMethods = new ArrayList<>();
   private String typeParamsFullDeclaration;
   private String typeParamsBriefDeclaration;
+  private List<MethodStatement> methods;
+  private final List<Map<String, Object>> generatedInjectionMethods = new ArrayList<>();
+  private List<Map<String, Object>> generatedGuideMethods;
+  private final List<String> generatedProjectionMethods = new ArrayList<>();
+  private final List<Map<String, String>> generatedGuideActionMethods = new ArrayList<>();
+  protected final List<Map<String, Object>> generatedMethodDescriptions = new ArrayList<>();
   private int injectionMethodCounter;
 
   public UnitWrapperGenerator(CustomType unitType) {
@@ -90,30 +77,18 @@ public class UnitWrapperGenerator extends JaquariusArtifactGenerator {
     if (sourceArtifact().isNested()) {
       addImport(sourceArtifactName());
     }
-
-    addImport(List.class);
-    addImport(Collections.class);
-    addImport(ArrayList.class);
-    addImport(Action.class);
-    addImport(Actions.class);
-    addImport(FunctionActions.class);
-    addImport(ResettableSupplierAction.class);
-    addImport(Wrapper.class);
-    addImport(Ordinal.class);
-    addImport(Modules.class);
-    addImport(Injection.class);
-    addImport(UnitWrapper.class);
-    addImport(ProjectionReferences.class);
-    addImport(ProjectionInjections.class);
-    addImport(GuideInjections.class);
-    addImport(AutoGuideInjections.class);
-    addImport(UnitBroker.class);
-    addImport(JaquariusEngines.class);
-    addImport(UnitMethodPurposes.class);
-    addImport(InjectionKinds.class);
-    addImport(ProjectionReferences.class);
-    addImport(GuideKinds.class);
-    addImport(ObjectReferenceForms.class);
+    addImports(
+        Wrapper.class,
+        Ordinal.class,
+        UnitWrapper.class,
+        UnitBroker.class,
+        JaquariusEngines.class,
+        UnitMethodPurposes.class,
+        InjectionKinds.class,
+        ProjectionReferences.class,
+        GuideKinds.class,
+        ObjectReferenceForms.class
+    );
 
     methods = sourceArtifact().actualMethods();
     analyzeTypeParams();
@@ -123,11 +98,11 @@ public class UnitWrapperGenerator extends JaquariusArtifactGenerator {
 
     addVariable("typeParamsFullDeclaration", typeParamsFullDeclaration);
     addVariable("typeParamsBriefDeclaration", typeParamsBriefDeclaration);
-    addVariable("injectionMethods", injectionMethods);
-    addVariable("overrideGuideMethods", overrideGuideMethods);
-    addVariable("overrideProjectionMethods", overrideProjectionMethods);
-    addVariable("guideActionMethods", guideActionMethods);
-    addVariable("wrapperMethods", wrapperMethods);
+    addVariable("injectionMethods", generatedInjectionMethods);
+    addVariable("overrideGuideMethods", generatedGuideMethods);
+    addVariable("overrideProjectionMethods", generatedProjectionMethods);
+    addVariable("guideActionMethods", generatedGuideActionMethods);
+    addVariable("methodDescriptions", generatedMethodDescriptions);
     return true;
   }
 
@@ -137,7 +112,7 @@ public class UnitWrapperGenerator extends JaquariusArtifactGenerator {
   }
 
   private void analyzeGuideMethods() {
-    this.overrideGuideMethods = methods.stream()
+    this.generatedGuideMethods = methods.stream()
         .filter(GuideFunctions::isGuideMethod)
         .map(this::buildGuideMethod)
         .toList();
@@ -165,8 +140,8 @@ public class UnitWrapperGenerator extends JaquariusArtifactGenerator {
     methods.stream()
         .filter(GuideFunctions::isGuideMethod)
         .forEach(method -> {
-          guideActionMethods.add((GuideProcessorFunctions.buildGuideActionMethod(method, this)));
-          wrapperMethods.add(buildGuideMethodDescription(method, guideOrdinal.get()));
+          generatedGuideActionMethods.add((AnnotationGeneratorFunctions.buildGuideActionMethod(method, this)));
+          generatedMethodDescriptions.add(buildGuideMethodDescription(method, guideOrdinal.get()));
           guideOrdinal.incrementAndGet();
       });
   }
@@ -190,23 +165,23 @@ public class UnitWrapperGenerator extends JaquariusArtifactGenerator {
   private void analyzeMethods() {
     for (MethodStatement method : methods) {
       if (method.isAbstract() && !method.isDefault()) {
-        if (isProjectionMethod(method)) {
-          if (!isReturnObjectHandle(method)) {
+        if (AnnotationGeneratorFunctions.isProjectionMethod(method)) {
+          if (!AnnotationGeneratorFunctions.isReturnObjectHandle(method)) {
             throw ConfigurationExceptions.withMessage("Projection method '{0}' in class {1} must return object handle",
                 method.name(), sourceArtifact().className()
             );
           }
           addProjectionInjection(method);
           addProjectionDefinitionForAbstractMethod(method);
-        } else if (isInjectionMethod(method)) {
-          if (isAutoGuideMethod(method)) {
-            if (!isReturnGuide(method)) {
+        } else if (AnnotationGeneratorFunctions.isInjectionMethod(method)) {
+          if (AnnotationGeneratorFunctions.isAutoGuideMethod(method)) {
+            if (!AnnotationGeneratorFunctions.isReturnGuide(method)) {
               throw ConfigurationExceptions.withMessage("Guide injection method '{0}' in class {1} must return guide",
                   method.name(), sourceArtifact().className()
               );
             }
             addAutoGuideInjectionAndImplementationMethod(method);
-          } else if (isReturnGuide(method)) {
+          } else if (AnnotationGeneratorFunctions.isReturnGuide(method)) {
             addGuideInjectionAndImplementationMethod(method);
           } else {
             addProjectionInjection(method);
@@ -217,12 +192,12 @@ public class UnitWrapperGenerator extends JaquariusArtifactGenerator {
           );
         }
       } else {
-        if (isProjectionMethod(method)) {
+        if (AnnotationGeneratorFunctions.isProjectionMethod(method)) {
           addProjectionInjection(method);
           addGeneratedProjectionMethod(method);
-        } else if (isStartupMethod(method)) {
+        } else if (AnnotationGeneratorFunctions.isStartupMethod(method)) {
           addStartupMethodDescription(method);
-        } else if (isShutdownMethod(method)) {
+        } else if (AnnotationGeneratorFunctions.isShutdownMethod(method)) {
           addShutdownMethodDescription(method);
         }
       }
@@ -255,8 +230,8 @@ public class UnitWrapperGenerator extends JaquariusArtifactGenerator {
   private void addProjectionDefinitionBasedOnProviderClass(
       MethodStatement method, ClassInstance projectionProvider
   ) {
-    overrideProjectionMethods.add(buildGeneratedProjectionMethodBasedOnSupplier(method, projectionProvider));
-    wrapperMethods.add(buildGeneratedProjectionMethodDescription(method));
+    generatedProjectionMethods.add(buildGeneratedProjectionMethodBasedOnSupplier(method, projectionProvider));
+    generatedMethodDescriptions.add(buildGeneratedProjectionMethodDescription(method));
   }
 
   private void addProjectionInjection(MethodStatement method) {
@@ -270,16 +245,14 @@ public class UnitWrapperGenerator extends JaquariusArtifactGenerator {
     methodProperties.put("annotations", List.of(Override.class.getSimpleName()));
     methodProperties.put("signature", buildMethodSignature(method));
     methodProperties.put("body", buildInjectionMethodBody(injectionType, injectionMethodCounter));
-    injectionMethods.add(methodProperties);
-
-    wrapperMethods.add(buildProjectionInjectionMethodDescriptor(method, injectionMethodCounter));
-
+    generatedInjectionMethods.add(methodProperties);
+    generatedMethodDescriptions.add(buildProjectionInjectionMethodDescription(method, injectionMethodCounter));
     injectionMethodCounter++;
   }
 
   private void addGeneratedProjectionMethod(MethodStatement method) {
-    overrideProjectionMethods.add(buildGeneratedProjectionMethod(method));
-    wrapperMethods.add(buildGeneratedProjectionMethodDescription(method));
+    generatedProjectionMethods.add(buildGeneratedProjectionMethod(method));
+    generatedMethodDescriptions.add(buildGeneratedProjectionMethodDescription(method));
   }
 
   private Map<String, Object> buildGuideMethodDescription(
@@ -385,7 +358,7 @@ public class UnitWrapperGenerator extends JaquariusArtifactGenerator {
     return sb.toString();
   }
 
-  private Map<String, Object> buildProjectionInjectionMethodDescriptor(
+  private Map<String, Object> buildProjectionInjectionMethodDescription(
       MethodStatement method, int ordinal
   ) {
     var map = new HashMap<String, Object>();
@@ -405,7 +378,7 @@ public class UnitWrapperGenerator extends JaquariusArtifactGenerator {
     return map;
   }
 
-  private Map<String, Object> buildAutoGuideInjectionMethodDescriptor(
+  private Map<String, Object> buildAutoGuideInjectionMethodDescription(
       MethodStatement method, int ordinal
   ) {
     var map = new HashMap<String, Object>();
@@ -425,7 +398,7 @@ public class UnitWrapperGenerator extends JaquariusArtifactGenerator {
     return map;
   }
 
-  private Map<String, Object> buildSpecGuideInjectionMethodDescriptor(
+  private Map<String, Object> buildSpecGuideInjectionMethodDescription(
       MethodStatement method, int ordinal
   ) {
     var map = new HashMap<String, Object>();
@@ -457,10 +430,8 @@ public class UnitWrapperGenerator extends JaquariusArtifactGenerator {
     methodProperties.put("annotations", List.of(Override.class.getSimpleName()));
     methodProperties.put("signature", buildMethodSignature(method));
     methodProperties.put("body", buildInjectionMethodBody(injectionType, injectionMethodCounter));
-    injectionMethods.add(methodProperties);
-
-    wrapperMethods.add(buildAutoGuideInjectionMethodDescriptor(method, injectionMethodCounter));
-
+    generatedInjectionMethods.add(methodProperties);
+    generatedMethodDescriptions.add(buildAutoGuideInjectionMethodDescription(method, injectionMethodCounter));
     injectionMethodCounter++;
   }
 
@@ -476,74 +447,44 @@ public class UnitWrapperGenerator extends JaquariusArtifactGenerator {
     methodProperties.put("annotations", List.of(Override.class.getSimpleName()));
     methodProperties.put("signature", buildMethodSignature(method));
     methodProperties.put("body", buildInjectionMethodBody(injectionType, injectionMethodCounter));
-    injectionMethods.add(methodProperties);
-
-    wrapperMethods.add(buildSpecGuideInjectionMethodDescriptor(method, injectionMethodCounter));
-
+    generatedInjectionMethods.add(methodProperties);
+    generatedMethodDescriptions.add(buildSpecGuideInjectionMethodDescription(method, injectionMethodCounter));
     injectionMethodCounter++;
   }
 
   private void addStartupMethodDescription(MethodStatement method) {
-    var map = new HashMap<String, Object>();
-    map.put("name", method.name());
+    var description = new HashMap<String, Object>();
+    description.put("name", method.name());
     List<String> paramClasses = new ArrayList<>();
     for (MethodParam param : method.params()) {
       paramClasses.add(addToImportAndGetSimpleName(param.type().asCustomTypeReferenceOrElseThrow().targetType().canonicalName()));
     }
-    map.put("params", paramClasses);
-    map.put("type", "consumer");
-    map.put("purpose", UnitMethodPurposes.StartupMethod.name());
+    description.put("params", paramClasses);
+    description.put("type", "consumer");
+    description.put("purpose", UnitMethodPurposes.StartupMethod.name());
     if (!method.params().isEmpty()) {
-      map.put("requiredProjections", buildRequiredProjections(method));
+      description.put("requiredProjections", buildRequiredProjections(method));
     }
-    wrapperMethods.add(map);
+    generatedMethodDescriptions.add(description);
   }
 
   private void addShutdownMethodDescription(MethodStatement method) {
-    var map = new HashMap<String, Object>();
-    map.put("name", method.name());
+    var description = new HashMap<String, Object>();
+    description.put("name", method.name());
     List<String> paramClasses = new ArrayList<>();
     for (MethodParam param : method.params()) {
       paramClasses.add(addToImportAndGetSimpleName(param.type().asCustomTypeReferenceOrElseThrow().targetType().canonicalName()));
     }
-    map.put("params", paramClasses);
-    map.put("type", "consumer");
-    map.put("purpose", UnitMethodPurposes.ShutdownMethod.name());
+    description.put("params", paramClasses);
+    description.put("type", "consumer");
+    description.put("purpose", UnitMethodPurposes.ShutdownMethod.name());
     if (!method.params().isEmpty()) {
-      map.put("requiredProjections", buildRequiredProjections(method));
+      description.put("requiredProjections", buildRequiredProjections(method));
     }
-    wrapperMethods.add(map);
+    generatedMethodDescriptions.add(description);
   }
 
   private String buildInjectionMethodBody(String injectionType, int injectionIndex) {
     return "return (" + injectionType + ") this.$broker.injection(" + injectionIndex + ").value();";
-  }
-
-  private boolean isStartupMethod(MethodStatement method) {
-    return method.hasAnnotation(Startup.class);
-  }
-
-  private boolean isShutdownMethod(MethodStatement method) {
-    return method.hasAnnotation(Shutdown.class);
-  }
-
-  private boolean isProjectionMethod(MethodStatement method) {
-    return method.hasAnnotation(Projection.class);
-  }
-
-  private boolean isInjectionMethod(MethodStatement method) {
-    return method.hasAnnotation(Inject.class) || method.hasAnnotation(AutoGuide.class);
-  }
-
-  private boolean isAutoGuideMethod(MethodStatement method) {
-    return method.hasAnnotation(AutoGuide.class);
-  }
-
-  private boolean isReturnObjectHandle(MethodStatement method) {
-    return ObjectHandleFunctions.isObjectHandleType(method.returnType().orElseThrow());
-  }
-
-  private boolean isReturnGuide(MethodStatement method) {
-    return GuideFunctions.isGuideType(method.returnType().orElseThrow());
   }
 }

@@ -1,4 +1,4 @@
-package tech.intellispaces.jaquarius.object;
+package tech.intellispaces.jaquarius.object.handle;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +17,6 @@ import tech.intellispaces.jaquarius.annotation.Wrapper;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
 import tech.intellispaces.jaquarius.object.reference.MovableObjectHandle;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleType;
-import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
 import tech.intellispaces.jaquarius.object.reference.ObjectReference;
 import tech.intellispaces.jaquarius.object.reference.UnmovableObjectHandle;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
@@ -122,7 +121,7 @@ public class ObjectHandleFunctions {
     if (isDefaultObjectHandleType(domainType)) {
       return domainType.canonicalName();
     }
-    return NameConventionFunctions.getUndefinedObjectHandleTypename(domainType.className());
+    return NameConventionFunctions.getGeneralObjectHandleTypename(domainType.className());
   }
 
   public static String getObjectHandleTypename(CustomType customType, ObjectHandleType type) {

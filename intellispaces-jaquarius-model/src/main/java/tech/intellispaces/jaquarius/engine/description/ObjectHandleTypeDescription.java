@@ -1,11 +1,11 @@
-package tech.intellispaces.jaquarius.engine.descriptor;
+package tech.intellispaces.jaquarius.engine.description;
 
 import java.util.List;
 
 /**
- * The object handle type descriptor.
+ * The object handle type description.
  */
-public interface ObjectHandleTypeDescriptor {
+public interface ObjectHandleTypeDescription {
 
   /**
    * The object handle class.
@@ -20,5 +20,5 @@ public interface ObjectHandleTypeDescriptor {
   /**
    * Object handle wrapper class methods.
    */
-  List<ObjectHandleMethodDescriptor> methods();
+  List<ObjectHandleMethodDescription> methods();
 }

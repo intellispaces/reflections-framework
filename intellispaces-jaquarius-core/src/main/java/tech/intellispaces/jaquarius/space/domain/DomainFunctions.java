@@ -16,6 +16,7 @@ import tech.intellispaces.java.reflection.reference.TypeReference;
 import tech.intellispaces.java.reflection.reference.TypeReferenceFunctions;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -223,5 +224,27 @@ public final class DomainFunctions {
       }
     }
     return null;
+  }
+
+  public static List<CustomTypeReference> getEffectiveParents(CustomType domainType) {
+    var parentTypes = new ArrayList<CustomTypeReference>();
+    getEffectiveParents(domainType, domainType, parentTypes);
+    return parentTypes;
+  }
+
+  private static void getEffectiveParents(
+      CustomType customType, CustomType effectiveCustomType, List<CustomTypeReference> result
+  ) {
+    Iterator<CustomTypeReference> parents = customType.parentTypes().iterator();
+    Iterator<CustomTypeReference> effectiveParents = effectiveCustomType.parentTypes().iterator();
+    while (parents.hasNext() && effectiveParents.hasNext()) {
+      CustomTypeReference parent = parents.next();
+      CustomTypeReference effectiveParent = effectiveParents.next();
+      if (DomainFunctions.isAliasOf(parent, customType)) {
+        getEffectiveParents(parent.targetType(), effectiveParent.effectiveTargetType(), result);
+      } else {
+        result.add(CustomTypeReferences.get(effectiveParent.effectiveTargetType()));
+      }
+    }
   }
 }

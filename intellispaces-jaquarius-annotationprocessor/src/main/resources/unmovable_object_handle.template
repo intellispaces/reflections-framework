@@ -13,9 +13,9 @@ import {{$importedClass}};
 @ObjectHandle({{$sourceArtifactSimpleName}}.class)
 {{$generatedAnnotation}}
 {{when $isAlias}}
-public interface {{$generatedArtifactSimpleName}}{{$domainTypeParamsFull}} extends {{$baseObjectHandle}}{{$domainTypeParamsBrief}}, {{$primaryObjectHandle}} {
+public interface {{$generatedArtifactSimpleName}}{{$domainTypeParamsFull}} extends {{$generalObjectHandle}}{{$domainTypeParamsBrief}}, {{$primaryObjectHandle}} {
 {{else}}
-public interface {{$generatedArtifactSimpleName}}{{$domainTypeParamsFull}} extends {{$baseObjectHandle}}{{$domainTypeParamsBrief}}, UnmovableObjectHandle<{{$sourceArtifactSimpleName}}{{$domainTypeParamsBrief}}> {
+public interface {{$generatedArtifactSimpleName}}{{$domainTypeParamsFull}} extends {{$generalObjectHandle}}{{$domainTypeParamsBrief}}, UnmovableObjectHandle<{{$sourceArtifactSimpleName}}{{$domainTypeParamsBrief}}> {
 {{end}}
 
 {{for method : $conversionMethods}}

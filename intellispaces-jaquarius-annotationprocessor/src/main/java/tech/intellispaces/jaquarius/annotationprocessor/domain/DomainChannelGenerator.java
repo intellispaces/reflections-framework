@@ -3,7 +3,7 @@ package tech.intellispaces.jaquarius.annotationprocessor.domain;
 import tech.intellispaces.action.runnable.RunnableAction;
 import tech.intellispaces.action.text.StringActions;
 import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
-import tech.intellispaces.jaquarius.annotationprocessor.AbstractChannelGenerator;
+import tech.intellispaces.jaquarius.annotationprocessor.ChannelGenerator;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
 import tech.intellispaces.java.reflection.customtype.CustomType;
 import tech.intellispaces.java.reflection.method.MethodParam;
@@ -13,9 +13,9 @@ import tech.intellispaces.java.reflection.reference.TypeReference;
 
 import java.util.List;
 
-public class ChannelGenerator extends AbstractChannelGenerator {
+public class DomainChannelGenerator extends ChannelGenerator {
 
-  public ChannelGenerator(CustomType domainType, MethodStatement channelMethod) {
+  public DomainChannelGenerator(CustomType domainType, MethodStatement channelMethod) {
     super(domainType, channelMethod);
   }
 

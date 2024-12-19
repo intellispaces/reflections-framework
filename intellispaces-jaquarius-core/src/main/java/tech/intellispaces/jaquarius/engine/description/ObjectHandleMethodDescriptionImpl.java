@@ -1,11 +1,11 @@
-package tech.intellispaces.jaquarius.engine.descriptor;
+package tech.intellispaces.jaquarius.engine.description;
 
 import tech.intellispaces.action.Action;
 import tech.intellispaces.jaquarius.traverse.TraverseType;
 
 import java.util.List;
 
-class ObjectHandleMethodDescriptorImpl implements ObjectHandleMethodDescriptor {
+class ObjectHandleMethodDescriptionImpl implements ObjectHandleMethodDescription {
   private final String name;
   private final List<Class<?>> paramClasses;
   private final ObjectHandleMethodPurpose purpose;
@@ -20,7 +20,7 @@ class ObjectHandleMethodDescriptorImpl implements ObjectHandleMethodDescriptor {
   private final String injectionName;
   private final Class<?> injectionType;
 
-  ObjectHandleMethodDescriptorImpl(
+  ObjectHandleMethodDescriptionImpl(
       String name,
       List<Class<?>> paramClasses,
       ObjectHandleMethodPurpose purpose,

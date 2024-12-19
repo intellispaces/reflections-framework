@@ -24,7 +24,7 @@ public interface OntologyProcessorFunctions {
       if (AnnotationProcessorFunctions.isAutoGenerationEnabled(
           ontologyType, ArtifactTypes.Channel, context.roundEnvironment()
       )) {
-        generators.add(new ChannelGenerator(
+        generators.add(new OntologyChannelGenerator(
             ontologyType, method
         ));
       }

@@ -2,12 +2,16 @@ package tech.intellispaces.jaquarius.annotationprocessor.domain;
 
 import tech.intellispaces.action.runnable.RunnableAction;
 import tech.intellispaces.action.text.StringActions;
+import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
 import tech.intellispaces.general.exception.UnexpectedExceptions;
+import tech.intellispaces.general.text.StringFunctions;
+import tech.intellispaces.jaquarius.annotation.Channel;
 import tech.intellispaces.jaquarius.annotation.Movable;
 import tech.intellispaces.jaquarius.annotation.Unmovable;
+import tech.intellispaces.jaquarius.annotationprocessor.AbstractObjectHandleGenerator;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
-import tech.intellispaces.jaquarius.object.ObjectHandleFunctions;
-import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
+import tech.intellispaces.jaquarius.object.handle.ObjectHandleFunctions;
+import tech.intellispaces.jaquarius.object.handle.ObjectHandleTypes;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
@@ -16,16 +20,29 @@ import tech.intellispaces.java.reflection.customtype.CustomType;
 import tech.intellispaces.java.reflection.method.MethodParam;
 import tech.intellispaces.java.reflection.method.MethodStatement;
 import tech.intellispaces.java.reflection.reference.CustomTypeReference;
+import tech.intellispaces.java.reflection.reference.CustomTypeReferences;
 import tech.intellispaces.java.reflection.reference.NotPrimitiveReference;
 import tech.intellispaces.java.reflection.reference.TypeReference;
 import tech.intellispaces.java.reflection.reference.TypeReferenceFunctions;
 
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
-abstract class ConversionObjectHandleGenerator extends ObjectHandleGenerator {
+abstract class ConversionObjectHandleGenerator extends AbstractObjectHandleGenerator {
+  protected String domainClassSimpleName;
+  protected String classTypeParams;
+  protected String classTypeParamsBrief;
+  protected String childObjectHandleType;
+  protected String parentDomainClassSimpleName;
+  protected String domainTypeParamsBrief;
+  protected String domainTypeArguments;
+  protected String primaryDomainSimpleName;
   protected final CustomTypeReference parentDomainType;
   protected String childFieldName;
+  protected String domainType;
+  protected boolean isAlias;
 
   public ConversionObjectHandleGenerator(
       CustomType customType, CustomTypeReference parentDomainType
@@ -34,12 +51,103 @@ abstract class ConversionObjectHandleGenerator extends ObjectHandleGenerator {
     this.parentDomainType = parentDomainType;
   }
 
+  protected void analyzeDomain() {
+    domainClassSimpleName = addToImportAndGetSimpleName(parentDomainType.targetType().canonicalName());
+    domainTypeParamsBrief = parentDomainType.targetType().typeParametersBriefDeclaration();
+    classTypeParams = sourceArtifact().typeParametersFullDeclaration();
+    classTypeParamsBrief = sourceArtifact().typeParametersBriefDeclaration();
+    domainTypeArguments = parentDomainType.typeArgumentsDeclaration(this::addToImportAndGetSimpleName);
+    childFieldName = StringFunctions.lowercaseFirstLetter(
+        StringFunctions.removeTailOrElseThrow(sourceArtifact().simpleName(), "Domain"));
+    parentDomainClassSimpleName = addToImportAndGetSimpleName(parentDomainType.targetType().canonicalName());
+  }
+
+  protected void analyzeObjectHandleMethods(ArtifactGeneratorContext context) {
+    CustomType actualParentDomainType = buildActualType(parentDomainType.targetType(), context);
+    CustomTypeReference actualParentDomainTypeReference = CustomTypeReferences.get(
+        actualParentDomainType, parentDomainType.typeArguments()
+    );
+    CustomType effectiveActualParentDomainType = actualParentDomainTypeReference.effectiveTargetType();
+
+    analyzeObjectHandleMethods(effectiveActualParentDomainType, context);
+  }
+
+  @SuppressWarnings("unchecked,rawtypes")
+  protected void analyzeAlias() {
+    Optional<CustomTypeReference> mainEquivalentDomain = DomainFunctions.getAliasBaseDomain(sourceArtifact());
+    isAlias = mainEquivalentDomain.isPresent();
+    if (isAlias) {
+      primaryDomainSimpleName = addToImportAndGetSimpleName(mainEquivalentDomain.get().targetType().canonicalName());
+      domainType = buildDomainType(mainEquivalentDomain.get().targetType(), mainEquivalentDomain.get().typeArguments());
+    } else {
+      domainType = buildDomainType(parentDomainType.targetType(), (List) sourceArtifact().typeParameters());
+    }
+  }
+
   protected MethodStatement convertMethodBeforeGenerate(MethodStatement method) {
     Map<String, NotPrimitiveReference> typeMapping = parentDomainType.typeArgumentMapping();
     return method.effective(typeMapping);
   }
 
-  protected void buildReturnStatement(StringBuilder sb, MethodStatement method, ObjectReferenceForm targetForm) {
+  @Override
+  protected Map<String, String> generateMethod(
+      MethodStatement method, ObjectReferenceForm targetForm, int methodOrdinal
+  ) {
+    if (method.hasAnnotation(Channel.class)) {
+      return generateNormalMethod(method, targetForm, methodOrdinal);
+    } else {
+      return generatePrototypeMethod(convertMethodBeforeGenerate(method));
+    }
+  }
+
+  private Map<String, String> generateNormalMethod(
+      MethodStatement method, ObjectReferenceForm targetForm, int methodOrdinal
+  ) {
+    var sb = new StringBuilder();
+    sb.append("public ");
+    appendMethodTypeParameters(sb, method);
+    appendMethodReturnHandleType(sb, method, targetForm);
+    sb.append(" ");
+    sb.append(getObjectHandleMethodName(method, targetForm));
+    sb.append("(");
+    appendMethodParameters(sb, method);
+    sb.append(")");
+    appendMethodExceptions(sb, method);
+    sb.append(" {\n");
+    sb.append("  ");
+    buildReturnStatement(sb, method, targetForm);
+    sb.append("\n}\n");
+    return Map.of(
+        "javadoc", buildGeneratedMethodJavadoc(method.owner().canonicalName(), method),
+        "declaration", sb.toString()
+    );
+  }
+
+  private Map<String, String> generatePrototypeMethod(MethodStatement method) {
+    var sb = new StringBuilder();
+    sb.append("public ");
+    appendMethodTypeParameters(sb, method);
+    appendMethodReturnType(sb, method);
+    sb.append(" ");
+    sb.append(method.name());
+    sb.append("(");
+    appendMethodParameters(sb, method);
+    sb.append(")");
+    appendMethodExceptions(sb, method);
+    sb.append(" {\n");
+    sb.append("  return this.")
+        .append(childFieldName)
+        .append(".")
+        .append(method.name())
+        .append("();\n");
+    sb.append("}");
+    return Map.of(
+        "javadoc", buildGeneratedMethodJavadoc(method.owner().canonicalName(), method),
+        "declaration", sb.toString()
+    );
+  }
+
+  private void buildReturnStatement(StringBuilder sb, MethodStatement method, ObjectReferenceForm targetForm) {
     if (NameConventionFunctions.isConversionMethod(method)) {
       buildConversionChainReturnStatement(sb, method, targetForm);
       return;
@@ -75,7 +183,9 @@ abstract class ConversionObjectHandleGenerator extends ObjectHandleGenerator {
     }
   }
 
-  private void buildConversionChainReturnStatement(StringBuilder sb, MethodStatement method, ObjectReferenceForm targetForm) {
+  private void buildConversionChainReturnStatement(
+      StringBuilder sb, MethodStatement method, ObjectReferenceForm targetForm
+  ) {
     CustomType targetDomain = method.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow().targetType();
 
     sb.append("return ");
@@ -87,7 +197,7 @@ abstract class ConversionObjectHandleGenerator extends ObjectHandleGenerator {
   private void buildDirectReturnStatement(StringBuilder sb, MethodStatement method, ObjectReferenceForm targetForm) {
     sb.append("return ");
     sb.append("this.").append(childFieldName).append(".");
-    sb.append(getMethodName(method, targetForm));
+    sb.append(getObjectHandleMethodName(method, targetForm));
     sb.append("(");
     sb.append(method.params().stream()
         .map(MethodParam::name)
@@ -101,7 +211,7 @@ abstract class ConversionObjectHandleGenerator extends ObjectHandleGenerator {
     appendMethodReturnHandleType(sb, method);
     sb.append(") ");
     sb.append("this.").append(childFieldName).append(".");
-    sb.append(getMethodName(method, targetForm));
+    sb.append(getObjectHandleMethodName(method, targetForm));
     sb.append("(");
     sb.append(method.params().stream()
         .map(MethodParam::name)

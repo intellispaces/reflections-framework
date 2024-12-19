@@ -1,4 +1,4 @@
-package tech.intellispaces.jaquarius.engine.descriptor;
+package tech.intellispaces.jaquarius.engine.description;
 
 import tech.intellispaces.action.Action;
 import tech.intellispaces.jaquarius.guide.GuideKind;
@@ -9,9 +9,9 @@ import tech.intellispaces.jaquarius.system.ProjectionReference;
 import java.util.List;
 
 /**
- * The unit wrapper method descriptor.
+ * The unit wrapper method description.
  */
-public interface UnitMethodDescriptor {
+public interface UnitMethodDescription {
 
   /**
    * The method name.

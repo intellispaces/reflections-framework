@@ -9,8 +9,8 @@ import tech.intellispaces.jaquarius.channel.Channel1;
 import tech.intellispaces.jaquarius.channel.MappingChannel;
 import tech.intellispaces.jaquarius.exception.TraverseException;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
+import tech.intellispaces.jaquarius.object.handle.ObjectHandleTypes;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleType;
-import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
@@ -24,11 +24,6 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 public class GeneralObjectHandleGenerator extends ObjectHandleGenerator {
-  private boolean isAlias;
-  private String primaryObjectHandle;
-  private String primaryDomainSimpleName;
-  private String primaryDomainTypeArguments;
-  private String domainType;
 
   public GeneralObjectHandleGenerator(CustomType domainType) {
     super(domainType);
@@ -56,18 +51,33 @@ public class GeneralObjectHandleGenerator extends ObjectHandleGenerator {
 
   @Override
   protected boolean analyzeSourceArtifact(ArtifactGeneratorContext context) {
-    addImport(sourceArtifactName());
-    addImport(Type.class);
-    addImport(Types.class);
-    addImport(ObjectHandle.class);
-    addImport(Channel1.class);
-    addImport(MappingChannel.class);
-    addImport(TraverseException.class);
+    addImports(
+        ObjectHandle.class,
+        Type.class,
+        Types.class,
+        Channel1.class,
+        MappingChannel.class,
+        TraverseException.class
+    );
 
-    domainTypeParamsFull = sourceArtifact().typeParametersFullDeclaration();
-    domainTypeParamsBrief = sourceArtifact().typeParametersBriefDeclaration();
+    analyzeDomain();
+    analyzeAlias();
     analyzeObjectHandleMethods(sourceArtifact(), context);
 
+    addVariable("movableClassSimpleName", movableClassSimpleName());
+    addVariable("domainTypeParamsFull", domainTypeParamsFull);
+    addVariable("domainTypeParamsBrief", domainTypeParamsBrief);
+    addVariable("domainType", domainType);
+    addVariable("domainMethods", methods);
+    addVariable("isAlias", isAlias);
+    addVariable("primaryObjectHandle", primaryObjectHandle);
+    addVariable("primaryDomainTypeArguments", primaryDomainTypeArguments);
+    addVariable("primaryDomainSimpleName", primaryDomainSimpleName);
+    return true;
+  }
+
+  @SuppressWarnings("unchecked,rawtypes")
+  private void analyzeAlias() {
     List<CustomTypeReference> equivalentDomains = DomainFunctions.getEquivalentDomains(sourceArtifact());
     isAlias = !equivalentDomains.isEmpty();
     if (isAlias) {
@@ -81,17 +91,6 @@ public class GeneralObjectHandleGenerator extends ObjectHandleGenerator {
     } else {
       domainType = buildDomainType(sourceArtifact(), (List) sourceArtifact().typeParameters());
     }
-
-    addVariable("movableClassSimpleName", movableClassSimpleName());
-    addVariable("domainTypeParamsFull", domainTypeParamsFull);
-    addVariable("domainTypeParamsBrief", domainTypeParamsBrief);
-    addVariable("domainType", domainType);
-    addVariable("domainMethods", methods);
-    addVariable("isAlias", isAlias);
-    addVariable("primaryObjectHandle", primaryObjectHandle);
-    addVariable("primaryDomainTypeArguments", primaryDomainTypeArguments);
-    addVariable("primaryDomainSimpleName", primaryDomainSimpleName);
-    return true;
   }
 
   @Override
@@ -107,7 +106,9 @@ public class GeneralObjectHandleGenerator extends ObjectHandleGenerator {
   }
 
   @Override
-  protected Map<String, String> generateMethod(MethodStatement method, ObjectReferenceForm targetForm, int methodOrdinal) {
+  protected Map<String, String> generateMethod(
+      MethodStatement method, ObjectReferenceForm targetForm, int methodOrdinal
+  ) {
     if (method.hasAnnotation(Channel.class)) {
       return super.generateMethod(method, targetForm, methodOrdinal);
     } else {

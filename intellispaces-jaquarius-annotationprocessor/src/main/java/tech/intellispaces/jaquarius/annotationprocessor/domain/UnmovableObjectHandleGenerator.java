@@ -5,8 +5,8 @@ import tech.intellispaces.general.exception.UnexpectedExceptions;
 import tech.intellispaces.jaquarius.annotation.ObjectHandle;
 import tech.intellispaces.jaquarius.annotation.Unmovable;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
+import tech.intellispaces.jaquarius.object.handle.ObjectHandleTypes;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleType;
-import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
 import tech.intellispaces.jaquarius.object.reference.UnmovableObjectHandle;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
@@ -19,9 +19,6 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 public class UnmovableObjectHandleGenerator extends ObjectHandleGenerator {
-  private String baseObjectHandle;
-  private boolean isAlias;
-  private String primaryObjectHandle;
 
   public UnmovableObjectHandleGenerator(CustomType domainType) {
     super(domainType);
@@ -49,38 +46,34 @@ public class UnmovableObjectHandleGenerator extends ObjectHandleGenerator {
 
   @Override
   protected boolean analyzeSourceArtifact(ArtifactGeneratorContext context) {
-    if (sourceArtifact().isNested()) {
-      addImport(sourceArtifactName());
-    }
-    addImport(UnexpectedExceptions.class);
-    addImport(UnmovableObjectHandle.class);
-    addImport(ObjectHandle.class);
-    addImport(Unmovable.class);
-
-    domainTypeParamsFull = sourceArtifact().typeParametersFullDeclaration();
-    domainTypeParamsBrief = sourceArtifact().typeParametersBriefDeclaration();
-    baseObjectHandle = addToImportAndGetSimpleName(
-        NameConventionFunctions.getUndefinedObjectHandleTypename(sourceArtifact().className())
+    addImports(
+        ObjectHandle.class,
+        Unmovable.class,
+        UnmovableObjectHandle.class,
+        UnexpectedExceptions.class
     );
+
+    analyzeDomain();
+    analyzeAlias();
     analyzeObjectHandleMethods(sourceArtifact(), context);
     analyzeConversionMethods(sourceArtifact());
 
+    addVariable("movableClassSimpleName", movableClassSimpleName());
+    addVariable("domainTypeParamsFull", domainTypeParamsFull);
+    addVariable("domainTypeParamsBrief", domainTypeParamsBrief);
+    addVariable("generalObjectHandle", generalObjectHandle);
+    addVariable("conversionMethods", conversionMethods);
+    addVariable("isAlias", isAlias);
+    addVariable("primaryObjectHandle", primaryObjectHandle);
+    return true;
+  }
+
+  private void analyzeAlias() {
     Optional<CustomTypeReference> equivalentDomain = DomainFunctions.getAliasNearNeighbourDomain(sourceArtifact());
     isAlias = equivalentDomain.isPresent();
     if (isAlias) {
       primaryObjectHandle = buildObjectHandleDeclaration(equivalentDomain.get(), ObjectHandleTypes.Unmovable);
     }
-
-    addVariable("movableClassSimpleName", movableClassSimpleName());
-    addVariable("domainTypeParamsFull", domainTypeParamsFull);
-    addVariable("domainTypeParamsBrief", domainTypeParamsBrief);
-    addVariable("baseObjectHandle", baseObjectHandle);
-    addVariable("conversionMethods", conversionMethods);
-    addVariable("domainMethods", methods);
-    addVariable("unmovableObjectHandleName", addToImportAndGetSimpleName(UnmovableObjectHandle.class));
-    addVariable("isAlias", isAlias);
-    addVariable("primaryObjectHandle", primaryObjectHandle);
-    return true;
   }
 
   @Override

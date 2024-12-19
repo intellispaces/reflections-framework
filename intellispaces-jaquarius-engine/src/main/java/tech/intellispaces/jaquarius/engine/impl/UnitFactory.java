@@ -4,8 +4,8 @@ import tech.intellispaces.action.Action;
 import tech.intellispaces.general.exception.NotImplementedExceptions;
 import tech.intellispaces.general.exception.UnexpectedExceptions;
 import tech.intellispaces.jaquarius.action.InvokeUnitMethodAction;
-import tech.intellispaces.jaquarius.engine.descriptor.UnitMethodDescriptor;
-import tech.intellispaces.jaquarius.engine.descriptor.UnitMethodPurposes;
+import tech.intellispaces.jaquarius.engine.description.UnitMethodDescription;
+import tech.intellispaces.jaquarius.engine.description.UnitMethodPurposes;
 import tech.intellispaces.jaquarius.guide.n0.UnitMapper0;
 import tech.intellispaces.jaquarius.guide.n0.UnitMapperOfMoving0;
 import tech.intellispaces.jaquarius.guide.n1.UnitMapper1;
@@ -38,7 +38,7 @@ import java.util.List;
 class UnitFactory {
 
   static <U,  W extends UnitWrapper> Unit createModule(
-      W wrapper, Class<U> unitClass, UnitMethodDescriptor... methods
+      W wrapper, Class<U> unitClass, UnitMethodDescription... methods
   ) {
     var unit = new Unit(unitClass);
     unit.setWrapper(wrapper);
@@ -51,8 +51,8 @@ class UnitFactory {
     return unit;
   }
 
-  static Action buildStartupAction(UnitWrapper wrapper, Class<?> unitClass, UnitMethodDescriptor... methods) {
-    List<UnitMethodDescriptor> startupMethods = Arrays.stream(methods)
+  static Action buildStartupAction(UnitWrapper wrapper, Class<?> unitClass, UnitMethodDescription... methods) {
+    List<UnitMethodDescription> startupMethods = Arrays.stream(methods)
         .filter(m -> UnitMethodPurposes.StartupMethod.is(m.purpose()))
         .toList();
     if (startupMethods.isEmpty()) {
@@ -68,8 +68,8 @@ class UnitFactory {
     throw NotImplementedExceptions.withCode("KElPQi4");
   }
 
-  static Action buildShutdownAction(UnitWrapper wrapper, Class<?> unitClass, UnitMethodDescriptor... methods) {
-    List<UnitMethodDescriptor> startupMethods = Arrays.stream(methods)
+  static Action buildShutdownAction(UnitWrapper wrapper, Class<?> unitClass, UnitMethodDescription... methods) {
+    List<UnitMethodDescription> startupMethods = Arrays.stream(methods)
         .filter(m -> UnitMethodPurposes.ShutdownMethod.is(m.purpose()))
         .toList();
     if (startupMethods.isEmpty()) {
@@ -85,18 +85,18 @@ class UnitFactory {
     throw NotImplementedExceptions.withCode("dGVuSg");
   }
 
-  static List<Injection> buildUnitInjections(Class<?> unitClass, UnitMethodDescriptor... methods) {
+  static List<Injection> buildUnitInjections(Class<?> unitClass, UnitMethodDescription... methods) {
     if (methods == null || methods.length == 0) {
       return List.of();
     }
     return Arrays.stream(methods)
         .filter(m -> m.purpose().is(UnitMethodPurposes.InjectionMethod.name()))
-        .sorted(Comparator.comparing(UnitMethodDescriptor::injectionOrdinal))
+        .sorted(Comparator.comparing(UnitMethodDescription::injectionOrdinal))
         .map(m -> buildUnitInjection(unitClass, m))
         .toList();
   }
 
-  static Injection buildUnitInjection(Class<?> unitClass, UnitMethodDescriptor method) {
+  static Injection buildUnitInjection(Class<?> unitClass, UnitMethodDescription method) {
     if (InjectionKinds.Projection.is(method.injectionKind())) {
       return ProjectionInjections.get(unitClass, method.injectionName(), method.injectionClass());
     }
@@ -109,19 +109,19 @@ class UnitFactory {
     throw UnexpectedExceptions.withMessage("Unsupported injection type '{0}'", method.injectionKind());
   }
 
-  static List<Action> buildUnitGuideActions(UnitMethodDescriptor... methods) {
+  static List<Action> buildUnitGuideActions(UnitMethodDescription... methods) {
     if (methods == null || methods.length == 0) {
       return List.of();
     }
     return Arrays.stream(methods)
         .filter(m -> m.purpose().is(UnitMethodPurposes.Guide.name()))
-        .sorted(Comparator.comparing(UnitMethodDescriptor::guideOrdinal))
-        .map(UnitMethodDescriptor::action)
+        .sorted(Comparator.comparing(UnitMethodDescription::guideOrdinal))
+        .map(UnitMethodDescription::action)
         .toList();
   }
 
   static List<UnitProjectionDefinition> buildUnitProjectionDefinitions(
-      Class<?> unitClass, UnitMethodDescriptor... methods
+      Class<?> unitClass, UnitMethodDescription... methods
   ) {
     if (methods == null || methods.length == 0) {
       return List.of();
@@ -133,7 +133,7 @@ class UnitFactory {
   }
 
   static UnitProjectionDefinition buildUnitProjectionDefinition(
-      Class<?> unitClass, UnitMethodDescriptor method
+      Class<?> unitClass, UnitMethodDescription method
   ) {
     int numRequiredProjections = method.requiredProjections() != null ? method.requiredProjections().size() : 0;
     return switch (numRequiredProjections) {
@@ -208,10 +208,10 @@ class UnitFactory {
   }
 
   static List<UnitGuide<?, ?>> buildGuides(
-      UnitWrapper unitWrapper, Class<?> unitClass, UnitMethodDescriptor... methods
+      UnitWrapper unitWrapper, Class<?> unitClass, UnitMethodDescription... methods
   ) {
     List<UnitGuide<?, ?>> guides = new ArrayList<>();
-    for (UnitMethodDescriptor method : methods) {
+    for (UnitMethodDescription method : methods) {
       if (UnitMethodPurposes.Guide.is(method.purpose())) {
         if (method.guideKind().isMapper()) {
           UnitGuide<?, ?> mapper = createMapper(unitWrapper, unitClass, method);
@@ -229,7 +229,7 @@ class UnitFactory {
   }
 
   static UnitGuide<?, ?> createMapper(
-      UnitWrapper unitWrapper, Class<?> unitClass, UnitMethodDescriptor methodDescriptor
+      UnitWrapper unitWrapper, Class<?> unitClass, UnitMethodDescription methodDescriptor
   ) {
     String cid = methodDescriptor.guideCid();
     int guideOrdinal = methodDescriptor.guideOrdinal();
@@ -247,14 +247,14 @@ class UnitFactory {
   }
 
   static UnitGuide<?, ?> createMover(
-      UnitWrapper unitWrapper, Class<?> unitClass, UnitMethodDescriptor methodDescriptor
+      UnitWrapper unitWrapper, Class<?> unitClass, UnitMethodDescription methodDescriptor
   ) {
     String cid = methodDescriptor.guideCid();
     throw NotImplementedExceptions.withCode("4GL2+g");
   }
 
   static UnitGuide<?, ?> createUnitMapperOfMoving(
-      UnitWrapper unitWrapper, Class<?> unitClass, UnitMethodDescriptor methodDescriptor
+      UnitWrapper unitWrapper, Class<?> unitClass, UnitMethodDescription methodDescriptor
   ) {
     String cid = methodDescriptor.guideCid();
     int guideOrdinal = methodDescriptor.guideOrdinal();
@@ -271,7 +271,7 @@ class UnitFactory {
     };
   }
 
-  static MethodStatement getGuideMethod(Class<?> unitClass, UnitMethodDescriptor methodDescriptor) {
+  static MethodStatement getGuideMethod(Class<?> unitClass, UnitMethodDescription methodDescriptor) {
     return Methods.of(unitClass, methodDescriptor.prototypeMethodName(), methodDescriptor.paramClasses());
   }
 }

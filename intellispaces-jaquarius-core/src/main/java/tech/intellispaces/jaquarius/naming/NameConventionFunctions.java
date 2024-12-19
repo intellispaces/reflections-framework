@@ -7,8 +7,8 @@ import tech.intellispaces.jaquarius.annotation.Channel;
 import tech.intellispaces.jaquarius.annotation.Domain;
 import tech.intellispaces.jaquarius.annotation.ObjectHandle;
 import tech.intellispaces.jaquarius.annotation.Ontology;
+import tech.intellispaces.jaquarius.object.handle.ObjectHandleTypes;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleType;
-import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
@@ -23,22 +23,22 @@ public interface NameConventionFunctions {
 
   static String getObjectHandleTypename(String domainClassName, ObjectHandleType handleType) {
     return switch (ObjectHandleTypes.from(handleType)) {
-      case General -> getUndefinedObjectHandleTypename(domainClassName);
+      case General -> getGeneralObjectHandleTypename(domainClassName);
       case Movable -> getMovableObjectHandleTypename(domainClassName);
       case Unmovable -> getUnmovableObjectHandleTypename(domainClassName);
     };
   }
 
-  static String getUndefinedObjectHandleTypename(String domainClassName) {
+  static String getGeneralObjectHandleTypename(String domainClassName) {
     return StringFunctions.removeTailOrElseThrow(transformClassName(domainClassName), "Domain");
   }
 
   static String getMovableObjectHandleTypename(String domainClassName) {
-    return ClassNameFunctions.addPrefixToSimpleName("Movable", getUndefinedObjectHandleTypename(domainClassName));
+    return ClassNameFunctions.addPrefixToSimpleName("Movable", getGeneralObjectHandleTypename(domainClassName));
   }
 
   static String getUnmovableObjectHandleTypename(String domainClassName) {
-    return ClassNameFunctions.addPrefixToSimpleName("Unmovable", getUndefinedObjectHandleTypename(domainClassName));
+    return ClassNameFunctions.addPrefixToSimpleName("Unmovable", getGeneralObjectHandleTypename(domainClassName));
   }
 
   static String getObjectHandleWrapperCanonicalName(CustomType objectHandleType) {

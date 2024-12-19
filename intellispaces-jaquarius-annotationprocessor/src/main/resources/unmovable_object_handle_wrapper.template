@@ -4,7 +4,7 @@ package {{$generatedArtifactPackageName}};
 import {{$importedClass}};
 {{end}}
 
-import static tech.intellispaces.jaquarius.engine.descriptor.ObjectHandleMethods.objectHandleMethod;
+import static tech.intellispaces.jaquarius.engine.description.ObjectHandleMethods.objectHandleMethod;
 
 /**
  * This class was generated automatically. Don't try to change it.
@@ -12,7 +12,7 @@ import static tech.intellispaces.jaquarius.engine.descriptor.ObjectHandleMethods
 @Wrapper({{$sourceArtifactSimpleName}}.class)
 {{$generatedAnnotation}}
 public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sourceArtifactSimpleName}}{{$typeParamsBrief}} implements ObjectHandleWrapper {
-  private static ObjectHandleTypeDescriptor $TYPE;
+  private static ObjectHandleTypeDescription $TYPE;
   private final ObjectHandleBroker $broker;
 
 {{for constructor : $constructors}}
@@ -78,11 +78,11 @@ public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sour
     return JaquariusEngines.get().registerObjectHandle(this, $TYPE);
   }
 
-  private static ObjectHandleTypeDescriptor $registerObjectHandleType() {
+  private static ObjectHandleTypeDescription $registerObjectHandleType() {
     return JaquariusEngines.get().registerObjectHandleType(
         {{$generatedArtifactSimpleName}}.class,
-        {{$sourceArtifactSimpleName}}.class{{when $wrapperMethods.isNotEmpty()}},{{end}}
-{{for method : $wrapperMethods}}
+        {{$sourceArtifactSimpleName}}.class{{when $methodDescriptions.isNotEmpty()}},{{end}}
+{{for method : $methodDescriptions}}
         objectHandleMethod({{$generatedArtifactSimpleName}}.class, "{{$method.get("name")}}"{{for param : $method.get("params")}}, {{$param}}.class{{end}})
             .purpose(ObjectHandleMethodPurposes.{{$method.get("purpose")}})
             .function({{$generatedArtifactSimpleName}}::{{$method.get("name")}})

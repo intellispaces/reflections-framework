@@ -2,21 +2,21 @@ package tech.intellispaces.jaquarius.engine.impl;
 
 import tech.intellispaces.action.Action;
 import tech.intellispaces.general.exception.UnexpectedExceptions;
-import tech.intellispaces.jaquarius.engine.descriptor.ObjectHandleTypeDescriptor;
+import tech.intellispaces.jaquarius.engine.description.ObjectHandleTypeDescription;
 import tech.intellispaces.jaquarius.system.Injection;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class ObjectHandleBroker implements tech.intellispaces.jaquarius.engine.ObjectHandleBroker {
-  private final ObjectHandleTypeDescriptor type;
+  private final ObjectHandleTypeDescription type;
   private final Action[] methodActions;
   private final Action[] guideActions;
   private final Injection[] injections;
   private final Map<Class<?>, Object> projections = new HashMap<>();
 
   public ObjectHandleBroker(
-      ObjectHandleTypeDescriptor type,
+      ObjectHandleTypeDescription type,
       Action[] methodActions,
       Action[] guideActions,
       Injection[] injections
@@ -28,7 +28,7 @@ public class ObjectHandleBroker implements tech.intellispaces.jaquarius.engine.O
   }
 
   @Override
-  public ObjectHandleTypeDescriptor type() {
+  public ObjectHandleTypeDescription type() {
     return type;
   }
 

@@ -1,4 +1,4 @@
-package tech.intellispaces.jaquarius.engine.descriptor;
+package tech.intellispaces.jaquarius.engine.description;
 
 import tech.intellispaces.action.Action;
 import tech.intellispaces.action.functional.FunctionActions;
@@ -76,8 +76,8 @@ public class ObjectHandleMethodBuilder3<H, P1, P2> {
     return this;
   }
 
-  public ObjectHandleMethodDescriptor get() {
-    return new ObjectHandleMethodDescriptorImpl(
+  public ObjectHandleMethodDescription get() {
+    return new ObjectHandleMethodDescriptionImpl(
         name,
         List.of(paramClass1, paramClass2),
         purpose,

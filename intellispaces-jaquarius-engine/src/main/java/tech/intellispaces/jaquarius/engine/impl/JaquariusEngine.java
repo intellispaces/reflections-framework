@@ -13,10 +13,10 @@ import tech.intellispaces.jaquarius.channel.Channel3;
 import tech.intellispaces.jaquarius.channel.Channel4;
 import tech.intellispaces.jaquarius.engine.ObjectHandleBroker;
 import tech.intellispaces.jaquarius.engine.UnitBroker;
-import tech.intellispaces.jaquarius.engine.descriptor.ObjectHandleMethodDescriptor;
-import tech.intellispaces.jaquarius.engine.descriptor.ObjectHandleMethodPurposes;
-import tech.intellispaces.jaquarius.engine.descriptor.ObjectHandleTypeDescriptor;
-import tech.intellispaces.jaquarius.engine.descriptor.UnitMethodDescriptor;
+import tech.intellispaces.jaquarius.engine.description.ObjectHandleMethodDescription;
+import tech.intellispaces.jaquarius.engine.description.ObjectHandleMethodPurposes;
+import tech.intellispaces.jaquarius.engine.description.ObjectHandleTypeDescription;
+import tech.intellispaces.jaquarius.engine.description.UnitMethodDescription;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
 import tech.intellispaces.jaquarius.system.Injection;
 import tech.intellispaces.jaquarius.system.Module;
@@ -38,10 +38,10 @@ public class JaquariusEngine implements tech.intellispaces.jaquarius.engine.Jaqu
   }
 
   @Override
-  public <H, W extends H> ObjectHandleTypeDescriptor registerObjectHandleType(
-      Class<W> wrapperClass, Class<H> objectHandleClass, ObjectHandleMethodDescriptor... methods
+  public <H, W extends H> ObjectHandleTypeDescription registerObjectHandleType(
+      Class<W> wrapperClass, Class<H> objectHandleClass, ObjectHandleMethodDescription... methods
   ) {
-    return new tech.intellispaces.jaquarius.engine.impl.ObjectHandleTypeDescriptor(
+    return new tech.intellispaces.jaquarius.engine.impl.ObjectHandleTypeDescription(
         objectHandleClass,
         wrapperClass,
         Arrays.asList(methods),
@@ -52,8 +52,8 @@ public class JaquariusEngine implements tech.intellispaces.jaquarius.engine.Jaqu
   }
 
   @Override
-  public <W> ObjectHandleBroker registerObjectHandle(W objectHandleWrapper, ObjectHandleTypeDescriptor type) {
-    var typeImpl = (tech.intellispaces.jaquarius.engine.impl.ObjectHandleTypeDescriptor) type;
+  public <W> ObjectHandleBroker registerObjectHandle(W objectHandleWrapper, ObjectHandleTypeDescription type) {
+    var typeImpl = (tech.intellispaces.jaquarius.engine.impl.ObjectHandleTypeDescription) type;
     return new tech.intellispaces.jaquarius.engine.impl.ObjectHandleBroker(
         type,
         typeImpl.methodActions(),
@@ -64,18 +64,18 @@ public class JaquariusEngine implements tech.intellispaces.jaquarius.engine.Jaqu
 
   @Override
   public <U, W extends UnitWrapper> UnitBroker registerUnit(
-      W unitWrapper, Class<U> unitClass, UnitMethodDescriptor... methods
+      W unitWrapper, Class<U> unitClass, UnitMethodDescription... methods
   ) {
     return UnitFactory.createModule(unitWrapper, unitClass, methods);
   }
 
-  private Action[] buildMethodActions(Class<?> objectHandleClass, ObjectHandleMethodDescriptor... methods) {
+  private Action[] buildMethodActions(Class<?> objectHandleClass, ObjectHandleMethodDescription... methods) {
     if (methods == null || methods.length == 0) {
       return new Action[0];
     }
 
     List<Action> actions = new ArrayList<>(methods.length);
-    for (ObjectHandleMethodDescriptor method : methods) {
+    for (ObjectHandleMethodDescription method : methods) {
       if (ObjectHandleMethodPurposes.TraverseMethod.is(method.purpose())) {
         Action action = switch (method.paramClasses().size()) {
           case 0 -> buildMethodAction0(objectHandleClass, method);
@@ -92,7 +92,7 @@ public class JaquariusEngine implements tech.intellispaces.jaquarius.engine.Jaqu
   }
 
   @SuppressWarnings("unchecked")
-  private Action buildMethodAction0(Class<?> objectHandleClass, ObjectHandleMethodDescriptor method) {
+  private Action buildMethodAction0(Class<?> objectHandleClass, ObjectHandleMethodDescription method) {
     if (method.traverseType().isMapping()) {
       return DelegateActions.delegateAction1(CachedSupplierActions.get(TraverseActions::mapThruChannel0,
           objectHandleClass,
@@ -115,7 +115,7 @@ public class JaquariusEngine implements tech.intellispaces.jaquarius.engine.Jaqu
   }
 
   @SuppressWarnings("unchecked")
-  private Action buildMethodAction1(Class<?> objectHandleClass, ObjectHandleMethodDescriptor method) {
+  private Action buildMethodAction1(Class<?> objectHandleClass, ObjectHandleMethodDescription method) {
     if (method.traverseType().isMapping()) {
       return DelegateActions.delegateAction2(CachedSupplierActions.get(TraverseActions::mapThruChannel1,
           objectHandleClass,
@@ -138,7 +138,7 @@ public class JaquariusEngine implements tech.intellispaces.jaquarius.engine.Jaqu
   }
 
   @SuppressWarnings("unchecked")
-  private Action buildMethodAction2(Class<?> objectHandleClass, ObjectHandleMethodDescriptor method) {
+  private Action buildMethodAction2(Class<?> objectHandleClass, ObjectHandleMethodDescription method) {
     if (method.traverseType().isMapping()) {
       return DelegateActions.delegateAction3(CachedSupplierActions.get(TraverseActions::mapThruChannel2,
           objectHandleClass,
@@ -161,7 +161,7 @@ public class JaquariusEngine implements tech.intellispaces.jaquarius.engine.Jaqu
   }
 
   @SuppressWarnings("unchecked")
-  private Action buildMethodAction3(Class<?> objectHandleClass, ObjectHandleMethodDescriptor method) {
+  private Action buildMethodAction3(Class<?> objectHandleClass, ObjectHandleMethodDescription method) {
     if (method.traverseType().isMapping()) {
       return DelegateActions.delegateAction4(CachedSupplierActions.get(TraverseActions::mapThruChannel3,
           objectHandleClass,
@@ -184,7 +184,7 @@ public class JaquariusEngine implements tech.intellispaces.jaquarius.engine.Jaqu
   }
 
   @SuppressWarnings("unchecked")
-  private Action buildMethodAction4(Class<?> objectHandleClass, ObjectHandleMethodDescriptor method) {
+  private Action buildMethodAction4(Class<?> objectHandleClass, ObjectHandleMethodDescription method) {
     if (method.traverseType().isMapping()) {
       throw NotImplementedExceptions.withCode("GYhrXA==");
     } else if (method.traverseType().isMoving()) {
@@ -198,18 +198,18 @@ public class JaquariusEngine implements tech.intellispaces.jaquarius.engine.Jaqu
     }
   }
 
-  private Action[] buildGuideActions(ObjectHandleMethodDescriptor... methods) {
+  private Action[] buildGuideActions(ObjectHandleMethodDescription... methods) {
     if (methods == null || methods.length == 0) {
       return new Action[0];
     }
 
     int maxOrdinal = Arrays.stream(methods)
         .filter(m -> ObjectHandleMethodPurposes.TraverseMethod.is(m.purpose()))
-        .map(ObjectHandleMethodDescriptor::traverseOrdinal)
+        .map(ObjectHandleMethodDescription::traverseOrdinal)
         .max(Comparator.naturalOrder())
         .orElse(0);
     Action[] actions = new Action[maxOrdinal + 1];
-    for (ObjectHandleMethodDescriptor method : methods) {
+    for (ObjectHandleMethodDescription method : methods) {
       if (ObjectHandleMethodPurposes.GuideMethod.is(method.purpose())) {
         actions[method.traverseOrdinal()] = method.action();
       }
@@ -217,18 +217,18 @@ public class JaquariusEngine implements tech.intellispaces.jaquarius.engine.Jaqu
     return actions;
   }
 
-  private Injection[] buildInjections(ObjectHandleMethodDescriptor... methods) {
+  private Injection[] buildInjections(ObjectHandleMethodDescription... methods) {
     if (methods == null || methods.length == 0) {
       return new Injection[0];
     }
 
     int maxOrdinal = Arrays.stream(methods)
         .filter(m -> ObjectHandleMethodPurposes.InjectionMethod.is(m.purpose()))
-        .map(ObjectHandleMethodDescriptor::injectionOrdinal)
+        .map(ObjectHandleMethodDescription::injectionOrdinal)
         .max(Comparator.naturalOrder())
         .orElse(0);
     Injection[] injections = new Injection[maxOrdinal + 1];
-    for (ObjectHandleMethodDescriptor method : methods) {
+    for (ObjectHandleMethodDescription method : methods) {
       if (ObjectHandleMethodPurposes.InjectionMethod.is(method.purpose())) {
         injections[method.injectionOrdinal()] = buildInjection(method);
       }
@@ -236,7 +236,7 @@ public class JaquariusEngine implements tech.intellispaces.jaquarius.engine.Jaqu
     return injections;
   }
 
-  private Injection buildInjection(ObjectHandleMethodDescriptor method) {
+  private Injection buildInjection(ObjectHandleMethodDescription method) {
     if ("autoguide".equals(method.injectionKind())) {
       return AutoGuideInjections.get(null, method.injectionName(), method.injectionType());
     } else if ("specguide".equals(method.injectionKind())) {

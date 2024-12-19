@@ -13,7 +13,7 @@ import tech.intellispaces.jaquarius.channel.Channel1;
 import tech.intellispaces.jaquarius.channel.MappingChannel;
 import tech.intellispaces.jaquarius.exception.TraverseException;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
-import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
+import tech.intellispaces.jaquarius.object.handle.ObjectHandleTypes;
 import tech.intellispaces.jaquarius.system.Modules;
 import tech.intellispaces.java.reflection.customtype.CustomType;
 import tech.intellispaces.java.reflection.method.MethodStatement;
@@ -54,16 +54,18 @@ public class UnmovableDataHandleGenerator extends JaquariusArtifactGenerator {
     if (sourceArtifact().isNested()) {
       addImport(sourceArtifactName());
     }
-    addImport(Name.class);
-    addImport(ObjectHandle.class);
-    addImport(Modules.class);
-    addImport(Type.class);
-    addImport(Types.class);
-    addImport(Channel1.class);
-    addImport(TraverseException.class);
-    addImport(NotImplementedExceptions.class);
-    addImport(Objects.class);
-    addImport(MappingChannel.class);
+    addImports(
+        Name.class,
+        ObjectHandle.class,
+        Objects.class,
+        Modules.class,
+        Type.class,
+        Types.class,
+        Channel1.class,
+        MappingChannel.class,
+        TraverseException.class,
+        NotImplementedExceptions.class
+    );
 
     analyzeTypeParams();
     analyzeProjections();

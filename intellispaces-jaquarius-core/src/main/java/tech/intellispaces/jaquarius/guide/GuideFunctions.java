@@ -34,7 +34,7 @@ import tech.intellispaces.jaquarius.guide.n4.ObjectMapperOfMoving4;
 import tech.intellispaces.jaquarius.guide.n5.Mapper5;
 import tech.intellispaces.jaquarius.guide.n5.Mover5;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
-import tech.intellispaces.jaquarius.object.ObjectHandleFunctions;
+import tech.intellispaces.jaquarius.object.handle.ObjectHandleFunctions;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
@@ -368,5 +368,14 @@ public final class GuideFunctions {
     GUIDE_CLASS_TO_KIND.put(Mover3.class, GuideKinds.Mover3);
     GUIDE_CLASS_TO_KIND.put(Mover4.class, GuideKinds.Mover4);
     GUIDE_CLASS_TO_KIND.put(Mover5.class, GuideKinds.Mover5);
+  }
+
+  public static ObjectReferenceForm getGuideTargetForm(MethodStatement guideMethod) {
+    TypeReference returnType = guideMethod.returnType().orElseThrow();
+    if (returnType.isPrimitiveReference()) {
+      return ObjectReferenceForms.Primitive;
+    } else {
+      return ObjectReferenceForms.Common;
+    }
   }
 }

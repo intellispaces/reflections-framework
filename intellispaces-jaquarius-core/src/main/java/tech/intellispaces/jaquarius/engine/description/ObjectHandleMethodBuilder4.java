@@ -1,18 +1,17 @@
-package tech.intellispaces.jaquarius.engine.descriptor;
+package tech.intellispaces.jaquarius.engine.description;
 
 import tech.intellispaces.action.Action;
 import tech.intellispaces.action.functional.FunctionActions;
-import tech.intellispaces.general.function.QuintiFunction;
+import tech.intellispaces.general.function.QuadriFunction;
 import tech.intellispaces.jaquarius.traverse.TraverseType;
 
 import java.util.List;
 
-public class ObjectHandleMethodBuilder5<H, P1, P2, P3, P4> {
+public class ObjectHandleMethodBuilder4<H, P1, P2, P3> {
   private final String name;
   private final Class<P1> paramClass1;
   private final Class<P2> paramClass2;
   private final Class<P3> paramClass3;
-  private final Class<P4> paramClass4;
   private Action action;
   private ObjectHandleMethodPurpose purpose;
 
@@ -25,70 +24,68 @@ public class ObjectHandleMethodBuilder5<H, P1, P2, P3, P4> {
   private String injectionName;
   private Class<?> injectionType;
 
-  public ObjectHandleMethodBuilder5(
+  public ObjectHandleMethodBuilder4(
       Class<H> objectHandleClass,
       String name,
       Class<P1> paramClass1,
       Class<P2> paramClass2,
-      Class<P3> paramClass3,
-      Class<P4> paramClass4
+      Class<P3> paramClass3
   ) {
     this.name = name;
     this.paramClass1 = paramClass1;
     this.paramClass2 = paramClass2;
     this.paramClass3 = paramClass3;
-    this.paramClass4 = paramClass4;
   }
 
-  public ObjectHandleMethodBuilder5<H, P1, P2, P3, P4> purpose(ObjectHandleMethodPurpose purpose) {
+  public ObjectHandleMethodBuilder4<H, P1, P2, P3> purpose(ObjectHandleMethodPurpose purpose) {
     this.purpose = purpose;
     return this;
   }
 
-  public <R> ObjectHandleMethodBuilder5<H, P1, P2, P3, P4> function(QuintiFunction<H, P1, P2, P3, P4, R> function) {
-    this.action = FunctionActions.ofQuintiFunction(function);
+  public <R> ObjectHandleMethodBuilder4<H, P1, P2, P3> function(QuadriFunction<H, P1, P2, P3, R> function) {
+    this.action = FunctionActions.ofQuadriFunction(function);
     return this;
   }
 
-  public ObjectHandleMethodBuilder5<H, P1, P2, P3, P4> traverseOrdinal(int ordinal) {
+  public ObjectHandleMethodBuilder4<H, P1, P2, P3> traverseOrdinal(int ordinal) {
     this.traverseOrdinal = ordinal;
     return this;
   }
 
-  public ObjectHandleMethodBuilder5<H, P1, P2, P3, P4> channelClass(Class<?> channelClass) {
+  public ObjectHandleMethodBuilder4<H, P1, P2, P3> channelClass(Class<?> channelClass) {
     this.channelClass = channelClass;
     return this;
   }
 
-  public ObjectHandleMethodBuilder5<H, P1, P2, P3, P4> traverseType(TraverseType traverseType) {
+  public ObjectHandleMethodBuilder4<H, P1, P2, P3> traverseType(TraverseType traverseType) {
     this.traverseType = traverseType;
     return this;
   }
 
-  public ObjectHandleMethodBuilder5<H, P1, P2, P3, P4> injectionKind(String kind) {
+  public ObjectHandleMethodBuilder4<H, P1, P2, P3> injectionKind(String kind) {
     this.injectionKind = kind;
     return this;
   }
 
-  public ObjectHandleMethodBuilder5<H, P1, P2, P3, P4> injectionOrdinal(int ordinal) {
+  public ObjectHandleMethodBuilder4<H, P1, P2, P3> injectionOrdinal(int ordinal) {
     this.injectionOrdinal = ordinal;
     return this;
   }
 
-  public ObjectHandleMethodBuilder5<H, P1, P2, P3, P4> injectionName(String injectionName) {
+  public ObjectHandleMethodBuilder4<H, P1, P2, P3> injectionName(String injectionName) {
     this.injectionName = injectionName;
     return this;
   }
 
-  public ObjectHandleMethodBuilder5<H, P1, P2, P3, P4> injectionType(Class<?> injectionType) {
+  public ObjectHandleMethodBuilder4<H, P1, P2, P3> injectionType(Class<?> injectionType) {
     this.injectionType = injectionType;
     return this;
   }
 
-  public ObjectHandleMethodDescriptor get() {
-    return new ObjectHandleMethodDescriptorImpl(
+  public ObjectHandleMethodDescription get() {
+    return new ObjectHandleMethodDescriptionImpl(
         name,
-        List.of(paramClass1, paramClass2, paramClass3, paramClass4),
+        List.of(paramClass1, paramClass2, paramClass3),
         purpose,
         traverseOrdinal,
         action,

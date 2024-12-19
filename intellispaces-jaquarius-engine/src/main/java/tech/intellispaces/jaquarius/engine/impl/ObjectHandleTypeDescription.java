@@ -1,23 +1,23 @@
 package tech.intellispaces.jaquarius.engine.impl;
 
 import tech.intellispaces.action.Action;
-import tech.intellispaces.jaquarius.engine.descriptor.ObjectHandleMethodDescriptor;
+import tech.intellispaces.jaquarius.engine.description.ObjectHandleMethodDescription;
 import tech.intellispaces.jaquarius.system.Injection;
 
 import java.util.List;
 
-public class ObjectHandleTypeDescriptor implements tech.intellispaces.jaquarius.engine.descriptor.ObjectHandleTypeDescriptor {
+public class ObjectHandleTypeDescription implements tech.intellispaces.jaquarius.engine.description.ObjectHandleTypeDescription {
   private final Class<?> objctHandleClass;
   private final Class<?> objctHandleWrapperClass;
-  private final List<ObjectHandleMethodDescriptor> methods;
+  private final List<ObjectHandleMethodDescription> methods;
   private final Action[] methodActions;
   private final Action[] guideActions;
   private final Injection[] injections;
 
-  public ObjectHandleTypeDescriptor(
+  public ObjectHandleTypeDescription(
       Class<?> objctHandleClass,
       Class<?> objctHandleWrapperClass,
-      List<ObjectHandleMethodDescriptor> methods,
+      List<ObjectHandleMethodDescription> methods,
       Action[] methodActions,
       Action[] guideActions,
       Injection[] injections
@@ -41,7 +41,7 @@ public class ObjectHandleTypeDescriptor implements tech.intellispaces.jaquarius.
   }
 
   @Override
-  public List<ObjectHandleMethodDescriptor> methods() {
+  public List<ObjectHandleMethodDescription> methods() {
     return methods;
   }
 

@@ -1,10 +1,8 @@
 package tech.intellispaces.jaquarius.annotationprocessor.domain;
 
 import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
-import tech.intellispaces.general.text.StringFunctions;
 import tech.intellispaces.general.type.Type;
 import tech.intellispaces.general.type.Types;
-import tech.intellispaces.jaquarius.annotation.Channel;
 import tech.intellispaces.jaquarius.annotation.ObjectHandle;
 import tech.intellispaces.jaquarius.channel.Channel0;
 import tech.intellispaces.jaquarius.channel.Channel1;
@@ -14,36 +12,16 @@ import tech.intellispaces.jaquarius.channel.MappingChannel;
 import tech.intellispaces.jaquarius.channel.MappingOfMovingChannel;
 import tech.intellispaces.jaquarius.exception.TraverseException;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
-import tech.intellispaces.jaquarius.object.ObjectHandleFunctions;
+import tech.intellispaces.jaquarius.object.handle.ObjectHandleTypes;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleType;
-import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
-import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
 import tech.intellispaces.java.reflection.customtype.CustomType;
 import tech.intellispaces.java.reflection.method.MethodStatement;
 import tech.intellispaces.java.reflection.reference.CustomTypeReference;
-import tech.intellispaces.java.reflection.reference.CustomTypeReferences;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Stream;
 
 public class MovableDownwardObjectHandleGenerator extends ConversionObjectHandleGenerator {
-  private String classTypeParams;
-  private String classTypeParamsBrief;
-  private String movableObjectHandleName;
-  private String childDomainClassSimpleName;
-  private String childObjectHandleType;
-  private String parentDomainClassSimpleName;
-  private String domainClassSimpleName;
-  protected String domainTypeParams;
-  protected String domainTypeParamsBrief;
-  protected String domainTypeArguments;
-  private boolean isAlias;
-  private String primaryDomainSimpleName;
-  private String primaryDomainTypeArguments;
-  private String domainType;
 
   public MovableDownwardObjectHandleGenerator(
       CustomType annotatedType, CustomTypeReference parentDomainType
@@ -63,7 +41,8 @@ public class MovableDownwardObjectHandleGenerator extends ConversionObjectHandle
 
   @Override
   public String generatedArtifactName() {
-    return NameConventionFunctions.getMovableDownwardObjectHandleTypename(sourceArtifact(), parentDomainType.targetType());
+    return NameConventionFunctions.getMovableDownwardObjectHandleTypename(
+        sourceArtifact(), parentDomainType.targetType());
   }
 
   @Override
@@ -73,59 +52,31 @@ public class MovableDownwardObjectHandleGenerator extends ConversionObjectHandle
 
   @Override
   protected boolean analyzeSourceArtifact(ArtifactGeneratorContext context) {
-    addImport(Type.class);
-    addImport(Types.class);
-    addImport(ObjectHandle.class);
-    addImport(ObjectHandleFunctions.class);
-    addImport(TraverseException.class);
-    addImport(Channel0.class);
-    addImport(Channel1.class);
-    addImport(ChannelMethod0.class);
-    addImport(ChannelMethod1.class);
-    addImport(MappingChannel.class);
-    addImport(MappingOfMovingChannel.class);
+    addImports(
+        ObjectHandle.class,
+        Type.class,
+        Types.class,
+        Channel0.class,
+        Channel1.class,
+        ChannelMethod0.class,
+        ChannelMethod1.class,
+        MappingChannel.class,
+        MappingOfMovingChannel.class,
+        TraverseException.class
+    );
 
-    movableObjectHandleName = addToImportAndGetSimpleName(
+    String movableObjectHandleName = addToImportAndGetSimpleName(
         NameConventionFunctions.getMovableObjectHandleTypename(parentDomainType.targetType().className()));
-    domainClassSimpleName = addToImportAndGetSimpleName(parentDomainType.targetType().canonicalName());
 
-    domainTypeParams = parentDomainType.targetType().typeParametersFullDeclaration();
-    domainTypeParamsBrief = parentDomainType.targetType().typeParametersBriefDeclaration();
-
-    classTypeParams = sourceArtifact().typeParametersFullDeclaration();
-    classTypeParamsBrief = sourceArtifact().typeParametersBriefDeclaration();
-    domainTypeArguments = parentDomainType.typeArgumentsDeclaration(this::addToImportAndGetSimpleName);
-    childFieldName = StringFunctions.lowercaseFirstLetter(StringFunctions.removeTailOrElseThrow(sourceArtifact().simpleName(), "Domain"));
-    childObjectHandleType = getChildObjectHandleType();
-    childDomainClassSimpleName = sourceArtifact().simpleName();
-    parentDomainClassSimpleName = addToImportAndGetSimpleName(parentDomainType.targetType().canonicalName());
-
-    CustomType actualParentDomainType = buildActualType(parentDomainType.targetType(), context);
-    CustomTypeReference actualParentDomainTypeReference = CustomTypeReferences.get(actualParentDomainType, parentDomainType.typeArguments());
-    CustomType effectiveActualParentDomainType = actualParentDomainTypeReference.effectiveTargetType();
-
-    analyzeObjectHandleMethods(effectiveActualParentDomainType, context);
-
-    Optional<CustomTypeReference> mainEquivalentDomain = DomainFunctions.getAliasBaseDomain(sourceArtifact());
-    isAlias = mainEquivalentDomain.isPresent();
-    if (isAlias) {
-      primaryDomainSimpleName = addToImportAndGetSimpleName(
-          mainEquivalentDomain.get().targetType().canonicalName()
-      );
-      primaryDomainTypeArguments = mainEquivalentDomain.get().typeArgumentsDeclaration(
-          this::addToImportAndGetSimpleName
-      );
-      domainType = buildDomainType(mainEquivalentDomain.get().targetType(), mainEquivalentDomain.get().typeArguments());
-    } else {
-      domainType = buildDomainType(parentDomainType.targetType(), (List) sourceArtifact().typeParameters());
-    }
+    analyzeDomain();
+    analyzeChildObjectHandleType();
+    analyzeObjectHandleMethods(context);
+    analyzeAlias();
 
     addVariable("classTypeParams", classTypeParams);
     addVariable("classTypeParamsBrief", classTypeParamsBrief);
-    addVariable("domainTypeParams", domainTypeParams);
     addVariable("domainTypeParamsBrief", domainTypeParamsBrief);
     addVariable("domainTypeArguments", domainTypeArguments);
-    addVariable("childDomainClassSimpleName", childDomainClassSimpleName);
     addVariable("parentDomainClassSimpleName", parentDomainClassSimpleName);
     addVariable("childObjectHandleType", childObjectHandleType);
     addVariable("childField", childFieldName);
@@ -134,9 +85,14 @@ public class MovableDownwardObjectHandleGenerator extends ConversionObjectHandle
     addVariable("domainClassSimpleName", domainClassSimpleName);
     addVariable("isAlias", isAlias);
     addVariable("primaryDomainSimpleName", primaryDomainSimpleName);
-    addVariable("primaryDomainTypeArguments", primaryDomainTypeArguments);
     addVariable("domainType", domainType);
     return true;
+  }
+
+  private void analyzeChildObjectHandleType() {
+    childObjectHandleType = addToImportAndGetSimpleName(
+        NameConventionFunctions.getMovableObjectHandleTypename(sourceArtifact().className())
+    );
   }
 
   @Override
@@ -146,65 +102,5 @@ public class MovableDownwardObjectHandleGenerator extends ConversionObjectHandle
     return buildActualType(parentDomainType.targetType(), context).actualMethods().stream()
         .filter(m -> excludeDeepConversionMethods(m, customType))
         .filter(DomainFunctions::isNotDomainClassGetter);
-  }
-
-  @Override
-  protected Map<String, String> generateMethod(MethodStatement method, ObjectReferenceForm targetForm, int methodOrdinal) {
-    if (method.hasAnnotation(Channel.class)) {
-      return generateMethodNormal(method, targetForm, methodOrdinal);
-    } else {
-      return generatePrototypeMethod(convertMethodBeforeGenerate(method));
-    }
-  }
-
-  protected Map<String, String> generateMethodNormal(MethodStatement method, ObjectReferenceForm targetForm, int methodIndex) {
-    var sb = new StringBuilder();
-    sb.append("public ");
-    appendMethodTypeParameters(sb, method);
-    appendMethodReturnHandleType(sb, method, targetForm);
-    sb.append(" ");
-    sb.append(getMethodName(method, targetForm));
-    sb.append("(");
-    appendMethodParameters(sb, method);
-    sb.append(")");
-    appendMethodExceptions(sb, method);
-    sb.append(" {\n");
-    sb.append("  ");
-    buildReturnStatement(sb, method, targetForm);
-    sb.append("\n}\n");
-    return Map.of(
-        "javadoc", buildGeneratedMethodJavadoc(method.owner().canonicalName(), method),
-        "declaration", sb.toString()
-    );
-  }
-
-  private Map<String, String> generatePrototypeMethod(MethodStatement method) {
-    var sb = new StringBuilder();
-    sb.append("public ");
-    appendMethodTypeParameters(sb, method);
-    appendMethodReturnType(sb, method);
-    sb.append(" ");
-    sb.append(method.name());
-    sb.append("(");
-    appendMethodParameters(sb, method);
-    sb.append(")");
-    appendMethodExceptions(sb, method);
-    sb.append(" {\n");
-    sb.append("  return this.")
-        .append(childFieldName)
-        .append(".")
-        .append(method.name())
-        .append("();\n");
-    sb.append("}");
-    return Map.of(
-        "javadoc", buildGeneratedMethodJavadoc(method.owner().canonicalName(), method),
-        "declaration", sb.toString()
-    );
-  }
-
-  private String getChildObjectHandleType() {
-    return addToImportAndGetSimpleName(
-        NameConventionFunctions.getMovableObjectHandleTypename(sourceArtifact().className())
-    );
   }
 }

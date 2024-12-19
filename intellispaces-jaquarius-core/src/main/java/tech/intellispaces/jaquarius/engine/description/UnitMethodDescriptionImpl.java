@@ -1,4 +1,4 @@
-package tech.intellispaces.jaquarius.engine.descriptor;
+package tech.intellispaces.jaquarius.engine.description;
 
 import tech.intellispaces.action.Action;
 import tech.intellispaces.jaquarius.guide.GuideKind;
@@ -8,7 +8,7 @@ import tech.intellispaces.jaquarius.system.ProjectionReference;
 
 import java.util.List;
 
-class UnitMethodDescriptorImpl implements UnitMethodDescriptor {
+class UnitMethodDescriptionImpl implements UnitMethodDescription {
   private final String name;
   private final List<Class<?>> paramClasses;
   private final String prototypeMethodName;
@@ -27,7 +27,7 @@ class UnitMethodDescriptorImpl implements UnitMethodDescriptor {
   private final String guideCid;
   private final ObjectReferenceForm guideTargetForm;
 
-  UnitMethodDescriptorImpl(
+  UnitMethodDescriptionImpl(
       String name,
       List<Class<?>> paramClasses,
       String prototypeMethodName,

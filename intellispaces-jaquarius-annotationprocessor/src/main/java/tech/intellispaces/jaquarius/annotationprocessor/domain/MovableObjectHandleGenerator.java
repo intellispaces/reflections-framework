@@ -11,9 +11,9 @@ import tech.intellispaces.jaquarius.channel.ChannelMethod1;
 import tech.intellispaces.jaquarius.channel.MappingOfMovingChannel;
 import tech.intellispaces.jaquarius.exception.TraverseException;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
+import tech.intellispaces.jaquarius.object.handle.ObjectHandleTypes;
 import tech.intellispaces.jaquarius.object.reference.MovableObjectHandle;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleType;
-import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
 import tech.intellispaces.jaquarius.traverse.TraverseType;
@@ -26,11 +26,6 @@ import java.util.List;
 import java.util.stream.Stream;
 
 public class MovableObjectHandleGenerator extends ObjectHandleGenerator {
-  private String baseObjectHandle;
-  private boolean isAlias;
-  private String primaryDomainSimpleName;
-  private String primaryDomainTypeArguments;
-  private String primaryObjectHandle;
 
   public MovableObjectHandleGenerator(CustomType domainType) {
     super(domainType);
@@ -58,27 +53,36 @@ public class MovableObjectHandleGenerator extends ObjectHandleGenerator {
 
   @Override
   protected boolean analyzeSourceArtifact(ArtifactGeneratorContext context) {
-    if (sourceArtifact().isNested()) {
-      addImport(sourceArtifactName());
-    }
-    addImport(MovableObjectHandle.class);
-    addImport(ObjectHandle.class);
-    addImport(Channel0.class);
-    addImport(Channel1.class);
-    addImport(ChannelMethod0.class);
-    addImport(ChannelMethod1.class);
-    addImport(TraverseException.class);
-    addImport(Movable.class);
-    addImport(MappingOfMovingChannel.class);
-
-    domainTypeParamsFull = sourceArtifact().typeParametersFullDeclaration();
-    domainTypeParamsBrief = sourceArtifact().typeParametersBriefDeclaration();
-    baseObjectHandle = addToImportAndGetSimpleName(
-        NameConventionFunctions.getUndefinedObjectHandleTypename(sourceArtifact().className())
+    addImports(
+        Movable.class,
+        ObjectHandle.class,
+        MovableObjectHandle.class,
+        Channel0.class,
+        Channel1.class,
+        ChannelMethod0.class,
+        ChannelMethod1.class,
+        MappingOfMovingChannel.class,
+        TraverseException.class
     );
+
+    analyzeDomain();
+    analyzeAlias();
     analyzeObjectHandleMethods(sourceArtifact(), context);
     analyzeConversionMethods(sourceArtifact());
 
+    addVariable("domainTypeParamsFull", domainTypeParamsFull);
+    addVariable("domainTypeParamsBrief", domainTypeParamsBrief);
+    addVariable("generalObjectHandle", generalObjectHandle);
+    addVariable("conversionMethods", conversionMethods);
+    addVariable("domainMethods", methods);
+    addVariable("isAlias", isAlias);
+    addVariable("primaryObjectHandle", primaryObjectHandle);
+    addVariable("primaryDomainSimpleName", primaryDomainSimpleName);
+    addVariable("primaryDomainTypeArguments", primaryDomainTypeArguments);
+    return true;
+  }
+
+  private void analyzeAlias() {
     List<CustomTypeReference> equivalentDomains = DomainFunctions.getEquivalentDomains(sourceArtifact());
     isAlias = !equivalentDomains.isEmpty();
     if (isAlias) {
@@ -89,18 +93,6 @@ public class MovableObjectHandleGenerator extends ObjectHandleGenerator {
       primaryDomainSimpleName = addToImportAndGetSimpleName(mainEquivalentDomain.targetType().canonicalName());
       primaryDomainTypeArguments = nearEquivalentDomain.typeArgumentsDeclaration(this::addToImportAndGetSimpleName);
     }
-
-    addVariable("domainTypeParamsFull", domainTypeParamsFull);
-    addVariable("domainTypeParamsBrief", domainTypeParamsBrief);
-    addVariable("baseObjectHandle", baseObjectHandle);
-    addVariable("conversionMethods", conversionMethods);
-    addVariable("domainMethods", methods);
-    addVariable("movableObjectHandleName", addToImportAndGetSimpleName(MovableObjectHandle.class));
-    addVariable("isAlias", isAlias);
-    addVariable("primaryObjectHandle", primaryObjectHandle);
-    addVariable("primaryDomainSimpleName", primaryDomainSimpleName);
-    addVariable("primaryDomainTypeArguments", primaryDomainTypeArguments);
-    return true;
   }
 
   @Override

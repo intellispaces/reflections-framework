@@ -3,7 +3,7 @@ package tech.intellispaces.jaquarius.engine.impl;
 import tech.intellispaces.jaquarius.guide.Guide;
 import tech.intellispaces.jaquarius.guide.GuideFunctions;
 import tech.intellispaces.jaquarius.guide.GuideKind;
-import tech.intellispaces.jaquarius.object.ObjectHandleFunctions;
+import tech.intellispaces.jaquarius.object.handle.ObjectHandleFunctions;
 
 import java.util.ArrayList;
 import java.util.HashMap;

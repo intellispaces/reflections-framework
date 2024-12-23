@@ -157,7 +157,7 @@ public class UnitWrapperGenerator extends JaquariusArtifactGenerator {
         return buildTypeDeclaration(namedType.extendedBounds().get(0));
       }
     }
-    return addToImportAndGetSimpleName(
+    return addImportAndGetSimpleName(
         type.asCustomTypeReferenceOrElseThrow().targetType().canonicalName()
     );
   }
@@ -263,7 +263,7 @@ public class UnitWrapperGenerator extends JaquariusArtifactGenerator {
 
     List<String> paramClasses = new ArrayList<>();
     for (MethodParam param : method.params()) {
-      paramClasses.add(addToImportAndGetSimpleName(param.type().asCustomTypeReferenceOrElseThrow().targetType().canonicalName()));
+      paramClasses.add(addImportAndGetSimpleName(param.type().asCustomTypeReferenceOrElseThrow().targetType().canonicalName()));
     }
     map.put("params", paramClasses);
     map.put("purpose", UnitMethodPurposes.Guide.name());
@@ -283,14 +283,14 @@ public class UnitWrapperGenerator extends JaquariusArtifactGenerator {
 
     List<String> paramClasses = new ArrayList<>();
     for (MethodParam param : method.params()) {
-      paramClasses.add(addToImportAndGetSimpleName(param.type().asCustomTypeReferenceOrElseThrow().targetType().canonicalName()));
+      paramClasses.add(addImportAndGetSimpleName(param.type().asCustomTypeReferenceOrElseThrow().targetType().canonicalName()));
     }
     map.put("params", paramClasses);
     map.put("purpose", UnitMethodPurposes.ProjectionDefinition.name());
     map.put("type", "function");
 
     map.put("projectionName", method.name());
-    map.put("targetClass", addToImportAndGetSimpleName(getTargetClassName(method)));
+    map.put("targetClass", addImportAndGetSimpleName(getTargetClassName(method)));
     if (!method.params().isEmpty()) {
       map.put("requiredProjections", buildRequiredProjections(method));
     }
@@ -313,7 +313,7 @@ public class UnitWrapperGenerator extends JaquariusArtifactGenerator {
     return method.params().stream()
         .map(param -> Map.of(
             "name", param.name(),
-            "class", addToImportAndGetSimpleName(param.type().asCustomTypeReferenceOrElseThrow().targetClass().getCanonicalName())))
+            "class", addImportAndGetSimpleName(param.type().asCustomTypeReferenceOrElseThrow().targetClass().getCanonicalName())))
         .toList();
   }
 
@@ -343,10 +343,10 @@ public class UnitWrapperGenerator extends JaquariusArtifactGenerator {
     sb.append("  return (");
     sb.append(buildTypeDeclaration(method.returnType().orElseThrow()));
     sb.append(") new ");
-    sb.append(addToImportAndGetSimpleName(projectionProvider.type().canonicalName()));
+    sb.append(addImportAndGetSimpleName(projectionProvider.type().canonicalName()));
     sb.append("(");
 
-    sb.append(addToImportAndGetSimpleName(Methods.class));
+    sb.append(addImportAndGetSimpleName(Methods.class));
     sb.append(".of(");
     sb.append(sourceArtifact().simpleName());
     sb.append(".class, \"");
@@ -365,7 +365,7 @@ public class UnitWrapperGenerator extends JaquariusArtifactGenerator {
     map.put("name", method.name());
     List<String> paramClasses = new ArrayList<>();
     for (MethodParam param : method.params()) {
-      paramClasses.add(addToImportAndGetSimpleName(param.type().asCustomTypeReferenceOrElseThrow().targetType().canonicalName()));
+      paramClasses.add(addImportAndGetSimpleName(param.type().asCustomTypeReferenceOrElseThrow().targetType().canonicalName()));
     }
     map.put("params", paramClasses);
     map.put("type", "function");
@@ -374,7 +374,7 @@ public class UnitWrapperGenerator extends JaquariusArtifactGenerator {
     map.put("injectionKind", InjectionKinds.class.getSimpleName() + "." + InjectionKinds.Projection.name());
     map.put("injectionOrdinal", ordinal);
     map.put("injectionName", method.name());
-    map.put("injectionClass", method.returnType().orElseThrow().actualDeclaration(this::addToImportAndGetSimpleName));
+    map.put("injectionClass", method.returnType().orElseThrow().actualDeclaration(this::addImportAndGetSimpleName));
     return map;
   }
 
@@ -385,7 +385,7 @@ public class UnitWrapperGenerator extends JaquariusArtifactGenerator {
     map.put("name", method.name());
     List<String> paramClasses = new ArrayList<>();
     for (MethodParam param : method.params()) {
-      paramClasses.add(addToImportAndGetSimpleName(param.type().asCustomTypeReferenceOrElseThrow().targetType().canonicalName()));
+      paramClasses.add(addImportAndGetSimpleName(param.type().asCustomTypeReferenceOrElseThrow().targetType().canonicalName()));
     }
     map.put("params", paramClasses);
     map.put("type", "function");
@@ -394,7 +394,7 @@ public class UnitWrapperGenerator extends JaquariusArtifactGenerator {
     map.put("injectionKind", InjectionKinds.class.getSimpleName() + "." + InjectionKinds.AutoGuide.name());
     map.put("injectionOrdinal", ordinal);
     map.put("injectionName", method.name());
-    map.put("injectionClass", method.returnType().orElseThrow().actualDeclaration(this::addToImportAndGetSimpleName));
+    map.put("injectionClass", method.returnType().orElseThrow().actualDeclaration(this::addImportAndGetSimpleName));
     return map;
   }
 
@@ -405,7 +405,7 @@ public class UnitWrapperGenerator extends JaquariusArtifactGenerator {
     map.put("name", method.name());
     List<String> paramClasses = new ArrayList<>();
     for (MethodParam param : method.params()) {
-      paramClasses.add(addToImportAndGetSimpleName(param.type().asCustomTypeReferenceOrElseThrow().targetType().canonicalName()));
+      paramClasses.add(addImportAndGetSimpleName(param.type().asCustomTypeReferenceOrElseThrow().targetType().canonicalName()));
     }
     map.put("params", paramClasses);
     map.put("type", "function");
@@ -414,7 +414,7 @@ public class UnitWrapperGenerator extends JaquariusArtifactGenerator {
     map.put("injectionKind", InjectionKinds.class.getSimpleName() + "." + InjectionKinds.SpecificGuide.name());
     map.put("injectionOrdinal", ordinal);
     map.put("injectionName", method.name());
-    map.put("injectionClass", method.returnType().orElseThrow().actualDeclaration(this::addToImportAndGetSimpleName));
+    map.put("injectionClass", method.returnType().orElseThrow().actualDeclaration(this::addImportAndGetSimpleName));
     return map;
   }
 
@@ -457,7 +457,7 @@ public class UnitWrapperGenerator extends JaquariusArtifactGenerator {
     description.put("name", method.name());
     List<String> paramClasses = new ArrayList<>();
     for (MethodParam param : method.params()) {
-      paramClasses.add(addToImportAndGetSimpleName(param.type().asCustomTypeReferenceOrElseThrow().targetType().canonicalName()));
+      paramClasses.add(addImportAndGetSimpleName(param.type().asCustomTypeReferenceOrElseThrow().targetType().canonicalName()));
     }
     description.put("params", paramClasses);
     description.put("type", "consumer");
@@ -473,7 +473,7 @@ public class UnitWrapperGenerator extends JaquariusArtifactGenerator {
     description.put("name", method.name());
     List<String> paramClasses = new ArrayList<>();
     for (MethodParam param : method.params()) {
-      paramClasses.add(addToImportAndGetSimpleName(param.type().asCustomTypeReferenceOrElseThrow().targetType().canonicalName()));
+      paramClasses.add(addImportAndGetSimpleName(param.type().asCustomTypeReferenceOrElseThrow().targetType().canonicalName()));
     }
     description.put("params", paramClasses);
     description.put("type", "consumer");

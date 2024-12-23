@@ -52,14 +52,14 @@ abstract class ConversionObjectHandleGenerator extends AbstractObjectHandleGener
   }
 
   protected void analyzeDomain() {
-    domainClassSimpleName = addToImportAndGetSimpleName(parentDomainType.targetType().canonicalName());
+    domainClassSimpleName = addImportAndGetSimpleName(parentDomainType.targetType().canonicalName());
     domainTypeParamsBrief = parentDomainType.targetType().typeParametersBriefDeclaration();
     classTypeParams = sourceArtifact().typeParametersFullDeclaration();
     classTypeParamsBrief = sourceArtifact().typeParametersBriefDeclaration();
-    domainTypeArguments = parentDomainType.typeArgumentsDeclaration(this::addToImportAndGetSimpleName);
+    domainTypeArguments = parentDomainType.typeArgumentsDeclaration(this::addImportAndGetSimpleName);
     childFieldName = StringFunctions.lowercaseFirstLetter(
         StringFunctions.removeTailOrElseThrow(sourceArtifact().simpleName(), "Domain"));
-    parentDomainClassSimpleName = addToImportAndGetSimpleName(parentDomainType.targetType().canonicalName());
+    parentDomainClassSimpleName = addImportAndGetSimpleName(parentDomainType.targetType().canonicalName());
   }
 
   protected void analyzeObjectHandleMethods(ArtifactGeneratorContext context) {
@@ -77,7 +77,7 @@ abstract class ConversionObjectHandleGenerator extends AbstractObjectHandleGener
     Optional<CustomTypeReference> mainEquivalentDomain = DomainFunctions.getAliasBaseDomain(sourceArtifact());
     isAlias = mainEquivalentDomain.isPresent();
     if (isAlias) {
-      primaryDomainSimpleName = addToImportAndGetSimpleName(mainEquivalentDomain.get().targetType().canonicalName());
+      primaryDomainSimpleName = addImportAndGetSimpleName(mainEquivalentDomain.get().targetType().canonicalName());
       domainType = buildDomainType(mainEquivalentDomain.get().targetType(), mainEquivalentDomain.get().typeArguments());
     } else {
       domainType = buildDomainType(parentDomainType.targetType(), (List) sourceArtifact().typeParameters());

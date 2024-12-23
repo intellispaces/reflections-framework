@@ -62,20 +62,20 @@ public abstract class ChannelGenerator extends JaquariusArtifactGenerator {
       RunnableAction commaAppender = StringActions.skipFirstTimeCommaAppender(sb);
       for (MethodStatement superChannel : superChannels) {
         commaAppender.run();
-        sb.append(addToImportAndGetSimpleName(NameConventionFunctions.getChannelClassCanonicalName(superChannel)));
+        sb.append(addImportAndGetSimpleName(NameConventionFunctions.getChannelClassCanonicalName(superChannel)));
       }
     } else {
-      sb.append(addToImportAndGetSimpleName(ChannelFunctions.getChannelClass(getQualifierTypes().size())));
+      sb.append(addImportAndGetSimpleName(ChannelFunctions.getChannelClass(getQualifierTypes().size())));
       for (TraverseType traverseType : getTraverseTypes()) {
         if (traverseType.isMapping()) {
           sb.append(", ");
-          sb.append(addToImportAndGetSimpleName(MappingChannel.class));
+          sb.append(addImportAndGetSimpleName(MappingChannel.class));
         } else if (traverseType.isMoving()) {
           sb.append(", ");
-          sb.append(addToImportAndGetSimpleName(MovingChannel.class));
+          sb.append(addImportAndGetSimpleName(MovingChannel.class));
         } else if (traverseType.isMappingOfMoving()) {
           sb.append(", ");
-          sb.append(addToImportAndGetSimpleName(MappingOfMovingChannel.class));
+          sb.append(addImportAndGetSimpleName(MappingOfMovingChannel.class));
         }
       }
     }

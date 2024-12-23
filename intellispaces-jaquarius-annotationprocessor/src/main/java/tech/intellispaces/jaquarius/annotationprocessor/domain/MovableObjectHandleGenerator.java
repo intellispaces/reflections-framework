@@ -90,8 +90,8 @@ public class MovableObjectHandleGenerator extends ObjectHandleGenerator {
       CustomTypeReference mainEquivalentDomain = equivalentDomains.get(equivalentDomains.size() - 1);
 
       primaryObjectHandle = buildObjectHandleDeclaration(nearEquivalentDomain, ObjectHandleTypes.Movable);
-      primaryDomainSimpleName = addToImportAndGetSimpleName(mainEquivalentDomain.targetType().canonicalName());
-      primaryDomainTypeArguments = nearEquivalentDomain.typeArgumentsDeclaration(this::addToImportAndGetSimpleName);
+      primaryDomainSimpleName = addImportAndGetSimpleName(mainEquivalentDomain.targetType().canonicalName());
+      primaryDomainTypeArguments = nearEquivalentDomain.typeArgumentsDeclaration(this::addImportAndGetSimpleName);
     }
   }
 

@@ -109,13 +109,13 @@ public class AutoGuideGenerator extends JaquariusArtifactGenerator {
     TypeReference sourceType = method.params().get(0).type();
 
     var sb = new StringBuilder();
-    sb.append(addToImportAndGetSimpleName(DelegateActions.class));
+    sb.append(addImportAndGetSimpleName(DelegateActions.class));
     sb.append(".delegateAction");
     sb.append(method.params().size());
     sb.append("(");
-    sb.append(addToImportAndGetSimpleName(CachedSupplierActions.class));
+    sb.append(addImportAndGetSimpleName(CachedSupplierActions.class));
     sb.append(".get(");
-    sb.append(addToImportAndGetSimpleName(TraverseActions.class));
+    sb.append(addImportAndGetSimpleName(TraverseActions.class));
     sb.append("::");
     if (GuideFunctions.isMapperMethod(method)) {
       sb.append("map");
@@ -128,15 +128,15 @@ public class AutoGuideGenerator extends JaquariusArtifactGenerator {
     sb.append(method.params().size() - 1);
     sb.append(",\n");
     sb.append("    ");
-    sb.append(addToImportAndGetSimpleName(Types.class));
+    sb.append(addImportAndGetSimpleName(Types.class));
     sb.append(".<");
-    sb.append(sourceType.actualBlindDeclaration(this::addToImportAndGetSimpleName));
+    sb.append(sourceType.actualBlindDeclaration(this::addImportAndGetSimpleName));
     sb.append(", ");
-    sb.append(sourceType.simpleDeclaration(this::addToImportAndGetSimpleName));
+    sb.append(sourceType.simpleDeclaration(this::addImportAndGetSimpleName));
     sb.append("> get(");
-    sb.append(sourceType.simpleDeclaration(this::addToImportAndGetSimpleName));
+    sb.append(sourceType.simpleDeclaration(this::addImportAndGetSimpleName));
     sb.append(".class),\n    ");
-    sb.append(addToImportAndGetSimpleName(GuideFunctions.getChannelType(method).canonicalName()));
+    sb.append(addImportAndGetSimpleName(GuideFunctions.getChannelType(method).canonicalName()));
     sb.append(".class,\n");
     ObjectReferenceForm targetForm = GuideFunctions.getGuideTargetForm(method);
     sb.append("    ObjectReferenceForms.");
@@ -150,7 +150,7 @@ public class AutoGuideGenerator extends JaquariusArtifactGenerator {
     if (method.returnType().isPresent()) {
       sb.append("return ");
       sb.append("(");
-      sb.append(method.returnType().get().actualDeclaration(this::addToImportAndGetSimpleName));
+      sb.append(method.returnType().get().actualDeclaration(this::addImportAndGetSimpleName));
       sb.append(") ");
     }
     sb.append(actionName);

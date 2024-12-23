@@ -28,7 +28,7 @@ abstract class ObjectHandleGenerator extends AbstractObjectHandleGenerator {
   protected void analyzeDomain() {
     domainTypeParamsFull = sourceArtifact().typeParametersFullDeclaration();
     domainTypeParamsBrief = sourceArtifact().typeParametersBriefDeclaration();
-    generalObjectHandle = addToImportAndGetSimpleName(
+    generalObjectHandle = addImportAndGetSimpleName(
         NameConventionFunctions.getGeneralObjectHandleTypename(sourceArtifact().className())
     );
   }

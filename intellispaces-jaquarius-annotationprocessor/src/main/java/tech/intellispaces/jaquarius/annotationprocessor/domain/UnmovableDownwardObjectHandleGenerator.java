@@ -67,7 +67,7 @@ public class UnmovableDownwardObjectHandleGenerator extends ConversionObjectHand
         TraverseException.class
     );
 
-    String unmovableObjectHandleName = addToImportAndGetSimpleName(
+    String unmovableObjectHandleName = addImportAndGetSimpleName(
         NameConventionFunctions.getUnmovableObjectHandleTypename(parentDomainType.targetType().className()));
 
     analyzeDomain();
@@ -92,7 +92,7 @@ public class UnmovableDownwardObjectHandleGenerator extends ConversionObjectHand
   }
 
   private void analyzeChildObjectHandleType() {
-    childObjectHandleType = addToImportAndGetSimpleName(
+    childObjectHandleType = addImportAndGetSimpleName(
         NameConventionFunctions.getUnmovableObjectHandleTypename(sourceArtifact().className())
     );
   }

@@ -72,8 +72,8 @@ abstract class ObjectHandleWrapperGenerator extends AbstractObjectHandleGenerato
       CustomTypeReference nearEquivalentDomain = equivalentDomains.get(0);
       CustomTypeReference mainEquivalentDomain = equivalentDomains.get(equivalentDomains.size() - 1);
 
-      primaryDomainSimpleName = addToImportAndGetSimpleName(mainEquivalentDomain.targetType().canonicalName());
-      primaryDomainTypeArguments = nearEquivalentDomain.typeArgumentsDeclaration(this::addToImportAndGetSimpleName);
+      primaryDomainSimpleName = addImportAndGetSimpleName(mainEquivalentDomain.targetType().canonicalName());
+      primaryDomainTypeArguments = nearEquivalentDomain.typeArgumentsDeclaration(this::addImportAndGetSimpleName);
     }
   }
 
@@ -281,7 +281,7 @@ abstract class ObjectHandleWrapperGenerator extends AbstractObjectHandleGenerato
     map.put("params", paramClasses);
     map.put("purpose", ObjectHandleMethodPurposes.TraverseMethod.name());
     map.put("traverseOrdinal", ordinal);
-    map.put("channelClass", addToImportAndGetSimpleName(NameConventionFunctions.getChannelClassCanonicalName(
+    map.put("channelClass", addImportAndGetSimpleName(NameConventionFunctions.getChannelClassCanonicalName(
         domainMethod)));
     map.put("traverseType", ChannelFunctions.getTraverseType(domainMethod).name());
 
@@ -330,7 +330,7 @@ abstract class ObjectHandleWrapperGenerator extends AbstractObjectHandleGenerato
     map.put("injectionOrdinal", ordinal);
     map.put("injectionName", injectionMethod.name());
     map.put("injectionType", injectionMethod.returnType().orElseThrow().actualDeclaration(
-        this::addToImportAndGetSimpleName)
+        this::addImportAndGetSimpleName)
     );
     return map;
   }
@@ -345,7 +345,7 @@ abstract class ObjectHandleWrapperGenerator extends AbstractObjectHandleGenerato
     map.put("injectionOrdinal", ordinal);
     map.put("injectionName", injectionMethod.name());
     map.put("injectionType", injectionMethod.returnType().orElseThrow().actualDeclaration(
-        this::addToImportAndGetSimpleName)
+        this::addImportAndGetSimpleName)
     );
     return map;
   }
@@ -355,7 +355,7 @@ abstract class ObjectHandleWrapperGenerator extends AbstractObjectHandleGenerato
         AnnotationGeneratorFunctions.normalizeType(type),
         ObjectHandleTypes.General,
         false,
-        this::addToImportAndGetSimpleName
+        this::addImportAndGetSimpleName
     );
   }
 
@@ -471,7 +471,7 @@ abstract class ObjectHandleWrapperGenerator extends AbstractObjectHandleGenerato
 
     Optional<CustomTypeReference> aliasBaseDomain = DomainFunctions.getAliasBaseDomain(domainType);
     CustomType actualDomain = aliasBaseDomain.isPresent() ? aliasBaseDomain.get().targetType() : domainType;
-    sb.append(addToImportAndGetSimpleName(
+    sb.append(addImportAndGetSimpleName(
         NameConventionFunctions.getDownwardObjectHandleTypename(actualDomain, parent.targetType(), getObjectHandleType())
     ));
     sb.append("(this);\n");

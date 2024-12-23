@@ -51,7 +51,7 @@ public abstract class JaquariusArtifactGenerator extends TemplatedJavaArtifactGe
 
   protected String buildObjectHandleDeclaration(TypeReference domainType, ObjectHandleType handleType) {
     return ObjectHandleFunctions.getObjectHandleDeclaration(
-        domainType, handleType, this::addToImportAndGetSimpleName
+        domainType, handleType, this::addImportAndGetSimpleName
     );
   }
 
@@ -65,7 +65,7 @@ public abstract class JaquariusArtifactGenerator extends TemplatedJavaArtifactGe
         method.name(),
         method.params().stream()
             .map(MethodParam::type)
-            .map(type -> type.actualDeclaration(this::addToImportAndGetSimpleName))
+            .map(type -> type.actualDeclaration(this::addImportAndGetSimpleName))
             .collect(Collectors.joining(", "))
     );
   }
@@ -77,7 +77,7 @@ public abstract class JaquariusArtifactGenerator extends TemplatedJavaArtifactGe
           "}";
     } else if (type.isCustomTypeReference()) {
       return "{@link " +
-          addToImportAndGetSimpleName(type.asCustomTypeReferenceOrElseThrow().targetType().canonicalName()) + "}";
+          addImportAndGetSimpleName(type.asCustomTypeReferenceOrElseThrow().targetType().canonicalName()) + "}";
     } else {
       return "Object";
     }

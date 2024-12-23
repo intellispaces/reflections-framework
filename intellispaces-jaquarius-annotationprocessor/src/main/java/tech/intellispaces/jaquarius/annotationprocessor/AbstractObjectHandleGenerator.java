@@ -44,7 +44,7 @@ public abstract class AbstractObjectHandleGenerator extends JaquariusArtifactGen
   abstract protected ObjectHandleType getObjectHandleType();
 
   protected String movableClassSimpleName() {
-    return addToImportAndGetSimpleName(
+    return addImportAndGetSimpleName(
         NameConventionFunctions.getMovableObjectHandleTypename(sourceArtifact().className())
     );
   }
@@ -112,7 +112,7 @@ public abstract class AbstractObjectHandleGenerator extends JaquariusArtifactGen
       sb.append("void");
     }
     TypeReference returnType = method.returnType().orElseThrow();
-    sb.append(returnType.actualDeclaration(this::addToImportAndGetSimpleName));
+    sb.append(returnType.actualDeclaration(this::addImportAndGetSimpleName));
   }
 
   protected Stream<MethodStatement> getObjectHandleMethods(CustomType customType, ArtifactGeneratorContext context) {
@@ -150,7 +150,7 @@ public abstract class AbstractObjectHandleGenerator extends JaquariusArtifactGen
   protected String buildDomainType(CustomType domainType, List<NotPrimitiveReference> typeQualifiers) {
     StringBuilder sb = new StringBuilder();
     sb.append("Types.get(");
-    sb.append(addToImportAndGetSimpleName(domainType.canonicalName())).append(".class");
+    sb.append(addImportAndGetSimpleName(domainType.canonicalName())).append(".class");
     for (NotPrimitiveReference typeQualifier : typeQualifiers) {
       sb.append(", ");
       analyzeDomainType(typeQualifier, sb);
@@ -163,7 +163,7 @@ public abstract class AbstractObjectHandleGenerator extends JaquariusArtifactGen
     if (typeReference.isCustomTypeReference()) {
       CustomTypeReference customTypeReference = typeReference.asCustomTypeReferenceOrElseThrow();
       sb.append("Types.get(");
-      sb.append(addToImportAndGetSimpleName(customTypeReference.targetType().canonicalName())).append(".class");
+      sb.append(addImportAndGetSimpleName(customTypeReference.targetType().canonicalName())).append(".class");
       for (NotPrimitiveReference typeArg : customTypeReference.typeArguments()) {
         sb.append(", ");
         analyzeDomainType(typeArg, sb);
@@ -173,7 +173,7 @@ public abstract class AbstractObjectHandleGenerator extends JaquariusArtifactGen
       NamedReference namedReference = typeReference.asNamedReferenceOrElseThrow();
       if (namedReference.extendedBounds().isEmpty()) {
         sb.append("Types.get(");
-        sb.append(addToImportAndGetSimpleName(Object.class)).append(".class");
+        sb.append(addImportAndGetSimpleName(Object.class)).append(".class");
         sb.append(")");
       } else {
         ReferenceBound extendedBound = namedReference.extendedBounds().get(0);

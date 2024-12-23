@@ -168,7 +168,7 @@ public class GuideGenerator extends JaquariusArtifactGenerator {
     String abstractGuideCanonicalName = ClassNameFunctions.addPrefixToSimpleName(
         "Abstract", guideClass.getCanonicalName()
     );
-    return addToImportAndGetSimpleName(abstractGuideCanonicalName);
+    return addImportAndGetSimpleName(abstractGuideCanonicalName);
   }
 
   private Class<?> getGuideClass() {
@@ -407,7 +407,7 @@ public class GuideGenerator extends JaquariusArtifactGenerator {
       return ClassFunctions.getPrimitiveWrapperClass(type.asPrimitiveReferenceOrElseThrow().typename()).getSimpleName();
     } else {
       String canonicalName = ObjectHandleFunctions.getCommonObjectHandleTypename(type, typeReplacer);
-      String name = type.isCustomTypeReference() ? addToImportAndGetSimpleName(canonicalName) : canonicalName;
+      String name = type.isCustomTypeReference() ? addImportAndGetSimpleName(canonicalName) : canonicalName;
       if (type.isCustomTypeReference() && !type.asCustomTypeReferenceOrElseThrow().typeArguments().isEmpty()) {
         var sb = new StringBuilder();
         sb.append(name);
@@ -439,7 +439,7 @@ public class GuideGenerator extends JaquariusArtifactGenerator {
   }
 
   private String channelClassSimpleName() {
-    return addToImportAndGetSimpleName(sourceArtifact().canonicalName());
+    return addImportAndGetSimpleName(sourceArtifact().canonicalName());
   }
 
   private List<MethodParam> getQualifierMethodParams() {

@@ -85,8 +85,8 @@ public class GeneralObjectHandleGenerator extends ObjectHandleGenerator {
       CustomTypeReference mainEquivalentDomain = equivalentDomains.get(equivalentDomains.size() - 1);
 
       primaryObjectHandle = buildObjectHandleDeclaration(nearEquivalentDomain, ObjectHandleTypes.General);
-      primaryDomainTypeArguments = nearEquivalentDomain.typeArgumentsDeclaration(this::addToImportAndGetSimpleName);
-      primaryDomainSimpleName = addToImportAndGetSimpleName(mainEquivalentDomain.targetType().canonicalName());
+      primaryDomainTypeArguments = nearEquivalentDomain.typeArgumentsDeclaration(this::addImportAndGetSimpleName);
+      primaryDomainSimpleName = addImportAndGetSimpleName(mainEquivalentDomain.targetType().canonicalName());
       domainType = buildDomainType(mainEquivalentDomain.targetType(), mainEquivalentDomain.typeArguments());
     } else {
       domainType = buildDomainType(sourceArtifact(), (List) sourceArtifact().typeParameters());

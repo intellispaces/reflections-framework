@@ -191,7 +191,7 @@ public interface AnnotationGeneratorFunctions {
     }
     sb.append(") {\n");
     sb.append("  return ");
-    String actualReturnType = guideMethod.returnType().orElseThrow().actualDeclaration(generator::addToImportAndGetSimpleName);
+    String actualReturnType = guideMethod.returnType().orElseThrow().actualDeclaration(generator::addImportAndGetSimpleName);
     if (!actualReturnType.equals(returnType)) {
       if (PrimitiveTypes.Boolean.typename().equals(actualReturnType)) {
         sb.append("PrimitiveFunctions.booleanToInt(");
@@ -218,7 +218,7 @@ public interface AnnotationGeneratorFunctions {
     commaAppender = StringActions.skipFirstTimeCommaAppender(sb);
     for (MethodParam param : rearrangementParams(objectHandleMethod.params())) {
       commaAppender.run();
-      String actualType = param.type().actualDeclaration(generator::addToImportAndGetSimpleName);
+      String actualType = param.type().actualDeclaration(generator::addImportAndGetSimpleName);
       if (!buildGuideTypeDeclaration(param.type(), generator).equals(actualType)) {
         if (PrimitiveTypes.Boolean.typename().equals(actualType)) {
           sb.append("PrimitiveFunctions.booleanToInt(").append(param.name());
@@ -236,6 +236,6 @@ public interface AnnotationGeneratorFunctions {
   }
 
   static String buildGuideTypeDeclaration(TypeReference type, TemplatedJavaArtifactGenerator generator) {
-    return normalizeType(type).actualDeclaration(generator::addToImportAndGetSimpleName);
+    return normalizeType(type).actualDeclaration(generator::addImportAndGetSimpleName);
   }
 }

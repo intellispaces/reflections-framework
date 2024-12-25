@@ -15,36 +15,36 @@ import {{$importedClass}};
 {{$generatedAnnotation}}
 public class {{$generatedArtifactSimpleName}} implements {{$objectHandleClassName}} {
 {{for projection : $projections}}
-  private final {{$projection.get("type")}} {{$projection.get("name")}};
+  private final {{$projection."type"}} {{$projection."name"}};
 {{end}}
 
   public {{$generatedArtifactSimpleName}}(
 {{for projection : $projections}}
-    @Name("{{$projection.get("name")}}") {{$projection.get("type")}} {{$projection.get("name")}}{{when $projection.isNotLast()}},{{end}}
+    @Name("{{$projection."name"}}") {{$projection."type"}} {{$projection."name"}}{{when $projection.isNotLast()}},{{end}}
 {{end}}
   ) {
 {{for projection : $projections}}
-    this.{{$projection.get("name")}} = {{$projection.get("name")}};
+    this.{{$projection."name"}} = {{$projection."name"}};
 {{end}}
   }
 
 {{for projection : $projections}}
   @Override
-  public {{$projection.get("type")}} {{$projection.get("name")}}() {
-    return this.{{$projection.get("name")}};
+  public {{$projection."type"}} {{$projection."name"}}() {
+    return this.{{$projection."name"}};
   }
 
-{{when $projection.get("type").eq("Integer")}}
+{{when $projection."type".eq("Integer")}}
   @Override
-  public int {{$projection.get("name")}}Primitive() {
-    Objects.requireNonNull(this.{{$projection.get("name")}});
-    return this.{{$projection.get("name")}};
+  public int {{$projection."name"}}Primitive() {
+    Objects.requireNonNull(this.{{$projection."name"}});
+    return this.{{$projection."name"}};
   }
-{{else when $projection.get("type").eq("Double")}}
+{{else when $projection."type".eq("Double")}}
   @Override
-  public double {{$projection.get("name")}}Primitive() {
-    Objects.requireNonNull(this.{{$projection.get("name")}});
-    return this.{{$projection.get("name")}};
+  public double {{$projection."name"}}Primitive() {
+    Objects.requireNonNull(this.{{$projection."name"}});
+    return this.{{$projection."name"}};
   }
 {{end}}
 {{end}}

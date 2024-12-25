@@ -20,7 +20,7 @@ public interface {{$generatedArtifactSimpleName}}{{$domainTypeParamsFull}} exten
 
 {{for method : $conversionMethods}}
   @Override
-  {{$method.get("declaration")}};
+  {{$method."declaration"}};
 
 {{end}}
   @Override

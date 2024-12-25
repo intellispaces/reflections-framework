@@ -35,8 +35,8 @@ public interface {{$generatedArtifactSimpleName}}{{$domainTypeParamsFull}} exten
   }
 
 {{for method : $domainMethods}}
-  {{$method.get("javadoc")}}
-  {{$method.get("declaration")}};
+  {{$method."javadoc"}}
+  {{$method."declaration"}};
 
 {{end}}
   {{$movableClassSimpleName}}{{$domainTypeParamsBrief}} asMovableOrElseThrow();

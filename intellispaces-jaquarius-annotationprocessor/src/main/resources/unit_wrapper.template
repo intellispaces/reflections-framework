@@ -26,22 +26,22 @@ public class {{$generatedArtifactSimpleName}}{{$typeParamsFullDeclaration}} exte
   }
 
 {{for method : $injectionMethods}}
-  {{$method.get("javadoc")}}
-{{for annotation : $method.get("annotations")}}
+  {{$method."javadoc"}}
+{{for annotation : $method."annotations"}}
   @{{$annotation}}
 {{end}}
-  public {{$method.get("signature")}} {
-    {{$method.get("body")}}
+  public {{$method."signature"}} {
+    {{$method."body"}}
   }
 {{end}}
 {{for method : $overrideGuideMethods}}
   @Override
   @Ordinal({{$method.index()}})
-  {{$method.get("declaration")}}
+  {{$method."declaration"}}
 
 {{end}}
 {{for method : $guideActionMethods}}
-  {{$method.get("declaration")}};
+  {{$method."declaration"}};
 
 {{end}}
 
@@ -54,56 +54,56 @@ public class {{$generatedArtifactSimpleName}}{{$typeParamsFullDeclaration}} exte
       this,
       {{$sourceArtifactSimpleName}}.class{{when $methodDescriptions.isNotEmpty()}},{{end}}
 {{for method : $methodDescriptions}}
-      unitMethod(this, "{{$method.get("name")}}"{{for param : $method.get("params")}}, {{$param}}.class{{end}})
-        .purpose(UnitMethodPurposes.{{$method.get("purpose")}})
-{{when $method.get("type").eq("function")}}
-        .function({{$generatedArtifactSimpleName}}::{{$method.get("name")}})
+      unitMethod(this, "{{$method."name"}}"{{for param : $method."params"}}, {{$param}}.class{{end}})
+        .purpose(UnitMethodPurposes.{{$method."purpose"}})
+{{when $method."type".eq("function")}}
+        .function({{$generatedArtifactSimpleName}}::{{$method."name"}})
 {{end}}
-{{when $method.get("type").eq("consumer")}}
-        .consumer({{$generatedArtifactSimpleName}}::{{$method.get("name")}})
+{{when $method."type".eq("consumer")}}
+        .consumer({{$generatedArtifactSimpleName}}::{{$method."name"}})
 {{end}}
-{{when $method.get("prototypeMethodName").isVoid().invert()}}
-        .prototypeMethodName("{{$method.get("prototypeMethodName")}}")
+{{when $method."prototypeMethodName".isNotVoid()}}
+        .prototypeMethodName("{{$method."prototypeMethodName"}}")
 {{end}}
-{{when $method.get("injectionName").isVoid().invert()}}
-        .injectionName("{{$method.get("injectionName")}}")
+{{when $method."injectionName".isNotVoid()}}
+        .injectionName("{{$method."injectionName"}}")
 {{end}}
-{{when $method.get("injectionClass").isVoid().invert()}}
-        .injectionClass({{$method.get("injectionClass")}}.class)
+{{when $method."injectionClass".isNotVoid()}}
+        .injectionClass({{$method."injectionClass"}}.class)
 {{end}}
-{{when $method.get("injectionKind").isVoid().invert()}}
-        .injectionKind({{$method.get("injectionKind")}})
+{{when $method."injectionKind".isNotVoid()}}
+        .injectionKind({{$method."injectionKind"}})
 {{end}}
-{{when $method.get("injectionOrdinal").isVoid().invert()}}
-        .injectionOrdinal({{$method.get("injectionOrdinal")}})
+{{when $method."injectionOrdinal".isNotVoid()}}
+        .injectionOrdinal({{$method."injectionOrdinal"}})
 {{end}}
-{{when $method.get("projectionName").isVoid().invert()}}
-        .projectionName("{{$method.get("projectionName")}}")
+{{when $method."projectionName".isNotVoid()}}
+        .projectionName("{{$method."projectionName"}}")
 {{end}}
-{{when $method.get("targetClass").isVoid().invert()}}
-        .targetClass({{$method.get("targetClass")}}.class)
+{{when $method."targetClass".isNotVoid()}}
+        .targetClass({{$method."targetClass"}}.class)
 {{end}}
-{{when $method.get("requiredProjections").isVoid().invert()}}
+{{when $method."requiredProjections".isNotVoid()}}
         .requiredProjections(ProjectionReferences.list(
-{{for projection : $method.get("requiredProjections")}}
-          "{{$projection.get("name")}}", {{$projection.get("class")}}.class{{when $projection.isNotLast()}},{{end}}
+{{for projection : $method."requiredProjections"}}
+          "{{$projection."name"}}", {{$projection."class"}}.class{{when $projection.isNotLast()}},{{end}}
 {{end}}
         ))
 {{end}}
-{{when $method.get("lazyLoading").isVoid().invert()}}
-        .lazyLoading({{$method.get("lazyLoading")}})
+{{when $method."lazyLoading".isNotVoid()}}
+        .lazyLoading({{$method."lazyLoading"}})
 {{end}}
-{{when $method.get("guideOrdinal").isVoid().invert()}}
-        .guideOrdinal({{$method.get("guideOrdinal")}})
+{{when $method."guideOrdinal".isNotVoid()}}
+        .guideOrdinal({{$method."guideOrdinal"}})
 {{end}}
-{{when $method.get("guideKind").isVoid().invert()}}
-        .guideKind(GuideKinds.{{$method.get("guideKind")}})
+{{when $method."guideKind".isNotVoid()}}
+        .guideKind(GuideKinds.{{$method."guideKind"}})
 {{end}}
-{{when $method.get("guideCid").isVoid().invert()}}
-        .guideCid("{{$method.get("guideCid")}}")
+{{when $method."guideCid".isNotVoid()}}
+        .guideCid("{{$method."guideCid"}}")
 {{end}}
-{{when $method.get("guideTargetForm").isVoid().invert()}}
-        .guideTargetForm(ObjectReferenceForms.{{$method.get("guideTargetForm")}})
+{{when $method."guideTargetForm".isNotVoid()}}
+        .guideTargetForm(ObjectReferenceForms.{{$method."guideTargetForm"}})
 {{end}}
         .get(){{when $method.isNotLast()}},{{end}}
 {{end}}

@@ -15,7 +15,7 @@ import {{$importedClass}};
 public interface {{$generatedArtifactSimpleName}} extends {{$guideClassSimpleName}}{{$guideTypeParams}} {
 
   @Override
-  default String cid() {
+  default java.lang.String cid() {
     return ChannelFunctions.getChannelId({{$channelClassSimpleName}}.class);
   }
 

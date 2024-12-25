@@ -20,12 +20,12 @@ public interface {{$generatedArtifactSimpleName}}{{$domainTypeParamsFull}} exten
 
 {{for method : $conversionMethods}}
   @Override
-  {{$method.get("declaration")}};
+  {{$method."declaration"}};
 
 {{end}}
 {{for method : $domainMethods}}
-  {{$method.get("javadoc")}}
-  {{$method.get("declaration")}};
+  {{$method."javadoc"}}
+  {{$method."declaration"}};
 
 {{end}}
   @Override
@@ -33,7 +33,7 @@ public interface {{$generatedArtifactSimpleName}}{{$domainTypeParamsFull}} exten
     return this;
   }
 
-  <Q> {{$generatedArtifactSimpleName}}{{$domainTypeParamsBrief}} moveThru(String cid, Q qualifier) throws TraverseException;
+  <Q> {{$generatedArtifactSimpleName}}{{$domainTypeParamsBrief}} moveThru(java.lang.String cid, Q qualifier) throws TraverseException;
 
 {{when $isAlias}}
   {{$generatedArtifactSimpleName}}{{$domainTypeParamsBrief}} moveThru(ChannelMethod0<? super {{$primaryDomainSimpleName}}{{$primaryDomainTypeArguments}}, ? super {{$primaryDomainSimpleName}}{{$primaryDomainTypeArguments}}> channelMethod) throws TraverseException;
@@ -49,7 +49,7 @@ public interface {{$generatedArtifactSimpleName}}{{$domainTypeParamsFull}} exten
 
   <Q> {{$generatedArtifactSimpleName}}{{$domainTypeParamsBrief}} moveThru(Class<? extends Channel1> channelClass, Q qualifier) throws TraverseException;
 
-  <R, Q> R mapOfMovingThru(String cid, Q qualifier) throws TraverseException;
+  <R, Q> R mapOfMovingThru(java.lang.String cid, Q qualifier) throws TraverseException;
 
   <R> R mapOfMovingThru(Class<? extends Channel0> channelClass) throws TraverseException;
 

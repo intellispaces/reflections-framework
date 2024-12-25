@@ -49,9 +49,9 @@ public class {{$generatedArtifactSimpleName}}{{$classTypeParams}} implements {{$
 {{end}}
 
 {{for method : $methods}}
-  {{$method.get("javadoc")}}
+  {{$method."javadoc"}}
   @Override
-  {{$method.get("declaration")}};
+  {{$method."declaration"}};
 
 {{end}}
 
@@ -66,7 +66,7 @@ public class {{$generatedArtifactSimpleName}}{{$classTypeParams}} implements {{$
   }
 
   @Override
-  public <Q> {{$movableObjectHandleName}}{{$domainTypeArguments}} moveThru(String cid, Q qualifier) throws TraverseException {
+  public <Q> {{$movableObjectHandleName}}{{$domainTypeArguments}} moveThru(java.lang.String cid, Q qualifier) throws TraverseException {
     {{$childField}}.moveThru(cid, qualifier);
     return this;
   }
@@ -110,7 +110,7 @@ public class {{$generatedArtifactSimpleName}}{{$classTypeParams}} implements {{$
   }
 
   @Override
-  public <R, Q> R mapOfMovingThru(String cid, Q qualifier) throws TraverseException {
+  public <R, Q> R mapOfMovingThru(java.lang.String cid, Q qualifier) throws TraverseException {
     return (R) {{$childField}}.mapOfMovingThru(cid, qualifier);
   }
 

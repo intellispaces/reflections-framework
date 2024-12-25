@@ -49,9 +49,9 @@ public class {{$generatedArtifactSimpleName}}{{$classTypeParams}} implements {{$
 {{end}}
 
 {{for method : $methods}}
-  {{$method.get("javadoc")}}
+  {{$method."javadoc"}}
   @Override
-  {{$method.get("declaration")}};
+  {{$method."declaration"}};
 
 {{end}}
 

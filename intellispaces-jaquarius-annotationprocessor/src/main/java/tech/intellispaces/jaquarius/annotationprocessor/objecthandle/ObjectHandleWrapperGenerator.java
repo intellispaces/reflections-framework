@@ -129,7 +129,7 @@ abstract class ObjectHandleWrapperGenerator extends AbstractObjectHandleGenerato
   protected void analyzeObjectHandleMethods() {
     int methodOrdinal = 0;
     for (MethodStatement method : domainMethods) {
-      analyzeMethod(method, ObjectReferenceForms.Common, methodOrdinal++);
+      analyzeMethod(method, ObjectReferenceForms.Object, methodOrdinal++);
       if (method.returnType().orElseThrow().isCustomTypeReference()) {
         CustomType returnType = method.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow().targetType();
         if (ClassFunctions.isPrimitiveWrapperClass(returnType.canonicalName())) {
@@ -354,6 +354,7 @@ abstract class ObjectHandleWrapperGenerator extends AbstractObjectHandleGenerato
     return ObjectHandleFunctions.getObjectHandleDeclaration(
         AnnotationGeneratorFunctions.normalizeType(type),
         ObjectHandleTypes.General,
+        ObjectReferenceForms.Default,
         false,
         this::addImportAndGetSimpleName
     );
@@ -370,14 +371,14 @@ abstract class ObjectHandleWrapperGenerator extends AbstractObjectHandleGenerato
     sb.append(" ");
     sb.append(getObjectHandleMethodName(domainMethod, targetForm));
     sb.append("(");
-    appendMethodParameters(sb, domainMethod);
+    appendMethodParams(sb, domainMethod);
     sb.append(")");
     appendMethodExceptions(sb, domainMethod);
     sb.append(" {\n");
     sb.append("  return ");
     if (ObjectReferenceForms.Primitive.is(targetForm)) {
       CustomType ct = domainMethod.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow().targetType();
-      String typename = ClassFunctions.getPrimitiveTypeOfWrapper(ct.canonicalName());
+      String typename = ClassFunctions.primitiveTypenameOfWrapper(ct.canonicalName());
       if (PrimitiveTypes.Boolean.typename().equals(typename)) {
         sb.append("PrimitiveFunctions.longToBoolean(");
         appendInvokeMethodAction(sb, domainMethod, targetForm, methodOrdinal);
@@ -435,11 +436,11 @@ abstract class ObjectHandleWrapperGenerator extends AbstractObjectHandleGenerato
   }
 
   private String buildExecuteMethod(MethodStatement domainMethod, ObjectReferenceForm targetForm) {
-    if (ObjectReferenceForms.Common.is(targetForm)) {
+    if (ObjectReferenceForms.Object.is(targetForm)) {
       return "execute";
     } else if (ObjectReferenceForms.Primitive.is(targetForm)) {
       CustomType ct = domainMethod.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow().targetType();
-      String typename = ClassFunctions.getPrimitiveTypeOfWrapper(ct.canonicalName());
+      String typename = ClassFunctions.primitiveTypenameOfWrapper(ct.canonicalName());
       if (tech.intellispaces.general.object.ObjectFunctions.equalsAnyOf(
           typename,
           PrimitiveTypes.Boolean.typename(),

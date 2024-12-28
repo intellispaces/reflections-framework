@@ -181,13 +181,13 @@ public class DomainValidator implements ArtifactValidator {
       throw JaquariusExceptions.withMessage("It is not allowed to use array type in channel qualifiers. " +
           "Check method '{0}' in class {1}", method.name(), domainType.canonicalName());
     }
+    if (param.type().isPrimitiveReference()) {
+      throw JaquariusExceptions.withMessage("It is not allowed to use primitive type in channel qualifiers. " +
+              "Check parameter '{0}' in method '{1}' in class {2}",
+          param.name(), method.name(), domainType.canonicalName());
+    }
     if (param.type().isCustomTypeReference()) {
       CustomTypeReference customTypeReference = param.type().asCustomTypeReferenceOrElseThrow();
-      if (ClassFunctions.isPrimitiveWrapperClass(customTypeReference.targetType().canonicalName())) {
-        throw JaquariusExceptions.withMessage("It is not allowed to use primitive wrapper type in channel qualifiers. " +
-            "Check parameter '{0}' in method '{1}' in class {2}",
-            param.name(), method.name(), domainType.canonicalName());
-      }
       CustomType customType = customTypeReference.targetType();
       if (UNACCEPTABLE_TYPES.contains(customType.canonicalName())) {
         throw JaquariusExceptions.withMessage("Channel method qualifier has unacceptable type. " +

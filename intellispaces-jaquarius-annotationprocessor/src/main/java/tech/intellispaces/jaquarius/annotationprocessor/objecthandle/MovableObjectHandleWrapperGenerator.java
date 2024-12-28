@@ -104,7 +104,7 @@ public class MovableObjectHandleWrapperGenerator extends ObjectHandleWrapperGene
     return true;
   }
 
-  protected void appendMethodReturnHandleType(StringBuilder sb, MethodStatement method) {
+  protected void appendObjectFormMethodReturnType(StringBuilder sb, MethodStatement method) {
     TypeReference domainReturnType = method.returnType().orElseThrow();
     if (
         ChannelFunctions.getTraverseTypes(method).stream().anyMatch(TraverseType::isMoving) ||

@@ -48,7 +48,7 @@ public final class DomainFunctions {
 
   public static CustomType getDomainType(TypeReference type) {
     if (type.isPrimitiveReference()) {
-      Class<?> wrapperClass = ClassFunctions.getPrimitiveWrapperClass(type.asPrimitiveReferenceOrElseThrow().typename());
+      Class<?> wrapperClass = ClassFunctions.wrapperClassOfPrimitive(type.asPrimitiveReferenceOrElseThrow().typename());
       return JavaStatements.customTypeStatement(wrapperClass);
     } else if (type.isCustomTypeReference()) {
       CustomType domainType = type.asCustomTypeReferenceOrElseThrow().targetType();

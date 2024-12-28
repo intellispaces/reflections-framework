@@ -54,7 +54,7 @@ public abstract class AbstractObjectHandleGenerator extends JaquariusArtifactGen
     int methodOrdinal = 0;
     for (MethodStatement method : methods) {
       MethodStatement effectiveMethod = convertMethodBeforeGenerate(method);
-      analyzeMethod(effectiveMethod, ObjectReferenceForms.Common, methodOrdinal++);
+      analyzeMethod(effectiveMethod, ObjectReferenceForms.Object, methodOrdinal++);
       if (method.returnType().orElseThrow().isCustomTypeReference()) {
         CustomType returnType = method.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow().targetType();
         if (ClassFunctions.isPrimitiveWrapperClass(returnType.canonicalName())) {
@@ -85,7 +85,7 @@ public abstract class AbstractObjectHandleGenerator extends JaquariusArtifactGen
     sb.append(" ");
     sb.append(getObjectHandleMethodName(method, targetForm));
     sb.append("(");
-    appendMethodParameters(sb, method);
+    appendMethodParams(sb, method);
     sb.append(")");
     appendMethodExceptions(sb, method);
 
@@ -183,7 +183,7 @@ public abstract class AbstractObjectHandleGenerator extends JaquariusArtifactGen
   }
 
   protected String getObjectHandleMethodName(MethodStatement domainMethod, ObjectReferenceForm targetForm) {
-    if (ObjectReferenceForms.Common.is(targetForm)) {
+    if (ObjectReferenceForms.Object.is(targetForm)) {
       return domainMethod.name();
     } else if (ObjectReferenceForms.Primitive.is(targetForm)) {
       return domainMethod.name() + "Primitive";
@@ -193,17 +193,17 @@ public abstract class AbstractObjectHandleGenerator extends JaquariusArtifactGen
   }
 
   protected void appendMethodReturnHandleType(StringBuilder sb, MethodStatement method, ObjectReferenceForm targetForm) {
-    if (ObjectReferenceForms.Common.is(targetForm)) {
-      appendMethodReturnHandleType(sb, method);
+    if (ObjectReferenceForms.Object.is(targetForm)) {
+      appendObjectFormMethodReturnType(sb, method);
     } else if (ObjectReferenceForms.Primitive.is(targetForm)) {
       CustomType ct = method.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow().targetType();
-      sb.append(ClassFunctions.getPrimitiveTypeOfWrapper(ct.canonicalName()));
+      sb.append(ClassFunctions.primitiveTypenameOfWrapper(ct.canonicalName()));
     } else {
       throw UnexpectedExceptions.withMessage("Unsupported guide form - {0}", targetForm);
     }
   }
 
-  protected void appendMethodReturnHandleType(StringBuilder sb, MethodStatement method) {
+  protected void appendObjectFormMethodReturnType(StringBuilder sb, MethodStatement method) {
     TypeReference domainReturnType = method.returnType().orElseThrow();
     if (NameConventionFunctions.isConversionMethod(method)) {
       sb.append(buildObjectHandleDeclaration(domainReturnType, getObjectHandleType()));
@@ -230,11 +230,14 @@ public abstract class AbstractObjectHandleGenerator extends JaquariusArtifactGen
     }
   }
 
-  protected void appendMethodParameters(StringBuilder sb, MethodStatement method) {
+  protected void appendMethodParams(StringBuilder sb, MethodStatement method) {
     RunnableAction commaAppender = StringActions.skipFirstTimeCommaAppender(sb);
     for (MethodParam param : AnnotationGeneratorFunctions.rearrangementParams(method.params())) {
       commaAppender.run();
-      sb.append(buildObjectHandleDeclaration(AnnotationGeneratorFunctions.normalizeType(param.type()), ObjectHandleTypes.General));
+      sb.append(buildHandleDeclarationDefaultForm(
+          AnnotationGeneratorFunctions.normalizeType(param.type()),
+          ObjectHandleTypes.General,
+          ObjectReferenceForms.Default));
       sb.append(" ");
       sb.append(param.name());
     }

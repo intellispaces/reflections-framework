@@ -22,10 +22,10 @@ public class ModuleSettingsSupplier extends AbstractProjectionSupplier {
     Module module = Modules.current();
     Settings annotation = projectionMethod.selectAnnotation(Settings.class).orElseThrow();
     String rawProperties = ModulePropertiesFunctions.getProperties(module, null);
-    Object parsedProperties = module.mapThruChannel0(rawProperties, SpaceConstants.STRING_TO_PROPERTIES_TID);
+    Object parsedProperties = module.mapThruChannel0(rawProperties, SpaceConstants.STRING_TO_DICTIONARY_CID);
 
     Object target = module.mapThruChannel1(
-        parsedProperties, SpaceConstants.PROPERTIES_TO_VALUE_TID, annotation.value());
+        parsedProperties, SpaceConstants.DICTIONARY_TO_VALUE_CID, annotation.value());
 
     Class<?> expectedReturnType = projectionMethod.returnType().orElseThrow()
         .asCustomTypeReferenceOrElseThrow()
@@ -33,7 +33,7 @@ public class ModuleSettingsSupplier extends AbstractProjectionSupplier {
     if (target.getClass() == expectedReturnType) {
       return target;
     }
-    if (ObjectHandleConstants.PROPERTIES_HANDLE_CLASSNAME.equals(expectedReturnType.getCanonicalName())) {
+    if (ObjectHandleConstants.DICTIONARY_HANDLE_CLASSNAME.equals(expectedReturnType.getCanonicalName())) {
       if (!ObjectHandleFunctions.propertiesHandleClass().isAssignableFrom(target.getClass())) {
         throw UnexpectedExceptions.withMessage("Invalid return type of method '{0}' in class {1}",
             projectionMethod.name(), projectionMethod.owner().canonicalName());
@@ -42,7 +42,7 @@ public class ModuleSettingsSupplier extends AbstractProjectionSupplier {
     }
     if (ObjectHandleFunctions.isCustomObjectHandleClass(expectedReturnType)) {
       if (DataFunctions.isDataObjectHandle(expectedReturnType)) {
-        return module.mapThruChannel1(target, SpaceConstants.PROPERTIES_TO_DATA_TID, expectedReturnType);
+        return module.mapThruChannel1(target, SpaceConstants.DICTIONARY_TO_DATA_CID, expectedReturnType);
       }
     }
     throw UnexpectedExceptions.withMessage("Invalid return type of method '{0}' in class {1}",

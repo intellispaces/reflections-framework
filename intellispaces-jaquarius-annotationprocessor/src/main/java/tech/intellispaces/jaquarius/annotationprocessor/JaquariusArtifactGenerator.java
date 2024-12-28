@@ -4,6 +4,8 @@ import tech.intellispaces.annotationprocessor.TemplatedJavaArtifactGenerator;
 import tech.intellispaces.general.type.ClassFunctions;
 import tech.intellispaces.jaquarius.object.handle.ObjectHandleFunctions;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleType;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
 import tech.intellispaces.java.reflection.customtype.CustomType;
 import tech.intellispaces.java.reflection.method.MethodParam;
 import tech.intellispaces.java.reflection.method.MethodSignatureDeclarations;
@@ -51,7 +53,15 @@ public abstract class JaquariusArtifactGenerator extends TemplatedJavaArtifactGe
 
   protected String buildObjectHandleDeclaration(TypeReference domainType, ObjectHandleType handleType) {
     return ObjectHandleFunctions.getObjectHandleDeclaration(
-        domainType, handleType, this::addImportAndGetSimpleName
+        domainType, handleType, ObjectReferenceForms.Object, this::addImportAndGetSimpleName
+    );
+  }
+
+  protected String buildHandleDeclarationDefaultForm(
+      TypeReference domainType, ObjectHandleType handleType, ObjectReferenceForm handleForm
+  ) {
+    return ObjectHandleFunctions.getObjectHandleDeclaration(
+        domainType, handleType, handleForm, this::addImportAndGetSimpleName
     );
   }
 
@@ -73,7 +83,7 @@ public abstract class JaquariusArtifactGenerator extends TemplatedJavaArtifactGe
   protected String buildDomainLink(TypeReference type) {
     if (type.isPrimitiveReference()) {
       return "{@link " +
-          ClassFunctions.getPrimitiveWrapperClass(type.asPrimitiveReferenceOrElseThrow().typename()).getSimpleName() +
+          ClassFunctions.wrapperClassOfPrimitive(type.asPrimitiveReferenceOrElseThrow().typename()).getSimpleName() +
           "}";
     } else if (type.isCustomTypeReference()) {
       return "{@link " +

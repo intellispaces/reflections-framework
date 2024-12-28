@@ -102,7 +102,7 @@ public class MovableObjectHandleGenerator extends ObjectHandleGenerator {
   }
 
   @Override
-  protected void appendMethodReturnHandleType(StringBuilder sb, MethodStatement method) {
+  protected void appendObjectFormMethodReturnType(StringBuilder sb, MethodStatement method) {
     TypeReference domainReturnType = method.returnType().orElseThrow();
     if (
         ChannelFunctions.getTraverseTypes(method).stream().anyMatch(TraverseType::isMoving)

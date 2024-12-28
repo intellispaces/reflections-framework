@@ -367,10 +367,10 @@ public class GuideGenerator extends JaquariusArtifactGenerator {
   }
 
   private String buildTargetObjectHandleFormDeclaration() {
-    if (ObjectReferenceForms.Common.is(targetForm)) {
+    if (ObjectReferenceForms.Object.is(targetForm)) {
       return buildTargetObjectHandleDeclaration(Function.identity(), false);
     } else if (ObjectReferenceForms.Primitive.is(targetForm)) {
-      return ClassFunctions.getPrimitiveTypeOfWrapper(
+      return ClassFunctions.primitiveTypenameOfWrapper(
           channelMethod.returnType().orElseThrow()
               .asCustomTypeReferenceOrElseThrow()
               .targetType()
@@ -404,7 +404,7 @@ public class GuideGenerator extends JaquariusArtifactGenerator {
       }
       return sb.toString();
     } else if (type.isPrimitiveReference()) {
-      return ClassFunctions.getPrimitiveWrapperClass(type.asPrimitiveReferenceOrElseThrow().typename()).getSimpleName();
+      return ClassFunctions.wrapperClassOfPrimitive(type.asPrimitiveReferenceOrElseThrow().typename()).getSimpleName();
     } else {
       String canonicalName = ObjectHandleFunctions.getCommonObjectHandleTypename(type, typeReplacer);
       String name = type.isCustomTypeReference() ? addImportAndGetSimpleName(canonicalName) : canonicalName;

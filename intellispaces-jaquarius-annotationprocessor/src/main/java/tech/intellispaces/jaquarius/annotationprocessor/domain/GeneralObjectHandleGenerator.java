@@ -123,7 +123,7 @@ public class GeneralObjectHandleGenerator extends ObjectHandleGenerator {
     sb.append(" ");
     sb.append(method.name());
     sb.append("(");
-    appendMethodParameters(sb, method);
+    appendMethodParams(sb, method);
     sb.append(")");
     appendMethodExceptions(sb, method);
     return Map.of(

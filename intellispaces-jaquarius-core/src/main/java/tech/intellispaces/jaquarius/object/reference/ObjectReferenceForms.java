@@ -5,12 +5,17 @@ import tech.intellispaces.general.entity.Enumeration;
 public enum ObjectReferenceForms implements ObjectReferenceForm, Enumeration<ObjectReferenceForm> {
 
   /**
-   * The object reference represented as the pure Java object or instance of the class {@link ObjectHandle}.
+   * The object reference represented as instance of the class {@link ObjectHandle} or primitive type.
    */
-  Common,
+  Default,
 
   /**
-   * The object reference represented as the primitive value.
+   * The object reference represented as instance of the class {@link ObjectHandle} or primitive wrapper class.
+   */
+  Object,
+
+  /**
+   * The object reference represented as the primitive type.
    */
   Primitive
 }

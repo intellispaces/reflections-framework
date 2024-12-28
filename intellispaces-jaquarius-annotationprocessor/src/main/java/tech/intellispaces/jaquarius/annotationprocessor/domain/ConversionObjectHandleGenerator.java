@@ -110,7 +110,7 @@ abstract class ConversionObjectHandleGenerator extends AbstractObjectHandleGener
     sb.append(" ");
     sb.append(getObjectHandleMethodName(method, targetForm));
     sb.append("(");
-    appendMethodParameters(sb, method);
+    appendMethodParams(sb, method);
     sb.append(")");
     appendMethodExceptions(sb, method);
     sb.append(" {\n");
@@ -131,7 +131,7 @@ abstract class ConversionObjectHandleGenerator extends AbstractObjectHandleGener
     sb.append(" ");
     sb.append(method.name());
     sb.append("(");
-    appendMethodParameters(sb, method);
+    appendMethodParams(sb, method);
     sb.append(")");
     appendMethodExceptions(sb, method);
     sb.append(" {\n");
@@ -208,7 +208,7 @@ abstract class ConversionObjectHandleGenerator extends AbstractObjectHandleGener
   private void buildCastReturnStatement(StringBuilder sb, MethodStatement method, ObjectReferenceForm targetForm) {
     sb.append("return ");
     sb.append("(");
-    appendMethodReturnHandleType(sb, method);
+    appendObjectFormMethodReturnType(sb, method);
     sb.append(") ");
     sb.append("this.").append(childFieldName).append(".");
     sb.append(getObjectHandleMethodName(method, targetForm));
@@ -246,7 +246,7 @@ abstract class ConversionObjectHandleGenerator extends AbstractObjectHandleGener
   }
 
   @Override
-  protected void appendMethodReturnHandleType(StringBuilder sb, MethodStatement method) {
+  protected void appendObjectFormMethodReturnType(StringBuilder sb, MethodStatement method) {
     TypeReference domainReturnType = method.returnType().orElseThrow();
     if (NameConventionFunctions.isConversionMethod(method)) {
       sb.append(buildObjectHandleDeclaration(domainReturnType, getObjectHandleType()));

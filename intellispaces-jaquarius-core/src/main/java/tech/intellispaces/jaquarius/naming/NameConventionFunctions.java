@@ -218,7 +218,7 @@ public interface NameConventionFunctions {
   static String getGuideClassCanonicalName(
       ObjectReferenceForm targetForm, String spaceName, CustomType channelType, MethodStatement channelMethod
   ) {
-    String name = StringFunctions.replaceLast(channelType.canonicalName(), "Channel", "Guide");
+    String name = StringFunctions.replaceTail(channelType.canonicalName(), "Channel", "Guide");
     if (ObjectReferenceForms.Primitive.is(targetForm)) {
       name = name + "Primitive";
     }

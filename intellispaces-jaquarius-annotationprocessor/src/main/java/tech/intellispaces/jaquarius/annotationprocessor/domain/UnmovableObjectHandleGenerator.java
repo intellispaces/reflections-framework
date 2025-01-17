@@ -59,7 +59,7 @@ public class UnmovableObjectHandleGenerator extends ObjectHandleGenerator {
     analyzeConversionMethods(sourceArtifact());
 
     addVariable("movableClassSimpleName", movableClassSimpleName());
-    addVariable("domainTypeParamsFull", domainTypeParamsFull);
+    addVariable("handleTypeParamsFull", typeParamsFull);
     addVariable("domainTypeParamsBrief", domainTypeParamsBrief);
     addVariable("generalObjectHandle", generalObjectHandle);
     addVariable("conversionMethods", conversionMethods);

@@ -12,13 +12,13 @@ import {{$importedClass}};
 @ObjectHandle({{$sourceArtifactSimpleName}}.class)
 {{$generatedAnnotation}}
 {{when $isAlias}}
-public interface {{$generatedArtifactSimpleName}}{{$domainTypeParamsFull}} extends {{$primaryObjectHandle}} {
+public interface {{$generatedArtifactSimpleName}}{{$handleTypeParamsFull}} extends {{$primaryObjectHandle}} {
 
   default Type<{{$primaryDomainSimpleName}}{{$primaryDomainTypeArguments}}> domain() {
     return {{$domainType}}
   }
 {{else}}
-public interface {{$generatedArtifactSimpleName}}{{$domainTypeParamsFull}} extends tech.intellispaces.jaquarius.object.reference.ObjectHandle<{{$sourceArtifactSimpleName}}{{$domainTypeParamsBrief}}> {
+public interface {{$generatedArtifactSimpleName}}{{$handleTypeParamsFull}} extends tech.intellispaces.jaquarius.object.reference.ObjectHandle<{{$sourceArtifactSimpleName}}{{$domainTypeParamsBrief}}> {
 
   default Type<{{$sourceArtifactSimpleName}}{{$domainTypeParamsBrief}}> domain() {
     return {{$domainType}}

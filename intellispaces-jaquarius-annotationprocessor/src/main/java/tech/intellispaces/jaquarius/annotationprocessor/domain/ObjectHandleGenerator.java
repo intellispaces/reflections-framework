@@ -2,6 +2,11 @@ package tech.intellispaces.jaquarius.annotationprocessor.domain;
 
 import tech.intellispaces.jaquarius.annotationprocessor.AbstractObjectHandleGenerator;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
+import tech.intellispaces.jaquarius.object.handle.ObjectHandleFunctions;
+import tech.intellispaces.jaquarius.object.handle.ObjectHandleTypes;
+import tech.intellispaces.jaquarius.object.reference.ObjectHandleType;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
 import tech.intellispaces.java.reflection.customtype.CustomType;
 import tech.intellispaces.java.reflection.reference.CustomTypeReference;
@@ -15,6 +20,7 @@ abstract class ObjectHandleGenerator extends AbstractObjectHandleGenerator {
   protected String domainType;
   protected String generalObjectHandle;
   protected String primaryObjectHandle;
+  protected String typeParamsFull;
   protected String domainTypeParamsFull;
   protected String domainTypeParamsBrief;
   protected String primaryDomainSimpleName;
@@ -26,6 +32,9 @@ abstract class ObjectHandleGenerator extends AbstractObjectHandleGenerator {
   }
 
   protected void analyzeDomain() {
+    typeParamsFull = ObjectHandleFunctions.getObjectHandleTypeParams(
+        sourceArtifact(), ObjectHandleTypes.General, ObjectReferenceForms.Object, this::addImportAndGetSimpleName, true
+    );
     domainTypeParamsFull = sourceArtifact().typeParametersFullDeclaration();
     domainTypeParamsBrief = sourceArtifact().typeParametersBriefDeclaration();
     generalObjectHandle = addImportAndGetSimpleName(

@@ -8,7 +8,7 @@ import tech.intellispaces.jaquarius.exception.TraverseException;
 /**
  * Object reference.<p/>
  *
- * The object reference connects the system, the object and the semantic domain.<p/>
+ * The object reference it a link from the system to an object.<p/>
  *
  * Any interaction of the system with the object is performed through the object reference.
  *

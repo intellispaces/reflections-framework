@@ -2,7 +2,7 @@ package tech.intellispaces.jaquarius.space.domain;
 
 import tech.intellispaces.general.entity.Enumeration;
 
-public enum CoreDomains implements Enumeration<CoreDomain>, CoreDomain {
+public enum PrimaryDomainTypes implements Enumeration<PrimaryDomainType>, PrimaryDomainType {
 
   /**
    * The domain of domains.
@@ -24,14 +24,13 @@ public enum CoreDomains implements Enumeration<CoreDomain>, CoreDomain {
    */
   Integer("java.lang.Integer");
 
+  private final String handleClassName;
 
-  private final String classname;
-
-  CoreDomains(java.lang.String classname) {
-    this.classname = classname;
+  PrimaryDomainTypes(java.lang.String handleClassName) {
+    this.handleClassName = handleClassName;
   }
 
-  public java.lang.String className() {
-    return classname;
+  public java.lang.String handleClassName() {
+    return handleClassName;
   }
 }

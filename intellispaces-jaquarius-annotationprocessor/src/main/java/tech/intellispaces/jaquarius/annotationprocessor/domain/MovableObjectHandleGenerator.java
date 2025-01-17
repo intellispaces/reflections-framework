@@ -70,7 +70,7 @@ public class MovableObjectHandleGenerator extends ObjectHandleGenerator {
     analyzeObjectHandleMethods(sourceArtifact(), context);
     analyzeConversionMethods(sourceArtifact());
 
-    addVariable("domainTypeParamsFull", domainTypeParamsFull);
+    addVariable("handleTypeParamsFull", typeParamsFull);
     addVariable("domainTypeParamsBrief", domainTypeParamsBrief);
     addVariable("generalObjectHandle", generalObjectHandle);
     addVariable("conversionMethods", conversionMethods);

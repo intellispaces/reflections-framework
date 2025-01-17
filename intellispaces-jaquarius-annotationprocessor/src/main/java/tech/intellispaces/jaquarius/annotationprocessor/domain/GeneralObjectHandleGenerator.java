@@ -65,7 +65,7 @@ public class GeneralObjectHandleGenerator extends ObjectHandleGenerator {
     analyzeObjectHandleMethods(sourceArtifact(), context);
 
     addVariable("movableClassSimpleName", movableClassSimpleName());
-    addVariable("domainTypeParamsFull", domainTypeParamsFull);
+    addVariable("handleTypeParamsFull", typeParamsFull);
     addVariable("domainTypeParamsBrief", domainTypeParamsBrief);
     addVariable("domainType", domainType);
     addVariable("domainMethods", methods);

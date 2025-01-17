@@ -30,7 +30,9 @@ import tech.intellispaces.java.reflection.instance.AnnotationInstance;
 import tech.intellispaces.java.reflection.method.MethodParam;
 import tech.intellispaces.java.reflection.method.MethodStatement;
 import tech.intellispaces.java.reflection.reference.CustomTypeReference;
+import tech.intellispaces.java.reflection.reference.NamedReference;
 import tech.intellispaces.java.reflection.reference.NotPrimitiveReference;
+import tech.intellispaces.java.reflection.reference.ReferenceBound;
 import tech.intellispaces.java.reflection.reference.TypeReference;
 import tech.intellispaces.java.reflection.reference.WildcardReference;
 
@@ -302,7 +304,7 @@ public class ObjectHandleFunctions {
       TypeReference domainType,
       ObjectHandleType handleType,
       ObjectReferenceForm form,
-      boolean withTypeParams,
+      boolean includeTypeParams,
       Function<String, String> simpleNameMapping
   ) {
     if (domainType.isPrimitiveReference()) {
@@ -319,7 +321,7 @@ public class ObjectHandleFunctions {
       } else if (targetType.canonicalName().equals(Class.class.getCanonicalName())) {
         var sb = new StringBuilder();
         sb.append(Class.class.getSimpleName());
-        if (withTypeParams && !customTypeReference.typeArguments().isEmpty()) {
+        if (includeTypeParams && !customTypeReference.typeArguments().isEmpty()) {
           sb.append("<");
           RunnableAction commaAppender = StringActions.skipFirstTimeCommaAppender(sb);
           for (NotPrimitiveReference argType : customTypeReference.typeArguments()) {
@@ -334,9 +336,12 @@ public class ObjectHandleFunctions {
       } else {
         var sb = new StringBuilder();
         String canonicalName = ObjectHandleFunctions.getObjectHandleTypename(targetType, handleType);
+
+
+
         String simpleName = simpleNameMapping.apply(canonicalName);
         sb.append(simpleName);
-        if (withTypeParams && !customTypeReference.typeArguments().isEmpty()) {
+        if (includeTypeParams && !customTypeReference.typeArguments().isEmpty()) {
           sb.append("<");
           RunnableAction commaAppender = StringActions.skipFirstTimeCommaAppender(sb);
           for (NotPrimitiveReference argType : customTypeReference.typeArguments()) {
@@ -364,6 +369,38 @@ public class ObjectHandleFunctions {
     } else {
       throw new UnsupportedOperationException("Unsupported type - " + domainType.actualDeclaration());
     }
+  }
+
+  public static String getObjectHandleTypeParams(
+      CustomType domainType,
+      ObjectHandleType handleType,
+      ObjectReferenceForm form,
+      Function<String, String> simpleNameMapping,
+      boolean full
+  ) {
+    if (domainType.typeParameters().isEmpty()) {
+      return "";
+    }
+
+    var sb = new StringBuilder();
+    RunnableAction commaAppender = StringActions.skipFirstTimeCommaAppender(sb);
+    sb.append("<");
+    for (NamedReference namedReference : domainType.typeParameters()) {
+      commaAppender.run();
+      if (!full || namedReference.extendedBounds().isEmpty()) {
+        sb.append(namedReference.name());
+      } else {
+        sb.append(namedReference.name());
+        sb.append(" extends ");
+        RunnableAction boundCommaAppender = StringActions.skipFirstTimeCommaAppender(sb);
+        for (ReferenceBound bound : namedReference.extendedBounds()) {
+          boundCommaAppender.run();
+          sb.append(getObjectHandleDeclaration(bound, handleType, form, true, simpleNameMapping));
+        }
+      }
+    }
+    sb.append(">");
+    return sb.toString();
   }
 
   public static String buildObjectHandleGuideMethodName(MethodStatement method) {

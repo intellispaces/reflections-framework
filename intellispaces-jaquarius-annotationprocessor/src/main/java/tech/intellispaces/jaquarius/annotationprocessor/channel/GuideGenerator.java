@@ -400,7 +400,7 @@ public class GuideGenerator extends JaquariusArtifactGenerator {
       RunnableAction commaAppender = StringActions.skipFirstTimeCommaAppender(sb);
       for (ReferenceBound bound : namedReference.extendedBounds()) {
         commaAppender.run();
-        sb.append(buildObjectHandleDeclaration(bound, typeReplacer));
+        sb.append(buildObjectHandleDeclaration(bound, typeReplacer, true));
       }
       return sb.toString();
     } else if (type.isPrimitiveReference()) {

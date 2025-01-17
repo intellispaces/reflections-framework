@@ -13,6 +13,7 @@ import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
 import tech.intellispaces.jaquarius.object.handle.ObjectHandleFunctions;
 import tech.intellispaces.jaquarius.object.handle.ObjectHandleTypes;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
 import tech.intellispaces.jaquarius.traverse.TraverseType;
@@ -54,7 +55,9 @@ abstract class ConversionObjectHandleGenerator extends AbstractObjectHandleGener
   protected void analyzeDomain() {
     domainClassSimpleName = addImportAndGetSimpleName(parentDomainType.targetType().canonicalName());
     domainTypeParamsBrief = parentDomainType.targetType().typeParametersBriefDeclaration();
-    classTypeParams = sourceArtifact().typeParametersFullDeclaration();
+    classTypeParams = ObjectHandleFunctions.getObjectHandleTypeParams(
+        sourceArtifact(), ObjectHandleTypes.General, ObjectReferenceForms.Object, this::addImportAndGetSimpleName, true
+    );
     classTypeParamsBrief = sourceArtifact().typeParametersBriefDeclaration();
     domainTypeArguments = parentDomainType.typeArgumentsDeclaration(this::addImportAndGetSimpleName);
     childFieldName = StringFunctions.lowercaseFirstLetter(

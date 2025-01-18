@@ -1,26 +1,47 @@
 package tech.intellispaces.jaquarius.space.domain;
 
+import tech.intellispaces.general.collection.CollectionFunctions;
+import tech.intellispaces.general.data.Dictionaries;
 import tech.intellispaces.general.data.Dictionary;
 import tech.intellispaces.general.exception.UnexpectedExceptions;
+import tech.intellispaces.general.resource.ResourceFunctions;
 
+import java.io.IOException;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Enumeration;
 import java.util.List;
 
 public class PrimaryDomainFunctions {
 
+  public static Dictionary readPrimaryDomainDictionary(String baseDirectory) throws IOException {
+    var path = Paths.get(baseDirectory, "src/main/resources/META-INF/jaquarius/domain.properties");
+    String content = Files.readString(path, StandardCharsets.UTF_8);
+    return Dictionaries.ofProperties(content);
+  }
+
+  public static List<Dictionary> readPrimaryDomainDictionaries(ClassLoader classLoader) throws IOException {
+    Enumeration<URL> enumeration = classLoader.getResources(
+        "META-INF/jaquarius/domain.properties");
+    List<URL> urls = CollectionFunctions.toList(enumeration);
+    return CollectionFunctions.mapEach(urls, url -> Dictionaries.ofProperties(
+        ResourceFunctions.readResourceAsString(url)));
+  }
+
   public static PrimaryDomainSet buildPrimaryDomains(List<Dictionary> dictionaries) {
-    var map = new HashMap<PrimaryDomainType, List<PrimaryDomain>>();
+    var primaryDomains = new ArrayList<PrimaryDomain>();
     dictionaries.forEach(dictionary ->
-        dictionary.propertyNames().forEach(property -> map.compute(
-          getPrimaryDomainType(property), (k, v) -> {
-            PrimaryDomain primaryDomain = buildPrimaryDomain((PrimaryDomainTypes) k, dictionary.stringValue(property));
-            List<PrimaryDomain> list = (v == null) ? new ArrayList<>() : v;
-            list.add(primaryDomain);
-            return list;
-          }))
+        dictionary.propertyNames().forEach(property -> {
+              PrimaryDomainType type = getPrimaryDomainType(property);
+              PrimaryDomain primaryDomain = buildPrimaryDomain((PrimaryDomainTypes) type, dictionary.stringValue(property));
+              primaryDomains.add(primaryDomain);
+          }
+        )
     );
-    return new MapBasedPrimaryDomainSet(map);
+    return new PrimaryDomainSetImpl(primaryDomains);
   }
 
   static PrimaryDomainType getPrimaryDomainType(String propertyName) {

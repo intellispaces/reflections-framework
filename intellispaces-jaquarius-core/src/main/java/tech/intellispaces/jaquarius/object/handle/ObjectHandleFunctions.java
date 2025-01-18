@@ -335,10 +335,7 @@ public class ObjectHandleFunctions {
         return targetType.simpleName();
       } else {
         var sb = new StringBuilder();
-        String canonicalName = ObjectHandleFunctions.getObjectHandleTypename(targetType, handleType);
-
-
-
+        String canonicalName = getObjectHandleTypename(targetType, handleType);
         String simpleName = simpleNameMapping.apply(canonicalName);
         sb.append(simpleName);
         if (includeTypeParams && !customTypeReference.typeArguments().isEmpty()) {

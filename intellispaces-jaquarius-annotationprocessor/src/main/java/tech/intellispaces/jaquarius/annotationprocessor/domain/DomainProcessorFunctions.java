@@ -9,6 +9,8 @@ import tech.intellispaces.jaquarius.annotation.AnnotationProcessor;
 import tech.intellispaces.jaquarius.annotation.Channel;
 import tech.intellispaces.jaquarius.annotationprocessor.AnnotationProcessorFunctions;
 import tech.intellispaces.jaquarius.annotationprocessor.ArtifactTypes;
+import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
+import tech.intellispaces.jaquarius.space.domain.PrimaryDomains;
 import tech.intellispaces.java.reflection.customtype.AnnotationFunctions;
 import tech.intellispaces.java.reflection.customtype.CustomType;
 import tech.intellispaces.java.reflection.method.MethodStatement;
@@ -61,10 +63,12 @@ public interface DomainProcessorFunctions {
   }
 
   private static void addBasicObjectHandleGenerators(
-      CustomType domainType,
-      List<ArtifactGenerator> generators,
-      RoundEnvironment roundEnv
+      CustomType domainType, List<ArtifactGenerator> generators, RoundEnvironment roundEnv
   ) {
+    if (PrimaryDomains.current().getByDomainName(NameConventionFunctions.convertJaquariusDomainName(domainType.canonicalName())) != null) {
+      return;
+    }
+
     if (
         AnnotationProcessorFunctions.isAutoGenerationEnabled(domainType, ArtifactTypes.ObjectHandle, roundEnv)
     ) {
@@ -85,6 +89,10 @@ public interface DomainProcessorFunctions {
   private static void addDownwardObjectHandleGenerators(
       CustomType domainType, List<ArtifactGenerator> generators
   ) {
+    if (PrimaryDomains.current().getByDomainName(NameConventionFunctions.convertJaquariusDomainName(domainType.canonicalName())) != null) {
+      return;
+    }
+
     List<CustomTypeReference> parents = domainType.parentTypes();
     if (parents.size() != 1) {
       return;

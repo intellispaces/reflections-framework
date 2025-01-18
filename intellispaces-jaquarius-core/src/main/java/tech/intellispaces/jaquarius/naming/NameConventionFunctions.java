@@ -12,6 +12,8 @@ import tech.intellispaces.jaquarius.object.reference.ObjectHandleType;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
+import tech.intellispaces.jaquarius.space.domain.PrimaryDomain;
+import tech.intellispaces.jaquarius.space.domain.PrimaryDomains;
 import tech.intellispaces.java.reflection.customtype.CustomType;
 import tech.intellispaces.java.reflection.method.MethodParam;
 import tech.intellispaces.java.reflection.method.MethodStatement;
@@ -20,6 +22,15 @@ import tech.intellispaces.java.reflection.reference.CustomTypeReference;
 import java.util.Optional;
 
 public interface NameConventionFunctions {
+
+  static String convertIntelliSpacesDomainName(String name) {
+    return StringFunctions.replaceHeadOrElseThrow(name, "intellispaces.", "tech.intellispaces.jaquarius.") + "Domain";
+  }
+
+  static String convertJaquariusDomainName(String name) {
+    return StringFunctions.removeTailOrElseThrow(
+        StringFunctions.replaceHeadOrElseThrow(name, "tech.intellispaces.jaquarius.", "intellispaces."), "Domain");
+  }
 
   static String getObjectHandleTypename(String domainClassName, ObjectHandleType handleType) {
     return switch (ObjectHandleTypes.from(handleType)) {
@@ -30,15 +41,23 @@ public interface NameConventionFunctions {
   }
 
   static String getGeneralObjectHandleTypename(String domainClassName) {
+    PrimaryDomain primaryDomain = PrimaryDomains.current().getByDomainName(convertJaquariusDomainName(domainClassName));
+    if (primaryDomain != null) {
+      return primaryDomain.handleClassName();
+    }
     return StringFunctions.removeTailOrElseThrow(transformClassName(domainClassName), "Domain");
+  }
+
+  static String getUnmovableObjectHandleTypename(String domainClassName) {
+    PrimaryDomain primaryDomain = PrimaryDomains.current().getByDomainName(convertJaquariusDomainName(domainClassName));
+    if (primaryDomain != null) {
+      return primaryDomain.handleClassName();
+    }
+    return ClassNameFunctions.addPrefixToSimpleName("Unmovable", getGeneralObjectHandleTypename(domainClassName));
   }
 
   static String getMovableObjectHandleTypename(String domainClassName) {
     return ClassNameFunctions.addPrefixToSimpleName("Movable", getGeneralObjectHandleTypename(domainClassName));
-  }
-
-  static String getUnmovableObjectHandleTypename(String domainClassName) {
-    return ClassNameFunctions.addPrefixToSimpleName("Unmovable", getGeneralObjectHandleTypename(domainClassName));
   }
 
   static String getObjectHandleWrapperCanonicalName(CustomType objectHandleType) {

@@ -2,7 +2,6 @@ package tech.intellispaces.jaquarius.annotationprocessor.domain;
 
 import tech.intellispaces.annotationprocessor.ArtifactValidator;
 import tech.intellispaces.general.text.StringFunctions;
-import tech.intellispaces.general.type.ClassFunctions;
 import tech.intellispaces.jaquarius.annotation.Channel;
 import tech.intellispaces.jaquarius.annotation.Domain;
 import tech.intellispaces.jaquarius.annotation.Ontology;
@@ -30,7 +29,7 @@ public class DomainValidator implements ArtifactValidator {
   public void validate(CustomType domainType) {
     validateName(domainType);
     validateEnclosingType(domainType);
-    validateParentDomains(domainType);
+    validateSuperDomains(domainType);
     validateMethods(domainType);
   }
 
@@ -49,34 +48,32 @@ public class DomainValidator implements ArtifactValidator {
     }
   }
 
-  private void validateParentDomains(CustomType domainType) {
+  private void validateSuperDomains(CustomType domainType) {
     boolean isAlias = false;
-    for (CustomTypeReference parentDomain : domainType.parentTypes()) {
+    for (CustomTypeReference superDomain : domainType.parentTypes()) {
       if (isAlias) {
         throw JaquariusExceptions.withMessage("Alias domain must have a single base domain. Check class {0}",
             domainType.canonicalName());
       }
-      if (isAliasDomain(parentDomain)) {
+      if (isAliasDomain(superDomain)) {
         isAlias = true;
-        if (domainType.declaredMethod(NameConventionFunctions.getConversionMethodName(parentDomain), List.of()).isPresent()) {
+        if (domainType.declaredMethod(NameConventionFunctions.getConversionMethodName(superDomain), List.of()).isPresent()) {
           throw JaquariusExceptions.withMessage("Alias domain could not contain channel to base domain. See domain {0}",
               domainType.canonicalName());
         }
       } else {
-        if (domainType.declaredMethod(NameConventionFunctions.getConversionMethodName(parentDomain), List.of()).isEmpty()) {
+        if (domainType.declaredMethod(NameConventionFunctions.getConversionMethodName(superDomain), List.of()).isEmpty()) {
           throw JaquariusExceptions.withMessage("Could not find conversion channel to domain {0}. See domain {1}",
-              parentDomain.targetType().canonicalName(), domainType.canonicalName());
+              superDomain.targetType().canonicalName(), domainType.canonicalName());
         }
       }
-      validateParentDomain(parentDomain, domainType);
     }
   }
 
-  private boolean isAliasDomain(CustomTypeReference baseDomain) {
-    for (NotPrimitiveReference typeArgument : baseDomain.typeArguments()) {
+  private boolean isAliasDomain(CustomTypeReference superDomain) {
+    for (NotPrimitiveReference typeArgument : superDomain.typeArguments()) {
       if (typeArgument.isCustomTypeReference()) {
-        CustomType targetType = typeArgument.asCustomTypeReferenceOrElseThrow().targetType();
-        return targetType.isFinal();
+        return true;
       }
       if (typeArgument.isNamedReference()) {
         List<ReferenceBound> extendedBounds = typeArgument.asNamedReferenceOrElseThrow().extendedBounds();
@@ -86,19 +83,6 @@ public class DomainValidator implements ArtifactValidator {
       }
     }
     return false;
-  }
-
-  private void validateParentDomain(CustomTypeReference baseDomain, CustomType domainType) {
-    for (NotPrimitiveReference typeArgument : baseDomain.typeArguments()) {
-      if (typeArgument.isCustomTypeReference()) {
-        CustomType argumentType = typeArgument.asCustomTypeReferenceOrElseThrow().targetType();
-        if (!argumentType.isFinal()) {
-          throw JaquariusExceptions.withMessage("The value of a base domain type variable should be " +
-              "a non-final class. Check domain {0}. Base domain {1} has type argument {2}",
-              domainType.canonicalName(), baseDomain.targetType().simpleName(), argumentType.simpleName());
-        }
-      }
-    }
   }
 
   private void validateMethods(CustomType domainType) {

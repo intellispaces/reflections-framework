@@ -20,9 +20,34 @@ public enum PrimaryDomainTypes implements Enumeration<PrimaryDomainType>, Primar
   Number("java.lang.Number"),
 
   /**
-   * The domain of integer numbers.
+   * The domain of 8 bits integer numbers.
    */
-  Integer("java.lang.Integer");
+  Integer8("java.lang.Byte"),
+
+  /**
+   * The domain of 16 bits integer numbers.
+   */
+  Integer16("java.lang.Short"),
+
+  /**
+   * The domain of 32 bits integer numbers.
+   */
+  Integer32("java.lang.Integer"),
+
+  /**
+   * The domain of 64 bits integer numbers.
+   */
+  Integer64("java.lang.Long"),
+
+  /**
+   * The domain of 32 bits float numbers.
+   */
+  Float32("java.lang.Float"),
+
+  /**
+   * The domain of 64 bits float numbers.
+   */
+  Float64("java.lang.Double");
 
   private final String handleClassName;
 

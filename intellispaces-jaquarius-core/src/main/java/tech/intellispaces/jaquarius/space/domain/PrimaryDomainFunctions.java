@@ -49,7 +49,12 @@ public class PrimaryDomainFunctions {
       case "domain" -> PrimaryDomainTypes.Domain;
       case "string" -> PrimaryDomainTypes.String;
       case "number" -> PrimaryDomainTypes.Number;
-      case "integer" -> PrimaryDomainTypes.Integer;
+      case "integer8" -> PrimaryDomainTypes.Integer8;
+      case "integer16" -> PrimaryDomainTypes.Integer16;
+      case "integer32" -> PrimaryDomainTypes.Integer32;
+      case "integer64" -> PrimaryDomainTypes.Integer64;
+      case "float32" -> PrimaryDomainTypes.Float32;
+      case "float64" -> PrimaryDomainTypes.Float64;
       default -> throw UnexpectedExceptions.withMessage(
           "Unsupported property '{0}' in file domain.properties", propertyName);
     };

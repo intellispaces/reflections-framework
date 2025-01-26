@@ -1,4 +1,4 @@
-package tech.intellispaces.jaquarius.object.handle;
+package tech.intellispaces.jaquarius.object.reference;
 
 public interface ObjectHandleConstants {
 

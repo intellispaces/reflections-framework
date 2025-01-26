@@ -1,7 +1,6 @@
 package tech.intellispaces.jaquarius.object.reference;
 
 import org.junit.jupiter.api.Test;
-import tech.intellispaces.jaquarius.object.handle.ObjectHandleTypes;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

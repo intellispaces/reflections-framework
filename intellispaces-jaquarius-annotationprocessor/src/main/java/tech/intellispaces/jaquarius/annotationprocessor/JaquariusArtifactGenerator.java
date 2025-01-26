@@ -2,7 +2,7 @@ package tech.intellispaces.jaquarius.annotationprocessor;
 
 import tech.intellispaces.annotationprocessor.TemplatedJavaArtifactGenerator;
 import tech.intellispaces.general.type.ClassFunctions;
-import tech.intellispaces.jaquarius.object.handle.ObjectHandleFunctions;
+import tech.intellispaces.jaquarius.object.reference.ObjectHandleFunctions;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleType;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
@@ -71,7 +71,7 @@ public abstract class JaquariusArtifactGenerator extends TemplatedJavaArtifactGe
        * Based on the method {@link %s#%s(%s)}
        */
       """.formatted(
-        sourceClassCanonicalName,
+        addImportAndGetSimpleName(sourceClassCanonicalName),
         method.name(),
         method.params().stream()
             .map(MethodParam::type)

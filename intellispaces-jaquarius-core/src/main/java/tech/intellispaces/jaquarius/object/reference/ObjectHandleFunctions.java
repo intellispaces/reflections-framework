@@ -1,4 +1,4 @@
-package tech.intellispaces.jaquarius.object.handle;
+package tech.intellispaces.jaquarius.object.reference;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,12 +15,6 @@ import tech.intellispaces.jaquarius.annotation.ObjectHandle;
 import tech.intellispaces.jaquarius.annotation.Unmovable;
 import tech.intellispaces.jaquarius.annotation.Wrapper;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
-import tech.intellispaces.jaquarius.object.reference.MovableObjectHandle;
-import tech.intellispaces.jaquarius.object.reference.ObjectHandleType;
-import tech.intellispaces.jaquarius.object.reference.ObjectReference;
-import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
-import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
-import tech.intellispaces.jaquarius.object.reference.UnmovableObjectHandle;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
 import tech.intellispaces.java.reflection.JavaStatements;
 import tech.intellispaces.java.reflection.customtype.AnnotationFunctions;
@@ -288,7 +282,7 @@ public class ObjectHandleFunctions {
       ObjectHandleType handleType,
       Function<String, String> simpleNameMapping
   ) {
-    return getObjectHandleDeclaration(domainType, handleType, ObjectReferenceForms.Default, simpleNameMapping);
+    return getObjectHandleDeclaration(domainType, handleType, ObjectReferenceForms.Normal, simpleNameMapping);
   }
 
   public static String getObjectHandleDeclaration(
@@ -314,7 +308,7 @@ public class ObjectHandleFunctions {
     } else if (domainType.isCustomTypeReference()) {
       CustomTypeReference customTypeReference = domainType.asCustomTypeReferenceOrElseThrow();
       CustomType targetType = customTypeReference.targetType();
-      if ((ObjectReferenceForms.Default.is(form) || ObjectReferenceForms.Primitive.is(form)) &&
+      if ((ObjectReferenceForms.Normal.is(form) || ObjectReferenceForms.Primitive.is(form)) &&
           ClassFunctions.isPrimitiveWrapperClass(targetType.canonicalName())
       ) {
         return ClassFunctions.primitiveTypenameOfWrapper(targetType.canonicalName());

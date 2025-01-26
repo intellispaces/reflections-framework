@@ -15,7 +15,7 @@ import tech.intellispaces.jaquarius.channel.Channel3;
 import tech.intellispaces.jaquarius.channel.Channel4;
 import tech.intellispaces.jaquarius.exception.ConfigurationExceptions;
 import tech.intellispaces.jaquarius.id.RepetableUuidIdentifierGenerator;
-import tech.intellispaces.jaquarius.object.handle.ObjectHandleFunctions;
+import tech.intellispaces.jaquarius.object.reference.ObjectHandleFunctions;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
 import tech.intellispaces.jaquarius.traverse.TraverseType;
 import tech.intellispaces.java.reflection.customtype.CustomType;
@@ -314,7 +314,7 @@ public interface ChannelFunctions {
   private static String getMethodMainFormName(MethodStatement objectHandleMethod) {
     Optional<TypeReference> returnType = objectHandleMethod.returnType();
     if (returnType.isPresent() && returnType.get().isPrimitiveReference()) {
-      return StringFunctions.removeTailOrElseThrow(objectHandleMethod.name(), "Primitive");
+      return StringFunctions.removeTailOrElseThrow(objectHandleMethod.name(), "AsPrimitive");
     }
     return objectHandleMethod.name();
   }

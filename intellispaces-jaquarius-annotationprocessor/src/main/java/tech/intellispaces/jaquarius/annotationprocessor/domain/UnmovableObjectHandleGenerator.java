@@ -5,20 +5,26 @@ import tech.intellispaces.general.exception.UnexpectedExceptions;
 import tech.intellispaces.jaquarius.annotation.ObjectHandle;
 import tech.intellispaces.jaquarius.annotation.Unmovable;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
-import tech.intellispaces.jaquarius.object.handle.ObjectHandleTypes;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleType;
+import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
 import tech.intellispaces.jaquarius.object.reference.UnmovableObjectHandle;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
 import tech.intellispaces.jaquarius.traverse.TraverseType;
 import tech.intellispaces.java.reflection.customtype.CustomType;
+import tech.intellispaces.java.reflection.method.MethodSignatureDeclarations;
 import tech.intellispaces.java.reflection.method.MethodStatement;
 import tech.intellispaces.java.reflection.reference.CustomTypeReference;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
 
 public class UnmovableObjectHandleGenerator extends ObjectHandleGenerator {
+
+  protected final List<Map<String, String>> movableMethods = new ArrayList<>();
 
   public UnmovableObjectHandleGenerator(CustomType domainType) {
     super(domainType);
@@ -57,14 +63,17 @@ public class UnmovableObjectHandleGenerator extends ObjectHandleGenerator {
     analyzeAlias();
     analyzeObjectHandleMethods(sourceArtifact(), context);
     analyzeConversionMethods(sourceArtifact());
+    analyzeMovableMethods(context);
 
     addVariable("movableClassSimpleName", movableClassSimpleName());
+    addVariable("handleTypeParamsBrief", typeParamsBrief);
     addVariable("handleTypeParamsFull", typeParamsFull);
     addVariable("domainTypeParamsBrief", domainTypeParamsBrief);
     addVariable("generalObjectHandle", generalObjectHandle);
     addVariable("conversionMethods", conversionMethods);
     addVariable("isAlias", isAlias);
-    addVariable("primaryObjectHandle", primaryObjectHandle);
+    addVariable("primaryObjectHandle", baseObjectHandle);
+    addVariable("movableMethods", movableMethods);
     return true;
   }
 
@@ -72,7 +81,7 @@ public class UnmovableObjectHandleGenerator extends ObjectHandleGenerator {
     Optional<CustomTypeReference> equivalentDomain = DomainFunctions.getAliasNearNeighbourDomain(sourceArtifact());
     isAlias = equivalentDomain.isPresent();
     if (isAlias) {
-      primaryObjectHandle = buildObjectHandleDeclaration(equivalentDomain.get(), ObjectHandleTypes.Unmovable);
+      baseObjectHandle = buildObjectHandleDeclaration(equivalentDomain.get(), ObjectHandleTypes.Unmovable);
     }
   }
 
@@ -80,5 +89,27 @@ public class UnmovableObjectHandleGenerator extends ObjectHandleGenerator {
   protected Stream<MethodStatement> getObjectHandleMethods(CustomType customType, ArtifactGeneratorContext context) {
     return super.getObjectHandleMethods(customType, context)
         .filter(m -> ChannelFunctions.getTraverseTypes(m).stream().noneMatch(TraverseType::isMovingBased));
+  }
+
+  private void analyzeMovableMethods(ArtifactGeneratorContext context) {
+    super.getObjectHandleMethods(sourceArtifact(), context)
+        .filter(m -> ChannelFunctions.getTraverseTypes(m).stream().anyMatch(TraverseType::isMovingBased))
+        .map(this::generateMethod)
+        .forEach(movableMethods::add);
+  }
+
+  private Map<String, String> generateMethod(MethodStatement method) {
+    var returnTypeHandle = new StringBuilder();
+    appendObjectFormMethodReturnType(returnTypeHandle, method);
+
+    String declaration = MethodSignatureDeclarations.build(method)
+        .returnType(returnTypeHandle.toString())
+        .includeMethodTypeParams(true)
+        .includeOwnerTypeParams(false)
+        .get(this::addImport, this::addImportAndGetSimpleName);
+    return Map.of(
+        "javadoc", buildGeneratedMethodJavadoc(method.owner().canonicalName(), method),
+        "declaration", declaration
+    );
   }
 }

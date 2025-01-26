@@ -39,7 +39,7 @@ import tech.intellispaces.jaquarius.guide.n3.MapperOfMoving3;
 import tech.intellispaces.jaquarius.guide.n3.Mover3;
 import tech.intellispaces.jaquarius.guide.n4.AutoMapperOfMoving4;
 import tech.intellispaces.jaquarius.guide.n4.MapperOfMoving4;
-import tech.intellispaces.jaquarius.object.handle.ObjectHandleFunctions;
+import tech.intellispaces.jaquarius.object.reference.ObjectHandleFunctions;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;

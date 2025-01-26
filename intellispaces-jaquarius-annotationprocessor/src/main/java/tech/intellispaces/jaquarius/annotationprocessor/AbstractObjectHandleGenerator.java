@@ -3,17 +3,22 @@ package tech.intellispaces.jaquarius.annotationprocessor;
 import tech.intellispaces.action.runnable.RunnableAction;
 import tech.intellispaces.action.text.StringActions;
 import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
+import tech.intellispaces.general.exception.NotImplementedExceptions;
 import tech.intellispaces.general.exception.UnexpectedExceptions;
 import tech.intellispaces.general.type.ClassFunctions;
 import tech.intellispaces.jaquarius.annotation.Movable;
 import tech.intellispaces.jaquarius.annotation.Unmovable;
 import tech.intellispaces.jaquarius.exception.TraverseException;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
-import tech.intellispaces.jaquarius.object.handle.ObjectHandleTypes;
+import tech.intellispaces.jaquarius.object.reference.ObjectHandleMethodForm;
+import tech.intellispaces.jaquarius.object.reference.ObjectHandleMethodForms;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleType;
+import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
+import tech.intellispaces.jaquarius.space.domain.BasicDomain;
+import tech.intellispaces.jaquarius.space.domain.BasicDomains;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
 import tech.intellispaces.java.reflection.customtype.CustomType;
 import tech.intellispaces.java.reflection.customtype.InterfaceType;
@@ -54,18 +59,46 @@ public abstract class AbstractObjectHandleGenerator extends JaquariusArtifactGen
     int methodOrdinal = 0;
     for (MethodStatement method : methods) {
       MethodStatement effectiveMethod = convertMethodBeforeGenerate(method);
-      analyzeMethod(effectiveMethod, ObjectReferenceForms.Object, methodOrdinal++);
-      if (method.returnType().orElseThrow().isCustomTypeReference()) {
-        CustomType returnType = method.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow().targetType();
-        if (ClassFunctions.isPrimitiveWrapperClass(returnType.canonicalName())) {
-          analyzeMethod(effectiveMethod, ObjectReferenceForms.Primitive, methodOrdinal++);
+      if (includeMethodForm(effectiveMethod, ObjectHandleMethodForms.Object)) {
+        analyzeMethod(effectiveMethod, ObjectHandleMethodForms.Object, methodOrdinal++);
+      }
+      if (hasMethodNormalForm(effectiveMethod)) {
+        if (includeMethodForm(effectiveMethod, ObjectHandleMethodForms.Normal)) {
+          analyzeMethod(effectiveMethod, ObjectHandleMethodForms.Normal, methodOrdinal++);
         }
       }
     }
   }
 
-  private void analyzeMethod(MethodStatement method, ObjectReferenceForm targetForm, int methodOrdinal) {
-    methods.add(generateMethod(method, targetForm, methodOrdinal));
+  protected boolean includeMethodForm(MethodStatement method, ObjectHandleMethodForm methodForm) {
+    return true;
+  }
+
+  protected boolean hasMethodNormalForm(MethodStatement method) {
+    TypeReference returnTypeReference = method.returnType().orElseThrow();
+    if (isPrimitiveWrapper(returnTypeReference)) {
+      return true;
+    }
+    for (MethodParam param : method.params()) {
+      if (isPrimitiveWrapper(param.type())) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  protected boolean isPrimitiveWrapper(TypeReference typeReference) {
+    if (typeReference.isCustomTypeReference()) {
+      CustomType returnType = typeReference.asCustomTypeReferenceOrElseThrow().targetType();
+      if (ClassFunctions.isPrimitiveWrapperClass(returnType.canonicalName())) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private void analyzeMethod(MethodStatement method, ObjectHandleMethodForm methodForm, int methodOrdinal) {
+    methods.add(generateMethod(method, methodForm, methodOrdinal));
   }
 
   protected MethodStatement convertMethodBeforeGenerate(MethodStatement method) {
@@ -73,8 +106,10 @@ public abstract class AbstractObjectHandleGenerator extends JaquariusArtifactGen
   }
 
   protected Map<String, String> generateMethod(
-      MethodStatement method, ObjectReferenceForm targetForm, int methodOrdinal
+      MethodStatement method, ObjectHandleMethodForm methodForm, int methodOrdinal
   ) {
+    ObjectReferenceForm targetForm = getTargetForm(method, methodForm);
+
     var sb = new StringBuilder();
     appendMethodTypeParameters(sb, method);
     boolean disableMoving = isDisableMoving(method);
@@ -85,7 +120,7 @@ public abstract class AbstractObjectHandleGenerator extends JaquariusArtifactGen
     sb.append(" ");
     sb.append(getObjectHandleMethodName(method, targetForm));
     sb.append("(");
-    appendMethodParams(sb, method);
+    appendMethodParams(sb, method, methodForm);
     sb.append(")");
     appendMethodExceptions(sb, method);
 
@@ -103,6 +138,16 @@ public abstract class AbstractObjectHandleGenerator extends JaquariusArtifactGen
     );
   }
 
+  protected ObjectReferenceForm getTargetForm(MethodStatement method, ObjectHandleMethodForm methodForm) {
+    if (methodForm.is(ObjectHandleMethodForms.Object.name())) {
+      return ObjectReferenceForms.Object;
+    }
+    if (methodForm.is(ObjectHandleMethodForms.Normal.name())) {
+      return ObjectReferenceForms.Normal;
+    }
+    throw NotImplementedExceptions.withCode("Pelptg");
+  }
+
   private boolean isDisableMoving(MethodStatement method) {
     return ChannelFunctions.isMovingBasedChannel(method) && ObjectHandleTypes.Unmovable.is(getObjectHandleType());
   }
@@ -112,23 +157,20 @@ public abstract class AbstractObjectHandleGenerator extends JaquariusArtifactGen
       sb.append("void");
     }
     TypeReference returnType = method.returnType().orElseThrow();
-    sb.append(returnType.actualDeclaration(this::addImportAndGetSimpleName));
+    sb.append(returnType.actualDeclaration(this::convertName));
+  }
+
+  private String convertName(String name) {
+    BasicDomain basicDomain = BasicDomains.active().getByDomainName(NameConventionFunctions.convertJaquariusDomainName(name));
+    if (basicDomain != null) {
+      return addImportAndGetSimpleName(basicDomain.delegateClassName());
+    }
+    return addImportAndGetSimpleName(name);
   }
 
   protected Stream<MethodStatement> getObjectHandleMethods(CustomType customType, ArtifactGeneratorContext context) {
     return customType.actualMethods().stream()
         .filter(m -> DomainFunctions.isDomainType(m.owner()));
-  }
-
-  protected List<MethodStatement> getAdditionalOMethods(CustomType customType, RoundEnvironment roundEnv) {
-    List<MethodStatement> methods = new ArrayList<>();
-    List<CustomType> artifactAddOns = AnnotationProcessorFunctions.findArtifactAddOns(
-        customType, ArtifactTypes.ObjectHandle, roundEnv
-    );
-    for (CustomType artifactAddOn : artifactAddOns) {
-      methods.addAll(artifactAddOn.declaredMethods());
-    }
-    return methods;
   }
 
   protected CustomType buildActualType(CustomType domain, ArtifactGeneratorContext context) {
@@ -137,14 +179,25 @@ public abstract class AbstractObjectHandleGenerator extends JaquariusArtifactGen
     var builder = Interfaces.build(domainInterface);
     getAdditionalOMethods(domainInterface, context.roundEnvironment()).forEach(builder::addDeclaredMethod);
 
-    var parentInterfaces = new ArrayList<CustomTypeReference>();
-    for (CustomTypeReference parent : domainInterface.extendedInterfaces()) {
-      parentInterfaces.add(
-          CustomTypeReferences.get(buildActualType(parent.targetType(), context), parent.typeArguments())
+    var extendedInterfaces = new ArrayList<CustomTypeReference>();
+    for (CustomTypeReference superDomain : domainInterface.extendedInterfaces()) {
+      extendedInterfaces.add(
+          CustomTypeReferences.get(buildActualType( superDomain.targetType(), context), superDomain.typeArguments())
       );
     }
-    builder.extendedInterfaces(parentInterfaces);
+    builder.extendedInterfaces(extendedInterfaces);
     return builder.get();
+  }
+
+  private List<MethodStatement> getAdditionalOMethods(CustomType customType, RoundEnvironment roundEnv) {
+    List<MethodStatement> methods = new ArrayList<>();
+    List<CustomType> artifactAddOns = AnnotationProcessorFunctions.findArtifactAddOns(
+        customType, ArtifactTypes.ObjectHandle, roundEnv
+    );
+    for (CustomType artifactAddOn : artifactAddOns) {
+      methods.addAll(artifactAddOn.declaredMethods());
+    }
+    return methods;
   }
 
   protected String buildDomainType(CustomType domainType, List<NotPrimitiveReference> typeQualifiers) {
@@ -185,19 +238,29 @@ public abstract class AbstractObjectHandleGenerator extends JaquariusArtifactGen
   protected String getObjectHandleMethodName(MethodStatement domainMethod, ObjectReferenceForm targetForm) {
     if (ObjectReferenceForms.Object.is(targetForm)) {
       return domainMethod.name();
-    } else if (ObjectReferenceForms.Primitive.is(targetForm)) {
-      return domainMethod.name() + "Primitive";
+    } else if (ObjectReferenceForms.Normal.is(targetForm)) {
+      if (isPrimitiveWrapper(domainMethod.returnType().orElseThrow())) {
+        return domainMethod.name() + "AsPrimitive";
+      } else {
+        return domainMethod.name();
+      }
     } else {
       throw UnexpectedExceptions.withMessage("Unsupported object reference form - {0}", targetForm);
     }
   }
 
-  protected void appendMethodReturnHandleType(StringBuilder sb, MethodStatement method, ObjectReferenceForm targetForm) {
+  protected void appendMethodReturnHandleType(
+      StringBuilder sb, MethodStatement method, ObjectReferenceForm targetForm
+  ) {
     if (ObjectReferenceForms.Object.is(targetForm)) {
       appendObjectFormMethodReturnType(sb, method);
-    } else if (ObjectReferenceForms.Primitive.is(targetForm)) {
-      CustomType ct = method.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow().targetType();
-      sb.append(ClassFunctions.primitiveTypenameOfWrapper(ct.canonicalName()));
+    } else if (ObjectReferenceForms.Normal.is(targetForm)) {
+      if (isPrimitiveWrapper(method.returnType().orElseThrow())) {
+        CustomType ct = method.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow().targetType();
+        sb.append(ClassFunctions.primitiveTypenameOfWrapper(ct.canonicalName()));
+      } else {
+        appendObjectFormMethodReturnType(sb, method);
+      }
     } else {
       throw UnexpectedExceptions.withMessage("Unsupported guide form - {0}", targetForm);
     }
@@ -230,14 +293,15 @@ public abstract class AbstractObjectHandleGenerator extends JaquariusArtifactGen
     }
   }
 
-  protected void appendMethodParams(StringBuilder sb, MethodStatement method) {
+  protected void appendMethodParams(StringBuilder sb, MethodStatement method, ObjectHandleMethodForm methodForm) {
     RunnableAction commaAppender = StringActions.skipFirstTimeCommaAppender(sb);
     for (MethodParam param : AnnotationGeneratorFunctions.rearrangementParams(method.params())) {
       commaAppender.run();
       sb.append(buildHandleDeclarationDefaultForm(
           AnnotationGeneratorFunctions.normalizeType(param.type()),
           ObjectHandleTypes.General,
-          ObjectReferenceForms.Default));
+          ObjectHandleMethodForms.Object.equals(methodForm) ? ObjectReferenceForms.Object :  ObjectReferenceForms.Normal
+      ));
       sb.append(" ");
       sb.append(param.name());
     }

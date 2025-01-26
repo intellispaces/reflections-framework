@@ -13,8 +13,10 @@ import tech.intellispaces.jaquarius.engine.description.ObjectHandleMethodPurpose
 import tech.intellispaces.jaquarius.exception.ConfigurationExceptions;
 import tech.intellispaces.jaquarius.guide.GuideFunctions;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
-import tech.intellispaces.jaquarius.object.handle.ObjectHandleFunctions;
-import tech.intellispaces.jaquarius.object.handle.ObjectHandleTypes;
+import tech.intellispaces.jaquarius.object.reference.ObjectHandleFunctions;
+import tech.intellispaces.jaquarius.object.reference.ObjectHandleMethodForm;
+import tech.intellispaces.jaquarius.object.reference.ObjectHandleMethodForms;
+import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
@@ -129,22 +131,19 @@ abstract class ObjectHandleWrapperGenerator extends AbstractObjectHandleGenerato
   protected void analyzeObjectHandleMethods() {
     int methodOrdinal = 0;
     for (MethodStatement method : domainMethods) {
-      analyzeMethod(method, ObjectReferenceForms.Object, methodOrdinal++);
-      if (method.returnType().orElseThrow().isCustomTypeReference()) {
-        CustomType returnType = method.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow().targetType();
-        if (ClassFunctions.isPrimitiveWrapperClass(returnType.canonicalName())) {
-          analyzeMethod(method, ObjectReferenceForms.Primitive, methodOrdinal++);
-        }
+      analyzeMethod(method, ObjectHandleMethodForms.Object, methodOrdinal++);
+      if (hasMethodNormalForm(method)) {
+        analyzeMethod(method, ObjectHandleMethodForms.Normal, methodOrdinal++);
       }
     }
   }
 
-  private void analyzeMethod(MethodStatement method, ObjectReferenceForm targetForm, int methodOrdinal) {
-    generatedDomainMethods.add(generateMethod(method, targetForm, methodOrdinal));
-    analyzeGuideMethod(method, targetForm, methodOrdinal);
+  private void analyzeMethod(MethodStatement method, ObjectHandleMethodForm methodForm, int methodOrdinal) {
+    generatedDomainMethods.add(generateMethod(method, methodForm, methodOrdinal));
+    analyzeGuideMethod(method, methodForm, methodOrdinal);
   }
 
-  private void analyzeGuideMethod(MethodStatement domainMethod, ObjectReferenceForm targetForm, int methodOrdinal) {
+  private void analyzeGuideMethod(MethodStatement domainMethod, ObjectHandleMethodForm methodForm, int methodOrdinal) {
     if (domainMethod.isDefault()) {
       return;
     }
@@ -155,7 +154,7 @@ abstract class ObjectHandleWrapperGenerator extends AbstractObjectHandleGenerato
     }
 
     List<MethodStatement> objectHandleMethods = sourceArtifact().actualMethods();
-    MethodStatement guideMethod = findGuideMethod(domainMethod, objectHandleMethods, targetForm);
+    MethodStatement guideMethod = findGuideMethod(domainMethod, objectHandleMethods, methodForm);
     this.generatedMethodDescriptions.add(buildTraverseMethodDescriptions(domainMethod, methodOrdinal));
     if (guideMethod != null && !guideMethod.isAbstract()) {
       this.generatedGuideMethods.add(AnnotationGeneratorFunctions.buildGuideActionMethod(guideMethod, this));
@@ -229,8 +228,10 @@ abstract class ObjectHandleWrapperGenerator extends AbstractObjectHandleGenerato
   }
 
   private MethodStatement findGuideMethod(
-      MethodStatement domainMethod, List<MethodStatement> objectHandleMethods, ObjectReferenceForm targetForm
+      MethodStatement domainMethod, List<MethodStatement> objectHandleMethods, ObjectHandleMethodForm methodForm
   ) {
+    ObjectReferenceForm targetForm = getTargetForm(domainMethod, methodForm);
+
     for (MethodStatement objectHandleMethod : objectHandleMethods) {
       if (!GuideFunctions.isGuideMethod(objectHandleMethod)) {
         continue;
@@ -354,15 +355,17 @@ abstract class ObjectHandleWrapperGenerator extends AbstractObjectHandleGenerato
     return ObjectHandleFunctions.getObjectHandleDeclaration(
         AnnotationGeneratorFunctions.normalizeType(type),
         ObjectHandleTypes.General,
-        ObjectReferenceForms.Default,
+        ObjectReferenceForms.Normal,
         false,
         this::addImportAndGetSimpleName
     );
   }
 
   protected Map<String, String> generateMethod(
-      MethodStatement domainMethod, ObjectReferenceForm targetForm, int methodOrdinal
+      MethodStatement domainMethod, ObjectHandleMethodForm methodForm, int methodOrdinal
   ) {
+    ObjectReferenceForm targetForm = getTargetForm(domainMethod, methodForm);
+
     var sb = new StringBuilder();
     sb.append("@Ordinal(").append(methodOrdinal).append(")\n");
     sb.append("public ");
@@ -371,43 +374,43 @@ abstract class ObjectHandleWrapperGenerator extends AbstractObjectHandleGenerato
     sb.append(" ");
     sb.append(getObjectHandleMethodName(domainMethod, targetForm));
     sb.append("(");
-    appendMethodParams(sb, domainMethod);
+    appendMethodParams(sb, domainMethod, methodForm);
     sb.append(")");
     appendMethodExceptions(sb, domainMethod);
     sb.append(" {\n");
     sb.append("  return ");
-    if (ObjectReferenceForms.Primitive.is(targetForm)) {
+    if (ObjectHandleMethodForms.Normal.is(methodForm) && isPrimitiveWrapper(domainMethod.returnType().orElseThrow())) {
       CustomType ct = domainMethod.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow().targetType();
       String typename = ClassFunctions.primitiveTypenameOfWrapper(ct.canonicalName());
       if (PrimitiveTypes.Boolean.typename().equals(typename)) {
         sb.append("PrimitiveFunctions.longToBoolean(");
-        appendInvokeMethodAction(sb, domainMethod, targetForm, methodOrdinal);
+        appendInvokeMethodAction(sb, domainMethod, methodForm, methodOrdinal);
         sb.append(")");
       } else {
         sb.append("(");
         appendMethodReturnHandleType(sb, domainMethod, targetForm);
         sb.append(") ");
-        appendInvokeMethodAction(sb, domainMethod, targetForm, methodOrdinal);
+        appendInvokeMethodAction(sb, domainMethod, methodForm, methodOrdinal);
       }
     } else {
       sb.append("(");
       appendMethodReturnHandleType(sb, domainMethod, targetForm);
       sb.append(") ");
-      appendInvokeMethodAction(sb, domainMethod, targetForm, methodOrdinal);
+      appendInvokeMethodAction(sb, domainMethod, methodForm, methodOrdinal);
     }
     sb.append(";\n}");
     return Map.of("declaration", sb.toString());
   }
 
   private void appendInvokeMethodAction(
-      StringBuilder sb, MethodStatement domainMethod, ObjectReferenceForm targetForm, int methodOrdinal
+      StringBuilder sb, MethodStatement domainMethod, ObjectHandleMethodForm methodForm, int methodOrdinal
   ) {
     sb.append("$broker.methodAction(");
     sb.append(methodOrdinal);
     sb.append(").castToAction");
     sb.append(domainMethod.params().size() + 1);
     sb.append("().");
-    sb.append(buildExecuteMethod(domainMethod, targetForm));
+    sb.append(buildExecuteMethod(domainMethod, methodForm));
     sb.append("(this");
     for (MethodParam param : domainMethod.params()) {
       sb.append(", ");
@@ -435,10 +438,8 @@ abstract class ObjectHandleWrapperGenerator extends AbstractObjectHandleGenerato
     }
   }
 
-  private String buildExecuteMethod(MethodStatement domainMethod, ObjectReferenceForm targetForm) {
-    if (ObjectReferenceForms.Object.is(targetForm)) {
-      return "execute";
-    } else if (ObjectReferenceForms.Primitive.is(targetForm)) {
+  private String buildExecuteMethod(MethodStatement domainMethod, ObjectHandleMethodForm methodForm) {
+    if (ObjectHandleMethodForms.Normal.is(methodForm) && isPrimitiveWrapper(domainMethod.returnType().orElseThrow())) {
       CustomType ct = domainMethod.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow().targetType();
       String typename = ClassFunctions.primitiveTypenameOfWrapper(ct.canonicalName());
       if (tech.intellispaces.general.object.ObjectFunctions.equalsAnyOf(
@@ -456,8 +457,10 @@ abstract class ObjectHandleWrapperGenerator extends AbstractObjectHandleGenerato
       } else {
         return "execute";
       }
+    } else if (ObjectHandleMethodForms.Object.is(methodForm)) {
+        return "execute";
     } else {
-      throw UnexpectedExceptions.withMessage("Unsupported guide form - {0}", targetForm);
+      throw UnexpectedExceptions.withMessage("Unsupported guide form - {0}", methodForm);
     }
   }
 

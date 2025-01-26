@@ -2,7 +2,7 @@ package tech.intellispaces.jaquarius.space.domain;
 
 import tech.intellispaces.general.entity.Enumeration;
 
-public enum PrimaryDomainTypes implements Enumeration<PrimaryDomainType>, PrimaryDomainType {
+public enum BasicDomainPurposes implements Enumeration<BasicDomainPurpose>, BasicDomainPurpose {
 
   /**
    * The domain of domains.
@@ -22,40 +22,40 @@ public enum PrimaryDomainTypes implements Enumeration<PrimaryDomainType>, Primar
   /**
    * The domain of 8 bits integer numbers.
    */
-  Integer8("java.lang.Byte"),
+  Byte("java.lang.Byte"),
 
   /**
    * The domain of 16 bits integer numbers.
    */
-  Integer16("java.lang.Short"),
+  Short("java.lang.Short"),
 
   /**
    * The domain of 32 bits integer numbers.
    */
-  Integer32("java.lang.Integer"),
+  Integer("java.lang.Integer"),
 
   /**
    * The domain of 64 bits integer numbers.
    */
-  Integer64("java.lang.Long"),
+  Long("java.lang.Long"),
 
   /**
    * The domain of 32 bits float numbers.
    */
-  Float32("java.lang.Float"),
+  Float("java.lang.Float"),
 
   /**
    * The domain of 64 bits float numbers.
    */
-  Float64("java.lang.Double");
+  Double("java.lang.Double");
 
-  private final String handleClassName;
+  private final String delegateClassName;
 
-  PrimaryDomainTypes(java.lang.String handleClassName) {
-    this.handleClassName = handleClassName;
+  BasicDomainPurposes(java.lang.String delegateClassName) {
+    this.delegateClassName = delegateClassName;
   }
 
-  public java.lang.String handleClassName() {
-    return handleClassName;
+  public java.lang.String delegateClassName() {
+    return delegateClassName;
   }
 }

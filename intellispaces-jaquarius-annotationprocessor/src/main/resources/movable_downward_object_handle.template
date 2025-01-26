@@ -1,5 +1,7 @@
 package {{$generatedArtifactPackageName}};
 
+import tech.intellispaces.general.exception.NotImplementedExceptions;
+
 {{for importedClass : $importedClasses}}
 import {{$importedClass}};
 {{end}}
@@ -25,7 +27,7 @@ public class {{$generatedArtifactSimpleName}}{{$classTypeParams}} implements {{$
   }
 
   @Override
-  public Class<?> domainClass() {
+  public Class<?> domainAsClass() {
     return {{$domainClassSimpleName}}.class;
   }
 {{else}}
@@ -36,7 +38,7 @@ public class {{$generatedArtifactSimpleName}}{{$classTypeParams}} implements {{$
   }
 
   @Override
-  public Class<?> domainClass() {
+  public Class<?> domainAsClass() {
     return {{$domainClassSimpleName}}.class;
   }
 {{else}}
@@ -67,46 +69,53 @@ public class {{$generatedArtifactSimpleName}}{{$classTypeParams}} implements {{$
 
   @Override
   public <Q> {{$movableObjectHandleName}}{{$domainTypeArguments}} moveThru(java.lang.String cid, Q qualifier) throws TraverseException {
-    {{$childField}}.moveThru(cid, qualifier);
-    return this;
+    throw NotImplementedExceptions.withCode("U4Y1FQ");
+    // {{$childField}}.moveThru(cid, qualifier);
+    // return this;
   }
 
 {{when $isAlias}}
   @Override
-  public {{$movableObjectHandleName}}{{$domainTypeArguments}} moveThru(ChannelMethod0<? super {{$primaryDomainSimpleName}}{{$domainTypeArguments}}, ? super {{$primaryDomainSimpleName}}{{$domainTypeArguments}}> channelMethod) throws TraverseException {
-    {{$childField}}.moveThru(channelMethod);
-    return this;
+  public {{$movableObjectHandleName}}{{$domainTypeArguments}} moveThru(ChannelFunction0<{{$primaryDomainSimpleName}}{{$domainTypeArguments}}, {{$primaryDomainSimpleName}}{{$domainTypeArguments}}> channelFunction) throws TraverseException {
+    throw NotImplementedExceptions.withCode("k97y5g");
+    // {{$childField}}.moveThru(channelFunction);
+    // return this;
   }
 
   @Override
-  public <Q> {{$movableObjectHandleName}}{{$domainTypeArguments}} moveThru(ChannelMethod1<? super {{$primaryDomainSimpleName}}{{$domainTypeArguments}}, ? super {{$primaryDomainSimpleName}}{{$domainTypeArguments}}, Q> channelMethod, Q qualifier) throws TraverseException {
-    {{$childField}}.moveThru(channelMethod, qualifier);
-    return this;
+  public <Q> {{$movableObjectHandleName}}{{$domainTypeArguments}} moveThru(ChannelFunction1<{{$primaryDomainSimpleName}}{{$domainTypeArguments}}, {{$primaryDomainSimpleName}}{{$domainTypeArguments}}, Q> channelFunction, Q qualifier) throws TraverseException {
+    throw NotImplementedExceptions.withCode("hQ8C8A");
+    // {{$childField}}.moveThru(channelFunction, qualifier);
+    // return this;
   }
 {{else}}
   @Override
-  public {{$movableObjectHandleName}}{{$domainTypeArguments}} moveThru(ChannelMethod0<? super {{$domainClassSimpleName}}{{$domainTypeArguments}}, ? super {{$domainClassSimpleName}}{{$domainTypeArguments}}> channelMethod) throws TraverseException {
-    {{$childField}}.moveThru(channelMethod);
-    return this;
+  public {{$movableObjectHandleName}}{{$domainTypeArguments}} moveThru(ChannelFunction0<{{$domainClassSimpleName}}{{$domainTypeArguments}}, {{$domainClassSimpleName}}{{$domainTypeArguments}}> channelFunction) throws TraverseException {
+    throw NotImplementedExceptions.withCode("zniMxQ");
+    // {{$childField}}.moveThru(channelFunction);
+    // return this;
   }
 
   @Override
-  public <Q> {{$movableObjectHandleName}}{{$domainTypeArguments}} moveThru(ChannelMethod1<? super {{$domainClassSimpleName}}{{$domainTypeArguments}}, ? super {{$domainClassSimpleName}}{{$domainTypeArguments}}, Q> channelMethod, Q qualifier) throws TraverseException {
-    {{$childField}}.moveThru(channelMethod, qualifier);
-    return this;
+  public <Q> {{$movableObjectHandleName}}{{$domainTypeArguments}} moveThru(ChannelFunction1<{{$domainClassSimpleName}}{{$domainTypeArguments}}, {{$domainClassSimpleName}}{{$domainTypeArguments}}, Q> channelFunction, Q qualifier) throws TraverseException {
+    throw NotImplementedExceptions.withCode("A2IHpg");
+    // {{$childField}}.moveThru(channelFunction, qualifier);
+    // return this;
   }
 {{end}}
 
   @Override
   public {{$movableObjectHandleName}}{{$domainTypeArguments}} moveThru(Class<? extends Channel0> channelClass) throws TraverseException {
-    {{$childField}}.moveThru(channelClass);
-    return this;
+    throw NotImplementedExceptions.withCode("EfXZCg");
+    // {{$childField}}.moveThru(channelClass);
+    // return this;
   }
 
   @Override
   public <Q> {{$movableObjectHandleName}}{{$domainTypeArguments}} moveThru(Class<? extends Channel1> channelClass, Q qualifier) throws TraverseException {
-    {{$childField}}.moveThru(channelClass, qualifier);
-    return this;
+    throw NotImplementedExceptions.withCode("8SdVYg");
+    // {{$childField}}.moveThru(channelClass, qualifier);
+    // return this;
   }
 
   @Override
@@ -116,23 +125,27 @@ public class {{$generatedArtifactSimpleName}}{{$classTypeParams}} implements {{$
 
 {{when $isAlias}}
   @Override
-  public <R> R mapOfMovingThru(ChannelMethod0<? super {{$primaryDomainSimpleName}}{{$domainTypeArguments}}, R> channelMethod) throws TraverseException {
-    return (R) {{$childField}}.mapOfMovingThru(channelMethod);
+  public <R> R mapOfMovingThru(ChannelFunction0<{{$primaryDomainSimpleName}}{{$domainTypeArguments}}, R> channelFunction) throws TraverseException {
+    throw NotImplementedExceptions.withCode("");
+    // return (R) {{$childField}}.mapOfMovingThru(channelFunction);
   }
 
   @Override
-  public <R, Q> R mapOfMovingThru(ChannelMethod1<? super {{$primaryDomainSimpleName}}{{$domainTypeArguments}}, R, Q> channelMethod, Q qualifier) throws TraverseException {
-    return (R) {{$childField}}.mapOfMovingThru(channelMethod, qualifier);
+  public <R, Q> R mapOfMovingThru(ChannelFunction1<{{$primaryDomainSimpleName}}{{$domainTypeArguments}}, R, Q> channelFunction, Q qualifier) throws TraverseException {
+    throw NotImplementedExceptions.withCode("");
+    // return (R) {{$childField}}.mapOfMovingThru(channelFunction, qualifier);
   }
 {{else}}
   @Override
-  public <R> R mapOfMovingThru(ChannelMethod0<? super {{$domainClassSimpleName}}{{$domainTypeArguments}}, R> channelMethod) throws TraverseException {
-    return (R) {{$childField}}.mapOfMovingThru(channelMethod);
+  public <R> R mapOfMovingThru(ChannelFunction0<{{$domainClassSimpleName}}{{$domainTypeArguments}}, R> channelFunction) throws TraverseException {
+    throw NotImplementedExceptions.withCode("");
+    // return (R) {{$childField}}.mapOfMovingThru(channelFunction);
   }
 
   @Override
-  public <R, Q> R mapOfMovingThru(ChannelMethod1<? super {{$domainClassSimpleName}}{{$domainTypeArguments}}, R, Q> channelMethod, Q qualifier) throws TraverseException {
-    return (R) {{$childField}}.mapOfMovingThru(channelMethod, qualifier);
+  public <R, Q> R mapOfMovingThru(ChannelFunction1<{{$domainClassSimpleName}}{{$domainTypeArguments}}, R, Q> channelFunction, Q qualifier) throws TraverseException {
+    throw NotImplementedExceptions.withCode("");
+    // return (R) {{$childField}}.mapOfMovingThru(channelFunction, qualifier);
   }
 {{end}}
 

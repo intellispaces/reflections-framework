@@ -1,11 +1,13 @@
 package tech.intellispaces.jaquarius.object.reference;
 
 /**
- * The object handle is focused object reference.
+ * The focused object reference.
  *
  * @param <D> the object domain type.
  */
 public interface ObjectHandle<D> extends ObjectReference<D> {
+
+//  <H extends ObjectHandle<D>> H as(Class<H> objectHandleClass);
 
   /**
    * Movable object handle can move an object in space.
@@ -25,7 +27,7 @@ public interface ObjectHandle<D> extends ObjectReference<D> {
    * @param targetDomain target domain class.
    * @param target target object handle.
    * @param <TD> target domain type.
-   * @param <TR> target object reference type.
+   * @param <T> target object reference type.
    */
-  <TD, TR> void addProjection(Class<TD> targetDomain, TR target);
+  <TD, T> void addProjection(Class<TD> targetDomain, T target);
 }

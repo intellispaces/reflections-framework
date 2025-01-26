@@ -5,17 +5,17 @@ import tech.intellispaces.general.type.PrimitiveFunctions;
 import tech.intellispaces.jaquarius.annotation.Ordinal;
 import tech.intellispaces.jaquarius.annotation.Wrapper;
 import tech.intellispaces.jaquarius.channel.Channel1;
-import tech.intellispaces.jaquarius.channel.ChannelMethod0;
-import tech.intellispaces.jaquarius.channel.ChannelMethod1;
+import tech.intellispaces.jaquarius.channel.ChannelFunction0;
+import tech.intellispaces.jaquarius.channel.ChannelFunction1;
 import tech.intellispaces.jaquarius.channel.MappingChannel;
 import tech.intellispaces.jaquarius.engine.JaquariusEngines;
 import tech.intellispaces.jaquarius.engine.ObjectHandleBroker;
 import tech.intellispaces.jaquarius.engine.description.ObjectHandleMethodPurposes;
 import tech.intellispaces.jaquarius.engine.description.ObjectHandleTypeDescription;
 import tech.intellispaces.jaquarius.exception.TraverseException;
-import tech.intellispaces.jaquarius.object.handle.ObjectHandleTypes;
+import tech.intellispaces.jaquarius.object.reference.ObjectHandleMethodForm;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleType;
-import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
+import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.system.Modules;
 import tech.intellispaces.jaquarius.system.ObjectHandleWrapper;
@@ -59,8 +59,8 @@ public class UnmovableObjectHandleWrapperGenerator extends ObjectHandleWrapperGe
         Modules.class,
         ObjectHandleWrapper.class,
         Channel1.class,
-        ChannelMethod0.class,
-        ChannelMethod1.class,
+        ChannelFunction0.class,
+        ChannelFunction1.class,
         MappingChannel.class,
         PrimitiveFunctions.class,
         ObjectHandleTypeDescription.class,
@@ -93,11 +93,11 @@ public class UnmovableObjectHandleWrapperGenerator extends ObjectHandleWrapperGe
 
   @Override
   protected Map<String, String> generateMethod(
-      MethodStatement domainMethod, ObjectReferenceForm targetForm, int methodOrdinal
+      MethodStatement domainMethod, ObjectHandleMethodForm methodForm, int methodOrdinal
   ) {
     if (ChannelFunctions.isMovingBasedChannel(domainMethod)) {
       return Map.of();
     }
-    return super.generateMethod(domainMethod, targetForm, methodOrdinal);
+    return super.generateMethod(domainMethod, methodForm, methodOrdinal);
   }
 }

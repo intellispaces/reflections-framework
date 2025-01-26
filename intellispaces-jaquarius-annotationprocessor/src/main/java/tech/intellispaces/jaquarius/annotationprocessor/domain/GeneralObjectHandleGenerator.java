@@ -1,6 +1,7 @@
 package tech.intellispaces.jaquarius.annotationprocessor.domain;
 
 import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
+import tech.intellispaces.general.text.StringFunctions;
 import tech.intellispaces.general.type.Type;
 import tech.intellispaces.general.type.Types;
 import tech.intellispaces.jaquarius.annotation.Channel;
@@ -9,9 +10,9 @@ import tech.intellispaces.jaquarius.channel.Channel1;
 import tech.intellispaces.jaquarius.channel.MappingChannel;
 import tech.intellispaces.jaquarius.exception.TraverseException;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
-import tech.intellispaces.jaquarius.object.handle.ObjectHandleTypes;
+import tech.intellispaces.jaquarius.object.reference.ObjectHandleMethodForm;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleType;
-import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
+import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
 import tech.intellispaces.jaquarius.traverse.TraverseType;
@@ -64,16 +65,23 @@ public class GeneralObjectHandleGenerator extends ObjectHandleGenerator {
     analyzeAlias();
     analyzeObjectHandleMethods(sourceArtifact(), context);
 
+    addVariable("simpleHandleName", getSimpleHandleName());
     addVariable("movableClassSimpleName", movableClassSimpleName());
     addVariable("handleTypeParamsFull", typeParamsFull);
+    addVariable("handleTypeParamsBrief", typeParamsBrief);
     addVariable("domainTypeParamsBrief", domainTypeParamsBrief);
     addVariable("domainType", domainType);
     addVariable("domainMethods", methods);
     addVariable("isAlias", isAlias);
-    addVariable("primaryObjectHandle", primaryObjectHandle);
+    addVariable("primaryObjectHandle", baseObjectHandle);
     addVariable("primaryDomainTypeArguments", primaryDomainTypeArguments);
     addVariable("primaryDomainSimpleName", primaryDomainSimpleName);
     return true;
+  }
+
+  private String getSimpleHandleName() {
+    return StringFunctions.lowercaseFirstLetter(
+        StringFunctions.removeTailOrElseThrow(sourceArtifactSimpleName(), "Domain"));
   }
 
   @SuppressWarnings("unchecked,rawtypes")
@@ -84,8 +92,8 @@ public class GeneralObjectHandleGenerator extends ObjectHandleGenerator {
       CustomTypeReference nearEquivalentDomain = equivalentDomains.get(0);
       CustomTypeReference mainEquivalentDomain = equivalentDomains.get(equivalentDomains.size() - 1);
 
-      primaryObjectHandle = buildObjectHandleDeclaration(nearEquivalentDomain, ObjectHandleTypes.General);
-      primaryDomainTypeArguments = nearEquivalentDomain.typeArgumentsDeclaration(this::addImportAndGetSimpleName);
+      baseObjectHandle = buildObjectHandleDeclaration(nearEquivalentDomain, ObjectHandleTypes.General);
+      primaryDomainTypeArguments = getDomainTypeParamsBrief(nearEquivalentDomain);
       primaryDomainSimpleName = addImportAndGetSimpleName(mainEquivalentDomain.targetType().canonicalName());
       domainType = buildDomainType(mainEquivalentDomain.targetType(), mainEquivalentDomain.typeArguments());
     } else {
@@ -107,23 +115,23 @@ public class GeneralObjectHandleGenerator extends ObjectHandleGenerator {
 
   @Override
   protected Map<String, String> generateMethod(
-      MethodStatement method, ObjectReferenceForm targetForm, int methodOrdinal
+      MethodStatement method, ObjectHandleMethodForm methodForm, int methodOrdinal
   ) {
     if (method.hasAnnotation(Channel.class)) {
-      return super.generateMethod(method, targetForm, methodOrdinal);
+      return super.generateMethod(method, methodForm, methodOrdinal);
     } else {
-      return buildAdditionalMethod(method);
+      return buildAdditionalMethod(method, methodForm);
     }
   }
 
-  private Map<String, String> buildAdditionalMethod(MethodStatement method) {
+  private Map<String, String> buildAdditionalMethod(MethodStatement method, ObjectHandleMethodForm methodForm) {
     var sb = new StringBuilder();
     appendMethodTypeParameters(sb, method);
     appendMethodReturnType(sb, method);
     sb.append(" ");
     sb.append(method.name());
     sb.append("(");
-    appendMethodParams(sb, method);
+    appendMethodParams(sb, method, methodForm);
     sb.append(")");
     appendMethodExceptions(sb, method);
     return Map.of(

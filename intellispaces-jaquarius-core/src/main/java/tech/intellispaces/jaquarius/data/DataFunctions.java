@@ -1,7 +1,7 @@
 package tech.intellispaces.jaquarius.data;
 
 import tech.intellispaces.jaquarius.annotation.Data;
-import tech.intellispaces.jaquarius.object.handle.ObjectHandleFunctions;
+import tech.intellispaces.jaquarius.object.reference.ObjectHandleFunctions;
 
 import java.lang.annotation.Annotation;
 import java.util.HashSet;

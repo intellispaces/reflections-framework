@@ -9,13 +9,13 @@ import {{$importedClass}};
  *
  * This class was generated automatically. Don't try to change it.
  */
-@Unmovable
 @ObjectHandle({{$sourceArtifactSimpleName}}.class)
+@Unmovable
 {{$generatedAnnotation}}
 {{when $isAlias}}
-public interface {{$generatedArtifactSimpleName}}{{$handleTypeParamsFull}} extends {{$generalObjectHandle}}{{$domainTypeParamsBrief}}, {{$primaryObjectHandle}} {
+public interface {{$generatedArtifactSimpleName}}{{$handleTypeParamsFull}} extends {{$generalObjectHandle}}{{$handleTypeParamsBrief}}, {{$primaryObjectHandle}} {
 {{else}}
-public interface {{$generatedArtifactSimpleName}}{{$handleTypeParamsFull}} extends {{$generalObjectHandle}}{{$domainTypeParamsBrief}}, UnmovableObjectHandle<{{$sourceArtifactSimpleName}}{{$domainTypeParamsBrief}}> {
+public interface {{$generatedArtifactSimpleName}}{{$handleTypeParamsFull}} extends {{$generalObjectHandle}}{{$handleTypeParamsBrief}}, UnmovableObjectHandle<{{$sourceArtifactSimpleName}}{{$domainTypeParamsBrief}}> {
 {{end}}
 
 {{for method : $conversionMethods}}
@@ -27,4 +27,11 @@ public interface {{$generatedArtifactSimpleName}}{{$handleTypeParamsFull}} exten
   default {{$movableClassSimpleName}}{{$domainTypeParamsBrief}} asMovableOrElseThrow() {
     throw UnexpectedExceptions.withMessage("Unmovable object");
   }
+
+{{for method : $movableMethods}}
+  @Override
+  @Deprecated
+  {{$method."declaration"}};
+
+{{end}}
 }

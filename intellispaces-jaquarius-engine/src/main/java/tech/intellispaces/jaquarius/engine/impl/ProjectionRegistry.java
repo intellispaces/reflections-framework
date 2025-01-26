@@ -8,7 +8,7 @@ import tech.intellispaces.jaquarius.annotation.Projection;
 import tech.intellispaces.jaquarius.exception.ConfigurationException;
 import tech.intellispaces.jaquarius.exception.ConfigurationExceptions;
 import tech.intellispaces.jaquarius.exception.CyclicDependencyExceptions;
-import tech.intellispaces.jaquarius.object.handle.ObjectHandleFunctions;
+import tech.intellispaces.jaquarius.object.reference.ObjectHandleFunctions;
 import tech.intellispaces.jaquarius.system.ModuleProjection;
 import tech.intellispaces.jaquarius.system.ProjectionDefinition;
 import tech.intellispaces.jaquarius.system.ProjectionProvider;

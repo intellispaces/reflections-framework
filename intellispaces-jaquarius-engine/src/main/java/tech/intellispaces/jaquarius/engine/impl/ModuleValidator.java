@@ -1,7 +1,7 @@
 package tech.intellispaces.jaquarius.engine.impl;
 
 import tech.intellispaces.jaquarius.exception.ConfigurationExceptions;
-import tech.intellispaces.jaquarius.object.handle.ObjectHandleFunctions;
+import tech.intellispaces.jaquarius.object.reference.ObjectHandleFunctions;
 import tech.intellispaces.jaquarius.system.ProjectionInjection;
 import tech.intellispaces.jaquarius.system.UnitProjectionDefinition;
 import tech.intellispaces.jaquarius.system.injection.InjectionKinds;

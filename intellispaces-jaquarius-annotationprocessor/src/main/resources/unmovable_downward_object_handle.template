@@ -25,7 +25,7 @@ public class {{$generatedArtifactSimpleName}}{{$classTypeParams}} implements {{$
   }
 
   @Override
-  public Class<?> domainClass() {
+  public Class<?> domainAsClass() {
     return {{$domainClassSimpleName}}.class;
   }
 {{else}}
@@ -36,7 +36,7 @@ public class {{$generatedArtifactSimpleName}}{{$classTypeParams}} implements {{$
   }
 
   @Override
-  public Class<?> domainClass() {
+  public Class<?> domainAsClass() {
     return {{$domainClassSimpleName}}.class;
   }
 {{else}}

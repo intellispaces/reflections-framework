@@ -6,14 +6,14 @@ import tech.intellispaces.general.type.Types;
 import tech.intellispaces.jaquarius.annotation.ObjectHandle;
 import tech.intellispaces.jaquarius.channel.Channel0;
 import tech.intellispaces.jaquarius.channel.Channel1;
-import tech.intellispaces.jaquarius.channel.ChannelMethod0;
-import tech.intellispaces.jaquarius.channel.ChannelMethod1;
+import tech.intellispaces.jaquarius.channel.ChannelFunction0;
+import tech.intellispaces.jaquarius.channel.ChannelFunction1;
 import tech.intellispaces.jaquarius.channel.MappingChannel;
 import tech.intellispaces.jaquarius.channel.MappingOfMovingChannel;
 import tech.intellispaces.jaquarius.exception.TraverseException;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
-import tech.intellispaces.jaquarius.object.handle.ObjectHandleTypes;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleType;
+import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
 import tech.intellispaces.java.reflection.customtype.CustomType;
 import tech.intellispaces.java.reflection.method.MethodStatement;
@@ -24,9 +24,9 @@ import java.util.stream.Stream;
 public class MovableDownwardObjectHandleGenerator extends ConversionObjectHandleGenerator {
 
   public MovableDownwardObjectHandleGenerator(
-      CustomType annotatedType, CustomTypeReference parentDomainType
+      CustomType annotatedType, CustomTypeReference superDomainType
   ) {
-    super(annotatedType, parentDomainType);
+    super(annotatedType, superDomainType);
   }
 
   @Override
@@ -42,7 +42,7 @@ public class MovableDownwardObjectHandleGenerator extends ConversionObjectHandle
   @Override
   public String generatedArtifactName() {
     return NameConventionFunctions.getMovableDownwardObjectHandleTypename(
-        sourceArtifact(), parentDomainType.targetType());
+        sourceArtifact(), superDomainType.targetType());
   }
 
   @Override
@@ -58,15 +58,15 @@ public class MovableDownwardObjectHandleGenerator extends ConversionObjectHandle
         Types.class,
         Channel0.class,
         Channel1.class,
-        ChannelMethod0.class,
-        ChannelMethod1.class,
+        ChannelFunction0.class,
+        ChannelFunction1.class,
         MappingChannel.class,
         MappingOfMovingChannel.class,
         TraverseException.class
     );
 
     String movableObjectHandleName = addImportAndGetSimpleName(
-        NameConventionFunctions.getMovableObjectHandleTypename(parentDomainType.targetType().className()));
+        NameConventionFunctions.getMovableObjectHandleTypename(superDomainType.targetType().className()));
 
     analyzeDomain();
     analyzeChildObjectHandleType();
@@ -99,7 +99,7 @@ public class MovableDownwardObjectHandleGenerator extends ConversionObjectHandle
   protected Stream<MethodStatement> getObjectHandleMethods(
       CustomType customType, ArtifactGeneratorContext context
   ) {
-    return buildActualType(parentDomainType.targetType(), context).actualMethods().stream()
+    return buildActualType(superDomainType.targetType(), context).actualMethods().stream()
         .filter(m -> excludeDeepConversionMethods(m, customType))
         .filter(DomainFunctions::isNotDomainClassGetter);
   }

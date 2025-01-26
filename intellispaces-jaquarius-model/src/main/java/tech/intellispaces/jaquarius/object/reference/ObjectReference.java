@@ -6,25 +6,24 @@ import tech.intellispaces.jaquarius.channel.MappingChannel;
 import tech.intellispaces.jaquarius.exception.TraverseException;
 
 /**
- * Object reference.<p/>
+ * The object reference.<p/>
  *
- * The object reference it a link from the system to an object.<p/>
+ * The object reference it a link from the system to the object.<p/>
+ * Any interaction of the system with the object is performed through the object reference only.
  *
- * Any interaction of the system with the object is performed through the object reference.
- *
- * @param <D> the related domain type.
+ * @param <D> the object domain type.
  */
 public interface ObjectReference<D> {
 
   /**
-   * Type of the domain related to this handle.
+   * The domain type related to this object reference.
    */
   Type<D> domain();
 
   /**
-   * Class of the domain related to this handle.
+   * The domain class related to this object reference.
    */
-  Class<?> domainClass();
+  Class<?> domainAsClass();
 
   /**
    * Returns <code>true</code> if this object reference focused to specific object.
@@ -36,10 +35,10 @@ public interface ObjectReference<D> {
    *
    * @param targetDomain target domain class.
    * @return projection target object handle or <code>null</code>.
-   * @param <TD> target domain type.
-   * @param <TH> target object handle type.
+   * @param <TD> the target domain type.
+   * @param <T> the target object reference type.
    */
-  <TD, TH> TH mapTo(Class<TD> targetDomain);
+  <TD, T> T mapTo(Class<TD> targetDomain);
 
   /**
    * Maps object through not parametrized channel.
@@ -53,6 +52,8 @@ public interface ObjectReference<D> {
    * @throws TraverseException throws if object cannot be traversed.
    */
   <T, Q, C extends Channel1 & MappingChannel> T mapThru(Class<C> channelClass, Q qualifier) throws TraverseException;
+
+//  <T, R extends T> R mapThru(ChannelFunction0<? super D, T> channelFunction) throws TraverseException;
 
   /**
    * Releases any system resources associated with this object reference, if any.

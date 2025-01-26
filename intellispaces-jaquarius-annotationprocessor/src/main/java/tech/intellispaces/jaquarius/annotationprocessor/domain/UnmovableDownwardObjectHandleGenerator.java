@@ -8,13 +8,13 @@ import tech.intellispaces.jaquarius.annotation.Channel;
 import tech.intellispaces.jaquarius.annotation.ObjectHandle;
 import tech.intellispaces.jaquarius.channel.Channel0;
 import tech.intellispaces.jaquarius.channel.Channel1;
-import tech.intellispaces.jaquarius.channel.ChannelMethod0;
-import tech.intellispaces.jaquarius.channel.ChannelMethod1;
+import tech.intellispaces.jaquarius.channel.ChannelFunction0;
+import tech.intellispaces.jaquarius.channel.ChannelFunction1;
 import tech.intellispaces.jaquarius.channel.MappingChannel;
 import tech.intellispaces.jaquarius.exception.TraverseException;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
-import tech.intellispaces.jaquarius.object.handle.ObjectHandleTypes;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleType;
+import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
 import tech.intellispaces.jaquarius.traverse.TraverseTypes;
 import tech.intellispaces.java.reflection.customtype.CustomType;
@@ -27,9 +27,9 @@ import java.util.stream.Stream;
 public class UnmovableDownwardObjectHandleGenerator extends ConversionObjectHandleGenerator {
 
   public UnmovableDownwardObjectHandleGenerator(
-      CustomType annotatedType, CustomTypeReference parentDomainType
+      CustomType annotatedType, CustomTypeReference superDomainType
   ) {
-    super(annotatedType, parentDomainType);
+    super(annotatedType, superDomainType);
   }
 
   @Override
@@ -45,7 +45,7 @@ public class UnmovableDownwardObjectHandleGenerator extends ConversionObjectHand
   @Override
   public String generatedArtifactName() {
     return NameConventionFunctions.getUnmovableDownwardObjectHandleTypename(
-        sourceArtifact(), parentDomainType.targetType());
+        sourceArtifact(), superDomainType.targetType());
   }
 
   @Override
@@ -61,14 +61,14 @@ public class UnmovableDownwardObjectHandleGenerator extends ConversionObjectHand
         Types.class,
         Channel0.class,
         Channel1.class,
-        ChannelMethod0.class,
-        ChannelMethod1.class,
+        ChannelFunction0.class,
+        ChannelFunction1.class,
         MappingChannel.class,
         TraverseException.class
     );
 
     String unmovableObjectHandleName = addImportAndGetSimpleName(
-        NameConventionFunctions.getUnmovableObjectHandleTypename(parentDomainType.targetType().className()));
+        NameConventionFunctions.getUnmovableObjectHandleTypename(superDomainType.targetType().className()));
 
     analyzeDomain();
     analyzeChildObjectHandleType();
@@ -101,7 +101,7 @@ public class UnmovableDownwardObjectHandleGenerator extends ConversionObjectHand
   protected Stream<MethodStatement> getObjectHandleMethods(
       CustomType customType, ArtifactGeneratorContext context
   ) {
-    return buildActualType(parentDomainType.targetType(), context).actualMethods().stream()
+    return buildActualType(superDomainType.targetType(), context).actualMethods().stream()
         .filter(m -> excludeDeepConversionMethods(m, customType))
         .filter(this::isNotMovingMethod)
         .filter(DomainFunctions::isNotDomainClassGetter);

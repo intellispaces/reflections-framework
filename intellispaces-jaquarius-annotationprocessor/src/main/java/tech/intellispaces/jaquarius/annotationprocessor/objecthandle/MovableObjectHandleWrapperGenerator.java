@@ -9,8 +9,8 @@ import tech.intellispaces.jaquarius.annotation.Unmovable;
 import tech.intellispaces.jaquarius.annotation.Wrapper;
 import tech.intellispaces.jaquarius.channel.Channel0;
 import tech.intellispaces.jaquarius.channel.Channel1;
-import tech.intellispaces.jaquarius.channel.ChannelMethod0;
-import tech.intellispaces.jaquarius.channel.ChannelMethod1;
+import tech.intellispaces.jaquarius.channel.ChannelFunction0;
+import tech.intellispaces.jaquarius.channel.ChannelFunction1;
 import tech.intellispaces.jaquarius.channel.MappingChannel;
 import tech.intellispaces.jaquarius.channel.MappingOfMovingChannel;
 import tech.intellispaces.jaquarius.engine.JaquariusEngines;
@@ -19,8 +19,8 @@ import tech.intellispaces.jaquarius.engine.description.ObjectHandleMethodPurpose
 import tech.intellispaces.jaquarius.engine.description.ObjectHandleTypeDescription;
 import tech.intellispaces.jaquarius.exception.TraverseException;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
-import tech.intellispaces.jaquarius.object.handle.ObjectHandleTypes;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleType;
+import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.system.Modules;
 import tech.intellispaces.jaquarius.system.ObjectHandleWrapper;
@@ -65,8 +65,8 @@ public class MovableObjectHandleWrapperGenerator extends ObjectHandleWrapperGene
         ObjectHandleWrapper.class,
         Channel0.class,
         Channel1.class,
-        ChannelMethod0.class,
-        ChannelMethod1.class,
+        ChannelFunction0.class,
+        ChannelFunction1.class,
         ChannelFunctions.class,
         MappingChannel.class,
         MappingOfMovingChannel.class,

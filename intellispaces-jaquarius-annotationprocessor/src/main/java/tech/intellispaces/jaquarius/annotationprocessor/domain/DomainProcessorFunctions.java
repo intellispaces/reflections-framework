@@ -10,7 +10,7 @@ import tech.intellispaces.jaquarius.annotation.Channel;
 import tech.intellispaces.jaquarius.annotationprocessor.AnnotationProcessorFunctions;
 import tech.intellispaces.jaquarius.annotationprocessor.ArtifactTypes;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
-import tech.intellispaces.jaquarius.space.domain.PrimaryDomains;
+import tech.intellispaces.jaquarius.space.domain.BasicDomains;
 import tech.intellispaces.java.reflection.customtype.AnnotationFunctions;
 import tech.intellispaces.java.reflection.customtype.CustomType;
 import tech.intellispaces.java.reflection.method.MethodStatement;
@@ -65,7 +65,7 @@ public interface DomainProcessorFunctions {
   private static void addBasicObjectHandleGenerators(
       CustomType domainType, List<ArtifactGenerator> generators, RoundEnvironment roundEnv
   ) {
-    if (PrimaryDomains.current().getByDomainName(NameConventionFunctions.convertJaquariusDomainName(domainType.canonicalName())) != null) {
+    if (BasicDomains.active().getByDomainName(NameConventionFunctions.convertJaquariusDomainName(domainType.canonicalName())) != null) {
       return;
     }
 
@@ -89,16 +89,16 @@ public interface DomainProcessorFunctions {
   private static void addDownwardObjectHandleGenerators(
       CustomType domainType, List<ArtifactGenerator> generators
   ) {
-    if (PrimaryDomains.current().getByDomainName(NameConventionFunctions.convertJaquariusDomainName(domainType.canonicalName())) != null) {
+    if (BasicDomains.active().getByDomainName(NameConventionFunctions.convertJaquariusDomainName(domainType.canonicalName())) != null) {
       return;
     }
 
-    List<CustomTypeReference> parents = domainType.parentTypes();
-    if (parents.size() != 1) {
+    List<CustomTypeReference> superDomains = domainType.parentTypes();
+    if (superDomains.size() != 1) {
       return;
     }
-    CustomTypeReference parentDomainType = parents.get(0);
-    generators.add(new UnmovableDownwardObjectHandleGenerator(domainType, parentDomainType));
-    generators.add(new MovableDownwardObjectHandleGenerator(domainType, parentDomainType));
+    CustomTypeReference superDomainType = superDomains.get(0);
+    generators.add(new UnmovableDownwardObjectHandleGenerator(domainType, superDomainType));
+    generators.add(new MovableDownwardObjectHandleGenerator(domainType, superDomainType));
   }
 }

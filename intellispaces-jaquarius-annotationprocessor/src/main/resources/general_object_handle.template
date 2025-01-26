@@ -14,20 +14,20 @@ import {{$importedClass}};
 {{when $isAlias}}
 public interface {{$generatedArtifactSimpleName}}{{$handleTypeParamsFull}} extends {{$primaryObjectHandle}} {
 
-  default Type<{{$primaryDomainSimpleName}}{{$primaryDomainTypeArguments}}> domain() {
+  default Type<{{$primaryDomainSimpleName}}{{$primaryDomainTypeArguments}}> {{$simpleHandleName}}Domain() {
     return {{$domainType}}
   }
 {{else}}
-public interface {{$generatedArtifactSimpleName}}{{$handleTypeParamsFull}} extends tech.intellispaces.jaquarius.object.reference.ObjectHandle<{{$sourceArtifactSimpleName}}{{$domainTypeParamsBrief}}> {
+public interface {{$generatedArtifactSimpleName}}{{$handleTypeParamsFull}} extends tech.intellispaces.jaquarius.object.reference.ObjectHandle<{{$sourceArtifactSimpleName}}{{$domainTypeParamsBrief}}>, {{$sourceArtifactSimpleName}}{{$domainTypeParamsBrief}} {
 
   default Type<{{$sourceArtifactSimpleName}}{{$domainTypeParamsBrief}}> domain() {
     return {{$domainType}}
   }
-{{end}}
 
-  default Class<?> domainClass() {
+  default Class<?> domainAsClass() {
     return {{$primaryDomainSimpleName}}.class;
   }
+{{end}}
 
   @Override
   default boolean isFocused() {
@@ -39,7 +39,7 @@ public interface {{$generatedArtifactSimpleName}}{{$handleTypeParamsFull}} exten
   {{$method."declaration"}};
 
 {{end}}
-  {{$movableClassSimpleName}}{{$domainTypeParamsBrief}} asMovableOrElseThrow();
+  {{$movableClassSimpleName}}{{$handleTypeParamsBrief}} asMovableOrElseThrow();
 
   <T, Q, C extends Channel1 & MappingChannel> T mapThru(Class<C> channelClass, Q qualifier) throws TraverseException;
 }

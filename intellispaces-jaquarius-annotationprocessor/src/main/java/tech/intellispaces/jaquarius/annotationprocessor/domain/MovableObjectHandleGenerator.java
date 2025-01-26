@@ -6,14 +6,14 @@ import tech.intellispaces.jaquarius.annotation.ObjectHandle;
 import tech.intellispaces.jaquarius.annotation.Unmovable;
 import tech.intellispaces.jaquarius.channel.Channel0;
 import tech.intellispaces.jaquarius.channel.Channel1;
-import tech.intellispaces.jaquarius.channel.ChannelMethod0;
-import tech.intellispaces.jaquarius.channel.ChannelMethod1;
+import tech.intellispaces.jaquarius.channel.ChannelFunction0;
+import tech.intellispaces.jaquarius.channel.ChannelFunction1;
 import tech.intellispaces.jaquarius.channel.MappingOfMovingChannel;
 import tech.intellispaces.jaquarius.exception.TraverseException;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
-import tech.intellispaces.jaquarius.object.handle.ObjectHandleTypes;
 import tech.intellispaces.jaquarius.object.reference.MovableObjectHandle;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleType;
+import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
 import tech.intellispaces.jaquarius.traverse.TraverseType;
@@ -59,8 +59,8 @@ public class MovableObjectHandleGenerator extends ObjectHandleGenerator {
         MovableObjectHandle.class,
         Channel0.class,
         Channel1.class,
-        ChannelMethod0.class,
-        ChannelMethod1.class,
+        ChannelFunction0.class,
+        ChannelFunction1.class,
         MappingOfMovingChannel.class,
         TraverseException.class
     );
@@ -71,11 +71,13 @@ public class MovableObjectHandleGenerator extends ObjectHandleGenerator {
     analyzeConversionMethods(sourceArtifact());
 
     addVariable("handleTypeParamsFull", typeParamsFull);
+    addVariable("handleTypeParamsBrief", typeParamsBrief);
     addVariable("domainTypeParamsBrief", domainTypeParamsBrief);
     addVariable("generalObjectHandle", generalObjectHandle);
     addVariable("conversionMethods", conversionMethods);
     addVariable("domainMethods", methods);
     addVariable("isAlias", isAlias);
+    addVariable("baseObjectHandle", baseObjectHandle);
     addVariable("primaryObjectHandle", primaryObjectHandle);
     addVariable("primaryDomainSimpleName", primaryDomainSimpleName);
     addVariable("primaryDomainTypeArguments", primaryDomainTypeArguments);
@@ -89,7 +91,10 @@ public class MovableObjectHandleGenerator extends ObjectHandleGenerator {
       CustomTypeReference nearEquivalentDomain = equivalentDomains.get(0);
       CustomTypeReference mainEquivalentDomain = equivalentDomains.get(equivalentDomains.size() - 1);
 
-      primaryObjectHandle = buildObjectHandleDeclaration(nearEquivalentDomain, ObjectHandleTypes.Movable);
+      baseObjectHandle = buildObjectHandleDeclaration(nearEquivalentDomain, ObjectHandleTypes.Movable);
+
+      primaryObjectHandle = buildObjectHandleDeclaration(mainEquivalentDomain, ObjectHandleTypes.General);
+
       primaryDomainSimpleName = addImportAndGetSimpleName(mainEquivalentDomain.targetType().canonicalName());
       primaryDomainTypeArguments = nearEquivalentDomain.typeArgumentsDeclaration(this::addImportAndGetSimpleName);
     }

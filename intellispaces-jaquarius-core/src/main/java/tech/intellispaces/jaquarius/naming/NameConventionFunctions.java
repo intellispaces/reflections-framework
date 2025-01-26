@@ -7,13 +7,13 @@ import tech.intellispaces.jaquarius.annotation.Channel;
 import tech.intellispaces.jaquarius.annotation.Domain;
 import tech.intellispaces.jaquarius.annotation.ObjectHandle;
 import tech.intellispaces.jaquarius.annotation.Ontology;
-import tech.intellispaces.jaquarius.object.handle.ObjectHandleTypes;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleType;
+import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
-import tech.intellispaces.jaquarius.space.domain.PrimaryDomain;
-import tech.intellispaces.jaquarius.space.domain.PrimaryDomains;
+import tech.intellispaces.jaquarius.space.domain.BasicDomain;
+import tech.intellispaces.jaquarius.space.domain.BasicDomains;
 import tech.intellispaces.java.reflection.customtype.CustomType;
 import tech.intellispaces.java.reflection.method.MethodParam;
 import tech.intellispaces.java.reflection.method.MethodStatement;
@@ -28,8 +28,8 @@ public interface NameConventionFunctions {
   }
 
   static String convertJaquariusDomainName(String name) {
-    return StringFunctions.removeTailOrElseThrow(
-        StringFunctions.replaceHeadOrElseThrow(name, "tech.intellispaces.jaquarius.", "intellispaces."), "Domain");
+    return StringFunctions.removeTailIfPresent(
+        StringFunctions.replaceHeadIfPresent(name, "tech.intellispaces.jaquarius.", "intellispaces."), "Domain");
   }
 
   static String getObjectHandleTypename(String domainClassName, ObjectHandleType handleType) {
@@ -41,17 +41,17 @@ public interface NameConventionFunctions {
   }
 
   static String getGeneralObjectHandleTypename(String domainClassName) {
-    PrimaryDomain primaryDomain = PrimaryDomains.current().getByDomainName(convertJaquariusDomainName(domainClassName));
-    if (primaryDomain != null) {
-      return primaryDomain.handleClassName();
+    BasicDomain basicDomain = BasicDomains.active().getByDomainName(convertJaquariusDomainName(domainClassName));
+    if (basicDomain != null) {
+      return basicDomain.delegateClassName();
     }
-    return StringFunctions.removeTailOrElseThrow(transformClassName(domainClassName), "Domain");
+    return StringFunctions.replaceTailOrElseThrow(transformClassName(domainClassName), "Domain", "Handle");
   }
 
   static String getUnmovableObjectHandleTypename(String domainClassName) {
-    PrimaryDomain primaryDomain = PrimaryDomains.current().getByDomainName(convertJaquariusDomainName(domainClassName));
-    if (primaryDomain != null) {
-      return primaryDomain.handleClassName();
+    BasicDomain basicDomain = BasicDomains.active().getByDomainName(convertJaquariusDomainName(domainClassName));
+    if (basicDomain != null) {
+      return basicDomain.delegateClassName();
     }
     return ClassNameFunctions.addPrefixToSimpleName("Unmovable", getGeneralObjectHandleTypename(domainClassName));
   }
@@ -139,7 +139,8 @@ public interface NameConventionFunctions {
     String packageName = ClassNameFunctions.getPackageName(domainType.canonicalName());
     String simpleName = "Movable" +
         StringFunctions.capitalizeFirstLetter(StringFunctions.removeTailOrElseThrow(baseDomainType.simpleName(), "Domain")) +
-        "BasedOn" + StringFunctions.capitalizeFirstLetter(StringFunctions.removeTailOrElseThrow(domainType.simpleName(), "Domain"));
+        "BasedOn" + StringFunctions.capitalizeFirstLetter(StringFunctions.removeTailOrElseThrow(domainType.simpleName(), "Domain"))
+        + "Handle";
     return ClassNameFunctions.joinPackageAndSimpleName(packageName, simpleName);
   }
 
@@ -147,7 +148,8 @@ public interface NameConventionFunctions {
     String packageName = ClassNameFunctions.getPackageName(domainType.canonicalName());
     String simpleName = "Unmovable" +
         StringFunctions.capitalizeFirstLetter(StringFunctions.removeTailOrElseThrow(baseDomainType.simpleName(), "Domain")) +
-        "BasedOn" + StringFunctions.capitalizeFirstLetter(domainType.simpleName());
+        "BasedOn" + StringFunctions.capitalizeFirstLetter(StringFunctions.removeTailOrElseThrow(domainType.simpleName(), "Domain"))
+        + "Handle";
     return ClassNameFunctions.joinPackageAndSimpleName(packageName, simpleName);
   }
 
@@ -164,6 +166,10 @@ public interface NameConventionFunctions {
   }
 
   static String getConversionMethodName(CustomType targetType) {
+    BasicDomain basicDomain = BasicDomains.active().getByDelegateClassName(targetType.canonicalName());
+    if (basicDomain != null) {
+      return "as" + StringFunctions.capitalizeFirstLetter(targetType.simpleName());
+    }
     return "as" + StringFunctions.capitalizeFirstLetter(
         StringFunctions.removeTailOrElseThrow(targetType.simpleName(), "Domain"));
   }
@@ -237,9 +243,9 @@ public interface NameConventionFunctions {
   static String getGuideClassCanonicalName(
       ObjectReferenceForm targetForm, String spaceName, CustomType channelType, MethodStatement channelMethod
   ) {
-    String name = StringFunctions.replaceTail(channelType.canonicalName(), "Channel", "Guide");
+    String name = StringFunctions.replaceTailIfPresent(channelType.canonicalName(), "Channel", "Guide");
     if (ObjectReferenceForms.Primitive.is(targetForm)) {
-      name = name + "Primitive";
+      name = name + "AsPrimitive";
     }
     return name;
   }

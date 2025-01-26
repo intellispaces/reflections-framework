@@ -1,7 +1,6 @@
-package tech.intellispaces.jaquarius.object.handle;
+package tech.intellispaces.jaquarius.object.reference;
 
 import tech.intellispaces.general.entity.Enumeration;
-import tech.intellispaces.jaquarius.object.reference.ObjectHandleType;
 
 public enum ObjectHandleTypes implements ObjectHandleType, Enumeration<ObjectHandleType> {
 

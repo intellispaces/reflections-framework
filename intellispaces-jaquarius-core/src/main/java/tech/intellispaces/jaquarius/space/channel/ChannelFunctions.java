@@ -13,6 +13,8 @@ import tech.intellispaces.jaquarius.channel.Channel1;
 import tech.intellispaces.jaquarius.channel.Channel2;
 import tech.intellispaces.jaquarius.channel.Channel3;
 import tech.intellispaces.jaquarius.channel.Channel4;
+import tech.intellispaces.jaquarius.channel.ChannelFunction0;
+import tech.intellispaces.jaquarius.channel.ChannelFunction1;
 import tech.intellispaces.jaquarius.exception.ConfigurationExceptions;
 import tech.intellispaces.jaquarius.id.RepetableUuidIdentifierGenerator;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleFunctions;
@@ -82,15 +84,15 @@ public interface ChannelFunctions {
     return channel.value();
   }
 
-  static <S, R> String getChannelId(Class<S> sourceDomain, Function<? super S, R> channelMethod) {
-    return findChannelId(sourceDomain, channelMethod, channelMethod::apply);
+  static <S, R> String getChannelId(Class<S> sourceDomain, ChannelFunction0<S, R> channelFunction) {
+    return findChannelId(sourceDomain, channelFunction, channelFunction::traverse);
   }
 
   static <S, R, Q> String getChannelId(
-    Class<S> sourceDomain, BiFunction<? super S, Q, R> channelMethod, Q qualifierAnyValidValue
+      Class<S> sourceDomain, ChannelFunction1<S, R, Q> channelFunction, Q qualifierAnyValidValue
   ) {
-    return findChannelId(sourceDomain, channelMethod,
-        (trackedObject) -> channelMethod.apply(trackedObject, qualifierAnyValidValue));
+    return findChannelId(sourceDomain, channelFunction,
+        (trackedObject) -> channelFunction.traverse(trackedObject, qualifierAnyValidValue));
   }
 
   static String computedChannelId(String channelClassCanonicalName) {
@@ -98,13 +100,13 @@ public interface ChannelFunctions {
   }
 
   private static <S> String findChannelId(
-      Class<S> sourceDomain, Object channelMethod, Consumer<S> trackedObjectProcessor
+      Class<S> sourceDomain, Object channelFunction, Consumer<S> trackedObjectProcessor
   ) {
     Tracker tracker = Trackers.get();
     S trackedObject = TrackerFunctions.createTrackedObject(sourceDomain, tracker);
     trackedObjectProcessor.accept(trackedObject);
     List<Method> trackedMethods = tracker.getInvokedMethods();
-    return extractChannelId(trackedMethods, sourceDomain, channelMethod);
+    return extractChannelId(trackedMethods, sourceDomain, channelFunction);
   }
 
   static MethodStatement getChannelMethod(CustomType channelType) {

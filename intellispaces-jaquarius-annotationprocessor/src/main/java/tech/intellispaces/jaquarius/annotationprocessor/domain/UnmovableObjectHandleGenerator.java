@@ -24,7 +24,7 @@ import java.util.stream.Stream;
 
 public class UnmovableObjectHandleGenerator extends ObjectHandleGenerator {
 
-  protected final List<Map<String, String>> movableMethods = new ArrayList<>();
+  private final List<Map<String, String>> movableMethods = new ArrayList<>();
 
   public UnmovableObjectHandleGenerator(CustomType domainType) {
     super(domainType);

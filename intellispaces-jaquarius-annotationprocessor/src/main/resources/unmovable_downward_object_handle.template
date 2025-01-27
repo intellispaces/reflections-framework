@@ -55,6 +55,14 @@ public class {{$generatedArtifactSimpleName}}{{$classTypeParams}} implements {{$
 
 {{end}}
 
+{{for method : $movableMethods}}
+  @Override
+  @Deprecated
+  {{$method."signature"}} {
+    throw TraverseExceptions.withMessage("Unable to move the unmovable object handle");
+  }
+
+{{end}}
   @Override
   public void release() {
     {{$childField}}.release();

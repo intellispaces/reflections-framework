@@ -150,6 +150,19 @@ abstract class ConversionObjectHandleGenerator extends AbstractObjectHandleGener
     throw NotImplementedExceptions.withCode("aXFZpg");
   }
 
+  @Override
+  protected boolean includeMethodForm(MethodStatement method, ObjectHandleMethodForm methodForm) {
+    if (methodForm.is(ObjectHandleMethodForms.Normal.name())) {
+      MethodStatement actualMethod = superDomainType.targetType().actualMethod(
+          method.name(), method.parameterTypes()
+      ).orElseThrow();
+      if (actualMethod.returnType().orElseThrow().isNamedReference() && method.params().isEmpty()) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   private Map<String, String> generatePrototypeMethod(MethodStatement method, ObjectHandleMethodForm methodForm) {
     var sb = new StringBuilder();
     sb.append("public ");

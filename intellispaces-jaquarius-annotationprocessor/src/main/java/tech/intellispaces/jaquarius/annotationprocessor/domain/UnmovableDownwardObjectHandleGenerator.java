@@ -12,19 +12,28 @@ import tech.intellispaces.jaquarius.channel.ChannelFunction0;
 import tech.intellispaces.jaquarius.channel.ChannelFunction1;
 import tech.intellispaces.jaquarius.channel.MappingChannel;
 import tech.intellispaces.jaquarius.exception.TraverseException;
+import tech.intellispaces.jaquarius.exception.TraverseExceptions;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleType;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
+import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
+import tech.intellispaces.jaquarius.traverse.TraverseType;
 import tech.intellispaces.jaquarius.traverse.TraverseTypes;
 import tech.intellispaces.java.reflection.customtype.CustomType;
+import tech.intellispaces.java.reflection.method.MethodSignatureDeclarations;
 import tech.intellispaces.java.reflection.method.MethodStatement;
 import tech.intellispaces.java.reflection.reference.CustomTypeReference;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
 
 public class UnmovableDownwardObjectHandleGenerator extends ConversionObjectHandleGenerator {
+
+  private final List<Map<String, String>> movableMethods = new ArrayList<>();
 
   public UnmovableDownwardObjectHandleGenerator(
       CustomType annotatedType, CustomTypeReference superDomainType
@@ -73,6 +82,7 @@ public class UnmovableDownwardObjectHandleGenerator extends ConversionObjectHand
     analyzeDomain();
     analyzeChildObjectHandleType();
     analyzeObjectHandleMethods(context);
+    analyzeMovableMethods(context);
     analyzeAlias();
 
     addVariable("classTypeParams", classTypeParams);
@@ -83,6 +93,7 @@ public class UnmovableDownwardObjectHandleGenerator extends ConversionObjectHand
     addVariable("childObjectHandleType", childObjectHandleType);
     addVariable("childField", childFieldName);
     addVariable("methods", methods);
+    addVariable("movableMethods", movableMethods);
     addVariable("unmovableObjectHandleName", unmovableObjectHandleName);
     addVariable("domainClassSimpleName", domainClassSimpleName);
     addVariable("isAlias", isAlias);
@@ -114,6 +125,31 @@ public class UnmovableDownwardObjectHandleGenerator extends ConversionObjectHand
     }
     return !ArraysFunctions.containsAny(
         channel.orElseThrow().allowedTraverse(), TraverseTypes.Moving, TraverseTypes.MappingOfMoving
+    );
+  }
+
+  private void analyzeMovableMethods(ArtifactGeneratorContext context) {
+    getObjectHandleMethods(sourceArtifact(), context)
+        .filter(m -> ChannelFunctions.getTraverseTypes(m).stream().anyMatch(TraverseType::isMovingBased))
+        .map(this::generateMovableMethod)
+        .forEach(movableMethods::add);
+    if (!movableMethods.isEmpty()) {
+      addImport(TraverseExceptions.class);
+    }
+  }
+
+  private Map<String, String> generateMovableMethod(MethodStatement method) {
+    var returnTypeHandle = new StringBuilder();
+    appendObjectFormMethodReturnType(returnTypeHandle, method);
+
+    String signature = MethodSignatureDeclarations.build(method)
+        .returnType(returnTypeHandle.toString())
+        .includeMethodTypeParams(true)
+        .includeOwnerTypeParams(false)
+        .get(this::addImport, this::addImportAndGetSimpleName);
+    return Map.of(
+        "javadoc", buildGeneratedMethodJavadoc(method.owner().canonicalName(), method),
+        "signature", signature
     );
   }
 }

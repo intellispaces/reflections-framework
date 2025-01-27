@@ -231,7 +231,6 @@ abstract class ObjectHandleWrapperGenerator extends AbstractObjectHandleGenerato
       MethodStatement domainMethod, List<MethodStatement> objectHandleMethods, ObjectHandleMethodForm methodForm
   ) {
     ObjectReferenceForm targetForm = getTargetForm(domainMethod, methodForm);
-
     for (MethodStatement objectHandleMethod : objectHandleMethods) {
       if (!GuideFunctions.isGuideMethod(objectHandleMethod)) {
         continue;
@@ -252,13 +251,13 @@ abstract class ObjectHandleWrapperGenerator extends AbstractObjectHandleGenerato
 
     boolean paramMatches = true;
     for (int i = 0; i < domainMethodParams.size(); i++) {
-      MethodParam domainMethodParam = domainMethodParams.get(i);
+      MethodParam domainParam = domainMethodParams.get(i);
       String domainMethodParamDeclaration = ObjectHandleFunctions.getObjectHandleDeclaration(
-          domainMethodParam.type(), ObjectHandleTypes.General, Function.identity()
+          domainParam.type(), ObjectHandleTypes.General, ObjectReferenceForms.Object, Function.identity()
       );
 
-      MethodParam guideMethodParam = guideMethodParams.get(i);
-      String guideMethodParamDeclaration = guideMethodParam.type().actualDeclaration(ClassNameFunctions::getShortenName);
+      MethodParam guideParam = guideMethodParams.get(i);
+      String guideMethodParamDeclaration = guideParam.type().actualDeclaration(ClassNameFunctions::getShortenName);
       if (!domainMethodParamDeclaration.equals(guideMethodParamDeclaration)) {
         paramMatches = false;
         break;
@@ -439,21 +438,24 @@ abstract class ObjectHandleWrapperGenerator extends AbstractObjectHandleGenerato
   }
 
   private String buildExecuteMethod(MethodStatement domainMethod, ObjectHandleMethodForm methodForm) {
-    if (ObjectHandleMethodForms.Normal.is(methodForm) && isPrimitiveWrapper(domainMethod.returnType().orElseThrow())) {
-      CustomType ct = domainMethod.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow().targetType();
-      String typename = ClassFunctions.primitiveTypenameOfWrapper(ct.canonicalName());
-      if (tech.intellispaces.general.object.ObjectFunctions.equalsAnyOf(
-          typename,
-          PrimitiveTypes.Boolean.typename(),
-          PrimitiveTypes.Char.typename(),
-          PrimitiveTypes.Byte.typename(),
-          PrimitiveTypes.Short.typename(),
-          PrimitiveTypes.Int.typename(),
-          PrimitiveTypes.Long.typename()
-      )) {
-        return "executeReturnInt";
-      } else if (PrimitiveTypes.Float.typename().equals(typename) || PrimitiveTypes.Double.typename().equals(typename)) {
-        return "executeReturnDouble";
+    if (ObjectHandleMethodForms.Normal.is(methodForm)) {
+      if (isPrimitiveWrapper(domainMethod.returnType().orElseThrow())) {
+        CustomType returnType = domainMethod.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow().targetType();
+        String typename = ClassFunctions.primitiveTypenameOfWrapper(returnType.canonicalName());
+        if (tech.intellispaces.general.object.ObjectFunctions.equalsAnyOf(
+            typename,
+            PrimitiveTypes.Boolean.typename(),
+            PrimitiveTypes.Char.typename(),
+            PrimitiveTypes.Byte.typename(),
+            PrimitiveTypes.Short.typename(),
+            PrimitiveTypes.Int.typename()
+        )) {
+          return "executeReturnInt";
+        } else if (PrimitiveTypes.Float.typename().equals(typename) || PrimitiveTypes.Double.typename().equals(typename)) {
+          return "executeReturnDouble";
+        } else {
+          return "execute";
+        }
       } else {
         return "execute";
       }

@@ -24,6 +24,7 @@ import tech.intellispaces.java.reflection.customtype.CustomType;
 import tech.intellispaces.java.reflection.method.MethodSignatureDeclarations;
 import tech.intellispaces.java.reflection.method.MethodStatement;
 import tech.intellispaces.java.reflection.reference.CustomTypeReference;
+import tech.intellispaces.java.reflection.reference.CustomTypeReferences;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -112,10 +113,33 @@ public class UnmovableDownwardObjectHandleGenerator extends ConversionObjectHand
   protected Stream<MethodStatement> getObjectHandleMethods(
       CustomType customType, ArtifactGeneratorContext context
   ) {
+    return extractNotMovingMethods(customType, context);
+  }
+
+  private Stream<MethodStatement> extractMovingMethods(CustomType customType, ArtifactGeneratorContext context) {
+    CustomType actualSuperDomainType = buildActualType(superDomainType.targetType(), context);
+    CustomTypeReference actualSuperDomainTypeReference = CustomTypeReferences.get(
+        actualSuperDomainType, superDomainType.typeArguments()
+    );
+    CustomType effectiveActualSuperDomainType = actualSuperDomainTypeReference.effectiveTargetType();
+
+
+
+    return effectiveActualSuperDomainType.actualMethods().stream()
+        .filter(m -> excludeDeepConversionMethods(m, customType))
+        .filter(this::isMovingMethod)
+        .filter(DomainFunctions::isNotDomainClassGetter);
+  }
+
+  private Stream<MethodStatement> extractNotMovingMethods(CustomType customType, ArtifactGeneratorContext context) {
     return buildActualType(superDomainType.targetType(), context).actualMethods().stream()
         .filter(m -> excludeDeepConversionMethods(m, customType))
         .filter(this::isNotMovingMethod)
         .filter(DomainFunctions::isNotDomainClassGetter);
+  }
+
+  private boolean isMovingMethod(MethodStatement method) {
+    return !isNotMovingMethod(method);
   }
 
   private boolean isNotMovingMethod(MethodStatement method) {
@@ -129,7 +153,7 @@ public class UnmovableDownwardObjectHandleGenerator extends ConversionObjectHand
   }
 
   private void analyzeMovableMethods(ArtifactGeneratorContext context) {
-    getObjectHandleMethods(sourceArtifact(), context)
+    extractMovingMethods(sourceArtifact(), context)
         .filter(m -> ChannelFunctions.getTraverseTypes(m).stream().anyMatch(TraverseType::isMovingBased))
         .map(this::generateMovableMethod)
         .forEach(movableMethods::add);

@@ -2,6 +2,7 @@ package tech.intellispaces.jaquarius.annotationprocessor.objecthandle;
 
 import tech.intellispaces.action.runnable.RunnableAction;
 import tech.intellispaces.action.text.StringActions;
+import tech.intellispaces.general.exception.NotImplementedExceptions;
 import tech.intellispaces.general.exception.UnexpectedExceptions;
 import tech.intellispaces.general.text.StringFunctions;
 import tech.intellispaces.general.type.ClassFunctions;
@@ -131,34 +132,41 @@ abstract class ObjectHandleWrapperGenerator extends AbstractObjectHandleGenerato
   protected void analyzeObjectHandleMethods() {
     int methodOrdinal = 0;
     for (MethodStatement method : domainMethods) {
-      analyzeMethod(method, ObjectHandleMethodForms.Object, methodOrdinal++);
+      analyzeMethod(method, ObjectHandleMethodForms.Object, ObjectReferenceForms.Object, methodOrdinal++);
       if (hasMethodNormalForm(method)) {
-        analyzeMethod(method, ObjectHandleMethodForms.Normal, methodOrdinal++);
+        analyzeMethod(method, ObjectHandleMethodForms.Normal, ObjectReferenceForms.Object, methodOrdinal++);
+        if (isPrimitiveWrapper(method.returnType().orElseThrow())) {
+          analyzeMethod(method, ObjectHandleMethodForms.Normal, ObjectReferenceForms.Primitive, methodOrdinal++);
+        }
       }
     }
   }
 
-  private void analyzeMethod(MethodStatement method, ObjectHandleMethodForm methodForm, int methodOrdinal) {
-    generatedDomainMethods.add(generateMethod(method, methodForm, methodOrdinal));
-    analyzeGuideMethod(method, methodForm, methodOrdinal);
+  private void analyzeMethod(
+      MethodStatement method, ObjectHandleMethodForm methodForm, ObjectReferenceForm targetForm, int methodOrdinal
+  ) {
+    generatedDomainMethods.add(generateMethod(method, methodForm, targetForm, methodOrdinal));
+    analyzeGuideMethod(method, methodForm, targetForm, methodOrdinal);
   }
 
-  private void analyzeGuideMethod(MethodStatement domainMethod, ObjectHandleMethodForm methodForm, int methodOrdinal) {
+  private void analyzeGuideMethod(
+      MethodStatement domainMethod, ObjectHandleMethodForm methodForm, ObjectReferenceForm targetForm, int methodOrdinal
+  ) {
     if (domainMethod.isDefault()) {
       return;
     }
     if (NameConventionFunctions.isConversionMethod(domainMethod)) {
-      this.generatedMethodDescriptions.add(buildTraverseMethodDescriptions(domainMethod, methodOrdinal));
+      this.generatedMethodDescriptions.add(buildTraverseMethodDescriptions(domainMethod, methodForm, targetForm, methodOrdinal));
       this.generatedMethodDescriptions.add(buildConversionGuideMethodDescriptions(domainMethod, methodOrdinal));
       return;
     }
 
     List<MethodStatement> objectHandleMethods = sourceArtifact().actualMethods();
     MethodStatement guideMethod = findGuideMethod(domainMethod, objectHandleMethods, methodForm);
-    this.generatedMethodDescriptions.add(buildTraverseMethodDescriptions(domainMethod, methodOrdinal));
+    this.generatedMethodDescriptions.add(buildTraverseMethodDescriptions(domainMethod, methodForm, targetForm, methodOrdinal));
     if (guideMethod != null && !guideMethod.isAbstract()) {
       this.generatedGuideMethods.add(AnnotationGeneratorFunctions.buildGuideActionMethod(guideMethod, this));
-      this.generatedMethodDescriptions.add(buildGuideMethodDescriptions(guideMethod, methodOrdinal));
+      this.generatedMethodDescriptions.add(buildGuideMethodDescriptions(guideMethod, methodForm, methodOrdinal));
     }
   }
 
@@ -236,7 +244,7 @@ abstract class ObjectHandleWrapperGenerator extends AbstractObjectHandleGenerato
         continue;
       }
       if (getObjectHandleMethodName(domainMethod, targetForm).equals(objectHandleMethod.name()) &&
-          equalParams(domainMethod.params(), objectHandleMethod.params())
+          equalParams(domainMethod.params(), objectHandleMethod.params(), methodForm)
       ) {
         return objectHandleMethod;
       }
@@ -244,16 +252,19 @@ abstract class ObjectHandleWrapperGenerator extends AbstractObjectHandleGenerato
     return null;
   }
 
-  private boolean equalParams(List<MethodParam> domainMethodParams, List<MethodParam> guideMethodParams) {
+  private boolean equalParams(
+      List<MethodParam> domainMethodParams, List<MethodParam> guideMethodParams, ObjectHandleMethodForm methodForm
+  ) {
     if (domainMethodParams.size() != guideMethodParams.size()) {
       return false;
     }
 
     boolean paramMatches = true;
+    ObjectReferenceForm referenceForm = getReferenceForm(methodForm);
     for (int i = 0; i < domainMethodParams.size(); i++) {
       MethodParam domainParam = domainMethodParams.get(i);
       String domainMethodParamDeclaration = ObjectHandleFunctions.getObjectHandleDeclaration(
-          domainParam.type(), ObjectHandleTypes.General, ObjectReferenceForms.Object, Function.identity()
+          domainParam.type(), ObjectHandleTypes.General, referenceForm, Function.identity()
       );
 
       MethodParam guideParam = guideMethodParams.get(i);
@@ -270,13 +281,15 @@ abstract class ObjectHandleWrapperGenerator extends AbstractObjectHandleGenerato
     return NameConventionFunctions.getObjectHandleWrapperCanonicalName(sourceArtifact());
   }
 
-  private Map<String, Object> buildTraverseMethodDescriptions(MethodStatement domainMethod, int ordinal) {
+  private Map<String, Object> buildTraverseMethodDescriptions(
+      MethodStatement domainMethod, ObjectHandleMethodForm methodForm, ObjectReferenceForm targetForm, int ordinal
+  ) {
     var map = new HashMap<String, Object>();
-    map.put("name", domainMethod.name());
+    map.put("name", getObjectHandleMethodName(domainMethod, targetForm));
 
     List<String> paramClasses = new ArrayList<>();
     for (MethodParam param : domainMethod.params()) {
-      paramClasses.add(buildGuideParamClassName(param.type()));
+      paramClasses.add(buildGuideParamClassName(param.type(), methodForm));
     }
     map.put("params", paramClasses);
     map.put("purpose", ObjectHandleMethodPurposes.TraverseMethod.name());
@@ -284,17 +297,18 @@ abstract class ObjectHandleWrapperGenerator extends AbstractObjectHandleGenerato
     map.put("channelClass", addImportAndGetSimpleName(NameConventionFunctions.getChannelClassCanonicalName(
         domainMethod)));
     map.put("traverseType", ChannelFunctions.getTraverseType(domainMethod).name());
-
     return map;
   }
 
-  private Map<String, Object> buildGuideMethodDescriptions(MethodStatement guidMethod, int ordinal) {
+  private Map<String, Object> buildGuideMethodDescriptions(
+      MethodStatement guidMethod, ObjectHandleMethodForm methodForm, int ordinal
+  ) {
     var map = new HashMap<String, Object>();
     map.put("name", ObjectHandleFunctions.buildObjectHandleGuideMethodName(guidMethod));
 
     List<String> paramClasses = new ArrayList<>();
     for (MethodParam param : guidMethod.params()) {
-      paramClasses.add(buildGuideParamClassName(param.type()));
+      paramClasses.add(buildGuideParamClassName(param.type(), methodForm));
     }
     map.put("params", paramClasses);
     map.put("purpose", ObjectHandleMethodPurposes.GuideMethod.name());
@@ -308,7 +322,7 @@ abstract class ObjectHandleWrapperGenerator extends AbstractObjectHandleGenerato
     var map = new HashMap<String, Object>();
 
     CustomTypeReference parentType = domainMethod.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow();
-    String methodName = "_as" +
+    String methodName = "$as" +
         StringFunctions.capitalizeFirstLetter(StringFunctions.removeTailOrElseThrow(parentType.targetType().simpleName(), "Domain"));
     map.put("name", methodName);
 
@@ -350,21 +364,19 @@ abstract class ObjectHandleWrapperGenerator extends AbstractObjectHandleGenerato
     return map;
   }
 
-  private String buildGuideParamClassName(TypeReference type) {
+  private String buildGuideParamClassName(TypeReference type, ObjectHandleMethodForm methodForm) {
     return ObjectHandleFunctions.getObjectHandleDeclaration(
         AnnotationGeneratorFunctions.normalizeType(type),
         ObjectHandleTypes.General,
-        ObjectReferenceForms.Normal,
+        getReferenceForm(methodForm),
         false,
         this::addImportAndGetSimpleName
     );
   }
 
   protected Map<String, String> generateMethod(
-      MethodStatement domainMethod, ObjectHandleMethodForm methodForm, int methodOrdinal
+      MethodStatement domainMethod, ObjectHandleMethodForm methodForm, ObjectReferenceForm targetForm, int methodOrdinal
   ) {
-    ObjectReferenceForm targetForm = getTargetForm(domainMethod, methodForm);
-
     var sb = new StringBuilder();
     sb.append("@Ordinal(").append(methodOrdinal).append(")\n");
     sb.append("public ");
@@ -470,7 +482,7 @@ abstract class ObjectHandleWrapperGenerator extends AbstractObjectHandleGenerato
     var sb = new StringBuilder();
     sb.append("private ");
     sb.append(buildObjectHandleDeclaration(parent, getObjectHandleType()));
-    sb.append(" _");
+    sb.append(" $");
     sb.append(NameConventionFunctions.getConversionMethodName(parent));
     sb.append("() {\n");
     sb.append("  return new ");

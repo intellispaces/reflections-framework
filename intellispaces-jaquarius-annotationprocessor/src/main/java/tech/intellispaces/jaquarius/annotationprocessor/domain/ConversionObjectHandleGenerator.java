@@ -65,19 +65,18 @@ abstract class ConversionObjectHandleGenerator extends AbstractObjectHandleGener
     childFieldName = StringFunctions.lowercaseFirstLetter(
         StringFunctions.removeTailOrElseThrow(sourceArtifact().simpleName(), "Domain"));
     if (LanguageFunctions.isKeyword(childFieldName)) {
-      childFieldName = "_" + childFieldName;
+      childFieldName = "$" + childFieldName;
     }
     parentDomainClassSimpleName = addImportAndGetSimpleName(superDomainType.targetType().canonicalName());
   }
 
   protected void analyzeObjectHandleMethods(ArtifactGeneratorContext context) {
-    CustomType actualParentDomainType = buildActualType(superDomainType.targetType(), context);
-    CustomTypeReference actualParentDomainTypeReference = CustomTypeReferences.get(
-        actualParentDomainType, superDomainType.typeArguments()
+    CustomType actualSuperDomainType = buildActualType(superDomainType.targetType(), context);
+    CustomTypeReference actualSuperDomainTypeReference = CustomTypeReferences.get(
+        actualSuperDomainType, superDomainType.typeArguments()
     );
-    CustomType effectiveActualParentDomainType = actualParentDomainTypeReference.effectiveTargetType();
-
-    analyzeObjectHandleMethods(effectiveActualParentDomainType, context);
+    CustomType effectiveActualSuperDomainType = actualSuperDomainTypeReference.effectiveTargetType();
+    analyzeObjectHandleMethods(effectiveActualSuperDomainType, context);
   }
 
   @SuppressWarnings("unchecked,rawtypes")
@@ -99,20 +98,18 @@ abstract class ConversionObjectHandleGenerator extends AbstractObjectHandleGener
 
   @Override
   protected Map<String, String> generateMethod(
-      MethodStatement method, ObjectHandleMethodForm methodForm, int methodOrdinal
+      MethodStatement method, ObjectHandleMethodForm methodForm, ObjectReferenceForm targetForm, int methodOrdinal
   ) {
     if (method.hasAnnotation(Channel.class)) {
-      return generateNormalMethod(method, methodForm, methodOrdinal);
+      return generateNormalMethod(method, methodForm, targetForm, methodOrdinal);
     } else {
       return generatePrototypeMethod(convertMethodBeforeGenerate(method), methodForm);
     }
   }
 
   private Map<String, String> generateNormalMethod(
-      MethodStatement method, ObjectHandleMethodForm methodForm, int methodOrdinal
+      MethodStatement method, ObjectHandleMethodForm methodForm, ObjectReferenceForm targetForm, int methodOrdinal
   ) {
-    ObjectReferenceForm targetForm = getTargetForm(method, methodForm);
-
     var sb = new StringBuilder();
     sb.append("public ");
     appendMethodTypeParameters(sb, method);

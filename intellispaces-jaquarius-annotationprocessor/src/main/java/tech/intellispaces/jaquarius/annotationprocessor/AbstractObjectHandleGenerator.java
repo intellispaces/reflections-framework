@@ -10,6 +10,7 @@ import tech.intellispaces.jaquarius.annotation.Movable;
 import tech.intellispaces.jaquarius.annotation.Unmovable;
 import tech.intellispaces.jaquarius.exception.TraverseException;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
+import tech.intellispaces.jaquarius.object.reference.ObjectHandleFunctions;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleMethodForm;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleMethodForms;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleType;
@@ -60,11 +61,14 @@ public abstract class AbstractObjectHandleGenerator extends JaquariusArtifactGen
     for (MethodStatement method : methods) {
       MethodStatement effectiveMethod = convertMethodBeforeGenerate(method);
       if (includeMethodForm(effectiveMethod, ObjectHandleMethodForms.Object)) {
-        analyzeMethod(effectiveMethod, ObjectHandleMethodForms.Object, methodOrdinal++);
+        analyzeMethod(effectiveMethod, ObjectHandleMethodForms.Object, ObjectReferenceForms.Object, methodOrdinal++);
       }
       if (hasMethodNormalForm(effectiveMethod)) {
         if (includeMethodForm(effectiveMethod, ObjectHandleMethodForms.Normal)) {
-          analyzeMethod(effectiveMethod, ObjectHandleMethodForms.Normal, methodOrdinal++);
+          analyzeMethod(effectiveMethod, ObjectHandleMethodForms.Normal, ObjectReferenceForms.Object, methodOrdinal++);
+          if (isPrimitiveWrapper(effectiveMethod.returnType().orElseThrow())) {
+            analyzeMethod(effectiveMethod, ObjectHandleMethodForms.Normal, ObjectReferenceForms.Primitive, methodOrdinal++);
+          }
         }
       }
     }
@@ -75,10 +79,6 @@ public abstract class AbstractObjectHandleGenerator extends JaquariusArtifactGen
   }
 
   protected boolean hasMethodNormalForm(MethodStatement method) {
-    TypeReference returnTypeReference = method.returnType().orElseThrow();
-    if (isPrimitiveWrapper(returnTypeReference)) {
-      return true;
-    }
     for (MethodParam param : method.params()) {
       if (isPrimitiveWrapper(param.type())) {
         return true;
@@ -97,8 +97,10 @@ public abstract class AbstractObjectHandleGenerator extends JaquariusArtifactGen
     return false;
   }
 
-  private void analyzeMethod(MethodStatement method, ObjectHandleMethodForm methodForm, int methodOrdinal) {
-    methods.add(generateMethod(method, methodForm, methodOrdinal));
+  private void analyzeMethod(
+      MethodStatement method, ObjectHandleMethodForm methodForm, ObjectReferenceForm targetForm, int methodOrdinal
+  ) {
+    methods.add(generateMethod(method, methodForm, targetForm,  methodOrdinal));
   }
 
   protected MethodStatement convertMethodBeforeGenerate(MethodStatement method) {
@@ -106,10 +108,8 @@ public abstract class AbstractObjectHandleGenerator extends JaquariusArtifactGen
   }
 
   protected Map<String, String> generateMethod(
-      MethodStatement method, ObjectHandleMethodForm methodForm, int methodOrdinal
+      MethodStatement method, ObjectHandleMethodForm methodForm, ObjectReferenceForm targetForm, int methodOrdinal
   ) {
-    ObjectReferenceForm targetForm = getTargetForm(method, methodForm);
-
     var sb = new StringBuilder();
     appendMethodTypeParameters(sb, method);
     boolean disableMoving = isDisableMoving(method);
@@ -136,16 +136,6 @@ public abstract class AbstractObjectHandleGenerator extends JaquariusArtifactGen
         "javadoc", buildGeneratedMethodJavadoc(method.owner().canonicalName(), method),
         "declaration", sb.toString()
     );
-  }
-
-  protected ObjectReferenceForm getTargetForm(MethodStatement method, ObjectHandleMethodForm methodForm) {
-    if (methodForm.is(ObjectHandleMethodForms.Object.name())) {
-      return ObjectReferenceForms.Object;
-    }
-    if (methodForm.is(ObjectHandleMethodForms.Normal.name())) {
-      return ObjectReferenceForms.Normal;
-    }
-    throw NotImplementedExceptions.withCode("Pelptg");
   }
 
   private boolean isDisableMoving(MethodStatement method) {
@@ -238,12 +228,8 @@ public abstract class AbstractObjectHandleGenerator extends JaquariusArtifactGen
   protected String getObjectHandleMethodName(MethodStatement domainMethod, ObjectReferenceForm targetForm) {
     if (ObjectReferenceForms.Object.is(targetForm)) {
       return domainMethod.name();
-    } else if (ObjectReferenceForms.Normal.is(targetForm)) {
-      if (isPrimitiveWrapper(domainMethod.returnType().orElseThrow())) {
-        return domainMethod.name() + "AsPrimitive";
-      } else {
-        return domainMethod.name();
-      }
+    } else if (ObjectReferenceForms.Primitive.is(targetForm)) {
+      return domainMethod.name() + "AsPrimitive";
     } else {
       throw UnexpectedExceptions.withMessage("Unsupported object reference form - {0}", targetForm);
     }
@@ -254,13 +240,9 @@ public abstract class AbstractObjectHandleGenerator extends JaquariusArtifactGen
   ) {
     if (ObjectReferenceForms.Object.is(targetForm)) {
       appendObjectFormMethodReturnType(sb, method);
-    } else if (ObjectReferenceForms.Normal.is(targetForm)) {
-      if (isPrimitiveWrapper(method.returnType().orElseThrow())) {
-        CustomType ct = method.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow().targetType();
-        sb.append(ClassFunctions.primitiveTypenameOfWrapper(ct.canonicalName()));
-      } else {
-        appendObjectFormMethodReturnType(sb, method);
-      }
+    } else if (ObjectReferenceForms.Primitive.is(targetForm)) {
+      CustomType ct = method.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow().targetType();
+      sb.append(ClassFunctions.primitiveTypenameOfWrapper(ct.canonicalName()));
     } else {
       throw UnexpectedExceptions.withMessage("Unsupported guide form - {0}", targetForm);
     }
@@ -300,7 +282,7 @@ public abstract class AbstractObjectHandleGenerator extends JaquariusArtifactGen
       sb.append(buildHandleDeclarationDefaultForm(
           AnnotationGeneratorFunctions.normalizeType(param.type()),
           ObjectHandleTypes.General,
-          ObjectHandleMethodForms.Object.equals(methodForm) ? ObjectReferenceForms.Object :  ObjectReferenceForms.Normal
+          ObjectHandleFunctions.getReferenceForm(param.type(), methodForm)
       ));
       sb.append(" ");
       sb.append(param.name());

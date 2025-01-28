@@ -6,5 +6,8 @@ public enum ObjectHandleMethodForms implements ObjectHandleMethodForm, Enumerati
 
   Object,
 
+  /**
+   * The object reference represented as instance of the class {@link ObjectHandle} or primitive type.
+   */
   Normal
 }

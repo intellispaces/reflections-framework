@@ -16,6 +16,7 @@ import tech.intellispaces.jaquarius.exception.TraverseException;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleMethodForm;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleType;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.system.Modules;
 import tech.intellispaces.jaquarius.system.ObjectHandleWrapper;
@@ -93,11 +94,11 @@ public class UnmovableObjectHandleWrapperGenerator extends ObjectHandleWrapperGe
 
   @Override
   protected Map<String, String> generateMethod(
-      MethodStatement domainMethod, ObjectHandleMethodForm methodForm, int methodOrdinal
+      MethodStatement domainMethod, ObjectHandleMethodForm methodForm, ObjectReferenceForm targetForm, int methodOrdinal
   ) {
     if (ChannelFunctions.isMovingBasedChannel(domainMethod)) {
       return Map.of();
     }
-    return super.generateMethod(domainMethod, methodForm, methodOrdinal);
+    return super.generateMethod(domainMethod, methodForm, targetForm, methodOrdinal);
   }
 }

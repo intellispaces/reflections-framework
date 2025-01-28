@@ -10,11 +10,6 @@ public enum ObjectReferenceForms implements ObjectReferenceForm, Enumeration<Obj
   Object,
 
   /**
-   * The object reference represented as instance of the class {@link ObjectHandle} or primitive type.
-   */
-  Normal,
-
-  /**
    * The object reference represented as the primitive type.
    */
   Primitive

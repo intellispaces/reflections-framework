@@ -277,12 +277,28 @@ public class ObjectHandleFunctions {
     return null;
   }
 
+  public static ObjectReferenceForm getReferenceForm(TypeReference type, ObjectHandleMethodForm methodForm) {
+    if (methodForm.is(ObjectHandleMethodForms.Object.name())) {
+      return ObjectReferenceForms.Object;
+    } else if (methodForm.is(ObjectHandleMethodForms.Normal.name())) {
+      if (type.isCustomTypeReference() &&
+          ClassFunctions.isPrimitiveWrapperClass(type.asCustomTypeReferenceOrElseThrow().targetType().canonicalName())
+      ) {
+        return ObjectReferenceForms.Primitive;
+      }
+      return ObjectReferenceForms.Object;
+    } else {
+      throw NotImplementedExceptions.withCode("qvd21A");
+    }
+  }
+
   public static String getObjectHandleDeclaration(
       TypeReference domainType,
       ObjectHandleType handleType,
       Function<String, String> simpleNameMapping
   ) {
-    return getObjectHandleDeclaration(domainType, handleType, ObjectReferenceForms.Normal, simpleNameMapping);
+    ObjectReferenceForm referenceForm = getReferenceForm(domainType, ObjectHandleMethodForms.Normal);
+    return getObjectHandleDeclaration(domainType, handleType, referenceForm, simpleNameMapping);
   }
 
   public static String getObjectHandleDeclaration(
@@ -308,9 +324,7 @@ public class ObjectHandleFunctions {
     } else if (domainType.isCustomTypeReference()) {
       CustomTypeReference customTypeReference = domainType.asCustomTypeReferenceOrElseThrow();
       CustomType targetType = customTypeReference.targetType();
-      if ((ObjectReferenceForms.Normal.is(form) || ObjectReferenceForms.Primitive.is(form)) &&
-          ClassFunctions.isPrimitiveWrapperClass(targetType.canonicalName())
-      ) {
+      if (ObjectReferenceForms.Primitive.is(form)) {
         return ClassFunctions.primitiveTypenameOfWrapper(targetType.canonicalName());
       } else if (targetType.canonicalName().equals(Class.class.getCanonicalName())) {
         var sb = new StringBuilder();
@@ -348,9 +362,7 @@ public class ObjectHandleFunctions {
     } else if (domainType.isWildcard()) {
       WildcardReference wildcardTypeReference = domainType.asWildcardOrElseThrow();
       if (wildcardTypeReference.extendedBound().isPresent()) {
-        return "? extends " + getObjectHandleDeclaration(
-            wildcardTypeReference.extendedBound().get(), handleType, simpleNameMapping
-        );
+        return getObjectHandleDeclaration(wildcardTypeReference.extendedBound().get(), handleType, simpleNameMapping);
       } else {
         return Object.class.getCanonicalName();
       }

@@ -58,7 +58,7 @@ public class {{$generatedArtifactSimpleName}}{{$classTypeParams}} implements {{$
 {{for method : $movableMethods}}
   @Override
   @Deprecated
-  {{$method."signature"}} {
+  public {{$method."signature"}} {
     throw TraverseExceptions.withMessage("Unable to move the unmovable object handle");
   }
 

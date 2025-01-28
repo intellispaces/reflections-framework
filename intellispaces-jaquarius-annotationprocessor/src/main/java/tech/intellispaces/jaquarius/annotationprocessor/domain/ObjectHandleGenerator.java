@@ -66,7 +66,8 @@ abstract class ObjectHandleGenerator extends AbstractObjectHandleGenerator {
         sb.append(addImportAndGetSimpleName(customTypeReference.targetType().canonicalName()));
       } else if (typeArgument.isNamedReference()) {
         NamedReference namedReference = typeArgument.asNamedReferenceOrElseThrow();
-        if (namedReference.extendedBounds().isEmpty()) {
+        sb.append(namedReference.name());
+/*        if (namedReference.extendedBounds().isEmpty()) {
           sb.append("?");
         } else if (namedReference.extendedBounds().size() == 1) {
           ReferenceBound bound = namedReference.extendedBounds().get(0);
@@ -78,6 +79,7 @@ abstract class ObjectHandleGenerator extends AbstractObjectHandleGenerator {
         } else {
           throw NotImplementedExceptions.withCode("xx8n2efQ");
         }
+ */
       } else {
         throw NotImplementedExceptions.withCode("xG3KKaWv");
       }

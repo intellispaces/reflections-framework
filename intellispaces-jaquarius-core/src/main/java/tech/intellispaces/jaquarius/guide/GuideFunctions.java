@@ -339,8 +339,7 @@ public final class GuideFunctions {
   private static int getUnitGuideOrdinal(UnitWrapper unit, MethodStatement guideMethod) {
     Class<?> unitWrapperClass = unit.getClass();
     Optional<MethodStatement> overrideGuideMethod = MethodFunctions.getOverrideMethod(
-        CustomTypes.of(unitWrapperClass),
-        guideMethod
+        CustomTypes.of(unitWrapperClass), guideMethod
     );
     if (overrideGuideMethod.isEmpty()) {
       throw UnexpectedExceptions.withMessage("Could not find override method in unit wrapper " +

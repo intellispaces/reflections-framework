@@ -12,9 +12,9 @@ import {{$importedClass}};
 @ObjectHandle({{$sourceArtifactSimpleName}}.class)
 {{$generatedAnnotation}}
 {{when $isAlias}}
-public interface {{$generatedArtifactSimpleName}}{{$handleTypeParamsFull}} extends {{$primaryObjectHandle}} {
+public interface {{$generatedArtifactSimpleName}}{{$handleTypeParamsFull}} extends {{$primaryObjectHandle}}, {{$sourceArtifactSimpleName}}{{$domainTypeParamsBrief}} {
 
-  default Type<{{$primaryDomainSimpleName}}{{$primaryDomainTypeArguments}}> {{$simpleHandleName}}Domain() {
+  default Type<{{$primaryDomainSimpleName}}{{$primaryDomainTypeArguments}}> domain() {
     return {{$domainType}}
   }
 {{else}}
@@ -25,7 +25,7 @@ public interface {{$generatedArtifactSimpleName}}{{$handleTypeParamsFull}} exten
   }
 
   default Class<?> domainAsClass() {
-    return {{$primaryDomainSimpleName}}.class;
+    return {{$sourceArtifactSimpleName}}.class;
   }
 {{end}}
 

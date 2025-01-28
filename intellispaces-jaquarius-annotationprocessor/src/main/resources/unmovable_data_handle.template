@@ -36,13 +36,13 @@ public class {{$generatedArtifactSimpleName}} implements {{$objectHandleClassNam
 
 {{when $projection."type".eq("Integer")}}
   @Override
-  public int {{$projection."name"}}Primitive() {
+  public int {{$projection."name"}}AsPrimitive() {
     Objects.requireNonNull(this.{{$projection."name"}});
     return this.{{$projection."name"}};
   }
 {{else when $projection."type".eq("Double")}}
   @Override
-  public double {{$projection."name"}}Primitive() {
+  public double {{$projection."name"}}AsPrimitive() {
     Objects.requireNonNull(this.{{$projection."name"}});
     return this.{{$projection."name"}};
   }

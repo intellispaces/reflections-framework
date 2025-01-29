@@ -56,6 +56,11 @@ public class {{$generatedArtifactSimpleName}}{{$classTypeParams}} implements {{$
   {{$method."declaration"}};
 
 {{end}}
+{{for method : $domainMethods}}
+  @Override
+  {{$method."declaration"}};
+
+{{end}}
 
   @Override
   public void release() {

@@ -54,7 +54,11 @@ public class {{$generatedArtifactSimpleName}}{{$classTypeParams}} implements {{$
   {{$method."declaration"}};
 
 {{end}}
+{{for method : $domainMethods}}
+  @Override
+  {{$method."declaration"}};
 
+{{end}}
 {{for method : $movableMethods}}
   @Override
   @Deprecated

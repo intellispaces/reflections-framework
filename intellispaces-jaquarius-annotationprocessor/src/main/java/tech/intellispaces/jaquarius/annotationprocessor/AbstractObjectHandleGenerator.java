@@ -24,6 +24,7 @@ import tech.intellispaces.java.reflection.customtype.CustomType;
 import tech.intellispaces.java.reflection.customtype.InterfaceType;
 import tech.intellispaces.java.reflection.customtype.Interfaces;
 import tech.intellispaces.java.reflection.method.MethodParam;
+import tech.intellispaces.java.reflection.method.MethodSignatureDeclarations;
 import tech.intellispaces.java.reflection.method.MethodStatement;
 import tech.intellispaces.java.reflection.reference.CustomTypeReference;
 import tech.intellispaces.java.reflection.reference.CustomTypeReferences;
@@ -41,6 +42,7 @@ import java.util.stream.Stream;
 
 public abstract class AbstractObjectHandleGenerator extends JaquariusArtifactGenerator {
   protected final List<Map<String, String>> methods = new ArrayList<>();
+  protected final List<Map<String, String>> rawDomainMethods = new ArrayList<>();
 
   public AbstractObjectHandleGenerator(CustomType sourceArtifact) {
     super(sourceArtifact);
@@ -59,6 +61,7 @@ public abstract class AbstractObjectHandleGenerator extends JaquariusArtifactGen
     int methodOrdinal = 0;
     for (MethodStatement method : methods) {
       MethodStatement effectiveMethod = convertMethodBeforeGenerate(method);
+      analyzeRawDomainMethod(effectiveMethod);
       if (includeMethodForm(effectiveMethod, TraverseQualifierSetForms.Object, ObjectReferenceForms.Object)) {
         analyzeMethod(effectiveMethod, TraverseQualifierSetForms.Object, ObjectReferenceForms.Object, methodOrdinal++);
       }
@@ -111,6 +114,19 @@ public abstract class AbstractObjectHandleGenerator extends JaquariusArtifactGen
     return method;
   }
 
+  protected void analyzeRawDomainMethod(MethodStatement method) {
+    boolean isRawDomainMethod = false;
+    for (TypeReference paramType : method.parameterTypes()) {
+      if (DomainFunctions.isDomainType(paramType)) {
+        isRawDomainMethod = true;
+        break;
+      }
+    }
+    if (isRawDomainMethod) {
+      rawDomainMethods.add(generateRawDomainMethod(method));
+    }
+  }
+
   protected Map<String, String> generateMethod(
       MethodStatement method, TraverseQualifierSetForm methodForm, ObjectReferenceForm targetForm, int methodOrdinal
   ) {
@@ -140,6 +156,29 @@ public abstract class AbstractObjectHandleGenerator extends JaquariusArtifactGen
         "javadoc", buildGeneratedMethodJavadoc(method.owner().canonicalName(), method),
         "declaration", sb.toString()
     );
+  }
+
+  protected Map<String, String> generateRawDomainMethod(MethodStatement method) {
+    var sb = new StringBuilder();
+    sb.append("public ");
+    sb.append(MethodSignatureDeclarations.build(method).get(this::addImport, this::simpleNameOf));
+    sb.append(" {\n");
+    sb.append("  return ");
+    sb.append(method.name());
+    sb.append("(");
+    RunnableAction commaAppender = StringActions.skipFirstTimeCommaAppender(sb);
+    for (MethodParam param : method.params()) {
+      commaAppender.run();
+      if (DomainFunctions.isDomainType(param.type())) {
+        sb.append("(");
+        sb.append(ObjectHandleFunctions.getObjectHandleDeclaration(param.type(), ObjectHandleTypes.General, this::addImportAndGetSimpleName));
+        sb.append(") ");
+      }
+      sb.append(param.name());
+    }
+    sb.append(");\n");
+    sb.append("}\n");
+    return Map.of("declaration", sb.toString());
   }
 
   private boolean isDisableMoving(MethodStatement method) {
@@ -304,17 +343,17 @@ public abstract class AbstractObjectHandleGenerator extends JaquariusArtifactGen
     }
   }
 
-  protected boolean excludeDeepConversionMethods(MethodStatement method, CustomType customType) {
-    if (!NameConventionFunctions.isConversionMethod(method)) {
+  protected boolean excludeDeepConversionMethods(MethodStatement domainMethod, CustomType customType) {
+    if (!NameConventionFunctions.isConversionMethod(domainMethod)) {
       return true;
     }
     for (CustomTypeReference parent : customType.parentTypes()) {
-      if (DomainFunctions.isAliasOf(parent, customType)) {
-        if (excludeDeepConversionMethods(method, parent.targetType())) {
+//      if (DomainFunctions.isAliasOf(parent, customType)) {
+        if (excludeDeepConversionMethods(domainMethod, parent.targetType())) {
           return true;
         }
-      }
-      if (NameConventionFunctions.getConversionMethodName(parent).equals(method.name())) {
+//      }
+      if (NameConventionFunctions.getConversionMethodName(parent).equals(domainMethod.name())) {
         return true;
       }
     }

@@ -29,6 +29,7 @@ import tech.intellispaces.java.reflection.reference.NotPrimitiveReference;
 import tech.intellispaces.java.reflection.reference.TypeReference;
 import tech.intellispaces.java.reflection.reference.TypeReferenceFunctions;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;

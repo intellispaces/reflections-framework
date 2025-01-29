@@ -94,6 +94,7 @@ public class UnmovableDownwardObjectHandleGenerator extends ConversionObjectHand
     addVariable("childObjectHandleType", childObjectHandleType);
     addVariable("childField", childFieldName);
     addVariable("methods", methods);
+    addVariable("domainMethods", rawDomainMethods);
     addVariable("movableMethods", movableMethods);
     addVariable("unmovableObjectHandleName", unmovableObjectHandleName);
     addVariable("domainClassSimpleName", domainClassSimpleName);

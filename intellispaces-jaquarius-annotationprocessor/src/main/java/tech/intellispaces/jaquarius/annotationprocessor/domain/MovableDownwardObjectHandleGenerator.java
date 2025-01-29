@@ -81,6 +81,7 @@ public class MovableDownwardObjectHandleGenerator extends ConversionObjectHandle
     addVariable("childObjectHandleType", childObjectHandleType);
     addVariable("childField", childFieldName);
     addVariable("methods", methods);
+    addVariable("domainMethods", rawDomainMethods);
     addVariable("movableObjectHandleName", movableObjectHandleName);
     addVariable("domainClassSimpleName", domainClassSimpleName);
     addVariable("isAlias", isAlias);

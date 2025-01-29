@@ -46,7 +46,6 @@ abstract class ObjectHandleWrapperGenerator extends AbstractObjectHandleGenerato
   private List<MethodStatement> domainMethods;
   protected final List<Map<String, Object>> generatedConstructors = new ArrayList<>();
   protected final List<Map<String, String>> generatedDomainMethods = new ArrayList<>();
-  protected final List<Map<String, String>> rawDomainMethods = new ArrayList<>();
   protected final List<Map<String, String>> generatedGuideMethods = new ArrayList<>();
   protected final List<Map<String, Object>> generatedInjectionMethods = new ArrayList<>();
   protected final List<Map<String, String>> generatedConversionMethods = new ArrayList<>();
@@ -143,19 +142,6 @@ abstract class ObjectHandleWrapperGenerator extends AbstractObjectHandleGenerato
     }
   }
 
-  private void analyzeRawDomainMethod(MethodStatement method) {
-    boolean isRawDomainMethod = false;
-    for (TypeReference paramType : method.parameterTypes()) {
-      if (DomainFunctions.isDomainType(paramType)) {
-        isRawDomainMethod = true;
-        break;
-      }
-    }
-    if (isRawDomainMethod) {
-      rawDomainMethods.add(generateRawDomainMethod(method));
-    }
-  }
-
   private void analyzeMethod(
       MethodStatement method, TraverseQualifierSetForm methodForm, ObjectReferenceForm targetForm, int methodOrdinal
   ) {
@@ -169,15 +155,19 @@ abstract class ObjectHandleWrapperGenerator extends AbstractObjectHandleGenerato
     if (domainMethod.isDefault()) {
       return;
     }
+
+    List<MethodStatement> objectHandleMethods = sourceArtifact().actualMethods();
     if (NameConventionFunctions.isConversionMethod(domainMethod)) {
       this.generatedMethodDescriptions.add(buildTraverseMethodDescriptions(domainMethod, methodForm, targetForm, methodOrdinal));
-      this.generatedMethodDescriptions.add(buildConversionGuideMethodDescriptions(domainMethod, methodOrdinal));
+      MethodStatement guideMethod = findGuideMethod(domainMethod, objectHandleMethods, methodForm, targetForm);
+      if (guideMethod != null && !guideMethod.isAbstract()) {
+        this.generatedMethodDescriptions.add(buildConversionGuideMethodDescriptions(domainMethod, methodOrdinal));
+      }
       return;
     }
 
-    List<MethodStatement> objectHandleMethods = sourceArtifact().actualMethods();
-    MethodStatement guideMethod = findGuideMethod(domainMethod, objectHandleMethods, methodForm, targetForm);
     this.generatedMethodDescriptions.add(buildTraverseMethodDescriptions(domainMethod, methodForm, targetForm, methodOrdinal));
+    MethodStatement guideMethod = findGuideMethod(domainMethod, objectHandleMethods, methodForm, targetForm);
     if (guideMethod != null && !guideMethod.isAbstract()) {
       this.generatedGuideMethods.add(AnnotationGeneratorFunctions.buildGuideActionMethod(guideMethod, this));
       this.generatedMethodDescriptions.add(buildGuideMethodDescriptions(guideMethod, methodForm, methodOrdinal));
@@ -530,29 +520,6 @@ abstract class ObjectHandleWrapperGenerator extends AbstractObjectHandleGenerato
     ));
     sb.append("(this);\n");
     sb.append("}");
-    return Map.of("declaration", sb.toString());
-  }
-
-  private Map<String, String> generateRawDomainMethod(MethodStatement method) {
-    var sb = new StringBuilder();
-    sb.append("public ");
-    sb.append(MethodSignatureDeclarations.build(method).get(this::addImport, this::simpleNameOf));
-    sb.append(" {\n");
-    sb.append("  return ");
-    sb.append(method.name());
-    sb.append("(");
-    RunnableAction commaAppender = StringActions.skipFirstTimeCommaAppender(sb);
-    for (MethodParam param : method.params()) {
-      commaAppender.run();
-      if (DomainFunctions.isDomainType(param.type())) {
-        sb.append("(");
-        sb.append(ObjectHandleFunctions.getObjectHandleDeclaration(param.type(), ObjectHandleTypes.General, this::addImportAndGetSimpleName));
-        sb.append(") ");
-      }
-      sb.append(param.name());
-    }
-    sb.append(");\n");
-    sb.append("}\n");
     return Map.of("declaration", sb.toString());
   }
 }

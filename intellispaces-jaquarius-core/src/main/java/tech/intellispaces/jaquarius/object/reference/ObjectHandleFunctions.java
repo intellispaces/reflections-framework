@@ -15,7 +15,9 @@ import tech.intellispaces.jaquarius.annotation.ObjectHandle;
 import tech.intellispaces.jaquarius.annotation.Unmovable;
 import tech.intellispaces.jaquarius.annotation.Wrapper;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
+import tech.intellispaces.jaquarius.traverse.TraverseQualifierSetForm;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
+import tech.intellispaces.jaquarius.traverse.TraverseQualifierSetForms;
 import tech.intellispaces.java.reflection.JavaStatements;
 import tech.intellispaces.java.reflection.customtype.AnnotationFunctions;
 import tech.intellispaces.java.reflection.customtype.CustomType;
@@ -102,8 +104,7 @@ public class ObjectHandleFunctions {
   ) {
     type = typeReplacer.apply(type);
     if (type.isPrimitiveReference()) {
-      return ClassFunctions.wrapperClassOfPrimitive(
-          type.asPrimitiveReferenceOrElseThrow().typename()).getCanonicalName();
+      return ClassFunctions.wrapperClassOfPrimitive(type.asPrimitiveReferenceOrElseThrow().typename()).getCanonicalName();
     } else if (type.isNamedReference()) {
       return type.asNamedReferenceOrElseThrow().name();
     } else if (type.isWildcard()) {
@@ -277,10 +278,10 @@ public class ObjectHandleFunctions {
     return null;
   }
 
-  public static ObjectReferenceForm getReferenceForm(TypeReference type, ObjectHandleMethodForm methodForm) {
-    if (methodForm.is(ObjectHandleMethodForms.Object.name())) {
+  public static ObjectReferenceForm getReferenceForm(TypeReference type, TraverseQualifierSetForm methodForm) {
+    if (methodForm.is(TraverseQualifierSetForms.Object.name())) {
       return ObjectReferenceForms.Object;
-    } else if (methodForm.is(ObjectHandleMethodForms.Normal.name())) {
+    } else if (methodForm.is(TraverseQualifierSetForms.Normal.name())) {
       if (type.isCustomTypeReference() &&
           ClassFunctions.isPrimitiveWrapperClass(type.asCustomTypeReferenceOrElseThrow().targetType().canonicalName())
       ) {
@@ -297,7 +298,7 @@ public class ObjectHandleFunctions {
       ObjectHandleType handleType,
       Function<String, String> simpleNameMapping
   ) {
-    ObjectReferenceForm referenceForm = getReferenceForm(domainType, ObjectHandleMethodForms.Normal);
+    ObjectReferenceForm referenceForm = getReferenceForm(domainType, TraverseQualifierSetForms.Normal);
     return getObjectHandleDeclaration(domainType, handleType, referenceForm, simpleNameMapping);
   }
 

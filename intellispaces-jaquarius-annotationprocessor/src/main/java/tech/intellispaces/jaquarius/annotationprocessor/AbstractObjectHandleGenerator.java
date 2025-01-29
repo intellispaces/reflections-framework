@@ -3,7 +3,6 @@ package tech.intellispaces.jaquarius.annotationprocessor;
 import tech.intellispaces.action.runnable.RunnableAction;
 import tech.intellispaces.action.text.StringActions;
 import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
-import tech.intellispaces.general.exception.NotImplementedExceptions;
 import tech.intellispaces.general.exception.UnexpectedExceptions;
 import tech.intellispaces.general.type.ClassFunctions;
 import tech.intellispaces.jaquarius.annotation.Movable;
@@ -11,8 +10,8 @@ import tech.intellispaces.jaquarius.annotation.Unmovable;
 import tech.intellispaces.jaquarius.exception.TraverseException;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleFunctions;
-import tech.intellispaces.jaquarius.object.reference.ObjectHandleMethodForm;
-import tech.intellispaces.jaquarius.object.reference.ObjectHandleMethodForms;
+import tech.intellispaces.jaquarius.traverse.TraverseQualifierSetForm;
+import tech.intellispaces.jaquarius.traverse.TraverseQualifierSetForms;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleType;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
@@ -60,21 +59,26 @@ public abstract class AbstractObjectHandleGenerator extends JaquariusArtifactGen
     int methodOrdinal = 0;
     for (MethodStatement method : methods) {
       MethodStatement effectiveMethod = convertMethodBeforeGenerate(method);
-      if (includeMethodForm(effectiveMethod, ObjectHandleMethodForms.Object)) {
-        analyzeMethod(effectiveMethod, ObjectHandleMethodForms.Object, ObjectReferenceForms.Object, methodOrdinal++);
+      if (includeMethodForm(effectiveMethod, TraverseQualifierSetForms.Object, ObjectReferenceForms.Object)) {
+        analyzeMethod(effectiveMethod, TraverseQualifierSetForms.Object, ObjectReferenceForms.Object, methodOrdinal++);
       }
       if (hasMethodNormalForm(effectiveMethod)) {
-        if (includeMethodForm(effectiveMethod, ObjectHandleMethodForms.Normal)) {
-          analyzeMethod(effectiveMethod, ObjectHandleMethodForms.Normal, ObjectReferenceForms.Object, methodOrdinal++);
-          if (isPrimitiveWrapper(effectiveMethod.returnType().orElseThrow())) {
-            analyzeMethod(effectiveMethod, ObjectHandleMethodForms.Normal, ObjectReferenceForms.Primitive, methodOrdinal++);
-          }
+        if (includeMethodForm(effectiveMethod, TraverseQualifierSetForms.Normal, ObjectReferenceForms.Object)) {
+          analyzeMethod(effectiveMethod, TraverseQualifierSetForms.Normal, ObjectReferenceForms.Object, methodOrdinal++);
         }
+      }
+      if (includeMethodForm(effectiveMethod, TraverseQualifierSetForms.Normal, ObjectReferenceForms.Primitive)) {
+        analyzeMethod(effectiveMethod, TraverseQualifierSetForms.Normal, ObjectReferenceForms.Primitive, methodOrdinal++);
       }
     }
   }
 
-  protected boolean includeMethodForm(MethodStatement method, ObjectHandleMethodForm methodForm) {
+  protected boolean includeMethodForm(
+      MethodStatement method, TraverseQualifierSetForm methodForm, ObjectReferenceForm targetForm
+  ) {
+    if (ObjectReferenceForms.Primitive.is(targetForm)) {
+      return isPrimitiveWrapper(method.returnType().orElseThrow());
+    }
     return true;
   }
 
@@ -98,7 +102,7 @@ public abstract class AbstractObjectHandleGenerator extends JaquariusArtifactGen
   }
 
   private void analyzeMethod(
-      MethodStatement method, ObjectHandleMethodForm methodForm, ObjectReferenceForm targetForm, int methodOrdinal
+      MethodStatement method, TraverseQualifierSetForm methodForm, ObjectReferenceForm targetForm, int methodOrdinal
   ) {
     methods.add(generateMethod(method, methodForm, targetForm,  methodOrdinal));
   }
@@ -108,7 +112,7 @@ public abstract class AbstractObjectHandleGenerator extends JaquariusArtifactGen
   }
 
   protected Map<String, String> generateMethod(
-      MethodStatement method, ObjectHandleMethodForm methodForm, ObjectReferenceForm targetForm, int methodOrdinal
+      MethodStatement method, TraverseQualifierSetForm methodForm, ObjectReferenceForm targetForm, int methodOrdinal
   ) {
     var sb = new StringBuilder();
     appendMethodTypeParameters(sb, method);
@@ -241,8 +245,8 @@ public abstract class AbstractObjectHandleGenerator extends JaquariusArtifactGen
     if (ObjectReferenceForms.Object.is(targetForm)) {
       appendObjectFormMethodReturnType(sb, method);
     } else if (ObjectReferenceForms.Primitive.is(targetForm)) {
-      CustomType ct = method.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow().targetType();
-      sb.append(ClassFunctions.primitiveTypenameOfWrapper(ct.canonicalName()));
+      CustomType returnType = method.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow().targetType();
+      sb.append(ClassFunctions.primitiveTypenameOfWrapper(returnType.canonicalName()));
     } else {
       throw UnexpectedExceptions.withMessage("Unsupported guide form - {0}", targetForm);
     }
@@ -275,7 +279,7 @@ public abstract class AbstractObjectHandleGenerator extends JaquariusArtifactGen
     }
   }
 
-  protected void appendMethodParams(StringBuilder sb, MethodStatement method, ObjectHandleMethodForm methodForm) {
+  protected void appendMethodParams(StringBuilder sb, MethodStatement method, TraverseQualifierSetForm methodForm) {
     RunnableAction commaAppender = StringActions.skipFirstTimeCommaAppender(sb);
     for (MethodParam param : AnnotationGeneratorFunctions.rearrangementParams(method.params())) {
       commaAppender.run();

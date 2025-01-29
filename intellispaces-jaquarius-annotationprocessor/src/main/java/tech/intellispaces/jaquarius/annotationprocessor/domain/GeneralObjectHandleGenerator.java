@@ -10,7 +10,7 @@ import tech.intellispaces.jaquarius.channel.Channel1;
 import tech.intellispaces.jaquarius.channel.MappingChannel;
 import tech.intellispaces.jaquarius.exception.TraverseException;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
-import tech.intellispaces.jaquarius.object.reference.ObjectHandleMethodForm;
+import tech.intellispaces.jaquarius.traverse.TraverseQualifierSetForm;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleType;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
@@ -116,7 +116,7 @@ public class GeneralObjectHandleGenerator extends ObjectHandleGenerator {
 
   @Override
   protected Map<String, String> generateMethod(
-      MethodStatement method, ObjectHandleMethodForm methodForm, ObjectReferenceForm targetForm, int methodOrdinal
+      MethodStatement method, TraverseQualifierSetForm methodForm, ObjectReferenceForm targetForm, int methodOrdinal
   ) {
     if (method.hasAnnotation(Channel.class)) {
       return super.generateMethod(method, methodForm, targetForm, methodOrdinal);
@@ -125,7 +125,7 @@ public class GeneralObjectHandleGenerator extends ObjectHandleGenerator {
     }
   }
 
-  private Map<String, String> buildAdditionalMethod(MethodStatement method, ObjectHandleMethodForm methodForm) {
+  private Map<String, String> buildAdditionalMethod(MethodStatement method, TraverseQualifierSetForm methodForm) {
     var sb = new StringBuilder();
     appendMethodTypeParameters(sb, method);
     appendMethodReturnType(sb, method);

@@ -31,9 +31,14 @@ public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sour
   {{$method."declaration"}}
 
 {{end}}
-{{for method : $domainMethods}}
+{{for method : $handleMethods}}
   @Override
   {{$method."declaration"}}
+
+{{end}}
+{{for method : $domainMethods}}
+  @Override
+  {{$method."declaration"}};
 
 {{end}}
 {{for method : $guideActionMethods}}

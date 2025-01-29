@@ -3,7 +3,6 @@ package tech.intellispaces.jaquarius.annotationprocessor.domain;
 import tech.intellispaces.action.runnable.RunnableAction;
 import tech.intellispaces.action.text.StringActions;
 import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
-import tech.intellispaces.general.exception.NotImplementedExceptions;
 import tech.intellispaces.general.exception.UnexpectedExceptions;
 import tech.intellispaces.general.text.StringFunctions;
 import tech.intellispaces.jaquarius.annotation.Channel;
@@ -12,8 +11,8 @@ import tech.intellispaces.jaquarius.annotation.Unmovable;
 import tech.intellispaces.jaquarius.annotationprocessor.AbstractObjectHandleGenerator;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleFunctions;
-import tech.intellispaces.jaquarius.object.reference.ObjectHandleMethodForm;
-import tech.intellispaces.jaquarius.object.reference.ObjectHandleMethodForms;
+import tech.intellispaces.jaquarius.traverse.TraverseQualifierSetForm;
+import tech.intellispaces.jaquarius.traverse.TraverseQualifierSetForms;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
@@ -98,7 +97,7 @@ abstract class ConversionObjectHandleGenerator extends AbstractObjectHandleGener
 
   @Override
   protected Map<String, String> generateMethod(
-      MethodStatement method, ObjectHandleMethodForm methodForm, ObjectReferenceForm targetForm, int methodOrdinal
+      MethodStatement method, TraverseQualifierSetForm methodForm, ObjectReferenceForm targetForm, int methodOrdinal
   ) {
     if (method.hasAnnotation(Channel.class)) {
       return generateNormalMethod(method, methodForm, targetForm, methodOrdinal);
@@ -108,7 +107,7 @@ abstract class ConversionObjectHandleGenerator extends AbstractObjectHandleGener
   }
 
   private Map<String, String> generateNormalMethod(
-      MethodStatement method, ObjectHandleMethodForm methodForm, ObjectReferenceForm targetForm, int methodOrdinal
+      MethodStatement method, TraverseQualifierSetForm methodForm, ObjectReferenceForm targetForm, int methodOrdinal
   ) {
     var sb = new StringBuilder();
     sb.append("public ");
@@ -131,36 +130,24 @@ abstract class ConversionObjectHandleGenerator extends AbstractObjectHandleGener
   }
 
   @Override
-  protected ObjectReferenceForm getTargetForm(MethodStatement method, ObjectHandleMethodForm methodForm) {
-    if (methodForm.is(ObjectHandleMethodForms.Object.name())) {
-      return ObjectReferenceForms.Object;
-    }
-    if (methodForm.is(ObjectHandleMethodForms.Normal.name())) {
-      MethodStatement actualMethod = superDomainType.targetType().actualMethod(
+  protected boolean includeMethodForm(
+      MethodStatement method, TraverseQualifierSetForm methodForm, ObjectReferenceForm targetForm
+  ) {
+    if (methodForm.is(TraverseQualifierSetForms.Normal.name()) && ObjectReferenceForms.Primitive.is(targetForm)) {
+      Optional<MethodStatement> actualMethod = superDomainType.targetType().actualMethod(
           method.name(), method.parameterTypes()
-      ).orElseThrow();
-      if (actualMethod.returnType().orElseThrow().isNamedReference()) {
-        return ObjectReferenceForms.Object;
+      );
+      if (actualMethod.isEmpty()) {
+        return false;
       }
-      return ObjectReferenceForms.Normal;
-    }
-    throw NotImplementedExceptions.withCode("aXFZpg");
-  }
-
-  @Override
-  protected boolean includeMethodForm(MethodStatement method, ObjectHandleMethodForm methodForm) {
-    if (methodForm.is(ObjectHandleMethodForms.Normal.name())) {
-      MethodStatement actualMethod = superDomainType.targetType().actualMethod(
-          method.name(), method.parameterTypes()
-      ).orElseThrow();
-      if (actualMethod.returnType().orElseThrow().isNamedReference() && method.params().isEmpty()) {
+      if (actualMethod.get().returnType().orElseThrow().isNamedReference()) {
         return false;
       }
     }
-    return true;
+    return super.includeMethodForm(method, methodForm, targetForm);
   }
 
-  private Map<String, String> generatePrototypeMethod(MethodStatement method, ObjectHandleMethodForm methodForm) {
+  private Map<String, String> generatePrototypeMethod(MethodStatement method, TraverseQualifierSetForm methodForm) {
     var sb = new StringBuilder();
     sb.append("public ");
     appendMethodTypeParameters(sb, method);

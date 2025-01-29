@@ -97,7 +97,8 @@ public class MovableObjectHandleWrapperGenerator extends ObjectHandleWrapperGene
     addVariable("constructors", generatedConstructors);
     addVariable("methodDescriptions", generatedMethodDescriptions);
     addVariable("guideActionMethods", generatedGuideMethods);
-    addVariable("domainMethods", generatedDomainMethods);
+    addVariable("handleMethods", generatedDomainMethods);
+    addVariable("domainMethods", rawDomainMethods);
     addVariable("injectionMethods", generatedInjectionMethods);
     addVariable("conversionMethods", generatedConversionMethods);
     addVariable("notImplRelease", !implRelease);

@@ -13,7 +13,7 @@ import tech.intellispaces.jaquarius.engine.ObjectHandleBroker;
 import tech.intellispaces.jaquarius.engine.description.ObjectHandleMethodPurposes;
 import tech.intellispaces.jaquarius.engine.description.ObjectHandleTypeDescription;
 import tech.intellispaces.jaquarius.exception.TraverseException;
-import tech.intellispaces.jaquarius.object.reference.ObjectHandleMethodForm;
+import tech.intellispaces.jaquarius.traverse.TraverseQualifierSetForm;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleType;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
@@ -85,7 +85,8 @@ public class UnmovableObjectHandleWrapperGenerator extends ObjectHandleWrapperGe
     addVariable("constructors", generatedConstructors);
     addVariable("methodDescriptions", generatedMethodDescriptions);
     addVariable("guideActionMethods", generatedGuideMethods);
-    addVariable("domainMethods", generatedDomainMethods);
+    addVariable("handleMethods", generatedDomainMethods);
+    addVariable("domainMethods", rawDomainMethods);
     addVariable("injectionMethods", generatedInjectionMethods);
     addVariable("conversionMethods", generatedConversionMethods);
     addVariable("notImplRelease", !implRelease);
@@ -94,7 +95,7 @@ public class UnmovableObjectHandleWrapperGenerator extends ObjectHandleWrapperGe
 
   @Override
   protected Map<String, String> generateMethod(
-      MethodStatement domainMethod, ObjectHandleMethodForm methodForm, ObjectReferenceForm targetForm, int methodOrdinal
+      MethodStatement domainMethod, TraverseQualifierSetForm methodForm, ObjectReferenceForm targetForm, int methodOrdinal
   ) {
     if (ChannelFunctions.isMovingBasedChannel(domainMethod)) {
       return Map.of();

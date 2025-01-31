@@ -8,26 +8,8 @@ import tech.intellispaces.jaquarius.guide.n2.Guide2;
 import tech.intellispaces.jaquarius.guide.n3.Guide3;
 import tech.intellispaces.jaquarius.guide.n4.Guide4;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
-import tech.intellispaces.jaquarius.traverse.plan.CallGuide0Plan;
-import tech.intellispaces.jaquarius.traverse.plan.CallGuide1Plan;
-import tech.intellispaces.jaquarius.traverse.plan.CallGuide2Plan;
-import tech.intellispaces.jaquarius.traverse.plan.CallGuide3Plan;
-import tech.intellispaces.jaquarius.traverse.plan.CallGuide4Plan;
-import tech.intellispaces.jaquarius.traverse.plan.ExecutionTraversePlan;
-import tech.intellispaces.jaquarius.traverse.plan.MapObjectHandleThruChannel0Plan;
-import tech.intellispaces.jaquarius.traverse.plan.MapObjectHandleThruChannel1Plan;
-import tech.intellispaces.jaquarius.traverse.plan.MapObjectHandleThruChannel2Plan;
-import tech.intellispaces.jaquarius.traverse.plan.MapObjectHandleThruChannel3Plan;
-import tech.intellispaces.jaquarius.traverse.plan.MapOfMovingObjectHandleThruChannel0Plan;
-import tech.intellispaces.jaquarius.traverse.plan.MapOfMovingObjectHandleThruChannel1Plan;
-import tech.intellispaces.jaquarius.traverse.plan.MapOfMovingObjectHandleThruChannel2Plan;
-import tech.intellispaces.jaquarius.traverse.plan.MapOfMovingObjectHandleThruChannel3Plan;
-import tech.intellispaces.jaquarius.traverse.plan.MapOfMovingObjectHandleThruChannel4Plan;
-import tech.intellispaces.jaquarius.traverse.plan.MoveObjectHandleThruChannel0Plan;
-import tech.intellispaces.jaquarius.traverse.plan.MoveObjectHandleThruChannel1Plan;
-import tech.intellispaces.jaquarius.traverse.plan.MoveObjectHandleThruChannel2Plan;
-import tech.intellispaces.jaquarius.traverse.plan.MoveObjectHandleThruChannel3Plan;
 import tech.intellispaces.jaquarius.traverse.plan.TraverseAnalyzer;
+import tech.intellispaces.jaquarius.traverse.plan.*;
 
 class TraverseExecutor implements tech.intellispaces.jaquarius.traverse.plan.TraverseExecutor {
   private final TraverseAnalyzer traverseAnalyzer;

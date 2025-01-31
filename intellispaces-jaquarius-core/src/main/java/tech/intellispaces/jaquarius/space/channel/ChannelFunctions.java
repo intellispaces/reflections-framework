@@ -3,18 +3,8 @@ package tech.intellispaces.jaquarius.space.channel;
 import tech.intellispaces.general.exception.NotImplementedExceptions;
 import tech.intellispaces.general.exception.UnexpectedExceptions;
 import tech.intellispaces.general.text.StringFunctions;
-import tech.intellispaces.jaquarius.annotation.Channel;
-import tech.intellispaces.jaquarius.annotation.Guide;
-import tech.intellispaces.jaquarius.annotation.Mapper;
-import tech.intellispaces.jaquarius.annotation.MapperOfMoving;
-import tech.intellispaces.jaquarius.annotation.Mover;
-import tech.intellispaces.jaquarius.channel.Channel0;
-import tech.intellispaces.jaquarius.channel.Channel1;
-import tech.intellispaces.jaquarius.channel.Channel2;
-import tech.intellispaces.jaquarius.channel.Channel3;
-import tech.intellispaces.jaquarius.channel.Channel4;
-import tech.intellispaces.jaquarius.channel.ChannelFunction0;
-import tech.intellispaces.jaquarius.channel.ChannelFunction1;
+import tech.intellispaces.jaquarius.annotation.*;
+import tech.intellispaces.jaquarius.channel.*;
 import tech.intellispaces.jaquarius.exception.ConfigurationExceptions;
 import tech.intellispaces.jaquarius.id.RepetableUuidIdentifierGenerator;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleFunctions;
@@ -41,9 +31,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.function.BiFunction;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
 /**
  * Channel related functions.

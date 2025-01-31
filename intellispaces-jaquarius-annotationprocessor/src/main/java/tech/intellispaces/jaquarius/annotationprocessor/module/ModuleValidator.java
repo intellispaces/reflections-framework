@@ -1,13 +1,9 @@
 package tech.intellispaces.jaquarius.annotationprocessor.module;
 
 import tech.intellispaces.annotationprocessor.ArtifactValidator;
-import tech.intellispaces.jaquarius.annotation.Configuration;
-import tech.intellispaces.jaquarius.annotation.Guide;
 import tech.intellispaces.jaquarius.annotation.Module;
-import tech.intellispaces.jaquarius.annotation.Projection;
-import tech.intellispaces.jaquarius.annotation.ProjectionSupplier;
 import tech.intellispaces.jaquarius.annotation.Shutdown;
-import tech.intellispaces.jaquarius.annotation.Startup;
+import tech.intellispaces.jaquarius.annotation.*;
 import tech.intellispaces.jaquarius.exception.JaquariusExceptions;
 import tech.intellispaces.jaquarius.guide.GuideFunctions;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleFunctions;

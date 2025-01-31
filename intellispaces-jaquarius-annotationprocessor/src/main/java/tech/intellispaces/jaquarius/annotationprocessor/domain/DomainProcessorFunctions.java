@@ -94,11 +94,9 @@ public interface DomainProcessorFunctions {
     }
 
     List<CustomTypeReference> superDomains = domainType.parentTypes();
-    if (superDomains.size() != 1) {
-      return;
+    for (CustomTypeReference superDomain : superDomains) {
+      generators.add(new UnmovableDownwardObjectHandleGenerator(domainType, superDomain));
+      generators.add(new MovableDownwardObjectHandleGenerator(domainType, superDomain));
     }
-    CustomTypeReference superDomainType = superDomains.get(0);
-    generators.add(new UnmovableDownwardObjectHandleGenerator(domainType, superDomainType));
-    generators.add(new MovableDownwardObjectHandleGenerator(domainType, superDomainType));
   }
 }

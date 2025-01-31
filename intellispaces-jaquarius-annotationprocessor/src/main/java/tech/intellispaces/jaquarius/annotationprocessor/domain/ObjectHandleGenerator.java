@@ -13,9 +13,9 @@ import tech.intellispaces.java.reflection.customtype.CustomType;
 import tech.intellispaces.java.reflection.reference.CustomTypeReference;
 import tech.intellispaces.java.reflection.reference.NamedReference;
 import tech.intellispaces.java.reflection.reference.NotPrimitiveReference;
-import tech.intellispaces.java.reflection.reference.ReferenceBound;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -67,19 +67,6 @@ abstract class ObjectHandleGenerator extends AbstractObjectHandleGenerator {
       } else if (typeArgument.isNamedReference()) {
         NamedReference namedReference = typeArgument.asNamedReferenceOrElseThrow();
         sb.append(namedReference.name());
-/*        if (namedReference.extendedBounds().isEmpty()) {
-          sb.append("?");
-        } else if (namedReference.extendedBounds().size() == 1) {
-          ReferenceBound bound = namedReference.extendedBounds().get(0);
-          if (bound.isCustomTypeReference()) {
-            sb.append(addImportAndGetSimpleName(bound.asCustomTypeReferenceOrElseThrow().targetType().canonicalName()));
-          } else {
-            throw NotImplementedExceptions.withCode("5X3sD716");
-          }
-        } else {
-          throw NotImplementedExceptions.withCode("xx8n2efQ");
-        }
- */
       } else {
         throw NotImplementedExceptions.withCode("xG3KKaWv");
       }
@@ -89,7 +76,7 @@ abstract class ObjectHandleGenerator extends AbstractObjectHandleGenerator {
   }
 
   protected void analyzeConversionMethods(CustomType domainType) {
-    List<CustomTypeReference> parents = DomainFunctions.getEffectiveParents(domainType);
+    Collection<CustomTypeReference> parents = DomainFunctions.getEffectiveSuperDomains(domainType);
     parents.stream()
         .map(this::buildConversionMethod)
         .forEach(conversionMethods::add);

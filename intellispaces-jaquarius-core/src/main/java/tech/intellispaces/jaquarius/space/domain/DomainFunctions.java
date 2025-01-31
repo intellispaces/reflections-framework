@@ -8,20 +8,12 @@ import tech.intellispaces.jaquarius.space.SpaceConstants;
 import tech.intellispaces.java.reflection.JavaStatements;
 import tech.intellispaces.java.reflection.customtype.CustomType;
 import tech.intellispaces.java.reflection.method.MethodStatement;
-import tech.intellispaces.java.reflection.reference.CustomTypeReference;
-import tech.intellispaces.java.reflection.reference.CustomTypeReferences;
-import tech.intellispaces.java.reflection.reference.NamedReference;
-import tech.intellispaces.java.reflection.reference.NotPrimitiveReference;
-import tech.intellispaces.java.reflection.reference.TypeReference;
-import tech.intellispaces.java.reflection.reference.TypeReferenceFunctions;
+import tech.intellispaces.java.reflection.reference.*;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * Domain functions.
@@ -214,11 +206,11 @@ public final class DomainFunctions {
       return prevChain;
     }
 
-    for (CustomTypeReference parent : sourceDomain.parentTypes()) {
-      String chain = isAliasOf(parent, sourceDomain)
+    for (CustomTypeReference superDomain : sourceDomain.parentTypes()) {
+      String chain = isAliasOf(superDomain, sourceDomain)
           ? prevChain
-          : prevChain + "." + NameConventionFunctions.getConversionMethodName(parent.targetType()) + "()";
-      String next = buildConversionMethodsChain(chain, parent.targetType(), targetDomain);
+          : prevChain + "." + NameConventionFunctions.getConversionMethodName(superDomain.targetType()) + "()";
+      String next = buildConversionMethodsChain(chain, superDomain.targetType(), targetDomain);
       if (next != null) {
         return next;
       }
@@ -226,25 +218,34 @@ public final class DomainFunctions {
     return null;
   }
 
-  public static List<CustomTypeReference> getEffectiveParents(CustomType domainType) {
-    var parentTypes = new ArrayList<CustomTypeReference>();
-    getEffectiveParents(domainType, domainType, parentTypes);
-    return parentTypes;
+  public static Collection<CustomTypeReference> getEffectiveSuperDomains(CustomType domain) {
+    var superDomains = new ArrayList<CustomTypeReference>();
+    getEffectiveSuperDomains(domain, domain, superDomains);
+    return filterSuperDomains(superDomains);
   }
 
-  private static void getEffectiveParents(
-      CustomType customType, CustomType effectiveCustomType, List<CustomTypeReference> result
+  private static void getEffectiveSuperDomains(
+      CustomType customType, CustomType effectiveCustomType, List<CustomTypeReference> superDomains
   ) {
     Iterator<CustomTypeReference> parents = customType.parentTypes().iterator();
     Iterator<CustomTypeReference> effectiveParents = effectiveCustomType.parentTypes().iterator();
     while (parents.hasNext() && effectiveParents.hasNext()) {
       CustomTypeReference parent = parents.next();
       CustomTypeReference effectiveParent = effectiveParents.next();
-      if (DomainFunctions.isAliasOf(parent, customType)) {
-        getEffectiveParents(parent.targetType(), effectiveParent.effectiveTargetType(), result);
-      } else {
-        result.add(CustomTypeReferences.get(effectiveParent.effectiveTargetType()));
+      if (!DomainFunctions.isAliasOf(parent, customType)) {
+        superDomains.add(CustomTypeReferences.get(effectiveParent.effectiveTargetType()));
       }
+      getEffectiveSuperDomains(parent.targetType(), effectiveParent.effectiveTargetType(), superDomains);
     }
+  }
+
+  private static Collection<CustomTypeReference> filterSuperDomains(ArrayList<CustomTypeReference> superDomains) {
+    Map<String, CustomTypeReference> superDomainNames = superDomains.stream()
+        .collect(Collectors.toMap(
+            d -> d.targetType().canonicalName(),
+            Function.identity(),
+            (v1, v2) -> v1
+        ));
+    return superDomainNames.values();
   }
 }

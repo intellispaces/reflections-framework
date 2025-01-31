@@ -40,12 +40,7 @@ import tech.intellispaces.jaquarius.traverse.TraverseTypes;
 import tech.intellispaces.java.reflection.customtype.CustomType;
 import tech.intellispaces.java.reflection.method.MethodParam;
 import tech.intellispaces.java.reflection.method.MethodStatement;
-import tech.intellispaces.java.reflection.reference.CustomTypeReferences;
-import tech.intellispaces.java.reflection.reference.NamedReference;
-import tech.intellispaces.java.reflection.reference.NotPrimitiveReference;
-import tech.intellispaces.java.reflection.reference.ReferenceBound;
-import tech.intellispaces.java.reflection.reference.TypeReference;
-import tech.intellispaces.java.reflection.reference.Wildcards;
+import tech.intellispaces.java.reflection.reference.*;
 
 import java.util.List;
 import java.util.Objects;

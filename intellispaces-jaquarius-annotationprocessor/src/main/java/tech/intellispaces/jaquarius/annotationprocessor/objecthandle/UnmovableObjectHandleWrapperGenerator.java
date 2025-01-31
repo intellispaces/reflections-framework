@@ -13,13 +13,13 @@ import tech.intellispaces.jaquarius.engine.ObjectHandleBroker;
 import tech.intellispaces.jaquarius.engine.description.ObjectHandleMethodPurposes;
 import tech.intellispaces.jaquarius.engine.description.ObjectHandleTypeDescription;
 import tech.intellispaces.jaquarius.exception.TraverseException;
-import tech.intellispaces.jaquarius.traverse.TraverseQualifierSetForm;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleType;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.system.Modules;
 import tech.intellispaces.jaquarius.system.ObjectHandleWrapper;
+import tech.intellispaces.jaquarius.traverse.TraverseQualifierSetForm;
 import tech.intellispaces.jaquarius.traverse.TraverseTypes;
 import tech.intellispaces.java.reflection.customtype.CustomType;
 import tech.intellispaces.java.reflection.method.MethodStatement;
@@ -82,13 +82,13 @@ public class UnmovableObjectHandleWrapperGenerator extends ObjectHandleWrapperGe
 
     addVariable("typeParamsFull", typeParamsFull);
     addVariable("typeParamsBrief", typeParamsBrief);
-    addVariable("constructors", generatedConstructors);
-    addVariable("methodDescriptions", generatedMethodDescriptions);
-    addVariable("guideActionMethods", generatedGuideMethods);
-    addVariable("handleMethods", generatedDomainMethods);
+    addVariable("constructors", constructors);
+    addVariable("methodDescriptions", methodDescriptions);
+    addVariable("guideActionMethods", guideMethods);
+    addVariable("handleMethods", traverseMethods);
     addVariable("domainMethods", rawDomainMethods);
-    addVariable("injectionMethods", generatedInjectionMethods);
-    addVariable("conversionMethods", generatedConversionMethods);
+    addVariable("injectionMethods", injectionMethods);
+    addVariable("conversionMethods", conversionMethods);
     addVariable("notImplRelease", !implRelease);
     return true;
   }

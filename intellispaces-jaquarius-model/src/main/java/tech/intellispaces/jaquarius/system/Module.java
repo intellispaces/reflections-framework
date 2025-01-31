@@ -1,13 +1,7 @@
 package tech.intellispaces.jaquarius.system;
 
 import tech.intellispaces.general.type.Type;
-import tech.intellispaces.jaquarius.channel.Channel0;
-import tech.intellispaces.jaquarius.channel.Channel1;
-import tech.intellispaces.jaquarius.channel.Channel2;
-import tech.intellispaces.jaquarius.channel.Channel3;
-import tech.intellispaces.jaquarius.channel.Channel4;
-import tech.intellispaces.jaquarius.channel.MappingChannel;
-import tech.intellispaces.jaquarius.channel.MappingOfMovingChannel;
+import tech.intellispaces.jaquarius.channel.*;
 import tech.intellispaces.jaquarius.guide.n0.Mapper0;
 import tech.intellispaces.jaquarius.guide.n0.MapperOfMoving0;
 import tech.intellispaces.jaquarius.guide.n0.Mover0;

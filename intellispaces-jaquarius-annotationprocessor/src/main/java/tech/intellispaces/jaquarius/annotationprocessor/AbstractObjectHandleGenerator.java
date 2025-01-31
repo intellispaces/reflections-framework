@@ -9,29 +9,20 @@ import tech.intellispaces.jaquarius.annotation.Movable;
 import tech.intellispaces.jaquarius.annotation.Unmovable;
 import tech.intellispaces.jaquarius.exception.TraverseException;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
-import tech.intellispaces.jaquarius.object.reference.ObjectHandleFunctions;
-import tech.intellispaces.jaquarius.traverse.TraverseQualifierSetForm;
-import tech.intellispaces.jaquarius.traverse.TraverseQualifierSetForms;
-import tech.intellispaces.jaquarius.object.reference.ObjectHandleType;
-import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
-import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
-import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
+import tech.intellispaces.jaquarius.object.reference.*;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.space.domain.BasicDomain;
 import tech.intellispaces.jaquarius.space.domain.BasicDomains;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
+import tech.intellispaces.jaquarius.traverse.TraverseQualifierSetForm;
+import tech.intellispaces.jaquarius.traverse.TraverseQualifierSetForms;
 import tech.intellispaces.java.reflection.customtype.CustomType;
 import tech.intellispaces.java.reflection.customtype.InterfaceType;
 import tech.intellispaces.java.reflection.customtype.Interfaces;
 import tech.intellispaces.java.reflection.method.MethodParam;
 import tech.intellispaces.java.reflection.method.MethodSignatureDeclarations;
 import tech.intellispaces.java.reflection.method.MethodStatement;
-import tech.intellispaces.java.reflection.reference.CustomTypeReference;
-import tech.intellispaces.java.reflection.reference.CustomTypeReferences;
-import tech.intellispaces.java.reflection.reference.NamedReference;
-import tech.intellispaces.java.reflection.reference.NotPrimitiveReference;
-import tech.intellispaces.java.reflection.reference.ReferenceBound;
-import tech.intellispaces.java.reflection.reference.TypeReference;
+import tech.intellispaces.java.reflection.reference.*;
 
 import javax.annotation.processing.RoundEnvironment;
 import java.util.ArrayList;
@@ -348,11 +339,9 @@ public abstract class AbstractObjectHandleGenerator extends JaquariusArtifactGen
       return true;
     }
     for (CustomTypeReference parent : customType.parentTypes()) {
-//      if (DomainFunctions.isAliasOf(parent, customType)) {
-        if (excludeDeepConversionMethods(domainMethod, parent.targetType())) {
-          return true;
-        }
-//      }
+      if (excludeDeepConversionMethods(domainMethod, parent.targetType())) {
+        return true;
+      }
       if (NameConventionFunctions.getConversionMethodName(parent).equals(domainMethod.name())) {
         return true;
       }

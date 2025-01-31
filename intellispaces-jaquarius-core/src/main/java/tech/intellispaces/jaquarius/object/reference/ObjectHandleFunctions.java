@@ -15,8 +15,8 @@ import tech.intellispaces.jaquarius.annotation.ObjectHandle;
 import tech.intellispaces.jaquarius.annotation.Unmovable;
 import tech.intellispaces.jaquarius.annotation.Wrapper;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
-import tech.intellispaces.jaquarius.traverse.TraverseQualifierSetForm;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
+import tech.intellispaces.jaquarius.traverse.TraverseQualifierSetForm;
 import tech.intellispaces.jaquarius.traverse.TraverseQualifierSetForms;
 import tech.intellispaces.java.reflection.JavaStatements;
 import tech.intellispaces.java.reflection.customtype.AnnotationFunctions;
@@ -25,12 +25,7 @@ import tech.intellispaces.java.reflection.customtype.CustomTypes;
 import tech.intellispaces.java.reflection.instance.AnnotationInstance;
 import tech.intellispaces.java.reflection.method.MethodParam;
 import tech.intellispaces.java.reflection.method.MethodStatement;
-import tech.intellispaces.java.reflection.reference.CustomTypeReference;
-import tech.intellispaces.java.reflection.reference.NamedReference;
-import tech.intellispaces.java.reflection.reference.NotPrimitiveReference;
-import tech.intellispaces.java.reflection.reference.ReferenceBound;
-import tech.intellispaces.java.reflection.reference.TypeReference;
-import tech.intellispaces.java.reflection.reference.WildcardReference;
+import tech.intellispaces.java.reflection.reference.*;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
@@ -293,6 +288,12 @@ public class ObjectHandleFunctions {
     }
   }
 
+  public static String getGeneralObjectHandleDeclaration(
+      TypeReference domainType, Function<String, String> simpleNameMapping
+  ) {
+    return getObjectHandleDeclaration(domainType, ObjectHandleTypes.General, simpleNameMapping);
+  }
+
   public static String getObjectHandleDeclaration(
       TypeReference domainType,
       ObjectHandleType handleType,
@@ -417,8 +418,9 @@ public class ObjectHandleFunctions {
     RunnableAction andAppender = StringActions.skipFirstTimeSeparatorAppender(sb, "And");
     for (MethodParam param : method.params()) {
       andAppender.run();
-      sb.append(StringFunctions.capitalizeFirstLetter(param.type().simpleDeclaration()));
+      sb.append(StringFunctions.removeTailIfPresent(StringFunctions.capitalizeFirstLetter(param.type().simpleDeclaration()), "Handle"));
     }
+    sb.append("Guide");
     return sb.toString();
   }
 

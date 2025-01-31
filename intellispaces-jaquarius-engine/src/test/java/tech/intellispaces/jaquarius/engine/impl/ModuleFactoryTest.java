@@ -5,15 +5,7 @@ import tech.intellispaces.jaquarius.action.InvokeUnitMethodAction;
 import tech.intellispaces.jaquarius.exception.ConfigurationException;
 import tech.intellispaces.jaquarius.exception.CyclicDependencyException;
 import tech.intellispaces.jaquarius.samples.object.ObjectReferenceOfEmptyDomain;
-import tech.intellispaces.jaquarius.samples.system.EmptyTestModule;
-import tech.intellispaces.jaquarius.samples.system.ModuleWithProjectionProvidersWithSelfCyclicDependency;
-import tech.intellispaces.jaquarius.samples.system.ModuleWithSimpleProjections;
-import tech.intellispaces.jaquarius.samples.system.ModuleWithStartupAndShutdownMethods;
-import tech.intellispaces.jaquarius.samples.system.ModuleWithThreeProjectionProvidersWithCyclicDependency;
-import tech.intellispaces.jaquarius.samples.system.ModuleWithTwoProjectionProvidersInDifferentUnitsWithCyclicDependency1;
-import tech.intellispaces.jaquarius.samples.system.ModuleWithTwoProjectionProvidersInDifferentUnitsWithCyclicDependency2;
-import tech.intellispaces.jaquarius.samples.system.ModuleWithTwoProjectionProvidersInDifferentUnitsWithCyclicDependency3;
-import tech.intellispaces.jaquarius.samples.system.ModuleWithTwoProjectionProvidersWithCyclicDependency;
+import tech.intellispaces.jaquarius.samples.system.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;

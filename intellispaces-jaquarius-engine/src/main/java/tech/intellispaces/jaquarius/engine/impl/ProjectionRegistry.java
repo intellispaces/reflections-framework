@@ -1,20 +1,38 @@
 package tech.intellispaces.jaquarius.engine.impl;
 
-import tech.intellispaces.action.Action;
-import tech.intellispaces.general.exception.ExceptionFunctions;
-import tech.intellispaces.general.exception.UnexpectedExceptions;
-import tech.intellispaces.general.type.ClassFunctions;
+import tech.intellispaces.commons.action.Action;
+import tech.intellispaces.commons.base.exception.ExceptionFunctions;
+import tech.intellispaces.commons.base.exception.UnexpectedExceptions;
+import tech.intellispaces.commons.base.type.ClassFunctions;
 import tech.intellispaces.jaquarius.annotation.Projection;
 import tech.intellispaces.jaquarius.exception.ConfigurationException;
 import tech.intellispaces.jaquarius.exception.ConfigurationExceptions;
 import tech.intellispaces.jaquarius.exception.CyclicDependencyExceptions;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleFunctions;
-import tech.intellispaces.jaquarius.system.*;
-import tech.intellispaces.jaquarius.system.projection.*;
+import tech.intellispaces.jaquarius.system.ModuleProjection;
+import tech.intellispaces.jaquarius.system.ProjectionDefinition;
+import tech.intellispaces.jaquarius.system.ProjectionProvider;
+import tech.intellispaces.jaquarius.system.ProjectionReference;
+import tech.intellispaces.jaquarius.system.ProjectionSupplier;
+import tech.intellispaces.jaquarius.system.UnitProjectionDefinition;
+import tech.intellispaces.jaquarius.system.projection.ModuleProjectionImpl;
+import tech.intellispaces.jaquarius.system.projection.ProjectionDefinitionBasedOnMethodAction;
+import tech.intellispaces.jaquarius.system.projection.ProjectionDefinitionBasedOnProviderClass;
+import tech.intellispaces.jaquarius.system.projection.ProjectionDefinitionKinds;
+import tech.intellispaces.jaquarius.system.projection.ProjectionFunctions;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.IdentityHashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 

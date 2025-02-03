@@ -1,16 +1,27 @@
 package tech.intellispaces.jaquarius.space.domain;
 
-import tech.intellispaces.general.exception.UnexpectedExceptions;
-import tech.intellispaces.general.type.ClassFunctions;
+import tech.intellispaces.commons.base.exception.UnexpectedExceptions;
+import tech.intellispaces.commons.base.type.ClassFunctions;
+import tech.intellispaces.commons.java.reflection.JavaStatements;
+import tech.intellispaces.commons.java.reflection.customtype.CustomType;
+import tech.intellispaces.commons.java.reflection.method.MethodStatement;
+import tech.intellispaces.commons.java.reflection.reference.CustomTypeReference;
+import tech.intellispaces.commons.java.reflection.reference.CustomTypeReferences;
+import tech.intellispaces.commons.java.reflection.reference.NamedReference;
+import tech.intellispaces.commons.java.reflection.reference.NotPrimitiveReference;
+import tech.intellispaces.commons.java.reflection.reference.TypeReference;
+import tech.intellispaces.commons.java.reflection.reference.TypeReferenceFunctions;
 import tech.intellispaces.jaquarius.annotation.Domain;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
 import tech.intellispaces.jaquarius.space.SpaceConstants;
-import tech.intellispaces.java.reflection.JavaStatements;
-import tech.intellispaces.java.reflection.customtype.CustomType;
-import tech.intellispaces.java.reflection.method.MethodStatement;
-import tech.intellispaces.java.reflection.reference.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;

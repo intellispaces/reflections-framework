@@ -1,6 +1,6 @@
 package {{$generatedArtifactPackageName}};
 
-import tech.intellispaces.general.exception.NotImplementedExceptions;
+import tech.intellispaces.commons.base.exception.NotImplementedExceptions;
 
 {{for importedClass : $importedClasses}}
 import {{$importedClass}};

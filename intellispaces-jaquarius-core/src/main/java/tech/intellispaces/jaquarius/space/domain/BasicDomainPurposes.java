@@ -1,13 +1,13 @@
 package tech.intellispaces.jaquarius.space.domain;
 
-import tech.intellispaces.general.entity.Enumeration;
+import tech.intellispaces.commons.base.entity.Enumeration;
 
 public enum BasicDomainPurposes implements Enumeration<BasicDomainPurpose>, BasicDomainPurpose {
 
   /**
    * The domain of domains.
    */
-  Domain("tech.intellispaces.general.type.Type"),
+  Domain("tech.intellispaces.commons.base.type.Type"),
 
   /**
    * The domain of strings.

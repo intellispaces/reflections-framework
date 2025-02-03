@@ -1,10 +1,10 @@
 package tech.intellispaces.jaquarius.annotationprocessor;
 
-import tech.intellispaces.annotationprocessor.ArtifactGenerator;
-import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
-import tech.intellispaces.annotationprocessor.ArtifactProcessor;
-import tech.intellispaces.annotationprocessor.ArtifactValidator;
-import tech.intellispaces.java.reflection.customtype.CustomType;
+import tech.intellispaces.commons.annotation.processor.ArtifactGenerator;
+import tech.intellispaces.commons.annotation.processor.ArtifactGeneratorContext;
+import tech.intellispaces.commons.annotation.processor.ArtifactProcessor;
+import tech.intellispaces.commons.annotation.processor.ArtifactValidator;
+import tech.intellispaces.commons.java.reflection.customtype.CustomType;
 
 import javax.lang.model.element.ElementKind;
 import java.util.List;

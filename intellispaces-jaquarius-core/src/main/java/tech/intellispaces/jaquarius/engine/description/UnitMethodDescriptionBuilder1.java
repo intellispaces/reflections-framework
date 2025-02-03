@@ -1,6 +1,6 @@
 package tech.intellispaces.jaquarius.engine.description;
 
-import tech.intellispaces.action.functional.FunctionActions;
+import tech.intellispaces.commons.action.functional.FunctionActions;
 
 import java.util.List;
 import java.util.function.BiConsumer;

@@ -1,9 +1,10 @@
 package tech.intellispaces.jaquarius.engine.impl;
 
-import tech.intellispaces.action.Action;
-import tech.intellispaces.general.exception.NotImplementedExceptions;
-import tech.intellispaces.general.exception.UnexpectedExceptions;
-import tech.intellispaces.general.stream.Streams;
+import tech.intellispaces.commons.action.Action;
+import tech.intellispaces.commons.base.exception.NotImplementedExceptions;
+import tech.intellispaces.commons.base.exception.UnexpectedExceptions;
+import tech.intellispaces.commons.base.stream.Streams;
+import tech.intellispaces.commons.java.reflection.method.MethodStatement;
 import tech.intellispaces.jaquarius.action.InvokeUnitMethodAction;
 import tech.intellispaces.jaquarius.annotation.Configuration;
 import tech.intellispaces.jaquarius.annotation.Guide;
@@ -15,7 +16,6 @@ import tech.intellispaces.jaquarius.system.UnitFunctions;
 import tech.intellispaces.jaquarius.system.UnitWrapper;
 import tech.intellispaces.jaquarius.system.empty.EmptyModule;
 import tech.intellispaces.jaquarius.system.empty.EmptyModuleWrapper;
-import tech.intellispaces.java.reflection.method.MethodStatement;
 
 import java.util.ArrayList;
 import java.util.List;

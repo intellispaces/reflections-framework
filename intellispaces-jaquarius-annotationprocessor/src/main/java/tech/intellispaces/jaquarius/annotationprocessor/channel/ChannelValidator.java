@@ -1,9 +1,9 @@
 package tech.intellispaces.jaquarius.annotationprocessor.channel;
 
-import tech.intellispaces.annotationprocessor.ArtifactValidator;
+import tech.intellispaces.commons.annotation.processor.ArtifactValidator;
+import tech.intellispaces.commons.java.reflection.customtype.CustomType;
 import tech.intellispaces.jaquarius.annotation.Ontology;
 import tech.intellispaces.jaquarius.exception.JaquariusExceptions;
-import tech.intellispaces.java.reflection.customtype.CustomType;
 
 import java.util.Optional;
 

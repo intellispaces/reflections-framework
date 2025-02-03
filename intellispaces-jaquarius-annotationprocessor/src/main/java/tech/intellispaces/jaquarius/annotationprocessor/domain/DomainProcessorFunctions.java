@@ -1,20 +1,20 @@
 package tech.intellispaces.jaquarius.annotationprocessor.domain;
 
-import tech.intellispaces.annotationprocessor.ArtifactGenerator;
-import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
-import tech.intellispaces.annotationprocessor.ArtifactProcessor;
-import tech.intellispaces.annotationprocessor.ArtifactValidator;
-import tech.intellispaces.general.object.Objects;
+import tech.intellispaces.commons.annotation.processor.ArtifactGenerator;
+import tech.intellispaces.commons.annotation.processor.ArtifactGeneratorContext;
+import tech.intellispaces.commons.annotation.processor.ArtifactProcessor;
+import tech.intellispaces.commons.annotation.processor.ArtifactValidator;
+import tech.intellispaces.commons.base.object.Objects;
+import tech.intellispaces.commons.java.reflection.customtype.AnnotationFunctions;
+import tech.intellispaces.commons.java.reflection.customtype.CustomType;
+import tech.intellispaces.commons.java.reflection.method.MethodStatement;
+import tech.intellispaces.commons.java.reflection.reference.CustomTypeReference;
 import tech.intellispaces.jaquarius.annotation.AnnotationProcessor;
 import tech.intellispaces.jaquarius.annotation.Channel;
 import tech.intellispaces.jaquarius.annotationprocessor.AnnotationProcessorFunctions;
 import tech.intellispaces.jaquarius.annotationprocessor.ArtifactTypes;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
 import tech.intellispaces.jaquarius.space.domain.BasicDomains;
-import tech.intellispaces.java.reflection.customtype.AnnotationFunctions;
-import tech.intellispaces.java.reflection.customtype.CustomType;
-import tech.intellispaces.java.reflection.method.MethodStatement;
-import tech.intellispaces.java.reflection.reference.CustomTypeReference;
 
 import javax.annotation.processing.RoundEnvironment;
 import java.util.ArrayList;

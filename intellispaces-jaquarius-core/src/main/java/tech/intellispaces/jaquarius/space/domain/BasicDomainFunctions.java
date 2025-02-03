@@ -1,10 +1,10 @@
 package tech.intellispaces.jaquarius.space.domain;
 
-import tech.intellispaces.general.collection.CollectionFunctions;
-import tech.intellispaces.general.data.Dictionaries;
-import tech.intellispaces.general.data.Dictionary;
-import tech.intellispaces.general.exception.UnexpectedExceptions;
-import tech.intellispaces.general.resource.ResourceFunctions;
+import tech.intellispaces.commons.base.collection.CollectionFunctions;
+import tech.intellispaces.commons.base.data.Dictionaries;
+import tech.intellispaces.commons.base.data.Dictionary;
+import tech.intellispaces.commons.base.exception.UnexpectedExceptions;
+import tech.intellispaces.commons.base.resource.ResourceFunctions;
 
 import java.io.IOException;
 import java.net.URL;

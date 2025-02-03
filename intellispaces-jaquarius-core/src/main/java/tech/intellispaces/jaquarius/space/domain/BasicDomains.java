@@ -1,7 +1,7 @@
 package tech.intellispaces.jaquarius.space.domain;
 
-import tech.intellispaces.general.data.Dictionary;
-import tech.intellispaces.general.exception.UnexpectedExceptions;
+import tech.intellispaces.commons.base.data.Dictionary;
+import tech.intellispaces.commons.base.exception.UnexpectedExceptions;
 
 import java.io.IOException;
 import java.util.List;

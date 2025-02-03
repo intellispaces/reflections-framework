@@ -1,9 +1,18 @@
 package tech.intellispaces.jaquarius.annotationprocessor.module;
 
-import tech.intellispaces.action.runnable.RunnableAction;
-import tech.intellispaces.action.text.StringActions;
-import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
-import tech.intellispaces.general.exception.UnexpectedExceptions;
+import tech.intellispaces.commons.action.runnable.RunnableAction;
+import tech.intellispaces.commons.action.text.StringActions;
+import tech.intellispaces.commons.annotation.processor.ArtifactGeneratorContext;
+import tech.intellispaces.commons.base.exception.UnexpectedExceptions;
+import tech.intellispaces.commons.java.reflection.customtype.CustomType;
+import tech.intellispaces.commons.java.reflection.instance.AnnotationInstance;
+import tech.intellispaces.commons.java.reflection.instance.ClassInstance;
+import tech.intellispaces.commons.java.reflection.instance.Instance;
+import tech.intellispaces.commons.java.reflection.method.MethodParam;
+import tech.intellispaces.commons.java.reflection.method.MethodStatement;
+import tech.intellispaces.commons.java.reflection.method.Methods;
+import tech.intellispaces.commons.java.reflection.reference.NamedReference;
+import tech.intellispaces.commons.java.reflection.reference.TypeReference;
 import tech.intellispaces.jaquarius.annotation.Ordinal;
 import tech.intellispaces.jaquarius.annotation.Projection;
 import tech.intellispaces.jaquarius.annotation.ProjectionSupplier;
@@ -25,17 +34,12 @@ import tech.intellispaces.jaquarius.system.ProjectionInjection;
 import tech.intellispaces.jaquarius.system.UnitWrapper;
 import tech.intellispaces.jaquarius.system.injection.InjectionKinds;
 import tech.intellispaces.jaquarius.system.projection.ProjectionReferences;
-import tech.intellispaces.java.reflection.customtype.CustomType;
-import tech.intellispaces.java.reflection.instance.AnnotationInstance;
-import tech.intellispaces.java.reflection.instance.ClassInstance;
-import tech.intellispaces.java.reflection.instance.Instance;
-import tech.intellispaces.java.reflection.method.MethodParam;
-import tech.intellispaces.java.reflection.method.MethodStatement;
-import tech.intellispaces.java.reflection.method.Methods;
-import tech.intellispaces.java.reflection.reference.NamedReference;
-import tech.intellispaces.java.reflection.reference.TypeReference;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class UnitWrapperGenerator extends JaquariusArtifactGenerator {

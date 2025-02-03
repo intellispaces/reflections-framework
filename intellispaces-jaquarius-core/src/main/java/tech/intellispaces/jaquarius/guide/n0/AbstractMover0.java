@@ -1,6 +1,6 @@
 package tech.intellispaces.jaquarius.guide.n0;
 
-import tech.intellispaces.general.exception.WrappedExceptions;
+import tech.intellispaces.commons.base.exception.WrappedExceptions;
 import tech.intellispaces.jaquarius.exception.TraverseException;
 import tech.intellispaces.jaquarius.exception.TraverseExceptions;
 import tech.intellispaces.jaquarius.guide.GuideKind;

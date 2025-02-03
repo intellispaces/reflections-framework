@@ -1,12 +1,16 @@
 package tech.intellispaces.jaquarius.engine.impl;
 
 import com.google.auto.service.AutoService;
-import tech.intellispaces.action.Action;
-import tech.intellispaces.action.cache.CachedSupplierActions;
-import tech.intellispaces.action.delegate.DelegateActions;
-import tech.intellispaces.general.exception.NotImplementedExceptions;
+import tech.intellispaces.commons.action.Action;
+import tech.intellispaces.commons.action.cache.CachedSupplierActions;
+import tech.intellispaces.commons.action.delegate.DelegateActions;
+import tech.intellispaces.commons.base.exception.NotImplementedExceptions;
 import tech.intellispaces.jaquarius.action.TraverseActions;
-import tech.intellispaces.jaquarius.channel.*;
+import tech.intellispaces.jaquarius.channel.Channel0;
+import tech.intellispaces.jaquarius.channel.Channel1;
+import tech.intellispaces.jaquarius.channel.Channel2;
+import tech.intellispaces.jaquarius.channel.Channel3;
+import tech.intellispaces.jaquarius.channel.Channel4;
 import tech.intellispaces.jaquarius.engine.ObjectHandleBroker;
 import tech.intellispaces.jaquarius.engine.UnitBroker;
 import tech.intellispaces.jaquarius.engine.description.ObjectHandleMethodDescription;

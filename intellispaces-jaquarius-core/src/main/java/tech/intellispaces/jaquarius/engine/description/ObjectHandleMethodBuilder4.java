@@ -1,8 +1,8 @@
 package tech.intellispaces.jaquarius.engine.description;
 
-import tech.intellispaces.action.Action;
-import tech.intellispaces.action.functional.FunctionActions;
-import tech.intellispaces.general.function.QuadriFunction;
+import tech.intellispaces.commons.action.Action;
+import tech.intellispaces.commons.action.functional.FunctionActions;
+import tech.intellispaces.commons.base.function.QuadriFunction;
 import tech.intellispaces.jaquarius.traverse.TraverseType;
 
 import java.util.List;

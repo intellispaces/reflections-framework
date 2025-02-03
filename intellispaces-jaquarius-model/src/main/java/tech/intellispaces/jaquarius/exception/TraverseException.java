@@ -1,6 +1,6 @@
 package tech.intellispaces.jaquarius.exception;
 
-import tech.intellispaces.general.exception.UnexpectedException;
+import tech.intellispaces.commons.base.exception.UnexpectedException;
 
 public class TraverseException extends UnexpectedException {
 

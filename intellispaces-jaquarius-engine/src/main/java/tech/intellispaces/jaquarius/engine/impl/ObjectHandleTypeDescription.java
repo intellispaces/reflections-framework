@@ -1,6 +1,6 @@
 package tech.intellispaces.jaquarius.engine.impl;
 
-import tech.intellispaces.action.Action;
+import tech.intellispaces.commons.action.Action;
 import tech.intellispaces.jaquarius.engine.description.ObjectHandleMethodDescription;
 import tech.intellispaces.jaquarius.system.Injection;
 

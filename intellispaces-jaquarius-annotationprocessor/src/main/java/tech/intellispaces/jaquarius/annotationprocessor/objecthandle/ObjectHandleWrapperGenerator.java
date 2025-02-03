@@ -1,12 +1,18 @@
 package tech.intellispaces.jaquarius.annotationprocessor.objecthandle;
 
-import tech.intellispaces.action.runnable.RunnableAction;
-import tech.intellispaces.action.text.StringActions;
-import tech.intellispaces.general.exception.UnexpectedExceptions;
-import tech.intellispaces.general.text.StringFunctions;
-import tech.intellispaces.general.type.ClassFunctions;
-import tech.intellispaces.general.type.ClassNameFunctions;
-import tech.intellispaces.general.type.PrimitiveTypes;
+import tech.intellispaces.commons.action.runnable.RunnableAction;
+import tech.intellispaces.commons.action.text.StringActions;
+import tech.intellispaces.commons.base.exception.UnexpectedExceptions;
+import tech.intellispaces.commons.base.text.StringFunctions;
+import tech.intellispaces.commons.base.type.ClassFunctions;
+import tech.intellispaces.commons.base.type.ClassNameFunctions;
+import tech.intellispaces.commons.base.type.PrimitiveTypes;
+import tech.intellispaces.commons.java.reflection.customtype.CustomType;
+import tech.intellispaces.commons.java.reflection.method.MethodParam;
+import tech.intellispaces.commons.java.reflection.method.MethodStatement;
+import tech.intellispaces.commons.java.reflection.reference.CustomTypeReference;
+import tech.intellispaces.commons.java.reflection.reference.NamedReference;
+import tech.intellispaces.commons.java.reflection.reference.TypeReference;
 import tech.intellispaces.jaquarius.annotationprocessor.AbstractObjectHandleGenerator;
 import tech.intellispaces.jaquarius.annotationprocessor.AnnotationGeneratorFunctions;
 import tech.intellispaces.jaquarius.engine.description.ObjectHandleMethodPurposes;
@@ -21,12 +27,6 @@ import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
 import tech.intellispaces.jaquarius.traverse.TraverseQualifierSetForm;
 import tech.intellispaces.jaquarius.traverse.TraverseQualifierSetForms;
-import tech.intellispaces.java.reflection.customtype.CustomType;
-import tech.intellispaces.java.reflection.method.MethodParam;
-import tech.intellispaces.java.reflection.method.MethodStatement;
-import tech.intellispaces.java.reflection.reference.CustomTypeReference;
-import tech.intellispaces.java.reflection.reference.NamedReference;
-import tech.intellispaces.java.reflection.reference.TypeReference;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -483,7 +483,7 @@ abstract class ObjectHandleWrapperGenerator extends AbstractObjectHandleGenerato
       if (isPrimitiveWrapper(domainMethod.returnType().orElseThrow())) {
         CustomType returnType = domainMethod.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow().targetType();
         String typename = ClassFunctions.primitiveTypenameOfWrapper(returnType.canonicalName());
-        if (tech.intellispaces.general.object.ObjectFunctions.equalsAnyOf(
+        if (tech.intellispaces.commons.base.object.ObjectFunctions.equalsAnyOf(
             typename,
             PrimitiveTypes.Boolean.typename(),
             PrimitiveTypes.Char.typename(),

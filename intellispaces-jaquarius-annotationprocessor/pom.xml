@@ -38,16 +38,16 @@
             <artifactId>intellispaces-jaquarius-core</artifactId>
         </dependency>
         <dependency>
-            <groupId>tech.intellispaces.common</groupId>
-            <artifactId>intellispaces-annotationprocessor</artifactId>
+            <groupId>tech.intellispaces.commons</groupId>
+            <artifactId>intellispaces-commons-annotation-processor</artifactId>
         </dependency>
         <dependency>
-            <groupId>tech.intellispaces.common</groupId>
-            <artifactId>intellispaces-actions</artifactId>
+            <groupId>tech.intellispaces.commons</groupId>
+            <artifactId>intellispaces-commons-action</artifactId>
         </dependency>
         <dependency>
-            <groupId>tech.intellispaces.common</groupId>
-            <artifactId>intellispaces-common-actions</artifactId>
+            <groupId>tech.intellispaces.commons</groupId>
+            <artifactId>intellispaces-commons-base-action</artifactId>
         </dependency>
 
         <!-- Auto-service library -->

@@ -1,7 +1,7 @@
 package tech.intellispaces.jaquarius.properties;
 
-import tech.intellispaces.general.exception.UnexpectedExceptions;
-import tech.intellispaces.general.resource.ResourceFunctions;
+import tech.intellispaces.commons.base.exception.UnexpectedExceptions;
+import tech.intellispaces.commons.base.resource.ResourceFunctions;
 import tech.intellispaces.jaquarius.system.Module;
 
 import java.util.HashMap;

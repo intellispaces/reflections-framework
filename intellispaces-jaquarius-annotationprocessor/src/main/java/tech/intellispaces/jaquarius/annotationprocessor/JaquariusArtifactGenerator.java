@@ -1,16 +1,16 @@
 package tech.intellispaces.jaquarius.annotationprocessor;
 
-import tech.intellispaces.annotationprocessor.TemplatedJavaArtifactGenerator;
-import tech.intellispaces.general.type.ClassFunctions;
+import tech.intellispaces.commons.annotation.processor.TemplatedJavaArtifactGenerator;
+import tech.intellispaces.commons.base.type.ClassFunctions;
+import tech.intellispaces.commons.java.reflection.customtype.CustomType;
+import tech.intellispaces.commons.java.reflection.method.MethodParam;
+import tech.intellispaces.commons.java.reflection.method.MethodSignatureDeclarations;
+import tech.intellispaces.commons.java.reflection.method.MethodStatement;
+import tech.intellispaces.commons.java.reflection.reference.TypeReference;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleFunctions;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleType;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
-import tech.intellispaces.java.reflection.customtype.CustomType;
-import tech.intellispaces.java.reflection.method.MethodParam;
-import tech.intellispaces.java.reflection.method.MethodSignatureDeclarations;
-import tech.intellispaces.java.reflection.method.MethodStatement;
-import tech.intellispaces.java.reflection.reference.TypeReference;
 
 import java.util.List;
 import java.util.stream.Collectors;

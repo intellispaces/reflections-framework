@@ -1,8 +1,8 @@
 package tech.intellispaces.jaquarius.engine.impl;
 
-import tech.intellispaces.action.Action;
-import tech.intellispaces.action.Actions;
-import tech.intellispaces.action.supplier.ResettableSupplierAction;
+import tech.intellispaces.commons.action.Action;
+import tech.intellispaces.commons.action.Actions;
+import tech.intellispaces.commons.action.supplier.ResettableSupplierAction;
 import tech.intellispaces.jaquarius.engine.UnitBroker;
 import tech.intellispaces.jaquarius.system.Injection;
 import tech.intellispaces.jaquarius.system.UnitGuide;

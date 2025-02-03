@@ -1,6 +1,6 @@
 package tech.intellispaces.jaquarius.space.domain;
 
-import tech.intellispaces.general.entity.Enumerable;
+import tech.intellispaces.commons.base.entity.Enumerable;
 
 /**
  * The basic domain purpose.

@@ -1,6 +1,6 @@
 package tech.intellispaces.jaquarius.traverse;
 
-import tech.intellispaces.general.entity.Enumerable;
+import tech.intellispaces.commons.base.entity.Enumerable;
 
 public interface TraverseType extends Enumerable<TraverseType> {
 

@@ -1,13 +1,18 @@
 package tech.intellispaces.jaquarius.system;
 
-import tech.intellispaces.general.collection.ArraysFunctions;
+import tech.intellispaces.commons.base.collection.ArraysFunctions;
+import tech.intellispaces.commons.java.reflection.customtype.CustomType;
+import tech.intellispaces.commons.java.reflection.instance.AnnotationInstance;
+import tech.intellispaces.commons.java.reflection.instance.Instance;
 import tech.intellispaces.jaquarius.annotation.Configuration;
 import tech.intellispaces.jaquarius.annotation.Module;
-import tech.intellispaces.java.reflection.customtype.CustomType;
-import tech.intellispaces.java.reflection.instance.AnnotationInstance;
-import tech.intellispaces.java.reflection.instance.Instance;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
 public interface ModuleFunctions {
 

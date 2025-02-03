@@ -1,6 +1,7 @@
 package tech.intellispaces.jaquarius.properties;
 
-import tech.intellispaces.general.exception.UnexpectedExceptions;
+import tech.intellispaces.commons.base.exception.UnexpectedExceptions;
+import tech.intellispaces.commons.java.reflection.method.MethodStatement;
 import tech.intellispaces.jaquarius.annotation.Settings;
 import tech.intellispaces.jaquarius.data.DataFunctions;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleConstants;
@@ -9,7 +10,6 @@ import tech.intellispaces.jaquarius.space.SpaceConstants;
 import tech.intellispaces.jaquarius.system.Module;
 import tech.intellispaces.jaquarius.system.Modules;
 import tech.intellispaces.jaquarius.system.projection.AbstractProjectionSupplier;
-import tech.intellispaces.java.reflection.method.MethodStatement;
 
 public class ModuleSettingsSupplier extends AbstractProjectionSupplier {
 

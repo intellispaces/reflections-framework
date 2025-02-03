@@ -1,6 +1,6 @@
 package tech.intellispaces.jaquarius.space.domain;
 
-import tech.intellispaces.general.exception.UnexpectedExceptions;
+import tech.intellispaces.commons.base.exception.UnexpectedExceptions;
 
 import java.util.List;
 import java.util.Map;

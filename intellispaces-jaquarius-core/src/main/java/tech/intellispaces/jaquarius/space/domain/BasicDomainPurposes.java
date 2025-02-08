@@ -10,6 +10,11 @@ public enum BasicDomainPurposes implements Enumeration<BasicDomainPurpose>, Basi
   Domain("tech.intellispaces.commons.base.type.Type"),
 
   /**
+   * The domain of boolean.
+   */
+  Boolean("java.lang.Boolean"),
+
+  /**
    * The domain of strings.
    */
   String("java.lang.String"),

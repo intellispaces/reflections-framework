@@ -5,6 +5,11 @@ import tech.intellispaces.commons.base.entity.Enumeration;
 public enum BasicDomainPurposes implements Enumeration<BasicDomainPurpose>, BasicDomainPurpose {
 
   /**
+   * The domain of points.
+   */
+  Point("java.lang.Object"),
+
+  /**
    * The domain of domains.
    */
   Domain("tech.intellispaces.commons.base.type.Type"),

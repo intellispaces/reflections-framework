@@ -46,6 +46,7 @@ public class BasicDomainFunctions {
 
   static BasicDomainPurpose parseBasicDomainPurpose(String purpose) {
     return switch (purpose.trim().toLowerCase()) {
+      case "point" -> BasicDomainPurposes.Point;
       case "domain" -> BasicDomainPurposes.Domain;
       case "boolean" -> BasicDomainPurposes.Boolean;
       case "string" -> BasicDomainPurposes.String;

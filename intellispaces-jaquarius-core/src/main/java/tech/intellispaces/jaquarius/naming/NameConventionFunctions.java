@@ -32,6 +32,10 @@ public interface NameConventionFunctions {
         StringFunctions.replaceHeadIfPresent(name, "tech.intellispaces.jaquarius.", "intellispaces."), "Domain");
   }
 
+  static String convertIntelliSpacesChannelName(String name) {
+    return StringFunctions.replaceHeadOrElseThrow(name, "intellispaces.", "tech.intellispaces.jaquarius.") + "Channel";
+  }
+
   static String getObjectHandleTypename(String domainClassName, ObjectHandleType handleType) {
     return switch (ObjectHandleTypes.from(handleType)) {
       case General -> getGeneralObjectHandleTypename(domainClassName);

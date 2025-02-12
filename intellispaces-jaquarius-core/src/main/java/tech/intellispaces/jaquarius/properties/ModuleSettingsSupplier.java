@@ -1,6 +1,7 @@
 package tech.intellispaces.jaquarius.properties;
 
 import tech.intellispaces.commons.base.exception.UnexpectedExceptions;
+import tech.intellispaces.commons.base.type.Types;
 import tech.intellispaces.commons.java.reflection.method.MethodStatement;
 import tech.intellispaces.jaquarius.annotation.Settings;
 import tech.intellispaces.jaquarius.data.DataFunctions;
@@ -42,7 +43,7 @@ public class ModuleSettingsSupplier extends AbstractProjectionSupplier {
     }
     if (ObjectHandleFunctions.isCustomObjectHandleClass(expectedReturnType)) {
       if (DataFunctions.isDataObjectHandle(expectedReturnType)) {
-        return module.mapThruChannel1(target, SpaceConstants.DICTIONARY_TO_DATA_CID, expectedReturnType);
+        return module.mapThruChannel1(target, SpaceConstants.DICTIONARY_TO_DATA_CID, Types.get(expectedReturnType));
       }
     }
     throw UnexpectedExceptions.withMessage("Invalid return type of method '{0}' in class {1}",

@@ -69,7 +69,7 @@ public interface NameConventionFunctions {
     if (oha.isPresent() && StringFunctions.isNotBlank(oha.get().name())) {
       return ClassNameFunctions.replaceSimpleName(objectHandleType.canonicalName(), oha.get().name());
     }
-    return objectHandleType.canonicalName() + "Impl";
+    return objectHandleType.canonicalName() + "Wrapper";
   }
 
   static String getObjectHandleWrapperCanonicalName(Class<?> objectHandleClass) {
@@ -77,7 +77,7 @@ public interface NameConventionFunctions {
     if (oha != null && StringFunctions.isNotBlank(oha.name())) {
       return ClassNameFunctions.replaceSimpleName(objectHandleClass.getCanonicalName(), oha.name());
     }
-    return objectHandleClass.getCanonicalName() + "Impl";
+    return objectHandleClass.getCanonicalName() + "Wrapper";
   }
 
   static String getUnitWrapperCanonicalName(String unitClassName) {

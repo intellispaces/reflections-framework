@@ -1,21 +1,24 @@
-package tech.intellispaces.jaquarius.annotationprocessor.data;
+package tech.intellispaces.jaquarius.annotationprocessor.dataset;
 
+import com.google.auto.service.AutoService;
 import tech.intellispaces.commons.annotation.processor.ArtifactGenerator;
 import tech.intellispaces.commons.annotation.processor.ArtifactGeneratorContext;
 import tech.intellispaces.commons.annotation.processor.ArtifactProcessor;
 import tech.intellispaces.commons.annotation.processor.ArtifactValidator;
 import tech.intellispaces.commons.java.reflection.customtype.CustomType;
-import tech.intellispaces.jaquarius.annotation.Data;
+import tech.intellispaces.jaquarius.annotation.Dataset;
 import tech.intellispaces.jaquarius.annotationprocessor.AnnotationProcessorFunctions;
 import tech.intellispaces.jaquarius.annotationprocessor.JaquariusArtifactProcessor;
 
+import javax.annotation.processing.Processor;
 import javax.lang.model.element.ElementKind;
 import java.util.List;
 
-public class DataProcessor extends ArtifactProcessor {
+@AutoService(Processor.class)
+public class DatasetProcessor extends ArtifactProcessor {
 
-  public DataProcessor() {
-    super(ElementKind.INTERFACE, Data.class, JaquariusArtifactProcessor.SOURCE_VERSION);
+  public DatasetProcessor() {
+    super(ElementKind.INTERFACE, Dataset.class, JaquariusArtifactProcessor.SOURCE_VERSION);
   }
 
   @Override
@@ -25,11 +28,11 @@ public class DataProcessor extends ArtifactProcessor {
 
   @Override
   public ArtifactValidator validator() {
-    return new DataValidator();
+    return new DatasetValidator();
   }
 
   @Override
   public List<ArtifactGenerator> makeGenerators(CustomType dataType, ArtifactGeneratorContext jobContext) {
-    return List.of(new UnmovableDataHandleGenerator(dataType));
+    return List.of(new UnmovableDatasetHandleGenerator(dataType));
   }
 }

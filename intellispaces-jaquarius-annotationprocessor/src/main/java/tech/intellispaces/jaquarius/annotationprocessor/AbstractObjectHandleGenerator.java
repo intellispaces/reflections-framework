@@ -195,7 +195,7 @@ public abstract class AbstractObjectHandleGenerator extends JaquariusArtifactGen
 
   private String convertName(String name) {
     BasicDomain basicDomain = BasicDomains.active().getByDomainName(NameConventionFunctions.convertJaquariusDomainName(name));
-    if (basicDomain != null) {
+    if (basicDomain != null && basicDomain.delegateClassName() != null) {
       return addImportAndGetSimpleName(basicDomain.delegateClassName());
     }
     return addImportAndGetSimpleName(name);

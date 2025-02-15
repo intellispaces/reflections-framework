@@ -1,8 +1,8 @@
-package tech.intellispaces.jaquarius.annotationprocessor.data;
+package tech.intellispaces.jaquarius.annotationprocessor.dataset;
 
 import tech.intellispaces.commons.annotation.processor.ArtifactValidator;
 import tech.intellispaces.commons.java.reflection.customtype.CustomType;
-import tech.intellispaces.jaquarius.annotation.Data;
+import tech.intellispaces.jaquarius.annotation.Dataset;
 import tech.intellispaces.jaquarius.annotation.Domain;
 import tech.intellispaces.jaquarius.annotation.Ontology;
 import tech.intellispaces.jaquarius.exception.JaquariusExceptions;
@@ -10,9 +10,9 @@ import tech.intellispaces.jaquarius.exception.JaquariusExceptions;
 import java.util.Optional;
 
 /**
- * The data type validator.
+ * The dataset type validator.
  */
-public class DataValidator implements ArtifactValidator {
+public class DatasetValidator implements ArtifactValidator {
 
   @Override
   public void validate(CustomType dataType) {
@@ -24,7 +24,7 @@ public class DataValidator implements ArtifactValidator {
     if (!dataType.hasAnnotation(Domain.class)) {
       throw JaquariusExceptions.withMessage(
           "Annotation {0} should only be applied to types with the annotation {1}",
-          Data.class.getSimpleName(), Domain.class.getSimpleName());
+          Dataset.class.getSimpleName(), Domain.class.getSimpleName());
     }
   }
 

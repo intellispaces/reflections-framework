@@ -46,7 +46,7 @@ public interface NameConventionFunctions {
 
   static String getGeneralObjectHandleTypename(String domainClassName) {
     BasicDomain basicDomain = BasicDomains.active().getByDomainName(convertJaquariusDomainName(domainClassName));
-    if (basicDomain != null) {
+    if (basicDomain != null && basicDomain.delegateClassName() != null) {
       return basicDomain.delegateClassName();
     }
     return StringFunctions.replaceTailOrElseThrow(transformClassName(domainClassName), "Domain", "Handle");
@@ -54,7 +54,7 @@ public interface NameConventionFunctions {
 
   static String getUnmovableObjectHandleTypename(String domainClassName) {
     BasicDomain basicDomain = BasicDomains.active().getByDomainName(convertJaquariusDomainName(domainClassName));
-    if (basicDomain != null) {
+    if (basicDomain != null && basicDomain.delegateClassName() != null) {
       return basicDomain.delegateClassName();
     }
     return ClassNameFunctions.addPrefixToSimpleName("Unmovable", getGeneralObjectHandleTypename(domainClassName));
@@ -88,8 +88,8 @@ public interface NameConventionFunctions {
     return StringFunctions.replaceSingleOrElseThrow(transformClassName(guideClassName), "Guide", "AutoGuide");
   }
 
-  static String getDataClassName(String domainClassName) {
-    return StringFunctions.replaceTailOrElseThrow(transformClassName(domainClassName), "Domain", "Data");
+  static String getDatasetClassName(String domainClassName) {
+    return StringFunctions.replaceTailOrElseThrow(transformClassName(domainClassName), "Domain", "Dataset");
   }
 
   static String getChannelClassCanonicalName(MethodStatement channelMethod) {

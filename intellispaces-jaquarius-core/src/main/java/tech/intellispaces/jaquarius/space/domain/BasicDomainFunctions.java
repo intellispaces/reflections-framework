@@ -34,10 +34,11 @@ public class BasicDomainFunctions {
   public static BasicDomainSet buildBasicDomainSet(List<Dictionary> dictionaries) {
     var basicDomains = new ArrayList<BasicDomain>();
     dictionaries.forEach(dictionary ->
-        dictionary.propertyNames().forEach(domainName -> {
-              BasicDomainPurpose purpose = parseBasicDomainPurpose(dictionary.stringValue(domainName));
-              BasicDomain basicDomain = buildBasicDomain(domainName, (BasicDomainPurposes) purpose);
-              basicDomains.add(basicDomain);
+        dictionary.propertyNames().forEach(propertyName -> {
+            String domainName = dictionary.stringValue(propertyName).trim();
+            BasicDomainPurpose domainPurpose = parseBasicDomainPurpose(propertyName);
+            BasicDomain basicDomain = buildBasicDomain(domainName, (BasicDomainPurposes) domainPurpose);
+            basicDomains.add(basicDomain);
           }
         )
     );
@@ -57,6 +58,7 @@ public class BasicDomainFunctions {
       case "long" -> BasicDomainPurposes.Long;
       case "float" -> BasicDomainPurposes.Float;
       case "double" -> BasicDomainPurposes.Double;
+      case "dataset" -> BasicDomainPurposes.Dataset;
       default -> throw UnexpectedExceptions.withMessage(
           "Unsupported property '{0}' in file basic_domain.properties", purpose);
     };

@@ -57,7 +57,12 @@ public enum BasicDomainPurposes implements Enumeration<BasicDomainPurpose>, Basi
   /**
    * The domain of 64 bits float numbers.
    */
-  Double("java.lang.Double");
+  Double("java.lang.Double"),
+
+  /**
+   * The dataset domain.
+   */
+  Dataset(null);
 
   private final String delegateClassName;
 

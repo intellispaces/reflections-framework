@@ -1,4 +1,4 @@
-package tech.intellispaces.jaquarius.annotationprocessor.data;
+package tech.intellispaces.jaquarius.annotationprocessor.dataset;
 
 import tech.intellispaces.commons.action.runnable.RunnableAction;
 import tech.intellispaces.commons.action.text.StringActions;
@@ -26,11 +26,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-public class UnmovableDataHandleGenerator extends JaquariusArtifactGenerator {
+public class UnmovableDatasetHandleGenerator extends JaquariusArtifactGenerator {
   protected String typeParamsBrief;
   private final List<Map<String, String>> projectionProperties = new ArrayList<>();
 
-  public UnmovableDataHandleGenerator(CustomType dataType) {
+  public UnmovableDatasetHandleGenerator(CustomType dataType) {
     super(dataType);
   }
 
@@ -41,7 +41,7 @@ public class UnmovableDataHandleGenerator extends JaquariusArtifactGenerator {
 
   @Override
   public String generatedArtifactName() {
-    return NameConventionFunctions.getDataClassName(sourceArtifact().className());
+    return NameConventionFunctions.getDatasetClassName(sourceArtifact().className());
   }
 
   @Override

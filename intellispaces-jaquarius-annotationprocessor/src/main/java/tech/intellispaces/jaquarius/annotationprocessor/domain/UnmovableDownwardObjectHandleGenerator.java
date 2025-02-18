@@ -78,7 +78,7 @@ public class UnmovableDownwardObjectHandleGenerator extends ConversionObjectHand
     );
 
     String unmovableObjectHandleName = addImportAndGetSimpleName(
-        NameConventionFunctions.getUnmovableObjectHandleTypename(superDomainType.targetType().className()));
+        NameConventionFunctions.getUnmovableObjectHandleTypename(superDomainType.targetType().className(), false));
 
     analyzeDomain();
     analyzeChildObjectHandleType();
@@ -106,7 +106,7 @@ public class UnmovableDownwardObjectHandleGenerator extends ConversionObjectHand
 
   private void analyzeChildObjectHandleType() {
     childObjectHandleType = addImportAndGetSimpleName(
-        NameConventionFunctions.getUnmovableObjectHandleTypename(sourceArtifact().className())
+        NameConventionFunctions.getUnmovableObjectHandleTypename(sourceArtifact().className(), true)
     );
   }
 

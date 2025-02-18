@@ -42,7 +42,7 @@ public class UnmovableObjectHandleGenerator extends ObjectHandleGenerator {
 
   @Override
   public String generatedArtifactName() {
-    return NameConventionFunctions.getUnmovableObjectHandleTypename(sourceArtifact().className());
+    return NameConventionFunctions.getUnmovableObjectHandleTypename(sourceArtifact().className(), false);
   }
 
   @Override
@@ -81,7 +81,7 @@ public class UnmovableObjectHandleGenerator extends ObjectHandleGenerator {
     Optional<CustomTypeReference> equivalentDomain = DomainFunctions.getAliasNearNeighbourDomain(sourceArtifact());
     isAlias = equivalentDomain.isPresent();
     if (isAlias) {
-      baseObjectHandle = buildObjectHandleDeclaration(equivalentDomain.get(), ObjectHandleTypes.Unmovable);
+      baseObjectHandle = buildObjectHandleDeclaration(equivalentDomain.get(), ObjectHandleTypes.Unmovable, true);
     }
   }
 

@@ -66,11 +66,11 @@ public interface DomainProcessorFunctions {
   private static void addBasicObjectHandleGenerators(
       CustomType domainType, List<ArtifactGenerator> generators, RoundEnvironment roundEnv
   ) {
-    String domainName = NameConventionFunctions.convertJaquariusDomainName(domainType.canonicalName());
-    BasicDomain basicDomain = BasicDomains.active().getByDomainName(domainName);
-    if (basicDomain != null && basicDomain.delegateClassName() != null) {
-      return;
-    }
+//    String domainName = NameConventionFunctions.convertJaquariusDomainName(domainType.canonicalName());
+//    BasicDomain basicDomain = BasicDomains.active().getByDomainName(domainName);
+//    if (basicDomain != null && basicDomain.delegateClassName() != null) {
+//      return;
+//    }
 
     if (
         AnnotationProcessorFunctions.isAutoGenerationEnabled(domainType, ArtifactTypes.ObjectHandle, roundEnv)

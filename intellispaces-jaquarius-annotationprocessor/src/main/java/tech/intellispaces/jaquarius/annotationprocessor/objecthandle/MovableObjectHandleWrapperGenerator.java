@@ -112,11 +112,11 @@ public class MovableObjectHandleWrapperGenerator extends ObjectHandleWrapperGene
             method.hasAnnotation(Movable.class) ||
             NameConventionFunctions.isConversionMethod(method)
     ) {
-      sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.Movable));
+      sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.Movable, true));
     } else if (method.hasAnnotation(Unmovable.class)) {
-      sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.Unmovable));
+      sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.Unmovable, true));
     } else {
-      sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.General));
+      sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.General, true));
     }
   }
 }

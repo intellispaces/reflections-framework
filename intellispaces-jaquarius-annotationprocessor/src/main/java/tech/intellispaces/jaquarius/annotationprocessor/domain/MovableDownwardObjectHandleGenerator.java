@@ -66,7 +66,7 @@ public class MovableDownwardObjectHandleGenerator extends ConversionObjectHandle
     );
 
     String movableObjectHandleName = addImportAndGetSimpleName(
-        NameConventionFunctions.getMovableObjectHandleTypename(superDomainType.targetType().className()));
+        NameConventionFunctions.getMovableObjectHandleTypename(superDomainType.targetType().className(), false));
 
     analyzeDomain();
     analyzeChildObjectHandleType();
@@ -92,7 +92,7 @@ public class MovableDownwardObjectHandleGenerator extends ConversionObjectHandle
 
   private void analyzeChildObjectHandleType() {
     childObjectHandleType = addImportAndGetSimpleName(
-        NameConventionFunctions.getMovableObjectHandleTypename(sourceArtifact().className())
+        NameConventionFunctions.getMovableObjectHandleTypename(sourceArtifact().className(), true)
     );
   }
 

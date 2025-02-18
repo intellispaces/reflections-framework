@@ -17,6 +17,7 @@ import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.space.domain.BasicDomain;
+import tech.intellispaces.jaquarius.space.domain.BasicDomainPurposes;
 import tech.intellispaces.jaquarius.space.domain.BasicDomains;
 
 import java.util.Optional;
@@ -36,32 +37,54 @@ public interface NameConventionFunctions {
     return StringFunctions.replaceHeadOrElseThrow(name, "intellispaces.", "tech.intellispaces.jaquarius.") + "Channel";
   }
 
-  static String getObjectHandleTypename(String domainClassName, ObjectHandleType handleType) {
+  static String getObjectHandleTypename(String domainClassName, ObjectHandleType handleType, boolean replaceBasicDomain) {
     return switch (ObjectHandleTypes.from(handleType)) {
-      case General -> getGeneralObjectHandleTypename(domainClassName);
-      case Movable -> getMovableObjectHandleTypename(domainClassName);
-      case Unmovable -> getUnmovableObjectHandleTypename(domainClassName);
+      case General -> getGeneralObjectHandleTypename(domainClassName, replaceBasicDomain);
+      case Movable -> getMovableObjectHandleTypename(domainClassName, replaceBasicDomain);
+      case Unmovable -> getUnmovableObjectHandleTypename(domainClassName, replaceBasicDomain);
     };
   }
 
-  static String getGeneralObjectHandleTypename(String domainClassName) {
-    BasicDomain basicDomain = BasicDomains.active().getByDomainName(convertJaquariusDomainName(domainClassName));
-    if (basicDomain != null && basicDomain.delegateClassName() != null) {
-      return basicDomain.delegateClassName();
+  static String getGeneralObjectHandleTypename(String domainClassName, boolean replaceBasicDomain) {
+    if (replaceBasicDomain) {
+      BasicDomain basicDomain = BasicDomains.active().getByDomainName(convertJaquariusDomainName(domainClassName));
+      if (basicDomain != null && basicDomain.delegateClassName() != null) {
+        return basicDomain.delegateClassName();
+      }
     }
     return StringFunctions.replaceTailOrElseThrow(transformClassName(domainClassName), "Domain", "Handle");
   }
 
-  static String getUnmovableObjectHandleTypename(String domainClassName) {
-    BasicDomain basicDomain = BasicDomains.active().getByDomainName(convertJaquariusDomainName(domainClassName));
-    if (basicDomain != null && basicDomain.delegateClassName() != null) {
-      return basicDomain.delegateClassName();
+  static String getUnmovableObjectHandleTypename(String domainClassName, boolean replaceBasicDomain) {
+    if (replaceBasicDomain) {
+      BasicDomain basicDomain = BasicDomains.active().getByDomainName(convertJaquariusDomainName(domainClassName));
+      if (basicDomain != null && basicDomain.delegateClassName() != null && (
+          BasicDomainPurposes.Number.is(basicDomain.purpose()) ||
+              BasicDomainPurposes.Short.is(basicDomain.purpose()) ||
+              BasicDomainPurposes.Integer.is(basicDomain.purpose()) ||
+              BasicDomainPurposes.Float.is(basicDomain.purpose()) ||
+              BasicDomainPurposes.Double.is(basicDomain.purpose())
+      )) {
+        return basicDomain.delegateClassName();
+      }
     }
-    return ClassNameFunctions.addPrefixToSimpleName("Unmovable", getGeneralObjectHandleTypename(domainClassName));
+    return ClassNameFunctions.addPrefixToSimpleName("Unmovable", getGeneralObjectHandleTypename(domainClassName, false));
   }
 
-  static String getMovableObjectHandleTypename(String domainClassName) {
-    return ClassNameFunctions.addPrefixToSimpleName("Movable", getGeneralObjectHandleTypename(domainClassName));
+  static String getMovableObjectHandleTypename(String domainClassName, boolean replaceBasicDomain) {
+    if (replaceBasicDomain) {
+      BasicDomain basicDomain = BasicDomains.active().getByDomainName(convertJaquariusDomainName(domainClassName));
+      if (basicDomain != null && basicDomain.delegateClassName() != null && (
+          BasicDomainPurposes.Number.is(basicDomain.purpose()) ||
+            BasicDomainPurposes.Short.is(basicDomain.purpose()) ||
+            BasicDomainPurposes.Integer.is(basicDomain.purpose()) ||
+            BasicDomainPurposes.Float.is(basicDomain.purpose()) ||
+            BasicDomainPurposes.Double.is(basicDomain.purpose())
+      )) {
+        return basicDomain.delegateClassName();
+      }
+    }
+    return ClassNameFunctions.addPrefixToSimpleName("Movable", getGeneralObjectHandleTypename(domainClassName, false));
   }
 
   static String getObjectHandleWrapperCanonicalName(CustomType objectHandleType) {

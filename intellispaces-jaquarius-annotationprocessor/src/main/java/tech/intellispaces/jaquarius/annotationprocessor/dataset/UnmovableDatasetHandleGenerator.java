@@ -70,7 +70,7 @@ public class UnmovableDatasetHandleGenerator extends JaquariusArtifactGenerator 
     analyzeTypeParams();
     analyzeProjections();
 
-    addVariable("objectHandleClassName", NameConventionFunctions.getUnmovableObjectHandleTypename(sourceArtifact().className()));
+    addVariable("objectHandleClassName", NameConventionFunctions.getUnmovableObjectHandleTypename(sourceArtifact().className(), true));
     addVariable("typeParamsBrief", typeParamsBrief);
     addVariable("projections", projectionProperties);
 
@@ -80,7 +80,7 @@ public class UnmovableDatasetHandleGenerator extends JaquariusArtifactGenerator 
   private void analyzeProjections() {
     for (MethodStatement method : sourceArtifact().actualMethods()) {
       TypeReference type = method.returnType().orElseThrow();
-      String handleType = buildObjectHandleDeclaration(type, ObjectHandleTypes.Unmovable);
+      String handleType = buildObjectHandleDeclaration(type, ObjectHandleTypes.Unmovable, true);
 
       Map<String, String> properties = new HashMap<>();
       properties.put("type", handleType);

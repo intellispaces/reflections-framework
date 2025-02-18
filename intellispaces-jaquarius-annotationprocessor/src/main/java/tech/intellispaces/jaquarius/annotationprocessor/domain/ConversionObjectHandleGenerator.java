@@ -273,17 +273,17 @@ abstract class ConversionObjectHandleGenerator extends AbstractObjectHandleGener
   protected void appendObjectFormMethodReturnType(StringBuilder sb, MethodStatement method) {
     TypeReference domainReturnType = method.returnType().orElseThrow();
     if (NameConventionFunctions.isConversionMethod(method)) {
-      sb.append(buildObjectHandleDeclaration(domainReturnType, getObjectHandleType()));
+      sb.append(buildObjectHandleDeclaration(domainReturnType, getObjectHandleType(), true));
     } else {
       if (
           ChannelFunctions.getTraverseTypes(method).stream().anyMatch(TraverseType::isMoving)
               || method.hasAnnotation(Movable.class)
       ) {
-        sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.Movable));
+        sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.Movable, true));
       } else if (method.hasAnnotation(Unmovable.class)) {
-        sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.Unmovable));
+        sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.Unmovable, true));
       } else {
-        sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.General));
+        sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.General, true));
       }
     }
   }

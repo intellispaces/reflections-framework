@@ -47,7 +47,7 @@ abstract class ObjectHandleGenerator extends AbstractObjectHandleGenerator {
     domainTypeParamsFull = sourceArtifact().typeParametersFullDeclaration();
     domainTypeParamsBrief = sourceArtifact().typeParametersBriefDeclaration();
     generalObjectHandle = addImportAndGetSimpleName(
-        NameConventionFunctions.getGeneralObjectHandleTypename(sourceArtifact().className())
+        NameConventionFunctions.getGeneralObjectHandleTypename(sourceArtifact().className(), false)
     );
   }
 
@@ -84,7 +84,7 @@ abstract class ObjectHandleGenerator extends AbstractObjectHandleGenerator {
 
   private Map<String, String> buildConversionMethod(CustomTypeReference parent) {
     var sb = new StringBuilder();
-    sb.append(buildObjectHandleDeclaration(parent, getObjectHandleType()));
+    sb.append(buildObjectHandleDeclaration(parent, getObjectHandleType(), true));
     sb.append(" ");
     sb.append(NameConventionFunctions.getConversionMethodName(parent));
     sb.append("()");

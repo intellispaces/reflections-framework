@@ -51,17 +51,17 @@ public abstract class JaquariusArtifactGenerator extends TemplatedJavaArtifactGe
         .get(this::addImport, this::simpleNameOf);
   }
 
-  protected String buildObjectHandleDeclaration(TypeReference domainType, ObjectHandleType handleType) {
+  protected String buildObjectHandleDeclaration(TypeReference domainType, ObjectHandleType handleType, boolean replaceBasicDomain) {
     return ObjectHandleFunctions.getObjectHandleDeclaration(
-        domainType, handleType, ObjectReferenceForms.Object, this::addImportAndGetSimpleName
+        domainType, handleType, ObjectReferenceForms.Object, replaceBasicDomain, this::addImportAndGetSimpleName
     );
   }
 
   protected String buildHandleDeclarationDefaultForm(
-      TypeReference domainType, ObjectHandleType handleType, ObjectReferenceForm handleForm
+      TypeReference domainType, ObjectHandleType handleType, boolean replaceBasicDomain, ObjectReferenceForm handleForm
   ) {
     return ObjectHandleFunctions.getObjectHandleDeclaration(
-        domainType, handleType, handleForm, this::addImportAndGetSimpleName
+        domainType, handleType, handleForm, replaceBasicDomain, this::addImportAndGetSimpleName
     );
   }
 

@@ -263,7 +263,7 @@ abstract class ObjectHandleWrapperGenerator extends AbstractObjectHandleGenerato
       MethodParam domainParam = domainMethodParams.get(i);
       ObjectReferenceForm referenceForm = ObjectHandleFunctions.getReferenceForm(domainParam.type(), methodForm);
       String domainMethodParamDeclaration = ObjectHandleFunctions.getObjectHandleDeclaration(
-          domainParam.type(), ObjectHandleTypes.General, referenceForm, Function.identity()
+          domainParam.type(), ObjectHandleTypes.General, referenceForm, true, Function.identity()
       );
 
       MethodParam guideParam = guideMethodParams.get(i);
@@ -370,6 +370,7 @@ abstract class ObjectHandleWrapperGenerator extends AbstractObjectHandleGenerato
         ObjectHandleTypes.General,
         ObjectHandleFunctions.getReferenceForm(type, methodForm),
         false,
+        true,
         this::addImportAndGetSimpleName
     );
   }
@@ -517,7 +518,7 @@ abstract class ObjectHandleWrapperGenerator extends AbstractObjectHandleGenerato
   private Map<String, String> buildConversionMethod(CustomTypeReference superDomain) {
     var sb = new StringBuilder();
     sb.append("private ");
-    sb.append(buildObjectHandleDeclaration(superDomain, getObjectHandleType()));
+    sb.append(buildObjectHandleDeclaration(superDomain, getObjectHandleType(), true));
     sb.append(" $");
     sb.append(NameConventionFunctions.getConversionMethodName(superDomain));
     sb.append("Guide() {\n");

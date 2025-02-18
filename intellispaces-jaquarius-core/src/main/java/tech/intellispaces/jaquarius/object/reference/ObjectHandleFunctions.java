@@ -120,24 +120,24 @@ public class ObjectHandleFunctions {
     if (isDefaultObjectHandleType(domainType)) {
       return domainType.canonicalName();
     }
-    return NameConventionFunctions.getGeneralObjectHandleTypename(domainType.className());
+    return NameConventionFunctions.getGeneralObjectHandleTypename(domainType.className(), true);
   }
 
-  public static String getObjectHandleTypename(CustomType customType, ObjectHandleType type) {
+  public static String getObjectHandleTypename(CustomType customType, ObjectHandleType type, boolean replaceBasicDomain) {
     if (isDefaultObjectHandleType(customType)) {
       return customType.canonicalName();
     }
     if (!DomainFunctions.isDomainType(customType)) {
       return customType.canonicalName();
     }
-    return NameConventionFunctions.getObjectHandleTypename(customType.className(), type);
+    return NameConventionFunctions.getObjectHandleTypename(customType.className(), type, replaceBasicDomain);
   }
 
   public static String getObjectHandleTypename(String canonicalName, ObjectHandleType type) {
     if (isDefaultObjectHandleType(canonicalName)) {
       return canonicalName;
     }
-    return NameConventionFunctions.getObjectHandleTypename(canonicalName, type);
+    return NameConventionFunctions.getObjectHandleTypename(canonicalName, type, true);
   }
 
   public static boolean isCustomObjectHandleClass(Class<?> aClass) {
@@ -294,27 +294,29 @@ public class ObjectHandleFunctions {
   }
 
   public static String getGeneralObjectHandleDeclaration(
-      TypeReference domainType, Function<String, String> simpleNameMapping
+      TypeReference domainType, boolean replaceBasicDomain, Function<String, String> simpleNameMapping
   ) {
-    return getObjectHandleDeclaration(domainType, ObjectHandleTypes.General, simpleNameMapping);
+    return getObjectHandleDeclaration(domainType, ObjectHandleTypes.General, replaceBasicDomain, simpleNameMapping);
   }
 
   public static String getObjectHandleDeclaration(
       TypeReference domainType,
       ObjectHandleType handleType,
+      boolean replaceBasicDomain,
       Function<String, String> simpleNameMapping
   ) {
     ObjectReferenceForm referenceForm = getReferenceForm(domainType, TraverseQualifierSetForms.Normal);
-    return getObjectHandleDeclaration(domainType, handleType, referenceForm, simpleNameMapping);
+    return getObjectHandleDeclaration(domainType, handleType, referenceForm, replaceBasicDomain, simpleNameMapping);
   }
 
   public static String getObjectHandleDeclaration(
       TypeReference domainType,
       ObjectHandleType handleType,
       ObjectReferenceForm form,
+      boolean replaceBasicDomain,
       Function<String, String> simpleNameMapping
   ) {
-    return getObjectHandleDeclaration(domainType, handleType, form, true, simpleNameMapping);
+    return getObjectHandleDeclaration(domainType, handleType, form, true, replaceBasicDomain, simpleNameMapping);
   }
 
   public static String getObjectHandleDeclaration(
@@ -322,6 +324,7 @@ public class ObjectHandleFunctions {
       ObjectHandleType handleType,
       ObjectReferenceForm form,
       boolean includeTypeParams,
+      boolean replaceBasicDomain,
       Function<String, String> simpleNameMapping
   ) {
     if (domainType.isPrimitiveReference()) {
@@ -350,7 +353,7 @@ public class ObjectHandleFunctions {
         return targetType.simpleName();
       } else {
         var sb = new StringBuilder();
-        String canonicalName = getObjectHandleTypename(targetType, handleType);
+        String canonicalName = getObjectHandleTypename(targetType, handleType, replaceBasicDomain);
         String simpleName = simpleNameMapping.apply(canonicalName);
         sb.append(simpleName);
         if (includeTypeParams && !customTypeReference.typeArguments().isEmpty()) {
@@ -359,7 +362,7 @@ public class ObjectHandleFunctions {
           for (NotPrimitiveReference argType : customTypeReference.typeArguments()) {
             commaAppender.run();
             sb.append(getObjectHandleDeclaration(
-                argType, ObjectHandleTypes.General, ObjectReferenceForms.Object, true, simpleNameMapping
+                argType, ObjectHandleTypes.General, ObjectReferenceForms.Object, true, replaceBasicDomain, simpleNameMapping
             ));
           }
           sb.append(">");
@@ -369,13 +372,13 @@ public class ObjectHandleFunctions {
     } else if (domainType.isWildcard()) {
       WildcardReference wildcardTypeReference = domainType.asWildcardOrElseThrow();
       if (wildcardTypeReference.extendedBound().isPresent()) {
-        return getObjectHandleDeclaration(wildcardTypeReference.extendedBound().get(), handleType, simpleNameMapping);
+        return getObjectHandleDeclaration(wildcardTypeReference.extendedBound().get(), handleType, replaceBasicDomain, simpleNameMapping);
       } else {
         return Object.class.getCanonicalName();
       }
     } else if (domainType.isArrayReference()) {
       TypeReference elementType = domainType.asArrayReferenceOrElseThrow().elementType();
-      return getObjectHandleDeclaration(elementType, handleType, simpleNameMapping) + "[]";
+      return getObjectHandleDeclaration(elementType, handleType, replaceBasicDomain, simpleNameMapping) + "[]";
     } else {
       throw new UnsupportedOperationException("Unsupported type - " + domainType.actualDeclaration());
     }

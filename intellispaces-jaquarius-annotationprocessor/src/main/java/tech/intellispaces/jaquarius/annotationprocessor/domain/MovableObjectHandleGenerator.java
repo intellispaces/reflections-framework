@@ -43,7 +43,7 @@ public class MovableObjectHandleGenerator extends ObjectHandleGenerator {
 
   @Override
   public String generatedArtifactName() {
-    return NameConventionFunctions.getMovableObjectHandleTypename(sourceArtifact().className());
+    return NameConventionFunctions.getMovableObjectHandleTypename(sourceArtifact().className(), false);
   }
 
   @Override
@@ -91,9 +91,9 @@ public class MovableObjectHandleGenerator extends ObjectHandleGenerator {
       CustomTypeReference nearEquivalentDomain = equivalentDomains.get(0);
       CustomTypeReference mainEquivalentDomain = equivalentDomains.get(equivalentDomains.size() - 1);
 
-      baseObjectHandle = buildObjectHandleDeclaration(nearEquivalentDomain, ObjectHandleTypes.Movable);
+      baseObjectHandle = buildObjectHandleDeclaration(nearEquivalentDomain, ObjectHandleTypes.Movable, true);
 
-      primaryObjectHandle = buildObjectHandleDeclaration(mainEquivalentDomain, ObjectHandleTypes.General);
+      primaryObjectHandle = buildObjectHandleDeclaration(mainEquivalentDomain, ObjectHandleTypes.General, true);
 
       primaryDomainSimpleName = addImportAndGetSimpleName(mainEquivalentDomain.targetType().canonicalName());
       primaryDomainTypeArguments = nearEquivalentDomain.typeArgumentsDeclaration(this::addImportAndGetSimpleName);
@@ -113,11 +113,11 @@ public class MovableObjectHandleGenerator extends ObjectHandleGenerator {
         ChannelFunctions.getTraverseTypes(method).stream().anyMatch(TraverseType::isMoving)
             || method.hasAnnotation(Movable.class)
     ) {
-      sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.Movable));
+      sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.Movable, true));
     } else if (method.hasAnnotation(Unmovable.class)) {
-      sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.Unmovable));
+      sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.Unmovable, true));
     } else {
-      sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.General));
+      sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.General, true));
     }
   }
 }

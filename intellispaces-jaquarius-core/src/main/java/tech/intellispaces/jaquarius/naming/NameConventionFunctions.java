@@ -24,17 +24,16 @@ import java.util.Optional;
 
 public interface NameConventionFunctions {
 
-  static String convertIntelliSpacesDomainName(String name) {
-    return StringFunctions.replaceHeadOrElseThrow(name, "intellispaces.", "tech.intellispaces.jaquarius.") + "Domain";
+  static String convertToDomainClassName(String domainName) {
+    return domainName + "Domain";
   }
 
-  static String convertJaquariusDomainName(String name) {
-    return StringFunctions.removeTailIfPresent(
-        StringFunctions.replaceHeadIfPresent(name, "tech.intellispaces.jaquarius.", "intellispaces."), "Domain");
+  static String convertToDomainName(String domainClassName) {
+    return StringFunctions.removeTailIfPresent(domainClassName, "Domain");
   }
 
-  static String convertIntelliSpacesChannelName(String name) {
-    return StringFunctions.replaceHeadOrElseThrow(name, "intellispaces.", "tech.intellispaces.jaquarius.") + "Channel";
+  static String convertToChannelClassName(String channelName) {
+    return channelName + "Channel";
   }
 
   static String getObjectHandleTypename(String domainClassName, ObjectHandleType handleType, boolean replaceBasicDomain) {
@@ -47,7 +46,7 @@ public interface NameConventionFunctions {
 
   static String getGeneralObjectHandleTypename(String domainClassName, boolean replaceBasicDomain) {
     if (replaceBasicDomain) {
-      BasicDomain basicDomain = BasicDomains.active().getByDomainName(convertJaquariusDomainName(domainClassName));
+      BasicDomain basicDomain = BasicDomains.active().getByDomainName(convertToDomainName(domainClassName));
       if (basicDomain != null && basicDomain.delegateClassName() != null) {
         return basicDomain.delegateClassName();
       }
@@ -57,7 +56,7 @@ public interface NameConventionFunctions {
 
   static String getUnmovableObjectHandleTypename(String domainClassName, boolean replaceBasicDomain) {
     if (replaceBasicDomain) {
-      BasicDomain basicDomain = BasicDomains.active().getByDomainName(convertJaquariusDomainName(domainClassName));
+      BasicDomain basicDomain = BasicDomains.active().getByDomainName(convertToDomainName(domainClassName));
       if (basicDomain != null && basicDomain.delegateClassName() != null && (
           BasicDomainPurposes.Number.is(basicDomain.purpose()) ||
               BasicDomainPurposes.Short.is(basicDomain.purpose()) ||
@@ -73,7 +72,7 @@ public interface NameConventionFunctions {
 
   static String getMovableObjectHandleTypename(String domainClassName, boolean replaceBasicDomain) {
     if (replaceBasicDomain) {
-      BasicDomain basicDomain = BasicDomains.active().getByDomainName(convertJaquariusDomainName(domainClassName));
+      BasicDomain basicDomain = BasicDomains.active().getByDomainName(convertToDomainName(domainClassName));
       if (basicDomain != null && basicDomain.delegateClassName() != null && (
           BasicDomainPurposes.Number.is(basicDomain.purpose()) ||
             BasicDomainPurposes.Short.is(basicDomain.purpose()) ||

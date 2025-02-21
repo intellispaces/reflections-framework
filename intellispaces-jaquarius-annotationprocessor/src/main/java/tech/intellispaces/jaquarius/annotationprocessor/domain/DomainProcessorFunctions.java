@@ -14,7 +14,6 @@ import tech.intellispaces.jaquarius.annotation.Channel;
 import tech.intellispaces.jaquarius.annotationprocessor.AnnotationProcessorFunctions;
 import tech.intellispaces.jaquarius.annotationprocessor.ArtifactTypes;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
-import tech.intellispaces.jaquarius.space.domain.BasicDomain;
 import tech.intellispaces.jaquarius.space.domain.BasicDomains;
 
 import javax.annotation.processing.RoundEnvironment;
@@ -86,7 +85,7 @@ public interface DomainProcessorFunctions {
   private static void addDownwardObjectHandleGenerators(
       CustomType domainType, List<ArtifactGenerator> generators
   ) {
-    if (BasicDomains.active().getByDomainName(NameConventionFunctions.convertJaquariusDomainName(domainType.canonicalName())) != null) {
+    if (BasicDomains.active().getByDomainName(NameConventionFunctions.convertToDomainName(domainType.canonicalName())) != null) {
       return;
     }
 

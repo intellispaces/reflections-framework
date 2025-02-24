@@ -7,9 +7,9 @@ import tech.intellispaces.commons.java.reflection.customtype.CustomType;
 import tech.intellispaces.commons.java.reflection.method.MethodStatement;
 import tech.intellispaces.commons.java.reflection.reference.TypeReference;
 import tech.intellispaces.jaquarius.annotation.Channel;
-import tech.intellispaces.jaquarius.channel.MappingChannel;
-import tech.intellispaces.jaquarius.channel.MappingOfMovingChannel;
-import tech.intellispaces.jaquarius.channel.MovingChannel;
+import tech.intellispaces.jaquarius.traverse.MappingTraverse;
+import tech.intellispaces.jaquarius.traverse.MappingOfMovingTraverse;
+import tech.intellispaces.jaquarius.traverse.MovingTraverse;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.traverse.TraverseType;
@@ -69,13 +69,13 @@ public abstract class ChannelGenerator extends JaquariusArtifactGenerator {
       for (TraverseType traverseType : getTraverseTypes()) {
         if (traverseType.isMapping()) {
           sb.append(", ");
-          sb.append(addImportAndGetSimpleName(MappingChannel.class));
+          sb.append(addImportAndGetSimpleName(MappingTraverse.class));
         } else if (traverseType.isMoving()) {
           sb.append(", ");
-          sb.append(addImportAndGetSimpleName(MovingChannel.class));
+          sb.append(addImportAndGetSimpleName(MovingTraverse.class));
         } else if (traverseType.isMappingOfMoving()) {
           sb.append(", ");
-          sb.append(addImportAndGetSimpleName(MappingOfMovingChannel.class));
+          sb.append(addImportAndGetSimpleName(MappingOfMovingTraverse.class));
         }
       }
     }

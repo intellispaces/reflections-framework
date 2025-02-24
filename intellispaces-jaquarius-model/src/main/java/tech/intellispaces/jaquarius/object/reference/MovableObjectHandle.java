@@ -4,7 +4,7 @@ import tech.intellispaces.jaquarius.channel.Channel0;
 import tech.intellispaces.jaquarius.channel.Channel1;
 import tech.intellispaces.jaquarius.channel.ChannelFunction0;
 import tech.intellispaces.jaquarius.channel.ChannelFunction1;
-import tech.intellispaces.jaquarius.channel.MappingOfMovingChannel;
+import tech.intellispaces.jaquarius.traverse.MappingOfMovingTraverse;
 import tech.intellispaces.jaquarius.exception.TraverseException;
 
 /**
@@ -39,5 +39,5 @@ public interface MovableObjectHandle<D> extends ObjectHandle<D> {
 
   <R, Q> R mapOfMovingThru(ChannelFunction1<D, R, Q> channelFunction, Q qualifier) throws TraverseException;
 
-  <R, Q, C extends Channel1 & MappingOfMovingChannel> R mapOfMovingThru(Class<C> channelClass, Q qualifier) throws TraverseException;
+  <R, Q, C extends Channel1 & MappingOfMovingTraverse> R mapOfMovingThru(Class<C> channelClass, Q qualifier) throws TraverseException;
 }

@@ -65,7 +65,7 @@ public class {{$generatedArtifactSimpleName}} implements {{$objectHandleClassNam
   }
 
   @Override
-  public <T, Q, C extends Channel1 & MappingChannel> T mapThru(Class<C> channelClass, Q qualifier) throws TraverseException {
+  public <T, Q, C extends Channel1 & MappingTraverse> T mapThru(Class<C> channelClass, Q qualifier) throws TraverseException {
     Type<{{$sourceArtifactSimpleName}}{{$typeParamsBrief}}> sourceType = Types.get({{$sourceArtifactSimpleName}}.class);
     return Modules.current().mapThruChannel1(sourceType, channelClass, qualifier);
   }

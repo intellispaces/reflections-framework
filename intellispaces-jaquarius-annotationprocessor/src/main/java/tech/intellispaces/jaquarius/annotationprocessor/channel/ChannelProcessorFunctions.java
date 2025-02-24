@@ -6,9 +6,9 @@ import tech.intellispaces.commons.java.reflection.customtype.CustomType;
 import tech.intellispaces.commons.java.reflection.method.MethodStatement;
 import tech.intellispaces.commons.java.reflection.reference.CustomTypeReference;
 import tech.intellispaces.commons.java.reflection.reference.TypeReference;
-import tech.intellispaces.jaquarius.channel.MappingChannel;
-import tech.intellispaces.jaquarius.channel.MappingOfMovingChannel;
-import tech.intellispaces.jaquarius.channel.MovingChannel;
+import tech.intellispaces.jaquarius.traverse.MappingTraverse;
+import tech.intellispaces.jaquarius.traverse.MappingOfMovingTraverse;
+import tech.intellispaces.jaquarius.traverse.MovingTraverse;
 import tech.intellispaces.jaquarius.exception.ConfigurationExceptions;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
@@ -40,15 +40,15 @@ public interface ChannelProcessorFunctions {
   }
 
   static boolean isEnableMapperGuideGeneration(CustomType channelType) {
-    return channelType.hasParent(MappingChannel.class);
+    return channelType.hasParent(MappingTraverse.class);
   }
 
   static boolean isEnableMoverGuideGeneration(CustomType channelType) {
-    return channelType.hasParent(MovingChannel.class);
+    return channelType.hasParent(MovingTraverse.class);
   }
 
   static boolean isEnableMapperOfMovingGuideGeneration(CustomType channelType) {
-    return channelType.hasParent(MappingOfMovingChannel.class);
+    return channelType.hasParent(MappingOfMovingTraverse.class);
   }
 
   static List<ArtifactGenerator> makeGuideArtifactGenerators(

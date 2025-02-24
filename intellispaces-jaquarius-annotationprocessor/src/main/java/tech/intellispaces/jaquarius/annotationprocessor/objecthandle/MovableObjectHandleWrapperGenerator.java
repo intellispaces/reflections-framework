@@ -14,8 +14,8 @@ import tech.intellispaces.jaquarius.channel.Channel0;
 import tech.intellispaces.jaquarius.channel.Channel1;
 import tech.intellispaces.jaquarius.channel.ChannelFunction0;
 import tech.intellispaces.jaquarius.channel.ChannelFunction1;
-import tech.intellispaces.jaquarius.channel.MappingChannel;
-import tech.intellispaces.jaquarius.channel.MappingOfMovingChannel;
+import tech.intellispaces.jaquarius.traverse.MappingTraverse;
+import tech.intellispaces.jaquarius.traverse.MappingOfMovingTraverse;
 import tech.intellispaces.jaquarius.engine.JaquariusEngines;
 import tech.intellispaces.jaquarius.engine.ObjectHandleBroker;
 import tech.intellispaces.jaquarius.engine.description.ObjectHandleMethodPurposes;
@@ -68,8 +68,8 @@ public class MovableObjectHandleWrapperGenerator extends ObjectHandleWrapperGene
         ChannelFunction0.class,
         ChannelFunction1.class,
         ChannelFunctions.class,
-        MappingChannel.class,
-        MappingOfMovingChannel.class,
+        MappingTraverse.class,
+        MappingOfMovingTraverse.class,
         PrimitiveFunctions.class,
         ObjectHandleTypeDescription.class,
         ObjectHandleBroker.class,

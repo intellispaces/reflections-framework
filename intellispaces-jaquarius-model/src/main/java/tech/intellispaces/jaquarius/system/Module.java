@@ -6,8 +6,8 @@ import tech.intellispaces.jaquarius.channel.Channel1;
 import tech.intellispaces.jaquarius.channel.Channel2;
 import tech.intellispaces.jaquarius.channel.Channel3;
 import tech.intellispaces.jaquarius.channel.Channel4;
-import tech.intellispaces.jaquarius.channel.MappingChannel;
-import tech.intellispaces.jaquarius.channel.MappingOfMovingChannel;
+import tech.intellispaces.jaquarius.traverse.MappingTraverse;
+import tech.intellispaces.jaquarius.traverse.MappingOfMovingTraverse;
 import tech.intellispaces.jaquarius.guide.n0.Mapper0;
 import tech.intellispaces.jaquarius.guide.n0.MapperOfMoving0;
 import tech.intellispaces.jaquarius.guide.n0.Mover0;
@@ -38,17 +38,17 @@ public interface Module {
 
   <S, T> T mapThruChannel0(S source, String cid);
 
-  <S, T, C extends Channel0 & MappingChannel> T mapThruChannel0(S source, Class<C> channelClass);
+  <S, T, C extends Channel0 & MappingTraverse> T mapThruChannel0(S source, Class<C> channelClass);
 
   <S, T, Q> T mapThruChannel1(S source, String cid, Q qualifier);
 
-  <S, T, Q, C extends Channel1 & MappingChannel> T mapThruChannel1(S source, Class<C> channelClass, Q qualifier);
+  <S, T, Q, C extends Channel1 & MappingTraverse> T mapThruChannel1(S source, Class<C> channelClass, Q qualifier);
 
   <S, R> R moveThruChannel0(S source, String cid);
 
   <S, R, Q> R moveThruChannel1(S source, String cid, Q qualifier);
 
-  <S, R, Q, C extends Channel1 & MappingOfMovingChannel> R mapOfMovingThruChannel1(S source, Class<C> channelClass, Q qualifier);
+  <S, R, Q, C extends Channel1 & MappingOfMovingTraverse> R mapOfMovingThruChannel1(S source, Class<C> channelClass, Q qualifier);
 
   <S, R, Q> R mapOfMovingThruChannel1(S source, String cid, Q qualifier);
 

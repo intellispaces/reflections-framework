@@ -11,8 +11,8 @@ import tech.intellispaces.jaquarius.channel.Channel1;
 import tech.intellispaces.jaquarius.channel.Channel2;
 import tech.intellispaces.jaquarius.channel.Channel3;
 import tech.intellispaces.jaquarius.channel.Channel4;
-import tech.intellispaces.jaquarius.channel.MappingChannel;
-import tech.intellispaces.jaquarius.channel.MappingOfMovingChannel;
+import tech.intellispaces.jaquarius.traverse.MappingTraverse;
+import tech.intellispaces.jaquarius.traverse.MappingOfMovingTraverse;
 import tech.intellispaces.jaquarius.guide.n0.AutoMapper0;
 import tech.intellispaces.jaquarius.guide.n0.AutoMapperOfMoving0;
 import tech.intellispaces.jaquarius.guide.n0.AutoMover0;
@@ -132,7 +132,7 @@ class Module implements tech.intellispaces.jaquarius.system.Module {
   }
 
   @Override
-  public <S, T, C extends Channel0 & MappingChannel> T mapThruChannel0(S source, Class<C> channelClass) {
+  public <S, T, C extends Channel0 & MappingTraverse> T mapThruChannel0(S source, Class<C> channelClass) {
     return mapThruChannel0(source, ChannelFunctions.getChannelId(channelClass));
   }
 
@@ -145,7 +145,7 @@ class Module implements tech.intellispaces.jaquarius.system.Module {
   }
 
   @Override
-  public <S, T, Q, C extends Channel1 & MappingChannel> T mapThruChannel1(S source, Class<C> channelClass, Q qualifier) {
+  public <S, T, Q, C extends Channel1 & MappingTraverse> T mapThruChannel1(S source, Class<C> channelClass, Q qualifier) {
     return mapThruChannel1(source, ChannelFunctions.getChannelId(channelClass), qualifier);
   }
 
@@ -166,7 +166,7 @@ class Module implements tech.intellispaces.jaquarius.system.Module {
   }
 
   @Override
-  public <S, R, Q, C extends Channel1 & MappingOfMovingChannel> R mapOfMovingThruChannel1(
+  public <S, R, Q, C extends Channel1 & MappingOfMovingTraverse> R mapOfMovingThruChannel1(
       S source, Class<C> channelClass, Q qualifier
   ) {
     return mapOfMovingThruChannel1(source, ChannelFunctions.getChannelId(channelClass), qualifier);

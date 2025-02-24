@@ -82,14 +82,14 @@ public interface ChannelFunctions {
     return channel.value();
   }
 
-  static <S, R> String getChannelId(Class<S> sourceDomain, ChannelFunction0<? super S, R> channelFunction) {
-    return findChannelId(sourceDomain, channelFunction, channelFunction::traverse);
+  static <S, R> String getChannelId(Class<S> domain, ChannelFunction0<? super S, R> channelFunction) {
+    return findChannelId(domain, channelFunction, channelFunction::traverse);
   }
 
   static <S, R, Q> String getChannelId(
-      Class<S> sourceDomain, ChannelFunction1<? super S, R, Q> channelFunction, Q qualifierAnyValidValue
+      Class<S> domain, ChannelFunction1<? super S, R, Q> channelFunction, Q qualifierAnyValidValue
   ) {
-    return findChannelId(sourceDomain, channelFunction,
+    return findChannelId(domain, channelFunction,
         (trackedObject) -> channelFunction.traverse(trackedObject, qualifierAnyValidValue));
   }
 

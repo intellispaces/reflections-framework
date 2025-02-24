@@ -12,7 +12,7 @@ import tech.intellispaces.jaquarius.channel.Channel0;
 import tech.intellispaces.jaquarius.channel.Channel1;
 import tech.intellispaces.jaquarius.channel.ChannelFunction0;
 import tech.intellispaces.jaquarius.channel.ChannelFunction1;
-import tech.intellispaces.jaquarius.channel.MappingOfMovingChannel;
+import tech.intellispaces.jaquarius.traverse.MappingOfMovingTraverse;
 import tech.intellispaces.jaquarius.exception.TraverseException;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
 import tech.intellispaces.jaquarius.object.reference.MovableObjectHandle;
@@ -61,7 +61,7 @@ public class MovableObjectHandleGenerator extends ObjectHandleGenerator {
         Channel1.class,
         ChannelFunction0.class,
         ChannelFunction1.class,
-        MappingOfMovingChannel.class,
+        MappingOfMovingTraverse.class,
         TraverseException.class
     );
 

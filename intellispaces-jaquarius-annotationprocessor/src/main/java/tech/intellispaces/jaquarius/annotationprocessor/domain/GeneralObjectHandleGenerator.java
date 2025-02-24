@@ -10,7 +10,7 @@ import tech.intellispaces.commons.java.reflection.reference.CustomTypeReference;
 import tech.intellispaces.jaquarius.annotation.Channel;
 import tech.intellispaces.jaquarius.annotation.ObjectHandle;
 import tech.intellispaces.jaquarius.channel.Channel1;
-import tech.intellispaces.jaquarius.channel.MappingChannel;
+import tech.intellispaces.jaquarius.traverse.MappingTraverse;
 import tech.intellispaces.jaquarius.exception.TraverseException;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleType;
@@ -58,7 +58,7 @@ public class GeneralObjectHandleGenerator extends ObjectHandleGenerator {
         Type.class,
         Types.class,
         Channel1.class,
-        MappingChannel.class,
+        MappingTraverse.class,
         TraverseException.class
     );
 

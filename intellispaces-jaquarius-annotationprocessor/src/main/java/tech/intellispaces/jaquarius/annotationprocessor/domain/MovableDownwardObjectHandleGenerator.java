@@ -11,8 +11,8 @@ import tech.intellispaces.jaquarius.channel.Channel0;
 import tech.intellispaces.jaquarius.channel.Channel1;
 import tech.intellispaces.jaquarius.channel.ChannelFunction0;
 import tech.intellispaces.jaquarius.channel.ChannelFunction1;
-import tech.intellispaces.jaquarius.channel.MappingChannel;
-import tech.intellispaces.jaquarius.channel.MappingOfMovingChannel;
+import tech.intellispaces.jaquarius.traverse.MappingTraverse;
+import tech.intellispaces.jaquarius.traverse.MappingOfMovingTraverse;
 import tech.intellispaces.jaquarius.exception.TraverseException;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleType;
@@ -60,8 +60,8 @@ public class MovableDownwardObjectHandleGenerator extends ConversionObjectHandle
         Channel1.class,
         ChannelFunction0.class,
         ChannelFunction1.class,
-        MappingChannel.class,
-        MappingOfMovingChannel.class,
+        MappingTraverse.class,
+        MappingOfMovingTraverse.class,
         TraverseException.class
     );
 

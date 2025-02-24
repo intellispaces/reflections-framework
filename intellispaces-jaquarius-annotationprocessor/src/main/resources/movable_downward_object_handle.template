@@ -68,7 +68,7 @@ public class {{$generatedArtifactSimpleName}}{{$classTypeParams}} implements {{$
   }
 
   @Override
-  public <T, Q, C extends Channel1 & MappingChannel> T mapThru(Class<C> channelClass, Q qualifier) throws TraverseException {
+  public <T, Q, C extends Channel1 & MappingTraverse> T mapThru(Class<C> channelClass, Q qualifier) throws TraverseException {
     return (T) {{$childField}}.mapThru(channelClass, qualifier);
   }
 
@@ -170,7 +170,7 @@ public class {{$generatedArtifactSimpleName}}{{$classTypeParams}} implements {{$
   }
 
   @Override
-  public <R, Q, C extends Channel1 & MappingOfMovingChannel> R mapOfMovingThru(Class<C> channelClass, Q qualifier) throws TraverseException {
+  public <R, Q, C extends Channel1 & MappingOfMovingTraverse> R mapOfMovingThru(Class<C> channelClass, Q qualifier) throws TraverseException {
     return (R) {{$childField}}.mapOfMovingThru(channelClass, qualifier);
   }
 }

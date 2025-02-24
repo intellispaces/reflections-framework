@@ -14,7 +14,7 @@ import tech.intellispaces.jaquarius.annotation.Name;
 import tech.intellispaces.jaquarius.annotation.ObjectHandle;
 import tech.intellispaces.jaquarius.annotationprocessor.JaquariusArtifactGenerator;
 import tech.intellispaces.jaquarius.channel.Channel1;
-import tech.intellispaces.jaquarius.channel.MappingChannel;
+import tech.intellispaces.jaquarius.traverse.MappingTraverse;
 import tech.intellispaces.jaquarius.exception.TraverseException;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
@@ -62,7 +62,7 @@ public class UnmovableDatasetHandleGenerator extends JaquariusArtifactGenerator 
         Type.class,
         Types.class,
         Channel1.class,
-        MappingChannel.class,
+        MappingTraverse.class,
         TraverseException.class,
         NotImplementedExceptions.class
     );

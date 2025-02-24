@@ -9,7 +9,7 @@ import tech.intellispaces.jaquarius.annotation.Wrapper;
 import tech.intellispaces.jaquarius.channel.Channel1;
 import tech.intellispaces.jaquarius.channel.ChannelFunction0;
 import tech.intellispaces.jaquarius.channel.ChannelFunction1;
-import tech.intellispaces.jaquarius.channel.MappingChannel;
+import tech.intellispaces.jaquarius.traverse.MappingTraverse;
 import tech.intellispaces.jaquarius.engine.JaquariusEngines;
 import tech.intellispaces.jaquarius.engine.ObjectHandleBroker;
 import tech.intellispaces.jaquarius.engine.description.ObjectHandleMethodPurposes;
@@ -62,7 +62,7 @@ public class UnmovableObjectHandleWrapperGenerator extends ObjectHandleWrapperGe
         Channel1.class,
         ChannelFunction0.class,
         ChannelFunction1.class,
-        MappingChannel.class,
+        MappingTraverse.class,
         PrimitiveFunctions.class,
         ObjectHandleTypeDescription.class,
         ObjectHandleBroker.class,

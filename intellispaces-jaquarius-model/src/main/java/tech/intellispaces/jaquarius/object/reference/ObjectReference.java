@@ -2,7 +2,7 @@ package tech.intellispaces.jaquarius.object.reference;
 
 import tech.intellispaces.commons.base.type.Type;
 import tech.intellispaces.jaquarius.channel.Channel1;
-import tech.intellispaces.jaquarius.channel.MappingChannel;
+import tech.intellispaces.jaquarius.traverse.MappingTraverse;
 import tech.intellispaces.jaquarius.exception.TraverseException;
 
 /**
@@ -51,7 +51,7 @@ public interface ObjectReference<D> {
    * @param <C> channel type.
    * @throws TraverseException throws if object cannot be traversed.
    */
-  <T, Q, C extends Channel1 & MappingChannel> T mapThru(Class<C> channelClass, Q qualifier) throws TraverseException;
+  <T, Q, C extends Channel1 & MappingTraverse> T mapThru(Class<C> channelClass, Q qualifier) throws TraverseException;
 
 //  <T, R extends T> R mapThru(ChannelFunction0<? super D, T> channelFunction) throws TraverseException;
 

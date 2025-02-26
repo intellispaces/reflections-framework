@@ -10,7 +10,6 @@ import tech.intellispaces.commons.java.reflection.reference.CustomTypeReference;
 import tech.intellispaces.jaquarius.annotation.Channel;
 import tech.intellispaces.jaquarius.annotation.ObjectHandle;
 import tech.intellispaces.jaquarius.channel.Channel1;
-import tech.intellispaces.jaquarius.traverse.MappingTraverse;
 import tech.intellispaces.jaquarius.exception.TraverseException;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleType;
@@ -18,6 +17,7 @@ import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
+import tech.intellispaces.jaquarius.traverse.MappingTraverse;
 import tech.intellispaces.jaquarius.traverse.TraverseQualifierSetForm;
 import tech.intellispaces.jaquarius.traverse.TraverseType;
 

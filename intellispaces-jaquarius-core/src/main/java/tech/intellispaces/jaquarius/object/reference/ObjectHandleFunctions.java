@@ -23,11 +23,14 @@ import tech.intellispaces.commons.java.reflection.reference.NotPrimitiveReferenc
 import tech.intellispaces.commons.java.reflection.reference.ReferenceBound;
 import tech.intellispaces.commons.java.reflection.reference.TypeReference;
 import tech.intellispaces.commons.java.reflection.reference.WildcardReference;
+import tech.intellispaces.jaquarius.Jaquarius;
 import tech.intellispaces.jaquarius.annotation.Movable;
 import tech.intellispaces.jaquarius.annotation.ObjectHandle;
 import tech.intellispaces.jaquarius.annotation.Unmovable;
 import tech.intellispaces.jaquarius.annotation.Wrapper;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
+import tech.intellispaces.jaquarius.settings.KeyDomain;
+import tech.intellispaces.jaquarius.settings.KeyDomainPurposes;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
 import tech.intellispaces.jaquarius.traverse.TraverseQualifierSetForm;
 import tech.intellispaces.jaquarius.traverse.TraverseQualifierSetForms;
@@ -123,14 +126,14 @@ public class ObjectHandleFunctions {
     return NameConventionFunctions.getGeneralObjectHandleTypename(domainType.className(), true);
   }
 
-  public static String getObjectHandleTypename(CustomType customType, ObjectHandleType type, boolean replaceBasicDomain) {
+  public static String getObjectHandleTypename(CustomType customType, ObjectHandleType type, boolean replaceKeyDomain) {
     if (isDefaultObjectHandleType(customType)) {
       return customType.canonicalName();
     }
     if (!DomainFunctions.isDomainType(customType)) {
       return customType.canonicalName();
     }
-    return NameConventionFunctions.getObjectHandleTypename(customType.className(), type, replaceBasicDomain);
+    return NameConventionFunctions.getObjectHandleTypename(customType.className(), type, replaceKeyDomain);
   }
 
   public static String getObjectHandleTypename(String canonicalName, ObjectHandleType type) {
@@ -294,29 +297,29 @@ public class ObjectHandleFunctions {
   }
 
   public static String getGeneralObjectHandleDeclaration(
-      TypeReference domainType, boolean replaceBasicDomain, Function<String, String> simpleNameMapping
+      TypeReference domainType, boolean replaceKeyDomain, Function<String, String> simpleNameMapping
   ) {
-    return getObjectHandleDeclaration(domainType, ObjectHandleTypes.General, replaceBasicDomain, simpleNameMapping);
+    return getObjectHandleDeclaration(domainType, ObjectHandleTypes.General, replaceKeyDomain, simpleNameMapping);
   }
 
   public static String getObjectHandleDeclaration(
       TypeReference domainType,
       ObjectHandleType handleType,
-      boolean replaceBasicDomain,
+      boolean replaceKeyDomain,
       Function<String, String> simpleNameMapping
   ) {
     ObjectReferenceForm referenceForm = getReferenceForm(domainType, TraverseQualifierSetForms.Normal);
-    return getObjectHandleDeclaration(domainType, handleType, referenceForm, replaceBasicDomain, simpleNameMapping);
+    return getObjectHandleDeclaration(domainType, handleType, referenceForm, replaceKeyDomain, simpleNameMapping);
   }
 
   public static String getObjectHandleDeclaration(
       TypeReference domainType,
       ObjectHandleType handleType,
       ObjectReferenceForm form,
-      boolean replaceBasicDomain,
+      boolean replaceKeyDomain,
       Function<String, String> simpleNameMapping
   ) {
-    return getObjectHandleDeclaration(domainType, handleType, form, true, replaceBasicDomain, simpleNameMapping);
+    return getObjectHandleDeclaration(domainType, handleType, form, true, replaceKeyDomain, simpleNameMapping);
   }
 
   public static String getObjectHandleDeclaration(
@@ -324,7 +327,7 @@ public class ObjectHandleFunctions {
       ObjectHandleType handleType,
       ObjectReferenceForm form,
       boolean includeTypeParams,
-      boolean replaceBasicDomain,
+      boolean replaceKeyDomain,
       Function<String, String> simpleNameMapping
   ) {
     if (domainType.isPrimitiveReference()) {
@@ -353,7 +356,7 @@ public class ObjectHandleFunctions {
         return targetType.simpleName();
       } else {
         var sb = new StringBuilder();
-        String canonicalName = getObjectHandleTypename(targetType, handleType, replaceBasicDomain);
+        String canonicalName = getObjectHandleTypename(targetType, handleType, replaceKeyDomain);
         String simpleName = simpleNameMapping.apply(canonicalName);
         sb.append(simpleName);
         if (includeTypeParams && !customTypeReference.typeArguments().isEmpty()) {
@@ -362,7 +365,7 @@ public class ObjectHandleFunctions {
           for (NotPrimitiveReference argType : customTypeReference.typeArguments()) {
             commaAppender.run();
             sb.append(getObjectHandleDeclaration(
-                argType, ObjectHandleTypes.General, ObjectReferenceForms.Object, true, replaceBasicDomain, simpleNameMapping
+                argType, ObjectHandleTypes.General, ObjectReferenceForms.Object, true, replaceKeyDomain, simpleNameMapping
             ));
           }
           sb.append(">");
@@ -372,13 +375,13 @@ public class ObjectHandleFunctions {
     } else if (domainType.isWildcard()) {
       WildcardReference wildcardTypeReference = domainType.asWildcardOrElseThrow();
       if (wildcardTypeReference.extendedBound().isPresent()) {
-        return getObjectHandleDeclaration(wildcardTypeReference.extendedBound().get(), handleType, replaceBasicDomain, simpleNameMapping);
+        return getObjectHandleDeclaration(wildcardTypeReference.extendedBound().get(), handleType, replaceKeyDomain, simpleNameMapping);
       } else {
         return Object.class.getCanonicalName();
       }
     } else if (domainType.isArrayReference()) {
       TypeReference elementType = domainType.asArrayReferenceOrElseThrow().elementType();
-      return getObjectHandleDeclaration(elementType, handleType, replaceBasicDomain, simpleNameMapping) + "[]";
+      return getObjectHandleDeclaration(elementType, handleType, replaceKeyDomain, simpleNameMapping) + "[]";
     } else {
       throw new UnsupportedOperationException("Unsupported type - " + domainType.actualDeclaration());
     }
@@ -432,14 +435,16 @@ public class ObjectHandleFunctions {
     return sb.toString();
   }
 
-  public static Class<?> propertiesHandleClass() {
-    if (propertiesHandleClass == null) {
-      propertiesHandleClass = ClassFunctions.getClass(ObjectHandleConstants.DICTIONARY_HANDLE_CLASSNAME).orElseThrow(
-          () -> UnexpectedExceptions.withMessage("Could not get class {0}",
-              ObjectHandleConstants.DICTIONARY_HANDLE_CLASSNAME)
+  public static Class<?> dictionaryHandleClass() {
+    if (dictionaryHandleClass == null) {
+      KeyDomain keyDomain = Jaquarius.settings().getKeyDomainByPurpose(KeyDomainPurposes.Properties);
+      String domainClassName = NameConventionFunctions.convertToDomainClassName(keyDomain.domainName());
+      String handleClassName = NameConventionFunctions.getGeneralObjectHandleTypename(domainClassName, false);
+      dictionaryHandleClass = ClassFunctions.getClass(handleClassName).orElseThrow(() ->
+          UnexpectedExceptions.withMessage("Could not get class {0}", handleClassName)
       );
     }
-    return propertiesHandleClass;
+    return dictionaryHandleClass;
   }
 
   public static void releaseSilently(ObjectReference<?> objectReference) {
@@ -499,5 +504,5 @@ public class ObjectHandleFunctions {
       Void.class.getCanonicalName()
   );
 
-  private static Class<?> propertiesHandleClass;
+  private static Class<?> dictionaryHandleClass;
 }

@@ -17,6 +17,7 @@ import tech.intellispaces.commons.java.reflection.reference.NamedReference;
 import tech.intellispaces.commons.java.reflection.reference.NotPrimitiveReference;
 import tech.intellispaces.commons.java.reflection.reference.ReferenceBound;
 import tech.intellispaces.commons.java.reflection.reference.TypeReference;
+import tech.intellispaces.jaquarius.Jaquarius;
 import tech.intellispaces.jaquarius.annotation.Movable;
 import tech.intellispaces.jaquarius.annotation.Unmovable;
 import tech.intellispaces.jaquarius.exception.TraverseException;
@@ -26,9 +27,8 @@ import tech.intellispaces.jaquarius.object.reference.ObjectHandleType;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
+import tech.intellispaces.jaquarius.settings.KeyDomain;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
-import tech.intellispaces.jaquarius.space.domain.BasicDomain;
-import tech.intellispaces.jaquarius.space.domain.BasicDomains;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
 import tech.intellispaces.jaquarius.traverse.TraverseQualifierSetForm;
 import tech.intellispaces.jaquarius.traverse.TraverseQualifierSetForms;
@@ -194,9 +194,9 @@ public abstract class AbstractObjectHandleGenerator extends JaquariusArtifactGen
   }
 
   private String convertName(String name) {
-    BasicDomain basicDomain = BasicDomains.active().getByDomainName(NameConventionFunctions.convertToDomainName(name));
-    if (basicDomain != null && basicDomain.delegateClassName() != null) {
-      return addImportAndGetSimpleName(basicDomain.delegateClassName());
+    KeyDomain keyDomain = Jaquarius.settings().getKeyDomainByName(NameConventionFunctions.convertToDomainName(name));
+    if (keyDomain != null && keyDomain.delegateClassName() != null) {
+      return addImportAndGetSimpleName(keyDomain.delegateClassName());
     }
     return addImportAndGetSimpleName(name);
   }

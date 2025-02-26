@@ -6,8 +6,6 @@ import tech.intellispaces.jaquarius.channel.Channel1;
 import tech.intellispaces.jaquarius.channel.Channel2;
 import tech.intellispaces.jaquarius.channel.Channel3;
 import tech.intellispaces.jaquarius.channel.Channel4;
-import tech.intellispaces.jaquarius.traverse.MappingTraverse;
-import tech.intellispaces.jaquarius.traverse.MappingOfMovingTraverse;
 import tech.intellispaces.jaquarius.guide.n0.Mapper0;
 import tech.intellispaces.jaquarius.guide.n0.MapperOfMoving0;
 import tech.intellispaces.jaquarius.guide.n0.Mover0;
@@ -22,6 +20,8 @@ import tech.intellispaces.jaquarius.guide.n3.MapperOfMoving3;
 import tech.intellispaces.jaquarius.guide.n3.Mover3;
 import tech.intellispaces.jaquarius.guide.n4.MapperOfMoving4;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
+import tech.intellispaces.jaquarius.traverse.MappingOfMovingTraverse;
+import tech.intellispaces.jaquarius.traverse.MappingTraverse;
 
 import java.util.List;
 

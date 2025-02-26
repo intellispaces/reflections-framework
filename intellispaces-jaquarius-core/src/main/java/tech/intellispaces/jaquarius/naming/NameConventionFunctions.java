@@ -7,6 +7,7 @@ import tech.intellispaces.commons.java.reflection.customtype.CustomType;
 import tech.intellispaces.commons.java.reflection.method.MethodParam;
 import tech.intellispaces.commons.java.reflection.method.MethodStatement;
 import tech.intellispaces.commons.java.reflection.reference.CustomTypeReference;
+import tech.intellispaces.jaquarius.Jaquarius;
 import tech.intellispaces.jaquarius.annotation.Channel;
 import tech.intellispaces.jaquarius.annotation.Domain;
 import tech.intellispaces.jaquarius.annotation.ObjectHandle;
@@ -15,10 +16,9 @@ import tech.intellispaces.jaquarius.object.reference.ObjectHandleType;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
+import tech.intellispaces.jaquarius.settings.KeyDomain;
+import tech.intellispaces.jaquarius.settings.KeyDomainPurposes;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
-import tech.intellispaces.jaquarius.space.domain.BasicDomain;
-import tech.intellispaces.jaquarius.space.domain.BasicDomainPurposes;
-import tech.intellispaces.jaquarius.space.domain.BasicDomains;
 
 import java.util.Optional;
 
@@ -36,51 +36,51 @@ public interface NameConventionFunctions {
     return channelName + "Channel";
   }
 
-  static String getObjectHandleTypename(String domainClassName, ObjectHandleType handleType, boolean replaceBasicDomain) {
+  static String getObjectHandleTypename(String domainClassName, ObjectHandleType handleType, boolean replaceKeyDomain) {
     return switch (ObjectHandleTypes.from(handleType)) {
-      case General -> getGeneralObjectHandleTypename(domainClassName, replaceBasicDomain);
-      case Movable -> getMovableObjectHandleTypename(domainClassName, replaceBasicDomain);
-      case Unmovable -> getUnmovableObjectHandleTypename(domainClassName, replaceBasicDomain);
+      case General -> getGeneralObjectHandleTypename(domainClassName, replaceKeyDomain);
+      case Movable -> getMovableObjectHandleTypename(domainClassName, replaceKeyDomain);
+      case Unmovable -> getUnmovableObjectHandleTypename(domainClassName, replaceKeyDomain);
     };
   }
 
-  static String getGeneralObjectHandleTypename(String domainClassName, boolean replaceBasicDomain) {
-    if (replaceBasicDomain) {
-      BasicDomain basicDomain = BasicDomains.active().getByDomainName(convertToDomainName(domainClassName));
-      if (basicDomain != null && basicDomain.delegateClassName() != null) {
-        return basicDomain.delegateClassName();
+  static String getGeneralObjectHandleTypename(String domainClassName, boolean replaceKeyDomain) {
+    if (replaceKeyDomain) {
+      KeyDomain keyDomain = Jaquarius.settings().getKeyDomainByName(convertToDomainName(domainClassName));
+      if (keyDomain != null && keyDomain.delegateClassName() != null) {
+        return keyDomain.delegateClassName();
       }
     }
     return StringFunctions.replaceTailOrElseThrow(transformClassName(domainClassName), "Domain", "Handle");
   }
 
-  static String getUnmovableObjectHandleTypename(String domainClassName, boolean replaceBasicDomain) {
-    if (replaceBasicDomain) {
-      BasicDomain basicDomain = BasicDomains.active().getByDomainName(convertToDomainName(domainClassName));
-      if (basicDomain != null && basicDomain.delegateClassName() != null && (
-          BasicDomainPurposes.Number.is(basicDomain.purpose()) ||
-              BasicDomainPurposes.Short.is(basicDomain.purpose()) ||
-              BasicDomainPurposes.Integer.is(basicDomain.purpose()) ||
-              BasicDomainPurposes.Float.is(basicDomain.purpose()) ||
-              BasicDomainPurposes.Double.is(basicDomain.purpose())
+  static String getUnmovableObjectHandleTypename(String domainClassName, boolean replaceKeyDomain) {
+    if (replaceKeyDomain) {
+      KeyDomain keyDomain = Jaquarius.settings().getKeyDomainByName(convertToDomainName(domainClassName));
+      if (keyDomain != null && keyDomain.delegateClassName() != null && (
+          KeyDomainPurposes.Number.is(keyDomain.purpose()) ||
+              KeyDomainPurposes.Short.is(keyDomain.purpose()) ||
+              KeyDomainPurposes.Integer.is(keyDomain.purpose()) ||
+              KeyDomainPurposes.Float.is(keyDomain.purpose()) ||
+              KeyDomainPurposes.Double.is(keyDomain.purpose())
       )) {
-        return basicDomain.delegateClassName();
+        return keyDomain.delegateClassName();
       }
     }
     return ClassNameFunctions.addPrefixToSimpleName("Unmovable", getGeneralObjectHandleTypename(domainClassName, false));
   }
 
-  static String getMovableObjectHandleTypename(String domainClassName, boolean replaceBasicDomain) {
-    if (replaceBasicDomain) {
-      BasicDomain basicDomain = BasicDomains.active().getByDomainName(convertToDomainName(domainClassName));
-      if (basicDomain != null && basicDomain.delegateClassName() != null && (
-          BasicDomainPurposes.Number.is(basicDomain.purpose()) ||
-            BasicDomainPurposes.Short.is(basicDomain.purpose()) ||
-            BasicDomainPurposes.Integer.is(basicDomain.purpose()) ||
-            BasicDomainPurposes.Float.is(basicDomain.purpose()) ||
-            BasicDomainPurposes.Double.is(basicDomain.purpose())
+  static String getMovableObjectHandleTypename(String domainClassName, boolean replaceKeyDomain) {
+    if (replaceKeyDomain) {
+      KeyDomain keyDomain = Jaquarius.settings().getKeyDomainByName(convertToDomainName(domainClassName));
+      if (keyDomain != null && keyDomain.delegateClassName() != null && (
+          KeyDomainPurposes.Number.is(keyDomain.purpose()) ||
+            KeyDomainPurposes.Short.is(keyDomain.purpose()) ||
+            KeyDomainPurposes.Integer.is(keyDomain.purpose()) ||
+            KeyDomainPurposes.Float.is(keyDomain.purpose()) ||
+            KeyDomainPurposes.Double.is(keyDomain.purpose())
       )) {
-        return basicDomain.delegateClassName();
+        return keyDomain.delegateClassName();
       }
     }
     return ClassNameFunctions.addPrefixToSimpleName("Movable", getGeneralObjectHandleTypename(domainClassName, false));
@@ -192,8 +192,8 @@ public interface NameConventionFunctions {
   }
 
   static String getConversionMethodName(CustomType targetType) {
-    BasicDomain basicDomain = BasicDomains.active().getByDelegateClassName(targetType.canonicalName());
-    if (basicDomain != null) {
+    KeyDomain keyDomain = Jaquarius.settings().getKeyDomainByDelegateClass(targetType.canonicalName());
+    if (keyDomain != null) {
       return "as" + StringFunctions.capitalizeFirstLetter(targetType.simpleName());
     }
     return "as" + StringFunctions.capitalizeFirstLetter(

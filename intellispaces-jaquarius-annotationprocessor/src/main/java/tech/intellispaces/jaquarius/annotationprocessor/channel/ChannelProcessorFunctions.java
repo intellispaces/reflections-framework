@@ -6,12 +6,12 @@ import tech.intellispaces.commons.java.reflection.customtype.CustomType;
 import tech.intellispaces.commons.java.reflection.method.MethodStatement;
 import tech.intellispaces.commons.java.reflection.reference.CustomTypeReference;
 import tech.intellispaces.commons.java.reflection.reference.TypeReference;
-import tech.intellispaces.jaquarius.traverse.MappingTraverse;
-import tech.intellispaces.jaquarius.traverse.MappingOfMovingTraverse;
-import tech.intellispaces.jaquarius.traverse.MovingTraverse;
 import tech.intellispaces.jaquarius.exception.ConfigurationExceptions;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
+import tech.intellispaces.jaquarius.traverse.MappingOfMovingTraverse;
+import tech.intellispaces.jaquarius.traverse.MappingTraverse;
+import tech.intellispaces.jaquarius.traverse.MovingTraverse;
 import tech.intellispaces.jaquarius.traverse.TraverseType;
 import tech.intellispaces.jaquarius.traverse.TraverseTypes;
 

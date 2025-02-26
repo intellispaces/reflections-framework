@@ -1,8 +1,8 @@
-package tech.intellispaces.jaquarius.space.domain;
+package tech.intellispaces.jaquarius.settings;
 
 import tech.intellispaces.commons.base.entity.Enumeration;
 
-public enum BasicDomainPurposes implements Enumeration<BasicDomainPurpose>, BasicDomainPurpose {
+public enum KeyDomainPurposes implements Enumeration<KeyDomainPurpose>, KeyDomainPurpose {
 
   /**
    * The domain of points.
@@ -60,13 +60,18 @@ public enum BasicDomainPurposes implements Enumeration<BasicDomainPurpose>, Basi
   Double("java.lang.Double"),
 
   /**
+   * The properties domain.
+   */
+  Properties(null),
+
+  /**
    * The dataset domain.
    */
   Dataset(null);
 
   private final String delegateClassName;
 
-  BasicDomainPurposes(java.lang.String delegateClassName) {
+  KeyDomainPurposes(java.lang.String delegateClassName) {
     this.delegateClassName = delegateClassName;
   }
 

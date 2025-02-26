@@ -11,9 +11,10 @@ import tech.intellispaces.commons.java.reflection.reference.NamedReference;
 import tech.intellispaces.commons.java.reflection.reference.NotPrimitiveReference;
 import tech.intellispaces.commons.java.reflection.reference.TypeReference;
 import tech.intellispaces.commons.java.reflection.reference.TypeReferenceFunctions;
+import tech.intellispaces.jaquarius.Jaquarius;
 import tech.intellispaces.jaquarius.annotation.Domain;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
-import tech.intellispaces.jaquarius.space.SpaceConstants;
+import tech.intellispaces.jaquarius.settings.KeyChannelPurposes;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -183,7 +184,7 @@ public final class DomainFunctions {
 
   public static boolean isNotDomainClassGetter(MethodStatement method) {
     return !method.name().equals("domainClass") &&
-        !method.name().equals(SpaceConstants.POINT_TO_DOMAIN_CHANNEL_SIMPLE_NAME);
+        !method.name().equals(Jaquarius.settings().getKeyChannelByPurpose(KeyChannelPurposes.PointToDomain).alias());
   }
 
   public static boolean isDefaultDomainType(CustomType type) {

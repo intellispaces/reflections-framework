@@ -14,8 +14,6 @@ import tech.intellispaces.jaquarius.channel.Channel0;
 import tech.intellispaces.jaquarius.channel.Channel1;
 import tech.intellispaces.jaquarius.channel.ChannelFunction0;
 import tech.intellispaces.jaquarius.channel.ChannelFunction1;
-import tech.intellispaces.jaquarius.traverse.MappingTraverse;
-import tech.intellispaces.jaquarius.traverse.MappingOfMovingTraverse;
 import tech.intellispaces.jaquarius.engine.JaquariusEngines;
 import tech.intellispaces.jaquarius.engine.ObjectHandleBroker;
 import tech.intellispaces.jaquarius.engine.description.ObjectHandleMethodPurposes;
@@ -27,6 +25,8 @@ import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.system.Modules;
 import tech.intellispaces.jaquarius.system.ObjectHandleWrapper;
+import tech.intellispaces.jaquarius.traverse.MappingOfMovingTraverse;
+import tech.intellispaces.jaquarius.traverse.MappingTraverse;
 import tech.intellispaces.jaquarius.traverse.TraverseType;
 import tech.intellispaces.jaquarius.traverse.TraverseTypes;
 

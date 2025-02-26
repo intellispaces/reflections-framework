@@ -9,12 +9,12 @@ import tech.intellispaces.commons.java.reflection.customtype.AnnotationFunctions
 import tech.intellispaces.commons.java.reflection.customtype.CustomType;
 import tech.intellispaces.commons.java.reflection.method.MethodStatement;
 import tech.intellispaces.commons.java.reflection.reference.CustomTypeReference;
+import tech.intellispaces.jaquarius.Jaquarius;
 import tech.intellispaces.jaquarius.annotation.AnnotationProcessor;
 import tech.intellispaces.jaquarius.annotation.Channel;
 import tech.intellispaces.jaquarius.annotationprocessor.AnnotationProcessorFunctions;
 import tech.intellispaces.jaquarius.annotationprocessor.ArtifactTypes;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
-import tech.intellispaces.jaquarius.space.domain.BasicDomains;
 
 import javax.annotation.processing.RoundEnvironment;
 import java.util.ArrayList;
@@ -85,7 +85,7 @@ public interface DomainProcessorFunctions {
   private static void addDownwardObjectHandleGenerators(
       CustomType domainType, List<ArtifactGenerator> generators
   ) {
-    if (BasicDomains.active().getByDomainName(NameConventionFunctions.convertToDomainName(domainType.canonicalName())) != null) {
+    if (Jaquarius.settings().getKeyDomainByName(NameConventionFunctions.convertToDomainName(domainType.canonicalName())) != null) {
       return;
     }
 

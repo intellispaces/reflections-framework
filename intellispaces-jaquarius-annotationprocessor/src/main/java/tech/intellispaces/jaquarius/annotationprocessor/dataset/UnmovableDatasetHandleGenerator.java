@@ -14,11 +14,11 @@ import tech.intellispaces.jaquarius.annotation.Name;
 import tech.intellispaces.jaquarius.annotation.ObjectHandle;
 import tech.intellispaces.jaquarius.annotationprocessor.JaquariusArtifactGenerator;
 import tech.intellispaces.jaquarius.channel.Channel1;
-import tech.intellispaces.jaquarius.traverse.MappingTraverse;
 import tech.intellispaces.jaquarius.exception.TraverseException;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
 import tech.intellispaces.jaquarius.system.Modules;
+import tech.intellispaces.jaquarius.traverse.MappingTraverse;
 
 import java.util.ArrayList;
 import java.util.HashMap;

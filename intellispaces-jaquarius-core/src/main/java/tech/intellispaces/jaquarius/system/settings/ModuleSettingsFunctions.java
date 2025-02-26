@@ -1,4 +1,4 @@
-package tech.intellispaces.jaquarius.properties;
+package tech.intellispaces.jaquarius.system.settings;
 
 import tech.intellispaces.commons.base.exception.UnexpectedExceptions;
 import tech.intellispaces.commons.base.resource.ResourceFunctions;
@@ -9,26 +9,23 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.WeakHashMap;
 
-public class ModulePropertiesFunctions {
+public class ModuleSettingsFunctions {
 
-  public static String getProperties(tech.intellispaces.jaquarius.system.Module module, String filename) {
+  public static String getSettingsText(Module module, String filename) {
     FileContents fileContents = CACHE.computeIfAbsent(module, k -> new FileContents());
     String fileContent = fileContents.getContent(filename);
     if (fileContent == null) {
-      fileContent = loadPropertiesInternal(module, filename);
+      fileContent = readSettings(module, filename);
       fileContents.addContent(filename, fileContent);
     }
     return fileContent;
   }
 
-  private static String loadPropertiesInternal(tech.intellispaces.jaquarius.system.Module module, String filename) {
-    return readResource(module, filename);
+  private static String readSettings(Module module, String filename) {
+    return readSettingsAsResource(module, filename);
   }
 
-  private static String readResource(tech.intellispaces.jaquarius.system.Module module, String resourceName) {
-    if (resourceName == null) {
-      resourceName = "/module.yaml";
-    }
+  private static String readSettingsAsResource(Module module, String resourceName) {
     final Optional<String> content;
     try {
       content = ResourceFunctions.readResourceAsString(module.getClass(), resourceName);
@@ -55,5 +52,5 @@ public class ModulePropertiesFunctions {
     }
   }
 
-  private ModulePropertiesFunctions() {}
+  private ModuleSettingsFunctions() {}
 }

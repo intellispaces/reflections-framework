@@ -7,11 +7,11 @@ import tech.intellispaces.commons.java.reflection.customtype.CustomType;
 import tech.intellispaces.commons.java.reflection.method.MethodStatement;
 import tech.intellispaces.commons.java.reflection.reference.TypeReference;
 import tech.intellispaces.jaquarius.annotation.Channel;
-import tech.intellispaces.jaquarius.traverse.MappingTraverse;
-import tech.intellispaces.jaquarius.traverse.MappingOfMovingTraverse;
-import tech.intellispaces.jaquarius.traverse.MovingTraverse;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
+import tech.intellispaces.jaquarius.traverse.MappingOfMovingTraverse;
+import tech.intellispaces.jaquarius.traverse.MappingTraverse;
+import tech.intellispaces.jaquarius.traverse.MovingTraverse;
 import tech.intellispaces.jaquarius.traverse.TraverseType;
 
 import java.util.List;

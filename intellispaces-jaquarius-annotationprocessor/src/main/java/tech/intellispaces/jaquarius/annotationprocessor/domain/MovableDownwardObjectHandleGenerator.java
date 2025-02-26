@@ -11,13 +11,13 @@ import tech.intellispaces.jaquarius.channel.Channel0;
 import tech.intellispaces.jaquarius.channel.Channel1;
 import tech.intellispaces.jaquarius.channel.ChannelFunction0;
 import tech.intellispaces.jaquarius.channel.ChannelFunction1;
-import tech.intellispaces.jaquarius.traverse.MappingTraverse;
-import tech.intellispaces.jaquarius.traverse.MappingOfMovingTraverse;
 import tech.intellispaces.jaquarius.exception.TraverseException;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleType;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
+import tech.intellispaces.jaquarius.traverse.MappingOfMovingTraverse;
+import tech.intellispaces.jaquarius.traverse.MappingTraverse;
 
 import java.util.stream.Stream;
 

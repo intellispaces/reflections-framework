@@ -36,7 +36,7 @@ public class MovableDownwardObjectHandleGenerator extends ConversionObjectHandle
 
   @Override
   protected ObjectHandleType getObjectHandleType() {
-    return ObjectHandleTypes.Movable;
+    return ObjectHandleTypes.MovableHandle;
   }
 
   @Override

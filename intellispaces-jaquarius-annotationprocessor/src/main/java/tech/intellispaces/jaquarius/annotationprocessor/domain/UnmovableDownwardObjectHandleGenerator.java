@@ -49,7 +49,7 @@ public class UnmovableDownwardObjectHandleGenerator extends ConversionObjectHand
 
   @Override
   protected ObjectHandleType getObjectHandleType() {
-    return ObjectHandleTypes.Unmovable;
+    return ObjectHandleTypes.UnmovableHandle;
   }
 
   @Override

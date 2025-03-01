@@ -5,19 +5,34 @@ import tech.intellispaces.commons.base.entity.Enumeration;
 public enum ObjectHandleTypes implements ObjectHandleType, Enumeration<ObjectHandleType> {
 
   /**
-   * The movable object handle.
+   * The unmovable pure object.
    */
-  Movable,
+  UnmovablePureObject,
+
+  /**
+   * The movable pure object.
+   */
+  MovablePureObject,
+
+  /**
+   * The undefined pure object.
+   */
+  UndefinedPureObject,
 
   /**
    * The unmovable object handle.
    */
-  Unmovable,
+  UnmovableHandle,
 
   /**
-   * The general object handle.
+   * The movable object handle.
    */
-  General;
+  MovableHandle,
+
+  /**
+   * The undefined object handle.
+   */
+  UndefinedHandle;
 
   public static ObjectHandleTypes from(ObjectHandleType value) {
     return VALUES[value.ordinal()];

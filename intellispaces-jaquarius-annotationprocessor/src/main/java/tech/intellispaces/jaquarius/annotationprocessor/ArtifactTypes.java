@@ -2,13 +2,17 @@ package tech.intellispaces.jaquarius.annotationprocessor;
 
 public enum ArtifactTypes {
 
-  Channel,
+  MovableObject,
+
+  UnmovableObject,
 
   ObjectHandle,
 
   MovableObjectHandle,
 
   UnmovableObjectHandle,
+
+  Channel,
 
   Mapper,
 

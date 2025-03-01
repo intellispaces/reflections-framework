@@ -39,15 +39,15 @@ abstract class ObjectHandleGenerator extends AbstractObjectHandleGenerator {
 
   protected void analyzeDomain() {
     typeParamsFull = ObjectHandleFunctions.getObjectHandleTypeParams(
-        sourceArtifact(), ObjectHandleTypes.General, ObjectReferenceForms.Object, this::addImportAndGetSimpleName, true
+        sourceArtifact(), ObjectHandleTypes.UndefinedHandle, ObjectReferenceForms.Object, this::addImportAndGetSimpleName, false, true
     );
     typeParamsBrief = ObjectHandleFunctions.getObjectHandleTypeParams(
-        sourceArtifact(), ObjectHandleTypes.General, ObjectReferenceForms.Object, this::addImportAndGetSimpleName, false
+        sourceArtifact(), ObjectHandleTypes.UndefinedHandle, ObjectReferenceForms.Object, this::addImportAndGetSimpleName, false, false
     );
     domainTypeParamsFull = sourceArtifact().typeParametersFullDeclaration();
     domainTypeParamsBrief = sourceArtifact().typeParametersBriefDeclaration();
     generalObjectHandle = addImportAndGetSimpleName(
-        NameConventionFunctions.getGeneralObjectHandleTypename(sourceArtifact().className(), false)
+        NameConventionFunctions.getUndefinedObjectHandleTypename(sourceArtifact().className())
     );
   }
 

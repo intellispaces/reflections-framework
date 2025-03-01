@@ -12,6 +12,7 @@ import tech.intellispaces.jaquarius.annotation.Channel;
 import tech.intellispaces.jaquarius.annotation.Domain;
 import tech.intellispaces.jaquarius.annotation.ObjectHandle;
 import tech.intellispaces.jaquarius.annotation.Ontology;
+import tech.intellispaces.jaquarius.exception.ConfigurationExceptions;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleType;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
@@ -36,22 +37,59 @@ public interface NameConventionFunctions {
     return channelName + "Channel";
   }
 
-  static String getObjectHandleTypename(String domainClassName, ObjectHandleType handleType, boolean replaceKeyDomain) {
+  static String getObjectHandleTypename(
+      String domainClassName, ObjectHandleType handleType, boolean replaceKeyDomain
+  ) {
     return switch (ObjectHandleTypes.from(handleType)) {
-      case General -> getGeneralObjectHandleTypename(domainClassName, replaceKeyDomain);
-      case Movable -> getMovableObjectHandleTypename(domainClassName, replaceKeyDomain);
-      case Unmovable -> getUnmovableObjectHandleTypename(domainClassName, replaceKeyDomain);
+      case UnmovablePureObject -> getUnmovablePureObjectTypename(domainClassName, replaceKeyDomain);
+      case MovablePureObject -> getMovablePureObjectTypename(domainClassName, replaceKeyDomain);
+      case UndefinedPureObject -> getUndefinedPureObjectTypename(domainClassName);
+      case UnmovableHandle -> getUnmovableObjectHandleTypename(domainClassName, replaceKeyDomain);
+      case MovableHandle -> getMovableObjectHandleTypename(domainClassName, replaceKeyDomain);
+      case UndefinedHandle -> getUndefinedObjectHandleTypename(domainClassName);
     };
   }
 
-  static String getGeneralObjectHandleTypename(String domainClassName, boolean replaceKeyDomain) {
+  static String getUndefinedPureObjectTypename(String domainClassName) {
+    return StringFunctions.removeTailOrElseThrow(transformClassName(domainClassName), "Domain");
+  }
+
+  static String getUndefinedObjectHandleTypename(String domainClassName) {
+    return StringFunctions.replaceTailOrElseThrow(transformClassName(domainClassName), "Domain", "Handle");
+  }
+
+  static String getUnmovablePureObjectTypename(String domainClassName, boolean replaceKeyDomain) {
     if (replaceKeyDomain) {
       KeyDomain keyDomain = Jaquarius.settings().getKeyDomainByName(convertToDomainName(domainClassName));
-      if (keyDomain != null && keyDomain.delegateClassName() != null) {
+      if (keyDomain != null && keyDomain.delegateClassName() != null && (
+          KeyDomainPurposes.Number.is(keyDomain.purpose()) ||
+              KeyDomainPurposes.Short.is(keyDomain.purpose()) ||
+              KeyDomainPurposes.Integer.is(keyDomain.purpose()) ||
+              KeyDomainPurposes.Float.is(keyDomain.purpose()) ||
+              KeyDomainPurposes.Double.is(keyDomain.purpose())
+      )) {
         return keyDomain.delegateClassName();
       }
     }
-    return StringFunctions.replaceTailOrElseThrow(transformClassName(domainClassName), "Domain", "Handle");
+    return ClassNameFunctions.addPrefixToSimpleName("Unmovable",
+        StringFunctions.removeTailOrElseThrow(transformClassName(domainClassName), "Domain"));
+  }
+
+  static String getMovablePureObjectTypename(String domainClassName, boolean replaceKeyDomain) {
+    if (replaceKeyDomain) {
+      KeyDomain keyDomain = Jaquarius.settings().getKeyDomainByName(convertToDomainName(domainClassName));
+      if (keyDomain != null && keyDomain.delegateClassName() != null && (
+          KeyDomainPurposes.Number.is(keyDomain.purpose()) ||
+              KeyDomainPurposes.Short.is(keyDomain.purpose()) ||
+              KeyDomainPurposes.Integer.is(keyDomain.purpose()) ||
+              KeyDomainPurposes.Float.is(keyDomain.purpose()) ||
+              KeyDomainPurposes.Double.is(keyDomain.purpose())
+      )) {
+        return keyDomain.delegateClassName();
+      }
+    }
+    return ClassNameFunctions.addPrefixToSimpleName("Movable",
+        StringFunctions.removeTailOrElseThrow(transformClassName(domainClassName), "Domain"));
   }
 
   static String getUnmovableObjectHandleTypename(String domainClassName, boolean replaceKeyDomain) {
@@ -67,7 +105,7 @@ public interface NameConventionFunctions {
         return keyDomain.delegateClassName();
       }
     }
-    return ClassNameFunctions.addPrefixToSimpleName("Unmovable", getGeneralObjectHandleTypename(domainClassName, false));
+    return ClassNameFunctions.addPrefixToSimpleName("Unmovable", getUndefinedObjectHandleTypename(domainClassName));
   }
 
   static String getMovableObjectHandleTypename(String domainClassName, boolean replaceKeyDomain) {
@@ -83,7 +121,7 @@ public interface NameConventionFunctions {
         return keyDomain.delegateClassName();
       }
     }
-    return ClassNameFunctions.addPrefixToSimpleName("Movable", getGeneralObjectHandleTypename(domainClassName, false));
+    return ClassNameFunctions.addPrefixToSimpleName("Movable", getUndefinedObjectHandleTypename(domainClassName));
   }
 
   static String getObjectHandleWrapperCanonicalName(CustomType objectHandleType) {
@@ -148,13 +186,14 @@ public interface NameConventionFunctions {
       CustomType domainType, CustomType baseDomainType, ObjectHandleType handleType
   ) {
     return switch (ObjectHandleTypes.from(handleType)) {
-      case General -> getBaseDownwardObjectHandleTypename(domainType, baseDomainType);
-      case Movable -> getMovableDownwardObjectHandleTypename(domainType, baseDomainType);
-      case Unmovable -> getUnmovableDownwardObjectHandleTypename(domainType, baseDomainType);
+      case UndefinedHandle -> getGeneralDownwardObjectHandleTypename(domainType, baseDomainType);
+      case UnmovableHandle -> getUnmovableDownwardObjectHandleTypename(domainType, baseDomainType);
+      case MovableHandle -> getMovableDownwardObjectHandleTypename(domainType, baseDomainType);
+      default -> throw ConfigurationExceptions.withMessage("Unexpected object type: {0}", handleType);
     };
   }
 
-  static String getBaseDownwardObjectHandleTypename(CustomType domainType, CustomType baseDomainType) {
+  static String getGeneralDownwardObjectHandleTypename(CustomType domainType, CustomType baseDomainType) {
     String packageName = ClassNameFunctions.getPackageName(domainType.canonicalName());
     String simpleName = StringFunctions.capitalizeFirstLetter(StringFunctions.removeTailOrElseThrow(baseDomainType.simpleName(), "Domain")) +
         "BasedOn" + StringFunctions.capitalizeFirstLetter(domainType.simpleName());

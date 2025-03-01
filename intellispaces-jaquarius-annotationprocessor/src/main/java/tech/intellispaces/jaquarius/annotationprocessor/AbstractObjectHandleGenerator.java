@@ -171,7 +171,7 @@ public abstract class AbstractObjectHandleGenerator extends JaquariusArtifactGen
       commaAppender.run();
       if (DomainFunctions.isDomainType(param.type())) {
         sb.append("(");
-        sb.append(ObjectHandleFunctions.getObjectHandleDeclaration(param.type(), ObjectHandleTypes.General, true, this::addImportAndGetSimpleName));
+        sb.append(ObjectHandleFunctions.getObjectHandleDeclaration(param.type(), ObjectHandleTypes.UndefinedHandle, true, this::addImportAndGetSimpleName));
         sb.append(") ");
       }
       sb.append(param.name());
@@ -182,7 +182,7 @@ public abstract class AbstractObjectHandleGenerator extends JaquariusArtifactGen
   }
 
   private boolean isDisableMoving(MethodStatement method) {
-    return ChannelFunctions.isMovingBasedChannel(method) && ObjectHandleTypes.Unmovable.is(getObjectHandleType());
+    return ChannelFunctions.isMovingBasedChannel(method) && ObjectHandleTypes.UnmovableHandle.is(getObjectHandleType());
   }
 
   protected void appendMethodReturnType(StringBuilder sb, MethodStatement method) {
@@ -297,11 +297,11 @@ public abstract class AbstractObjectHandleGenerator extends JaquariusArtifactGen
       sb.append(buildObjectHandleDeclaration(domainReturnType, getObjectHandleType(), true));
     } else {
       if (method.hasAnnotation(Movable.class)) {
-        sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.Movable, true));
+        sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.MovableHandle, true));
       } else if (method.hasAnnotation(Unmovable.class)) {
-        sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.Unmovable, true));
+        sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.UnmovableHandle, true));
       } else {
-        sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.General, true));
+        sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.UndefinedHandle, true));
       }
     }
   }
@@ -324,7 +324,7 @@ public abstract class AbstractObjectHandleGenerator extends JaquariusArtifactGen
       commaAppender.run();
       sb.append(buildHandleDeclarationDefaultForm(
           AnnotationGeneratorFunctions.normalizeType(param.type()),
-          ObjectHandleTypes.General,
+          ObjectHandleTypes.UndefinedHandle,
           true,
           ObjectHandleFunctions.getReferenceForm(param.type(), methodForm)
       ));

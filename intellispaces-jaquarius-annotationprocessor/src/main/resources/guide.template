@@ -5,8 +5,8 @@ import {{$importedClass}};
 {{end}}
 
 /**
- * Guide through channel {@link {{$channelClassSimpleName}}}.<p/>
- *
+ * Guide through channel {@link {{$channelClassSimpleName}}}.
+ * <p>
  * This class was generated automatically. Don't try to change it.
  */
 @Guide

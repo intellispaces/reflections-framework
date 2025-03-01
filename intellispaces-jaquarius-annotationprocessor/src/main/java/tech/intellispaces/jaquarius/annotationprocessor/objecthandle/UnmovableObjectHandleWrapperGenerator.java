@@ -49,7 +49,7 @@ public class UnmovableObjectHandleWrapperGenerator extends ObjectHandleWrapperGe
 
   @Override
   protected ObjectHandleType getObjectHandleType() {
-    return ObjectHandleTypes.Unmovable;
+    return ObjectHandleTypes.UnmovableHandle;
   }
 
   @Override

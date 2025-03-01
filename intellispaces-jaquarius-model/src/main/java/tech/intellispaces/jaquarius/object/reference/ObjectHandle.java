@@ -22,7 +22,7 @@ public interface ObjectHandle<D> extends ObjectReference<D> {
   MovableObjectHandle<D> asMovableOrElseThrow();
 
   /**
-   * Stores projection.
+   * Sets projection.
    *
    * @param targetDomain target domain class.
    * @param target target object handle.

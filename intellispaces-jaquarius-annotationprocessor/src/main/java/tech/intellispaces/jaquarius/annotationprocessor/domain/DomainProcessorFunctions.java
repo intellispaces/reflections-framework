@@ -25,7 +25,7 @@ public interface DomainProcessorFunctions {
   static List<ArtifactGenerator> makeDomainArtifactGenerators(
       CustomType domainType, ArtifactGeneratorContext context
   ) {
-    List<ArtifactGenerator> generators = new ArrayList<>();
+    var generators = new ArrayList<ArtifactGenerator>();
     for (MethodStatement method : domainType.declaredMethods()) {
       if (method.hasAnnotation(Channel.class)) {
         if (AnnotationProcessorFunctions.isAutoGenerationEnabled(
@@ -68,7 +68,7 @@ public interface DomainProcessorFunctions {
     if (
         AnnotationProcessorFunctions.isAutoGenerationEnabled(domainType, ArtifactTypes.ObjectHandle, roundEnv)
     ) {
-      generators.add(new GeneralObjectHandleGenerator(domainType));
+      generators.add(new UndefinedObjectHandleGenerator(domainType));
     }
     if (
         AnnotationProcessorFunctions.isAutoGenerationEnabled(domainType, ArtifactTypes.MovableObjectHandle, roundEnv)
@@ -80,6 +80,9 @@ public interface DomainProcessorFunctions {
     ) {
       generators.add(new UnmovableObjectHandleGenerator(domainType));
     }
+    generators.add(new UndefinedPureObjectGenerator(domainType));
+    generators.add(new MovablePureObjectGenerator(domainType));
+    generators.add(new UnmovablePureObjectGenerator(domainType));
   }
 
   private static void addDownwardObjectHandleGenerators(

@@ -25,10 +25,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
-public class GeneralObjectHandleGenerator extends ObjectHandleGenerator {
+public class UndefinedObjectHandleGenerator extends ObjectHandleGenerator {
 
-  public GeneralObjectHandleGenerator(CustomType domainType) {
+  public UndefinedObjectHandleGenerator(CustomType domainType) {
     super(domainType);
+    addHiddenImport(NameConventionFunctions.getUndefinedPureObjectTypename(domainType.className()));
   }
 
   @Override
@@ -38,12 +39,12 @@ public class GeneralObjectHandleGenerator extends ObjectHandleGenerator {
 
   @Override
   protected ObjectHandleType getObjectHandleType() {
-    return ObjectHandleTypes.General;
+    return ObjectHandleTypes.UndefinedHandle;
   }
 
   @Override
   public String generatedArtifactName() {
-    return NameConventionFunctions.getObjectHandleTypename(sourceArtifact().className(), ObjectHandleTypes.General, false);
+    return NameConventionFunctions.getObjectHandleTypename(sourceArtifact().className(), ObjectHandleTypes.UndefinedHandle, false);
   }
 
   @Override
@@ -61,6 +62,7 @@ public class GeneralObjectHandleGenerator extends ObjectHandleGenerator {
         MappingTraverse.class,
         TraverseException.class
     );
+    addHiddenImports(context);
 
     analyzeDomain();
     analyzeAlias();
@@ -77,7 +79,12 @@ public class GeneralObjectHandleGenerator extends ObjectHandleGenerator {
     addVariable("primaryObjectHandle", baseObjectHandle);
     addVariable("primaryDomainTypeArguments", primaryDomainTypeArguments);
     addVariable("primaryDomainSimpleName", primaryDomainSimpleName);
+    addVariable("pureObject", getPureObjectClassName());
     return true;
+  }
+
+  private String getPureObjectClassName() {
+    return addImportAndGetSimpleName(NameConventionFunctions.getUndefinedPureObjectTypename(sourceArtifact().className()));
   }
 
   private String getSimpleHandleName() {
@@ -93,7 +100,7 @@ public class GeneralObjectHandleGenerator extends ObjectHandleGenerator {
       CustomTypeReference nearEquivalentDomain = equivalentDomains.get(0);
       CustomTypeReference mainEquivalentDomain = equivalentDomains.get(equivalentDomains.size() - 1);
 
-      baseObjectHandle = buildObjectHandleDeclaration(nearEquivalentDomain, ObjectHandleTypes.General, true);
+      baseObjectHandle = buildObjectHandleDeclaration(nearEquivalentDomain, ObjectHandleTypes.UndefinedHandle, true);
       primaryDomainTypeArguments = getDomainTypeParamsBrief(nearEquivalentDomain);
       primaryDomainSimpleName = addImportAndGetSimpleName(mainEquivalentDomain.targetType().canonicalName());
       domainType = buildDomainType(mainEquivalentDomain.targetType(), mainEquivalentDomain.typeArguments());

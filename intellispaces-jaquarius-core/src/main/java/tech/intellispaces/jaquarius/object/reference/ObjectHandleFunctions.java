@@ -47,9 +47,9 @@ public class ObjectHandleFunctions {
 
   public static Class<?> getObjectHandleClass(ObjectHandleTypes objectHandleType) {
     return switch (objectHandleType) {
-      case General -> tech.intellispaces.jaquarius.object.reference.ObjectHandle.class;
-      case Movable -> MovableObjectHandle.class;
-      case Unmovable -> UnmovableObjectHandle.class;
+      case UndefinedHandle, UndefinedPureObject -> tech.intellispaces.jaquarius.object.reference.ObjectHandle.class;
+      case UnmovableHandle, UnmovablePureObject -> UnmovableObjectHandle.class;
+      case MovableHandle, MovablePureObject -> MovableObjectHandle.class;
     };
   }
 
@@ -123,10 +123,12 @@ public class ObjectHandleFunctions {
     if (isDefaultObjectHandleType(domainType)) {
       return domainType.canonicalName();
     }
-    return NameConventionFunctions.getGeneralObjectHandleTypename(domainType.className(), true);
+    return NameConventionFunctions.getUndefinedObjectHandleTypename(domainType.className());
   }
 
-  public static String getObjectHandleTypename(CustomType customType, ObjectHandleType type, boolean replaceKeyDomain) {
+  public static String getObjectHandleTypename(
+      CustomType customType, ObjectHandleType type, boolean replaceKeyDomain
+  ) {
     if (isDefaultObjectHandleType(customType)) {
       return customType.canonicalName();
     }
@@ -299,7 +301,7 @@ public class ObjectHandleFunctions {
   public static String getGeneralObjectHandleDeclaration(
       TypeReference domainType, boolean replaceKeyDomain, Function<String, String> simpleNameMapping
   ) {
-    return getObjectHandleDeclaration(domainType, ObjectHandleTypes.General, replaceKeyDomain, simpleNameMapping);
+    return getObjectHandleDeclaration(domainType, ObjectHandleTypes.UndefinedHandle, replaceKeyDomain, simpleNameMapping);
   }
 
   public static String getObjectHandleDeclaration(
@@ -365,7 +367,7 @@ public class ObjectHandleFunctions {
           for (NotPrimitiveReference argType : customTypeReference.typeArguments()) {
             commaAppender.run();
             sb.append(getObjectHandleDeclaration(
-                argType, ObjectHandleTypes.General, ObjectReferenceForms.Object, true, replaceKeyDomain, simpleNameMapping
+                argType, ObjectHandleTypes.UndefinedHandle, ObjectReferenceForms.Object, true, replaceKeyDomain, simpleNameMapping
             ));
           }
           sb.append(">");
@@ -392,6 +394,7 @@ public class ObjectHandleFunctions {
       ObjectHandleType handleType,
       ObjectReferenceForm form,
       Function<String, String> simpleNameMapping,
+      boolean pureHandle,
       boolean full
   ) {
     if (domainType.typeParameters().isEmpty()) {
@@ -411,7 +414,7 @@ public class ObjectHandleFunctions {
         RunnableAction boundCommaAppender = StringActions.skipFirstTimeCommaAppender(sb);
         for (ReferenceBound bound : namedReference.extendedBounds()) {
           boundCommaAppender.run();
-          sb.append(getObjectHandleDeclaration(bound, handleType, form, true, simpleNameMapping));
+          sb.append(getObjectHandleDeclaration(bound, handleType, form, true, pureHandle, simpleNameMapping));
         }
       }
     }
@@ -439,7 +442,7 @@ public class ObjectHandleFunctions {
     if (dictionaryHandleClass == null) {
       KeyDomain keyDomain = Jaquarius.settings().getKeyDomainByPurpose(KeyDomainPurposes.Properties);
       String domainClassName = NameConventionFunctions.convertToDomainClassName(keyDomain.domainName());
-      String handleClassName = NameConventionFunctions.getGeneralObjectHandleTypename(domainClassName, false);
+      String handleClassName = NameConventionFunctions.getUndefinedObjectHandleTypename(domainClassName);
       dictionaryHandleClass = ClassFunctions.getClass(handleClassName).orElseThrow(() ->
           UnexpectedExceptions.withMessage("Could not get class {0}", handleClassName)
       );

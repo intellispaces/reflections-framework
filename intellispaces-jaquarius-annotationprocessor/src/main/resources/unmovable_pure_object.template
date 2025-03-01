@@ -1,0 +1,19 @@
+package {{$generatedArtifactPackageName}};
+
+{{for importedClass : $importedClasses}}
+import {{$importedClass}};
+{{end}}
+
+/**
+ * Unmovable object of domain {@link {{$sourceArtifactSimpleName}}}.
+ * <p>
+ * This class was generated automatically. Don't try to change it.
+ */
+{{$generatedAnnotation}}
+public interface {{$generatedArtifactSimpleName}}{{$handleTypeParamsFull}} extends {{$undefinedPureObjectHandle}}{{$handleTypeParamsBrief}} {
+
+{{for method : $conversionMethods}}
+  {{$method."declaration"}};
+
+{{end}}
+}

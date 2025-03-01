@@ -7,8 +7,8 @@ import {{$importedClass}};
 import static tech.intellispaces.jaquarius.engine.description.UnitMethods.unitMethod;
 
 /**
- * Wrapper of module unit {@link {{$sourceArtifactSimpleName}}}.<p/>
- *
+ * Wrapper of module unit {@link {{$sourceArtifactSimpleName}}}.
+ * <p>
  * This class was generated automatically. Don't try to change it.
  */
 @Wrapper({{$sourceArtifactSimpleName}}.class)

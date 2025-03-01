@@ -5,8 +5,8 @@ import {{$importedClass}};
 {{end}}
 
 /**
- * Unmovable downward object handle for objects of domain {@link {{$sourceArtifactSimpleName}}}.<p/>
- *
+ * Unmovable downward object handle for objects of domain {@link {{$sourceArtifactSimpleName}}}.
+ * <p>
  * This class was generated automatically. Don't try to change it.
  */
 @ObjectHandle({{$sourceArtifactSimpleName}}.class)

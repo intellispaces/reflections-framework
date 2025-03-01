@@ -53,7 +53,7 @@ public class MovableObjectHandleWrapperGenerator extends ObjectHandleWrapperGene
 
   @Override
   protected ObjectHandleType getObjectHandleType() {
-    return ObjectHandleTypes.Movable;
+    return ObjectHandleTypes.MovableHandle;
   }
 
   @Override
@@ -112,11 +112,11 @@ public class MovableObjectHandleWrapperGenerator extends ObjectHandleWrapperGene
             method.hasAnnotation(Movable.class) ||
             NameConventionFunctions.isConversionMethod(method)
     ) {
-      sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.Movable, true));
+      sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.MovableHandle, true));
     } else if (method.hasAnnotation(Unmovable.class)) {
-      sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.Unmovable, true));
+      sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.UnmovableHandle, true));
     } else {
-      sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.General, true));
+      sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.UndefinedHandle, true));
     }
   }
 }

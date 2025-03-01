@@ -5,10 +5,10 @@ import {{$importedClass}};
 {{end}}
 
 /**
- * Unmovable object handle implementation for data object of domain {@link {{$sourceArtifactSimpleName}}}.<p/>
- *
- * Data objects are entirely in memory.<p/>
- *
+ * Unmovable object handle implementation for data object of domain {@link {{$sourceArtifactSimpleName}}}.
+ * <p>
+ * Data objects are entirely in memory.
+ * <p>
  * This class was generated automatically. Don't try to change it.
  */
 @ObjectHandle({{$sourceArtifactSimpleName}}.class)

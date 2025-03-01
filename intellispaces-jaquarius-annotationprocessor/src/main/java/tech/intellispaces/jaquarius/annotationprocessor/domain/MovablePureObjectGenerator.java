@@ -3,7 +3,6 @@ package tech.intellispaces.jaquarius.annotationprocessor.domain;
 import tech.intellispaces.commons.annotation.processor.ArtifactGeneratorContext;
 import tech.intellispaces.commons.java.reflection.customtype.CustomType;
 import tech.intellispaces.commons.java.reflection.method.MethodStatement;
-import tech.intellispaces.commons.java.reflection.reference.CustomTypeReference;
 import tech.intellispaces.commons.java.reflection.reference.TypeReference;
 import tech.intellispaces.jaquarius.annotation.Movable;
 import tech.intellispaces.jaquarius.annotation.ObjectHandle;
@@ -18,16 +17,14 @@ import tech.intellispaces.jaquarius.object.reference.MovableObjectHandle;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleType;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
-import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
 import tech.intellispaces.jaquarius.traverse.MappingOfMovingTraverse;
 import tech.intellispaces.jaquarius.traverse.TraverseType;
 
-import java.util.List;
 import java.util.stream.Stream;
 
-public class MovableObjectHandleGenerator extends ObjectHandleGenerator {
+public class MovablePureObjectGenerator extends PureObjectGenerator {
 
-  public MovableObjectHandleGenerator(CustomType domainType) {
+  public MovablePureObjectGenerator(CustomType domainType) {
     super(domainType);
   }
 
@@ -38,17 +35,17 @@ public class MovableObjectHandleGenerator extends ObjectHandleGenerator {
 
   @Override
   protected ObjectHandleType getObjectHandleType() {
-    return ObjectHandleTypes.MovableHandle;
+    return ObjectHandleTypes.MovablePureObject;
   }
 
   @Override
   public String generatedArtifactName() {
-    return NameConventionFunctions.getMovableObjectHandleTypename(sourceArtifact().className(), false);
+    return NameConventionFunctions.getMovablePureObjectTypename(sourceArtifact().className(), false);
   }
 
   @Override
   protected String templateName() {
-    return "/movable_object_handle.template";
+    return "/movable_pure_object.template";
   }
 
   @Override
@@ -66,43 +63,15 @@ public class MovableObjectHandleGenerator extends ObjectHandleGenerator {
     );
 
     analyzeDomain();
-    analyzeAlias();
     analyzeObjectHandleMethods(sourceArtifact(), context);
     analyzeConversionMethods(sourceArtifact());
 
     addVariable("handleTypeParamsFull", typeParamsFull);
     addVariable("handleTypeParamsBrief", typeParamsBrief);
-    addVariable("domainTypeParamsBrief", domainTypeParamsBrief);
-    addVariable("generalObjectHandle", generalObjectHandle);
     addVariable("conversionMethods", conversionMethods);
     addVariable("domainMethods", methods);
-    addVariable("isAlias", isAlias);
-    addVariable("baseObjectHandle", baseObjectHandle);
-    addVariable("primaryObjectHandle", primaryObjectHandle);
-    addVariable("primaryDomainSimpleName", primaryDomainSimpleName);
-    addVariable("primaryDomainTypeArguments", primaryDomainTypeArguments);
-    addVariable("pureObject", getPureObjectClassName());
+    addVariable("undefinedPureObjectHandle", getUndefinedOriginHandleClassName());
     return true;
-  }
-
-  private String getPureObjectClassName() {
-    return addImportAndGetSimpleName(NameConventionFunctions.getMovablePureObjectTypename(sourceArtifact().className(), false));
-  }
-
-  private void analyzeAlias() {
-    List<CustomTypeReference> equivalentDomains = DomainFunctions.getEquivalentDomains(sourceArtifact());
-    isAlias = !equivalentDomains.isEmpty();
-    if (isAlias) {
-      CustomTypeReference nearEquivalentDomain = equivalentDomains.get(0);
-      CustomTypeReference mainEquivalentDomain = equivalentDomains.get(equivalentDomains.size() - 1);
-
-      baseObjectHandle = buildObjectHandleDeclaration(nearEquivalentDomain, ObjectHandleTypes.MovableHandle, true);
-
-      primaryObjectHandle = buildObjectHandleDeclaration(mainEquivalentDomain, ObjectHandleTypes.UndefinedHandle, true);
-
-      primaryDomainSimpleName = addImportAndGetSimpleName(mainEquivalentDomain.targetType().canonicalName());
-      primaryDomainTypeArguments = nearEquivalentDomain.typeArgumentsDeclaration(this::addImportAndGetSimpleName);
-    }
   }
 
   @Override
@@ -118,11 +87,11 @@ public class MovableObjectHandleGenerator extends ObjectHandleGenerator {
         ChannelFunctions.getTraverseTypes(method).stream().anyMatch(TraverseType::isMoving)
             || method.hasAnnotation(Movable.class)
     ) {
-      sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.MovableHandle, true));
+      sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.MovablePureObject, true));
     } else if (method.hasAnnotation(Unmovable.class)) {
-      sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.UnmovableHandle, true));
+      sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.UnmovablePureObject, true));
     } else {
-      sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.UndefinedHandle, true));
+      sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.UndefinedPureObject, true));
     }
   }
 }

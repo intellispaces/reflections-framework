@@ -37,7 +37,7 @@ public class UnmovableObjectHandleGenerator extends ObjectHandleGenerator {
 
   @Override
   protected ObjectHandleType getObjectHandleType() {
-    return ObjectHandleTypes.Unmovable;
+    return ObjectHandleTypes.UnmovableHandle;
   }
 
   @Override
@@ -74,14 +74,19 @@ public class UnmovableObjectHandleGenerator extends ObjectHandleGenerator {
     addVariable("isAlias", isAlias);
     addVariable("primaryObjectHandle", baseObjectHandle);
     addVariable("movableMethods", movableMethods);
+    addVariable("pureObject", getPureObjectClassName());
     return true;
+  }
+
+  private String getPureObjectClassName() {
+    return addImportAndGetSimpleName(NameConventionFunctions.getUnmovablePureObjectTypename(sourceArtifact().className(), false));
   }
 
   private void analyzeAlias() {
     Optional<CustomTypeReference> equivalentDomain = DomainFunctions.getAliasNearNeighbourDomain(sourceArtifact());
     isAlias = equivalentDomain.isPresent();
     if (isAlias) {
-      baseObjectHandle = buildObjectHandleDeclaration(equivalentDomain.get(), ObjectHandleTypes.Unmovable, true);
+      baseObjectHandle = buildObjectHandleDeclaration(equivalentDomain.get(), ObjectHandleTypes.UnmovableHandle, true);
     }
   }
 

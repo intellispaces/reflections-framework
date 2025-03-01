@@ -46,6 +46,7 @@ public abstract class ChannelGenerator extends JaquariusArtifactGenerator {
       addImport(sourceArtifactName());
     }
     addImport(Channel.class);
+    addHiddenImports(context);
 
     addVariable("targetClassLink", buildDomainLink(channelMethod.returnType().orElseThrow()));
     addVariable("channelMethod", buildChannelMethodSignature());

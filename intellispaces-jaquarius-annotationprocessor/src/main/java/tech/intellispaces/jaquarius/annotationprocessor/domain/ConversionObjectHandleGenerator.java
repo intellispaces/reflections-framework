@@ -57,7 +57,7 @@ abstract class ConversionObjectHandleGenerator extends AbstractObjectHandleGener
     domainClassSimpleName = addImportAndGetSimpleName(superDomainType.targetType().canonicalName());
     domainTypeParamsBrief = superDomainType.targetType().typeParametersBriefDeclaration();
     classTypeParams = ObjectHandleFunctions.getObjectHandleTypeParams(
-        sourceArtifact(), ObjectHandleTypes.General, ObjectReferenceForms.Object, this::addImportAndGetSimpleName, true
+        sourceArtifact(), ObjectHandleTypes.UndefinedHandle, ObjectReferenceForms.Object, this::addImportAndGetSimpleName, false, true
     );
     classTypeParamsBrief = sourceArtifact().typeParametersBriefDeclaration();
     domainTypeArguments = superDomainType.typeArgumentsDeclaration(this::addImportAndGetSimpleName);
@@ -279,11 +279,11 @@ abstract class ConversionObjectHandleGenerator extends AbstractObjectHandleGener
           ChannelFunctions.getTraverseTypes(method).stream().anyMatch(TraverseType::isMoving)
               || method.hasAnnotation(Movable.class)
       ) {
-        sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.Movable, true));
+        sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.MovableHandle, true));
       } else if (method.hasAnnotation(Unmovable.class)) {
-        sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.Unmovable, true));
+        sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.UnmovableHandle, true));
       } else {
-        sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.General, true));
+        sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.UndefinedHandle, true));
       }
     }
   }

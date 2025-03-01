@@ -7,8 +7,8 @@ import {{$importedClass}};
 {{end}}
 
 /**
- * Movable downward object handle for objects of domain {@link {{$sourceArtifactSimpleName}}}.<p/>
- *
+ * Movable downward object handle for objects of domain {@link {{$sourceArtifactSimpleName}}}.
+ * <p>
  * This class was generated automatically. Don't try to change it.
  */
 @ObjectHandle({{$sourceArtifactSimpleName}}.class)

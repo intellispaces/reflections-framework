@@ -5,17 +5,17 @@ import {{$importedClass}};
 {{end}}
 
 /**
- * Movable object handle for domain {@link {{$sourceArtifactSimpleName}}}.<p/>
- *
+ * Movable object handle for domain {@link {{$sourceArtifactSimpleName}}}.
+ * <p>
  * This class was generated automatically. Don't try to change it.
  */
 @ObjectHandle({{$sourceArtifactSimpleName}}.class)
 @Movable
 {{$generatedAnnotation}}
 {{when $isAlias}}
-public interface {{$generatedArtifactSimpleName}}{{$handleTypeParamsFull}} extends {{$generalObjectHandle}}{{$handleTypeParamsBrief}}, {{$baseObjectHandle}} {
+public interface {{$generatedArtifactSimpleName}}{{$handleTypeParamsFull}} extends {{$pureObject}}{{$handleTypeParamsBrief}}, {{$generalObjectHandle}}{{$handleTypeParamsBrief}}, {{$baseObjectHandle}} {
 {{else}}
-public interface {{$generatedArtifactSimpleName}}{{$handleTypeParamsFull}} extends {{$generalObjectHandle}}{{$handleTypeParamsBrief}}, MovableObjectHandle<{{$sourceArtifactSimpleName}}{{$domainTypeParamsBrief}}> {
+public interface {{$generatedArtifactSimpleName}}{{$handleTypeParamsFull}} extends {{$pureObject}}{{$handleTypeParamsBrief}}, {{$generalObjectHandle}}{{$handleTypeParamsBrief}}, MovableObjectHandle<{{$sourceArtifactSimpleName}}{{$domainTypeParamsBrief}}> {
 {{end}}
 
 {{for method : $conversionMethods}}

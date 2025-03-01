@@ -263,7 +263,7 @@ abstract class ObjectHandleWrapperGenerator extends AbstractObjectHandleGenerato
       MethodParam domainParam = domainMethodParams.get(i);
       ObjectReferenceForm referenceForm = ObjectHandleFunctions.getReferenceForm(domainParam.type(), methodForm);
       String domainMethodParamDeclaration = ObjectHandleFunctions.getObjectHandleDeclaration(
-          domainParam.type(), ObjectHandleTypes.General, referenceForm, true, Function.identity()
+          domainParam.type(), ObjectHandleTypes.UndefinedHandle, referenceForm, true, false, Function.identity()
       );
 
       MethodParam guideParam = guideMethodParams.get(i);
@@ -367,7 +367,7 @@ abstract class ObjectHandleWrapperGenerator extends AbstractObjectHandleGenerato
   private String buildGuideParamClassName(TypeReference type, TraverseQualifierSetForm methodForm) {
     return ObjectHandleFunctions.getObjectHandleDeclaration(
         AnnotationGeneratorFunctions.normalizeType(type),
-        ObjectHandleTypes.General,
+        ObjectHandleTypes.UndefinedHandle,
         ObjectHandleFunctions.getReferenceForm(type, methodForm),
         false,
         true,

@@ -5,20 +5,20 @@ import {{$importedClass}};
 {{end}}
 
 /**
- * Common object handle for domain {@link {{$sourceArtifactSimpleName}}}.<p/>
- *
+ * Undefined object handle for domain {@link {{$sourceArtifactSimpleName}}}.
+ * <p>
  * This class was generated automatically. Don't try to change it.
  */
 @ObjectHandle({{$sourceArtifactSimpleName}}.class)
 {{$generatedAnnotation}}
 {{when $isAlias}}
-public interface {{$generatedArtifactSimpleName}}{{$handleTypeParamsFull}} extends {{$primaryObjectHandle}}, {{$sourceArtifactSimpleName}}{{$domainTypeParamsBrief}} {
+public interface {{$generatedArtifactSimpleName}}{{$handleTypeParamsFull}} extends {{$pureObject}}{{$handleTypeParamsBrief}}, {{$primaryObjectHandle}}, {{$sourceArtifactSimpleName}}{{$domainTypeParamsBrief}} {
 
   default Type<{{$primaryDomainSimpleName}}{{$primaryDomainTypeArguments}}> domain() {
     return {{$domainType}}
   }
 {{else}}
-public interface {{$generatedArtifactSimpleName}}{{$handleTypeParamsFull}} extends tech.intellispaces.jaquarius.object.reference.ObjectHandle<{{$sourceArtifactSimpleName}}{{$domainTypeParamsBrief}}>, {{$sourceArtifactSimpleName}}{{$domainTypeParamsBrief}} {
+public interface {{$generatedArtifactSimpleName}}{{$handleTypeParamsFull}} extends {{$pureObject}}{{$handleTypeParamsBrief}}, tech.intellispaces.jaquarius.object.reference.ObjectHandle<{{$sourceArtifactSimpleName}}{{$domainTypeParamsBrief}}>, {{$sourceArtifactSimpleName}}{{$domainTypeParamsBrief}} {
 
   default Type<{{$sourceArtifactSimpleName}}{{$domainTypeParamsBrief}}> domain() {
     return {{$domainType}}

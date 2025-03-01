@@ -5,17 +5,17 @@ import {{$importedClass}};
 {{end}}
 
 /**
- * Unmovable object handle for domain {@link {{$sourceArtifactSimpleName}}}.<p/>
- *
+ * Unmovable object handle for domain {@link {{$sourceArtifactSimpleName}}}.
+ * <p>
  * This class was generated automatically. Don't try to change it.
  */
 @ObjectHandle({{$sourceArtifactSimpleName}}.class)
 @Unmovable
 {{$generatedAnnotation}}
 {{when $isAlias}}
-public interface {{$generatedArtifactSimpleName}}{{$handleTypeParamsFull}} extends {{$generalObjectHandle}}{{$handleTypeParamsBrief}}, {{$primaryObjectHandle}} {
+public interface {{$generatedArtifactSimpleName}}{{$handleTypeParamsFull}} extends {{$pureObject}}{{$handleTypeParamsBrief}}, {{$generalObjectHandle}}{{$handleTypeParamsBrief}}, {{$primaryObjectHandle}} {
 {{else}}
-public interface {{$generatedArtifactSimpleName}}{{$handleTypeParamsFull}} extends {{$generalObjectHandle}}{{$handleTypeParamsBrief}}, UnmovableObjectHandle<{{$sourceArtifactSimpleName}}{{$domainTypeParamsBrief}}> {
+public interface {{$generatedArtifactSimpleName}}{{$handleTypeParamsFull}} extends {{$pureObject}}{{$handleTypeParamsBrief}}, {{$generalObjectHandle}}{{$handleTypeParamsBrief}}, UnmovableObjectHandle<{{$sourceArtifactSimpleName}}{{$domainTypeParamsBrief}}> {
 {{end}}
 
 {{for method : $conversionMethods}}

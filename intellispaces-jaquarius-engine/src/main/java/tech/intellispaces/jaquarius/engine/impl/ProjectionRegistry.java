@@ -59,19 +59,12 @@ class ProjectionRegistry implements ProjectionProvider {
 
   @Override
   public <T> T getProjection(String name, Class<T> targetObjectHandleClass) {
-    if (!ObjectHandleFunctions.isObjectHandleClass(targetObjectHandleClass)) {
-      throw UnexpectedExceptions.withMessage("Expected target object handle class");
-    }
     return getProjection(name, targetObjectHandleClass, new LinkedHashSet<>());
   }
 
   @Override
   @SuppressWarnings("unchecked")
   public <T> List<T> getProjections(Class<T> targetObjectHandleClass) {
-    if (!ObjectHandleFunctions.isObjectHandleClass(targetObjectHandleClass)) {
-      throw UnexpectedExceptions.withMessage("Expected target object handle class");
-    }
-
     List<T> projections = new ArrayList<>();
     for (ProjectionDefinition projectionDefinition : projectionDefinitions.values()) {
       if (projectionDefinition.type() == targetObjectHandleClass || targetObjectHandleClass.isAssignableFrom(projectionDefinition.type())) {
@@ -107,10 +100,6 @@ class ProjectionRegistry implements ProjectionProvider {
   }
 
   public <T> void addContextProjection(String name, Class<T> targetObjectHandleClass, T target) {
-    if (!ObjectHandleFunctions.isObjectHandleClass(targetObjectHandleClass)) {
-      throw UnexpectedExceptions.withMessage("Expected target object handle class");
-    }
-
     ModuleProjection projection = new ModuleProjectionImpl(name, targetObjectHandleClass, null, target);
 
     Map<String, ModuleProjection> mapByName = contextProjectionsByName.get();
@@ -146,6 +135,9 @@ class ProjectionRegistry implements ProjectionProvider {
     ModuleProjection projection = getProjection(name, dependencyPath);
     if (projection == null) {
       return null;
+    }
+    if (projection.target() != null && ObjectHandleFunctions.isCompatibleObjectType(targetObjectHandleClass, projection.target().getClass())) {
+      return (T) projection.target();
     }
     if (!ObjectHandleFunctions.isCompatibleObjectType(targetObjectHandleClass, projection.type())) {
       T downgradedProjection = ObjectHandleFunctions.tryDowngrade(projection.target(), targetObjectHandleClass);

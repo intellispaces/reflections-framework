@@ -222,7 +222,7 @@ public final class GuideFunctions {
     }
     CustomType objectHandleWrapperType = Interfaces.of(objectHandleImplClass.get());
 
-    CustomType domainType = ObjectHandleFunctions.getDomainTypeOfObjectHandle(Classes.of(objectHandleClass));
+    CustomType domainType = ObjectHandleFunctions.getDomainOfObjectHandle(Classes.of(objectHandleClass));
 
     for (MethodStatement method : domainType.declaredMethods()) {
       if (NameConventionFunctions.isConversionMethod(method)) {

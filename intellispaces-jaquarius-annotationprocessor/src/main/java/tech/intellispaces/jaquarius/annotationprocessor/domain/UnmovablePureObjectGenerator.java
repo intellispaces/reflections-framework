@@ -4,6 +4,7 @@ import tech.intellispaces.commons.annotation.processor.ArtifactGeneratorContext;
 import tech.intellispaces.commons.base.exception.UnexpectedExceptions;
 import tech.intellispaces.commons.java.reflection.customtype.CustomType;
 import tech.intellispaces.commons.java.reflection.method.MethodStatement;
+import tech.intellispaces.commons.java.reflection.reference.CustomTypeReference;
 import tech.intellispaces.commons.java.reflection.reference.TypeReference;
 import tech.intellispaces.jaquarius.annotation.Movable;
 import tech.intellispaces.jaquarius.annotation.ObjectHandle;
@@ -13,8 +14,10 @@ import tech.intellispaces.jaquarius.object.reference.ObjectHandleType;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
 import tech.intellispaces.jaquarius.object.reference.UnmovableObjectHandle;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
+import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
 import tech.intellispaces.jaquarius.traverse.TraverseType;
 
+import java.util.Optional;
 import java.util.stream.Stream;
 
 public class UnmovablePureObjectGenerator extends PureObjectGenerator {
@@ -52,6 +55,7 @@ public class UnmovablePureObjectGenerator extends PureObjectGenerator {
         UnexpectedExceptions.class
     );
 
+    analyzeAlias();
     analyzeDomain();
     analyzeObjectHandleMethods(sourceArtifact(), context);
     analyzeConversionMethods(sourceArtifact());
@@ -60,7 +64,17 @@ public class UnmovablePureObjectGenerator extends PureObjectGenerator {
     addVariable("handleTypeParamsFull", typeParamsFull);
     addVariable("conversionMethods", conversionMethods);
     addVariable("undefinedPureObjectHandle", getUndefinedOriginHandleClassName());
+    addVariable("isAlias", isAlias);
+    addVariable("primaryObject", baseObjectHandle);
     return true;
+  }
+
+  protected void analyzeAlias() {
+    Optional<CustomTypeReference> equivalentDomain = DomainFunctions.getAliasNearNeighbourDomain(sourceArtifact());
+    isAlias = equivalentDomain.isPresent();
+    if (isAlias) {
+      baseObjectHandle = buildObjectHandleDeclaration(equivalentDomain.get(), ObjectHandleTypes.UnmovablePureObject, true);
+    }
   }
 
   @Override

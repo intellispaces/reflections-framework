@@ -9,8 +9,13 @@ import {{$importedClass}};
  * <p>
  * This class was generated automatically. Don't try to change it.
  */
+@Movable
 {{$generatedAnnotation}}
+{{when $isAlias}}
+public interface {{$generatedArtifactSimpleName}}{{$handleTypeParamsFull}} extends {{$undefinedPureObjectHandle}}{{$handleTypeParamsBrief}}, {{$primaryObject}} {
+{{else}}
 public interface {{$generatedArtifactSimpleName}}{{$handleTypeParamsFull}} extends {{$undefinedPureObjectHandle}}{{$handleTypeParamsBrief}} {
+{{end}}
 
 {{for method : $conversionMethods}}
   {{$method."declaration"}};

@@ -279,11 +279,11 @@ abstract class ConversionObjectHandleGenerator extends AbstractObjectHandleGener
           ChannelFunctions.getTraverseTypes(method).stream().anyMatch(TraverseType::isMoving)
               || method.hasAnnotation(Movable.class)
       ) {
-        sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.MovableHandle, true));
+        sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.MovablePureObject, true));
       } else if (method.hasAnnotation(Unmovable.class)) {
-        sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.UnmovableHandle, true));
+        sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.UnmovablePureObject, true));
       } else {
-        sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.UndefinedHandle, true));
+        sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.UndefinedPureObject, true));
       }
     }
   }

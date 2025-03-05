@@ -1,7 +1,10 @@
 package tech.intellispaces.jaquarius.annotationprocessor.objecthandle;
 
 import tech.intellispaces.commons.annotation.processor.ArtifactGeneratorContext;
+import tech.intellispaces.commons.base.exception.UnexpectedExceptions;
 import tech.intellispaces.commons.base.type.PrimitiveFunctions;
+import tech.intellispaces.commons.base.type.Type;
+import tech.intellispaces.commons.base.type.Types;
 import tech.intellispaces.commons.java.reflection.customtype.CustomType;
 import tech.intellispaces.commons.java.reflection.method.MethodStatement;
 import tech.intellispaces.jaquarius.annotation.Ordinal;
@@ -14,6 +17,7 @@ import tech.intellispaces.jaquarius.engine.ObjectHandleBroker;
 import tech.intellispaces.jaquarius.engine.description.ObjectHandleMethodPurposes;
 import tech.intellispaces.jaquarius.engine.description.ObjectHandleTypeDescription;
 import tech.intellispaces.jaquarius.exception.TraverseException;
+import tech.intellispaces.jaquarius.object.reference.MovableObjectHandle;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleType;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
@@ -49,7 +53,7 @@ public class UnmovableObjectHandleWrapperGenerator extends ObjectHandleWrapperGe
 
   @Override
   protected ObjectHandleType getObjectHandleType() {
-    return ObjectHandleTypes.UnmovableHandle;
+    return ObjectHandleTypes.UnmovablePureObject;
   }
 
   @Override
@@ -58,7 +62,10 @@ public class UnmovableObjectHandleWrapperGenerator extends ObjectHandleWrapperGe
         Ordinal.class,
         Wrapper.class,
         Modules.class,
+        Type.class,
+        Types.class,
         ObjectHandleWrapper.class,
+        MovableObjectHandle.class,
         Channel1.class,
         ChannelFunction0.class,
         ChannelFunction1.class,
@@ -69,10 +76,12 @@ public class UnmovableObjectHandleWrapperGenerator extends ObjectHandleWrapperGe
         JaquariusEngines.class,
         TraverseTypes.class,
         ObjectHandleMethodPurposes.class,
-        TraverseException.class
+        TraverseException.class,
+        UnexpectedExceptions.class
     );
 
     analyzeDomain();
+    analyzeAlias();
     analyzeTypeParams();
     analyzeConstructors();
     analyzeInjectedGuides();
@@ -82,6 +91,13 @@ public class UnmovableObjectHandleWrapperGenerator extends ObjectHandleWrapperGe
 
     addVariable("typeParamsFull", typeParamsFull);
     addVariable("typeParamsBrief", typeParamsBrief);
+    addVariable("isAlias", isAlias);
+    addVariable("primaryDomainSimpleName", primaryDomainSimpleName);
+    addVariable("primaryDomainTypeArguments", primaryDomainTypeArguments);
+    addVariable("domainClassSimpleName", domainSimpleClassName);
+    addVariable("primaryDomainTypeDeclaration", primaryDomainTypeDeclaration);
+    addVariable("domainTypeDeclaration", domainTypeDeclaration);
+    addVariable("domainTypeParamsBrief", domainTypeParamsBrief);
     addVariable("constructors", constructors);
     addVariable("methodDescriptions", methodDescriptions);
     addVariable("guideActionMethods", guideMethods);
@@ -90,6 +106,7 @@ public class UnmovableObjectHandleWrapperGenerator extends ObjectHandleWrapperGe
     addVariable("injectionMethods", injectionMethods);
     addVariable("conversionMethods", conversionMethods);
     addVariable("notImplRelease", !implRelease);
+    addVariable("objectHandleClassSimpleName", getObjectHandleSimpleName());
     return true;
   }
 

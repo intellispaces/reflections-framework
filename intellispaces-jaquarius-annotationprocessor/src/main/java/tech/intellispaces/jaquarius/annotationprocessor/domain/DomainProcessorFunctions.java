@@ -65,21 +65,21 @@ public interface DomainProcessorFunctions {
   private static void addBasicObjectHandleGenerators(
       CustomType domainType, List<ArtifactGenerator> generators, RoundEnvironment roundEnv
   ) {
-    if (
-        AnnotationProcessorFunctions.isAutoGenerationEnabled(domainType, ArtifactTypes.ObjectHandle, roundEnv)
-    ) {
-      generators.add(new UndefinedObjectHandleGenerator(domainType));
-    }
-    if (
-        AnnotationProcessorFunctions.isAutoGenerationEnabled(domainType, ArtifactTypes.MovableObjectHandle, roundEnv)
-    ) {
-      generators.add(new MovableObjectHandleGenerator(domainType));
-    }
-    if (
-        AnnotationProcessorFunctions.isAutoGenerationEnabled(domainType, ArtifactTypes.UnmovableObjectHandle, roundEnv)
-    ) {
-      generators.add(new UnmovableObjectHandleGenerator(domainType));
-    }
+//    if (
+//        AnnotationProcessorFunctions.isAutoGenerationEnabled(domainType, ArtifactTypes.ObjectHandle, roundEnv)
+//    ) {
+//      generators.add(new UndefinedObjectHandleGenerator(domainType));
+//    }
+//    if (
+//        AnnotationProcessorFunctions.isAutoGenerationEnabled(domainType, ArtifactTypes.MovableObjectHandle, roundEnv)
+//    ) {
+//      generators.add(new MovableObjectHandleGenerator(domainType));
+//    }
+//    if (
+//        AnnotationProcessorFunctions.isAutoGenerationEnabled(domainType, ArtifactTypes.UnmovableObjectHandle, roundEnv)
+//    ) {
+//      generators.add(new UnmovableObjectHandleGenerator(domainType));
+//    }
     generators.add(new UndefinedPureObjectGenerator(domainType));
     generators.add(new MovablePureObjectGenerator(domainType));
     generators.add(new UnmovablePureObjectGenerator(domainType));

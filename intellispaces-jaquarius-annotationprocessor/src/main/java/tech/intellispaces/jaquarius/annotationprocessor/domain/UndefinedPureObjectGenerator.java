@@ -2,19 +2,24 @@ package tech.intellispaces.jaquarius.annotationprocessor.domain;
 
 import tech.intellispaces.commons.annotation.processor.ArtifactGeneratorContext;
 import tech.intellispaces.commons.base.exception.UnexpectedExceptions;
-import tech.intellispaces.commons.base.type.Type;
 import tech.intellispaces.commons.java.reflection.customtype.CustomType;
 import tech.intellispaces.commons.java.reflection.method.MethodStatement;
 import tech.intellispaces.commons.java.reflection.reference.TypeReference;
+import tech.intellispaces.jaquarius.annotation.Channel;
+import tech.intellispaces.jaquarius.annotation.Movable;
 import tech.intellispaces.jaquarius.annotation.ObjectHandle;
 import tech.intellispaces.jaquarius.annotation.Unmovable;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleType;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.object.reference.UnmovableObjectHandle;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
+import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
+import tech.intellispaces.jaquarius.traverse.TraverseQualifierSetForm;
 import tech.intellispaces.jaquarius.traverse.TraverseType;
 
+import java.util.Map;
 import java.util.stream.Stream;
 
 public class UndefinedPureObjectGenerator extends PureObjectGenerator {
@@ -64,22 +69,50 @@ public class UndefinedPureObjectGenerator extends PureObjectGenerator {
 
   @Override
   protected Stream<MethodStatement> getObjectHandleMethods(CustomType customType, ArtifactGeneratorContext context) {
-    return super.getObjectHandleMethods(customType, context)
-        .filter(m -> ChannelFunctions.getTraverseTypes(m).stream().noneMatch(TraverseType::isMovingBased))
-        .filter(UndefinedPureObjectGenerator::notTypeRelatedMethod);
+    return buildActualType(customType, context)
+        .actualMethods().stream()
+        .filter(DomainFunctions::isNotDomainClassGetter)
+        .filter(m -> excludeDeepConversionMethods(m, customType))
+        .filter(m -> !ChannelFunctions.isChannelMethod(m)
+            || ChannelFunctions.getTraverseTypes(m).stream().noneMatch(TraverseType::isMovingBased));
   }
 
-  private static boolean notTypeRelatedMethod(MethodStatement method) {
-    if (!method.returnType().orElseThrow().isCustomTypeReference()) {
-      return true;
+  @Override
+  protected Map<String, String> generateMethod(
+      MethodStatement method, TraverseQualifierSetForm methodForm, ObjectReferenceForm targetForm, int methodOrdinal
+  ) {
+    if (method.hasAnnotation(Channel.class)) {
+      return super.generateMethod(method, methodForm, targetForm, methodOrdinal);
+    } else {
+      return buildAdditionalMethod(method, methodForm);
     }
-    CustomType returnType = method.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow().targetType();
-    return !Type.class.getCanonicalName().equals(returnType.canonicalName());
+  }
+
+  private Map<String, String> buildAdditionalMethod(MethodStatement method, TraverseQualifierSetForm methodForm) {
+    var sb = new StringBuilder();
+    appendMethodTypeParameters(sb, method);
+    appendMethodReturnType(sb, method);
+    sb.append(" ");
+    sb.append(method.name());
+    sb.append("(");
+    appendMethodParams(sb, method, methodForm);
+    sb.append(")");
+    appendMethodExceptions(sb, method);
+    return Map.of(
+        "javadoc", buildGeneratedMethodJavadoc(method.owner().canonicalName(), method),
+        "declaration", sb.toString()
+    );
   }
 
   @Override
   protected void appendObjectFormMethodReturnType(StringBuilder sb, MethodStatement method) {
     TypeReference domainReturnType = method.returnType().orElseThrow();
-    sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.UndefinedPureObject, true));
+    if (method.hasAnnotation(Movable.class)) {
+      sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.MovablePureObject, true));
+    } else if (method.hasAnnotation(Unmovable.class)) {
+      sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.UnmovablePureObject, true));
+    } else {
+      sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.UndefinedPureObject, true));
+    }
   }
 }

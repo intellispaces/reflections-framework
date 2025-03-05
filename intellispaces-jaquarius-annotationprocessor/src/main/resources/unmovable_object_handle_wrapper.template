@@ -11,7 +11,7 @@ import static tech.intellispaces.jaquarius.engine.description.ObjectHandleMethod
  */
 @Wrapper({{$sourceArtifactSimpleName}}.class)
 {{$generatedAnnotation}}
-public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sourceArtifactSimpleName}}{{$typeParamsBrief}} implements ObjectHandleWrapper {
+public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sourceArtifactSimpleName}}{{$typeParamsBrief}} implements {{$objectHandleClassSimpleName}}<{{$domainClassSimpleName}}{{$typeParamsBrief}}>, ObjectHandleWrapper {
   private static ObjectHandleTypeDescription $TYPE;
   private final ObjectHandleBroker $broker;
 
@@ -20,11 +20,36 @@ public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sour
     super({{for param : $constructor."params"}}{{$param."name"}}{{when $param.isNotLast()}},{{end}}{{end}});
     $broker = $registerObjectHandle();
   }
+
 {{end}}
 
   @Override
   public ObjectHandleBroker $broker() {
     return this.$broker;
+  }
+
+  @Override
+  public boolean isFocused() {
+    return true;
+  }
+
+  @Override
+  public Type<{{$domainClassSimpleName}}{{$typeParamsBrief}}> domain() {
+    return {{$domainTypeDeclaration}}
+  }
+
+  @Override
+  public Class<{{$domainClassSimpleName}}> domainAsClass() {
+    return {{$domainClassSimpleName}}.class;
+  }
+
+  public Type<{{$primaryDomainSimpleName}}{{$primaryDomainTypeArguments}}> primaryDomain() {
+    return {{$primaryDomainTypeDeclaration}}
+  }
+
+  @Override
+  public MovableObjectHandle<{{$domainClassSimpleName}}{{$typeParamsBrief}}> asMovableOrElseThrow() {
+    throw UnexpectedExceptions.withMessage("Unmovable object");
   }
 
 {{for method : $conversionMethods}}

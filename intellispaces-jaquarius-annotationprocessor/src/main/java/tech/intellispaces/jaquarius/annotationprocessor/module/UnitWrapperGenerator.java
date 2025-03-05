@@ -166,11 +166,6 @@ public class UnitWrapperGenerator extends JaquariusArtifactGenerator {
     for (MethodStatement method : methods) {
       if (method.isAbstract() && !method.isDefault()) {
         if (AnnotationGeneratorFunctions.isProjectionMethod(method)) {
-          if (!AnnotationGeneratorFunctions.isReturnObjectHandle(method)) {
-            throw ConfigurationExceptions.withMessage("Projection method '{0}' in class {1} must return object handle",
-                method.name(), sourceArtifact().className()
-            );
-          }
           addProjectionInjection(method);
           addProjectionDefinitionForAbstractMethod(method);
         } else if (AnnotationGeneratorFunctions.isInjectionMethod(method)) {

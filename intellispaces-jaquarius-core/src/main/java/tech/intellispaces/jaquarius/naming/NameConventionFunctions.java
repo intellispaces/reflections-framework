@@ -37,6 +37,14 @@ public interface NameConventionFunctions {
     return channelName + "Channel";
   }
 
+  static String getDomainNameOfPureObject(String pureObjectCanonicalName) {
+    String simpleName = ClassNameFunctions.getSimpleName(pureObjectCanonicalName);
+    simpleName = StringFunctions.removeHeadIfPresent(simpleName, "Unmovable");
+    simpleName = StringFunctions.removeHeadIfPresent(simpleName, "Movable");
+    simpleName = simpleName + "Domain";
+    return ClassNameFunctions.replaceSimpleName(pureObjectCanonicalName, simpleName);
+  }
+
   static String getObjectHandleTypename(
       String domainClassName, ObjectHandleType handleType, boolean replaceKeyDomain
   ) {
@@ -186,10 +194,9 @@ public interface NameConventionFunctions {
       CustomType domainType, CustomType baseDomainType, ObjectHandleType handleType
   ) {
     return switch (ObjectHandleTypes.from(handleType)) {
-      case UndefinedHandle -> getGeneralDownwardObjectHandleTypename(domainType, baseDomainType);
-      case UnmovableHandle -> getUnmovableDownwardObjectHandleTypename(domainType, baseDomainType);
-      case MovableHandle -> getMovableDownwardObjectHandleTypename(domainType, baseDomainType);
-      default -> throw ConfigurationExceptions.withMessage("Unexpected object type: {0}", handleType);
+      case UndefinedHandle, UndefinedPureObject -> getGeneralDownwardObjectHandleTypename(domainType, baseDomainType);
+      case UnmovableHandle, UnmovablePureObject -> getUnmovableDownwardObjectHandleTypename(domainType, baseDomainType);
+      case MovableHandle, MovablePureObject -> getMovableDownwardObjectHandleTypename(domainType, baseDomainType);
     };
   }
 
@@ -204,8 +211,7 @@ public interface NameConventionFunctions {
     String packageName = ClassNameFunctions.getPackageName(domainType.canonicalName());
     String simpleName = "Movable" +
         StringFunctions.capitalizeFirstLetter(StringFunctions.removeTailOrElseThrow(baseDomainType.simpleName(), "Domain")) +
-        "BasedOn" + StringFunctions.capitalizeFirstLetter(StringFunctions.removeTailOrElseThrow(domainType.simpleName(), "Domain"))
-        + "Handle";
+        "BasedOn" + StringFunctions.capitalizeFirstLetter(StringFunctions.removeTailOrElseThrow(domainType.simpleName(), "Domain"));
     return ClassNameFunctions.joinPackageAndSimpleName(packageName, simpleName);
   }
 
@@ -213,8 +219,7 @@ public interface NameConventionFunctions {
     String packageName = ClassNameFunctions.getPackageName(domainType.canonicalName());
     String simpleName = "Unmovable" +
         StringFunctions.capitalizeFirstLetter(StringFunctions.removeTailOrElseThrow(baseDomainType.simpleName(), "Domain")) +
-        "BasedOn" + StringFunctions.capitalizeFirstLetter(StringFunctions.removeTailOrElseThrow(domainType.simpleName(), "Domain"))
-        + "Handle";
+        "BasedOn" + StringFunctions.capitalizeFirstLetter(StringFunctions.removeTailOrElseThrow(domainType.simpleName(), "Domain"));
     return ClassNameFunctions.joinPackageAndSimpleName(packageName, simpleName);
   }
 

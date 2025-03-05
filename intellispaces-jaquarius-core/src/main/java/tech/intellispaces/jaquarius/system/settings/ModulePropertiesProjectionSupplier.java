@@ -33,8 +33,8 @@ public class ModulePropertiesProjectionSupplier extends InjectedMethodProjection
     if (settingsValue.getClass() == expectedReturnClass) {
       return settingsValue;
     }
-    if (ObjectHandleFunctions.dictionaryHandleClass().getCanonicalName().equals(expectedReturnClass.getCanonicalName())) {
-      if (!ObjectHandleFunctions.dictionaryHandleClass().isAssignableFrom(settingsValue.getClass())) {
+    if (ObjectHandleFunctions.propertiesHandleClass().getCanonicalName().equals(expectedReturnClass.getCanonicalName())) {
+      if (!ObjectHandleFunctions.propertiesHandleClass().isAssignableFrom(settingsValue.getClass())) {
         throw UnexpectedExceptions.withMessage("Invalid return type of method '{0}' in class {1}",
             injectedMethod.name(), injectedMethod.owner().canonicalName());
       }

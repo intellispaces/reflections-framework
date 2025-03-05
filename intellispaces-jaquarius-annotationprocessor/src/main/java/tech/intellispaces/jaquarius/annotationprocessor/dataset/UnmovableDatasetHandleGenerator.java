@@ -4,19 +4,25 @@ import tech.intellispaces.commons.action.runnable.RunnableAction;
 import tech.intellispaces.commons.action.text.StringActions;
 import tech.intellispaces.commons.annotation.processor.ArtifactGeneratorContext;
 import tech.intellispaces.commons.base.exception.NotImplementedExceptions;
+import tech.intellispaces.commons.base.exception.UnexpectedExceptions;
 import tech.intellispaces.commons.base.type.Type;
 import tech.intellispaces.commons.base.type.Types;
 import tech.intellispaces.commons.java.reflection.customtype.CustomType;
 import tech.intellispaces.commons.java.reflection.method.MethodStatement;
+import tech.intellispaces.commons.java.reflection.reference.CustomTypeReference;
 import tech.intellispaces.commons.java.reflection.reference.NamedReference;
 import tech.intellispaces.commons.java.reflection.reference.TypeReference;
 import tech.intellispaces.jaquarius.annotation.Name;
 import tech.intellispaces.jaquarius.annotation.ObjectHandle;
-import tech.intellispaces.jaquarius.annotationprocessor.JaquariusArtifactGenerator;
+import tech.intellispaces.jaquarius.annotationprocessor.AbstractObjectHandleGenerator;
 import tech.intellispaces.jaquarius.channel.Channel1;
 import tech.intellispaces.jaquarius.exception.TraverseException;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
+import tech.intellispaces.jaquarius.object.reference.MovableObjectHandle;
+import tech.intellispaces.jaquarius.object.reference.ObjectHandleType;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
+import tech.intellispaces.jaquarius.object.reference.UnmovableObjectHandle;
+import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
 import tech.intellispaces.jaquarius.system.Modules;
 import tech.intellispaces.jaquarius.traverse.MappingTraverse;
 
@@ -25,9 +31,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
-public class UnmovableDatasetHandleGenerator extends JaquariusArtifactGenerator {
-  protected String typeParamsBrief;
+public class UnmovableDatasetHandleGenerator extends AbstractObjectHandleGenerator {
+  private String typeParamsBrief;
+  private boolean isAlias;
+  private String domainType;
   private final List<Map<String, String>> projectionProperties = new ArrayList<>();
 
   public UnmovableDatasetHandleGenerator(CustomType dataType) {
@@ -50,6 +59,11 @@ public class UnmovableDatasetHandleGenerator extends JaquariusArtifactGenerator 
   }
 
   @Override
+  protected ObjectHandleType getObjectHandleType() {
+    return ObjectHandleTypes.UnmovablePureObject;
+  }
+
+  @Override
   protected boolean analyzeSourceArtifact(ArtifactGeneratorContext context) {
     if (sourceArtifact().isNested()) {
       addImport(sourceArtifactName());
@@ -64,23 +78,39 @@ public class UnmovableDatasetHandleGenerator extends JaquariusArtifactGenerator 
         Channel1.class,
         MappingTraverse.class,
         TraverseException.class,
-        NotImplementedExceptions.class
+        UnmovableObjectHandle.class,
+        MovableObjectHandle.class,
+        NotImplementedExceptions.class,
+        UnexpectedExceptions.class
     );
 
+    analyzeAlias();
     analyzeTypeParams();
     analyzeProjections();
 
-    addVariable("objectHandleClassName", NameConventionFunctions.getUnmovableObjectHandleTypename(sourceArtifact().className(), true));
+    addVariable("objectHandleClassName", NameConventionFunctions.getUnmovablePureObjectTypename(sourceArtifact().className(), true));
     addVariable("typeParamsBrief", typeParamsBrief);
     addVariable("projections", projectionProperties);
+    addVariable("domainType", domainType);
 
     return true;
+  }
+
+  @SuppressWarnings("unchecked,rawtypes")
+  private void analyzeAlias() {
+    Optional<CustomTypeReference> mainEquivalentDomain = DomainFunctions.getAliasBaseDomain(sourceArtifact());
+    isAlias = mainEquivalentDomain.isPresent();
+    if (isAlias) {
+      domainType = buildDomainType(mainEquivalentDomain.get().targetType(), mainEquivalentDomain.get().typeArguments());
+    } else {
+      domainType = buildDomainType(sourceArtifact(), (List) sourceArtifact().typeParameters());
+    }
   }
 
   private void analyzeProjections() {
     for (MethodStatement method : sourceArtifact().actualMethods()) {
       TypeReference type = method.returnType().orElseThrow();
-      String handleType = buildObjectHandleDeclaration(type, ObjectHandleTypes.UnmovableHandle, true);
+      String handleType = buildObjectHandleDeclaration(type, ObjectHandleTypes.UnmovablePureObject, true);
 
       Map<String, String> properties = new HashMap<>();
       properties.put("type", handleType);

@@ -3,6 +3,7 @@ package tech.intellispaces.jaquarius.annotationprocessor.domain;
 import tech.intellispaces.commons.annotation.processor.ArtifactGeneratorContext;
 import tech.intellispaces.commons.java.reflection.customtype.CustomType;
 import tech.intellispaces.commons.java.reflection.method.MethodStatement;
+import tech.intellispaces.commons.java.reflection.reference.CustomTypeReference;
 import tech.intellispaces.commons.java.reflection.reference.TypeReference;
 import tech.intellispaces.jaquarius.annotation.Movable;
 import tech.intellispaces.jaquarius.annotation.ObjectHandle;
@@ -17,9 +18,11 @@ import tech.intellispaces.jaquarius.object.reference.MovableObjectHandle;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleType;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
+import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
 import tech.intellispaces.jaquarius.traverse.MappingOfMovingTraverse;
 import tech.intellispaces.jaquarius.traverse.TraverseType;
 
+import java.util.Optional;
 import java.util.stream.Stream;
 
 public class MovablePureObjectGenerator extends PureObjectGenerator {
@@ -62,16 +65,27 @@ public class MovablePureObjectGenerator extends PureObjectGenerator {
         TraverseException.class
     );
 
+    analyzeAlias();
     analyzeDomain();
     analyzeObjectHandleMethods(sourceArtifact(), context);
     analyzeConversionMethods(sourceArtifact());
 
+    addVariable("isAlias", isAlias);
+    addVariable("primaryObject", baseObjectHandle);
     addVariable("handleTypeParamsFull", typeParamsFull);
     addVariable("handleTypeParamsBrief", typeParamsBrief);
     addVariable("conversionMethods", conversionMethods);
     addVariable("domainMethods", methods);
     addVariable("undefinedPureObjectHandle", getUndefinedOriginHandleClassName());
     return true;
+  }
+
+  protected void analyzeAlias() {
+    Optional<CustomTypeReference> equivalentDomain = DomainFunctions.getAliasNearNeighbourDomain(sourceArtifact());
+    isAlias = equivalentDomain.isPresent();
+    if (isAlias) {
+      baseObjectHandle = buildObjectHandleDeclaration(equivalentDomain.get(), ObjectHandleTypes.MovablePureObject, true);
+    }
   }
 
   @Override

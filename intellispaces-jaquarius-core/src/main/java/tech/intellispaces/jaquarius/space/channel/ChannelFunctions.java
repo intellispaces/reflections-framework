@@ -262,7 +262,7 @@ public interface ChannelFunctions {
 
   static Channel findObjectHandleMethodChannelAnnotation(MethodStatement objectHandleMethod) {
     CustomType objectHandleClass = objectHandleMethod.owner();
-    CustomType domainClass = ObjectHandleFunctions.getDomainTypeOfObjectHandle(objectHandleClass);
+    CustomType domainClass = ObjectHandleFunctions.getDomainOfObjectHandle(objectHandleClass);
     Channel channel = findObjectHandleMethodChannelAnnotation(domainClass, objectHandleMethod);
     if (channel == null) {
       throw UnexpectedExceptions.withMessage("Failed to find related channel annotation " +
@@ -300,7 +300,7 @@ public interface ChannelFunctions {
       for (int i = 0; i < domainMethod.params().size(); ++i) {
         TypeReference domainParamType1 = domainMethod.params().get(i).type();
         TypeReference objectHandleParamType = objectHandleMethod.params().get(i).type();
-        CustomType domainParamType2 = ObjectHandleFunctions.getDomainTypeOfObjectHandle(
+        CustomType domainParamType2 = ObjectHandleFunctions.getDomainOfObjectHandle(
             objectHandleParamType.asCustomTypeReferenceOrElseThrow().targetType()
         );
         if (!TypeReferenceFunctions.isEqualTypes(domainParamType1, CustomTypeReferences.get(domainParamType2))) {

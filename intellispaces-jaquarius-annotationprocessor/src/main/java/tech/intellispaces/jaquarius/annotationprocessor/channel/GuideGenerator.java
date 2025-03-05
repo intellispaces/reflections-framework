@@ -129,7 +129,7 @@ public class GuideGenerator extends JaquariusArtifactGenerator {
         if (!typeParam.extendedBounds().isEmpty()) {
           sb.append(" extends ");
           for (ReferenceBound bound : typeParam.extendedBounds()) {
-            sb.append(ObjectHandleFunctions.getCommonObjectHandleTypename(bound));
+            sb.append(ObjectHandleFunctions.getUndefinedObjectHandleTypename(bound));
           }
         }
       }
@@ -406,7 +406,7 @@ public class GuideGenerator extends JaquariusArtifactGenerator {
     } else if (type.isPrimitiveReference()) {
       return ClassFunctions.wrapperClassOfPrimitive(type.asPrimitiveReferenceOrElseThrow().typename()).getSimpleName();
     } else {
-      String canonicalName = ObjectHandleFunctions.getCommonObjectHandleTypename(type, typeReplacer);
+      String canonicalName = ObjectHandleFunctions.getUndefinedPureObjectTypename(type, typeReplacer);
       String name = type.isCustomTypeReference() ? addImportAndGetSimpleName(canonicalName) : canonicalName;
       if (type.isCustomTypeReference() && !type.asCustomTypeReferenceOrElseThrow().typeArguments().isEmpty()) {
         var sb = new StringBuilder();

@@ -2,6 +2,7 @@ package tech.intellispaces.jaquarius.annotationprocessor.objecthandle;
 
 import tech.intellispaces.commons.action.runnable.RunnableAction;
 import tech.intellispaces.commons.action.text.StringActions;
+import tech.intellispaces.commons.base.exception.NotImplementedExceptions;
 import tech.intellispaces.commons.base.exception.UnexpectedExceptions;
 import tech.intellispaces.commons.base.text.StringFunctions;
 import tech.intellispaces.commons.base.type.ClassFunctions;
@@ -12,6 +13,7 @@ import tech.intellispaces.commons.java.reflection.method.MethodParam;
 import tech.intellispaces.commons.java.reflection.method.MethodStatement;
 import tech.intellispaces.commons.java.reflection.reference.CustomTypeReference;
 import tech.intellispaces.commons.java.reflection.reference.NamedReference;
+import tech.intellispaces.commons.java.reflection.reference.NotPrimitiveReference;
 import tech.intellispaces.commons.java.reflection.reference.TypeReference;
 import tech.intellispaces.jaquarius.annotationprocessor.AbstractObjectHandleGenerator;
 import tech.intellispaces.jaquarius.annotationprocessor.AnnotationGeneratorFunctions;
@@ -41,11 +43,14 @@ abstract class ObjectHandleWrapperGenerator extends AbstractObjectHandleGenerato
   protected String domainSimpleClassName;
   protected String typeParamsFull;
   protected String typeParamsBrief;
+  protected String domainTypeParamsBrief;
   protected boolean isAlias;
   protected String primaryDomainSimpleName;
   protected String primaryDomainTypeArguments;
   protected boolean implRelease;
   protected CustomType domainType;
+  protected String domainTypeDeclaration;
+  protected String primaryDomainTypeDeclaration;
   private List<MethodStatement> domainMethods;
   protected final List<Map<String, Object>> constructors = new ArrayList<>();
   protected final List<Map<String, String>> traverseMethods = new ArrayList<>();
@@ -59,15 +64,21 @@ abstract class ObjectHandleWrapperGenerator extends AbstractObjectHandleGenerato
   }
 
   protected void analyzeDomain() {
-    domainType = ObjectHandleFunctions.getDomainTypeOfObjectHandle(sourceArtifact());
+    domainType = ObjectHandleFunctions.getDomainOfObjectHandle(sourceArtifact());
     addImport(domainType.canonicalName());
     domainSimpleClassName = simpleNameOf(domainType.canonicalName());
+    domainTypeParamsBrief = sourceArtifact().typeParametersBriefDeclaration();
 
     domainMethods = domainType.actualMethods().stream()
         .filter(m -> !m.isDefault())
         .filter(m -> excludeDeepConversionMethods(m, domainType))
         .filter(DomainFunctions::isNotDomainClassGetter)
         .toList();
+  }
+
+  @SuppressWarnings("unchecked,rawtypes")
+  protected void analyzeAlias() {
+    domainTypeDeclaration = buildDomainType(domainType, (List) domainType.typeParameters());
 
     List<CustomTypeReference> equivalentDomains = DomainFunctions.getEquivalentDomains(domainType);
     isAlias = !equivalentDomains.isEmpty();
@@ -75,9 +86,51 @@ abstract class ObjectHandleWrapperGenerator extends AbstractObjectHandleGenerato
       CustomTypeReference nearEquivalentDomain = equivalentDomains.get(0);
       CustomTypeReference mainEquivalentDomain = equivalentDomains.get(equivalentDomains.size() - 1);
 
+      primaryDomainTypeArguments = getDomainTypeParamsBrief(nearEquivalentDomain);
       primaryDomainSimpleName = addImportAndGetSimpleName(mainEquivalentDomain.targetType().canonicalName());
-      primaryDomainTypeArguments = nearEquivalentDomain.typeArgumentsDeclaration(this::addImportAndGetSimpleName);
+      primaryDomainTypeDeclaration = buildDomainType(mainEquivalentDomain.targetType(), mainEquivalentDomain.typeArguments());
+    } else {
+      primaryDomainTypeArguments = domainTypeParamsBrief;
+      primaryDomainSimpleName = addImportAndGetSimpleName(domainType.canonicalName());
+      primaryDomainTypeDeclaration = domainTypeDeclaration;
     }
+  }
+
+  protected String getObjectHandleSimpleName() {
+    Class<?> handleClass;
+    if (ObjectHandleFunctions.isUnmovableObjectHandle(sourceArtifact())) {
+      handleClass = ObjectHandleFunctions.getObjectHandleClass(ObjectHandleTypes.UnmovablePureObject);
+    } else if (ObjectHandleFunctions.isMovableObjectHandle(sourceArtifact())) {
+      handleClass = ObjectHandleFunctions.getObjectHandleClass(ObjectHandleTypes.MovablePureObject);
+    } else {
+      throw UnexpectedExceptions.withMessage("Could not define movable type of the object handle {0}",
+          sourceArtifact().canonicalName());
+    }
+    return addImportAndGetSimpleName(handleClass);
+  }
+
+  private String getDomainTypeParamsBrief(CustomTypeReference domainType) {
+    if (domainType.typeArguments().isEmpty()) {
+      return "";
+    }
+
+    var sb = new StringBuilder();
+    RunnableAction commaAppender = StringActions.skipFirstTimeCommaAppender(sb);
+    sb.append("<");
+    for (NotPrimitiveReference typeArgument : domainType.typeArguments()) {
+      commaAppender.run();
+      if (typeArgument.isCustomTypeReference()) {
+        CustomTypeReference customTypeReference = typeArgument.asCustomTypeReferenceOrElseThrow();
+        sb.append(addImportAndGetSimpleName(customTypeReference.targetType().canonicalName()));
+      } else if (typeArgument.isNamedReference()) {
+        NamedReference namedReference = typeArgument.asNamedReferenceOrElseThrow();
+        sb.append(namedReference.name());
+      } else {
+        throw NotImplementedExceptions.withCode("xG3KKaWv");
+      }
+    }
+    sb.append(">");
+    return sb.toString();
   }
 
   protected void analyzeTypeParams() {
@@ -263,7 +316,7 @@ abstract class ObjectHandleWrapperGenerator extends AbstractObjectHandleGenerato
       MethodParam domainParam = domainMethodParams.get(i);
       ObjectReferenceForm referenceForm = ObjectHandleFunctions.getReferenceForm(domainParam.type(), methodForm);
       String domainMethodParamDeclaration = ObjectHandleFunctions.getObjectHandleDeclaration(
-          domainParam.type(), ObjectHandleTypes.UndefinedHandle, referenceForm, true, false, Function.identity()
+          domainParam.type(), ObjectHandleTypes.UndefinedPureObject, referenceForm, true, false, Function.identity()
       );
 
       MethodParam guideParam = guideMethodParams.get(i);
@@ -367,7 +420,7 @@ abstract class ObjectHandleWrapperGenerator extends AbstractObjectHandleGenerato
   private String buildGuideParamClassName(TypeReference type, TraverseQualifierSetForm methodForm) {
     return ObjectHandleFunctions.getObjectHandleDeclaration(
         AnnotationGeneratorFunctions.normalizeType(type),
-        ObjectHandleTypes.UndefinedHandle,
+        ObjectHandleTypes.UndefinedPureObject,
         ObjectHandleFunctions.getReferenceForm(type, methodForm),
         false,
         true,

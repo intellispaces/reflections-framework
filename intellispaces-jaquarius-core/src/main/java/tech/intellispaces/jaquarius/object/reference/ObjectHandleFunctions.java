@@ -9,6 +9,7 @@ import tech.intellispaces.commons.base.exception.UnexpectedException;
 import tech.intellispaces.commons.base.exception.UnexpectedExceptions;
 import tech.intellispaces.commons.base.text.StringFunctions;
 import tech.intellispaces.commons.base.type.ClassFunctions;
+import tech.intellispaces.commons.base.type.Classes;
 import tech.intellispaces.commons.base.type.Type;
 import tech.intellispaces.commons.java.reflection.JavaStatements;
 import tech.intellispaces.commons.java.reflection.customtype.AnnotationFunctions;
@@ -57,6 +58,20 @@ public class ObjectHandleFunctions {
     return isDefaultObjectHandleClass(aClass) || isCustomObjectHandleClass(aClass);
   }
 
+  public static boolean isObjectType(TypeReference type) {
+    if (type.isCustomTypeReference()) {
+      if (type.asCustomTypeReferenceOrElseThrow().targetType().hasParent(tech.intellispaces.jaquarius.object.reference.ObjectHandle.class)) {
+        return true;
+      }
+    }
+    try {
+      CustomType domainType = getDomainOfObjectHandle(type);
+      return true;
+    } catch (Exception e) {
+      return false;
+    }
+  }
+
   public static boolean isObjectHandleType(TypeReference type) {
     return isDefaultObjectHandleType(type) || isCustomObjectHandleType(type);
   }
@@ -98,11 +113,11 @@ public class ObjectHandleFunctions {
     return AnnotationFunctions.isAssignableAnnotatedType(objectHandleType, Unmovable.class);
   }
 
-  public static String getCommonObjectHandleTypename(TypeReference domainType) {
-    return getCommonObjectHandleTypename(domainType, Function.identity());
+  public static String getUndefinedObjectHandleTypename(TypeReference domainType) {
+    return getUndefinedObjectHandleTypename(domainType, Function.identity());
   }
 
-  public static String getCommonObjectHandleTypename(
+  public static String getUndefinedObjectHandleTypename(
       TypeReference type, Function<TypeReference, TypeReference> typeReplacer
   ) {
     type = typeReplacer.apply(type);
@@ -114,12 +129,36 @@ public class ObjectHandleFunctions {
       if (type.asWildcardOrElseThrow().extendedBound().isEmpty()) {
         return "?";
       }
-      return "? extends " + getCommonObjectHandleTypename(type.asWildcardOrElseThrow().extendedBound().get(), typeReplacer);
+      return "? extends " + getUndefinedObjectHandleTypename(type.asWildcardOrElseThrow().extendedBound().get(), typeReplacer);
     }
-    return getCommonObjectHandleTypename(type.asCustomTypeReferenceOrElseThrow().targetType());
+    return getUndefinedObjectHandleTypename(type.asCustomTypeReferenceOrElseThrow().targetType());
   }
 
-  public static String getCommonObjectHandleTypename(CustomType domainType) {
+  public static String getUndefinedPureObjectTypename(
+      TypeReference type, Function<TypeReference, TypeReference> typeReplacer
+  ) {
+    type = typeReplacer.apply(type);
+    if (type.isPrimitiveReference()) {
+      return ClassFunctions.wrapperClassOfPrimitive(type.asPrimitiveReferenceOrElseThrow().typename()).getCanonicalName();
+    } else if (type.isNamedReference()) {
+      return type.asNamedReferenceOrElseThrow().name();
+    } else if (type.isWildcard()) {
+      if (type.asWildcardOrElseThrow().extendedBound().isEmpty()) {
+        return "?";
+      }
+      return "? extends " + getUndefinedPureObjectTypename(type.asWildcardOrElseThrow().extendedBound().get(), typeReplacer);
+    }
+    return getUndefinedPureObjectTypename(type.asCustomTypeReferenceOrElseThrow().targetType());
+  }
+
+  public static String getUndefinedPureObjectTypename(CustomType domainType) {
+    if (isDefaultObjectHandleType(domainType)) {
+      return domainType.canonicalName();
+    }
+    return NameConventionFunctions.getUndefinedPureObjectTypename(domainType.className());
+  }
+
+  public static String getUndefinedObjectHandleTypename(CustomType domainType) {
     if (isDefaultObjectHandleType(domainType)) {
       return domainType.canonicalName();
     }
@@ -150,7 +189,15 @@ public class ObjectHandleFunctions {
     if (wrapper != null) {
       aClass = wrapper.value();
     }
-    return aClass.isAnnotationPresent(ObjectHandle.class);
+    if (aClass.isAnnotationPresent(ObjectHandle.class)) {
+      return true;
+    }
+
+    Optional<Class<?>> domainClass = Classes.get(
+        NameConventionFunctions.getDomainNameOfPureObject(aClass.getCanonicalName())
+    );
+    return domainClass.isPresent();
+
   }
 
   public static boolean isCustomObjectHandleType(TypeReference type) {
@@ -192,20 +239,20 @@ public class ObjectHandleFunctions {
     return actualType2 == actualType1 || actualType1.isAssignableFrom(actualType2);
   }
 
-  public static CustomType getDomainTypeOfObjectHandle(TypeReference objectHandleType) {
+  public static CustomType getDomainOfObjectHandle(TypeReference objectHandleType) {
     if (objectHandleType.isPrimitiveReference()) {
       Class<?> wrapperClass = ClassFunctions.wrapperClassOfPrimitive(
         objectHandleType.asPrimitiveReferenceOrElseThrow().typename()
       );
       return JavaStatements.customTypeStatement(wrapperClass);
     } else if (objectHandleType.isCustomTypeReference()) {
-      return getDomainTypeOfObjectHandle(objectHandleType.asCustomTypeReferenceOrElseThrow().targetType());
+      return getDomainOfObjectHandle(objectHandleType.asCustomTypeReferenceOrElseThrow().targetType());
     } else {
       throw NotImplementedExceptions.withCode("yZJg8A");
     }
   }
 
-  public static CustomType getDomainTypeOfObjectHandle(CustomType objectHandleType) {
+  public static CustomType getDomainOfObjectHandle(CustomType objectHandleType) {
     if (isDefaultObjectHandleType(objectHandleType)) {
       if (ClassFunctions.isPrimitiveClass(objectHandleType.canonicalName())) {
         return CustomTypes.of(ClassFunctions.wrapperClassOfPrimitive((objectHandleType.canonicalName())));
@@ -230,6 +277,14 @@ public class ObjectHandleFunctions {
           .asClass().orElseThrow()
           .type();
     }
+
+    Optional<Class<?>> domainClass = Classes.get(
+        NameConventionFunctions.getDomainNameOfPureObject(objectHandleType.canonicalName())
+    );
+    if (domainClass.isPresent()) {
+      return CustomTypes.of(domainClass.get());
+    }
+
     throw UnexpectedExceptions.withMessage("Object handle class {0} must be annotated with annotation {1}",
         objectHandleType.canonicalName(), ObjectHandle.class.getSimpleName());
   }
@@ -247,6 +302,14 @@ public class ObjectHandleFunctions {
     if (objectHandle != null) {
       return objectHandle.value();
     }
+
+    Optional<Class<?>> domainClass = Classes.get(
+        NameConventionFunctions.getDomainNameOfPureObject(objectHandleClass.getCanonicalName())
+    );
+    if (domainClass.isPresent()) {
+      return domainClass.get();
+    }
+
     throw UnexpectedExceptions.withMessage("Object handle class {0} must be annotated with annotation {1}",
         objectHandleClass.getCanonicalName(), ObjectHandle.class.getSimpleName());
   }
@@ -255,8 +318,8 @@ public class ObjectHandleFunctions {
   public static <T> T tryDowngrade(Object sourceObjectHandle, Class<T> targetObjectHandleClass) {
     Class<?> sourceObjectHandleClass = sourceObjectHandle.getClass();
     if (isCustomObjectHandleClass(sourceObjectHandleClass) && isCustomObjectHandleClass(targetObjectHandleClass)) {
-      CustomType sourceObjectHandleDomain = getDomainTypeOfObjectHandle(CustomTypes.of(sourceObjectHandleClass));
-      CustomType targetObjectHandleDomain = getDomainTypeOfObjectHandle(CustomTypes.of(targetObjectHandleClass));
+      CustomType sourceObjectHandleDomain = getDomainOfObjectHandle(CustomTypes.of(sourceObjectHandleClass));
+      CustomType targetObjectHandleDomain = getDomainOfObjectHandle(CustomTypes.of(targetObjectHandleClass));
       if (sourceObjectHandleDomain.hasParent(targetObjectHandleDomain)) {
         if (isMovableObjectHandle(targetObjectHandleClass)) {
           return (T) tryCreateDowngradeObjectHandle(sourceObjectHandle, sourceObjectHandleDomain, targetObjectHandleDomain);
@@ -298,10 +361,10 @@ public class ObjectHandleFunctions {
     }
   }
 
-  public static String getGeneralObjectHandleDeclaration(
+  public static String geUndefinedPureObjectDeclaration(
       TypeReference domainType, boolean replaceKeyDomain, Function<String, String> simpleNameMapping
   ) {
-    return getObjectHandleDeclaration(domainType, ObjectHandleTypes.UndefinedHandle, replaceKeyDomain, simpleNameMapping);
+    return getObjectHandleDeclaration(domainType, ObjectHandleTypes.UndefinedPureObject, replaceKeyDomain, simpleNameMapping);
   }
 
   public static String getObjectHandleDeclaration(
@@ -367,7 +430,7 @@ public class ObjectHandleFunctions {
           for (NotPrimitiveReference argType : customTypeReference.typeArguments()) {
             commaAppender.run();
             sb.append(getObjectHandleDeclaration(
-                argType, ObjectHandleTypes.UndefinedHandle, ObjectReferenceForms.Object, true, replaceKeyDomain, simpleNameMapping
+                argType, ObjectHandleTypes.UndefinedPureObject, ObjectReferenceForms.Object, true, replaceKeyDomain, simpleNameMapping
             ));
           }
           sb.append(">");
@@ -438,16 +501,16 @@ public class ObjectHandleFunctions {
     return sb.toString();
   }
 
-  public static Class<?> dictionaryHandleClass() {
-    if (dictionaryHandleClass == null) {
+  public static Class<?> propertiesHandleClass() {
+    if (propertiesHandleClass == null) {
       KeyDomain keyDomain = Jaquarius.settings().getKeyDomainByPurpose(KeyDomainPurposes.Properties);
       String domainClassName = NameConventionFunctions.convertToDomainClassName(keyDomain.domainName());
-      String handleClassName = NameConventionFunctions.getUndefinedObjectHandleTypename(domainClassName);
-      dictionaryHandleClass = ClassFunctions.getClass(handleClassName).orElseThrow(() ->
+      String handleClassName = NameConventionFunctions.getUndefinedPureObjectTypename(domainClassName);
+      propertiesHandleClass = ClassFunctions.getClass(handleClassName).orElseThrow(() ->
           UnexpectedExceptions.withMessage("Could not get class {0}", handleClassName)
       );
     }
-    return dictionaryHandleClass;
+    return propertiesHandleClass;
   }
 
   public static void releaseSilently(ObjectReference<?> objectReference) {
@@ -507,5 +570,5 @@ public class ObjectHandleFunctions {
       Void.class.getCanonicalName()
   );
 
-  private static Class<?> dictionaryHandleClass;
+  private static Class<?> propertiesHandleClass;
 }

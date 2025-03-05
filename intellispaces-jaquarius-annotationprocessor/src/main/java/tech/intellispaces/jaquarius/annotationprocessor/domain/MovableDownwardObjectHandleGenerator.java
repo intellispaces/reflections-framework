@@ -13,8 +13,10 @@ import tech.intellispaces.jaquarius.channel.ChannelFunction0;
 import tech.intellispaces.jaquarius.channel.ChannelFunction1;
 import tech.intellispaces.jaquarius.exception.TraverseException;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
+import tech.intellispaces.jaquarius.object.reference.MovableObjectHandle;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleType;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
+import tech.intellispaces.jaquarius.object.reference.ObjectHandles;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
 import tech.intellispaces.jaquarius.traverse.MappingOfMovingTraverse;
 import tech.intellispaces.jaquarius.traverse.MappingTraverse;
@@ -36,7 +38,7 @@ public class MovableDownwardObjectHandleGenerator extends ConversionObjectHandle
 
   @Override
   protected ObjectHandleType getObjectHandleType() {
-    return ObjectHandleTypes.MovableHandle;
+    return ObjectHandleTypes.MovablePureObject;
   }
 
   @Override
@@ -54,6 +56,8 @@ public class MovableDownwardObjectHandleGenerator extends ConversionObjectHandle
   protected boolean analyzeSourceArtifact(ArtifactGeneratorContext context) {
     addImports(
         ObjectHandle.class,
+        MovableObjectHandle.class,
+        ObjectHandles.class,
         Type.class,
         Types.class,
         Channel0.class,
@@ -66,7 +70,7 @@ public class MovableDownwardObjectHandleGenerator extends ConversionObjectHandle
     );
 
     String movableObjectHandleName = addImportAndGetSimpleName(
-        NameConventionFunctions.getMovableObjectHandleTypename(superDomainType.targetType().className(), false));
+        NameConventionFunctions.getMovablePureObjectTypename(superDomainType.targetType().className(), false));
 
     analyzeDomain();
     analyzeChildObjectHandleType();
@@ -81,7 +85,6 @@ public class MovableDownwardObjectHandleGenerator extends ConversionObjectHandle
     addVariable("childObjectHandleType", childObjectHandleType);
     addVariable("childField", childFieldName);
     addVariable("methods", methods);
-    addVariable("domainMethods", rawDomainMethods);
     addVariable("movableObjectHandleName", movableObjectHandleName);
     addVariable("domainClassSimpleName", domainClassSimpleName);
     addVariable("isAlias", isAlias);
@@ -92,7 +95,7 @@ public class MovableDownwardObjectHandleGenerator extends ConversionObjectHandle
 
   private void analyzeChildObjectHandleType() {
     childObjectHandleType = addImportAndGetSimpleName(
-        NameConventionFunctions.getMovableObjectHandleTypename(sourceArtifact().className(), true)
+        NameConventionFunctions.getMovablePureObjectTypename(sourceArtifact().className(), true)
     );
   }
 

@@ -3,6 +3,8 @@ package tech.intellispaces.jaquarius.annotationprocessor.objecthandle;
 import tech.intellispaces.commons.annotation.processor.ArtifactGeneratorContext;
 import tech.intellispaces.commons.base.exception.NotImplementedExceptions;
 import tech.intellispaces.commons.base.type.PrimitiveFunctions;
+import tech.intellispaces.commons.base.type.Type;
+import tech.intellispaces.commons.base.type.Types;
 import tech.intellispaces.commons.java.reflection.customtype.CustomType;
 import tech.intellispaces.commons.java.reflection.method.MethodStatement;
 import tech.intellispaces.commons.java.reflection.reference.TypeReference;
@@ -53,7 +55,7 @@ public class MovableObjectHandleWrapperGenerator extends ObjectHandleWrapperGene
 
   @Override
   protected ObjectHandleType getObjectHandleType() {
-    return ObjectHandleTypes.MovableHandle;
+    return ObjectHandleTypes.MovablePureObject;
   }
 
   @Override
@@ -61,6 +63,8 @@ public class MovableObjectHandleWrapperGenerator extends ObjectHandleWrapperGene
     addImports(
         Ordinal.class,
         Wrapper.class,
+        Type.class,
+        Types.class,
         Modules.class,
         ObjectHandleWrapper.class,
         Channel0.class,
@@ -81,6 +85,7 @@ public class MovableObjectHandleWrapperGenerator extends ObjectHandleWrapperGene
     );
 
     analyzeDomain();
+    analyzeAlias();
     analyzeTypeParams();
     analyzeConstructors();
     analyzeInjectedGuides();
@@ -94,14 +99,17 @@ public class MovableObjectHandleWrapperGenerator extends ObjectHandleWrapperGene
     addVariable("isAlias", isAlias);
     addVariable("primaryDomainSimpleName", primaryDomainSimpleName);
     addVariable("primaryDomainTypeArguments", primaryDomainTypeArguments);
+    addVariable("primaryDomainTypeDeclaration", primaryDomainTypeDeclaration);
+    addVariable("domainTypeDeclaration", domainTypeDeclaration);
+    addVariable("domainTypeParamsBrief", domainTypeParamsBrief);
     addVariable("constructors", constructors);
     addVariable("methodDescriptions", methodDescriptions);
     addVariable("guideActionMethods", guideMethods);
     addVariable("handleMethods", traverseMethods);
-    addVariable("domainMethods", rawDomainMethods);
     addVariable("injectionMethods", injectionMethods);
     addVariable("conversionMethods", conversionMethods);
     addVariable("notImplRelease", !implRelease);
+    addVariable("objectHandleClassSimpleName", getObjectHandleSimpleName());
     return true;
   }
 
@@ -112,11 +120,11 @@ public class MovableObjectHandleWrapperGenerator extends ObjectHandleWrapperGene
             method.hasAnnotation(Movable.class) ||
             NameConventionFunctions.isConversionMethod(method)
     ) {
-      sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.MovableHandle, true));
+      sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.MovablePureObject, true));
     } else if (method.hasAnnotation(Unmovable.class)) {
-      sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.UnmovableHandle, true));
+      sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.UnmovablePureObject, true));
     } else {
-      sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.UndefinedHandle, true));
+      sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.UndefinedPureObject, true));
     }
   }
 }

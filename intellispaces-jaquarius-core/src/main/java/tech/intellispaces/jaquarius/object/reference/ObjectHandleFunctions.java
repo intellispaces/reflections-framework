@@ -254,9 +254,6 @@ public class ObjectHandleFunctions {
 
   public static CustomType getDomainOfObjectHandle(CustomType objectHandleType) {
     if (isDefaultObjectHandleType(objectHandleType)) {
-      if (ClassFunctions.isPrimitiveClass(objectHandleType.canonicalName())) {
-        return CustomTypes.of(ClassFunctions.wrapperClassOfPrimitive((objectHandleType.canonicalName())));
-      }
       return objectHandleType;
     }
 

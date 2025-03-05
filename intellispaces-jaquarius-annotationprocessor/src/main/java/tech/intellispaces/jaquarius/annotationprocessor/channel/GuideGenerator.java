@@ -7,12 +7,14 @@ import tech.intellispaces.commons.base.exception.UnexpectedExceptions;
 import tech.intellispaces.commons.base.type.ClassFunctions;
 import tech.intellispaces.commons.base.type.ClassNameFunctions;
 import tech.intellispaces.commons.base.type.PrimitiveFunctions;
+import tech.intellispaces.commons.base.type.PrimitiveTypes;
 import tech.intellispaces.commons.java.reflection.customtype.CustomType;
 import tech.intellispaces.commons.java.reflection.method.MethodParam;
 import tech.intellispaces.commons.java.reflection.method.MethodStatement;
 import tech.intellispaces.commons.java.reflection.reference.CustomTypeReferences;
 import tech.intellispaces.commons.java.reflection.reference.NamedReference;
 import tech.intellispaces.commons.java.reflection.reference.NotPrimitiveReference;
+import tech.intellispaces.commons.java.reflection.reference.PrimitiveReference;
 import tech.intellispaces.commons.java.reflection.reference.ReferenceBound;
 import tech.intellispaces.commons.java.reflection.reference.TypeReference;
 import tech.intellispaces.commons.java.reflection.reference.Wildcards;
@@ -313,10 +315,12 @@ public class GuideGenerator extends JaquariusArtifactGenerator {
 
   private void buildPrimitiveMethodBody(StringBuilder sb, boolean longForm) {
     TypeReference returnType = channelMethod.returnType().orElseThrow();
-    if (returnType.isNamedReference()
-        || !ClassFunctions.isPrimitiveWrapperClass(returnType.asCustomTypeReferenceOrElseThrow().targetType().canonicalName())
-        || (ClassFunctions.isDoubleClass(returnType.asCustomTypeReferenceOrElseThrow().targetType().canonicalName()) && longForm)
-    ) {
+    if (returnType.isNamedReference()) {
+      sb.append("  throw UnexpectedExceptions.withMessage(\"Invalid operation\");\n");
+    } else if (returnType.isCustomTypeReference() && (
+        !ClassFunctions.isPrimitiveWrapperClass(returnType.asCustomTypeReferenceOrElseThrow().targetType().canonicalName())
+            || (ClassFunctions.isDoubleClass(returnType.asCustomTypeReferenceOrElseThrow().targetType().canonicalName()) && longForm
+    ))) {
       sb.append("  throw UnexpectedExceptions.withMessage(\"Invalid operation\");\n");
     } else {
       sb.append("  Objects.requireNonNull(source);\n");
@@ -325,8 +329,14 @@ public class GuideGenerator extends JaquariusArtifactGenerator {
       }
       sb.append("  return ");
 
-      String returnTypeCanonicalName = returnType.asCustomTypeReferenceOrElseThrow().targetType().canonicalName();
-      boolean isBooleanReturnType = ClassFunctions.isBooleanClass(returnTypeCanonicalName);
+      final boolean isBooleanReturnType;
+      if (returnType.isPrimitiveReference()) {
+        PrimitiveReference primitiveReference = returnType.asPrimitiveReferenceOrElseThrow();
+        isBooleanReturnType = PrimitiveTypes.Boolean.is(primitiveReference.primitiveType());
+      } else {
+        String returnTypeCanonicalName = returnType.asCustomTypeReferenceOrElseThrow().targetType().canonicalName();
+        isBooleanReturnType = ClassFunctions.isBooleanClass(returnTypeCanonicalName);
+      }
       if (isBooleanReturnType) {
         if (longForm) {
           sb.append("PrimitiveFunctions.booleanToInt(");

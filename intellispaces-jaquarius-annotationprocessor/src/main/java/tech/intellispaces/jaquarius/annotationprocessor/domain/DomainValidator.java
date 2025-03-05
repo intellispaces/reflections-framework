@@ -121,10 +121,6 @@ public class DomainValidator implements ArtifactValidator {
       throw JaquariusExceptions.withMessage("Domain methods must return a value. " +
           "Check method '{0}' in class 12}", method.name(), domainType.canonicalName());
     }
-    if (returnType.get().isPrimitiveReference()) {
-      throw JaquariusExceptions.withMessage("Domain method cannot return a primitive value. " +
-          "Check method '{0}' in class {1}", method.name(), domainType.canonicalName());
-    }
     if (returnType.get().isArrayReference()) {
       throw JaquariusExceptions.withMessage("Domain methods cannot return an array. " +
           "Check method '{0}' in class {1}", method.name(), domainType.canonicalName());
@@ -164,11 +160,6 @@ public class DomainValidator implements ArtifactValidator {
     if (param.type().isArrayReference()) {
       throw JaquariusExceptions.withMessage("It is not allowed to use array type in channel qualifiers. " +
           "Check method '{0}' in class {1}", method.name(), domainType.canonicalName());
-    }
-    if (param.type().isPrimitiveReference()) {
-      throw JaquariusExceptions.withMessage("It is not allowed to use primitive type in channel qualifiers. " +
-              "Check parameter '{0}' in method '{1}' in class {2}",
-          param.name(), method.name(), domainType.canonicalName());
     }
     if (param.type().isCustomTypeReference()) {
       CustomTypeReference customTypeReference = param.type().asCustomTypeReferenceOrElseThrow();

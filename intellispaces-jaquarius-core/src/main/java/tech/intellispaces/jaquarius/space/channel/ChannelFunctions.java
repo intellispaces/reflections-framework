@@ -313,9 +313,9 @@ public interface ChannelFunctions {
 
   private static String getMethodMainFormName(MethodStatement objectHandleMethod) {
     Optional<TypeReference> returnType = objectHandleMethod.returnType();
-    if (returnType.isPresent() && returnType.get().isPrimitiveReference()) {
-      return StringFunctions.removeTailOrElseThrow(objectHandleMethod.name(), "AsPrimitive");
-    }
+//    if (returnType.isPresent() && returnType.get().isPrimitiveReference()) {
+//      return StringFunctions.removeTailOrElseThrow(objectHandleMethod.name(), "AsPrimitive");
+//    }
     return objectHandleMethod.name();
   }
 

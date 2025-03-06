@@ -57,7 +57,7 @@ abstract class ConversionObjectHandleGenerator extends AbstractObjectHandleGener
     domainClassSimpleName = addImportAndGetSimpleName(superDomainType.targetType().canonicalName());
     domainTypeParamsBrief = superDomainType.targetType().typeParametersBriefDeclaration();
     classTypeParams = ObjectHandleFunctions.getObjectHandleTypeParams(
-        sourceArtifact(), ObjectHandleTypes.UndefinedHandle, ObjectReferenceForms.Object, this::addImportAndGetSimpleName, false, true
+        sourceArtifact(), ObjectHandleTypes.UndefinedHandle, ObjectReferenceForms.Default, this::addImportAndGetSimpleName, false, true
     );
     classTypeParamsBrief = sourceArtifact().typeParametersBriefDeclaration();
     domainTypeArguments = superDomainType.typeArgumentsDeclaration(this::addImportAndGetSimpleName);

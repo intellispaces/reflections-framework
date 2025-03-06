@@ -12,7 +12,6 @@ import tech.intellispaces.jaquarius.annotation.Channel;
 import tech.intellispaces.jaquarius.annotation.Domain;
 import tech.intellispaces.jaquarius.annotation.ObjectHandle;
 import tech.intellispaces.jaquarius.annotation.Ontology;
-import tech.intellispaces.jaquarius.exception.ConfigurationExceptions;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleType;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
@@ -318,6 +317,10 @@ public interface NameConventionFunctions {
       name = name + "AsPrimitive";
     }
     return name;
+  }
+
+  static boolean isPrimitiveTargetForm(MethodStatement method) {
+    return method.name().endsWith("AsPrimitive");
   }
 
   private static boolean isMappingTraverseType(MethodStatement method) {

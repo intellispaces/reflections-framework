@@ -80,7 +80,7 @@ public abstract class JaquariusArtifactGenerator extends TemplatedJavaArtifactGe
       TypeReference domainType, ObjectHandleType handleType, boolean replaceKeyDomain
   ) {
     return ObjectHandleFunctions.getObjectHandleDeclaration(
-        domainType, handleType, ObjectReferenceForms.Object, replaceKeyDomain, this::addImportAndGetSimpleName
+        domainType, handleType, ObjectReferenceForms.Default, replaceKeyDomain, this::addImportAndGetSimpleName
     );
   }
 

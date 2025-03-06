@@ -343,6 +343,13 @@ public class GuideGenerator extends JaquariusArtifactGenerator {
         } else {
           sb.append("PrimitiveFunctions.booleanToDouble(");
         }
+      } else {
+        if (longForm) {
+          sb.append("(int) ");
+        } else {
+          sb.append("(double) ");
+        }
+        sb.append("(Object) ");
       }
       sb.append(channelMethod.name());
       sb.append("(").append("source");
@@ -377,7 +384,7 @@ public class GuideGenerator extends JaquariusArtifactGenerator {
   }
 
   private String buildTargetObjectHandleFormDeclaration() {
-    if (ObjectReferenceForms.Object.is(targetForm)) {
+    if (ObjectReferenceForms.Default.is(targetForm)) {
       return buildTargetObjectHandleDeclaration(Function.identity(), false);
     } else if (ObjectReferenceForms.Primitive.is(targetForm)) {
       return ClassFunctions.primitiveTypenameOfWrapper(

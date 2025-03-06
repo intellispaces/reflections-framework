@@ -236,7 +236,7 @@ public final class GuideFunctions {
             (Class) objectHandleClass,
             method,
             channelOrdinal,
-            ObjectReferenceForms.Object
+            ObjectReferenceForms.Default
         );
         guides.add(guide);
       }
@@ -304,31 +304,31 @@ public final class GuideFunctions {
   }
 
   public static ObjectReferenceForm getTargetForm(MethodStatement guideMethod) {
-    if (guideMethod.returnType().orElseThrow().isPrimitiveReference()) {
+    if (NameConventionFunctions.isPrimitiveTargetForm(guideMethod)) {
       return ObjectReferenceForms.Primitive;
     }
-    return ObjectReferenceForms.Object;
+    return ObjectReferenceForms.Default;
   }
 
   public static int getChannelOrdinal(Class<?> objectHandleClass, MethodStatement guideMethod) {
-    String implClassCanonicalName = NameConventionFunctions.getObjectHandleWrapperCanonicalName(
+    String wrapperClassCanonicalName = NameConventionFunctions.getObjectHandleWrapperCanonicalName(
         objectHandleClass
     );
-    Optional<Class<?>> objectHandleImplClass = ClassFunctions.getClass(implClassCanonicalName);
-    if (objectHandleImplClass.isEmpty()) {
-      throw UnexpectedExceptions.withMessage("Could not get object handle implementation class {0}",
-          implClassCanonicalName);
+    Optional<Class<?>> wrapperClass = ClassFunctions.getClass(wrapperClassCanonicalName);
+    if (wrapperClass.isEmpty()) {
+      throw UnexpectedExceptions.withMessage("Could not get object wrapper class {0}",
+          wrapperClassCanonicalName);
     }
 
-    Optional<MethodStatement> objectHandleImplGuideMethod = MethodFunctions.getOverrideMethod(
-        CustomTypes.of(objectHandleImplClass.get()),
+    Optional<MethodStatement> wrapperGuideMethod = MethodFunctions.getOverrideMethod(
+        CustomTypes.of(wrapperClass.get()),
         guideMethod
     );
-    if (objectHandleImplGuideMethod.isEmpty()) {
-      throw UnexpectedExceptions.withMessage("Could not find override method in object handle " +
-          "implementation class {0}. Method {1}", objectHandleImplClass.get(), guideMethod.name());
+    if (wrapperGuideMethod.isEmpty()) {
+      throw UnexpectedExceptions.withMessage("Could not find override method in object wrapper " +
+          "class {0}. Guide method {1} in {2}", wrapperClass.get(), guideMethod.name(), guideMethod.owner().canonicalName());
     }
-    Optional<Ordinal> indexAnnotation = objectHandleImplGuideMethod.get().selectAnnotation(Ordinal.class);
+    Optional<Ordinal> indexAnnotation = wrapperGuideMethod.get().selectAnnotation(Ordinal.class);
     if (indexAnnotation.isEmpty()) {
       throw UnexpectedExceptions.withMessage("Method {0} does not contain annotation {1}",
           guideMethod.name(), Ordinal.class.getCanonicalName());
@@ -374,7 +374,7 @@ public final class GuideFunctions {
     if (returnType.isPrimitiveReference()) {
       return ObjectReferenceForms.Primitive;
     } else {
-      return ObjectReferenceForms.Object;
+      return ObjectReferenceForms.Default;
     }
   }
 }

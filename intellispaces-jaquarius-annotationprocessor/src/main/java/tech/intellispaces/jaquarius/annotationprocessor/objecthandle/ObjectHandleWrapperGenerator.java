@@ -186,10 +186,10 @@ abstract class ObjectHandleWrapperGenerator extends AbstractObjectHandleGenerato
     int methodOrdinal = 0;
     for (MethodStatement method : domainMethods) {
       analyzeRawDomainMethod(method);
-      analyzeMethod(method, TraverseQualifierSetForms.Object, ObjectReferenceForms.Object, methodOrdinal++);
+      analyzeMethod(method, TraverseQualifierSetForms.Object, ObjectReferenceForms.Default, methodOrdinal++);
       if (hasMethodNormalForm(method)) {
-        if (includeMethodForm(method, TraverseQualifierSetForms.Normal, ObjectReferenceForms.Object)) {
-          analyzeMethod(method, TraverseQualifierSetForms.Normal, ObjectReferenceForms.Object, methodOrdinal++);
+        if (includeMethodForm(method, TraverseQualifierSetForms.Normal, ObjectReferenceForms.Default)) {
+          analyzeMethod(method, TraverseQualifierSetForms.Normal, ObjectReferenceForms.Default, methodOrdinal++);
         }
       }
       if (includeMethodForm(method, TraverseQualifierSetForms.Normal, ObjectReferenceForms.Primitive)) {
@@ -444,11 +444,11 @@ abstract class ObjectHandleWrapperGenerator extends AbstractObjectHandleGenerato
     appendMethodExceptions(sb, domainMethod);
     sb.append(" {\n");
     sb.append("  return ");
-    if (ObjectReferenceForms.Primitive.is(targetForm)) {
-      CustomType ct = domainMethod.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow().targetType();
-      String typename = ClassFunctions.primitiveTypenameOfWrapper(ct.canonicalName());
-      if (PrimitiveTypes.Boolean.typename().equals(typename)) {
-        sb.append("PrimitiveFunctions.longToBoolean(");
+
+    TypeReference returnType = domainMethod.returnType().orElseThrow();
+    if (returnType.isPrimitiveReference()) {
+      if (PrimitiveTypes.Boolean.is(returnType.asPrimitiveReferenceOrElseThrow().primitiveType())) {
+        sb.append("PrimitiveFunctions.longToBoolean((int) ");
         appendInvokeMethodAction(sb, domainMethod, methodForm, targetForm, methodOrdinal);
         sb.append(")");
       } else {
@@ -470,7 +470,7 @@ abstract class ObjectHandleWrapperGenerator extends AbstractObjectHandleGenerato
   private void appendMethodCastHandleType(
       StringBuilder sb, MethodStatement method, ObjectReferenceForm targetForm
   ) {
-    if (ObjectReferenceForms.Object.is(targetForm)) {
+    if (ObjectReferenceForms.Default.is(targetForm)) {
       appendObjectFormMethodReturnType(sb, method);
     } else if (ObjectReferenceForms.Primitive.is(targetForm)) {
       CustomType returnType = method.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow().targetType();
@@ -554,7 +554,7 @@ abstract class ObjectHandleWrapperGenerator extends AbstractObjectHandleGenerato
       } else {
         return "execute";
       }
-    } else if (ObjectReferenceForms.Object.is(targetForm)) {
+    } else if (ObjectReferenceForms.Default.is(targetForm)) {
         return "execute";
     } else {
       throw UnexpectedExceptions.withMessage("Unsupported guide form - {0}", targetForm);

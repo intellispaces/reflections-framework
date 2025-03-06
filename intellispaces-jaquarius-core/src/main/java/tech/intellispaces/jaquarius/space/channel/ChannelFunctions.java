@@ -32,6 +32,7 @@ import tech.intellispaces.jaquarius.channel.ChannelFunction0;
 import tech.intellispaces.jaquarius.channel.ChannelFunction1;
 import tech.intellispaces.jaquarius.exception.ConfigurationExceptions;
 import tech.intellispaces.jaquarius.id.RepetableUuidIdentifierGenerator;
+import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleFunctions;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
 import tech.intellispaces.jaquarius.traverse.TraverseType;
@@ -263,7 +264,7 @@ public interface ChannelFunctions {
   static Channel findObjectHandleMethodChannelAnnotation(MethodStatement objectHandleMethod) {
     CustomType objectHandleClass = objectHandleMethod.owner();
     CustomType domainClass = ObjectHandleFunctions.getDomainOfObjectHandle(objectHandleClass);
-    Channel channel = findObjectHandleMethodChannelAnnotation(domainClass, objectHandleMethod);
+    Channel channel = findObjectHandleMethodChannelAnnotation(objectHandleMethod, domainClass);
     if (channel == null) {
       throw UnexpectedExceptions.withMessage("Failed to find related channel annotation " +
           "of method '{0}' in {1}. Domain class {2}",
@@ -273,7 +274,7 @@ public interface ChannelFunctions {
   }
 
   private static Channel findObjectHandleMethodChannelAnnotation(
-      CustomType domainClass, MethodStatement objectHandleMethod
+      MethodStatement objectHandleMethod, CustomType domainClass
   ) {
     for (MethodStatement domainMethod : domainClass.declaredMethods()) {
       if (isEquivalentMethods(domainMethod, objectHandleMethod)) {
@@ -282,7 +283,7 @@ public interface ChannelFunctions {
     }
     for (CustomTypeReference parent : domainClass.parentTypes()) {
       if (DomainFunctions.isDomainType(parent.targetType())) {
-        Channel channel = findObjectHandleMethodChannelAnnotation(parent.targetType(), objectHandleMethod);
+        Channel channel = findObjectHandleMethodChannelAnnotation(objectHandleMethod, parent.targetType());
         if (channel != null) {
           return channel;
         }
@@ -312,10 +313,9 @@ public interface ChannelFunctions {
   }
 
   private static String getMethodMainFormName(MethodStatement objectHandleMethod) {
-    Optional<TypeReference> returnType = objectHandleMethod.returnType();
-//    if (returnType.isPresent() && returnType.get().isPrimitiveReference()) {
-//      return StringFunctions.removeTailOrElseThrow(objectHandleMethod.name(), "AsPrimitive");
-//    }
+    if (NameConventionFunctions.isPrimitiveTargetForm(objectHandleMethod)) {
+      return StringFunctions.removeTailOrElseThrow(objectHandleMethod.name(), "AsPrimitive");
+    }
     return objectHandleMethod.name();
   }
 

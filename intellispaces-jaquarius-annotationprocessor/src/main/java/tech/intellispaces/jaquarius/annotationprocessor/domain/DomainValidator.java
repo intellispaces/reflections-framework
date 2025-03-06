@@ -2,7 +2,9 @@ package tech.intellispaces.jaquarius.annotationprocessor.domain;
 
 import tech.intellispaces.commons.annotation.processor.ArtifactValidator;
 import tech.intellispaces.commons.base.text.StringFunctions;
+import tech.intellispaces.commons.base.type.ClassFunctions;
 import tech.intellispaces.commons.java.reflection.customtype.CustomType;
+import tech.intellispaces.commons.java.reflection.method.MethodFunctions;
 import tech.intellispaces.commons.java.reflection.method.MethodParam;
 import tech.intellispaces.commons.java.reflection.method.MethodStatement;
 import tech.intellispaces.commons.java.reflection.reference.CustomTypeReference;
@@ -14,6 +16,7 @@ import tech.intellispaces.jaquarius.annotation.Domain;
 import tech.intellispaces.jaquarius.annotation.Ontology;
 import tech.intellispaces.jaquarius.exception.JaquariusExceptions;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
+import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
 
 import java.util.List;
@@ -128,6 +131,14 @@ public class DomainValidator implements ArtifactValidator {
     if (returnType.get().isCustomTypeReference()) {
       CustomTypeReference customTypeReference = returnType.get().asCustomTypeReferenceOrElseThrow();
       CustomType customType = customTypeReference.targetType();
+      if (ClassFunctions.isPrimitiveWrapperClass(customType.canonicalName())) {
+        boolean isGeneralReturnType = MethodFunctions.getOverrideMethods(method).stream()
+            .anyMatch(m -> m.returnType().orElseThrow().isNamedReference());
+        if (!isGeneralReturnType) {
+          throw JaquariusExceptions.withMessage("Domain methods must return primitive type. " +
+              "Check method '{0}' in class {1}", method.name(), domainType.canonicalName());
+        }
+      }
       if (UNACCEPTABLE_TYPES.contains(customType.canonicalName())) {
         throw JaquariusExceptions.withMessage("Domain method returns unacceptable type. " +
             "Check method '{0}' in class {1}", method.name(), domainType.canonicalName());

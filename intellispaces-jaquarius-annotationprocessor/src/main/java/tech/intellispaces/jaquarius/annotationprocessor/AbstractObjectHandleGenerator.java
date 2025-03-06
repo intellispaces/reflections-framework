@@ -62,12 +62,12 @@ public abstract class AbstractObjectHandleGenerator extends JaquariusArtifactGen
     for (MethodStatement method : methods) {
       MethodStatement effectiveMethod = convertMethodBeforeGenerate(method);
       analyzeRawDomainMethod(effectiveMethod);
-      if (includeMethodForm(effectiveMethod, TraverseQualifierSetForms.Object, ObjectReferenceForms.Object)) {
-        analyzeMethod(effectiveMethod, TraverseQualifierSetForms.Object, ObjectReferenceForms.Object, methodOrdinal++);
+      if (includeMethodForm(effectiveMethod, TraverseQualifierSetForms.Object, ObjectReferenceForms.Default)) {
+        analyzeMethod(effectiveMethod, TraverseQualifierSetForms.Object, ObjectReferenceForms.Default, methodOrdinal++);
       }
       if (hasMethodNormalForm(effectiveMethod)) {
-        if (includeMethodForm(effectiveMethod, TraverseQualifierSetForms.Normal, ObjectReferenceForms.Object)) {
-          analyzeMethod(effectiveMethod, TraverseQualifierSetForms.Normal, ObjectReferenceForms.Object, methodOrdinal++);
+        if (includeMethodForm(effectiveMethod, TraverseQualifierSetForms.Normal, ObjectReferenceForms.Default)) {
+          analyzeMethod(effectiveMethod, TraverseQualifierSetForms.Normal, ObjectReferenceForms.Default, methodOrdinal++);
         }
       }
       if (includeMethodForm(effectiveMethod, TraverseQualifierSetForms.Normal, ObjectReferenceForms.Primitive)) {
@@ -269,7 +269,7 @@ public abstract class AbstractObjectHandleGenerator extends JaquariusArtifactGen
   }
 
   protected String getObjectHandleMethodName(MethodStatement domainMethod, ObjectReferenceForm targetForm) {
-    if (ObjectReferenceForms.Object.is(targetForm)) {
+    if (ObjectReferenceForms.Default.is(targetForm)) {
       return domainMethod.name();
     } else if (ObjectReferenceForms.Primitive.is(targetForm)) {
       return domainMethod.name() + "AsPrimitive";
@@ -281,7 +281,7 @@ public abstract class AbstractObjectHandleGenerator extends JaquariusArtifactGen
   protected void appendMethodReturnHandleType(
       StringBuilder sb, MethodStatement method, ObjectReferenceForm targetForm
   ) {
-    if (ObjectReferenceForms.Object.is(targetForm)) {
+    if (ObjectReferenceForms.Default.is(targetForm)) {
       appendObjectFormMethodReturnType(sb, method);
     } else if (ObjectReferenceForms.Primitive.is(targetForm)) {
       CustomType returnType = method.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow().targetType();

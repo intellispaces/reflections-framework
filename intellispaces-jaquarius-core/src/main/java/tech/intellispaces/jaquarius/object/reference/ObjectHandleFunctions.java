@@ -345,14 +345,14 @@ public class ObjectHandleFunctions {
 
   public static ObjectReferenceForm getReferenceForm(TypeReference type, TraverseQualifierSetForm methodForm) {
     if (methodForm.is(TraverseQualifierSetForms.Object.name())) {
-      return ObjectReferenceForms.Object;
+      return ObjectReferenceForms.Default;
     } else if (methodForm.is(TraverseQualifierSetForms.Normal.name())) {
       if (type.isCustomTypeReference() &&
           ClassFunctions.isPrimitiveWrapperClass(type.asCustomTypeReferenceOrElseThrow().targetType().canonicalName())
       ) {
         return ObjectReferenceForms.Primitive;
       }
-      return ObjectReferenceForms.Object;
+      return ObjectReferenceForms.Default;
     } else {
       throw NotImplementedExceptions.withCode("qvd21A");
     }
@@ -427,7 +427,7 @@ public class ObjectHandleFunctions {
           for (NotPrimitiveReference argType : customTypeReference.typeArguments()) {
             commaAppender.run();
             sb.append(getObjectHandleDeclaration(
-                argType, ObjectHandleTypes.UndefinedPureObject, ObjectReferenceForms.Object, true, replaceKeyDomain, simpleNameMapping
+                argType, ObjectHandleTypes.UndefinedPureObject, ObjectReferenceForms.Default, true, replaceKeyDomain, simpleNameMapping
             ));
           }
           sb.append(">");

@@ -1,6 +1,6 @@
 package tech.intellispaces.jaquarius.settings;
 
-import tech.intellispaces.commons.base.entity.Enumeration;
+import tech.intellispaces.commons.entity.Enumeration;
 
 public enum KeyDomainPurposes implements Enumeration<KeyDomainPurpose>, KeyDomainPurpose {
 
@@ -12,7 +12,7 @@ public enum KeyDomainPurposes implements Enumeration<KeyDomainPurpose>, KeyDomai
   /**
    * The domain of domains.
    */
-  Domain("tech.intellispaces.commons.base.type.Type"),
+  Domain("tech.intellispaces.commons.type.Type"),
 
   /**
    * The domain of boolean.

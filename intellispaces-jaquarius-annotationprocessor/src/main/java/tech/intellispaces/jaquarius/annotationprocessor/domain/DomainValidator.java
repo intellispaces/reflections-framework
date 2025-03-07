@@ -1,8 +1,8 @@
 package tech.intellispaces.jaquarius.annotationprocessor.domain;
 
 import tech.intellispaces.commons.annotation.processor.ArtifactValidator;
-import tech.intellispaces.commons.base.text.StringFunctions;
-import tech.intellispaces.commons.base.type.ClassFunctions;
+import tech.intellispaces.commons.text.StringFunctions;
+import tech.intellispaces.commons.type.ClassFunctions;
 import tech.intellispaces.commons.java.reflection.customtype.CustomType;
 import tech.intellispaces.commons.java.reflection.method.MethodFunctions;
 import tech.intellispaces.commons.java.reflection.method.MethodParam;

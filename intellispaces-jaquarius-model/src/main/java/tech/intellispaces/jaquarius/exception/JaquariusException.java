@@ -1,6 +1,6 @@
 package tech.intellispaces.jaquarius.exception;
 
-import tech.intellispaces.commons.base.exception.UnexpectedException;
+import tech.intellispaces.commons.exception.UnexpectedException;
 
 public class JaquariusException extends UnexpectedException {
 

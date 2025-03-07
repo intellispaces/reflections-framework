@@ -1,7 +1,7 @@
 package tech.intellispaces.jaquarius;
 
-import tech.intellispaces.commons.base.data.Dictionary;
-import tech.intellispaces.commons.base.exception.UnexpectedExceptions;
+import tech.intellispaces.commons.data.Dictionary;
+import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.jaquarius.settings.JaquariusSettings;
 import tech.intellispaces.jaquarius.settings.JaquariusSettingsFunctions;
 

@@ -2,11 +2,11 @@ package tech.intellispaces.jaquarius.annotationprocessor.objecthandle;
 
 import tech.intellispaces.commons.action.runnable.RunnableAction;
 import tech.intellispaces.commons.action.text.StringActions;
-import tech.intellispaces.commons.base.exception.UnexpectedExceptions;
-import tech.intellispaces.commons.base.text.StringFunctions;
-import tech.intellispaces.commons.base.type.ClassFunctions;
-import tech.intellispaces.commons.base.type.ClassNameFunctions;
-import tech.intellispaces.commons.base.type.PrimitiveTypes;
+import tech.intellispaces.commons.exception.UnexpectedExceptions;
+import tech.intellispaces.commons.text.StringFunctions;
+import tech.intellispaces.commons.type.ClassFunctions;
+import tech.intellispaces.commons.type.ClassNameFunctions;
+import tech.intellispaces.commons.type.PrimitiveTypes;
 import tech.intellispaces.commons.java.reflection.customtype.CustomType;
 import tech.intellispaces.commons.java.reflection.method.MethodParam;
 import tech.intellispaces.commons.java.reflection.method.MethodStatement;
@@ -511,7 +511,7 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
       if (isPrimitiveWrapper(domainMethod.returnType().orElseThrow())) {
         CustomType returnType = domainMethod.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow().targetType();
         String typename = ClassFunctions.primitiveTypenameOfWrapper(returnType.canonicalName());
-        if (tech.intellispaces.commons.base.object.ObjectFunctions.equalsAnyOf(
+        if (tech.intellispaces.commons.object.ObjectFunctions.equalsAnyOf(
             typename,
             PrimitiveTypes.Boolean.typename(),
             PrimitiveTypes.Char.typename(),

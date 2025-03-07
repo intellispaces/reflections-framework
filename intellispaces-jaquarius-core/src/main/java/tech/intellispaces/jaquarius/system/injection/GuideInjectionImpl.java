@@ -1,6 +1,6 @@
 package tech.intellispaces.jaquarius.system.injection;
 
-import tech.intellispaces.commons.base.exception.UnexpectedExceptions;
+import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.jaquarius.system.GuideInjection;
 import tech.intellispaces.jaquarius.system.InjectionKind;
 import tech.intellispaces.jaquarius.system.Modules;

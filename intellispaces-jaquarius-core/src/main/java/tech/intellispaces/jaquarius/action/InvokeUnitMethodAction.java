@@ -2,7 +2,7 @@ package tech.intellispaces.jaquarius.action;
 
 import tech.intellispaces.commons.action.AbstractAction0;
 import tech.intellispaces.commons.action.Action;
-import tech.intellispaces.commons.base.exception.UnexpectedExceptions;
+import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.commons.java.reflection.method.MethodParam;
 import tech.intellispaces.commons.java.reflection.method.MethodStatement;
 import tech.intellispaces.jaquarius.exception.ConfigurationExceptions;

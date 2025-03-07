@@ -1,7 +1,7 @@
 package tech.intellispaces.jaquarius.annotationprocessor.channel;
 
 import tech.intellispaces.commons.annotation.processor.ArtifactGenerator;
-import tech.intellispaces.commons.base.type.ClassFunctions;
+import tech.intellispaces.commons.type.ClassFunctions;
 import tech.intellispaces.commons.java.reflection.customtype.CustomType;
 import tech.intellispaces.commons.java.reflection.method.MethodStatement;
 import tech.intellispaces.commons.java.reflection.reference.CustomTypeReference;

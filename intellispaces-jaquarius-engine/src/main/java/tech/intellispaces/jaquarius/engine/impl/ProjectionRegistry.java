@@ -1,9 +1,9 @@
 package tech.intellispaces.jaquarius.engine.impl;
 
 import tech.intellispaces.commons.action.Action;
-import tech.intellispaces.commons.base.exception.ExceptionFunctions;
-import tech.intellispaces.commons.base.exception.UnexpectedExceptions;
-import tech.intellispaces.commons.base.type.ClassFunctions;
+import tech.intellispaces.commons.exception.ExceptionFunctions;
+import tech.intellispaces.commons.exception.UnexpectedExceptions;
+import tech.intellispaces.commons.type.ClassFunctions;
 import tech.intellispaces.jaquarius.annotation.Projection;
 import tech.intellispaces.jaquarius.exception.ConfigurationException;
 import tech.intellispaces.jaquarius.exception.ConfigurationExceptions;

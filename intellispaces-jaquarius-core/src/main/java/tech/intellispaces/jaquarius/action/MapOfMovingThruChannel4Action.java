@@ -1,7 +1,7 @@
 package tech.intellispaces.jaquarius.action;
 
 import tech.intellispaces.commons.action.AbstractAction5;
-import tech.intellispaces.commons.base.type.Type;
+import tech.intellispaces.commons.type.Type;
 import tech.intellispaces.jaquarius.channel.Channel4;
 import tech.intellispaces.jaquarius.guide.n4.MapperOfMoving4;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;

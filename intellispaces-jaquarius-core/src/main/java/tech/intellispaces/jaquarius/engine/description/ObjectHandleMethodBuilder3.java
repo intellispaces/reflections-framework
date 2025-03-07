@@ -2,7 +2,7 @@ package tech.intellispaces.jaquarius.engine.description;
 
 import tech.intellispaces.commons.action.Action;
 import tech.intellispaces.commons.action.functional.FunctionActions;
-import tech.intellispaces.commons.base.function.TriFunction;
+import tech.intellispaces.commons.function.TriFunction;
 import tech.intellispaces.jaquarius.traverse.TraverseType;
 
 import java.util.List;

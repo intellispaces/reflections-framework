@@ -1,6 +1,6 @@
 package tech.intellispaces.jaquarius.id;
 
-import tech.intellispaces.commons.base.data.UuidFunctions;
+import tech.intellispaces.commons.data.UuidFunctions;
 
 import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;

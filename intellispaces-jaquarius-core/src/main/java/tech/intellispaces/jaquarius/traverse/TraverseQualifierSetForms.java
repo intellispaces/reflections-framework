@@ -1,6 +1,6 @@
 package tech.intellispaces.jaquarius.traverse;
 
-import tech.intellispaces.commons.base.entity.Enumeration;
+import tech.intellispaces.commons.entity.Enumeration;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandle;
 
 public enum TraverseQualifierSetForms implements TraverseQualifierSetForm, Enumeration<TraverseQualifierSetForm> {

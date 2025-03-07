@@ -1,9 +1,9 @@
 package tech.intellispaces.jaquarius.engine.impl;
 
 import tech.intellispaces.commons.action.Action;
-import tech.intellispaces.commons.base.exception.NotImplementedExceptions;
-import tech.intellispaces.commons.base.exception.UnexpectedExceptions;
-import tech.intellispaces.commons.base.stream.Streams;
+import tech.intellispaces.commons.exception.NotImplementedExceptions;
+import tech.intellispaces.commons.exception.UnexpectedExceptions;
+import tech.intellispaces.commons.stream.Streams;
 import tech.intellispaces.commons.java.reflection.method.MethodStatement;
 import tech.intellispaces.jaquarius.action.InvokeUnitMethodAction;
 import tech.intellispaces.jaquarius.annotation.Configuration;

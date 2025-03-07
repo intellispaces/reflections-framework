@@ -1,8 +1,8 @@
 package tech.intellispaces.jaquarius.engine.impl;
 
-import tech.intellispaces.commons.base.exception.UnexpectedExceptions;
-import tech.intellispaces.commons.base.object.Objects;
-import tech.intellispaces.commons.base.type.ClassFunctions;
+import tech.intellispaces.commons.exception.UnexpectedExceptions;
+import tech.intellispaces.commons.object.Objects;
+import tech.intellispaces.commons.type.ClassFunctions;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
 
 import java.util.Map;

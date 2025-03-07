@@ -1,10 +1,10 @@
 package tech.intellispaces.jaquarius.settings;
 
-import tech.intellispaces.commons.base.collection.CollectionFunctions;
-import tech.intellispaces.commons.base.data.Dictionaries;
-import tech.intellispaces.commons.base.data.Dictionary;
-import tech.intellispaces.commons.base.resource.ResourceFunctions;
-import tech.intellispaces.commons.base.text.StringFunctions;
+import tech.intellispaces.commons.collection.CollectionFunctions;
+import tech.intellispaces.commons.data.Dictionaries;
+import tech.intellispaces.commons.data.Dictionary;
+import tech.intellispaces.commons.resource.ResourceFunctions;
+import tech.intellispaces.commons.text.StringFunctions;
 import tech.intellispaces.jaquarius.exception.ConfigurationExceptions;
 
 import java.io.IOException;

@@ -1,6 +1,6 @@
 package tech.intellispaces.jaquarius.guide;
 
-import tech.intellispaces.commons.base.entity.Enumerable;
+import tech.intellispaces.commons.entity.Enumerable;
 
 public interface GuideKind extends Enumerable<GuideKind> {
 

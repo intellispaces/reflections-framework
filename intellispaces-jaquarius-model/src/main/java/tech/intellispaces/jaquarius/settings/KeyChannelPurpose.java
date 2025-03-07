@@ -1,6 +1,6 @@
 package tech.intellispaces.jaquarius.settings;
 
-import tech.intellispaces.commons.base.entity.Enumerable;
+import tech.intellispaces.commons.entity.Enumerable;
 
 /**
  * The key channel purpose.

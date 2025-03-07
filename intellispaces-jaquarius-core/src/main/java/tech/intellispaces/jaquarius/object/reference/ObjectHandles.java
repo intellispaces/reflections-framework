@@ -1,6 +1,6 @@
 package tech.intellispaces.jaquarius.object.reference;
 
-import tech.intellispaces.commons.base.exception.UnexpectedExceptions;
+import tech.intellispaces.commons.exception.UnexpectedExceptions;
 
 public interface ObjectHandles {
 

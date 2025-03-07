@@ -3,7 +3,7 @@ package tech.intellispaces.jaquarius.annotationprocessor.module;
 import tech.intellispaces.commons.action.runnable.RunnableAction;
 import tech.intellispaces.commons.action.text.StringActions;
 import tech.intellispaces.commons.annotation.processor.ArtifactGeneratorContext;
-import tech.intellispaces.commons.base.exception.UnexpectedExceptions;
+import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.commons.java.reflection.customtype.CustomType;
 import tech.intellispaces.commons.java.reflection.instance.AnnotationInstance;
 import tech.intellispaces.commons.java.reflection.instance.ClassInstance;

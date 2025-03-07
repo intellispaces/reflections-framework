@@ -1,8 +1,8 @@
 package tech.intellispaces.jaquarius.engine.description;
 
 import tech.intellispaces.commons.action.functional.FunctionActions;
-import tech.intellispaces.commons.base.function.TriConsumer;
-import tech.intellispaces.commons.base.function.TriFunction;
+import tech.intellispaces.commons.function.TriConsumer;
+import tech.intellispaces.commons.function.TriFunction;
 
 import java.util.List;
 

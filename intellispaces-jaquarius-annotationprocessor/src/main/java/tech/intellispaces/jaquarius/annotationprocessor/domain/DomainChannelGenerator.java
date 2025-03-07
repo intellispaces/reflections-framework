@@ -8,12 +8,12 @@ import tech.intellispaces.commons.java.reflection.method.MethodParam;
 import tech.intellispaces.commons.java.reflection.method.MethodStatement;
 import tech.intellispaces.commons.java.reflection.reference.NamedReference;
 import tech.intellispaces.commons.java.reflection.reference.TypeReference;
-import tech.intellispaces.jaquarius.annotationprocessor.ChannelGenerator;
+import tech.intellispaces.jaquarius.annotationprocessor.channel.AbstractChannelGenerator;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
 
 import java.util.List;
 
-public class DomainChannelGenerator extends ChannelGenerator {
+public class DomainChannelGenerator extends AbstractChannelGenerator {
 
   public DomainChannelGenerator(CustomType domainType, MethodStatement channelMethod) {
     super(domainType, channelMethod);

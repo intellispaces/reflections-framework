@@ -22,7 +22,7 @@ import tech.intellispaces.jaquarius.traverse.TraverseType;
 import java.util.Map;
 import java.util.stream.Stream;
 
-public class UndefinedPureObjectGenerator extends PureObjectGenerator {
+public class UndefinedPureObjectGenerator extends AbstractPureObjectGenerator {
 
   public UndefinedPureObjectGenerator(CustomType domainType) {
     super(domainType);

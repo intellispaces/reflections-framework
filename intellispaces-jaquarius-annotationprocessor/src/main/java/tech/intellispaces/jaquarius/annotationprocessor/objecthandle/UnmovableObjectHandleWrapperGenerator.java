@@ -30,7 +30,7 @@ import tech.intellispaces.jaquarius.traverse.TraverseTypes;
 
 import java.util.Map;
 
-public class UnmovableObjectHandleWrapperGenerator extends ObjectHandleWrapperGenerator {
+public class UnmovableObjectHandleWrapperGenerator extends AbstractObjectHandleWrapperGenerator {
 
   public UnmovableObjectHandleWrapperGenerator(CustomType objectHandleType) {
     super(objectHandleType);

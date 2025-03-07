@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-public class UnmovableObjectHandleGenerator extends ObjectHandleGenerator {
+public class UnmovableObjectHandleGenerator extends AbstractObjectHandleGenerator {
 
   private final List<Map<String, String>> movableMethods = new ArrayList<>();
 

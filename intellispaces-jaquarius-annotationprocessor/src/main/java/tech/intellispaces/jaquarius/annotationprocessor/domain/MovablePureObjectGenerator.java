@@ -25,7 +25,7 @@ import tech.intellispaces.jaquarius.traverse.TraverseType;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-public class MovablePureObjectGenerator extends PureObjectGenerator {
+public class MovablePureObjectGenerator extends AbstractPureObjectGenerator {
 
   public MovablePureObjectGenerator(CustomType domainType) {
     super(domainType);

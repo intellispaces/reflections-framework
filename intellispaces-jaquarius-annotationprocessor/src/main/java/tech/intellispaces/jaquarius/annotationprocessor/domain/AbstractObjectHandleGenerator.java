@@ -1,8 +1,9 @@
-package tech.intellispaces.jaquarius.annotationprocessor;
+package tech.intellispaces.jaquarius.annotationprocessor.domain;
 
 import tech.intellispaces.commons.action.runnable.RunnableAction;
 import tech.intellispaces.commons.action.text.StringActions;
 import tech.intellispaces.commons.annotation.processor.ArtifactGeneratorContext;
+import tech.intellispaces.commons.base.exception.NotImplementedExceptions;
 import tech.intellispaces.commons.base.exception.UnexpectedExceptions;
 import tech.intellispaces.commons.base.type.ClassFunctions;
 import tech.intellispaces.commons.java.reflection.customtype.CustomType;
@@ -20,6 +21,10 @@ import tech.intellispaces.commons.java.reflection.reference.TypeReference;
 import tech.intellispaces.jaquarius.Jaquarius;
 import tech.intellispaces.jaquarius.annotation.Movable;
 import tech.intellispaces.jaquarius.annotation.Unmovable;
+import tech.intellispaces.jaquarius.annotationprocessor.AnnotationGeneratorFunctions;
+import tech.intellispaces.jaquarius.annotationprocessor.AnnotationProcessorFunctions;
+import tech.intellispaces.jaquarius.annotationprocessor.ArtifactTypes;
+import tech.intellispaces.jaquarius.annotationprocessor.JaquariusArtifactGenerator;
 import tech.intellispaces.jaquarius.exception.TraverseException;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandleFunctions;
@@ -35,17 +40,30 @@ import tech.intellispaces.jaquarius.traverse.TraverseQualifierSetForms;
 
 import javax.annotation.processing.RoundEnvironment;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public abstract class AbstractObjectHandleGenerator extends JaquariusArtifactGenerator {
+  protected boolean isAlias;
+  protected String domainType;
+  protected String generalObjectHandle;
+  protected String baseObjectHandle;
+  protected String primaryObjectHandle;
+  protected String typeParamsFull;
+  protected String typeParamsBrief;
+  protected String domainTypeParamsFull;
+  protected String domainTypeParamsBrief;
+  protected String primaryDomainSimpleName;
+  protected String primaryDomainTypeArguments;
   protected final List<Map<String, String>> methods = new ArrayList<>();
+  protected final List<Map<String, String>> conversionMethods = new ArrayList<>();
   protected final List<Map<String, String>> rawDomainMethods = new ArrayList<>();
 
-  public AbstractObjectHandleGenerator(CustomType sourceArtifact) {
-    super(sourceArtifact);
+  public AbstractObjectHandleGenerator(CustomType domainType) {
+    super(domainType);
   }
 
   abstract protected ObjectHandleType getObjectHandleType();
@@ -53,6 +71,62 @@ public abstract class AbstractObjectHandleGenerator extends JaquariusArtifactGen
   protected String movableClassSimpleName() {
     return addImportAndGetSimpleName(
         NameConventionFunctions.getMovableObjectHandleTypename(sourceArtifact().className(), false)
+    );
+  }
+
+  protected void analyzeDomain() {
+    typeParamsFull = ObjectHandleFunctions.getObjectHandleTypeParams(
+        sourceArtifact(), ObjectHandleTypes.UndefinedPureObject, ObjectReferenceForms.Default, this::addImportAndGetSimpleName, false, true
+    );
+    typeParamsBrief = ObjectHandleFunctions.getObjectHandleTypeParams(
+        sourceArtifact(), ObjectHandleTypes.UndefinedPureObject, ObjectReferenceForms.Default, this::addImportAndGetSimpleName, false, false
+    );
+    domainTypeParamsFull = sourceArtifact().typeParametersFullDeclaration();
+    domainTypeParamsBrief = sourceArtifact().typeParametersBriefDeclaration();
+    generalObjectHandle = addImportAndGetSimpleName(
+        NameConventionFunctions.getUndefinedObjectHandleTypename(sourceArtifact().className())
+    );
+  }
+
+  protected String getDomainTypeParamsBrief(CustomTypeReference domainType) {
+    if (domainType.typeArguments().isEmpty()) {
+      return "";
+    }
+
+    var sb = new StringBuilder();
+    RunnableAction commaAppender = StringActions.skipFirstTimeCommaAppender(sb);
+    sb.append("<");
+    for (NotPrimitiveReference typeArgument : domainType.typeArguments()) {
+      commaAppender.run();
+      if (typeArgument.isCustomTypeReference()) {
+        CustomTypeReference customTypeReference = typeArgument.asCustomTypeReferenceOrElseThrow();
+        sb.append(addImportAndGetSimpleName(customTypeReference.targetType().canonicalName()));
+      } else if (typeArgument.isNamedReference()) {
+        NamedReference namedReference = typeArgument.asNamedReferenceOrElseThrow();
+        sb.append(namedReference.name());
+      } else {
+        throw NotImplementedExceptions.withCode("xG3KKaWv");
+      }
+    }
+    sb.append(">");
+    return sb.toString();
+  }
+
+  protected void analyzeConversionMethods(CustomType domainType) {
+    Collection<CustomTypeReference> parents = DomainFunctions.getEffectiveSuperDomains(domainType);
+    parents.stream()
+        .map(this::buildConversionMethod)
+        .forEach(conversionMethods::add);
+  }
+
+  private Map<String, String> buildConversionMethod(CustomTypeReference parent) {
+    var sb = new StringBuilder();
+    sb.append(buildObjectHandleDeclaration(parent, getObjectHandleType(), true));
+    sb.append(" ");
+    sb.append(NameConventionFunctions.getConversionMethodName(parent));
+    sb.append("()");
+    return Map.of(
+        "declaration", sb.toString()
     );
   }
 
@@ -225,7 +299,7 @@ public abstract class AbstractObjectHandleGenerator extends JaquariusArtifactGen
   private List<MethodStatement> getAdditionalOMethods(CustomType customType, RoundEnvironment roundEnv) {
     List<MethodStatement> methods = new ArrayList<>();
     List<CustomType> artifactAddOns = AnnotationProcessorFunctions.findArtifactAddOns(
-        customType, ArtifactTypes.ObjectHandle, roundEnv
+        customType, ArtifactTypes.UndefinedPureObject, roundEnv
     );
     for (CustomType artifactAddOn : artifactAddOns) {
       methods.addAll(artifactAddOn.declaredMethods());

@@ -2,7 +2,6 @@ package tech.intellispaces.jaquarius.annotationprocessor.objecthandle;
 
 import tech.intellispaces.commons.action.runnable.RunnableAction;
 import tech.intellispaces.commons.action.text.StringActions;
-import tech.intellispaces.commons.base.exception.NotImplementedExceptions;
 import tech.intellispaces.commons.base.exception.UnexpectedExceptions;
 import tech.intellispaces.commons.base.text.StringFunctions;
 import tech.intellispaces.commons.base.type.ClassFunctions;
@@ -13,9 +12,8 @@ import tech.intellispaces.commons.java.reflection.method.MethodParam;
 import tech.intellispaces.commons.java.reflection.method.MethodStatement;
 import tech.intellispaces.commons.java.reflection.reference.CustomTypeReference;
 import tech.intellispaces.commons.java.reflection.reference.NamedReference;
-import tech.intellispaces.commons.java.reflection.reference.NotPrimitiveReference;
 import tech.intellispaces.commons.java.reflection.reference.TypeReference;
-import tech.intellispaces.jaquarius.annotationprocessor.AbstractObjectHandleGenerator;
+import tech.intellispaces.jaquarius.annotationprocessor.domain.AbstractObjectHandleGenerator;
 import tech.intellispaces.jaquarius.annotationprocessor.AnnotationGeneratorFunctions;
 import tech.intellispaces.jaquarius.engine.description.ObjectHandleMethodPurposes;
 import tech.intellispaces.jaquarius.exception.ConfigurationExceptions;
@@ -39,7 +37,7 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-abstract class ObjectHandleWrapperGenerator extends AbstractObjectHandleGenerator {
+abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandleGenerator {
   protected String domainSimpleClassName;
   protected String typeParamsFull;
   protected String typeParamsBrief;
@@ -59,7 +57,7 @@ abstract class ObjectHandleWrapperGenerator extends AbstractObjectHandleGenerato
   protected final List<Map<String, String>> conversionMethods = new ArrayList<>();
   protected final List<Map<String, Object>> methodDescriptions = new ArrayList<>();
 
-  ObjectHandleWrapperGenerator(CustomType objectHandleType) {
+  AbstractObjectHandleWrapperGenerator(CustomType objectHandleType) {
     super(objectHandleType);
   }
 
@@ -107,30 +105,6 @@ abstract class ObjectHandleWrapperGenerator extends AbstractObjectHandleGenerato
           sourceArtifact().canonicalName());
     }
     return addImportAndGetSimpleName(handleClass);
-  }
-
-  private String getDomainTypeParamsBrief(CustomTypeReference domainType) {
-    if (domainType.typeArguments().isEmpty()) {
-      return "";
-    }
-
-    var sb = new StringBuilder();
-    RunnableAction commaAppender = StringActions.skipFirstTimeCommaAppender(sb);
-    sb.append("<");
-    for (NotPrimitiveReference typeArgument : domainType.typeArguments()) {
-      commaAppender.run();
-      if (typeArgument.isCustomTypeReference()) {
-        CustomTypeReference customTypeReference = typeArgument.asCustomTypeReferenceOrElseThrow();
-        sb.append(addImportAndGetSimpleName(customTypeReference.targetType().canonicalName()));
-      } else if (typeArgument.isNamedReference()) {
-        NamedReference namedReference = typeArgument.asNamedReferenceOrElseThrow();
-        sb.append(namedReference.name());
-      } else {
-        throw NotImplementedExceptions.withCode("xG3KKaWv");
-      }
-    }
-    sb.append(">");
-    return sb.toString();
   }
 
   protected void analyzeTypeParams() {

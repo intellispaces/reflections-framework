@@ -32,7 +32,7 @@ import tech.intellispaces.jaquarius.traverse.MappingTraverse;
 import tech.intellispaces.jaquarius.traverse.TraverseType;
 import tech.intellispaces.jaquarius.traverse.TraverseTypes;
 
-public class MovableObjectHandleWrapperGenerator extends ObjectHandleWrapperGenerator {
+public class MovableObjectHandleWrapperGenerator extends AbstractObjectHandleWrapperGenerator {
 
   public MovableObjectHandleWrapperGenerator(CustomType objectHandleType) {
     super(objectHandleType);

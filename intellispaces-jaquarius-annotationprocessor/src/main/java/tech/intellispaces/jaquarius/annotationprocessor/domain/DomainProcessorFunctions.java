@@ -80,9 +80,15 @@ public interface DomainProcessorFunctions {
 //    ) {
 //      generators.add(new UnmovableObjectHandleGenerator(domainType));
 //    }
-    generators.add(new UndefinedPureObjectGenerator(domainType));
-    generators.add(new MovablePureObjectGenerator(domainType));
-    generators.add(new UnmovablePureObjectGenerator(domainType));
+    if (AnnotationProcessorFunctions.isAutoGenerationEnabled(domainType, ArtifactTypes.UndefinedPureObject, roundEnv)) {
+      generators.add(new UndefinedPureObjectGenerator(domainType));
+    }
+    if (AnnotationProcessorFunctions.isAutoGenerationEnabled(domainType, ArtifactTypes.MovablePureObject, roundEnv)) {
+      generators.add(new MovablePureObjectGenerator(domainType));
+    }
+    if (AnnotationProcessorFunctions.isAutoGenerationEnabled(domainType, ArtifactTypes.UnmovablePureObject, roundEnv)) {
+      generators.add(new UnmovablePureObjectGenerator(domainType));
+    }
   }
 
   private static void addDownwardObjectHandleGenerators(

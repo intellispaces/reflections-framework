@@ -25,7 +25,7 @@ import tech.intellispaces.jaquarius.traverse.TraverseType;
 import java.util.List;
 import java.util.stream.Stream;
 
-public class MovableObjectHandleGenerator extends ObjectHandleGenerator {
+public class MovableObjectHandleGenerator extends AbstractObjectHandleGenerator {
 
   public MovableObjectHandleGenerator(CustomType domainType) {
     super(domainType);

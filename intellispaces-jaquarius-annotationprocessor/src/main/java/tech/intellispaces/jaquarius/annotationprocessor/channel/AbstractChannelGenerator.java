@@ -1,4 +1,4 @@
-package tech.intellispaces.jaquarius.annotationprocessor;
+package tech.intellispaces.jaquarius.annotationprocessor.channel;
 
 import tech.intellispaces.commons.action.runnable.RunnableAction;
 import tech.intellispaces.commons.action.text.StringActions;
@@ -7,6 +7,7 @@ import tech.intellispaces.commons.java.reflection.customtype.CustomType;
 import tech.intellispaces.commons.java.reflection.method.MethodStatement;
 import tech.intellispaces.commons.java.reflection.reference.TypeReference;
 import tech.intellispaces.jaquarius.annotation.Channel;
+import tech.intellispaces.jaquarius.annotationprocessor.JaquariusArtifactGenerator;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.traverse.MappingOfMovingTraverse;
@@ -16,10 +17,10 @@ import tech.intellispaces.jaquarius.traverse.TraverseType;
 
 import java.util.List;
 
-public abstract class ChannelGenerator extends JaquariusArtifactGenerator {
+public abstract class AbstractChannelGenerator extends JaquariusArtifactGenerator {
   protected final MethodStatement channelMethod;
 
-  public ChannelGenerator(CustomType annotatedType, MethodStatement channelMethod) {
+  public AbstractChannelGenerator(CustomType annotatedType, MethodStatement channelMethod) {
     super(annotatedType);
     this.channelMethod = channelMethod;
   }

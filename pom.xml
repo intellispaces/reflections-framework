@@ -63,7 +63,7 @@
             </dependency>
             <dependency>
                 <groupId>tech.intellispaces.commons</groupId>
-                <artifactId>intellispaces-commons-base-action</artifactId>
+                <artifactId>intellispaces-commons-action-base</artifactId>
                 <version>0.0.1-SNAPSHOT</version>
             </dependency>
             <dependency>

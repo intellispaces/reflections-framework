@@ -47,7 +47,7 @@
         </dependency>
         <dependency>
             <groupId>tech.intellispaces.commons</groupId>
-            <artifactId>intellispaces-commons-base-action</artifactId>
+            <artifactId>intellispaces-commons-action-base</artifactId>
         </dependency>
 
         <!-- Auto-service library -->

@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
-public class UndefinedObjectHandleGenerator extends AbstractObjectHandleGenerator {
+public class UndefinedObjectHandleGenerator extends AbstractObjectGenerator {
 
   public UndefinedObjectHandleGenerator(CustomType domainType) {
     super(domainType);

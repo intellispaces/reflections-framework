@@ -3,9 +3,9 @@ package tech.intellispaces.jaquarius.annotationprocessor.domain;
 import tech.intellispaces.commons.java.reflection.customtype.CustomType;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
 
-public abstract class AbstractPureObjectGenerator extends AbstractObjectHandleGenerator {
+public abstract class AbstractSimpleObjectGenerator extends AbstractObjectGenerator {
 
-  public AbstractPureObjectGenerator(CustomType domainType) {
+  public AbstractSimpleObjectGenerator(CustomType domainType) {
     super(domainType);
   }
 

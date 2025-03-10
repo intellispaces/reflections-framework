@@ -23,9 +23,9 @@ import tech.intellispaces.jaquarius.traverse.MappingTraverse;
 
 import java.util.stream.Stream;
 
-public class MovableDownwardObjectHandleGenerator extends ConversionObjectHandleGenerator {
+public class MovableDownwardObjectGenerator extends ConversionObjectGenerator {
 
-  public MovableDownwardObjectHandleGenerator(
+  public MovableDownwardObjectGenerator(
       CustomType annotatedType, CustomTypeReference superDomainType
   ) {
     super(annotatedType, superDomainType);

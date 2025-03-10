@@ -13,7 +13,7 @@ import tech.intellispaces.commons.java.reflection.method.MethodStatement;
 import tech.intellispaces.commons.java.reflection.reference.CustomTypeReference;
 import tech.intellispaces.commons.java.reflection.reference.NamedReference;
 import tech.intellispaces.commons.java.reflection.reference.TypeReference;
-import tech.intellispaces.jaquarius.annotationprocessor.domain.AbstractObjectHandleGenerator;
+import tech.intellispaces.jaquarius.annotationprocessor.domain.AbstractObjectGenerator;
 import tech.intellispaces.jaquarius.annotationprocessor.AnnotationGeneratorFunctions;
 import tech.intellispaces.jaquarius.engine.description.ObjectHandleMethodPurposes;
 import tech.intellispaces.jaquarius.exception.ConfigurationExceptions;
@@ -37,7 +37,7 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandleGenerator {
+abstract class AbstractObjectWrapperGenerator extends AbstractObjectGenerator {
   protected String domainSimpleClassName;
   protected String typeParamsFull;
   protected String typeParamsBrief;
@@ -57,7 +57,7 @@ abstract class AbstractObjectHandleWrapperGenerator extends AbstractObjectHandle
   protected final List<Map<String, String>> conversionMethods = new ArrayList<>();
   protected final List<Map<String, Object>> methodDescriptions = new ArrayList<>();
 
-  AbstractObjectHandleWrapperGenerator(CustomType objectHandleType) {
+  AbstractObjectWrapperGenerator(CustomType objectHandleType) {
     super(objectHandleType);
   }
 

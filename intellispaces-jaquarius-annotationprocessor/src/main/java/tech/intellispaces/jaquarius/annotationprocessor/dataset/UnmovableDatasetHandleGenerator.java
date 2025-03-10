@@ -14,7 +14,7 @@ import tech.intellispaces.commons.java.reflection.reference.NamedReference;
 import tech.intellispaces.commons.java.reflection.reference.TypeReference;
 import tech.intellispaces.jaquarius.annotation.Name;
 import tech.intellispaces.jaquarius.annotation.ObjectHandle;
-import tech.intellispaces.jaquarius.annotationprocessor.domain.AbstractObjectHandleGenerator;
+import tech.intellispaces.jaquarius.annotationprocessor.domain.AbstractObjectGenerator;
 import tech.intellispaces.jaquarius.channel.Channel1;
 import tech.intellispaces.jaquarius.exception.TraverseException;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
@@ -33,7 +33,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-public class UnmovableDatasetHandleGenerator extends AbstractObjectHandleGenerator {
+public class UnmovableDatasetHandleGenerator extends AbstractObjectGenerator {
   private String typeParamsBrief;
   private boolean isAlias;
   private String domainType;

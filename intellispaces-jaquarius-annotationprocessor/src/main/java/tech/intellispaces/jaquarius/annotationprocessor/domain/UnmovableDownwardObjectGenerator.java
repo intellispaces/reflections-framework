@@ -31,9 +31,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-public class UnmovableDownwardObjectHandleGenerator extends ConversionObjectHandleGenerator {
+public class UnmovableDownwardObjectGenerator extends ConversionObjectGenerator {
 
-  public UnmovableDownwardObjectHandleGenerator(
+  public UnmovableDownwardObjectGenerator(
       CustomType annotatedType, CustomTypeReference superDomainType
   ) {
     super(annotatedType, superDomainType);

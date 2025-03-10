@@ -2,12 +2,24 @@ package tech.intellispaces.jaquarius.traverse;
 
 import tech.intellispaces.commons.entity.Enumeration;
 
+/**
+ * The traverse types.
+ */
 public enum TraverseTypes implements TraverseType, Enumeration<TraverseType> {
 
+  /**
+   * The mapping traverse.
+   */
   Mapping,
 
+  /**
+   * The moving traverse.
+   */
   Moving,
 
+  /**
+   * The mapping related to a specific movement.
+   */
   MappingOfMoving;
 
 

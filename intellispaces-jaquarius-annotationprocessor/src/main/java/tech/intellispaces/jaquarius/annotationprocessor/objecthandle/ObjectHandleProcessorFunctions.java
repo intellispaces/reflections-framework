@@ -13,9 +13,9 @@ public interface ObjectHandleProcessorFunctions {
       CustomType objectHandleType
   ) {
     if (ObjectHandleFunctions.isUnmovableObjectHandle(objectHandleType)) {
-      return List.of(new UnmovableObjectHandleWrapperGenerator(objectHandleType));
+      return List.of(new UnmovableObjectWrapperGenerator(objectHandleType));
     } else if (ObjectHandleFunctions.isMovableObjectHandle(objectHandleType)) {
-      return List.of(new MovableObjectHandleWrapperGenerator(objectHandleType));
+      return List.of(new MovableObjectWrapperGenerator(objectHandleType));
     } else {
       throw UnexpectedExceptions.withMessage("Could not define movable type of the object handle {0}",
           objectHandleType.canonicalName());

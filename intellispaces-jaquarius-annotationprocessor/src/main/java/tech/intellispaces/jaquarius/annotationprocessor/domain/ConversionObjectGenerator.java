@@ -33,7 +33,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-abstract class ConversionObjectHandleGenerator extends AbstractObjectHandleGenerator {
+abstract class ConversionObjectGenerator extends AbstractObjectGenerator {
   protected String domainClassSimpleName;
   protected String classTypeParams;
   protected String classTypeParamsBrief;
@@ -47,7 +47,7 @@ abstract class ConversionObjectHandleGenerator extends AbstractObjectHandleGener
   protected String domainType;
   protected boolean isAlias;
 
-  public ConversionObjectHandleGenerator(CustomType customType, CustomTypeReference superDomainType) {
+  public ConversionObjectGenerator(CustomType customType, CustomTypeReference superDomainType) {
     super(customType);
     this.superDomainType = superDomainType;
   }

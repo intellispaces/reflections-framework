@@ -46,7 +46,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public abstract class AbstractObjectHandleGenerator extends JaquariusArtifactGenerator {
+public abstract class AbstractObjectGenerator extends JaquariusArtifactGenerator {
   protected boolean isAlias;
   protected String domainType;
   protected String generalObjectHandle;
@@ -62,7 +62,7 @@ public abstract class AbstractObjectHandleGenerator extends JaquariusArtifactGen
   protected final List<Map<String, String>> conversionMethods = new ArrayList<>();
   protected final List<Map<String, String>> rawDomainMethods = new ArrayList<>();
 
-  public AbstractObjectHandleGenerator(CustomType domainType) {
+  public AbstractObjectGenerator(CustomType domainType) {
     super(domainType);
   }
 
@@ -299,7 +299,7 @@ public abstract class AbstractObjectHandleGenerator extends JaquariusArtifactGen
   private List<MethodStatement> getAdditionalOMethods(CustomType customType, RoundEnvironment roundEnv) {
     List<MethodStatement> methods = new ArrayList<>();
     List<CustomType> artifactAddOns = AnnotationProcessorFunctions.findArtifactAddOns(
-        customType, ArtifactTypes.UndefinedPureObject, roundEnv
+        customType, ArtifactTypes.UndefinedSimpleObject, roundEnv
     );
     for (CustomType artifactAddOn : artifactAddOns) {
       methods.addAll(artifactAddOn.declaredMethods());

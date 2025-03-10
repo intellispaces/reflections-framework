@@ -35,7 +35,8 @@ public interface DomainProcessorFunctions {
         }
       }
     }
-    addBasicObjectHandleGenerators(domainType, generators, context.roundEnvironment());
+    addSimpleObjectGenerators(domainType, generators, context.roundEnvironment());
+//    addObjectHandleGenerators(domainType, generators, context.roundEnvironment());
     addDownwardObjectHandleGenerators(domainType, generators);
     addIncludedGenerators(domainType, generators, context);
     return generators;
@@ -62,32 +63,37 @@ public interface DomainProcessorFunctions {
     }
   }
 
-  private static void addBasicObjectHandleGenerators(
+  private static void addSimpleObjectGenerators(
       CustomType domainType, List<ArtifactGenerator> generators, RoundEnvironment roundEnv
   ) {
-//    if (
-//        AnnotationProcessorFunctions.isAutoGenerationEnabled(domainType, ArtifactTypes.ObjectHandle, roundEnv)
-//    ) {
-//      generators.add(new UndefinedObjectHandleGenerator(domainType));
-//    }
-//    if (
-//        AnnotationProcessorFunctions.isAutoGenerationEnabled(domainType, ArtifactTypes.MovableObjectHandle, roundEnv)
-//    ) {
-//      generators.add(new MovableObjectHandleGenerator(domainType));
-//    }
-//    if (
-//        AnnotationProcessorFunctions.isAutoGenerationEnabled(domainType, ArtifactTypes.UnmovableObjectHandle, roundEnv)
-//    ) {
-//      generators.add(new UnmovableObjectHandleGenerator(domainType));
-//    }
-    if (AnnotationProcessorFunctions.isAutoGenerationEnabled(domainType, ArtifactTypes.UndefinedPureObject, roundEnv)) {
-      generators.add(new UndefinedPureObjectGenerator(domainType));
+    if (AnnotationProcessorFunctions.isAutoGenerationEnabled(domainType, ArtifactTypes.UndefinedSimpleObject, roundEnv)) {
+      generators.add(new UndefinedSimpleObjectGenerator(domainType));
     }
-    if (AnnotationProcessorFunctions.isAutoGenerationEnabled(domainType, ArtifactTypes.MovablePureObject, roundEnv)) {
-      generators.add(new MovablePureObjectGenerator(domainType));
+    if (AnnotationProcessorFunctions.isAutoGenerationEnabled(domainType, ArtifactTypes.MovableSimpleObject, roundEnv)) {
+      generators.add(new MovableSimpleObjectGenerator(domainType));
     }
-    if (AnnotationProcessorFunctions.isAutoGenerationEnabled(domainType, ArtifactTypes.UnmovablePureObject, roundEnv)) {
-      generators.add(new UnmovablePureObjectGenerator(domainType));
+    if (AnnotationProcessorFunctions.isAutoGenerationEnabled(domainType, ArtifactTypes.UnmovableSimpleObject, roundEnv)) {
+      generators.add(new UnmovableSimpleObjectGenerator(domainType));
+    }
+  }
+
+  private static void addObjectHandleGenerators(
+      CustomType domainType, List<ArtifactGenerator> generators, RoundEnvironment roundEnv
+  ) {
+    if (
+        AnnotationProcessorFunctions.isAutoGenerationEnabled(domainType, ArtifactTypes.UndefinedObjectHandle, roundEnv)
+    ) {
+      generators.add(new UndefinedObjectHandleGenerator(domainType));
+    }
+    if (
+        AnnotationProcessorFunctions.isAutoGenerationEnabled(domainType, ArtifactTypes.MovableObjectHandle, roundEnv)
+    ) {
+      generators.add(new MovableObjectHandleGenerator(domainType));
+    }
+    if (
+        AnnotationProcessorFunctions.isAutoGenerationEnabled(domainType, ArtifactTypes.UnmovableObjectHandle, roundEnv)
+    ) {
+      generators.add(new UnmovableObjectHandleGenerator(domainType));
     }
   }
 
@@ -100,8 +106,8 @@ public interface DomainProcessorFunctions {
 
     List<CustomTypeReference> superDomains = domainType.parentTypes();
     for (CustomTypeReference superDomain : superDomains) {
-      generators.add(new UnmovableDownwardObjectHandleGenerator(domainType, superDomain));
-      generators.add(new MovableDownwardObjectHandleGenerator(domainType, superDomain));
+      generators.add(new UnmovableDownwardObjectGenerator(domainType, superDomain));
+      generators.add(new MovableDownwardObjectGenerator(domainType, superDomain));
     }
   }
 }

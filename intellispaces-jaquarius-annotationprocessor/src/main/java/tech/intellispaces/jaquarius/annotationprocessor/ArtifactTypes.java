@@ -6,19 +6,19 @@ package tech.intellispaces.jaquarius.annotationprocessor;
 public enum ArtifactTypes {
 
   /**
-   * The movable pure object interface,
+   * The movable simple object interface.
    */
-  MovablePureObject,
+  MovableSimpleObject,
 
   /**
-   * The unmovable pure object interface.
+   * The unmovable simple object interface.
    */
-  UnmovablePureObject,
+  UnmovableSimpleObject,
 
   /**
-   * The undefined pure object interface.
+   * The undefined simple object interface.
    */
-  UndefinedPureObject,
+  UndefinedSimpleObject,
 
   /**
    * The movable object handle interface.

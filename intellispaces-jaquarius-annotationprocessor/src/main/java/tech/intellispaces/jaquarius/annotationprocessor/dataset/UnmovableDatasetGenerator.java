@@ -33,13 +33,13 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-public class UnmovableDatasetHandleGenerator extends AbstractObjectGenerator {
+public class UnmovableDatasetGenerator extends AbstractObjectGenerator {
   private String typeParamsBrief;
   private boolean isAlias;
   private String domainType;
   private final List<Map<String, String>> projectionProperties = new ArrayList<>();
 
-  public UnmovableDatasetHandleGenerator(CustomType dataType) {
+  public UnmovableDatasetGenerator(CustomType dataType) {
     super(dataType);
   }
 
@@ -55,12 +55,12 @@ public class UnmovableDatasetHandleGenerator extends AbstractObjectGenerator {
 
   @Override
   protected String templateName() {
-    return "/unmovable_data_handle.template";
+    return "/unmovable_dataset.template";
   }
 
   @Override
   protected ObjectHandleType getObjectHandleType() {
-    return ObjectHandleTypes.UnmovablePureObject;
+    return ObjectHandleTypes.UnmovableClearObject;
   }
 
   @Override
@@ -110,7 +110,7 @@ public class UnmovableDatasetHandleGenerator extends AbstractObjectGenerator {
   private void analyzeProjections() {
     for (MethodStatement method : sourceArtifact().actualMethods()) {
       TypeReference type = method.returnType().orElseThrow();
-      String handleType = buildObjectHandleDeclaration(type, ObjectHandleTypes.UnmovablePureObject, true);
+      String handleType = buildObjectHandleDeclaration(type, ObjectHandleTypes.UnmovableClearObject, true);
 
       Map<String, String> properties = new HashMap<>();
       properties.put("type", handleType);

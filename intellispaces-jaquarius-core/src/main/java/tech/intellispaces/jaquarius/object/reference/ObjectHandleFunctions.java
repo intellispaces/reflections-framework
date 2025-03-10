@@ -33,8 +33,6 @@ import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
 import tech.intellispaces.jaquarius.settings.KeyDomain;
 import tech.intellispaces.jaquarius.settings.KeyDomainPurposes;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
-import tech.intellispaces.jaquarius.traverse.TraverseQualifierSetForm;
-import tech.intellispaces.jaquarius.traverse.TraverseQualifierSetForms;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
@@ -48,9 +46,9 @@ public class ObjectHandleFunctions {
 
   public static Class<?> getObjectHandleClass(ObjectHandleTypes objectHandleType) {
     return switch (objectHandleType) {
-      case UndefinedHandle, UndefinedPureObject -> tech.intellispaces.jaquarius.object.reference.ObjectHandle.class;
-      case UnmovableHandle, UnmovablePureObject -> UnmovableObjectHandle.class;
-      case MovableHandle, MovablePureObject -> MovableObjectHandle.class;
+      case UndefinedHandle, UndefinedClearObject -> tech.intellispaces.jaquarius.object.reference.ObjectHandle.class;
+      case UnmovableHandle, UnmovableClearObject -> UnmovableObjectHandle.class;
+      case MovableHandle, MovableClearObject -> MovableObjectHandle.class;
     };
   }
 
@@ -343,25 +341,10 @@ public class ObjectHandleFunctions {
     return null;
   }
 
-  public static ObjectReferenceForm getReferenceForm(TypeReference type, TraverseQualifierSetForm methodForm) {
-    if (methodForm.is(TraverseQualifierSetForms.Object.name())) {
-      return ObjectReferenceForms.Default;
-    } else if (methodForm.is(TraverseQualifierSetForms.Normal.name())) {
-      if (type.isCustomTypeReference() &&
-          ClassFunctions.isPrimitiveWrapperClass(type.asCustomTypeReferenceOrElseThrow().targetType().canonicalName())
-      ) {
-        return ObjectReferenceForms.Primitive;
-      }
-      return ObjectReferenceForms.Default;
-    } else {
-      throw NotImplementedExceptions.withCode("qvd21A");
-    }
-  }
-
   public static String geUndefinedPureObjectDeclaration(
       TypeReference domainType, boolean replaceKeyDomain, Function<String, String> simpleNameMapping
   ) {
-    return getObjectHandleDeclaration(domainType, ObjectHandleTypes.UndefinedPureObject, replaceKeyDomain, simpleNameMapping);
+    return getObjectHandleDeclaration(domainType, ObjectHandleTypes.UndefinedClearObject, replaceKeyDomain, simpleNameMapping);
   }
 
   public static String getObjectHandleDeclaration(
@@ -370,8 +353,7 @@ public class ObjectHandleFunctions {
       boolean replaceKeyDomain,
       Function<String, String> simpleNameMapping
   ) {
-    ObjectReferenceForm referenceForm = getReferenceForm(domainType, TraverseQualifierSetForms.Normal);
-    return getObjectHandleDeclaration(domainType, handleType, referenceForm, replaceKeyDomain, simpleNameMapping);
+    return getObjectHandleDeclaration(domainType, handleType, ObjectReferenceForms.Default, replaceKeyDomain, simpleNameMapping);
   }
 
   public static String getObjectHandleDeclaration(
@@ -427,7 +409,7 @@ public class ObjectHandleFunctions {
           for (NotPrimitiveReference argType : customTypeReference.typeArguments()) {
             commaAppender.run();
             sb.append(getObjectHandleDeclaration(
-                argType, ObjectHandleTypes.UndefinedPureObject, ObjectReferenceForms.Default, true, replaceKeyDomain, simpleNameMapping
+                argType, ObjectHandleTypes.UndefinedClearObject, ObjectReferenceForms.Default, true, replaceKeyDomain, simpleNameMapping
             ));
           }
           sb.append(">");

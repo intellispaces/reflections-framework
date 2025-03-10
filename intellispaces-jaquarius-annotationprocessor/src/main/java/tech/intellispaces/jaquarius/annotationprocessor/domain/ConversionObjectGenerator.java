@@ -24,8 +24,6 @@ import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
-import tech.intellispaces.jaquarius.traverse.TraverseQualifierSetForm;
-import tech.intellispaces.jaquarius.traverse.TraverseQualifierSetForms;
 import tech.intellispaces.jaquarius.traverse.TraverseType;
 
 import java.util.List;
@@ -96,17 +94,17 @@ abstract class ConversionObjectGenerator extends AbstractObjectGenerator {
 
   @Override
   protected Map<String, String> generateMethod(
-      MethodStatement method, TraverseQualifierSetForm methodForm, ObjectReferenceForm targetForm, int methodOrdinal
+      MethodStatement method, ObjectReferenceForm targetForm, int methodOrdinal
   ) {
     if (method.hasAnnotation(Channel.class)) {
-      return generateNormalMethod(method, methodForm, targetForm, methodOrdinal);
+      return generateNormalMethod(method, targetForm, methodOrdinal);
     } else {
-      return generatePrototypeMethod(convertMethodBeforeGenerate(method), methodForm);
+      return generatePrototypeMethod(convertMethodBeforeGenerate(method));
     }
   }
 
   private Map<String, String> generateNormalMethod(
-      MethodStatement method, TraverseQualifierSetForm methodForm, ObjectReferenceForm targetForm, int methodOrdinal
+      MethodStatement method, ObjectReferenceForm targetForm, int methodOrdinal
   ) {
     var sb = new StringBuilder();
     sb.append("public ");
@@ -115,7 +113,7 @@ abstract class ConversionObjectGenerator extends AbstractObjectGenerator {
     sb.append(" ");
     sb.append(getObjectHandleMethodName(method, targetForm));
     sb.append("(");
-    appendMethodParams(sb, method, methodForm);
+    appendMethodParams(sb, method);
     sb.append(")");
     appendMethodExceptions(sb, method);
     sb.append(" {\n");
@@ -130,9 +128,9 @@ abstract class ConversionObjectGenerator extends AbstractObjectGenerator {
 
   @Override
   protected boolean includeMethodForm(
-      MethodStatement method, TraverseQualifierSetForm methodForm, ObjectReferenceForm targetForm
+      MethodStatement method, ObjectReferenceForm targetForm
   ) {
-    if (methodForm.is(TraverseQualifierSetForms.Normal.name()) && ObjectReferenceForms.Primitive.is(targetForm)) {
+    if (ObjectReferenceForms.Primitive.is(targetForm)) {
       Optional<MethodStatement> actualMethod = superDomainType.targetType().actualMethod(
           method.name(), method.parameterTypes()
       );
@@ -143,10 +141,10 @@ abstract class ConversionObjectGenerator extends AbstractObjectGenerator {
         return false;
       }
     }
-    return super.includeMethodForm(method, methodForm, targetForm);
+    return super.includeMethodForm(method, targetForm);
   }
 
-  private Map<String, String> generatePrototypeMethod(MethodStatement method, TraverseQualifierSetForm methodForm) {
+  private Map<String, String> generatePrototypeMethod(MethodStatement method) {
     var sb = new StringBuilder();
     sb.append("public ");
     appendMethodTypeParameters(sb, method);
@@ -154,7 +152,7 @@ abstract class ConversionObjectGenerator extends AbstractObjectGenerator {
     sb.append(" ");
     sb.append(method.name());
     sb.append("(");
-    appendMethodParams(sb, method, methodForm);
+    appendMethodParams(sb, method);
     sb.append(")");
     appendMethodExceptions(sb, method);
     sb.append(" {\n");
@@ -278,11 +276,11 @@ abstract class ConversionObjectGenerator extends AbstractObjectGenerator {
           ChannelFunctions.getTraverseTypes(method).stream().anyMatch(TraverseType::isMoving)
               || method.hasAnnotation(Movable.class)
       ) {
-        sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.MovablePureObject, true));
+        sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.MovableClearObject, true));
       } else if (method.hasAnnotation(Unmovable.class)) {
-        sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.UnmovablePureObject, true));
+        sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.UnmovableClearObject, true));
       } else {
-        sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.UndefinedPureObject, true));
+        sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.UndefinedClearObject, true));
       }
     }
   }

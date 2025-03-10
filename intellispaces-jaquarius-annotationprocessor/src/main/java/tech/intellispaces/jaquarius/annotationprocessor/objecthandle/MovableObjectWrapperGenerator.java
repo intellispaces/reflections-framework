@@ -50,12 +50,12 @@ public class MovableObjectWrapperGenerator extends AbstractObjectWrapperGenerato
 
   @Override
   protected String templateName() {
-    return "/movable_object_handle_wrapper.template";
+    return "/movable_object_wrapper.template";
   }
 
   @Override
   protected ObjectHandleType getObjectHandleType() {
-    return ObjectHandleTypes.MovablePureObject;
+    return ObjectHandleTypes.MovableClearObject;
   }
 
   @Override
@@ -120,11 +120,11 @@ public class MovableObjectWrapperGenerator extends AbstractObjectWrapperGenerato
             method.hasAnnotation(Movable.class) ||
             NameConventionFunctions.isConversionMethod(method)
     ) {
-      sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.MovablePureObject, true));
+      sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.MovableClearObject, true));
     } else if (method.hasAnnotation(Unmovable.class)) {
-      sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.UnmovablePureObject, true));
+      sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.UnmovableClearObject, true));
     } else {
-      sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.UndefinedPureObject, true));
+      sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.UndefinedClearObject, true));
     }
   }
 }

@@ -38,7 +38,7 @@ public class MovableDownwardObjectGenerator extends ConversionObjectGenerator {
 
   @Override
   protected ObjectHandleType getObjectHandleType() {
-    return ObjectHandleTypes.MovablePureObject;
+    return ObjectHandleTypes.MovableClearObject;
   }
 
   @Override
@@ -49,7 +49,7 @@ public class MovableDownwardObjectGenerator extends ConversionObjectGenerator {
 
   @Override
   protected String templateName() {
-    return "/movable_downward_object_handle.template";
+    return "/movable_downward_object.template";
   }
 
   @Override

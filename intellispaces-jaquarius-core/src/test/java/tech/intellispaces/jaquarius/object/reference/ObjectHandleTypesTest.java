@@ -11,9 +11,9 @@ public class ObjectHandleTypesTest {
 
   @Test
   public void testOrdinal() {
-    assertThat(ObjectHandleTypes.UnmovablePureObject.ordinal()).isEqualTo(0);
-    assertThat(ObjectHandleTypes.MovablePureObject.ordinal()).isEqualTo(1);
-    assertThat(ObjectHandleTypes.UndefinedPureObject.ordinal()).isEqualTo(2);
+    assertThat(ObjectHandleTypes.UnmovableClearObject.ordinal()).isEqualTo(0);
+    assertThat(ObjectHandleTypes.MovableClearObject.ordinal()).isEqualTo(1);
+    assertThat(ObjectHandleTypes.UndefinedClearObject.ordinal()).isEqualTo(2);
     assertThat(ObjectHandleTypes.UnmovableHandle.ordinal()).isEqualTo(3);
     assertThat(ObjectHandleTypes.MovableHandle.ordinal()).isEqualTo(4);
     assertThat(ObjectHandleTypes.UndefinedHandle.ordinal()).isEqualTo(5);

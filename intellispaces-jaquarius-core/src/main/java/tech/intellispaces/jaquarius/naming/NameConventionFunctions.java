@@ -48,9 +48,9 @@ public interface NameConventionFunctions {
       String domainClassName, ObjectHandleType handleType, boolean replaceKeyDomain
   ) {
     return switch (ObjectHandleTypes.from(handleType)) {
-      case UnmovablePureObject -> getUnmovablePureObjectTypename(domainClassName, replaceKeyDomain);
-      case MovablePureObject -> getMovablePureObjectTypename(domainClassName, replaceKeyDomain);
-      case UndefinedPureObject -> getUndefinedPureObjectTypename(domainClassName);
+      case UnmovableClearObject -> getUnmovablePureObjectTypename(domainClassName, replaceKeyDomain);
+      case MovableClearObject -> getMovablePureObjectTypename(domainClassName, replaceKeyDomain);
+      case UndefinedClearObject -> getUndefinedPureObjectTypename(domainClassName);
       case UnmovableHandle -> getUnmovableObjectHandleTypename(domainClassName, replaceKeyDomain);
       case MovableHandle -> getMovableObjectHandleTypename(domainClassName, replaceKeyDomain);
       case UndefinedHandle -> getUndefinedObjectHandleTypename(domainClassName);
@@ -193,9 +193,9 @@ public interface NameConventionFunctions {
       CustomType domainType, CustomType baseDomainType, ObjectHandleType handleType
   ) {
     return switch (ObjectHandleTypes.from(handleType)) {
-      case UndefinedHandle, UndefinedPureObject -> getGeneralDownwardObjectHandleTypename(domainType, baseDomainType);
-      case UnmovableHandle, UnmovablePureObject -> getUnmovableDownwardObjectHandleTypename(domainType, baseDomainType);
-      case MovableHandle, MovablePureObject -> getMovableDownwardObjectHandleTypename(domainType, baseDomainType);
+      case UndefinedHandle, UndefinedClearObject -> getGeneralDownwardObjectHandleTypename(domainType, baseDomainType);
+      case UnmovableHandle, UnmovableClearObject -> getUnmovableDownwardObjectHandleTypename(domainType, baseDomainType);
+      case MovableHandle, MovableClearObject -> getMovableDownwardObjectHandleTypename(domainType, baseDomainType);
     };
   }
 

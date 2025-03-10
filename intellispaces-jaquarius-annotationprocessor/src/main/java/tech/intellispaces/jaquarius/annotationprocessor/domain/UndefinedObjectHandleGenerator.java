@@ -18,7 +18,6 @@ import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
 import tech.intellispaces.jaquarius.traverse.MappingTraverse;
-import tech.intellispaces.jaquarius.traverse.TraverseQualifierSetForm;
 import tech.intellispaces.jaquarius.traverse.TraverseType;
 
 import java.util.List;
@@ -49,7 +48,7 @@ public class UndefinedObjectHandleGenerator extends AbstractObjectGenerator {
 
   @Override
   protected String templateName() {
-    return "/general_object_handle.template";
+    return "/undefined_object_handle.template";
   }
 
   @Override
@@ -123,23 +122,23 @@ public class UndefinedObjectHandleGenerator extends AbstractObjectGenerator {
 
   @Override
   protected Map<String, String> generateMethod(
-      MethodStatement method, TraverseQualifierSetForm methodForm, ObjectReferenceForm targetForm, int methodOrdinal
+      MethodStatement method, ObjectReferenceForm targetForm, int methodOrdinal
   ) {
     if (method.hasAnnotation(Channel.class)) {
-      return super.generateMethod(method, methodForm, targetForm, methodOrdinal);
+      return super.generateMethod(method, targetForm, methodOrdinal);
     } else {
-      return buildAdditionalMethod(method, methodForm);
+      return buildAdditionalMethod(method);
     }
   }
 
-  private Map<String, String> buildAdditionalMethod(MethodStatement method, TraverseQualifierSetForm methodForm) {
+  private Map<String, String> buildAdditionalMethod(MethodStatement method) {
     var sb = new StringBuilder();
     appendMethodTypeParameters(sb, method);
     appendMethodReturnType(sb, method);
     sb.append(" ");
     sb.append(method.name());
     sb.append("(");
-    appendMethodParams(sb, method, methodForm);
+    appendMethodParams(sb, method);
     sb.append(")");
     appendMethodExceptions(sb, method);
     return Map.of(

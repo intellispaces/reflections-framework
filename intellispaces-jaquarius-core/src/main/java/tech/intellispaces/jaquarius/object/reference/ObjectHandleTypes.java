@@ -5,19 +5,19 @@ import tech.intellispaces.commons.entity.Enumeration;
 public enum ObjectHandleTypes implements ObjectHandleType, Enumeration<ObjectHandleType> {
 
   /**
-   * The unmovable pure object.
+   * The unmovable clear object.
    */
-  UnmovablePureObject,
+  UnmovableClearObject,
 
   /**
-   * The movable pure object.
+   * The movable clear object.
    */
-  MovablePureObject,
+  MovableClearObject,
 
   /**
-   * The undefined pure object.
+   * The undefined clear object.
    */
-  UndefinedPureObject,
+  UndefinedClearObject,
 
   /**
    * The unmovable object handle.

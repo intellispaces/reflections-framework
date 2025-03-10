@@ -6,10 +6,8 @@ import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.commons.type.Type;
 import tech.intellispaces.commons.type.Types;
 import tech.intellispaces.commons.java.reflection.customtype.CustomType;
-import tech.intellispaces.commons.java.reflection.method.MethodSignatureDeclarations;
 import tech.intellispaces.commons.java.reflection.method.MethodStatement;
 import tech.intellispaces.commons.java.reflection.reference.CustomTypeReference;
-import tech.intellispaces.commons.java.reflection.reference.CustomTypeReferences;
 import tech.intellispaces.jaquarius.annotation.Channel;
 import tech.intellispaces.jaquarius.annotation.ObjectHandle;
 import tech.intellispaces.jaquarius.channel.Channel0;
@@ -27,7 +25,6 @@ import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
 import tech.intellispaces.jaquarius.traverse.MappingTraverse;
 import tech.intellispaces.jaquarius.traverse.TraverseTypes;
 
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -46,7 +43,7 @@ public class UnmovableDownwardObjectGenerator extends ConversionObjectGenerator 
 
   @Override
   protected ObjectHandleType getObjectHandleType() {
-    return ObjectHandleTypes.UnmovablePureObject;
+    return ObjectHandleTypes.UnmovableClearObject;
   }
 
   @Override
@@ -57,7 +54,7 @@ public class UnmovableDownwardObjectGenerator extends ConversionObjectGenerator 
 
   @Override
   protected String templateName() {
-    return "/unmovable_downward_object_handle.template";
+    return "/unmovable_downward_object.template";
   }
 
   @Override
@@ -116,27 +113,11 @@ public class UnmovableDownwardObjectGenerator extends ConversionObjectGenerator 
     return extractNotMovingMethods(customType, context);
   }
 
-  private Stream<MethodStatement> extractMovingMethods(CustomType customType, ArtifactGeneratorContext context) {
-    CustomType actualSuperDomainType = buildActualType(superDomainType.targetType(), context);
-    CustomTypeReference actualSuperDomainTypeReference = CustomTypeReferences.get(
-        actualSuperDomainType, superDomainType.typeArguments()
-    );
-    CustomType effectiveActualSuperDomainType = actualSuperDomainTypeReference.effectiveTargetType();
-    return effectiveActualSuperDomainType.actualMethods().stream()
-        .filter(m -> excludeDeepConversionMethods(m, customType))
-        .filter(this::isMovingMethod)
-        .filter(DomainFunctions::isNotDomainClassGetter);
-  }
-
   private Stream<MethodStatement> extractNotMovingMethods(CustomType customType, ArtifactGeneratorContext context) {
     return buildActualType(superDomainType.targetType(), context).actualMethods().stream()
         .filter(m -> excludeDeepConversionMethods(m, customType))
         .filter(this::isNotMovingMethod)
         .filter(DomainFunctions::isNotDomainClassGetter);
-  }
-
-  private boolean isMovingMethod(MethodStatement method) {
-    return !isNotMovingMethod(method);
   }
 
   private boolean isNotMovingMethod(MethodStatement method) {
@@ -146,21 +127,6 @@ public class UnmovableDownwardObjectGenerator extends ConversionObjectGenerator 
     }
     return !ArraysFunctions.containsAny(
         channel.orElseThrow().allowedTraverse(), TraverseTypes.Moving, TraverseTypes.MappingOfMoving
-    );
-  }
-
-  private Map<String, String> generateMovableMethod(MethodStatement method) {
-    var returnTypeHandle = new StringBuilder();
-    appendObjectFormMethodReturnType(returnTypeHandle, method);
-
-    String signature = MethodSignatureDeclarations.build(method)
-        .returnType(returnTypeHandle.toString())
-        .includeMethodTypeParams(true)
-        .includeOwnerTypeParams(false)
-        .get(this::addImport, this::addImportAndGetSimpleName);
-    return Map.of(
-        "javadoc", buildGeneratedMethodJavadoc(method.owner().canonicalName(), method),
-        "signature", signature
     );
   }
 }

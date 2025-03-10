@@ -25,7 +25,6 @@ import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.system.Modules;
 import tech.intellispaces.jaquarius.system.ObjectHandleWrapper;
 import tech.intellispaces.jaquarius.traverse.MappingTraverse;
-import tech.intellispaces.jaquarius.traverse.TraverseQualifierSetForm;
 import tech.intellispaces.jaquarius.traverse.TraverseTypes;
 
 import java.util.Map;
@@ -48,12 +47,12 @@ public class UnmovableObjectWrapperGenerator extends AbstractObjectWrapperGenera
 
   @Override
   protected String templateName() {
-    return "/unmovable_object_handle_wrapper.template";
+    return "/unmovable_object_wrapper.template";
   }
 
   @Override
   protected ObjectHandleType getObjectHandleType() {
-    return ObjectHandleTypes.UnmovablePureObject;
+    return ObjectHandleTypes.UnmovableClearObject;
   }
 
   @Override
@@ -112,11 +111,11 @@ public class UnmovableObjectWrapperGenerator extends AbstractObjectWrapperGenera
 
   @Override
   protected Map<String, String> generateMethod(
-      MethodStatement domainMethod, TraverseQualifierSetForm methodForm, ObjectReferenceForm targetForm, int methodOrdinal
+      MethodStatement domainMethod, ObjectReferenceForm targetForm, int methodOrdinal
   ) {
     if (ChannelFunctions.isMovingBasedChannel(domainMethod)) {
       return Map.of();
     }
-    return super.generateMethod(domainMethod, methodForm, targetForm, methodOrdinal);
+    return super.generateMethod(domainMethod,  targetForm, methodOrdinal);
   }
 }

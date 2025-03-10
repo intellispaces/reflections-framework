@@ -33,7 +33,7 @@ public class UnmovableSimpleObjectGenerator extends AbstractSimpleObjectGenerato
 
   @Override
   protected ObjectHandleType getObjectHandleType() {
-    return ObjectHandleTypes.UnmovablePureObject;
+    return ObjectHandleTypes.UnmovableClearObject;
   }
 
   @Override
@@ -43,7 +43,7 @@ public class UnmovableSimpleObjectGenerator extends AbstractSimpleObjectGenerato
 
   @Override
   protected String templateName() {
-    return "/unmovable_pure_object.template";
+    return "/unmovable_clear_object.template";
   }
 
   @Override
@@ -73,7 +73,7 @@ public class UnmovableSimpleObjectGenerator extends AbstractSimpleObjectGenerato
     Optional<CustomTypeReference> equivalentDomain = DomainFunctions.getAliasNearNeighbourDomain(sourceArtifact());
     isAlias = equivalentDomain.isPresent();
     if (isAlias) {
-      baseObjectHandle = buildObjectHandleDeclaration(equivalentDomain.get(), ObjectHandleTypes.UnmovablePureObject, true);
+      baseObjectHandle = buildObjectHandleDeclaration(equivalentDomain.get(), ObjectHandleTypes.UnmovableClearObject, true);
     }
   }
 
@@ -90,11 +90,11 @@ public class UnmovableSimpleObjectGenerator extends AbstractSimpleObjectGenerato
         ChannelFunctions.getTraverseTypes(method).stream().anyMatch(TraverseType::isMoving)
             || method.hasAnnotation(Movable.class)
     ) {
-      sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.MovablePureObject, true));
+      sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.MovableClearObject, true));
     } else if (method.hasAnnotation(Unmovable.class)) {
-      sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.UnmovablePureObject, true));
+      sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.UnmovableClearObject, true));
     } else {
-      sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.UndefinedPureObject, true));
+      sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.UndefinedClearObject, true));
     }
   }
 }

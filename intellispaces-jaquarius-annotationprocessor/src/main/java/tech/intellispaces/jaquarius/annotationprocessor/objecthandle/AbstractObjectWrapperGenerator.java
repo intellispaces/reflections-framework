@@ -25,8 +25,6 @@ import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
-import tech.intellispaces.jaquarius.traverse.TraverseQualifierSetForm;
-import tech.intellispaces.jaquarius.traverse.TraverseQualifierSetForms;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -97,9 +95,9 @@ abstract class AbstractObjectWrapperGenerator extends AbstractObjectGenerator {
   protected String getObjectHandleSimpleName() {
     Class<?> handleClass;
     if (ObjectHandleFunctions.isUnmovableObjectHandle(sourceArtifact())) {
-      handleClass = ObjectHandleFunctions.getObjectHandleClass(ObjectHandleTypes.UnmovablePureObject);
+      handleClass = ObjectHandleFunctions.getObjectHandleClass(ObjectHandleTypes.UnmovableClearObject);
     } else if (ObjectHandleFunctions.isMovableObjectHandle(sourceArtifact())) {
-      handleClass = ObjectHandleFunctions.getObjectHandleClass(ObjectHandleTypes.MovablePureObject);
+      handleClass = ObjectHandleFunctions.getObjectHandleClass(ObjectHandleTypes.MovableClearObject);
     } else {
       throw UnexpectedExceptions.withMessage("Could not define movable type of the object handle {0}",
           sourceArtifact().canonicalName());
@@ -160,27 +158,26 @@ abstract class AbstractObjectWrapperGenerator extends AbstractObjectGenerator {
     int methodOrdinal = 0;
     for (MethodStatement method : domainMethods) {
       analyzeRawDomainMethod(method);
-      analyzeMethod(method, TraverseQualifierSetForms.Object, ObjectReferenceForms.Default, methodOrdinal++);
       if (hasMethodNormalForm(method)) {
-        if (includeMethodForm(method, TraverseQualifierSetForms.Normal, ObjectReferenceForms.Default)) {
-          analyzeMethod(method, TraverseQualifierSetForms.Normal, ObjectReferenceForms.Default, methodOrdinal++);
+        if (includeMethodForm(method, ObjectReferenceForms.Default)) {
+          analyzeMethod(method, ObjectReferenceForms.Default, methodOrdinal++);
         }
       }
-      if (includeMethodForm(method, TraverseQualifierSetForms.Normal, ObjectReferenceForms.Primitive)) {
-        analyzeMethod(method, TraverseQualifierSetForms.Normal, ObjectReferenceForms.Primitive, methodOrdinal++);
+      if (includeMethodForm(method, ObjectReferenceForms.Primitive)) {
+        analyzeMethod(method, ObjectReferenceForms.Primitive, methodOrdinal++);
       }
     }
   }
 
   private void analyzeMethod(
-      MethodStatement method, TraverseQualifierSetForm methodForm, ObjectReferenceForm targetForm, int methodOrdinal
+      MethodStatement method, ObjectReferenceForm targetForm, int methodOrdinal
   ) {
-    traverseMethods.add(generateTraverseMethod(method, methodForm, targetForm, methodOrdinal));
-    analyzeGuideMethod(method, methodForm, targetForm, methodOrdinal);
+    traverseMethods.add(generateTraverseMethod(method, targetForm, methodOrdinal));
+    analyzeGuideMethod(method, targetForm, methodOrdinal);
   }
 
   private void analyzeGuideMethod(
-      MethodStatement domainMethod, TraverseQualifierSetForm methodForm, ObjectReferenceForm targetForm, int methodOrdinal
+      MethodStatement domainMethod, ObjectReferenceForm targetForm, int methodOrdinal
   ) {
     if (domainMethod.isDefault()) {
       return;
@@ -188,16 +185,16 @@ abstract class AbstractObjectWrapperGenerator extends AbstractObjectGenerator {
 
     List<MethodStatement> objectHandleMethods = sourceArtifact().actualMethods();
     if (NameConventionFunctions.isConversionMethod(domainMethod)) {
-      this.methodDescriptions.add(buildTraverseMethodDescriptions(domainMethod, methodForm, targetForm, methodOrdinal));
+      this.methodDescriptions.add(buildTraverseMethodDescriptions(domainMethod, targetForm, methodOrdinal));
       this.methodDescriptions.add(buildConversionGuideMethodDescriptions(domainMethod, methodOrdinal));
       return;
     }
 
-    this.methodDescriptions.add(buildTraverseMethodDescriptions(domainMethod, methodForm, targetForm, methodOrdinal));
-    MethodStatement guideMethod = findGuideMethod(domainMethod, objectHandleMethods, methodForm, targetForm);
+    this.methodDescriptions.add(buildTraverseMethodDescriptions(domainMethod, targetForm, methodOrdinal));
+    MethodStatement guideMethod = findGuideMethod(domainMethod, objectHandleMethods, targetForm);
     if (guideMethod != null && !guideMethod.isAbstract()) {
       this.guideMethods.add(AnnotationGeneratorFunctions.buildGuideActionMethod(guideMethod, this));
-      this.methodDescriptions.add(buildGuideMethodDescriptions(guideMethod, methodForm, methodOrdinal));
+      this.methodDescriptions.add(buildGuideMethodDescriptions(guideMethod, methodOrdinal));
     }
   }
 
@@ -262,7 +259,6 @@ abstract class AbstractObjectWrapperGenerator extends AbstractObjectGenerator {
   private MethodStatement findGuideMethod(
       MethodStatement domainMethod,
       List<MethodStatement> objectHandleMethods,
-      TraverseQualifierSetForm methodForm,
       ObjectReferenceForm targetForm
   ) {
     for (MethodStatement objectHandleMethod : objectHandleMethods) {
@@ -270,7 +266,7 @@ abstract class AbstractObjectWrapperGenerator extends AbstractObjectGenerator {
         continue;
       }
       if (getObjectHandleMethodName(domainMethod, targetForm).equals(objectHandleMethod.name()) &&
-          equalParams(domainMethod.params(), objectHandleMethod.params(), methodForm)
+          equalParams(domainMethod.params(), objectHandleMethod.params())
       ) {
         return objectHandleMethod;
       }
@@ -279,7 +275,7 @@ abstract class AbstractObjectWrapperGenerator extends AbstractObjectGenerator {
   }
 
   private boolean equalParams(
-      List<MethodParam> domainMethodParams, List<MethodParam> guideMethodParams, TraverseQualifierSetForm methodForm
+      List<MethodParam> domainMethodParams, List<MethodParam> guideMethodParams
   ) {
     if (domainMethodParams.size() != guideMethodParams.size()) {
       return false;
@@ -288,9 +284,8 @@ abstract class AbstractObjectWrapperGenerator extends AbstractObjectGenerator {
     boolean paramMatches = true;
     for (int i = 0; i < domainMethodParams.size(); i++) {
       MethodParam domainParam = domainMethodParams.get(i);
-      ObjectReferenceForm referenceForm = ObjectHandleFunctions.getReferenceForm(domainParam.type(), methodForm);
       String domainMethodParamDeclaration = ObjectHandleFunctions.getObjectHandleDeclaration(
-          domainParam.type(), ObjectHandleTypes.UndefinedPureObject, referenceForm, true, false, Function.identity()
+          domainParam.type(), ObjectHandleTypes.UndefinedClearObject, ObjectReferenceForms.Default, true, false, Function.identity()
       );
 
       MethodParam guideParam = guideMethodParams.get(i);
@@ -308,14 +303,14 @@ abstract class AbstractObjectWrapperGenerator extends AbstractObjectGenerator {
   }
 
   private Map<String, Object> buildTraverseMethodDescriptions(
-      MethodStatement domainMethod, TraverseQualifierSetForm methodForm, ObjectReferenceForm targetForm, int ordinal
+      MethodStatement domainMethod, ObjectReferenceForm targetForm, int ordinal
   ) {
     var map = new HashMap<String, Object>();
     map.put("name", getObjectHandleMethodName(domainMethod, targetForm));
 
     List<String> paramClasses = new ArrayList<>();
     for (MethodParam param : domainMethod.params()) {
-      paramClasses.add(buildGuideParamClassName(param.type(), methodForm));
+      paramClasses.add(buildGuideParamClassName(param.type()));
     }
     map.put("params", paramClasses);
     map.put("purpose", ObjectHandleMethodPurposes.TraverseMethod.name());
@@ -327,14 +322,14 @@ abstract class AbstractObjectWrapperGenerator extends AbstractObjectGenerator {
   }
 
   private Map<String, Object> buildGuideMethodDescriptions(
-      MethodStatement guidMethod, TraverseQualifierSetForm methodForm, int ordinal
+      MethodStatement guidMethod, int ordinal
   ) {
     var map = new HashMap<String, Object>();
     map.put("name", ObjectHandleFunctions.buildObjectHandleGuideMethodName(guidMethod));
 
     List<String> paramClasses = new ArrayList<>();
     for (MethodParam param : guidMethod.params()) {
-      paramClasses.add(buildGuideParamClassName(param.type(), methodForm));
+      paramClasses.add(buildGuideParamClassName(param.type()));
     }
     map.put("params", paramClasses);
     map.put("purpose", ObjectHandleMethodPurposes.GuideMethod.name());
@@ -391,11 +386,11 @@ abstract class AbstractObjectWrapperGenerator extends AbstractObjectGenerator {
     return map;
   }
 
-  private String buildGuideParamClassName(TypeReference type, TraverseQualifierSetForm methodForm) {
+  private String buildGuideParamClassName(TypeReference type) {
     return ObjectHandleFunctions.getObjectHandleDeclaration(
         AnnotationGeneratorFunctions.normalizeType(type),
-        ObjectHandleTypes.UndefinedPureObject,
-        ObjectHandleFunctions.getReferenceForm(type, methodForm),
+        ObjectHandleTypes.UndefinedClearObject,
+        ObjectReferenceForms.Default,
         false,
         true,
         this::addImportAndGetSimpleName
@@ -403,7 +398,7 @@ abstract class AbstractObjectWrapperGenerator extends AbstractObjectGenerator {
   }
 
   protected Map<String, String> generateTraverseMethod(
-      MethodStatement domainMethod, TraverseQualifierSetForm methodForm, ObjectReferenceForm targetForm, int methodOrdinal
+      MethodStatement domainMethod, ObjectReferenceForm targetForm, int methodOrdinal
   ) {
     var sb = new StringBuilder();
     sb.append("@Ordinal(").append(methodOrdinal).append(")\n");
@@ -413,7 +408,7 @@ abstract class AbstractObjectWrapperGenerator extends AbstractObjectGenerator {
     sb.append(" ");
     sb.append(getObjectHandleMethodName(domainMethod, targetForm));
     sb.append("(");
-    appendMethodParams(sb, domainMethod, methodForm);
+    appendMethodParams(sb, domainMethod);
     sb.append(")");
     appendMethodExceptions(sb, domainMethod);
     sb.append(" {\n");
@@ -423,19 +418,19 @@ abstract class AbstractObjectWrapperGenerator extends AbstractObjectGenerator {
     if (returnType.isPrimitiveReference()) {
       if (PrimitiveTypes.Boolean.is(returnType.asPrimitiveReferenceOrElseThrow().primitiveType())) {
         sb.append("PrimitiveFunctions.longToBoolean((int) ");
-        appendInvokeMethodAction(sb, domainMethod, methodForm, targetForm, methodOrdinal);
+        appendInvokeMethodAction(sb, domainMethod, targetForm, methodOrdinal);
         sb.append(")");
       } else {
         sb.append("(");
         appendMethodReturnHandleType(sb, domainMethod, targetForm);
         sb.append(") ");
-        appendInvokeMethodAction(sb, domainMethod, methodForm, targetForm, methodOrdinal);
+        appendInvokeMethodAction(sb, domainMethod, targetForm, methodOrdinal);
       }
     } else {
       sb.append("(");
       appendMethodCastHandleType(sb, domainMethod, targetForm);
       sb.append(") ");
-      appendInvokeMethodAction(sb, domainMethod, methodForm, targetForm, methodOrdinal);
+      appendInvokeMethodAction(sb, domainMethod, targetForm, methodOrdinal);
     }
     sb.append(";\n}");
     return Map.of("declaration", sb.toString());
@@ -457,7 +452,6 @@ abstract class AbstractObjectWrapperGenerator extends AbstractObjectGenerator {
   private void appendInvokeMethodAction(
       StringBuilder sb,
       MethodStatement domainMethod,
-      TraverseQualifierSetForm methodForm,
       ObjectReferenceForm targetForm,
       int methodOrdinal
   ) {

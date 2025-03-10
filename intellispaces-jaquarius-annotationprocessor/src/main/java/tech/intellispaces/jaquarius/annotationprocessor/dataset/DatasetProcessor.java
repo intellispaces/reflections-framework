@@ -33,6 +33,6 @@ public class DatasetProcessor extends ArtifactProcessor {
 
   @Override
   public List<ArtifactGenerator> makeGenerators(CustomType dataType, ArtifactGeneratorContext jobContext) {
-    return List.of(new UnmovableDatasetHandleGenerator(dataType));
+    return List.of(new UnmovableDatasetGenerator(dataType));
   }
 }

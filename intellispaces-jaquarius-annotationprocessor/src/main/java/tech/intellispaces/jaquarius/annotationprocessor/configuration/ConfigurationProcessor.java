@@ -7,7 +7,7 @@ import tech.intellispaces.commons.annotation.processor.ArtifactProcessor;
 import tech.intellispaces.commons.annotation.processor.ArtifactValidator;
 import tech.intellispaces.commons.java.reflection.customtype.CustomType;
 import tech.intellispaces.jaquarius.annotation.Configuration;
-import tech.intellispaces.jaquarius.annotationprocessor.AnnotationProcessorFunctions;
+import tech.intellispaces.jaquarius.annotationprocessor.ArtifactGenerationAnnotationFunctions;
 import tech.intellispaces.jaquarius.annotationprocessor.JaquariusArtifactProcessor;
 import tech.intellispaces.jaquarius.annotationprocessor.module.UnitWrapperGenerator;
 
@@ -24,7 +24,7 @@ public class ConfigurationProcessor extends ArtifactProcessor {
 
   @Override
   public boolean isApplicable(CustomType moduleType) {
-    return AnnotationProcessorFunctions.isAutoGenerationEnabled(moduleType);
+    return ArtifactGenerationAnnotationFunctions.isAutoGenerationEnabled(moduleType);
   }
 
   @Override

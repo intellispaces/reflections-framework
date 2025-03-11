@@ -22,7 +22,7 @@ import tech.intellispaces.jaquarius.Jaquarius;
 import tech.intellispaces.jaquarius.annotation.Movable;
 import tech.intellispaces.jaquarius.annotation.Unmovable;
 import tech.intellispaces.jaquarius.annotationprocessor.AnnotationGeneratorFunctions;
-import tech.intellispaces.jaquarius.annotationprocessor.AnnotationProcessorFunctions;
+import tech.intellispaces.jaquarius.annotationprocessor.ArtifactGenerationAnnotationFunctions;
 import tech.intellispaces.jaquarius.annotationprocessor.ArtifactTypes;
 import tech.intellispaces.jaquarius.annotationprocessor.JaquariusArtifactGenerator;
 import tech.intellispaces.jaquarius.exception.TraverseException;
@@ -298,7 +298,7 @@ public abstract class AbstractObjectGenerator extends JaquariusArtifactGenerator
 
   private List<MethodStatement> getAdditionalOMethods(CustomType customType, RoundEnvironment roundEnv) {
     List<MethodStatement> methods = new ArrayList<>();
-    List<CustomType> artifactAddOns = AnnotationProcessorFunctions.findArtifactAddOns(
+    List<CustomType> artifactAddOns = ArtifactGenerationAnnotationFunctions.findArtifactCustomizers(
         customType, ArtifactTypes.UndefinedSimpleObject, roundEnv
     );
     for (CustomType artifactAddOn : artifactAddOns) {

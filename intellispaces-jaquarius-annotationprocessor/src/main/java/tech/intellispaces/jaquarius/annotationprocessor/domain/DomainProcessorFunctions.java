@@ -12,7 +12,7 @@ import tech.intellispaces.commons.object.Objects;
 import tech.intellispaces.jaquarius.Jaquarius;
 import tech.intellispaces.jaquarius.annotation.AnnotationProcessor;
 import tech.intellispaces.jaquarius.annotation.Channel;
-import tech.intellispaces.jaquarius.annotationprocessor.AnnotationProcessorFunctions;
+import tech.intellispaces.jaquarius.annotationprocessor.ArtifactGenerationAnnotationFunctions;
 import tech.intellispaces.jaquarius.annotationprocessor.ArtifactTypes;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
 
@@ -28,7 +28,7 @@ public interface DomainProcessorFunctions {
     var generators = new ArrayList<ArtifactGenerator>();
     for (MethodStatement method : domainType.declaredMethods()) {
       if (method.hasAnnotation(Channel.class)) {
-        if (AnnotationProcessorFunctions.isAutoGenerationEnabled(
+        if (ArtifactGenerationAnnotationFunctions.isAutoGenerationEnabled(
             domainType, ArtifactTypes.Channel, context.roundEnvironment())
         ) {
           generators.add(new DomainChannelGenerator(domainType, method));
@@ -48,7 +48,7 @@ public interface DomainProcessorFunctions {
     List<ArtifactProcessor> processors = AnnotationFunctions.allAnnotationsOf(
         annotatedType, AnnotationProcessor.class
     ).stream()
-        .map(AnnotationProcessorFunctions::getAnnotationProcessorClass)
+        .map(ArtifactGenerationAnnotationFunctions::getAnnotationProcessorClass)
         .distinct()
         .map(c -> (ArtifactProcessor) Objects.get(c))
         .toList();
@@ -66,13 +66,13 @@ public interface DomainProcessorFunctions {
   private static void addSimpleObjectGenerators(
       CustomType domainType, List<ArtifactGenerator> generators, RoundEnvironment roundEnv
   ) {
-    if (AnnotationProcessorFunctions.isAutoGenerationEnabled(domainType, ArtifactTypes.UndefinedSimpleObject, roundEnv)) {
+    if (ArtifactGenerationAnnotationFunctions.isAutoGenerationEnabled(domainType, ArtifactTypes.UndefinedSimpleObject, roundEnv)) {
       generators.add(new UndefinedSimpleObjectGenerator(domainType));
     }
-    if (AnnotationProcessorFunctions.isAutoGenerationEnabled(domainType, ArtifactTypes.MovableSimpleObject, roundEnv)) {
+    if (ArtifactGenerationAnnotationFunctions.isAutoGenerationEnabled(domainType, ArtifactTypes.MovableSimpleObject, roundEnv)) {
       generators.add(new MovableSimpleObjectGenerator(domainType));
     }
-    if (AnnotationProcessorFunctions.isAutoGenerationEnabled(domainType, ArtifactTypes.UnmovableSimpleObject, roundEnv)) {
+    if (ArtifactGenerationAnnotationFunctions.isAutoGenerationEnabled(domainType, ArtifactTypes.UnmovableSimpleObject, roundEnv)) {
       generators.add(new UnmovableSimpleObjectGenerator(domainType));
     }
   }
@@ -81,17 +81,17 @@ public interface DomainProcessorFunctions {
       CustomType domainType, List<ArtifactGenerator> generators, RoundEnvironment roundEnv
   ) {
     if (
-        AnnotationProcessorFunctions.isAutoGenerationEnabled(domainType, ArtifactTypes.UndefinedObjectHandle, roundEnv)
+        ArtifactGenerationAnnotationFunctions.isAutoGenerationEnabled(domainType, ArtifactTypes.UndefinedObjectHandle, roundEnv)
     ) {
       generators.add(new UndefinedObjectHandleGenerator(domainType));
     }
     if (
-        AnnotationProcessorFunctions.isAutoGenerationEnabled(domainType, ArtifactTypes.MovableObjectHandle, roundEnv)
+        ArtifactGenerationAnnotationFunctions.isAutoGenerationEnabled(domainType, ArtifactTypes.MovableObjectHandle, roundEnv)
     ) {
       generators.add(new MovableObjectHandleGenerator(domainType));
     }
     if (
-        AnnotationProcessorFunctions.isAutoGenerationEnabled(domainType, ArtifactTypes.UnmovableObjectHandle, roundEnv)
+        ArtifactGenerationAnnotationFunctions.isAutoGenerationEnabled(domainType, ArtifactTypes.UnmovableObjectHandle, roundEnv)
     ) {
       generators.add(new UnmovableObjectHandleGenerator(domainType));
     }

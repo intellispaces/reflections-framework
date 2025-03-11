@@ -1,20 +1,21 @@
 package tech.intellispaces.jaquarius.annotationprocessor.domain;
 
 import tech.intellispaces.commons.annotation.processor.ArtifactGeneratorContext;
-import tech.intellispaces.commons.text.StringFunctions;
-import tech.intellispaces.commons.type.Type;
-import tech.intellispaces.commons.type.Types;
 import tech.intellispaces.commons.java.reflection.customtype.CustomType;
 import tech.intellispaces.commons.java.reflection.method.MethodStatement;
 import tech.intellispaces.commons.java.reflection.reference.CustomTypeReference;
+import tech.intellispaces.commons.text.StringFunctions;
+import tech.intellispaces.commons.type.Type;
+import tech.intellispaces.commons.type.Types;
 import tech.intellispaces.jaquarius.annotation.Channel;
 import tech.intellispaces.jaquarius.annotation.ObjectHandle;
 import tech.intellispaces.jaquarius.channel.Channel1;
 import tech.intellispaces.jaquarius.exception.TraverseException;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
-import tech.intellispaces.jaquarius.object.reference.ObjectHandleType;
-import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
-import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
+import tech.intellispaces.jaquarius.object.reference.MovabilityType;
+import tech.intellispaces.jaquarius.object.reference.MovabilityTypes;
+import tech.intellispaces.jaquarius.object.reference.ObjectForm;
+import tech.intellispaces.jaquarius.object.reference.ObjectForms;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
 import tech.intellispaces.jaquarius.traverse.MappingTraverse;
@@ -37,13 +38,18 @@ public class UndefinedObjectHandleGenerator extends AbstractObjectGenerator {
   }
 
   @Override
-  protected ObjectHandleType getObjectHandleType() {
-    return ObjectHandleTypes.UndefinedHandle;
+  protected ObjectForm getObjectForm() {
+    return ObjectForms.ObjectHandle;
+  }
+
+  @Override
+  protected MovabilityType getMovabilityType() {
+    return MovabilityTypes.Undefined;
   }
 
   @Override
   public String generatedArtifactName() {
-    return NameConventionFunctions.getObjectHandleTypename(sourceArtifact().className(), ObjectHandleTypes.UndefinedHandle, false);
+    return NameConventionFunctions.getObjectTypename(sourceArtifact().className(), ObjectForms.ObjectHandle, MovabilityTypes.Undefined, false);
   }
 
   @Override
@@ -65,7 +71,7 @@ public class UndefinedObjectHandleGenerator extends AbstractObjectGenerator {
 
     analyzeDomain();
     analyzeAlias();
-    analyzeObjectHandleMethods(sourceArtifact(), context);
+    analyzeObjectFormMethods(sourceArtifact(), context);
 
     addVariable("simpleHandleName", getSimpleHandleName());
     addVariable("movableClassSimpleName", movableClassSimpleName());
@@ -99,7 +105,7 @@ public class UndefinedObjectHandleGenerator extends AbstractObjectGenerator {
       CustomTypeReference nearEquivalentDomain = equivalentDomains.get(0);
       CustomTypeReference mainEquivalentDomain = equivalentDomains.get(equivalentDomains.size() - 1);
 
-      baseObjectHandle = buildObjectHandleDeclaration(nearEquivalentDomain, ObjectHandleTypes.UndefinedHandle, true);
+      baseObjectHandle = buildObjectFormDeclaration(nearEquivalentDomain, ObjectForms.ObjectHandle, MovabilityTypes.Undefined, true);
       primaryDomainTypeArguments = getDomainTypeParamsBrief(nearEquivalentDomain);
       primaryDomainSimpleName = addImportAndGetSimpleName(mainEquivalentDomain.targetType().canonicalName());
       domainType = buildDomainType(mainEquivalentDomain.targetType(), mainEquivalentDomain.typeArguments());
@@ -109,7 +115,7 @@ public class UndefinedObjectHandleGenerator extends AbstractObjectGenerator {
   }
 
   @Override
-  protected Stream<MethodStatement> getObjectHandleMethods(
+  protected Stream<MethodStatement> getObjectFormMethods(
       CustomType customType, ArtifactGeneratorContext context
   ) {
     return buildActualType(customType, context)
@@ -122,7 +128,7 @@ public class UndefinedObjectHandleGenerator extends AbstractObjectGenerator {
 
   @Override
   protected Map<String, String> generateMethod(
-      MethodStatement method, ObjectReferenceForm targetForm, int methodOrdinal
+      MethodStatement method, ObjectForm targetForm, int methodOrdinal
   ) {
     if (method.hasAnnotation(Channel.class)) {
       return super.generateMethod(method, targetForm, methodOrdinal);

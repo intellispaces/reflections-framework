@@ -2,12 +2,12 @@ package tech.intellispaces.jaquarius.annotationprocessor.objecthandle;
 
 import tech.intellispaces.commons.annotation.processor.ArtifactGeneratorContext;
 import tech.intellispaces.commons.exception.NotImplementedExceptions;
-import tech.intellispaces.commons.type.PrimitiveFunctions;
-import tech.intellispaces.commons.type.Type;
-import tech.intellispaces.commons.type.Types;
 import tech.intellispaces.commons.java.reflection.customtype.CustomType;
 import tech.intellispaces.commons.java.reflection.method.MethodStatement;
 import tech.intellispaces.commons.java.reflection.reference.TypeReference;
+import tech.intellispaces.commons.type.PrimitiveFunctions;
+import tech.intellispaces.commons.type.Type;
+import tech.intellispaces.commons.type.Types;
 import tech.intellispaces.jaquarius.annotation.Movable;
 import tech.intellispaces.jaquarius.annotation.Ordinal;
 import tech.intellispaces.jaquarius.annotation.Unmovable;
@@ -22,8 +22,10 @@ import tech.intellispaces.jaquarius.engine.description.ObjectHandleMethodPurpose
 import tech.intellispaces.jaquarius.engine.description.ObjectHandleTypeDescription;
 import tech.intellispaces.jaquarius.exception.TraverseException;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
-import tech.intellispaces.jaquarius.object.reference.ObjectHandleType;
-import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
+import tech.intellispaces.jaquarius.object.reference.MovabilityType;
+import tech.intellispaces.jaquarius.object.reference.MovabilityTypes;
+import tech.intellispaces.jaquarius.object.reference.ObjectForm;
+import tech.intellispaces.jaquarius.object.reference.ObjectForms;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.system.Modules;
 import tech.intellispaces.jaquarius.system.ObjectHandleWrapper;
@@ -54,8 +56,13 @@ public class MovableObjectWrapperGenerator extends AbstractObjectWrapperGenerato
   }
 
   @Override
-  protected ObjectHandleType getObjectHandleType() {
-    return ObjectHandleTypes.MovableClearObject;
+  protected ObjectForm getObjectForm() {
+    return ObjectForms.Simple;
+  }
+
+  @Override
+  protected MovabilityType getMovabilityType() {
+    return MovabilityTypes.Movable;
   }
 
   @Override
@@ -120,11 +127,11 @@ public class MovableObjectWrapperGenerator extends AbstractObjectWrapperGenerato
             method.hasAnnotation(Movable.class) ||
             NameConventionFunctions.isConversionMethod(method)
     ) {
-      sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.MovableClearObject, true));
+      sb.append(buildObjectFormDeclaration(domainReturnType, ObjectForms.Simple, MovabilityTypes.Movable, true));
     } else if (method.hasAnnotation(Unmovable.class)) {
-      sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.UnmovableClearObject, true));
+      sb.append(buildObjectFormDeclaration(domainReturnType, ObjectForms.Simple, MovabilityTypes.Unmovable, true));
     } else {
-      sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.UndefinedClearObject, true));
+      sb.append(buildObjectFormDeclaration(domainReturnType, ObjectForms.Simple, MovabilityTypes.Undefined, true));
     }
   }
 }

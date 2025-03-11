@@ -5,7 +5,7 @@ import tech.intellispaces.commons.java.reflection.method.MethodStatement;
 import tech.intellispaces.jaquarius.exception.TraverseException;
 import tech.intellispaces.jaquarius.exception.TraverseExceptions;
 import tech.intellispaces.jaquarius.guide.GuideLogger;
-import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
+import tech.intellispaces.jaquarius.object.reference.ObjectForm;
 import tech.intellispaces.jaquarius.system.UnitGuide;
 import tech.intellispaces.jaquarius.system.UnitWrapper;
 
@@ -14,9 +14,9 @@ abstract class UnitGuide0<S, R> implements Guide0<S, R>, UnitGuide<S, R> {
   private final UnitWrapper unit;
   private final MethodStatement guideMethod;
   private final int guideOrdinal;
-  private final ObjectReferenceForm targetForm;
+  private final ObjectForm targetForm;
 
-  UnitGuide0(String cid, UnitWrapper unit, MethodStatement guideMethod, int guideOrdinal, ObjectReferenceForm targetForm) {
+  UnitGuide0(String cid, UnitWrapper unit, MethodStatement guideMethod, int guideOrdinal, ObjectForm targetForm) {
     if (guideMethod.params().size() != 1) {
       throw UnexpectedExceptions.withMessage("Guide method should have one parameter: source");
     }
@@ -43,7 +43,7 @@ abstract class UnitGuide0<S, R> implements Guide0<S, R>, UnitGuide<S, R> {
   }
 
   @Override
-  public ObjectReferenceForm targetForm() {
+  public ObjectForm targetForm() {
     return targetForm;
   }
 

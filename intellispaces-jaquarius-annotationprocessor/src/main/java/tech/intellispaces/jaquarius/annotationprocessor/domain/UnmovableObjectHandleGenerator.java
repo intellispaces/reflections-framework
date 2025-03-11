@@ -9,8 +9,10 @@ import tech.intellispaces.commons.java.reflection.reference.CustomTypeReference;
 import tech.intellispaces.jaquarius.annotation.ObjectHandle;
 import tech.intellispaces.jaquarius.annotation.Unmovable;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
-import tech.intellispaces.jaquarius.object.reference.ObjectHandleType;
-import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
+import tech.intellispaces.jaquarius.object.reference.MovabilityType;
+import tech.intellispaces.jaquarius.object.reference.MovabilityTypes;
+import tech.intellispaces.jaquarius.object.reference.ObjectForm;
+import tech.intellispaces.jaquarius.object.reference.ObjectForms;
 import tech.intellispaces.jaquarius.object.reference.UnmovableObjectHandle;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
@@ -36,8 +38,13 @@ public class UnmovableObjectHandleGenerator extends AbstractObjectGenerator {
   }
 
   @Override
-  protected ObjectHandleType getObjectHandleType() {
-    return ObjectHandleTypes.UnmovableHandle;
+  protected ObjectForm getObjectForm() {
+    return ObjectForms.ObjectHandle;
+  }
+
+  @Override
+  protected MovabilityType getMovabilityType() {
+    return MovabilityTypes.Unmovable;
   }
 
   @Override
@@ -61,7 +68,7 @@ public class UnmovableObjectHandleGenerator extends AbstractObjectGenerator {
 
     analyzeDomain();
     analyzeAlias();
-    analyzeObjectHandleMethods(sourceArtifact(), context);
+    analyzeObjectFormMethods(sourceArtifact(), context);
     analyzeConversionMethods(sourceArtifact());
     analyzeMovableMethods(context);
 
@@ -86,18 +93,18 @@ public class UnmovableObjectHandleGenerator extends AbstractObjectGenerator {
     Optional<CustomTypeReference> equivalentDomain = DomainFunctions.getAliasNearNeighbourDomain(sourceArtifact());
     isAlias = equivalentDomain.isPresent();
     if (isAlias) {
-      baseObjectHandle = buildObjectHandleDeclaration(equivalentDomain.get(), ObjectHandleTypes.UnmovableHandle, true);
+      baseObjectHandle = buildObjectFormDeclaration(equivalentDomain.get(), ObjectForms.ObjectHandle, MovabilityTypes.Unmovable, true);
     }
   }
 
   @Override
-  protected Stream<MethodStatement> getObjectHandleMethods(CustomType customType, ArtifactGeneratorContext context) {
-    return super.getObjectHandleMethods(customType, context)
+  protected Stream<MethodStatement> getObjectFormMethods(CustomType customType, ArtifactGeneratorContext context) {
+    return super.getObjectFormMethods(customType, context)
         .filter(m -> ChannelFunctions.getTraverseTypes(m).stream().noneMatch(TraverseType::isMovingBased));
   }
 
   private void analyzeMovableMethods(ArtifactGeneratorContext context) {
-    super.getObjectHandleMethods(sourceArtifact(), context)
+    super.getObjectFormMethods(sourceArtifact(), context)
         .filter(m -> ChannelFunctions.getTraverseTypes(m).stream().anyMatch(TraverseType::isMovingBased))
         .map(this::generateMethod)
         .forEach(movableMethods::add);

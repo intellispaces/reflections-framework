@@ -1,7 +1,7 @@
 package tech.intellispaces.jaquarius.guide;
 
 import tech.intellispaces.jaquarius.exception.TraverseException;
-import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
+import tech.intellispaces.jaquarius.object.reference.ObjectForm;
 
 /**
  * The guide.<p/>
@@ -33,7 +33,7 @@ public interface Guide<S, R> {
   /**
    * Guide form.
    */
-  ObjectReferenceForm targetForm();
+  ObjectForm targetForm();
 
   /**
    * Synchronous execution of the guide.

@@ -26,8 +26,8 @@ import tech.intellispaces.jaquarius.exception.ConfigurationExceptions;
 import tech.intellispaces.jaquarius.guide.GuideFunctions;
 import tech.intellispaces.jaquarius.guide.GuideKinds;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
-import tech.intellispaces.jaquarius.object.reference.ObjectHandleFunctions;
-import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
+import tech.intellispaces.jaquarius.object.reference.ObjectForms;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceFunctions;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.system.Modules;
 import tech.intellispaces.jaquarius.system.ProjectionInjection;
@@ -87,7 +87,7 @@ public class UnitWrapperGenerator extends JaquariusArtifactGenerator {
         InjectionKinds.class,
         ProjectionReferences.class,
         GuideKinds.class,
-        ObjectReferenceForms.class
+        ObjectForms.class
     );
 
     methods = sourceArtifact().actualMethods();
@@ -170,13 +170,13 @@ public class UnitWrapperGenerator extends JaquariusArtifactGenerator {
           addProjectionDefinitionForAbstractMethod(method);
         } else if (AnnotationGeneratorFunctions.isInjectionMethod(method)) {
           if (AnnotationGeneratorFunctions.isAutoGuideMethod(method)) {
-            if (!AnnotationGeneratorFunctions.isReturnGuide(method)) {
+            if (!AnnotationGeneratorFunctions.returnTypeIsGuide(method)) {
               throw ConfigurationExceptions.withMessage("Guide injection method '{0}' in class {1} must return guide",
                   method.name(), sourceArtifact().className()
               );
             }
             addAutoGuideInjectionAndImplementationMethod(method);
-          } else if (AnnotationGeneratorFunctions.isReturnGuide(method)) {
+          } else if (AnnotationGeneratorFunctions.returnTypeIsGuide(method)) {
             addGuideInjectionAndImplementationMethod(method);
           } else {
             addProjectionInjection(method);
@@ -254,7 +254,7 @@ public class UnitWrapperGenerator extends JaquariusArtifactGenerator {
       MethodStatement method, int guideOrdinal
   ) {
     var map = new HashMap<String, Object>();
-    map.put("name", ObjectHandleFunctions.buildObjectHandleGuideMethodName(method));
+    map.put("name", ObjectReferenceFunctions.buildObjectHandleGuideMethodName(method));
 
     List<String> paramClasses = new ArrayList<>();
     for (MethodParam param : method.params()) {

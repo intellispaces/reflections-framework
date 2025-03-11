@@ -7,11 +7,20 @@ import tech.intellispaces.commons.entity.Enumeration;
  */
 public enum MovabilityTypes implements MovabilityType, Enumeration<MovabilityType> {
 
+  /**
+   * The undefined object type (movable or unmovable).
+   */
   Undefined,
 
-  Movable,
+  /**
+   * The unmovable object type.
+   */
+  Unmovable,
 
-  Unmovable;
+  /**
+   * The movable object type.
+   */
+  Movable;
 
   public static MovabilityTypes from(MovabilityType value) {
     return VALUES[value.ordinal()];

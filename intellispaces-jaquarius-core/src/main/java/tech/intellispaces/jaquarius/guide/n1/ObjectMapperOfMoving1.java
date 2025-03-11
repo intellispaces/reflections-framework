@@ -1,7 +1,7 @@
 package tech.intellispaces.jaquarius.guide.n1;
 
 import tech.intellispaces.commons.java.reflection.method.MethodStatement;
-import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
+import tech.intellispaces.jaquarius.object.reference.ObjectForm;
 import tech.intellispaces.jaquarius.system.ObjectHandleWrapper;
 
 /**
@@ -22,7 +22,7 @@ public class ObjectMapperOfMoving1<S extends ObjectHandleWrapper, T, Q>
       Class<S> objectHandleClass,
       MethodStatement guideMethod,
       int traverseOrdinal,
-      ObjectReferenceForm targetForm
+      ObjectForm targetForm
   ) {
     super(cid, objectHandleClass, guideMethod, traverseOrdinal, targetForm);
   }

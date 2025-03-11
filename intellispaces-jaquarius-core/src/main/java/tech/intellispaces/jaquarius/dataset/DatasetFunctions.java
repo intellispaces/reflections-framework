@@ -1,7 +1,7 @@
 package tech.intellispaces.jaquarius.dataset;
 
 import tech.intellispaces.jaquarius.annotation.Dataset;
-import tech.intellispaces.jaquarius.object.reference.ObjectHandleFunctions;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceFunctions;
 
 import java.lang.annotation.Annotation;
 import java.util.HashSet;
@@ -10,7 +10,7 @@ import java.util.Set;
 public interface DatasetFunctions {
 
   static boolean isDatasetObjectHandle(Class<?> objectHandleClass) {
-    return isDatasetDomain(ObjectHandleFunctions.getDomainClassOfObjectHandle(objectHandleClass));
+    return isDatasetDomain(ObjectReferenceFunctions.getDomainClassOfObjectHandle(objectHandleClass));
   }
 
   static boolean isDatasetDomain(Class<?> domainClass) {

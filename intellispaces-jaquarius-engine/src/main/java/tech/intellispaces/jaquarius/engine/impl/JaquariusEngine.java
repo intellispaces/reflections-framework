@@ -17,7 +17,7 @@ import tech.intellispaces.jaquarius.engine.description.ObjectHandleMethodDescrip
 import tech.intellispaces.jaquarius.engine.description.ObjectHandleMethodPurposes;
 import tech.intellispaces.jaquarius.engine.description.ObjectHandleTypeDescription;
 import tech.intellispaces.jaquarius.engine.description.UnitMethodDescription;
-import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
+import tech.intellispaces.jaquarius.object.reference.ObjectForms;
 import tech.intellispaces.jaquarius.system.Injection;
 import tech.intellispaces.jaquarius.system.Module;
 import tech.intellispaces.jaquarius.system.UnitWrapper;
@@ -97,19 +97,19 @@ public class JaquariusEngine implements tech.intellispaces.jaquarius.engine.Jaqu
       return DelegateActions.delegateAction1(CachedSupplierActions.get(TraverseActions::mapThruChannel0,
           objectHandleClass,
           (Class<Channel0>) method.channelClass(),
-          ObjectReferenceForms.Default)
+          ObjectForms.ObjectHandle)
       );
     } else if (method.traverseType().isMoving()) {
       return DelegateActions.delegateAction1(CachedSupplierActions.get(TraverseActions::moveThruChannel0,
           objectHandleClass,
           (Class<Channel0>) method.channelClass(),
-          ObjectReferenceForms.Default)
+          ObjectForms.ObjectHandle)
       );
     } else {
       return DelegateActions.delegateAction1(CachedSupplierActions.get(TraverseActions::mapOfMovingThruChannel0,
           objectHandleClass,
           (Class<Channel0>) method.channelClass(),
-          ObjectReferenceForms.Default)
+          ObjectForms.ObjectHandle)
       );
     }
   }
@@ -120,19 +120,19 @@ public class JaquariusEngine implements tech.intellispaces.jaquarius.engine.Jaqu
       return DelegateActions.delegateAction2(CachedSupplierActions.get(TraverseActions::mapThruChannel1,
           objectHandleClass,
           (Class<Channel1>) method.channelClass(),
-          ObjectReferenceForms.Default)
+          ObjectForms.ObjectHandle)
       );
     } else if (method.traverseType().isMoving()) {
       return DelegateActions.delegateAction2(CachedSupplierActions.get(TraverseActions::moveThruChannel1,
           objectHandleClass,
           (Class<Channel1>) method.channelClass(),
-          ObjectReferenceForms.Default)
+          ObjectForms.ObjectHandle)
       );
     } else {
       return DelegateActions.delegateAction2(CachedSupplierActions.get(TraverseActions::mapOfMovingThruChannel1,
           objectHandleClass,
           (Class<Channel1>) method.channelClass(),
-          ObjectReferenceForms.Default)
+          ObjectForms.ObjectHandle)
       );
     }
   }
@@ -143,19 +143,19 @@ public class JaquariusEngine implements tech.intellispaces.jaquarius.engine.Jaqu
       return DelegateActions.delegateAction3(CachedSupplierActions.get(TraverseActions::mapThruChannel2,
           objectHandleClass,
           (Class<Channel2>) method.channelClass(),
-          ObjectReferenceForms.Default)
+          ObjectForms.ObjectHandle)
       );
     } else if (method.traverseType().isMoving()) {
       return DelegateActions.delegateAction3(CachedSupplierActions.get(TraverseActions::moveThruChannel2,
           objectHandleClass,
           (Class<Channel2>) method.channelClass(),
-          ObjectReferenceForms.Default)
+          ObjectForms.ObjectHandle)
       );
     } else {
       return DelegateActions.delegateAction3(CachedSupplierActions.get(TraverseActions::mapOfMovingThruChannel2,
           objectHandleClass,
           (Class<Channel2>) method.channelClass(),
-          ObjectReferenceForms.Default)
+          ObjectForms.ObjectHandle)
       );
     }
   }
@@ -166,19 +166,19 @@ public class JaquariusEngine implements tech.intellispaces.jaquarius.engine.Jaqu
       return DelegateActions.delegateAction4(CachedSupplierActions.get(TraverseActions::mapThruChannel3,
           objectHandleClass,
           (Class<Channel3>) method.channelClass(),
-          ObjectReferenceForms.Default)
+          ObjectForms.ObjectHandle)
       );
     } else if (method.traverseType().isMoving()) {
       return DelegateActions.delegateAction4(CachedSupplierActions.get(TraverseActions::moveThruChannel3,
           objectHandleClass,
           (Class<Channel3>) method.channelClass(),
-          ObjectReferenceForms.Default)
+          ObjectForms.ObjectHandle)
       );
     } else {
       return DelegateActions.delegateAction4(CachedSupplierActions.get(TraverseActions::mapOfMovingThruChannel3,
           objectHandleClass,
           (Class<Channel3>) method.channelClass(),
-          ObjectReferenceForms.Default)
+          ObjectForms.ObjectHandle)
       );
     }
   }
@@ -193,7 +193,7 @@ public class JaquariusEngine implements tech.intellispaces.jaquarius.engine.Jaqu
       return DelegateActions.delegateAction5(CachedSupplierActions.get(TraverseActions::mapOfMovingThruChannel4,
           objectHandleClass,
           (Class<Channel4>) method.channelClass(),
-          ObjectReferenceForms.Default)
+          ObjectForms.ObjectHandle)
       );
     }
   }

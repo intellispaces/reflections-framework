@@ -10,9 +10,10 @@ import tech.intellispaces.jaquarius.annotation.Movable;
 import tech.intellispaces.jaquarius.annotation.ObjectHandle;
 import tech.intellispaces.jaquarius.annotation.Unmovable;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
-import tech.intellispaces.jaquarius.object.reference.ObjectHandleType;
-import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
-import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
+import tech.intellispaces.jaquarius.object.reference.MovabilityType;
+import tech.intellispaces.jaquarius.object.reference.MovabilityTypes;
+import tech.intellispaces.jaquarius.object.reference.ObjectForm;
+import tech.intellispaces.jaquarius.object.reference.ObjectForms;
 import tech.intellispaces.jaquarius.object.reference.UnmovableObjectHandle;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
@@ -33,8 +34,13 @@ public class UndefinedSimpleObjectGenerator extends AbstractSimpleObjectGenerato
   }
 
   @Override
-  protected ObjectHandleType getObjectHandleType() {
-    return ObjectHandleTypes.UndefinedClearObject;
+  protected ObjectForm getObjectForm() {
+    return ObjectForms.Simple;
+  }
+
+  @Override
+  protected MovabilityType getMovabilityType() {
+    return MovabilityTypes.Undefined;
   }
 
   @Override
@@ -58,7 +64,7 @@ public class UndefinedSimpleObjectGenerator extends AbstractSimpleObjectGenerato
     addHiddenImports(context);
 
     analyzeDomain();
-    analyzeObjectHandleMethods(sourceArtifact(), context);
+    analyzeObjectFormMethods(sourceArtifact(), context);
     analyzeConversionMethods(sourceArtifact());
 
     addVariable("handleTypeParamsFull", typeParamsFull);
@@ -67,7 +73,7 @@ public class UndefinedSimpleObjectGenerator extends AbstractSimpleObjectGenerato
   }
 
   @Override
-  protected Stream<MethodStatement> getObjectHandleMethods(CustomType customType, ArtifactGeneratorContext context) {
+  protected Stream<MethodStatement> getObjectFormMethods(CustomType customType, ArtifactGeneratorContext context) {
     return buildActualType(customType, context)
         .actualMethods().stream()
         .filter(DomainFunctions::isNotDomainClassGetter)
@@ -78,7 +84,7 @@ public class UndefinedSimpleObjectGenerator extends AbstractSimpleObjectGenerato
 
   @Override
   protected Map<String, String> generateMethod(
-      MethodStatement method, ObjectReferenceForm targetForm, int methodOrdinal
+      MethodStatement method, ObjectForm targetForm, int methodOrdinal
   ) {
     if (method.hasAnnotation(Channel.class)) {
       return super.generateMethod(method, targetForm, methodOrdinal);
@@ -107,11 +113,11 @@ public class UndefinedSimpleObjectGenerator extends AbstractSimpleObjectGenerato
   protected void appendObjectFormMethodReturnType(StringBuilder sb, MethodStatement method) {
     TypeReference domainReturnType = method.returnType().orElseThrow();
     if (method.hasAnnotation(Movable.class)) {
-      sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.MovableClearObject, true));
+      sb.append(buildObjectFormDeclaration(domainReturnType, ObjectForms.Simple, MovabilityTypes.Movable, true));
     } else if (method.hasAnnotation(Unmovable.class)) {
-      sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.UnmovableClearObject, true));
+      sb.append(buildObjectFormDeclaration(domainReturnType, ObjectForms.Simple, MovabilityTypes.Unmovable, true));
     } else {
-      sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.UndefinedClearObject, true));
+      sb.append(buildObjectFormDeclaration(domainReturnType, ObjectForms.Simple, MovabilityTypes.Undefined, true));
     }
   }
 }

@@ -1,7 +1,7 @@
 package tech.intellispaces.jaquarius.guide.n3;
 
 import tech.intellispaces.jaquarius.exception.TraverseException;
-import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
+import tech.intellispaces.jaquarius.object.reference.ObjectForm;
 import tech.intellispaces.jaquarius.traverse.plan.TraverseExecutor;
 import tech.intellispaces.jaquarius.traverse.plan.TraversePlan;
 
@@ -19,11 +19,11 @@ import tech.intellispaces.jaquarius.traverse.plan.TraversePlan;
 public class AutoMapper3<S, T, Q1, Q2,  Q3> implements AbstractMapper3<S, T, Q1, Q2, Q3> {
   private final String cid;
   private final TraversePlan traversePlan;
-  private final ObjectReferenceForm targetForm;
+  private final ObjectForm targetForm;
   private final TraverseExecutor traverseExecutor;
 
   public AutoMapper3(
-      String cid, TraversePlan traversePlan, ObjectReferenceForm targetForm, TraverseExecutor traverseExecutor
+      String cid, TraversePlan traversePlan, ObjectForm targetForm, TraverseExecutor traverseExecutor
   ) {
     this.cid = cid;
     this.traversePlan = traversePlan;
@@ -37,7 +37,7 @@ public class AutoMapper3<S, T, Q1, Q2,  Q3> implements AbstractMapper3<S, T, Q1,
   }
 
   @Override
-  public ObjectReferenceForm targetForm() {
+  public ObjectForm targetForm() {
     return targetForm;
   }
 

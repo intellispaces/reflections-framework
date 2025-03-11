@@ -2,7 +2,6 @@ package tech.intellispaces.jaquarius.guide;
 
 import tech.intellispaces.commons.exception.NotImplementedExceptions;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
-import tech.intellispaces.commons.type.ClassFunctions;
 import tech.intellispaces.commons.java.reflection.customtype.Classes;
 import tech.intellispaces.commons.java.reflection.customtype.CustomType;
 import tech.intellispaces.commons.java.reflection.customtype.CustomTypes;
@@ -14,6 +13,7 @@ import tech.intellispaces.commons.java.reflection.method.MethodFunctions;
 import tech.intellispaces.commons.java.reflection.method.MethodStatement;
 import tech.intellispaces.commons.java.reflection.method.Methods;
 import tech.intellispaces.commons.java.reflection.reference.TypeReference;
+import tech.intellispaces.commons.type.ClassFunctions;
 import tech.intellispaces.jaquarius.annotation.Channel;
 import tech.intellispaces.jaquarius.annotation.Mapper;
 import tech.intellispaces.jaquarius.annotation.MapperOfMoving;
@@ -45,9 +45,9 @@ import tech.intellispaces.jaquarius.guide.n4.ObjectMapperOfMoving4;
 import tech.intellispaces.jaquarius.guide.n5.Mapper5;
 import tech.intellispaces.jaquarius.guide.n5.Mover5;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
-import tech.intellispaces.jaquarius.object.reference.ObjectHandleFunctions;
-import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
-import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
+import tech.intellispaces.jaquarius.object.reference.ObjectForm;
+import tech.intellispaces.jaquarius.object.reference.ObjectForms;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceFunctions;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.system.UnitWrapper;
 import tech.intellispaces.jaquarius.traverse.TraverseType;
@@ -222,7 +222,7 @@ public final class GuideFunctions {
     }
     CustomType objectHandleWrapperType = Interfaces.of(objectHandleImplClass.get());
 
-    CustomType domainType = ObjectHandleFunctions.getDomainOfObjectHandle(Classes.of(objectHandleClass));
+    CustomType domainType = ObjectReferenceFunctions.getDomainOfObjectFormOrElseThrow(Classes.of(objectHandleClass));
 
     for (MethodStatement method : domainType.declaredMethods()) {
       if (NameConventionFunctions.isConversionMethod(method)) {
@@ -236,7 +236,7 @@ public final class GuideFunctions {
             (Class) objectHandleClass,
             method,
             channelOrdinal,
-            ObjectReferenceForms.Default
+            ObjectForms.ObjectHandle
         );
         guides.add(guide);
       }
@@ -255,7 +255,7 @@ public final class GuideFunctions {
   private static <S, T> Guide<S, T> createObjectMapper(
       Class<S> objectHandleClass, String cid, MethodStatement guideMethod
   ) {
-    ObjectReferenceForm targetForm = getTargetForm(guideMethod);
+    ObjectForm targetForm = getTargetForm(guideMethod);
     int channelOrdinal = getChannelOrdinal(objectHandleClass, guideMethod);
     int qualifiersCount = guideMethod.params().size();
     return switch (qualifiersCount) {
@@ -272,7 +272,7 @@ public final class GuideFunctions {
   private static <S, T> Guide<S, T> createObjectMover(
       Class<S> objectHandleClass, String cid, MethodStatement guideMethod
   ) {
-    ObjectReferenceForm targetForm = getTargetForm(guideMethod);
+    ObjectForm targetForm = getTargetForm(guideMethod);
     int channelOrdinal = getChannelOrdinal(objectHandleClass, guideMethod);
     int qualifiersCount = guideMethod.params().size();
     return switch (qualifiersCount) {
@@ -289,7 +289,7 @@ public final class GuideFunctions {
   private static <S, T> Guide<S, T> createObjectMapperOfMoving(
       Class<S> objectHandleClass, String cid, MethodStatement guideMethod
   ) {
-    ObjectReferenceForm targetForm = getTargetForm(guideMethod);
+    ObjectForm targetForm = getTargetForm(guideMethod);
     int channelOrdinal = getChannelOrdinal(objectHandleClass, guideMethod);
     int qualifiersCount = guideMethod.params().size();
     return switch (qualifiersCount) {
@@ -303,11 +303,17 @@ public final class GuideFunctions {
     };
   }
 
-  public static ObjectReferenceForm getTargetForm(MethodStatement guideMethod) {
-    if (NameConventionFunctions.isPrimitiveTargetForm(guideMethod)) {
-      return ObjectReferenceForms.Primitive;
+  public static ObjectForm getTargetForm(MethodStatement guideMethod) {
+    TypeReference returnType = guideMethod.returnType().orElseThrow();
+    if (returnType.isCustomTypeReference()) {
+      if (ClassFunctions.isPrimitiveWrapperClass(returnType.asCustomTypeReferenceOrElseThrow().targetType().canonicalName())) {
+        return ObjectForms.Primitive;
+      }
+      if (ObjectReferenceFunctions.isObjectHandleType(returnType)) {
+        return ObjectForms.ObjectHandle;
+      }
     }
-    return ObjectReferenceForms.Default;
+    return ObjectForms.ObjectHandle;
   }
 
   public static int getChannelOrdinal(Class<?> objectHandleClass, MethodStatement guideMethod) {
@@ -367,14 +373,5 @@ public final class GuideFunctions {
     GUIDE_CLASS_TO_KIND.put(Mover3.class, GuideKinds.Mover3);
     GUIDE_CLASS_TO_KIND.put(Mover4.class, GuideKinds.Mover4);
     GUIDE_CLASS_TO_KIND.put(Mover5.class, GuideKinds.Mover5);
-  }
-
-  public static ObjectReferenceForm getGuideTargetForm(MethodStatement guideMethod) {
-    TypeReference returnType = guideMethod.returnType().orElseThrow();
-    if (returnType.isPrimitiveReference()) {
-      return ObjectReferenceForms.Primitive;
-    } else {
-      return ObjectReferenceForms.Default;
-    }
   }
 }

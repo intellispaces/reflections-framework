@@ -1,7 +1,7 @@
 package tech.intellispaces.jaquarius.guide.n2;
 
 import tech.intellispaces.commons.java.reflection.method.MethodStatement;
-import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
+import tech.intellispaces.jaquarius.object.reference.ObjectForm;
 import tech.intellispaces.jaquarius.system.UnitWrapper;
 
 /**
@@ -21,7 +21,7 @@ public class UnitMapper2<S, T, Q1, Q2>
       UnitWrapper unitInstance,
       MethodStatement guideMethod,
       int guideOrdinal,
-      ObjectReferenceForm targetForm
+      ObjectForm targetForm
   ) {
     super(cid, unitInstance, guideMethod, guideOrdinal, targetForm);
   }

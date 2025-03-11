@@ -10,8 +10,8 @@ import tech.intellispaces.jaquarius.guide.n1.Guide1;
 import tech.intellispaces.jaquarius.guide.n2.Guide2;
 import tech.intellispaces.jaquarius.guide.n3.Guide3;
 import tech.intellispaces.jaquarius.guide.n4.Guide4;
-import tech.intellispaces.jaquarius.object.reference.ObjectHandleFunctions;
-import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
+import tech.intellispaces.jaquarius.object.reference.ObjectForm;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceFunctions;
 import tech.intellispaces.jaquarius.traverse.plan.CallGuide0PlanImpl;
 import tech.intellispaces.jaquarius.traverse.plan.CallGuide1PlanImpl;
 import tech.intellispaces.jaquarius.traverse.plan.CallGuide2PlanImpl;
@@ -60,7 +60,7 @@ class TraverseAnalyzer implements tech.intellispaces.jaquarius.traverse.plan.Tra
 
   @Override
   public MapObjectHandleThruChannel0Plan buildMapObjectHandleThruChannel0Plan(
-    Class<?> sourceClass, String cid, ObjectReferenceForm targetForm
+    Class<?> sourceClass, String cid, ObjectForm targetForm
   ) {
     MapObjectHandleThruChannel0Plan declarativePlan = new MapObjectHandleThruChannel0PlanImpl(sourceClass, cid);
     defineExecutionPlan(declarativePlan, sourceClass, targetForm);
@@ -69,7 +69,7 @@ class TraverseAnalyzer implements tech.intellispaces.jaquarius.traverse.plan.Tra
 
   @Override
   public MapObjectHandleThruChannel1Plan buildMapObjectHandleThruChannel1Plan(
-    Class<?> sourceClass, String cid, ObjectReferenceForm targetForm
+    Class<?> sourceClass, String cid, ObjectForm targetForm
   ) {
     MapObjectHandleThruChannel1Plan declarativePlan = new MapObjectHandleThruChannel1PlanImpl(sourceClass, cid);
     defineExecutionPlan(declarativePlan, sourceClass, targetForm);
@@ -78,7 +78,7 @@ class TraverseAnalyzer implements tech.intellispaces.jaquarius.traverse.plan.Tra
 
   @Override
   public MapObjectHandleThruChannel2Plan buildMapObjectHandleThruChannel2Plan(
-    Class<?> sourceClass, String cid, ObjectReferenceForm targetForm
+    Class<?> sourceClass, String cid, ObjectForm targetForm
   ) {
     MapObjectHandleThruChannel2Plan declarativePlan = new MapObjectHandleThruChannel2PlanImpl(sourceClass, cid);
     defineExecutionPlan(declarativePlan, sourceClass, targetForm);
@@ -87,7 +87,7 @@ class TraverseAnalyzer implements tech.intellispaces.jaquarius.traverse.plan.Tra
 
   @Override
   public MapObjectHandleThruChannel3Plan buildMapObjectHandleThruChannel3Plan(
-    Class<?> sourceClass, String cid, ObjectReferenceForm targetForm
+    Class<?> sourceClass, String cid, ObjectForm targetForm
   ) {
     MapObjectHandleThruChannel3Plan declarativePlan = new MapObjectHandleThruChannel3PlanImpl(sourceClass, cid);
     defineExecutionPlan(declarativePlan, sourceClass, targetForm);
@@ -96,7 +96,7 @@ class TraverseAnalyzer implements tech.intellispaces.jaquarius.traverse.plan.Tra
 
   @Override
   public MoveObjectHandleThruChannel0Plan buildMoveObjectHandleThruChannel0Plan(
-    Class<?> sourceClass, String cid, ObjectReferenceForm targetForm
+    Class<?> sourceClass, String cid, ObjectForm targetForm
   ) {
     MoveObjectHandleThruChannel0Plan declarativePlan = new MoveObjectHandleThruChannel0PlanImpl(sourceClass, cid);
     defineExecutionPlan(declarativePlan, sourceClass, targetForm);
@@ -105,7 +105,7 @@ class TraverseAnalyzer implements tech.intellispaces.jaquarius.traverse.plan.Tra
 
   @Override
   public MoveObjectHandleThruChannel1Plan buildMoveObjectHandleThruChannel1Plan(
-    Class<?> sourceClass, String cid, ObjectReferenceForm targetForm
+    Class<?> sourceClass, String cid, ObjectForm targetForm
   ) {
     MoveObjectHandleThruChannel1Plan declarativePlan = new MoveObjectHandleThruChannel1PlanImpl(sourceClass, cid);
     defineExecutionPlan(declarativePlan, sourceClass, targetForm);
@@ -114,7 +114,7 @@ class TraverseAnalyzer implements tech.intellispaces.jaquarius.traverse.plan.Tra
 
   @Override
   public MoveObjectHandleThruChannel2Plan buildMoveObjectHandleThruChannel2Plan(
-    Class<?> sourceClass, String cid, ObjectReferenceForm targetForm
+    Class<?> sourceClass, String cid, ObjectForm targetForm
   ) {
     MoveObjectHandleThruChannel2Plan declarativePlan = new MoveObjectHandleThruChannel2PlanImpl(sourceClass, cid);
     defineExecutionPlan(declarativePlan, sourceClass, targetForm);
@@ -123,7 +123,7 @@ class TraverseAnalyzer implements tech.intellispaces.jaquarius.traverse.plan.Tra
 
   @Override
   public MoveObjectHandleThruChannel3Plan buildMoveObjectHandleThruChannel3Plan(
-    Class<?> sourceClass, String cid, ObjectReferenceForm targetForm
+    Class<?> sourceClass, String cid, ObjectForm targetForm
   ) {
     MoveObjectHandleThruChannel3Plan declarativePlan = new MoveObjectHandleThruChannel3PlanImpl(sourceClass, cid);
     defineExecutionPlan(declarativePlan, sourceClass, targetForm);
@@ -132,7 +132,7 @@ class TraverseAnalyzer implements tech.intellispaces.jaquarius.traverse.plan.Tra
 
   @Override
   public MapOfMovingObjectHandleThruChannel0Plan buildMapOfMovingObjectHandleThruChannel0Plan(
-      Class<?> sourceClass, String cid, ObjectReferenceForm targetForm
+      Class<?> sourceClass, String cid, ObjectForm targetForm
   ) {
     MapOfMovingObjectHandleThruChannel0Plan declarativePlan = new MapOfMovingObjectHandleThruChannel0PlanImpl(sourceClass, cid);
     defineExecutionPlan(declarativePlan, sourceClass, targetForm);
@@ -141,7 +141,7 @@ class TraverseAnalyzer implements tech.intellispaces.jaquarius.traverse.plan.Tra
 
   @Override
   public MapOfMovingObjectHandleThruChannel1Plan buildMapOfMovingObjectHandleThruChannel1Plan(
-      Class<?> sourceClass, String cid, ObjectReferenceForm targetForm
+      Class<?> sourceClass, String cid, ObjectForm targetForm
   ) {
     MapOfMovingObjectHandleThruChannel1Plan declarativePlan = new MapOfMovingObjectHandleThruChannel1PlanImpl(sourceClass, cid);
     defineExecutionPlan(declarativePlan, sourceClass, targetForm);
@@ -150,7 +150,7 @@ class TraverseAnalyzer implements tech.intellispaces.jaquarius.traverse.plan.Tra
 
   @Override
   public MapOfMovingObjectHandleThruChannel2Plan buildMapOfMovingObjectHandleThruChannel2Plan(
-      Class<?> sourceClass, String cid, ObjectReferenceForm targetForm
+      Class<?> sourceClass, String cid, ObjectForm targetForm
   ) {
     MapOfMovingObjectHandleThruChannel2Plan declarativePlan = new MapOfMovingObjectHandleThruChannel2PlanImpl(sourceClass, cid);
     defineExecutionPlan(declarativePlan, sourceClass, targetForm);
@@ -159,7 +159,7 @@ class TraverseAnalyzer implements tech.intellispaces.jaquarius.traverse.plan.Tra
 
   @Override
   public MapOfMovingObjectHandleThruChannel3Plan buildMapOfMovingObjectHandleThruChannel3Plan(
-      Class<?> sourceClass, String cid, ObjectReferenceForm targetForm
+      Class<?> sourceClass, String cid, ObjectForm targetForm
   ) {
     MapOfMovingObjectHandleThruChannel3Plan declarativePlan = new MapOfMovingObjectHandleThruChannel3PlanImpl(sourceClass, cid);
     defineExecutionPlan(declarativePlan, sourceClass, targetForm);
@@ -168,7 +168,7 @@ class TraverseAnalyzer implements tech.intellispaces.jaquarius.traverse.plan.Tra
 
   @Override
   public MapOfMovingObjectHandleThruChannel4Plan buildMapOfMovingObjectHandleThruChannel4Plan(
-      Class<?> sourceClass, String cid, ObjectReferenceForm targetForm
+      Class<?> sourceClass, String cid, ObjectForm targetForm
   ) {
     MapOfMovingObjectHandleThruChannel4Plan declarativePlan = new MapOfMovingObjectHandleThruChannel4PlanImpl(sourceClass, cid);
     defineExecutionPlan(declarativePlan, sourceClass, targetForm);
@@ -176,7 +176,7 @@ class TraverseAnalyzer implements tech.intellispaces.jaquarius.traverse.plan.Tra
   }
 
   private void defineExecutionPlan(
-      ObjectHandleTraversePlan plan, Class<?> objectHandleClass, ObjectReferenceForm targetForm
+      ObjectHandleTraversePlan plan, Class<?> objectHandleClass, ObjectForm targetForm
   ) {
     ExecutionTraversePlan executionPlan = getExecutionPlan(plan, objectHandleClass, targetForm);
     if (executionPlan != null) {
@@ -186,18 +186,18 @@ class TraverseAnalyzer implements tech.intellispaces.jaquarius.traverse.plan.Tra
 
   @Override
   public ExecutionTraversePlan getExecutionPlan(
-      ObjectHandleTraversePlan plan, Class<?> sourceClass, ObjectReferenceForm targetForm
+      ObjectHandleTraversePlan plan, Class<?> sourceClass, ObjectForm targetForm
   ) {
     ExecutionTraversePlan executionPlan = plan.getExecutionPlan(sourceClass);
     if (executionPlan != null) {
       return executionPlan;
     }
 
-    if (!ObjectHandleFunctions.isObjectHandleClass(sourceClass)) {
-      throw UnexpectedExceptions.withMessage("Traverse plan of type {0} expected object handle to input",
+    if (!ObjectReferenceFunctions.isObjectFormClass(sourceClass)) {
+      throw UnexpectedExceptions.withMessage("Traverse plan of type {0} expected any object form to input",
           plan.type());
     }
-    Class<?> objectHandleClass = ObjectHandleFunctions.getObjectHandleClass(sourceClass);
+    Class<?> objectHandleClass = ObjectReferenceFunctions.getObjectHandleClass(sourceClass);
     executionPlan = plan.getExecutionPlan(objectHandleClass);
     if (executionPlan != null) {
       return executionPlan;
@@ -226,7 +226,7 @@ class TraverseAnalyzer implements tech.intellispaces.jaquarius.traverse.plan.Tra
   }
 
   private ExecutionTraversePlan buildExecutionTraversePlan(
-      ObjectHandleTraversePlan plan, Class<?> objectHandleClass, ObjectReferenceForm targetForm
+      ObjectHandleTraversePlan plan, Class<?> objectHandleClass, ObjectForm targetForm
   ) {
     GuideKinds guideKind = getGuideKind(plan.type());
     List<Guide<?, ?>> guides = findGuides(guideKind, objectHandleClass, plan.cid(), targetForm);
@@ -248,7 +248,7 @@ class TraverseAnalyzer implements tech.intellispaces.jaquarius.traverse.plan.Tra
     };
   }
 
-  private List<Guide<?, ?>> findGuides(GuideKind kind, Class<?> objectHandleClass, String cid, ObjectReferenceForm form) {
+  private List<Guide<?, ?>> findGuides(GuideKind kind, Class<?> objectHandleClass, String cid, ObjectForm form) {
     return guideRegistry.findGuides(kind, objectHandleClass, cid, form);
   }
 

@@ -1,8 +1,6 @@
 package tech.intellispaces.jaquarius.annotationprocessor.domain;
 
 import tech.intellispaces.commons.annotation.processor.ArtifactValidator;
-import tech.intellispaces.commons.text.StringFunctions;
-import tech.intellispaces.commons.type.ClassFunctions;
 import tech.intellispaces.commons.java.reflection.customtype.CustomType;
 import tech.intellispaces.commons.java.reflection.method.MethodFunctions;
 import tech.intellispaces.commons.java.reflection.method.MethodParam;
@@ -11,12 +9,13 @@ import tech.intellispaces.commons.java.reflection.reference.CustomTypeReference;
 import tech.intellispaces.commons.java.reflection.reference.NotPrimitiveReference;
 import tech.intellispaces.commons.java.reflection.reference.ReferenceBound;
 import tech.intellispaces.commons.java.reflection.reference.TypeReference;
+import tech.intellispaces.commons.text.StringFunctions;
+import tech.intellispaces.commons.type.ClassFunctions;
 import tech.intellispaces.jaquarius.annotation.Channel;
 import tech.intellispaces.jaquarius.annotation.Domain;
 import tech.intellispaces.jaquarius.annotation.Ontology;
 import tech.intellispaces.jaquarius.exception.JaquariusExceptions;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
-import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
 
 import java.util.List;

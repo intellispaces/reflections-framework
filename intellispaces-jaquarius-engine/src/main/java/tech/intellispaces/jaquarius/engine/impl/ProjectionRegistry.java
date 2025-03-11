@@ -8,7 +8,7 @@ import tech.intellispaces.jaquarius.annotation.Projection;
 import tech.intellispaces.jaquarius.exception.ConfigurationException;
 import tech.intellispaces.jaquarius.exception.ConfigurationExceptions;
 import tech.intellispaces.jaquarius.exception.CyclicDependencyExceptions;
-import tech.intellispaces.jaquarius.object.reference.ObjectHandleFunctions;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceFunctions;
 import tech.intellispaces.jaquarius.system.ModuleProjection;
 import tech.intellispaces.jaquarius.system.ProjectionDefinition;
 import tech.intellispaces.jaquarius.system.ProjectionProvider;
@@ -136,11 +136,11 @@ class ProjectionRegistry implements ProjectionProvider {
     if (projection == null) {
       return null;
     }
-    if (projection.target() != null && ObjectHandleFunctions.isCompatibleObjectType(targetObjectHandleClass, projection.target().getClass())) {
+    if (projection.target() != null && ObjectReferenceFunctions.isCompatibleObjectType(targetObjectHandleClass, projection.target().getClass())) {
       return (T) projection.target();
     }
-    if (!ObjectHandleFunctions.isCompatibleObjectType(targetObjectHandleClass, projection.type())) {
-      T downgradedProjection = ObjectHandleFunctions.tryDowngrade(projection.target(), targetObjectHandleClass);
+    if (!ObjectReferenceFunctions.isCompatibleObjectType(targetObjectHandleClass, projection.type())) {
+      T downgradedProjection = ObjectReferenceFunctions.tryDowngrade(projection.target(), targetObjectHandleClass);
       if (downgradedProjection != null) {
         return downgradedProjection;
       }

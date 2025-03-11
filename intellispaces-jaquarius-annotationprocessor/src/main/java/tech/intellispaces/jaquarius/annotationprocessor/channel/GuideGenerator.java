@@ -4,10 +4,6 @@ import tech.intellispaces.commons.action.runnable.RunnableAction;
 import tech.intellispaces.commons.action.text.StringActions;
 import tech.intellispaces.commons.annotation.processor.ArtifactGeneratorContext;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
-import tech.intellispaces.commons.type.ClassFunctions;
-import tech.intellispaces.commons.type.ClassNameFunctions;
-import tech.intellispaces.commons.type.PrimitiveFunctions;
-import tech.intellispaces.commons.type.PrimitiveTypes;
 import tech.intellispaces.commons.java.reflection.customtype.CustomType;
 import tech.intellispaces.commons.java.reflection.method.MethodParam;
 import tech.intellispaces.commons.java.reflection.method.MethodStatement;
@@ -18,6 +14,10 @@ import tech.intellispaces.commons.java.reflection.reference.PrimitiveReference;
 import tech.intellispaces.commons.java.reflection.reference.ReferenceBound;
 import tech.intellispaces.commons.java.reflection.reference.TypeReference;
 import tech.intellispaces.commons.java.reflection.reference.Wildcards;
+import tech.intellispaces.commons.type.ClassFunctions;
+import tech.intellispaces.commons.type.ClassNameFunctions;
+import tech.intellispaces.commons.type.PrimitiveFunctions;
+import tech.intellispaces.commons.type.PrimitiveTypes;
 import tech.intellispaces.jaquarius.annotation.Guide;
 import tech.intellispaces.jaquarius.annotation.Mapper;
 import tech.intellispaces.jaquarius.annotation.MapperOfMoving;
@@ -42,9 +42,9 @@ import tech.intellispaces.jaquarius.guide.n5.Mapper5;
 import tech.intellispaces.jaquarius.guide.n5.MapperOfMoving5;
 import tech.intellispaces.jaquarius.guide.n5.Mover5;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
-import tech.intellispaces.jaquarius.object.reference.ObjectHandleFunctions;
-import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
-import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
+import tech.intellispaces.jaquarius.object.reference.ObjectForm;
+import tech.intellispaces.jaquarius.object.reference.ObjectForms;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceFunctions;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.traverse.TraverseType;
 import tech.intellispaces.jaquarius.traverse.TraverseTypes;
@@ -54,7 +54,7 @@ import java.util.Objects;
 import java.util.function.Function;
 
 public class GuideGenerator extends JaquariusArtifactGenerator {
-  private final ObjectReferenceForm targetForm;
+  private final ObjectForm targetForm;
   private final TraverseType traverseType;
   private final MethodStatement channelMethod;
   private String guideClassSimpleName;
@@ -65,7 +65,7 @@ public class GuideGenerator extends JaquariusArtifactGenerator {
   private String traverseMethodPrimitiveFormDouble;
 
   public GuideGenerator(
-      ObjectReferenceForm targetForm,
+      ObjectForm targetForm,
       TraverseType traverseType,
       CustomType channelType,
       MethodStatement channelMethod
@@ -100,8 +100,8 @@ public class GuideGenerator extends JaquariusArtifactGenerator {
         Guide.class,
         Objects.class,
         ChannelFunctions.class,
-        ObjectReferenceForm.class,
-        ObjectReferenceForms.class,
+        ObjectForm.class,
+        ObjectForms.class,
         PrimitiveFunctions.class,
         UnexpectedExceptions.class
     );
@@ -131,7 +131,7 @@ public class GuideGenerator extends JaquariusArtifactGenerator {
         if (!typeParam.extendedBounds().isEmpty()) {
           sb.append(" extends ");
           for (ReferenceBound bound : typeParam.extendedBounds()) {
-            sb.append(ObjectHandleFunctions.getUndefinedObjectHandleTypename(bound));
+            sb.append(ObjectReferenceFunctions.getUndefinedObjectHandleTypename(bound));
           }
         }
       }
@@ -384,9 +384,9 @@ public class GuideGenerator extends JaquariusArtifactGenerator {
   }
 
   private String buildTargetObjectHandleFormDeclaration() {
-    if (ObjectReferenceForms.Default.is(targetForm)) {
+    if (ObjectForms.Simple.is(targetForm)) {
       return buildTargetObjectHandleDeclaration(Function.identity(), false);
-    } else if (ObjectReferenceForms.Primitive.is(targetForm)) {
+    } else if (ObjectForms.Primitive.is(targetForm)) {
       return ClassFunctions.primitiveTypenameOfWrapper(
           channelMethod.returnType().orElseThrow()
               .asCustomTypeReferenceOrElseThrow()
@@ -423,7 +423,7 @@ public class GuideGenerator extends JaquariusArtifactGenerator {
     } else if (type.isPrimitiveReference()) {
       return ClassFunctions.wrapperClassOfPrimitive(type.asPrimitiveReferenceOrElseThrow().typename()).getSimpleName();
     } else {
-      String canonicalName = ObjectHandleFunctions.getUndefinedPureObjectTypename(type, typeReplacer);
+      String canonicalName = ObjectReferenceFunctions.getUndefinedSimpleObjectTypename(type, typeReplacer);
       String name = type.isCustomTypeReference() ? addImportAndGetSimpleName(canonicalName) : canonicalName;
       if (type.isCustomTypeReference() && !type.asCustomTypeReferenceOrElseThrow().typeArguments().isEmpty()) {
         var sb = new StringBuilder();

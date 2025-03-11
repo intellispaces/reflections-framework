@@ -7,10 +7,6 @@ import tech.intellispaces.commons.action.text.StringActions;
 import tech.intellispaces.commons.exception.NotImplementedExceptions;
 import tech.intellispaces.commons.exception.UnexpectedException;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
-import tech.intellispaces.commons.text.StringFunctions;
-import tech.intellispaces.commons.type.ClassFunctions;
-import tech.intellispaces.commons.type.Classes;
-import tech.intellispaces.commons.type.Type;
 import tech.intellispaces.commons.java.reflection.JavaStatements;
 import tech.intellispaces.commons.java.reflection.customtype.AnnotationFunctions;
 import tech.intellispaces.commons.java.reflection.customtype.CustomType;
@@ -24,6 +20,10 @@ import tech.intellispaces.commons.java.reflection.reference.NotPrimitiveReferenc
 import tech.intellispaces.commons.java.reflection.reference.ReferenceBound;
 import tech.intellispaces.commons.java.reflection.reference.TypeReference;
 import tech.intellispaces.commons.java.reflection.reference.WildcardReference;
+import tech.intellispaces.commons.text.StringFunctions;
+import tech.intellispaces.commons.type.ClassFunctions;
+import tech.intellispaces.commons.type.Classes;
+import tech.intellispaces.commons.type.Type;
 import tech.intellispaces.jaquarius.Jaquarius;
 import tech.intellispaces.jaquarius.annotation.Movable;
 import tech.intellispaces.jaquarius.annotation.ObjectHandle;
@@ -41,37 +41,73 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 
-public class ObjectHandleFunctions {
-  private static final Logger LOG = LoggerFactory.getLogger(ObjectHandleFunctions.class);
+public class ObjectReferenceFunctions {
+  private static final Logger LOG = LoggerFactory.getLogger(ObjectReferenceFunctions.class);
 
-  public static Class<?> getObjectHandleClass(ObjectHandleTypes objectHandleType) {
-    return switch (objectHandleType) {
-      case UndefinedHandle, UndefinedClearObject -> tech.intellispaces.jaquarius.object.reference.ObjectHandle.class;
-      case UnmovableHandle, UnmovableClearObject -> UnmovableObjectHandle.class;
-      case MovableHandle, MovableClearObject -> MovableObjectHandle.class;
-    };
-  }
-
-  public static boolean isObjectHandleClass(Class<?> aClass) {
-    return isDefaultObjectHandleClass(aClass) || isCustomObjectHandleClass(aClass);
-  }
-
-  public static boolean isObjectType(TypeReference type) {
+  public static boolean isObjectFormType(TypeReference type) {
+    if (type.isPrimitiveReference()) {
+      return true;
+    }
     if (type.isCustomTypeReference()) {
-      if (type.asCustomTypeReferenceOrElseThrow().targetType().hasParent(tech.intellispaces.jaquarius.object.reference.ObjectHandle.class)) {
+      CustomType targetType = type.asCustomTypeReferenceOrElseThrow().targetType();
+      if (targetType.hasParent(tech.intellispaces.jaquarius.object.reference.ObjectHandle.class)) {
         return true;
       }
     }
-    try {
-      CustomType domainType = getDomainOfObjectHandle(type);
-      return true;
-    } catch (Exception e) {
-      return false;
+    return getDomainOfObjectForm(type).isPresent();
+  }
+
+  public static boolean isObjectFormClass(Class<?> aClass) {
+    Wrapper wrapper = aClass.getAnnotation(Wrapper.class);
+    if (wrapper != null) {
+      aClass = wrapper.value();
     }
+    if (isDefaultObjectHandleType(aClass.getCanonicalName())) {
+      return true;
+    }
+    if (aClass.isAnnotationPresent(ObjectHandle.class)) {
+      return true;
+    }
+    if (tech.intellispaces.jaquarius.object.reference.ObjectHandle.class.isAssignableFrom(aClass)) {
+      return true;
+    }
+    Optional<Class<?>> domainClass = Classes.get(
+        NameConventionFunctions.getDomainNameOfSimpleObjectForm(aClass.getCanonicalName())
+    );
+    return domainClass.isPresent();
   }
 
   public static boolean isObjectHandleType(TypeReference type) {
     return isDefaultObjectHandleType(type) || isCustomObjectHandleType(type);
+  }
+
+  public static boolean isObjectHandleClass(Class<?> aClass) {
+    return isDefaultObjectHandleClass(aClass) || isCustomObjectFormClass(aClass);
+  }
+
+  public static boolean isCustomObjectHandleType(TypeReference type) {
+    if (!type.isCustomTypeReference()) {
+      return false;
+    }
+    CustomType customType = type.asCustomTypeReferenceOrElseThrow().targetType();
+    return customType.hasParent(tech.intellispaces.jaquarius.object.reference.ObjectHandle.class);
+  }
+
+  public static boolean isCustomObjectFormClass(Class<?> aClass) {
+    Wrapper wrapper = aClass.getAnnotation(Wrapper.class);
+    if (wrapper != null) {
+      aClass = wrapper.value();
+    }
+    if (aClass.isAnnotationPresent(ObjectHandle.class)) {
+      return true;
+    }
+    if (tech.intellispaces.jaquarius.object.reference.ObjectHandle.class.isAssignableFrom(aClass)) {
+      return true;
+    };
+    Optional<Class<?>> domainClass = Classes.get(
+        NameConventionFunctions.getDomainNameOfSimpleObjectForm(aClass.getCanonicalName())
+    );
+    return domainClass.isPresent();
   }
 
   public static boolean isDefaultObjectHandleClass(Class<?> aClass) {
@@ -111,6 +147,14 @@ public class ObjectHandleFunctions {
     return AnnotationFunctions.isAssignableAnnotatedType(objectHandleType, Unmovable.class);
   }
 
+  public static Class<?> getObjectHandleClass(MovabilityType movabilityType) {
+    return switch (MovabilityTypes.from(movabilityType)) {
+      case Undefined -> tech.intellispaces.jaquarius.object.reference.ObjectHandle.class;
+      case Unmovable -> UnmovableObjectHandle.class;
+      case Movable -> MovableObjectHandle.class;
+    };
+  }
+
   public static String getUndefinedObjectHandleTypename(TypeReference domainType) {
     return getUndefinedObjectHandleTypename(domainType, Function.identity());
   }
@@ -132,7 +176,7 @@ public class ObjectHandleFunctions {
     return getUndefinedObjectHandleTypename(type.asCustomTypeReferenceOrElseThrow().targetType());
   }
 
-  public static String getUndefinedPureObjectTypename(
+  public static String getUndefinedSimpleObjectTypename(
       TypeReference type, Function<TypeReference, TypeReference> typeReplacer
   ) {
     type = typeReplacer.apply(type);
@@ -144,12 +188,12 @@ public class ObjectHandleFunctions {
       if (type.asWildcardOrElseThrow().extendedBound().isEmpty()) {
         return "?";
       }
-      return "? extends " + getUndefinedPureObjectTypename(type.asWildcardOrElseThrow().extendedBound().get(), typeReplacer);
+      return "? extends " + getUndefinedSimpleObjectTypename(type.asWildcardOrElseThrow().extendedBound().get(), typeReplacer);
     }
-    return getUndefinedPureObjectTypename(type.asCustomTypeReferenceOrElseThrow().targetType());
+    return getUndefinedSimpleObjectTypename(type.asCustomTypeReferenceOrElseThrow().targetType());
   }
 
-  public static String getUndefinedPureObjectTypename(CustomType domainType) {
+  public static String getUndefinedSimpleObjectTypename(CustomType domainType) {
     if (isDefaultObjectHandleType(domainType)) {
       return domainType.canonicalName();
     }
@@ -163,8 +207,8 @@ public class ObjectHandleFunctions {
     return NameConventionFunctions.getUndefinedObjectHandleTypename(domainType.className());
   }
 
-  public static String getObjectHandleTypename(
-      CustomType customType, ObjectHandleType type, boolean replaceKeyDomain
+  public static String getObjectTypename(
+      CustomType customType, ObjectForm objectForm, MovabilityType movabilityType, boolean replaceKeyDomain
   ) {
     if (isDefaultObjectHandleType(customType)) {
       return customType.canonicalName();
@@ -172,38 +216,14 @@ public class ObjectHandleFunctions {
     if (!DomainFunctions.isDomainType(customType)) {
       return customType.canonicalName();
     }
-    return NameConventionFunctions.getObjectHandleTypename(customType.className(), type, replaceKeyDomain);
+    return NameConventionFunctions.getObjectTypename(customType.className(), objectForm, movabilityType, replaceKeyDomain);
   }
 
-  public static String getObjectHandleTypename(String canonicalName, ObjectHandleType type) {
+  public static String getObjectTypename(String canonicalName, ObjectForm objectForm, MovabilityType movabilityType) {
     if (isDefaultObjectHandleType(canonicalName)) {
       return canonicalName;
     }
-    return NameConventionFunctions.getObjectHandleTypename(canonicalName, type, true);
-  }
-
-  public static boolean isCustomObjectHandleClass(Class<?> aClass) {
-    Wrapper wrapper = aClass.getAnnotation(Wrapper.class);
-    if (wrapper != null) {
-      aClass = wrapper.value();
-    }
-    if (aClass.isAnnotationPresent(ObjectHandle.class)) {
-      return true;
-    }
-
-    Optional<Class<?>> domainClass = Classes.get(
-        NameConventionFunctions.getDomainNameOfPureObject(aClass.getCanonicalName())
-    );
-    return domainClass.isPresent();
-
-  }
-
-  public static boolean isCustomObjectHandleType(TypeReference type) {
-    if (!type.isCustomTypeReference()) {
-      return false;
-    }
-    CustomType customType = type.asCustomTypeReferenceOrElseThrow().targetType();
-    return AnnotationFunctions.isAssignableAnnotatedType(customType, ObjectHandle.class);
+    return NameConventionFunctions.getObjectTypename(canonicalName, objectForm, movabilityType, true);
   }
 
   public static Class<?> getObjectHandleClass(Class<?> aClass) {
@@ -237,51 +257,55 @@ public class ObjectHandleFunctions {
     return actualType2 == actualType1 || actualType1.isAssignableFrom(actualType2);
   }
 
-  public static CustomType getDomainOfObjectHandle(TypeReference objectHandleType) {
-    if (objectHandleType.isPrimitiveReference()) {
+  public static Optional<CustomType> getDomainOfObjectForm(TypeReference objectFormType) {
+    if (objectFormType.isPrimitiveReference()) {
       Class<?> wrapperClass = ClassFunctions.wrapperClassOfPrimitive(
-        objectHandleType.asPrimitiveReferenceOrElseThrow().typename()
+        objectFormType.asPrimitiveReferenceOrElseThrow().typename()
       );
-      return JavaStatements.customTypeStatement(wrapperClass);
-    } else if (objectHandleType.isCustomTypeReference()) {
-      return getDomainOfObjectHandle(objectHandleType.asCustomTypeReferenceOrElseThrow().targetType());
+      return Optional.of(JavaStatements.customTypeStatement(wrapperClass));
+    } else if (objectFormType.isCustomTypeReference()) {
+      return getDomainOfObjectForm(objectFormType.asCustomTypeReferenceOrElseThrow().targetType());
     } else {
       throw NotImplementedExceptions.withCode("yZJg8A");
     }
   }
 
-  public static CustomType getDomainOfObjectHandle(CustomType objectHandleType) {
-    if (isDefaultObjectHandleType(objectHandleType)) {
-      return objectHandleType;
+  public static Optional<CustomType> getDomainOfObjectForm(CustomType objectFormType) {
+    if (isDefaultObjectHandleType(objectFormType)) {
+      return Optional.of(objectFormType);
     }
 
-    Optional<AnnotationInstance> wrapper = objectHandleType.selectAnnotation(Wrapper.class.getCanonicalName());
+    Optional<AnnotationInstance> wrapper = objectFormType.selectAnnotation(Wrapper.class.getCanonicalName());
     if (wrapper.isPresent()) {
-      objectHandleType = wrapper.get()
+      objectFormType = wrapper.get()
           .value().orElseThrow()
           .asClass().orElseThrow()
           .type();
     }
 
-    Optional<AnnotationInstance> objectHandle = objectHandleType.selectAnnotation(
-      ObjectHandle.class.getCanonicalName()
+    Optional<AnnotationInstance> objectHandle = objectFormType.selectAnnotation(
+        ObjectHandle.class.getCanonicalName()
     );
     if (objectHandle.isPresent()) {
-      return objectHandle.get()
+      return Optional.of(objectHandle.get()
           .value().orElseThrow()
           .asClass().orElseThrow()
-          .type();
+          .type());
     }
 
     Optional<Class<?>> domainClass = Classes.get(
-        NameConventionFunctions.getDomainNameOfPureObject(objectHandleType.canonicalName())
+        NameConventionFunctions.getDomainNameOfSimpleObjectForm(objectFormType.canonicalName())
     );
-    if (domainClass.isPresent()) {
-      return CustomTypes.of(domainClass.get());
-    }
+    return domainClass.map(CustomTypes::of);
+  }
 
-    throw UnexpectedExceptions.withMessage("Object handle class {0} must be annotated with annotation {1}",
-        objectHandleType.canonicalName(), ObjectHandle.class.getSimpleName());
+  public static CustomType getDomainOfObjectFormOrElseThrow(CustomType objectFormType) {
+    Optional<CustomType> domainType = getDomainOfObjectForm(objectFormType);
+    if (domainType.isEmpty()) {
+      throw UnexpectedExceptions.withMessage("Object handle class {0} must be annotated with annotation {1}",
+          objectFormType.canonicalName(), ObjectHandle.class.getSimpleName());
+    }
+    return domainType.get();
   }
 
   public static Class<?> getDomainClassOfObjectHandle(Class<?> objectHandleClass) {
@@ -299,7 +323,7 @@ public class ObjectHandleFunctions {
     }
 
     Optional<Class<?>> domainClass = Classes.get(
-        NameConventionFunctions.getDomainNameOfPureObject(objectHandleClass.getCanonicalName())
+        NameConventionFunctions.getDomainNameOfSimpleObjectForm(objectHandleClass.getCanonicalName())
     );
     if (domainClass.isPresent()) {
       return domainClass.get();
@@ -312,9 +336,9 @@ public class ObjectHandleFunctions {
   @SuppressWarnings("unchecked")
   public static <T> T tryDowngrade(Object sourceObjectHandle, Class<T> targetObjectHandleClass) {
     Class<?> sourceObjectHandleClass = sourceObjectHandle.getClass();
-    if (isCustomObjectHandleClass(sourceObjectHandleClass) && isCustomObjectHandleClass(targetObjectHandleClass)) {
-      CustomType sourceObjectHandleDomain = getDomainOfObjectHandle(CustomTypes.of(sourceObjectHandleClass));
-      CustomType targetObjectHandleDomain = getDomainOfObjectHandle(CustomTypes.of(targetObjectHandleClass));
+    if (isCustomObjectFormClass(sourceObjectHandleClass) && isCustomObjectFormClass(targetObjectHandleClass)) {
+      CustomType sourceObjectHandleDomain = getDomainOfObjectFormOrElseThrow(CustomTypes.of(sourceObjectHandleClass));
+      CustomType targetObjectHandleDomain = getDomainOfObjectFormOrElseThrow(CustomTypes.of(targetObjectHandleClass));
       if (sourceObjectHandleDomain.hasParent(targetObjectHandleDomain)) {
         if (isMovableObjectHandle(targetObjectHandleClass)) {
           return (T) tryCreateDowngradeObjectHandle(sourceObjectHandle, sourceObjectHandleDomain, targetObjectHandleDomain);
@@ -327,7 +351,7 @@ public class ObjectHandleFunctions {
   private static Object tryCreateDowngradeObjectHandle(
       Object sourceObjectHandle, CustomType sourceObjectHandleDomain, CustomType targetObjectHandleDomain
   ) {
-    String downgradeObjectHandleCanonicalName = NameConventionFunctions.getMovableDownwardObjectHandleTypename(
+    String downgradeObjectHandleCanonicalName = NameConventionFunctions.getMovableDownwardObjectTypename(
         sourceObjectHandleDomain, targetObjectHandleDomain);
     Optional<Class<?>> downgradeObjectHandleClass = ClassFunctions.getClass(downgradeObjectHandleCanonicalName);
     if (downgradeObjectHandleClass.isPresent()) {
@@ -341,35 +365,26 @@ public class ObjectHandleFunctions {
     return null;
   }
 
-  public static String geUndefinedPureObjectDeclaration(
+  public static String geUndefinedSimpleObjectDeclaration(
       TypeReference domainType, boolean replaceKeyDomain, Function<String, String> simpleNameMapping
   ) {
-    return getObjectHandleDeclaration(domainType, ObjectHandleTypes.UndefinedClearObject, replaceKeyDomain, simpleNameMapping);
+    return getObjectFormDeclaration(domainType, ObjectForms.Simple, MovabilityTypes.Undefined, replaceKeyDomain, simpleNameMapping);
   }
 
-  public static String getObjectHandleDeclaration(
+  public static String getObjectFormDeclaration(
       TypeReference domainType,
-      ObjectHandleType handleType,
+      ObjectForm objectForm,
+      MovabilityType movabilityType,
       boolean replaceKeyDomain,
       Function<String, String> simpleNameMapping
   ) {
-    return getObjectHandleDeclaration(domainType, handleType, ObjectReferenceForms.Default, replaceKeyDomain, simpleNameMapping);
+    return getObjectFormDeclaration(domainType, objectForm, movabilityType, true, replaceKeyDomain, simpleNameMapping);
   }
 
-  public static String getObjectHandleDeclaration(
+  public static String getObjectFormDeclaration(
       TypeReference domainType,
-      ObjectHandleType handleType,
-      ObjectReferenceForm form,
-      boolean replaceKeyDomain,
-      Function<String, String> simpleNameMapping
-  ) {
-    return getObjectHandleDeclaration(domainType, handleType, form, true, replaceKeyDomain, simpleNameMapping);
-  }
-
-  public static String getObjectHandleDeclaration(
-      TypeReference domainType,
-      ObjectHandleType handleType,
-      ObjectReferenceForm form,
+      ObjectForm objectForm,
+      MovabilityType movabilityType,
       boolean includeTypeParams,
       boolean replaceKeyDomain,
       Function<String, String> simpleNameMapping
@@ -381,9 +396,7 @@ public class ObjectHandleFunctions {
     } else if (domainType.isCustomTypeReference()) {
       CustomTypeReference customTypeReference = domainType.asCustomTypeReferenceOrElseThrow();
       CustomType targetType = customTypeReference.targetType();
-      if (ObjectReferenceForms.Primitive.is(form)) {
-        return ClassFunctions.primitiveTypenameOfWrapper(targetType.canonicalName());
-      } else if (targetType.canonicalName().equals(Class.class.getCanonicalName())) {
+      if (targetType.canonicalName().equals(Class.class.getCanonicalName())) {
         var sb = new StringBuilder();
         sb.append(Class.class.getSimpleName());
         if (includeTypeParams && !customTypeReference.typeArguments().isEmpty()) {
@@ -400,7 +413,7 @@ public class ObjectHandleFunctions {
         return targetType.simpleName();
       } else {
         var sb = new StringBuilder();
-        String canonicalName = getObjectHandleTypename(targetType, handleType, replaceKeyDomain);
+        String canonicalName = getObjectTypename(targetType, objectForm, movabilityType, replaceKeyDomain);
         String simpleName = simpleNameMapping.apply(canonicalName);
         sb.append(simpleName);
         if (includeTypeParams && !customTypeReference.typeArguments().isEmpty()) {
@@ -408,8 +421,8 @@ public class ObjectHandleFunctions {
           RunnableAction commaAppender = StringActions.skipFirstTimeCommaAppender(sb);
           for (NotPrimitiveReference argType : customTypeReference.typeArguments()) {
             commaAppender.run();
-            sb.append(getObjectHandleDeclaration(
-                argType, ObjectHandleTypes.UndefinedClearObject, ObjectReferenceForms.Default, true, replaceKeyDomain, simpleNameMapping
+            sb.append(getObjectFormDeclaration(
+                argType, ObjectForms.Simple, MovabilityTypes.Undefined, true, replaceKeyDomain, simpleNameMapping
             ));
           }
           sb.append(">");
@@ -419,13 +432,13 @@ public class ObjectHandleFunctions {
     } else if (domainType.isWildcard()) {
       WildcardReference wildcardTypeReference = domainType.asWildcardOrElseThrow();
       if (wildcardTypeReference.extendedBound().isPresent()) {
-        return getObjectHandleDeclaration(wildcardTypeReference.extendedBound().get(), handleType, replaceKeyDomain, simpleNameMapping);
+        return getObjectFormDeclaration(wildcardTypeReference.extendedBound().get(), objectForm, movabilityType, replaceKeyDomain, simpleNameMapping);
       } else {
         return Object.class.getCanonicalName();
       }
     } else if (domainType.isArrayReference()) {
       TypeReference elementType = domainType.asArrayReferenceOrElseThrow().elementType();
-      return getObjectHandleDeclaration(elementType, handleType, replaceKeyDomain, simpleNameMapping) + "[]";
+      return getObjectFormDeclaration(elementType, objectForm, movabilityType, replaceKeyDomain, simpleNameMapping) + "[]";
     } else {
       throw new UnsupportedOperationException("Unsupported type - " + domainType.actualDeclaration());
     }
@@ -433,10 +446,10 @@ public class ObjectHandleFunctions {
 
   public static String getObjectHandleTypeParams(
       CustomType domainType,
-      ObjectHandleType handleType,
-      ObjectReferenceForm form,
+      ObjectForm objectForm,
+      MovabilityType movabilityType,
       Function<String, String> simpleNameMapping,
-      boolean pureHandle,
+      boolean replaceKeyDomain,
       boolean full
   ) {
     if (domainType.typeParameters().isEmpty()) {
@@ -456,7 +469,7 @@ public class ObjectHandleFunctions {
         RunnableAction boundCommaAppender = StringActions.skipFirstTimeCommaAppender(sb);
         for (ReferenceBound bound : namedReference.extendedBounds()) {
           boundCommaAppender.run();
-          sb.append(getObjectHandleDeclaration(bound, handleType, form, true, pureHandle, simpleNameMapping));
+          sb.append(getObjectFormDeclaration(bound, objectForm, movabilityType, true, replaceKeyDomain, simpleNameMapping));
         }
       }
     }
@@ -522,7 +535,7 @@ public class ObjectHandleFunctions {
     }
   }
 
-  private ObjectHandleFunctions() {}
+  private ObjectReferenceFunctions() {}
 
   private final static Set<String> DEFAULT_OBJECT_HANDLE_CLASSES = Set.of(
       boolean.class.getCanonicalName(),

@@ -3,26 +3,26 @@ package tech.intellispaces.jaquarius.annotationprocessor.objecthandle;
 import tech.intellispaces.commons.action.runnable.RunnableAction;
 import tech.intellispaces.commons.action.text.StringActions;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
-import tech.intellispaces.commons.text.StringFunctions;
-import tech.intellispaces.commons.type.ClassFunctions;
-import tech.intellispaces.commons.type.ClassNameFunctions;
-import tech.intellispaces.commons.type.PrimitiveTypes;
 import tech.intellispaces.commons.java.reflection.customtype.CustomType;
 import tech.intellispaces.commons.java.reflection.method.MethodParam;
 import tech.intellispaces.commons.java.reflection.method.MethodStatement;
 import tech.intellispaces.commons.java.reflection.reference.CustomTypeReference;
 import tech.intellispaces.commons.java.reflection.reference.NamedReference;
 import tech.intellispaces.commons.java.reflection.reference.TypeReference;
-import tech.intellispaces.jaquarius.annotationprocessor.domain.AbstractObjectGenerator;
+import tech.intellispaces.commons.text.StringFunctions;
+import tech.intellispaces.commons.type.ClassFunctions;
+import tech.intellispaces.commons.type.ClassNameFunctions;
+import tech.intellispaces.commons.type.PrimitiveTypes;
 import tech.intellispaces.jaquarius.annotationprocessor.AnnotationGeneratorFunctions;
+import tech.intellispaces.jaquarius.annotationprocessor.domain.AbstractObjectGenerator;
 import tech.intellispaces.jaquarius.engine.description.ObjectHandleMethodPurposes;
 import tech.intellispaces.jaquarius.exception.ConfigurationExceptions;
 import tech.intellispaces.jaquarius.guide.GuideFunctions;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
-import tech.intellispaces.jaquarius.object.reference.ObjectHandleFunctions;
-import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
-import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
-import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
+import tech.intellispaces.jaquarius.object.reference.MovabilityTypes;
+import tech.intellispaces.jaquarius.object.reference.ObjectForm;
+import tech.intellispaces.jaquarius.object.reference.ObjectForms;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceFunctions;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
 
@@ -60,7 +60,7 @@ abstract class AbstractObjectWrapperGenerator extends AbstractObjectGenerator {
   }
 
   protected void analyzeDomain() {
-    domainType = ObjectHandleFunctions.getDomainOfObjectHandle(sourceArtifact());
+    domainType = ObjectReferenceFunctions.getDomainOfObjectFormOrElseThrow(sourceArtifact());
     addImport(domainType.canonicalName());
     domainSimpleClassName = simpleNameOf(domainType.canonicalName());
     domainTypeParamsBrief = sourceArtifact().typeParametersBriefDeclaration();
@@ -94,10 +94,10 @@ abstract class AbstractObjectWrapperGenerator extends AbstractObjectGenerator {
 
   protected String getObjectHandleSimpleName() {
     Class<?> handleClass;
-    if (ObjectHandleFunctions.isUnmovableObjectHandle(sourceArtifact())) {
-      handleClass = ObjectHandleFunctions.getObjectHandleClass(ObjectHandleTypes.UnmovableClearObject);
-    } else if (ObjectHandleFunctions.isMovableObjectHandle(sourceArtifact())) {
-      handleClass = ObjectHandleFunctions.getObjectHandleClass(ObjectHandleTypes.MovableClearObject);
+    if (ObjectReferenceFunctions.isUnmovableObjectHandle(sourceArtifact())) {
+      handleClass = ObjectReferenceFunctions.getObjectHandleClass(MovabilityTypes.Unmovable);
+    } else if (ObjectReferenceFunctions.isMovableObjectHandle(sourceArtifact())) {
+      handleClass = ObjectReferenceFunctions.getObjectHandleClass(MovabilityTypes.Movable);
     } else {
       throw UnexpectedExceptions.withMessage("Could not define movable type of the object handle {0}",
           sourceArtifact().canonicalName());
@@ -159,25 +159,25 @@ abstract class AbstractObjectWrapperGenerator extends AbstractObjectGenerator {
     for (MethodStatement method : domainMethods) {
       analyzeRawDomainMethod(method);
       if (hasMethodNormalForm(method)) {
-        if (includeMethodForm(method, ObjectReferenceForms.Default)) {
-          analyzeMethod(method, ObjectReferenceForms.Default, methodOrdinal++);
+        if (includeMethodForm(method, ObjectForms.Simple)) {
+          analyzeMethod(method, ObjectForms.Simple, methodOrdinal++);
         }
       }
-      if (includeMethodForm(method, ObjectReferenceForms.Primitive)) {
-        analyzeMethod(method, ObjectReferenceForms.Primitive, methodOrdinal++);
+      if (includeMethodForm(method, ObjectForms.Primitive)) {
+        analyzeMethod(method, ObjectForms.Primitive, methodOrdinal++);
       }
     }
   }
 
   private void analyzeMethod(
-      MethodStatement method, ObjectReferenceForm targetForm, int methodOrdinal
+      MethodStatement method, ObjectForm targetForm, int methodOrdinal
   ) {
     traverseMethods.add(generateTraverseMethod(method, targetForm, methodOrdinal));
     analyzeGuideMethod(method, targetForm, methodOrdinal);
   }
 
   private void analyzeGuideMethod(
-      MethodStatement domainMethod, ObjectReferenceForm targetForm, int methodOrdinal
+      MethodStatement domainMethod, ObjectForm targetForm, int methodOrdinal
   ) {
     if (domainMethod.isDefault()) {
       return;
@@ -202,7 +202,7 @@ abstract class AbstractObjectWrapperGenerator extends AbstractObjectGenerator {
     for (MethodStatement method : sourceArtifact().declaredMethods()) {
       if (method.isAbstract()) {
         if (AnnotationGeneratorFunctions.isInjectionMethod(method)) {
-          if (!AnnotationGeneratorFunctions.isReturnGuide(method)) {
+          if (!AnnotationGeneratorFunctions.returnTypeIsGuide(method)) {
             throw ConfigurationExceptions.withMessage("Guide injection method '{0}' in class {1} must return guide",
                 method.name(), sourceArtifact().className()
             );
@@ -259,13 +259,13 @@ abstract class AbstractObjectWrapperGenerator extends AbstractObjectGenerator {
   private MethodStatement findGuideMethod(
       MethodStatement domainMethod,
       List<MethodStatement> objectHandleMethods,
-      ObjectReferenceForm targetForm
+      ObjectForm targetForm
   ) {
     for (MethodStatement objectHandleMethod : objectHandleMethods) {
       if (!GuideFunctions.isGuideMethod(objectHandleMethod)) {
         continue;
       }
-      if (getObjectHandleMethodName(domainMethod, targetForm).equals(objectHandleMethod.name()) &&
+      if (getObjectFormMethodName(domainMethod, targetForm).equals(objectHandleMethod.name()) &&
           equalParams(domainMethod.params(), objectHandleMethod.params())
       ) {
         return objectHandleMethod;
@@ -284,8 +284,8 @@ abstract class AbstractObjectWrapperGenerator extends AbstractObjectGenerator {
     boolean paramMatches = true;
     for (int i = 0; i < domainMethodParams.size(); i++) {
       MethodParam domainParam = domainMethodParams.get(i);
-      String domainMethodParamDeclaration = ObjectHandleFunctions.getObjectHandleDeclaration(
-          domainParam.type(), ObjectHandleTypes.UndefinedClearObject, ObjectReferenceForms.Default, true, false, Function.identity()
+      String domainMethodParamDeclaration = ObjectReferenceFunctions.getObjectFormDeclaration(
+          domainParam.type(), ObjectForms.Simple, MovabilityTypes.Undefined, true, false, Function.identity()
       );
 
       MethodParam guideParam = guideMethodParams.get(i);
@@ -303,10 +303,10 @@ abstract class AbstractObjectWrapperGenerator extends AbstractObjectGenerator {
   }
 
   private Map<String, Object> buildTraverseMethodDescriptions(
-      MethodStatement domainMethod, ObjectReferenceForm targetForm, int ordinal
+      MethodStatement domainMethod, ObjectForm targetForm, int ordinal
   ) {
     var map = new HashMap<String, Object>();
-    map.put("name", getObjectHandleMethodName(domainMethod, targetForm));
+    map.put("name", getObjectFormMethodName(domainMethod, targetForm));
 
     List<String> paramClasses = new ArrayList<>();
     for (MethodParam param : domainMethod.params()) {
@@ -325,7 +325,7 @@ abstract class AbstractObjectWrapperGenerator extends AbstractObjectGenerator {
       MethodStatement guidMethod, int ordinal
   ) {
     var map = new HashMap<String, Object>();
-    map.put("name", ObjectHandleFunctions.buildObjectHandleGuideMethodName(guidMethod));
+    map.put("name", ObjectReferenceFunctions.buildObjectHandleGuideMethodName(guidMethod));
 
     List<String> paramClasses = new ArrayList<>();
     for (MethodParam param : guidMethod.params()) {
@@ -387,10 +387,10 @@ abstract class AbstractObjectWrapperGenerator extends AbstractObjectGenerator {
   }
 
   private String buildGuideParamClassName(TypeReference type) {
-    return ObjectHandleFunctions.getObjectHandleDeclaration(
+    return ObjectReferenceFunctions.getObjectFormDeclaration(
         AnnotationGeneratorFunctions.normalizeType(type),
-        ObjectHandleTypes.UndefinedClearObject,
-        ObjectReferenceForms.Default,
+        ObjectForms.Simple,
+        MovabilityTypes.Undefined,
         false,
         true,
         this::addImportAndGetSimpleName
@@ -398,15 +398,15 @@ abstract class AbstractObjectWrapperGenerator extends AbstractObjectGenerator {
   }
 
   protected Map<String, String> generateTraverseMethod(
-      MethodStatement domainMethod, ObjectReferenceForm targetForm, int methodOrdinal
+      MethodStatement domainMethod, ObjectForm targetForm, int methodOrdinal
   ) {
     var sb = new StringBuilder();
     sb.append("@Ordinal(").append(methodOrdinal).append(")\n");
     sb.append("public ");
     appendMethodTypeParameters(sb, domainMethod);
-    appendMethodReturnHandleType(sb, domainMethod, targetForm);
+    appendMethodReturnTypeDeclaration(sb, domainMethod, targetForm);
     sb.append(" ");
-    sb.append(getObjectHandleMethodName(domainMethod, targetForm));
+    sb.append(getObjectFormMethodName(domainMethod, targetForm));
     sb.append("(");
     appendMethodParams(sb, domainMethod);
     sb.append(")");
@@ -422,7 +422,7 @@ abstract class AbstractObjectWrapperGenerator extends AbstractObjectGenerator {
         sb.append(")");
       } else {
         sb.append("(");
-        appendMethodReturnHandleType(sb, domainMethod, targetForm);
+        appendMethodReturnTypeDeclaration(sb, domainMethod, targetForm);
         sb.append(") ");
         appendInvokeMethodAction(sb, domainMethod, targetForm, methodOrdinal);
       }
@@ -437,11 +437,11 @@ abstract class AbstractObjectWrapperGenerator extends AbstractObjectGenerator {
   }
 
   private void appendMethodCastHandleType(
-      StringBuilder sb, MethodStatement method, ObjectReferenceForm targetForm
+      StringBuilder sb, MethodStatement method, ObjectForm targetForm
   ) {
-    if (ObjectReferenceForms.Default.is(targetForm)) {
+    if (ObjectForms.Simple.is(targetForm)) {
       appendObjectFormMethodReturnType(sb, method);
-    } else if (ObjectReferenceForms.Primitive.is(targetForm)) {
+    } else if (ObjectForms.Primitive.is(targetForm)) {
       CustomType returnType = method.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow().targetType();
       sb.append(ClassFunctions.primitiveTypenameOfWrapper(returnType.canonicalName()));
     } else {
@@ -452,11 +452,11 @@ abstract class AbstractObjectWrapperGenerator extends AbstractObjectGenerator {
   private void appendInvokeMethodAction(
       StringBuilder sb,
       MethodStatement domainMethod,
-      ObjectReferenceForm targetForm,
+      ObjectForm targetForm,
       int methodOrdinal
   ) {
     var additionalCloseBracket = false;
-    if (ObjectReferenceForms.Primitive.is(targetForm) && isPrimitiveWrapper(domainMethod.returnType().orElseThrow())) {
+    if (ObjectForms.PrimitiveWrapper.is(targetForm) && isPrimitiveWrapper(domainMethod.returnType().orElseThrow())) {
       CustomType returnType = domainMethod.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow().targetType();
       String typename = ClassFunctions.primitiveTypenameOfWrapper(returnType.canonicalName());
       if (PrimitiveTypes.Byte.typename().equals(typename)) {
@@ -500,8 +500,8 @@ abstract class AbstractObjectWrapperGenerator extends AbstractObjectGenerator {
     }
   }
 
-  private String buildExecuteMethod(MethodStatement domainMethod, ObjectReferenceForm targetForm) {
-    if (ObjectReferenceForms.Primitive.is(targetForm)) {
+  private String buildExecuteMethod(MethodStatement domainMethod, ObjectForm targetForm) {
+    if (ObjectForms.Primitive.is(targetForm)) {
       if (isPrimitiveWrapper(domainMethod.returnType().orElseThrow())) {
         CustomType returnType = domainMethod.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow().targetType();
         String typename = ClassFunctions.primitiveTypenameOfWrapper(returnType.canonicalName());
@@ -522,7 +522,7 @@ abstract class AbstractObjectWrapperGenerator extends AbstractObjectGenerator {
       } else {
         return "execute";
       }
-    } else if (ObjectReferenceForms.Default.is(targetForm)) {
+    } else if (ObjectForms.Simple.is(targetForm)) {
         return "execute";
     } else {
       throw UnexpectedExceptions.withMessage("Unsupported guide form - {0}", targetForm);
@@ -539,7 +539,7 @@ abstract class AbstractObjectWrapperGenerator extends AbstractObjectGenerator {
   private Map<String, String> buildConversionMethod(CustomTypeReference superDomain) {
     var sb = new StringBuilder();
     sb.append("private ");
-    sb.append(buildObjectHandleDeclaration(superDomain, getObjectHandleType(), true));
+    sb.append(buildObjectFormDeclaration(superDomain, getObjectForm(), getMovabilityType(), true));
     sb.append(" $");
     sb.append(NameConventionFunctions.getConversionMethodName(superDomain));
     sb.append("Guide() {\n");
@@ -550,7 +550,7 @@ abstract class AbstractObjectWrapperGenerator extends AbstractObjectGenerator {
       Optional<CustomTypeReference> aliasBaseDomain = DomainFunctions.getAliasBaseDomain(domainType);
       CustomType actualDomain = aliasBaseDomain.isPresent() ? aliasBaseDomain.get().targetType() : domainType;
       sb.append(addImportAndGetSimpleName(
-          NameConventionFunctions.getDownwardObjectHandleTypename(actualDomain, superDomain.targetType(), getObjectHandleType())
+          NameConventionFunctions.getDownwardObjectHandleTypename(actualDomain, superDomain.targetType(), getMovabilityType())
       ));
       sb.append("(this);");
     } else {

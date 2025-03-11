@@ -7,18 +7,18 @@ import tech.intellispaces.commons.action.runnable.RunnableAction;
 import tech.intellispaces.commons.action.text.StringActions;
 import tech.intellispaces.commons.annotation.processor.ArtifactGeneratorContext;
 import tech.intellispaces.commons.exception.NotImplementedExceptions;
-import tech.intellispaces.commons.text.StringFunctions;
-import tech.intellispaces.commons.type.Types;
 import tech.intellispaces.commons.java.reflection.customtype.CustomType;
 import tech.intellispaces.commons.java.reflection.method.MethodParam;
 import tech.intellispaces.commons.java.reflection.method.MethodStatement;
 import tech.intellispaces.commons.java.reflection.reference.TypeReference;
+import tech.intellispaces.commons.text.StringFunctions;
+import tech.intellispaces.commons.type.Types;
 import tech.intellispaces.jaquarius.action.TraverseActions;
 import tech.intellispaces.jaquarius.annotationprocessor.JaquariusArtifactGenerator;
 import tech.intellispaces.jaquarius.guide.GuideFunctions;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
-import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
-import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
+import tech.intellispaces.jaquarius.object.reference.ObjectForm;
+import tech.intellispaces.jaquarius.object.reference.ObjectForms;
 
 import java.util.HashMap;
 import java.util.List;
@@ -52,7 +52,7 @@ public class AutoGuideGenerator extends JaquariusArtifactGenerator {
   protected boolean analyzeSourceArtifact(ArtifactGeneratorContext context) {
     addImports(
         Action.class,
-        ObjectReferenceForms.class
+        ObjectForms.class
     );
 
     analyzeTypeParams();
@@ -138,8 +138,8 @@ public class AutoGuideGenerator extends JaquariusArtifactGenerator {
     sb.append(".class),\n    ");
     sb.append(addImportAndGetSimpleName(GuideFunctions.getChannelType(method).canonicalName()));
     sb.append(".class,\n");
-    ObjectReferenceForm targetForm = GuideFunctions.getGuideTargetForm(method);
-    sb.append("    ObjectReferenceForms.");
+    ObjectForm targetForm = GuideFunctions.getTargetForm(method);
+    sb.append("    ").append(addImportAndGetSimpleName(ObjectForms.class)).append(".");
     sb.append(targetForm.name());
     sb.append("))");
     return sb.toString();

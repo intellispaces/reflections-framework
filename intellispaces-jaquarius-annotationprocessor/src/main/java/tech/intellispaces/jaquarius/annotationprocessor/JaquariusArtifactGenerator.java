@@ -2,20 +2,19 @@ package tech.intellispaces.jaquarius.annotationprocessor;
 
 import tech.intellispaces.commons.annotation.processor.ArtifactGeneratorContext;
 import tech.intellispaces.commons.annotation.processor.TemplatedJavaArtifactGenerator;
-import tech.intellispaces.commons.type.ClassFunctions;
 import tech.intellispaces.commons.java.reflection.customtype.CustomType;
 import tech.intellispaces.commons.java.reflection.customtype.CustomTypes;
 import tech.intellispaces.commons.java.reflection.method.MethodParam;
 import tech.intellispaces.commons.java.reflection.method.MethodSignatureDeclarations;
 import tech.intellispaces.commons.java.reflection.method.MethodStatement;
 import tech.intellispaces.commons.java.reflection.reference.TypeReference;
+import tech.intellispaces.commons.type.ClassFunctions;
 import tech.intellispaces.jaquarius.Jaquarius;
 import tech.intellispaces.jaquarius.annotation.Domain;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
-import tech.intellispaces.jaquarius.object.reference.ObjectHandleFunctions;
-import tech.intellispaces.jaquarius.object.reference.ObjectHandleType;
-import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
-import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
+import tech.intellispaces.jaquarius.object.reference.MovabilityType;
+import tech.intellispaces.jaquarius.object.reference.ObjectForm;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceFunctions;
 import tech.intellispaces.jaquarius.settings.KeyDomainPurposes;
 
 import javax.lang.model.element.TypeElement;
@@ -76,19 +75,11 @@ public abstract class JaquariusArtifactGenerator extends TemplatedJavaArtifactGe
         .get(this::addImport, this::simpleNameOf);
   }
 
-  protected String buildObjectHandleDeclaration(
-      TypeReference domainType, ObjectHandleType handleType, boolean replaceKeyDomain
+  protected String buildObjectFormDeclaration(
+      TypeReference domainType, ObjectForm objectForm, MovabilityType movabilityType, boolean replaceKeyDomain
   ) {
-    return ObjectHandleFunctions.getObjectHandleDeclaration(
-        domainType, handleType, ObjectReferenceForms.Default, replaceKeyDomain, this::addImportAndGetSimpleName
-    );
-  }
-
-  protected String buildHandleDeclarationDefaultForm(
-      TypeReference domainType, ObjectHandleType handleType, boolean replaceKeyDomain,  ObjectReferenceForm handleForm
-  ) {
-    return ObjectHandleFunctions.getObjectHandleDeclaration(
-        domainType, handleType, handleForm, replaceKeyDomain, this::addImportAndGetSimpleName
+    return ObjectReferenceFunctions.getObjectFormDeclaration(
+        domainType, objectForm, movabilityType, replaceKeyDomain, this::addImportAndGetSimpleName
     );
   }
 

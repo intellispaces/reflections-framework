@@ -14,9 +14,11 @@ import tech.intellispaces.jaquarius.channel.ChannelFunction0;
 import tech.intellispaces.jaquarius.channel.ChannelFunction1;
 import tech.intellispaces.jaquarius.exception.TraverseException;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
+import tech.intellispaces.jaquarius.object.reference.MovabilityType;
+import tech.intellispaces.jaquarius.object.reference.MovabilityTypes;
 import tech.intellispaces.jaquarius.object.reference.MovableObjectHandle;
-import tech.intellispaces.jaquarius.object.reference.ObjectHandleType;
-import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
+import tech.intellispaces.jaquarius.object.reference.ObjectForm;
+import tech.intellispaces.jaquarius.object.reference.ObjectForms;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
 import tech.intellispaces.jaquarius.traverse.MappingOfMovingTraverse;
@@ -37,8 +39,13 @@ public class MovableObjectHandleGenerator extends AbstractObjectGenerator {
   }
 
   @Override
-  protected ObjectHandleType getObjectHandleType() {
-    return ObjectHandleTypes.MovableHandle;
+  protected ObjectForm getObjectForm() {
+    return ObjectForms.ObjectHandle;
+  }
+
+  @Override
+  protected MovabilityType getMovabilityType() {
+    return MovabilityTypes.Movable;
   }
 
   @Override
@@ -67,7 +74,7 @@ public class MovableObjectHandleGenerator extends AbstractObjectGenerator {
 
     analyzeDomain();
     analyzeAlias();
-    analyzeObjectHandleMethods(sourceArtifact(), context);
+    analyzeObjectFormMethods(sourceArtifact(), context);
     analyzeConversionMethods(sourceArtifact());
 
     addVariable("handleTypeParamsFull", typeParamsFull);
@@ -96,9 +103,9 @@ public class MovableObjectHandleGenerator extends AbstractObjectGenerator {
       CustomTypeReference nearEquivalentDomain = equivalentDomains.get(0);
       CustomTypeReference mainEquivalentDomain = equivalentDomains.get(equivalentDomains.size() - 1);
 
-      baseObjectHandle = buildObjectHandleDeclaration(nearEquivalentDomain, ObjectHandleTypes.MovableHandle, true);
+      baseObjectHandle = buildObjectFormDeclaration(nearEquivalentDomain, ObjectForms.ObjectHandle, MovabilityTypes.Movable, true);
 
-      primaryObjectHandle = buildObjectHandleDeclaration(mainEquivalentDomain, ObjectHandleTypes.UndefinedHandle, true);
+      primaryObjectHandle = buildObjectFormDeclaration(mainEquivalentDomain, ObjectForms.ObjectHandle, MovabilityTypes.Undefined, true);
 
       primaryDomainSimpleName = addImportAndGetSimpleName(mainEquivalentDomain.targetType().canonicalName());
       primaryDomainTypeArguments = nearEquivalentDomain.typeArgumentsDeclaration(this::addImportAndGetSimpleName);
@@ -106,8 +113,8 @@ public class MovableObjectHandleGenerator extends AbstractObjectGenerator {
   }
 
   @Override
-  protected Stream<MethodStatement> getObjectHandleMethods(CustomType customType, ArtifactGeneratorContext context) {
-    return super.getObjectHandleMethods(customType, context)
+  protected Stream<MethodStatement> getObjectFormMethods(CustomType customType, ArtifactGeneratorContext context) {
+    return super.getObjectFormMethods(customType, context)
         .filter(m -> ChannelFunctions.getTraverseTypes(m).stream().anyMatch(TraverseType::isMovingBased));
   }
 
@@ -118,11 +125,11 @@ public class MovableObjectHandleGenerator extends AbstractObjectGenerator {
         ChannelFunctions.getTraverseTypes(method).stream().anyMatch(TraverseType::isMoving)
             || method.hasAnnotation(Movable.class)
     ) {
-      sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.MovableHandle, true));
+      sb.append(buildObjectFormDeclaration(domainReturnType, ObjectForms.ObjectHandle, MovabilityTypes.Movable, true));
     } else if (method.hasAnnotation(Unmovable.class)) {
-      sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.UnmovableHandle, true));
+      sb.append(buildObjectFormDeclaration(domainReturnType, ObjectForms.ObjectHandle, MovabilityTypes.Unmovable, true));
     } else {
-      sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.UndefinedHandle, true));
+      sb.append(buildObjectFormDeclaration(domainReturnType, ObjectForms.ObjectHandle, MovabilityTypes.Undefined, true));
     }
   }
 }

@@ -15,7 +15,7 @@ import tech.intellispaces.jaquarius.annotation.Shutdown;
 import tech.intellispaces.jaquarius.annotation.Startup;
 import tech.intellispaces.jaquarius.exception.JaquariusExceptions;
 import tech.intellispaces.jaquarius.guide.GuideFunctions;
-import tech.intellispaces.jaquarius.object.reference.ObjectHandleFunctions;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceFunctions;
 import tech.intellispaces.jaquarius.system.ModuleFunctions;
 
 import java.util.List;
@@ -121,7 +121,7 @@ public class ModuleValidator implements ArtifactValidator {
       throw JaquariusExceptions.withMessage("Method of the projection '{0}' in unit {1} should " +
               "return value", method.name(), method.owner().canonicalName());
     }
-    if (!ObjectHandleFunctions.isObjectType(returnType.get())) {
+    if (!ObjectReferenceFunctions.isObjectFormType(returnType.get())) {
       throw JaquariusExceptions.withMessage("Method of the projection '{0}' in unit {1} should " +
               "return object handle class", method.name(), method.owner().canonicalName());
     }
@@ -142,7 +142,7 @@ public class ModuleValidator implements ArtifactValidator {
       throw JaquariusExceptions.withMessage("Abstract method '{0}' in unit {1} should have no parameters",
           method.name(), method.owner().canonicalName());
     }
-    if (!ObjectHandleFunctions.isObjectType(returnType.get()) && !GuideFunctions.isGuideType(returnType.get())) {
+    if (!ObjectReferenceFunctions.isObjectFormType(returnType.get()) && !GuideFunctions.isGuideType(returnType.get())) {
       throw JaquariusExceptions.withMessage("Injection '{0}' in unit {1} should return " +
               "object handle or guide class", method.name(), method.owner().canonicalName());
     }
@@ -165,7 +165,7 @@ public class ModuleValidator implements ArtifactValidator {
   private void checkMethodParams(MethodStatement method) {
     for (MethodParam param : method.params()) {
       TypeReference paramType = param.type();
-      if (!ObjectHandleFunctions.isObjectType(paramType)) {
+      if (!ObjectReferenceFunctions.isObjectFormType(paramType)) {
         throw JaquariusExceptions.withMessage("Parameter '{0}' of method '{1}' in unit {2} should be " +
             "object handle class", param.name(), method.name(), method.owner().canonicalName());
       }

@@ -3,7 +3,7 @@ package tech.intellispaces.jaquarius.engine.impl;
 import tech.intellispaces.jaquarius.guide.Guide;
 import tech.intellispaces.jaquarius.guide.GuideFunctions;
 import tech.intellispaces.jaquarius.guide.GuideKind;
-import tech.intellispaces.jaquarius.object.reference.ObjectHandleFunctions;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceFunctions;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,7 +15,7 @@ class ObjectGuideRegistry {
   private final Map<Class<?>, HandleDescription> handleDescriptions = new WeakHashMap<>();
 
   public List<Guide<?, ?>> getGuides(GuideKind kind, Class<?> objectHandleClass, String cid) {
-    if (!ObjectHandleFunctions.isCustomObjectHandleClass(objectHandleClass) || objectHandleClass.isInterface()) {
+    if (!ObjectReferenceFunctions.isCustomObjectFormClass(objectHandleClass) || objectHandleClass.isInterface()) {
       return List.of();
     }
     HandleDescription description = handleDescriptions.computeIfAbsent(
@@ -25,7 +25,7 @@ class ObjectGuideRegistry {
 
   private HandleDescription createHandleDescription(Class<?> objectHandleClass) {
     HandleDescription handleDescription = new HandleDescription(objectHandleClass);
-    Class<?> actualObjectHandleClass = ObjectHandleFunctions.getObjectHandleClass(objectHandleClass);
+    Class<?> actualObjectHandleClass = ObjectReferenceFunctions.getObjectHandleClass(objectHandleClass);
     if (actualObjectHandleClass == null) {
       return handleDescription;
     }

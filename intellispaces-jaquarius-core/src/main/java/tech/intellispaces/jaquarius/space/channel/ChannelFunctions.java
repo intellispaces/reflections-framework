@@ -2,7 +2,6 @@ package tech.intellispaces.jaquarius.space.channel;
 
 import tech.intellispaces.commons.exception.NotImplementedExceptions;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
-import tech.intellispaces.commons.text.StringFunctions;
 import tech.intellispaces.commons.java.reflection.customtype.CustomType;
 import tech.intellispaces.commons.java.reflection.instance.AnnotationInstance;
 import tech.intellispaces.commons.java.reflection.instance.ClassInstance;
@@ -18,6 +17,7 @@ import tech.intellispaces.commons.java.reflection.reference.TypeReferenceFunctio
 import tech.intellispaces.commons.proxy.tracker.Tracker;
 import tech.intellispaces.commons.proxy.tracker.TrackerFunctions;
 import tech.intellispaces.commons.proxy.tracker.Trackers;
+import tech.intellispaces.commons.text.StringFunctions;
 import tech.intellispaces.jaquarius.annotation.Channel;
 import tech.intellispaces.jaquarius.annotation.Guide;
 import tech.intellispaces.jaquarius.annotation.Mapper;
@@ -33,7 +33,7 @@ import tech.intellispaces.jaquarius.channel.ChannelFunction1;
 import tech.intellispaces.jaquarius.exception.ConfigurationExceptions;
 import tech.intellispaces.jaquarius.id.RepetableUuidIdentifierGenerator;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
-import tech.intellispaces.jaquarius.object.reference.ObjectHandleFunctions;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceFunctions;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
 import tech.intellispaces.jaquarius.traverse.TraverseType;
 
@@ -263,7 +263,7 @@ public interface ChannelFunctions {
 
   static Channel findObjectHandleMethodChannelAnnotation(MethodStatement objectHandleMethod) {
     CustomType objectHandleClass = objectHandleMethod.owner();
-    CustomType domainClass = ObjectHandleFunctions.getDomainOfObjectHandle(objectHandleClass);
+    CustomType domainClass = ObjectReferenceFunctions.getDomainOfObjectFormOrElseThrow(objectHandleClass);
     Channel channel = findObjectHandleMethodChannelAnnotation(objectHandleMethod, domainClass);
     if (channel == null) {
       throw UnexpectedExceptions.withMessage("Failed to find related channel annotation " +
@@ -301,7 +301,7 @@ public interface ChannelFunctions {
       for (int i = 0; i < domainMethod.params().size(); ++i) {
         TypeReference domainParamType1 = domainMethod.params().get(i).type();
         TypeReference objectHandleParamType = objectHandleMethod.params().get(i).type();
-        CustomType domainParamType2 = ObjectHandleFunctions.getDomainOfObjectHandle(
+        CustomType domainParamType2 = ObjectReferenceFunctions.getDomainOfObjectFormOrElseThrow(
             objectHandleParamType.asCustomTypeReferenceOrElseThrow().targetType()
         );
         if (!TypeReferenceFunctions.isEqualTypes(domainParamType1, CustomTypeReferences.get(domainParamType2))) {

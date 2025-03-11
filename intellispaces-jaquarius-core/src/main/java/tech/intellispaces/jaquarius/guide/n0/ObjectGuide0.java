@@ -6,7 +6,7 @@ import tech.intellispaces.commons.java.reflection.method.MethodStatement;
 import tech.intellispaces.jaquarius.exception.TraverseException;
 import tech.intellispaces.jaquarius.exception.TraverseExceptions;
 import tech.intellispaces.jaquarius.guide.GuideLogger;
-import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
+import tech.intellispaces.jaquarius.object.reference.ObjectForm;
 import tech.intellispaces.jaquarius.system.ObjectHandleWrapper;
 
 import java.util.stream.Collectors;
@@ -14,14 +14,14 @@ import java.util.stream.Collectors;
 abstract class ObjectGuide0<S extends ObjectHandleWrapper, R> implements Guide0<S, R> {
   private final Class<S> objectHandleClass;
   private final String cid;
-  private final ObjectReferenceForm targetForm;
+  private final ObjectForm targetForm;
   private final MethodStatement guideMethod;
   private final int traverseOrdinal;
 
   ObjectGuide0(
     String cid,
     Class<S> objectHandleClass,
-    ObjectReferenceForm targetForm,
+    ObjectForm targetForm,
     MethodStatement guideMethod,
     int traverseOrdinal
   ) {
@@ -41,7 +41,7 @@ abstract class ObjectGuide0<S extends ObjectHandleWrapper, R> implements Guide0<
   }
 
   @Override
-  public ObjectReferenceForm targetForm() {
+  public ObjectForm targetForm() {
     return targetForm;
   }
 

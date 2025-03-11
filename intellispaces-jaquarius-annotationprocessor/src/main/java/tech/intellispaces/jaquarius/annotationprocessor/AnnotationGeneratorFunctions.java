@@ -4,10 +4,6 @@ import tech.intellispaces.commons.action.runnable.RunnableAction;
 import tech.intellispaces.commons.action.text.StringActions;
 import tech.intellispaces.commons.annotation.processor.TemplatedJavaArtifactGenerator;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
-import tech.intellispaces.commons.object.ObjectFunctions;
-import tech.intellispaces.commons.type.ClassFunctions;
-import tech.intellispaces.commons.type.PrimitiveType;
-import tech.intellispaces.commons.type.PrimitiveTypes;
 import tech.intellispaces.commons.java.reflection.customtype.CustomType;
 import tech.intellispaces.commons.java.reflection.method.MethodParam;
 import tech.intellispaces.commons.java.reflection.method.MethodStatement;
@@ -15,13 +11,17 @@ import tech.intellispaces.commons.java.reflection.reference.NamedReference;
 import tech.intellispaces.commons.java.reflection.reference.PrimitiveReference;
 import tech.intellispaces.commons.java.reflection.reference.PrimitiveReferences;
 import tech.intellispaces.commons.java.reflection.reference.TypeReference;
+import tech.intellispaces.commons.object.ObjectFunctions;
+import tech.intellispaces.commons.type.ClassFunctions;
+import tech.intellispaces.commons.type.PrimitiveType;
+import tech.intellispaces.commons.type.PrimitiveTypes;
 import tech.intellispaces.jaquarius.annotation.AutoGuide;
 import tech.intellispaces.jaquarius.annotation.Inject;
 import tech.intellispaces.jaquarius.annotation.Projection;
 import tech.intellispaces.jaquarius.annotation.Shutdown;
 import tech.intellispaces.jaquarius.annotation.Startup;
 import tech.intellispaces.jaquarius.guide.GuideFunctions;
-import tech.intellispaces.jaquarius.object.reference.ObjectHandleFunctions;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceFunctions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,11 +53,7 @@ public interface AnnotationGeneratorFunctions {
     return method.hasAnnotation(Projection.class);
   }
 
-  static boolean isReturnObjectHandle(MethodStatement method) {
-    return ObjectHandleFunctions.isObjectHandleType(method.returnType().orElseThrow());
-  }
-
-  static boolean isReturnGuide(MethodStatement method) {
+  static boolean returnTypeIsGuide(MethodStatement method) {
     return GuideFunctions.isGuideType(method.returnType().orElseThrow());
   }
 
@@ -180,7 +176,7 @@ public interface AnnotationGeneratorFunctions {
     String returnType = buildGuideTypeDeclaration(guideMethod.returnType().orElseThrow(), generator);
     sb.append(returnType);
     sb.append(" ");
-    sb.append(ObjectHandleFunctions.buildObjectHandleGuideMethodName(guideMethod));
+    sb.append(ObjectReferenceFunctions.buildObjectHandleGuideMethodName(guideMethod));
     sb.append("(");
     commaAppender = StringActions.skipFirstTimeCommaAppender(sb);
     for (MethodParam param : rearrangementParams(guideMethod.params())) {

@@ -5,22 +5,24 @@ import tech.intellispaces.commons.action.text.StringActions;
 import tech.intellispaces.commons.annotation.processor.ArtifactGeneratorContext;
 import tech.intellispaces.commons.exception.NotImplementedExceptions;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
-import tech.intellispaces.commons.type.Type;
-import tech.intellispaces.commons.type.Types;
 import tech.intellispaces.commons.java.reflection.customtype.CustomType;
 import tech.intellispaces.commons.java.reflection.method.MethodStatement;
 import tech.intellispaces.commons.java.reflection.reference.CustomTypeReference;
 import tech.intellispaces.commons.java.reflection.reference.NamedReference;
 import tech.intellispaces.commons.java.reflection.reference.TypeReference;
+import tech.intellispaces.commons.type.Type;
+import tech.intellispaces.commons.type.Types;
 import tech.intellispaces.jaquarius.annotation.Name;
 import tech.intellispaces.jaquarius.annotation.ObjectHandle;
 import tech.intellispaces.jaquarius.annotationprocessor.domain.AbstractObjectGenerator;
 import tech.intellispaces.jaquarius.channel.Channel1;
 import tech.intellispaces.jaquarius.exception.TraverseException;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
+import tech.intellispaces.jaquarius.object.reference.MovabilityType;
+import tech.intellispaces.jaquarius.object.reference.MovabilityTypes;
 import tech.intellispaces.jaquarius.object.reference.MovableObjectHandle;
-import tech.intellispaces.jaquarius.object.reference.ObjectHandleType;
-import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
+import tech.intellispaces.jaquarius.object.reference.ObjectForm;
+import tech.intellispaces.jaquarius.object.reference.ObjectForms;
 import tech.intellispaces.jaquarius.object.reference.UnmovableObjectHandle;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
 import tech.intellispaces.jaquarius.system.Modules;
@@ -59,8 +61,13 @@ public class UnmovableDatasetGenerator extends AbstractObjectGenerator {
   }
 
   @Override
-  protected ObjectHandleType getObjectHandleType() {
-    return ObjectHandleTypes.UnmovableClearObject;
+  protected ObjectForm getObjectForm() {
+    return ObjectForms.Simple;
+  }
+
+  @Override
+  protected MovabilityType getMovabilityType() {
+    return MovabilityTypes.Unmovable;
   }
 
   @Override
@@ -110,7 +117,7 @@ public class UnmovableDatasetGenerator extends AbstractObjectGenerator {
   private void analyzeProjections() {
     for (MethodStatement method : sourceArtifact().actualMethods()) {
       TypeReference type = method.returnType().orElseThrow();
-      String handleType = buildObjectHandleDeclaration(type, ObjectHandleTypes.UnmovableClearObject, true);
+      String handleType = buildObjectFormDeclaration(type, ObjectForms.Simple, MovabilityTypes.Unmovable, true);
 
       Map<String, String> properties = new HashMap<>();
       properties.put("type", handleType);

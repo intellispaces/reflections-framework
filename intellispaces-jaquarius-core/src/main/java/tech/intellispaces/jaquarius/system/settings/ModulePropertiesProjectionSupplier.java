@@ -1,13 +1,13 @@
 package tech.intellispaces.jaquarius.system.settings;
 
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
-import tech.intellispaces.commons.type.Types;
 import tech.intellispaces.commons.java.reflection.method.MethodStatement;
+import tech.intellispaces.commons.type.Types;
 import tech.intellispaces.jaquarius.Jaquarius;
 import tech.intellispaces.jaquarius.annotation.Properties;
 import tech.intellispaces.jaquarius.dataset.DatasetFunctions;
 import tech.intellispaces.jaquarius.exception.ConfigurationExceptions;
-import tech.intellispaces.jaquarius.object.reference.ObjectHandleFunctions;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceFunctions;
 import tech.intellispaces.jaquarius.settings.KeyChannel;
 import tech.intellispaces.jaquarius.settings.KeyChannelPurposes;
 import tech.intellispaces.jaquarius.system.Module;
@@ -33,19 +33,19 @@ public class ModulePropertiesProjectionSupplier extends InjectedMethodProjection
     if (settingsValue.getClass() == expectedReturnClass) {
       return settingsValue;
     }
-    if (ObjectHandleFunctions.propertiesHandleClass().getCanonicalName().equals(expectedReturnClass.getCanonicalName())) {
-      if (!ObjectHandleFunctions.propertiesHandleClass().isAssignableFrom(settingsValue.getClass())) {
+    if (ObjectReferenceFunctions.propertiesHandleClass().getCanonicalName().equals(expectedReturnClass.getCanonicalName())) {
+      if (!ObjectReferenceFunctions.propertiesHandleClass().isAssignableFrom(settingsValue.getClass())) {
         throw UnexpectedExceptions.withMessage("Invalid return type of method '{0}' in class {1}",
             injectedMethod.name(), injectedMethod.owner().canonicalName());
       }
       return settingsValue;
     }
-    if (ObjectHandleFunctions.isCustomObjectHandleClass(expectedReturnClass)) {
+    if (ObjectReferenceFunctions.isObjectFormClass(expectedReturnClass)) {
       if (DatasetFunctions.isDatasetObjectHandle(expectedReturnClass)) {
         return traverseToData(settingsValue, expectedReturnClass, module);
       }
     }
-    throw UnexpectedExceptions.withMessage("Invalid return type of method '{0}' in class {1}",
+    throw UnexpectedExceptions.withMessage("Invalid return type of method '{0}' in class {1}. Expected any object form",
         injectedMethod.name(), injectedMethod.owner().canonicalName());
   }
 

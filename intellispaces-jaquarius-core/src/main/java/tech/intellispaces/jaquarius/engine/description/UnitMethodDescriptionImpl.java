@@ -2,7 +2,7 @@ package tech.intellispaces.jaquarius.engine.description;
 
 import tech.intellispaces.commons.action.Action;
 import tech.intellispaces.jaquarius.guide.GuideKind;
-import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
+import tech.intellispaces.jaquarius.object.reference.ObjectForm;
 import tech.intellispaces.jaquarius.system.InjectionKind;
 import tech.intellispaces.jaquarius.system.ProjectionReference;
 
@@ -25,7 +25,7 @@ class UnitMethodDescriptionImpl implements UnitMethodDescription {
   private final int guideOrdinal;
   private final GuideKind guideKind;
   private final String guideCid;
-  private final ObjectReferenceForm guideTargetForm;
+  private final ObjectForm guideTargetForm;
 
   UnitMethodDescriptionImpl(
       String name,
@@ -44,7 +44,7 @@ class UnitMethodDescriptionImpl implements UnitMethodDescription {
       int guideOrdinal,
       GuideKind guideKind,
       String guideCid,
-      ObjectReferenceForm guideTargetForm
+      ObjectForm guideTargetForm
   ) {
     this.name = name;
     this.paramClasses = paramClasses;
@@ -149,7 +149,7 @@ class UnitMethodDescriptionImpl implements UnitMethodDescription {
   }
 
   @Override
-  public ObjectReferenceForm guideTargetForm() {
+  public ObjectForm guideTargetForm() {
     return guideTargetForm;
   }
 }

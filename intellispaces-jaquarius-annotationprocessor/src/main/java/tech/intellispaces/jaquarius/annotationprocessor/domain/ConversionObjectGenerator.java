@@ -4,7 +4,6 @@ import tech.intellispaces.commons.action.runnable.RunnableAction;
 import tech.intellispaces.commons.action.text.StringActions;
 import tech.intellispaces.commons.annotation.processor.ArtifactGeneratorContext;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
-import tech.intellispaces.commons.text.StringFunctions;
 import tech.intellispaces.commons.java.reflection.common.LanguageFunctions;
 import tech.intellispaces.commons.java.reflection.customtype.CustomType;
 import tech.intellispaces.commons.java.reflection.method.MethodParam;
@@ -14,14 +13,15 @@ import tech.intellispaces.commons.java.reflection.reference.CustomTypeReferences
 import tech.intellispaces.commons.java.reflection.reference.NotPrimitiveReference;
 import tech.intellispaces.commons.java.reflection.reference.TypeReference;
 import tech.intellispaces.commons.java.reflection.reference.TypeReferenceFunctions;
+import tech.intellispaces.commons.text.StringFunctions;
 import tech.intellispaces.jaquarius.annotation.Channel;
 import tech.intellispaces.jaquarius.annotation.Movable;
 import tech.intellispaces.jaquarius.annotation.Unmovable;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
-import tech.intellispaces.jaquarius.object.reference.ObjectHandleFunctions;
-import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
-import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
-import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
+import tech.intellispaces.jaquarius.object.reference.MovabilityTypes;
+import tech.intellispaces.jaquarius.object.reference.ObjectForm;
+import tech.intellispaces.jaquarius.object.reference.ObjectForms;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceFunctions;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
 import tech.intellispaces.jaquarius.traverse.TraverseType;
@@ -53,8 +53,8 @@ abstract class ConversionObjectGenerator extends AbstractObjectGenerator {
   protected void analyzeDomain() {
     domainClassSimpleName = addImportAndGetSimpleName(superDomainType.targetType().canonicalName());
     domainTypeParamsBrief = superDomainType.targetType().typeParametersBriefDeclaration();
-    classTypeParams = ObjectHandleFunctions.getObjectHandleTypeParams(
-        sourceArtifact(), ObjectHandleTypes.UndefinedHandle, ObjectReferenceForms.Default, this::addImportAndGetSimpleName, false, true
+    classTypeParams = ObjectReferenceFunctions.getObjectHandleTypeParams(
+        sourceArtifact(), ObjectForms.ObjectHandle, MovabilityTypes.Undefined, this::addImportAndGetSimpleName, false, true
     );
     classTypeParamsBrief = sourceArtifact().typeParametersBriefDeclaration();
     domainTypeArguments = superDomainType.typeArgumentsDeclaration(this::addImportAndGetSimpleName);
@@ -72,7 +72,7 @@ abstract class ConversionObjectGenerator extends AbstractObjectGenerator {
         actualSuperDomainType, superDomainType.typeArguments()
     );
     CustomType effectiveActualSuperDomainType = actualSuperDomainTypeReference.effectiveTargetType();
-    analyzeObjectHandleMethods(effectiveActualSuperDomainType, context);
+    analyzeObjectFormMethods(effectiveActualSuperDomainType, context);
   }
 
   @SuppressWarnings("unchecked,rawtypes")
@@ -94,7 +94,7 @@ abstract class ConversionObjectGenerator extends AbstractObjectGenerator {
 
   @Override
   protected Map<String, String> generateMethod(
-      MethodStatement method, ObjectReferenceForm targetForm, int methodOrdinal
+      MethodStatement method, ObjectForm targetForm, int methodOrdinal
   ) {
     if (method.hasAnnotation(Channel.class)) {
       return generateNormalMethod(method, targetForm, methodOrdinal);
@@ -104,14 +104,14 @@ abstract class ConversionObjectGenerator extends AbstractObjectGenerator {
   }
 
   private Map<String, String> generateNormalMethod(
-      MethodStatement method, ObjectReferenceForm targetForm, int methodOrdinal
+      MethodStatement method, ObjectForm targetForm, int methodOrdinal
   ) {
     var sb = new StringBuilder();
     sb.append("public ");
     appendMethodTypeParameters(sb, method);
-    appendMethodReturnHandleType(sb, method, targetForm);
+    appendMethodReturnTypeDeclaration(sb, method, targetForm);
     sb.append(" ");
-    sb.append(getObjectHandleMethodName(method, targetForm));
+    sb.append(getObjectFormMethodName(method, targetForm));
     sb.append("(");
     appendMethodParams(sb, method);
     sb.append(")");
@@ -128,9 +128,9 @@ abstract class ConversionObjectGenerator extends AbstractObjectGenerator {
 
   @Override
   protected boolean includeMethodForm(
-      MethodStatement method, ObjectReferenceForm targetForm
+      MethodStatement method, ObjectForm targetForm
   ) {
-    if (ObjectReferenceForms.Primitive.is(targetForm)) {
+    if (ObjectForms.Primitive.is(targetForm)) {
       Optional<MethodStatement> actualMethod = superDomainType.targetType().actualMethod(
           method.name(), method.parameterTypes()
       );
@@ -168,7 +168,7 @@ abstract class ConversionObjectGenerator extends AbstractObjectGenerator {
     );
   }
 
-  private void buildReturnStatement(StringBuilder sb, MethodStatement method, ObjectReferenceForm targetForm) {
+  private void buildReturnStatement(StringBuilder sb, MethodStatement method, ObjectForm targetForm) {
     if (NameConventionFunctions.isConversionMethod(method)) {
       buildConversionChainReturnStatement(sb, method, targetForm);
       return;
@@ -190,8 +190,8 @@ abstract class ConversionObjectGenerator extends AbstractObjectGenerator {
         CustomType expectedReturnType = parentReturnTypeRef.asCustomTypeReferenceOrElseThrow().targetType();
         CustomType actualReturnType = childReturnTypeRef.asCustomTypeReferenceOrElseThrow().targetType();
         if (
-            !ObjectHandleFunctions.isDefaultObjectHandleType(actualReturnType)
-                && !ObjectHandleFunctions.isDefaultObjectHandleType(expectedReturnType)
+            !ObjectReferenceFunctions.isDefaultObjectHandleType(actualReturnType)
+                && !ObjectReferenceFunctions.isDefaultObjectHandleType(expectedReturnType)
                 && actualReturnType.hasParent(expectedReturnType)
         ) {
           buildDownwardReturnStatement(sb, method, actualReturnType, expectedReturnType);
@@ -205,7 +205,7 @@ abstract class ConversionObjectGenerator extends AbstractObjectGenerator {
   }
 
   private void buildConversionChainReturnStatement(
-      StringBuilder sb, MethodStatement method, ObjectReferenceForm targetForm
+      StringBuilder sb, MethodStatement method, ObjectForm targetForm
   ) {
     CustomType targetDomain = method.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow().targetType();
 
@@ -215,10 +215,10 @@ abstract class ConversionObjectGenerator extends AbstractObjectGenerator {
     sb.append(";");
   }
 
-  private void buildDirectReturnStatement(StringBuilder sb, MethodStatement method, ObjectReferenceForm targetForm) {
+  private void buildDirectReturnStatement(StringBuilder sb, MethodStatement method, ObjectForm targetForm) {
     sb.append("return ");
     sb.append("this.").append(childFieldName).append(".");
-    sb.append(getObjectHandleMethodName(method, targetForm));
+    sb.append(getObjectFormMethodName(method, targetForm));
     sb.append("(");
     sb.append(method.params().stream()
         .map(MethodParam::name)
@@ -226,13 +226,13 @@ abstract class ConversionObjectGenerator extends AbstractObjectGenerator {
     sb.append(");");
   }
 
-  private void buildCastReturnStatement(StringBuilder sb, MethodStatement method, ObjectReferenceForm targetForm) {
+  private void buildCastReturnStatement(StringBuilder sb, MethodStatement method, ObjectForm targetForm) {
     sb.append("return ");
     sb.append("(");
     appendObjectFormMethodReturnType(sb, method);
     sb.append(") ");
     sb.append("this.").append(childFieldName).append(".");
-    sb.append(getObjectHandleMethodName(method, targetForm));
+    sb.append(getObjectFormMethodName(method, targetForm));
     sb.append("(");
     sb.append(method.params().stream()
         .map(MethodParam::name)
@@ -270,17 +270,17 @@ abstract class ConversionObjectGenerator extends AbstractObjectGenerator {
   protected void appendObjectFormMethodReturnType(StringBuilder sb, MethodStatement method) {
     TypeReference domainReturnType = method.returnType().orElseThrow();
     if (NameConventionFunctions.isConversionMethod(method)) {
-      sb.append(buildObjectHandleDeclaration(domainReturnType, getObjectHandleType(), true));
+      sb.append(buildObjectFormDeclaration(domainReturnType, getObjectForm(), getMovabilityType(), true));
     } else {
       if (
           ChannelFunctions.getTraverseTypes(method).stream().anyMatch(TraverseType::isMoving)
               || method.hasAnnotation(Movable.class)
       ) {
-        sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.MovableClearObject, true));
+        sb.append(buildObjectFormDeclaration(domainReturnType, ObjectForms.Simple, MovabilityTypes.Movable, true));
       } else if (method.hasAnnotation(Unmovable.class)) {
-        sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.UnmovableClearObject, true));
+        sb.append(buildObjectFormDeclaration(domainReturnType, ObjectForms.Simple, MovabilityTypes.Unmovable, true));
       } else {
-        sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.UndefinedClearObject, true));
+        sb.append(buildObjectFormDeclaration(domainReturnType, ObjectForms.Simple, MovabilityTypes.Undefined, true));
       }
     }
   }

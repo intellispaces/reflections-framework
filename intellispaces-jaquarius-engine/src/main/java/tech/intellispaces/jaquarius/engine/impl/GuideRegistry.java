@@ -3,7 +3,7 @@ package tech.intellispaces.jaquarius.engine.impl;
 import tech.intellispaces.jaquarius.exception.ConfigurationExceptions;
 import tech.intellispaces.jaquarius.guide.Guide;
 import tech.intellispaces.jaquarius.guide.GuideKind;
-import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
+import tech.intellispaces.jaquarius.object.reference.ObjectForm;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,7 +45,7 @@ class GuideRegistry {
   }
 
   public List<Guide<?, ?>> findGuides(
-      GuideKind kind, Class<?> objectHandleClass, String cid, ObjectReferenceForm targetForm
+      GuideKind kind, Class<?> objectHandleClass, String cid, ObjectForm targetForm
   ) {
     var guides = new ArrayList<Guide<?, ?>>();
 

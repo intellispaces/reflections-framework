@@ -2,11 +2,11 @@ package tech.intellispaces.jaquarius.annotationprocessor.objecthandle;
 
 import tech.intellispaces.commons.annotation.processor.ArtifactGeneratorContext;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
+import tech.intellispaces.commons.java.reflection.customtype.CustomType;
+import tech.intellispaces.commons.java.reflection.method.MethodStatement;
 import tech.intellispaces.commons.type.PrimitiveFunctions;
 import tech.intellispaces.commons.type.Type;
 import tech.intellispaces.commons.type.Types;
-import tech.intellispaces.commons.java.reflection.customtype.CustomType;
-import tech.intellispaces.commons.java.reflection.method.MethodStatement;
 import tech.intellispaces.jaquarius.annotation.Ordinal;
 import tech.intellispaces.jaquarius.annotation.Wrapper;
 import tech.intellispaces.jaquarius.channel.Channel1;
@@ -17,10 +17,11 @@ import tech.intellispaces.jaquarius.engine.ObjectHandleBroker;
 import tech.intellispaces.jaquarius.engine.description.ObjectHandleMethodPurposes;
 import tech.intellispaces.jaquarius.engine.description.ObjectHandleTypeDescription;
 import tech.intellispaces.jaquarius.exception.TraverseException;
+import tech.intellispaces.jaquarius.object.reference.MovabilityType;
+import tech.intellispaces.jaquarius.object.reference.MovabilityTypes;
 import tech.intellispaces.jaquarius.object.reference.MovableObjectHandle;
-import tech.intellispaces.jaquarius.object.reference.ObjectHandleType;
-import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
-import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
+import tech.intellispaces.jaquarius.object.reference.ObjectForm;
+import tech.intellispaces.jaquarius.object.reference.ObjectForms;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.system.Modules;
 import tech.intellispaces.jaquarius.system.ObjectHandleWrapper;
@@ -51,8 +52,13 @@ public class UnmovableObjectWrapperGenerator extends AbstractObjectWrapperGenera
   }
 
   @Override
-  protected ObjectHandleType getObjectHandleType() {
-    return ObjectHandleTypes.UnmovableClearObject;
+  protected ObjectForm getObjectForm() {
+    return ObjectForms.Simple;
+  }
+
+  @Override
+  protected MovabilityType getMovabilityType() {
+    return MovabilityTypes.Unmovable;
   }
 
   @Override
@@ -111,7 +117,7 @@ public class UnmovableObjectWrapperGenerator extends AbstractObjectWrapperGenera
 
   @Override
   protected Map<String, String> generateMethod(
-      MethodStatement domainMethod, ObjectReferenceForm targetForm, int methodOrdinal
+      MethodStatement domainMethod, ObjectForm targetForm, int methodOrdinal
   ) {
     if (ChannelFunctions.isMovingBasedChannel(domainMethod)) {
       return Map.of();

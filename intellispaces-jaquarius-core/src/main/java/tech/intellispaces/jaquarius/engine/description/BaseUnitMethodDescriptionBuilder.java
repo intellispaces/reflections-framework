@@ -2,7 +2,7 @@ package tech.intellispaces.jaquarius.engine.description;
 
 import tech.intellispaces.commons.action.Action;
 import tech.intellispaces.jaquarius.guide.GuideKind;
-import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
+import tech.intellispaces.jaquarius.object.reference.ObjectForm;
 import tech.intellispaces.jaquarius.system.InjectionKind;
 import tech.intellispaces.jaquarius.system.ProjectionReference;
 
@@ -25,7 +25,7 @@ class BaseUnitMethodDescriptionBuilder<B extends BaseUnitMethodDescriptionBuilde
   private int guideOrdinal;
   private GuideKind guideKind;
   private String guideCid;
-  private ObjectReferenceForm guideTargetForm;
+  private ObjectForm guideTargetForm;
 
   BaseUnitMethodDescriptionBuilder(String name, List<Class<?>> paramClasses) {
     this.name = name;
@@ -111,7 +111,7 @@ class BaseUnitMethodDescriptionBuilder<B extends BaseUnitMethodDescriptionBuilde
   }
 
   @SuppressWarnings("unchecked")
-  public B guideTargetForm(ObjectReferenceForm guideTargetForm) {
+  public B guideTargetForm(ObjectForm guideTargetForm) {
     this.guideTargetForm = guideTargetForm;
     return (B) this;
   }

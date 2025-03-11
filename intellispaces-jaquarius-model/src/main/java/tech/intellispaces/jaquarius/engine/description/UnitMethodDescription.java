@@ -2,7 +2,7 @@ package tech.intellispaces.jaquarius.engine.description;
 
 import tech.intellispaces.commons.action.Action;
 import tech.intellispaces.jaquarius.guide.GuideKind;
-import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
+import tech.intellispaces.jaquarius.object.reference.ObjectForm;
 import tech.intellispaces.jaquarius.system.InjectionKind;
 import tech.intellispaces.jaquarius.system.ProjectionReference;
 
@@ -57,5 +57,5 @@ public interface UnitMethodDescription {
 
   String guideCid();
 
-  ObjectReferenceForm guideTargetForm();
+  ObjectForm guideTargetForm();
 }

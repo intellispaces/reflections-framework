@@ -5,7 +5,6 @@ import tech.intellispaces.commons.action.text.StringActions;
 import tech.intellispaces.commons.annotation.processor.ArtifactGeneratorContext;
 import tech.intellispaces.commons.exception.NotImplementedExceptions;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
-import tech.intellispaces.commons.type.ClassFunctions;
 import tech.intellispaces.commons.java.reflection.customtype.CustomType;
 import tech.intellispaces.commons.java.reflection.customtype.InterfaceType;
 import tech.intellispaces.commons.java.reflection.customtype.Interfaces;
@@ -18,6 +17,7 @@ import tech.intellispaces.commons.java.reflection.reference.NamedReference;
 import tech.intellispaces.commons.java.reflection.reference.NotPrimitiveReference;
 import tech.intellispaces.commons.java.reflection.reference.ReferenceBound;
 import tech.intellispaces.commons.java.reflection.reference.TypeReference;
+import tech.intellispaces.commons.type.ClassFunctions;
 import tech.intellispaces.jaquarius.Jaquarius;
 import tech.intellispaces.jaquarius.annotation.Movable;
 import tech.intellispaces.jaquarius.annotation.Unmovable;
@@ -27,11 +27,11 @@ import tech.intellispaces.jaquarius.annotationprocessor.ArtifactTypes;
 import tech.intellispaces.jaquarius.annotationprocessor.JaquariusArtifactGenerator;
 import tech.intellispaces.jaquarius.exception.TraverseException;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
-import tech.intellispaces.jaquarius.object.reference.ObjectHandleFunctions;
-import tech.intellispaces.jaquarius.object.reference.ObjectHandleType;
-import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
-import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
-import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
+import tech.intellispaces.jaquarius.object.reference.MovabilityType;
+import tech.intellispaces.jaquarius.object.reference.MovabilityTypes;
+import tech.intellispaces.jaquarius.object.reference.ObjectForm;
+import tech.intellispaces.jaquarius.object.reference.ObjectForms;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceFunctions;
 import tech.intellispaces.jaquarius.settings.KeyDomain;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
@@ -64,7 +64,9 @@ public abstract class AbstractObjectGenerator extends JaquariusArtifactGenerator
     super(domainType);
   }
 
-  abstract protected ObjectHandleType getObjectHandleType();
+  abstract protected ObjectForm getObjectForm();
+
+  abstract protected MovabilityType getMovabilityType();
 
   protected String movableClassSimpleName() {
     return addImportAndGetSimpleName(
@@ -73,11 +75,11 @@ public abstract class AbstractObjectGenerator extends JaquariusArtifactGenerator
   }
 
   protected void analyzeDomain() {
-    typeParamsFull = ObjectHandleFunctions.getObjectHandleTypeParams(
-        sourceArtifact(), ObjectHandleTypes.UndefinedClearObject, ObjectReferenceForms.Default, this::addImportAndGetSimpleName, false, true
+    typeParamsFull = ObjectReferenceFunctions.getObjectHandleTypeParams(
+        sourceArtifact(), ObjectForms.Simple, MovabilityTypes.Undefined, this::addImportAndGetSimpleName, false, true
     );
-    typeParamsBrief = ObjectHandleFunctions.getObjectHandleTypeParams(
-        sourceArtifact(), ObjectHandleTypes.UndefinedClearObject, ObjectReferenceForms.Default, this::addImportAndGetSimpleName, false, false
+    typeParamsBrief = ObjectReferenceFunctions.getObjectHandleTypeParams(
+        sourceArtifact(), ObjectForms.Simple, MovabilityTypes.Undefined, this::addImportAndGetSimpleName, false, false
     );
     domainTypeParamsFull = sourceArtifact().typeParametersFullDeclaration();
     domainTypeParamsBrief = sourceArtifact().typeParametersBriefDeclaration();
@@ -119,7 +121,7 @@ public abstract class AbstractObjectGenerator extends JaquariusArtifactGenerator
 
   private Map<String, String> buildConversionMethod(CustomTypeReference parent) {
     var sb = new StringBuilder();
-    sb.append(buildObjectHandleDeclaration(parent, getObjectHandleType(), true));
+    sb.append(buildObjectFormDeclaration(parent, getObjectForm(), getMovabilityType(), true));
     sb.append(" ");
     sb.append(NameConventionFunctions.getConversionMethodName(parent));
     sb.append("()");
@@ -128,26 +130,31 @@ public abstract class AbstractObjectGenerator extends JaquariusArtifactGenerator
     );
   }
 
-  protected void analyzeObjectHandleMethods(CustomType type, ArtifactGeneratorContext context) {
-    List<MethodStatement> methods = getObjectHandleMethods(type, context).toList();
+  protected void analyzeObjectFormMethods(CustomType type, ArtifactGeneratorContext context) {
+    List<MethodStatement> methods = getObjectFormMethods(type, context).toList();
     int methodOrdinal = 0;
     for (MethodStatement method : methods) {
       MethodStatement effectiveMethod = convertMethodBeforeGenerate(method);
       analyzeRawDomainMethod(effectiveMethod);
       if (hasMethodNormalForm(effectiveMethod)) {
-        if (includeMethodForm(effectiveMethod, ObjectReferenceForms.Default)) {
-          analyzeMethod(effectiveMethod, ObjectReferenceForms.Default, methodOrdinal++);
+        if (includeMethodForm(effectiveMethod, ObjectForms.Simple)) {
+          analyzeMethod(effectiveMethod, ObjectForms.Simple, methodOrdinal++);
         }
       }
-      if (includeMethodForm(effectiveMethod,  ObjectReferenceForms.Primitive)) {
-        analyzeMethod(effectiveMethod, ObjectReferenceForms.Primitive, methodOrdinal++);
+      if (includeMethodForm(effectiveMethod,  ObjectForms.Primitive)) {
+        analyzeMethod(effectiveMethod, ObjectForms.Primitive, methodOrdinal++);
+      }
+      if (includeMethodForm(effectiveMethod,  ObjectForms.PrimitiveWrapper)) {
+        analyzeMethod(effectiveMethod, ObjectForms.PrimitiveWrapper, methodOrdinal++);
       }
     }
   }
 
-  protected boolean includeMethodForm(MethodStatement method, ObjectReferenceForm targetForm) {
-    if (ObjectReferenceForms.Primitive.is(targetForm)) {
+  protected boolean includeMethodForm(MethodStatement method, ObjectForm targetForm) {
+    if (ObjectForms.Primitive.is(targetForm)) {
       return isPrimitiveWrapper(method.returnType().orElseThrow());
+    } else if (ObjectForms.PrimitiveWrapper.is(targetForm)) {
+      return false;
     }
     return true;
   }
@@ -164,15 +171,13 @@ public abstract class AbstractObjectGenerator extends JaquariusArtifactGenerator
   protected boolean isPrimitiveWrapper(TypeReference typeReference) {
     if (typeReference.isCustomTypeReference()) {
       CustomType returnType = typeReference.asCustomTypeReferenceOrElseThrow().targetType();
-      if (ClassFunctions.isPrimitiveWrapperClass(returnType.canonicalName())) {
-        return true;
-      }
+      return ClassFunctions.isPrimitiveWrapperClass(returnType.canonicalName());
     }
     return false;
   }
 
   private void analyzeMethod(
-      MethodStatement method, ObjectReferenceForm targetForm, int methodOrdinal
+      MethodStatement method, ObjectForm targetForm, int methodOrdinal
   ) {
     methods.add(generateMethod(method, targetForm,  methodOrdinal));
   }
@@ -195,7 +200,7 @@ public abstract class AbstractObjectGenerator extends JaquariusArtifactGenerator
   }
 
   protected Map<String, String> generateMethod(
-      MethodStatement method, ObjectReferenceForm targetForm, int methodOrdinal
+      MethodStatement method, ObjectForm targetForm, int methodOrdinal
   ) {
     var sb = new StringBuilder();
     appendMethodTypeParameters(sb, method);
@@ -203,9 +208,9 @@ public abstract class AbstractObjectGenerator extends JaquariusArtifactGenerator
     if (disableMoving) {
       sb.append("default ");
     }
-    appendMethodReturnHandleType(sb, method, targetForm);
+    appendMethodReturnTypeDeclaration(sb, method, targetForm);
     sb.append(" ");
-    sb.append(getObjectHandleMethodName(method, targetForm));
+    sb.append(getObjectFormMethodName(method, targetForm));
     sb.append("(");
     appendMethodParams(sb, method);
     sb.append(")");
@@ -238,7 +243,7 @@ public abstract class AbstractObjectGenerator extends JaquariusArtifactGenerator
       commaAppender.run();
       if (DomainFunctions.isDomainType(param.type())) {
         sb.append("(");
-        sb.append(ObjectHandleFunctions.getObjectHandleDeclaration(param.type(), ObjectHandleTypes.UndefinedClearObject, true, this::addImportAndGetSimpleName));
+        sb.append(ObjectReferenceFunctions.getObjectFormDeclaration(param.type(),ObjectForms.Simple, MovabilityTypes.Undefined, true, this::addImportAndGetSimpleName));
         sb.append(") ");
       }
       sb.append(param.name());
@@ -249,7 +254,9 @@ public abstract class AbstractObjectGenerator extends JaquariusArtifactGenerator
   }
 
   private boolean isDisableMoving(MethodStatement method) {
-    return ChannelFunctions.isMovingBasedChannel(method) && ObjectHandleTypes.UnmovableHandle.is(getObjectHandleType());
+    return ChannelFunctions.isMovingBasedChannel(method)
+        && ObjectForms.ObjectHandle.is(getObjectForm())
+        && MovabilityTypes.Unmovable.is(getMovabilityType());
   }
 
   protected void appendMethodReturnType(StringBuilder sb, MethodStatement method) {
@@ -268,7 +275,7 @@ public abstract class AbstractObjectGenerator extends JaquariusArtifactGenerator
     return addImportAndGetSimpleName(name);
   }
 
-  protected Stream<MethodStatement> getObjectHandleMethods(CustomType customType, ArtifactGeneratorContext context) {
+  protected Stream<MethodStatement> getObjectFormMethods(CustomType customType, ArtifactGeneratorContext context) {
     return customType.actualMethods().stream()
         .filter(m -> DomainFunctions.isDomainType(m.owner()));
   }
@@ -335,22 +342,24 @@ public abstract class AbstractObjectGenerator extends JaquariusArtifactGenerator
     }
   }
 
-  protected String getObjectHandleMethodName(MethodStatement domainMethod, ObjectReferenceForm targetForm) {
-    if (ObjectReferenceForms.Default.is(targetForm)) {
+  protected String getObjectFormMethodName(MethodStatement domainMethod, ObjectForm targetForm) {
+    if (ObjectForms.Simple.is(targetForm)) {
       return domainMethod.name();
-    } else if (ObjectReferenceForms.Primitive.is(targetForm)) {
+    } else if (ObjectForms.Primitive.is(targetForm)) {
       return domainMethod.name() + "AsPrimitive";
+    } else if (ObjectForms.PrimitiveWrapper.is(targetForm)) {
+      return domainMethod.name() + "AsObject";
     } else {
       throw UnexpectedExceptions.withMessage("Unsupported object reference form - {0}", targetForm);
     }
   }
 
-  protected void appendMethodReturnHandleType(
-      StringBuilder sb, MethodStatement method, ObjectReferenceForm targetForm
+  protected void appendMethodReturnTypeDeclaration(
+      StringBuilder sb, MethodStatement method, ObjectForm targetForm
   ) {
-    if (ObjectReferenceForms.Default.is(targetForm)) {
+    if (ObjectForms.Simple.is(targetForm)) {
       appendObjectFormMethodReturnType(sb, method);
-    } else if (ObjectReferenceForms.Primitive.is(targetForm)) {
+    } else if (ObjectForms.Primitive.is(targetForm)) {
       CustomType returnType = method.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow().targetType();
       sb.append(ClassFunctions.primitiveTypenameOfWrapper(returnType.canonicalName()));
     } else {
@@ -361,14 +370,14 @@ public abstract class AbstractObjectGenerator extends JaquariusArtifactGenerator
   protected void appendObjectFormMethodReturnType(StringBuilder sb, MethodStatement method) {
     TypeReference domainReturnType = method.returnType().orElseThrow();
     if (NameConventionFunctions.isConversionMethod(method)) {
-      sb.append(buildObjectHandleDeclaration(domainReturnType, getObjectHandleType(), true));
+      sb.append(buildObjectFormDeclaration(domainReturnType, getObjectForm(), getMovabilityType(), true));
     } else {
       if (method.hasAnnotation(Movable.class)) {
-        sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.MovableClearObject, true));
+        sb.append(buildObjectFormDeclaration(domainReturnType, ObjectForms.Simple, MovabilityTypes.Movable, true));
       } else if (method.hasAnnotation(Unmovable.class)) {
-        sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.UnmovableClearObject, true));
+        sb.append(buildObjectFormDeclaration(domainReturnType, ObjectForms.Simple, MovabilityTypes.Unmovable, true));
       } else {
-        sb.append(buildObjectHandleDeclaration(domainReturnType, ObjectHandleTypes.UndefinedClearObject, true));
+        sb.append(buildObjectFormDeclaration(domainReturnType, ObjectForms.Simple, MovabilityTypes.Undefined, true));
       }
     }
   }
@@ -389,11 +398,11 @@ public abstract class AbstractObjectGenerator extends JaquariusArtifactGenerator
     RunnableAction commaAppender = StringActions.skipFirstTimeCommaAppender(sb);
     for (MethodParam param : AnnotationGeneratorFunctions.rearrangementParams(method.params())) {
       commaAppender.run();
-      sb.append(buildHandleDeclarationDefaultForm(
+      sb.append(buildObjectFormDeclaration(
           AnnotationGeneratorFunctions.normalizeType(param.type()),
-          ObjectHandleTypes.UndefinedClearObject,
-          true,
-          ObjectReferenceForms.Default
+          ObjectForms.Simple,
+          MovabilityTypes.Undefined,
+          true
       ));
       sb.append(" ");
       sb.append(param.name());

@@ -3,11 +3,11 @@ package tech.intellispaces.jaquarius.annotationprocessor.domain;
 import tech.intellispaces.commons.annotation.processor.ArtifactGeneratorContext;
 import tech.intellispaces.commons.collection.ArraysFunctions;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
-import tech.intellispaces.commons.type.Type;
-import tech.intellispaces.commons.type.Types;
 import tech.intellispaces.commons.java.reflection.customtype.CustomType;
 import tech.intellispaces.commons.java.reflection.method.MethodStatement;
 import tech.intellispaces.commons.java.reflection.reference.CustomTypeReference;
+import tech.intellispaces.commons.type.Type;
+import tech.intellispaces.commons.type.Types;
 import tech.intellispaces.jaquarius.annotation.Channel;
 import tech.intellispaces.jaquarius.annotation.ObjectHandle;
 import tech.intellispaces.jaquarius.channel.Channel0;
@@ -16,9 +16,11 @@ import tech.intellispaces.jaquarius.channel.ChannelFunction0;
 import tech.intellispaces.jaquarius.channel.ChannelFunction1;
 import tech.intellispaces.jaquarius.exception.TraverseException;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
+import tech.intellispaces.jaquarius.object.reference.MovabilityType;
+import tech.intellispaces.jaquarius.object.reference.MovabilityTypes;
 import tech.intellispaces.jaquarius.object.reference.MovableObjectHandle;
-import tech.intellispaces.jaquarius.object.reference.ObjectHandleType;
-import tech.intellispaces.jaquarius.object.reference.ObjectHandleTypes;
+import tech.intellispaces.jaquarius.object.reference.ObjectForm;
+import tech.intellispaces.jaquarius.object.reference.ObjectForms;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandles;
 import tech.intellispaces.jaquarius.object.reference.UnmovableObjectHandle;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
@@ -42,13 +44,18 @@ public class UnmovableDownwardObjectGenerator extends ConversionObjectGenerator 
   }
 
   @Override
-  protected ObjectHandleType getObjectHandleType() {
-    return ObjectHandleTypes.UnmovableClearObject;
+  protected ObjectForm getObjectForm() {
+    return ObjectForms.Simple;
+  }
+
+  @Override
+  protected MovabilityType getMovabilityType() {
+    return MovabilityTypes.Unmovable;
   }
 
   @Override
   public String generatedArtifactName() {
-    return NameConventionFunctions.getUnmovableDownwardObjectHandleTypename(
+    return NameConventionFunctions.getUnmovableDownwardObjectTypename(
         sourceArtifact(), superDomainType.targetType());
   }
 
@@ -107,7 +114,7 @@ public class UnmovableDownwardObjectGenerator extends ConversionObjectGenerator 
   }
 
   @Override
-  protected Stream<MethodStatement> getObjectHandleMethods(
+  protected Stream<MethodStatement> getObjectFormMethods(
       CustomType customType, ArtifactGeneratorContext context
   ) {
     return extractNotMovingMethods(customType, context);

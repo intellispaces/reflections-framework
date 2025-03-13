@@ -1,10 +1,10 @@
 package tech.intellispaces.jaquarius.annotationprocessor.ontology;
 
 import tech.intellispaces.commons.annotation.processor.ArtifactGeneratorContext;
-import tech.intellispaces.commons.java.reflection.customtype.CustomType;
-import tech.intellispaces.commons.java.reflection.method.MethodParam;
-import tech.intellispaces.commons.java.reflection.method.MethodStatement;
-import tech.intellispaces.commons.java.reflection.reference.TypeReference;
+import tech.intellispaces.commons.reflection.customtype.CustomType;
+import tech.intellispaces.commons.reflection.method.MethodParam;
+import tech.intellispaces.commons.reflection.method.MethodStatement;
+import tech.intellispaces.commons.reflection.reference.TypeReference;
 import tech.intellispaces.jaquarius.annotationprocessor.channel.AbstractChannelGenerator;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
 

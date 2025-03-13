@@ -1,11 +1,11 @@
 package tech.intellispaces.jaquarius.annotationprocessor.module;
 
 import tech.intellispaces.commons.annotation.processor.ArtifactValidator;
-import tech.intellispaces.commons.java.reflection.customtype.CustomType;
-import tech.intellispaces.commons.java.reflection.instance.AnnotationInstance;
-import tech.intellispaces.commons.java.reflection.method.MethodParam;
-import tech.intellispaces.commons.java.reflection.method.MethodStatement;
-import tech.intellispaces.commons.java.reflection.reference.TypeReference;
+import tech.intellispaces.commons.reflection.customtype.CustomType;
+import tech.intellispaces.commons.reflection.instance.AnnotationInstance;
+import tech.intellispaces.commons.reflection.method.MethodParam;
+import tech.intellispaces.commons.reflection.method.MethodStatement;
+import tech.intellispaces.commons.reflection.reference.TypeReference;
 import tech.intellispaces.jaquarius.annotation.Configuration;
 import tech.intellispaces.jaquarius.annotation.Guide;
 import tech.intellispaces.jaquarius.annotation.Module;

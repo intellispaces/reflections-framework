@@ -1,10 +1,10 @@
 package tech.intellispaces.jaquarius.annotationprocessor.channel;
 
 import tech.intellispaces.commons.annotation.processor.ArtifactGenerator;
-import tech.intellispaces.commons.java.reflection.customtype.CustomType;
-import tech.intellispaces.commons.java.reflection.method.MethodStatement;
-import tech.intellispaces.commons.java.reflection.reference.CustomTypeReference;
-import tech.intellispaces.commons.java.reflection.reference.TypeReference;
+import tech.intellispaces.commons.reflection.customtype.CustomType;
+import tech.intellispaces.commons.reflection.method.MethodStatement;
+import tech.intellispaces.commons.reflection.reference.CustomTypeReference;
+import tech.intellispaces.commons.reflection.reference.TypeReference;
 import tech.intellispaces.commons.type.ClassFunctions;
 import tech.intellispaces.jaquarius.exception.ConfigurationExceptions;
 import tech.intellispaces.jaquarius.object.reference.ObjectForm;

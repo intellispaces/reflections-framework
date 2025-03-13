@@ -1,7 +1,7 @@
 package tech.intellispaces.jaquarius.system.settings;
 
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
-import tech.intellispaces.commons.java.reflection.method.MethodStatement;
+import tech.intellispaces.commons.reflection.method.MethodStatement;
 import tech.intellispaces.commons.type.Types;
 import tech.intellispaces.jaquarius.Jaquarius;
 import tech.intellispaces.jaquarius.annotation.Properties;

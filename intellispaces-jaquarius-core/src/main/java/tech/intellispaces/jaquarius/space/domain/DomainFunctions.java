@@ -1,15 +1,15 @@
 package tech.intellispaces.jaquarius.space.domain;
 
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
-import tech.intellispaces.commons.java.reflection.JavaStatements;
-import tech.intellispaces.commons.java.reflection.customtype.CustomType;
-import tech.intellispaces.commons.java.reflection.method.MethodStatement;
-import tech.intellispaces.commons.java.reflection.reference.CustomTypeReference;
-import tech.intellispaces.commons.java.reflection.reference.CustomTypeReferences;
-import tech.intellispaces.commons.java.reflection.reference.NamedReference;
-import tech.intellispaces.commons.java.reflection.reference.NotPrimitiveReference;
-import tech.intellispaces.commons.java.reflection.reference.TypeReference;
-import tech.intellispaces.commons.java.reflection.reference.TypeReferenceFunctions;
+import tech.intellispaces.commons.reflection.JavaStatements;
+import tech.intellispaces.commons.reflection.customtype.CustomType;
+import tech.intellispaces.commons.reflection.method.MethodStatement;
+import tech.intellispaces.commons.reflection.reference.CustomTypeReference;
+import tech.intellispaces.commons.reflection.reference.CustomTypeReferences;
+import tech.intellispaces.commons.reflection.reference.NamedReference;
+import tech.intellispaces.commons.reflection.reference.NotPrimitiveReference;
+import tech.intellispaces.commons.reflection.reference.TypeReference;
+import tech.intellispaces.commons.reflection.reference.TypeReferenceFunctions;
 import tech.intellispaces.commons.type.ClassFunctions;
 import tech.intellispaces.jaquarius.Jaquarius;
 import tech.intellispaces.jaquarius.annotation.Domain;

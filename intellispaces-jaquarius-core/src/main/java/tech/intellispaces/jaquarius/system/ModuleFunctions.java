@@ -1,9 +1,9 @@
 package tech.intellispaces.jaquarius.system;
 
 import tech.intellispaces.commons.collection.ArraysFunctions;
-import tech.intellispaces.commons.java.reflection.customtype.CustomType;
-import tech.intellispaces.commons.java.reflection.instance.AnnotationInstance;
-import tech.intellispaces.commons.java.reflection.instance.Instance;
+import tech.intellispaces.commons.reflection.customtype.CustomType;
+import tech.intellispaces.commons.reflection.instance.AnnotationInstance;
+import tech.intellispaces.commons.reflection.instance.Instance;
 import tech.intellispaces.jaquarius.annotation.Configuration;
 import tech.intellispaces.jaquarius.annotation.Module;
 

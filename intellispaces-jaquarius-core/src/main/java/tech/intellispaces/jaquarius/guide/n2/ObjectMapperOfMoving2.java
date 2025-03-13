@@ -1,6 +1,6 @@
 package tech.intellispaces.jaquarius.guide.n2;
 
-import tech.intellispaces.commons.java.reflection.method.MethodStatement;
+import tech.intellispaces.commons.reflection.method.MethodStatement;
 import tech.intellispaces.jaquarius.object.reference.ObjectForm;
 import tech.intellispaces.jaquarius.system.ObjectHandleWrapper;
 

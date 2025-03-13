@@ -2,7 +2,7 @@ package tech.intellispaces.jaquarius.aop;
 
 import tech.intellispaces.commons.action.AbstractAction;
 import tech.intellispaces.commons.action.Action;
-import tech.intellispaces.commons.java.reflection.method.MethodStatement;
+import tech.intellispaces.commons.reflection.method.MethodStatement;
 import tech.intellispaces.jaquarius.system.ProjectionProvider;
 
 public abstract class AbstractMethodAdvice extends AbstractAction implements MethodAdvice {

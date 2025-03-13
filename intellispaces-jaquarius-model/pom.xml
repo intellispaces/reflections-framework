@@ -35,7 +35,7 @@
         </dependency>
         <dependency>
             <groupId>tech.intellispaces.commons</groupId>
-            <artifactId>intellispaces-commons-java-reflection-model</artifactId>
+            <artifactId>intellispaces-commons-reflection-model</artifactId>
         </dependency>
     </dependencies>
 </project>

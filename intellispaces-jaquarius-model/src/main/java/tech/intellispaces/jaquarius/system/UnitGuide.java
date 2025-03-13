@@ -1,6 +1,6 @@
 package tech.intellispaces.jaquarius.system;
 
-import tech.intellispaces.commons.java.reflection.method.MethodStatement;
+import tech.intellispaces.commons.reflection.method.MethodStatement;
 import tech.intellispaces.jaquarius.guide.Guide;
 
 /**

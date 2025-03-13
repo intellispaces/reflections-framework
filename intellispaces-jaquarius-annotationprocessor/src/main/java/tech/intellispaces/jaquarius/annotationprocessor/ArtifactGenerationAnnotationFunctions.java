@@ -1,12 +1,12 @@
 package tech.intellispaces.jaquarius.annotationprocessor;
 
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
-import tech.intellispaces.commons.java.reflection.AnnotatedStatement;
-import tech.intellispaces.commons.java.reflection.JavaStatements;
-import tech.intellispaces.commons.java.reflection.customtype.CustomType;
-import tech.intellispaces.commons.java.reflection.instance.AnnotationInstance;
-import tech.intellispaces.commons.java.reflection.instance.ClassInstance;
-import tech.intellispaces.commons.java.reflection.instance.Instance;
+import tech.intellispaces.commons.reflection.AnnotatedStatement;
+import tech.intellispaces.commons.reflection.JavaStatements;
+import tech.intellispaces.commons.reflection.customtype.CustomType;
+import tech.intellispaces.commons.reflection.instance.AnnotationInstance;
+import tech.intellispaces.commons.reflection.instance.ClassInstance;
+import tech.intellispaces.commons.reflection.instance.Instance;
 import tech.intellispaces.commons.text.StringFunctions;
 import tech.intellispaces.commons.type.Classes;
 import tech.intellispaces.jaquarius.annotation.AnnotationProcessor;

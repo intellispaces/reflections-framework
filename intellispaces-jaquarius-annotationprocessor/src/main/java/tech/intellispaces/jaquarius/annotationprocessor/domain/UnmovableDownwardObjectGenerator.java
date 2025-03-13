@@ -45,7 +45,7 @@ public class UnmovableDownwardObjectGenerator extends ConversionObjectGenerator 
 
   @Override
   protected ObjectForm getObjectForm() {
-    return ObjectForms.Simple;
+    return ObjectForms.ObjectHandle;
   }
 
   @Override
@@ -83,7 +83,7 @@ public class UnmovableDownwardObjectGenerator extends ConversionObjectGenerator 
     );
 
     String unmovableObjectHandleName = addImportAndGetSimpleName(
-        NameConventionFunctions.getUnmovablePureObjectTypename(superDomainType.targetType().className(), false));
+        NameConventionFunctions.getUnmovableSimpleObjectTypename(superDomainType.targetType().className(), false));
 
     analyzeDomain();
     analyzeChildObjectHandleType();
@@ -104,12 +104,14 @@ public class UnmovableDownwardObjectGenerator extends ConversionObjectGenerator 
     addVariable("isAlias", isAlias);
     addVariable("primaryDomainSimpleName", primaryDomainSimpleName);
     addVariable("domainType", domainType);
+    addVariable("objectHandleClassSimpleName", getObjectHandleSimpleName());
+    addVariable("movableObjectHandleName", getMovableObjectHandleSimpleName());
     return true;
   }
 
   private void analyzeChildObjectHandleType() {
     childObjectHandleType = addImportAndGetSimpleName(
-        NameConventionFunctions.getUnmovablePureObjectTypename(sourceArtifact().className(), true)
+        NameConventionFunctions.getUnmovableObjectHandleTypename(sourceArtifact().className(), true)
     );
   }
 

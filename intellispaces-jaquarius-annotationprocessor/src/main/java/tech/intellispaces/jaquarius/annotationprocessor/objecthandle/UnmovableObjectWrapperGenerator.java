@@ -53,7 +53,7 @@ public class UnmovableObjectWrapperGenerator extends AbstractObjectWrapperGenera
 
   @Override
   protected ObjectForm getObjectForm() {
-    return ObjectForms.Simple;
+    return ObjectForms.ObjectHandle;
   }
 
   @Override
@@ -112,6 +112,7 @@ public class UnmovableObjectWrapperGenerator extends AbstractObjectWrapperGenera
     addVariable("conversionMethods", conversionMethods);
     addVariable("notImplRelease", !implRelease);
     addVariable("objectHandleClassSimpleName", getObjectHandleSimpleName());
+    addVariable("movableObjectHandleClassSimpleName", getMovableObjectHandleSimpleName());
     return true;
   }
 

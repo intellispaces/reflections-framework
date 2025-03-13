@@ -13,9 +13,9 @@ import {{$importedClass}};
 @Movable
 {{$generatedAnnotation}}
 {{when $isAlias}}
-public interface {{$generatedArtifactSimpleName}}{{$handleTypeParamsFull}} extends {{$pureObject}}{{$handleTypeParamsBrief}}, {{$generalObjectHandle}}{{$handleTypeParamsBrief}}, {{$baseObjectHandle}} {
+public interface {{$generatedArtifactSimpleName}}{{$handleTypeParamsFull}} extends {{$simpleObject}}{{$handleTypeParamsBrief}}, {{$generalObjectHandle}}{{$handleTypeParamsBrief}}, {{$baseObjectHandle}} {
 {{else}}
-public interface {{$generatedArtifactSimpleName}}{{$handleTypeParamsFull}} extends {{$pureObject}}{{$handleTypeParamsBrief}}, {{$generalObjectHandle}}{{$handleTypeParamsBrief}}, MovableObjectHandle<{{$sourceArtifactSimpleName}}{{$domainTypeParamsBrief}}> {
+public interface {{$generatedArtifactSimpleName}}{{$handleTypeParamsFull}} extends {{$simpleObject}}{{$handleTypeParamsBrief}}, {{$generalObjectHandle}}{{$handleTypeParamsBrief}}, MovableObjectHandle<{{$sourceArtifactSimpleName}}{{$domainTypeParamsBrief}}> {
 {{end}}
 
 {{for method : $conversionMethods}}

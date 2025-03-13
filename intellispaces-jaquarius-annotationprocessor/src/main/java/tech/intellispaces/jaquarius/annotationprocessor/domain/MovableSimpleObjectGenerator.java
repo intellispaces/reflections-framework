@@ -50,7 +50,7 @@ public class MovableSimpleObjectGenerator extends AbstractSimpleObjectGenerator 
 
   @Override
   public String generatedArtifactName() {
-    return NameConventionFunctions.getMovablePureObjectTypename(sourceArtifact().className(), false);
+    return NameConventionFunctions.getMovableSimpleObjectTypename(sourceArtifact().className(), false);
   }
 
   @Override

@@ -272,16 +272,41 @@ abstract class ConversionObjectGenerator extends AbstractObjectGenerator {
     if (NameConventionFunctions.isConversionMethod(method)) {
       sb.append(buildObjectFormDeclaration(domainReturnType, getObjectForm(), getMovabilityType(), true));
     } else {
-      if (
-          ChannelFunctions.getTraverseTypes(method).stream().anyMatch(TraverseType::isMoving)
-              || method.hasAnnotation(Movable.class)
-      ) {
-        sb.append(buildObjectFormDeclaration(domainReturnType, ObjectForms.Simple, MovabilityTypes.Movable, true));
-      } else if (method.hasAnnotation(Unmovable.class)) {
-        sb.append(buildObjectFormDeclaration(domainReturnType, ObjectForms.Simple, MovabilityTypes.Unmovable, true));
+      if (isMovable(method)) {
+        sb.append(buildObjectFormDeclaration(domainReturnType, ObjectForms.ObjectHandle, MovabilityTypes.Movable, true));
+      } else if (isUnmovable(method)) {
+        sb.append(buildObjectFormDeclaration(domainReturnType, ObjectForms.ObjectHandle, MovabilityTypes.Unmovable, true));
       } else {
-        sb.append(buildObjectFormDeclaration(domainReturnType, ObjectForms.Simple, MovabilityTypes.Undefined, true));
+        sb.append(buildObjectFormDeclaration(domainReturnType, ObjectForms.ObjectHandle, MovabilityTypes.Undefined, true));
       }
     }
+  }
+
+  protected String getObjectHandleSimpleName() {
+    final String canonicalName;
+    String superDomainCanonicalName = superDomainType.targetType().canonicalName();
+    if (MovabilityTypes.Unmovable.is(getMovabilityType())) {
+      canonicalName = NameConventionFunctions.getUnmovableObjectHandleTypename(superDomainCanonicalName, false);
+    } else if (MovabilityTypes.Movable.is(getMovabilityType())) {
+      canonicalName = NameConventionFunctions.getMovableObjectHandleTypename(superDomainCanonicalName, false);
+    } else {
+      throw UnexpectedExceptions.withMessage("Could not define movable type of the object handle {0}",
+          sourceArtifact().canonicalName());
+    }
+    return addImportAndGetSimpleName(canonicalName);
+  }
+
+  protected String getMovableObjectHandleSimpleName() {
+    String superDomainCanonicalName = superDomainType.targetType().canonicalName();
+    return addImportAndGetSimpleName(NameConventionFunctions.getMovableObjectHandleTypename(superDomainCanonicalName, false));
+  }
+
+  private boolean isMovable(MethodStatement method) {
+    return ChannelFunctions.getTraverseTypes(method).stream().anyMatch(TraverseType::isMoving)
+        || method.hasAnnotation(Movable.class);
+  }
+
+  private boolean isUnmovable(MethodStatement method) {
+    return method.hasAnnotation(Unmovable.class);
   }
 }

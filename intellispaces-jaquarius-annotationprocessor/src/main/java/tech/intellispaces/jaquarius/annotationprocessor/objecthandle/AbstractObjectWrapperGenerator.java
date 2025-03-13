@@ -93,16 +93,22 @@ abstract class AbstractObjectWrapperGenerator extends AbstractObjectGenerator {
   }
 
   protected String getObjectHandleSimpleName() {
-    Class<?> handleClass;
+    final String canonicalName;
     if (ObjectReferenceFunctions.isUnmovableObjectHandle(sourceArtifact())) {
-      handleClass = ObjectReferenceFunctions.getObjectHandleClass(MovabilityTypes.Unmovable);
+      canonicalName = NameConventionFunctions.getUnmovableObjectHandleTypename(domainType.canonicalName(), true);
     } else if (ObjectReferenceFunctions.isMovableObjectHandle(sourceArtifact())) {
-      handleClass = ObjectReferenceFunctions.getObjectHandleClass(MovabilityTypes.Movable);
+      canonicalName = NameConventionFunctions.getMovableObjectHandleTypename(domainType.canonicalName(), true);
     } else {
       throw UnexpectedExceptions.withMessage("Could not define movable type of the object handle {0}",
           sourceArtifact().canonicalName());
     }
-    return addImportAndGetSimpleName(handleClass);
+    return addImportAndGetSimpleName(canonicalName);
+  }
+
+  protected String getMovableObjectHandleSimpleName() {
+    return addImportAndGetSimpleName(
+        NameConventionFunctions.getMovableObjectHandleTypename(domainType.canonicalName(), true)
+    );
   }
 
   protected void analyzeTypeParams() {
@@ -159,8 +165,8 @@ abstract class AbstractObjectWrapperGenerator extends AbstractObjectGenerator {
     for (MethodStatement method : domainMethods) {
       analyzeRawDomainMethod(method);
       if (hasMethodNormalForm(method)) {
-        if (includeMethodForm(method, ObjectForms.Simple)) {
-          analyzeMethod(method, ObjectForms.Simple, methodOrdinal++);
+        if (includeMethodForm(method, ObjectForms.ObjectHandle)) {
+          analyzeMethod(method, ObjectForms.ObjectHandle, methodOrdinal++);
         }
       }
       if (includeMethodForm(method, ObjectForms.Primitive)) {
@@ -439,7 +445,7 @@ abstract class AbstractObjectWrapperGenerator extends AbstractObjectGenerator {
   private void appendMethodCastHandleType(
       StringBuilder sb, MethodStatement method, ObjectForm targetForm
   ) {
-    if (ObjectForms.Simple.is(targetForm)) {
+    if (ObjectForms.ObjectHandle.is(targetForm)) {
       appendObjectFormMethodReturnType(sb, method);
     } else if (ObjectForms.Primitive.is(targetForm)) {
       CustomType returnType = method.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow().targetType();
@@ -522,7 +528,7 @@ abstract class AbstractObjectWrapperGenerator extends AbstractObjectGenerator {
       } else {
         return "execute";
       }
-    } else if (ObjectForms.Simple.is(targetForm)) {
+    } else if (ObjectForms.ObjectHandle.is(targetForm)) {
         return "execute";
     } else {
       throw UnexpectedExceptions.withMessage("Unsupported guide form - {0}", targetForm);

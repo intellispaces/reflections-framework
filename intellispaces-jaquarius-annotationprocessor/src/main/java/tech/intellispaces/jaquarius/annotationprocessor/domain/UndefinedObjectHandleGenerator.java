@@ -22,14 +22,13 @@ import tech.intellispaces.jaquarius.traverse.MappingTraverse;
 import tech.intellispaces.jaquarius.traverse.TraverseType;
 
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Stream;
 
 public class UndefinedObjectHandleGenerator extends AbstractObjectGenerator {
 
   public UndefinedObjectHandleGenerator(CustomType domainType) {
     super(domainType);
-    addHiddenImport(NameConventionFunctions.getUndefinedPureObjectTypename(domainType.className()));
+    addHiddenImport(NameConventionFunctions.getUndefinedSimpleObjectTypename(domainType.className()));
   }
 
   @Override
@@ -84,12 +83,12 @@ public class UndefinedObjectHandleGenerator extends AbstractObjectGenerator {
     addVariable("primaryObjectHandle", baseObjectHandle);
     addVariable("primaryDomainTypeArguments", primaryDomainTypeArguments);
     addVariable("primaryDomainSimpleName", primaryDomainSimpleName);
-    addVariable("pureObject", getPureObjectClassName());
+    addVariable("simpleObject", getSimpleObjectClassName());
     return true;
   }
 
-  private String getPureObjectClassName() {
-    return addImportAndGetSimpleName(NameConventionFunctions.getUndefinedPureObjectTypename(sourceArtifact().className()));
+  private String getSimpleObjectClassName() {
+    return addImportAndGetSimpleName(NameConventionFunctions.getUndefinedSimpleObjectTypename(sourceArtifact().className()));
   }
 
   private String getSimpleHandleName() {
@@ -123,33 +122,7 @@ public class UndefinedObjectHandleGenerator extends AbstractObjectGenerator {
         .filter(DomainFunctions::isNotDomainClassGetter)
         .filter(m -> excludeDeepConversionMethods(m, customType))
         .filter(m -> !ChannelFunctions.isChannelMethod(m)
-            || ChannelFunctions.getTraverseTypes(m).stream().noneMatch(TraverseType::isMovingBased));
-  }
-
-  @Override
-  protected Map<String, String> generateMethod(
-      MethodStatement method, ObjectForm targetForm, int methodOrdinal
-  ) {
-    if (method.hasAnnotation(Channel.class)) {
-      return super.generateMethod(method, targetForm, methodOrdinal);
-    } else {
-      return buildAdditionalMethod(method);
-    }
-  }
-
-  private Map<String, String> buildAdditionalMethod(MethodStatement method) {
-    var sb = new StringBuilder();
-    appendMethodTypeParameters(sb, method);
-    appendMethodReturnType(sb, method);
-    sb.append(" ");
-    sb.append(method.name());
-    sb.append("(");
-    appendMethodParams(sb, method);
-    sb.append(")");
-    appendMethodExceptions(sb, method);
-    return Map.of(
-        "javadoc", buildGeneratedMethodJavadoc(method.owner().canonicalName(), method),
-        "declaration", sb.toString()
-    );
+            || ChannelFunctions.getTraverseTypes(m).stream().noneMatch(TraverseType::isMovingBased))
+        .filter(m -> m.hasAnnotation(Channel.class));
   }
 }

@@ -36,7 +36,7 @@ public interface DomainProcessorFunctions {
       }
     }
     addSimpleObjectGenerators(domainType, generators, context.roundEnvironment());
-//    addObjectHandleGenerators(domainType, generators, context.roundEnvironment());
+    addObjectHandleGenerators(domainType, generators, context.roundEnvironment());
     addDownwardObjectHandleGenerators(domainType, generators);
     addIncludedGenerators(domainType, generators, context);
     return generators;

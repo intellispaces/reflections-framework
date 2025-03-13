@@ -141,6 +141,9 @@ public abstract class AbstractObjectGenerator extends JaquariusArtifactGenerator
           analyzeMethod(effectiveMethod, ObjectForms.Simple, methodOrdinal++);
         }
       }
+      if (includeMethodForm(effectiveMethod, ObjectForms.ObjectHandle)) {
+        analyzeMethod(effectiveMethod, ObjectForms.ObjectHandle, methodOrdinal++);
+      }
       if (includeMethodForm(effectiveMethod,  ObjectForms.Primitive)) {
         analyzeMethod(effectiveMethod, ObjectForms.Primitive, methodOrdinal++);
       }
@@ -151,7 +154,11 @@ public abstract class AbstractObjectGenerator extends JaquariusArtifactGenerator
   }
 
   protected boolean includeMethodForm(MethodStatement method, ObjectForm targetForm) {
-    if (ObjectForms.Primitive.is(targetForm)) {
+    if (ObjectForms.Simple.is(targetForm)) {
+      return ObjectForms.Simple.is(getObjectForm());
+    } else if (ObjectForms.ObjectHandle.is(targetForm)) {
+      return ObjectForms.ObjectHandle.is(getObjectForm());
+    } else if (ObjectForms.Primitive.is(targetForm)) {
       return isPrimitiveWrapper(method.returnType().orElseThrow());
     } else if (ObjectForms.PrimitiveWrapper.is(targetForm)) {
       return false;
@@ -343,7 +350,7 @@ public abstract class AbstractObjectGenerator extends JaquariusArtifactGenerator
   }
 
   protected String getObjectFormMethodName(MethodStatement domainMethod, ObjectForm targetForm) {
-    if (ObjectForms.Simple.is(targetForm)) {
+    if (ObjectForms.Simple.is(targetForm) || ObjectForms.ObjectHandle.is(targetForm)) {
       return domainMethod.name();
     } else if (ObjectForms.Primitive.is(targetForm)) {
       return domainMethod.name() + "AsPrimitive";
@@ -357,7 +364,7 @@ public abstract class AbstractObjectGenerator extends JaquariusArtifactGenerator
   protected void appendMethodReturnTypeDeclaration(
       StringBuilder sb, MethodStatement method, ObjectForm targetForm
   ) {
-    if (ObjectForms.Simple.is(targetForm)) {
+    if (ObjectForms.Simple.is(targetForm) || ObjectForms.ObjectHandle.is(targetForm)) {
       appendObjectFormMethodReturnType(sb, method);
     } else if (ObjectForms.Primitive.is(targetForm)) {
       CustomType returnType = method.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow().targetType();
@@ -373,11 +380,11 @@ public abstract class AbstractObjectGenerator extends JaquariusArtifactGenerator
       sb.append(buildObjectFormDeclaration(domainReturnType, getObjectForm(), getMovabilityType(), true));
     } else {
       if (method.hasAnnotation(Movable.class)) {
-        sb.append(buildObjectFormDeclaration(domainReturnType, ObjectForms.Simple, MovabilityTypes.Movable, true));
+        sb.append(buildObjectFormDeclaration(domainReturnType, getObjectForm(), MovabilityTypes.Movable, true));
       } else if (method.hasAnnotation(Unmovable.class)) {
-        sb.append(buildObjectFormDeclaration(domainReturnType, ObjectForms.Simple, MovabilityTypes.Unmovable, true));
+        sb.append(buildObjectFormDeclaration(domainReturnType, getObjectForm(), MovabilityTypes.Unmovable, true));
       } else {
-        sb.append(buildObjectFormDeclaration(domainReturnType, ObjectForms.Simple, MovabilityTypes.Undefined, true));
+        sb.append(buildObjectFormDeclaration(domainReturnType, getObjectForm(), MovabilityTypes.Undefined, true));
       }
     }
   }

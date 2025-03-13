@@ -45,7 +45,7 @@ public class UnmovableSimpleObjectGenerator extends AbstractSimpleObjectGenerato
 
   @Override
   public String generatedArtifactName() {
-    return NameConventionFunctions.getUnmovablePureObjectTypename(sourceArtifact().className(), false);
+    return NameConventionFunctions.getUnmovableSimpleObjectTypename(sourceArtifact().className(), false);
   }
 
   @Override

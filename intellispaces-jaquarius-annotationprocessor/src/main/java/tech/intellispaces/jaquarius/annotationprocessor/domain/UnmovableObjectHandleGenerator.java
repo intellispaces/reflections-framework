@@ -81,12 +81,12 @@ public class UnmovableObjectHandleGenerator extends AbstractObjectGenerator {
     addVariable("isAlias", isAlias);
     addVariable("primaryObjectHandle", baseObjectHandle);
     addVariable("movableMethods", movableMethods);
-    addVariable("pureObject", getPureObjectClassName());
+    addVariable("simpleObject", getSimpleObjectClassName());
     return true;
   }
 
-  private String getPureObjectClassName() {
-    return addImportAndGetSimpleName(NameConventionFunctions.getUnmovablePureObjectTypename(sourceArtifact().className(), false));
+  private String getSimpleObjectClassName() {
+    return addImportAndGetSimpleName(NameConventionFunctions.getUnmovableSimpleObjectTypename(sourceArtifact().className(), false));
   }
 
   private void analyzeAlias() {

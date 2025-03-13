@@ -88,12 +88,12 @@ public class MovableObjectHandleGenerator extends AbstractObjectGenerator {
     addVariable("primaryObjectHandle", primaryObjectHandle);
     addVariable("primaryDomainSimpleName", primaryDomainSimpleName);
     addVariable("primaryDomainTypeArguments", primaryDomainTypeArguments);
-    addVariable("pureObject", getPureObjectClassName());
+    addVariable("simpleObject", getSimpleObjectClassName());
     return true;
   }
 
-  private String getPureObjectClassName() {
-    return addImportAndGetSimpleName(NameConventionFunctions.getMovablePureObjectTypename(sourceArtifact().className(), false));
+  private String getSimpleObjectClassName() {
+    return addImportAndGetSimpleName(NameConventionFunctions.getMovableSimpleObjectTypename(sourceArtifact().className(), false));
   }
 
   private void analyzeAlias() {

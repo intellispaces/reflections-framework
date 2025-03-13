@@ -11,7 +11,7 @@ import static tech.intellispaces.jaquarius.engine.description.ObjectHandleMethod
  */
 @Wrapper({{$sourceArtifactSimpleName}}.class)
 {{$generatedAnnotation}}
-public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sourceArtifactSimpleName}}{{$typeParamsBrief}} implements {{$objectHandleClassSimpleName}}<{{$domainClassSimpleName}}{{$typeParamsBrief}}>, ObjectHandleWrapper {
+public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sourceArtifactSimpleName}}{{$typeParamsBrief}} implements {{$objectHandleClassSimpleName}}{{$typeParamsBrief}}, ObjectHandleWrapper {
   private static ObjectHandleTypeDescription $TYPE;
   private final ObjectHandleBroker $broker;
 
@@ -33,10 +33,17 @@ public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sour
     return true;
   }
 
+{{when $isAlias}}
+  @Override
+  public Type<{{$primaryDomainSimpleName}}{{$primaryDomainTypeArguments}}> domain() {
+    return {{$primaryDomainTypeDeclaration}}
+  }
+{{else}}
   @Override
   public Type<{{$domainClassSimpleName}}{{$typeParamsBrief}}> domain() {
     return {{$domainTypeDeclaration}}
   }
+{{end}}
 
   @Override
   public Class<{{$domainClassSimpleName}}> domainAsClass() {
@@ -48,7 +55,7 @@ public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sour
   }
 
   @Override
-  public MovableObjectHandle<{{$domainClassSimpleName}}{{$typeParamsBrief}}> asMovableOrElseThrow() {
+  public {{$movableObjectHandleClassSimpleName}}{{$typeParamsBrief}} asMovableOrElseThrow() {
     throw UnexpectedExceptions.withMessage("Unmovable object");
   }
 

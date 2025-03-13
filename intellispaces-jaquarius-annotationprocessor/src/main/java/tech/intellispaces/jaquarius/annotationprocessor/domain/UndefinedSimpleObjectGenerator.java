@@ -45,7 +45,7 @@ public class UndefinedSimpleObjectGenerator extends AbstractSimpleObjectGenerato
 
   @Override
   public String generatedArtifactName() {
-    return NameConventionFunctions.getUndefinedPureObjectTypename(sourceArtifact().className());
+    return NameConventionFunctions.getUndefinedSimpleObjectTypename(sourceArtifact().className());
   }
 
   @Override

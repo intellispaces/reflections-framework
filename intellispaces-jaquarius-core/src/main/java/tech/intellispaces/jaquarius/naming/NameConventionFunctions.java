@@ -50,9 +50,9 @@ public interface NameConventionFunctions {
   ) {
     return switch (ObjectForms.from(objectForm)) {
       case Simple -> switch (MovabilityTypes.from(movabilityType)) {
-        case Undefined -> getUndefinedPureObjectTypename(domainClassName);
-        case Movable -> getMovablePureObjectTypename(domainClassName, replaceKeyDomain);
-        case Unmovable -> getUnmovablePureObjectTypename(domainClassName, replaceKeyDomain);
+        case Undefined -> getUndefinedSimpleObjectTypename(domainClassName);
+        case Movable -> getMovableSimpleObjectTypename(domainClassName, replaceKeyDomain);
+        case Unmovable -> getUnmovableSimpleObjectTypename(domainClassName, replaceKeyDomain);
       };
       case ObjectHandle -> switch (MovabilityTypes.from(movabilityType)) {
         case Undefined -> getUndefinedObjectHandleTypename(domainClassName);
@@ -64,7 +64,7 @@ public interface NameConventionFunctions {
     };
   }
 
-  static String getUndefinedPureObjectTypename(String domainClassName) {
+  static String getUndefinedSimpleObjectTypename(String domainClassName) {
     return StringFunctions.removeTailOrElseThrow(transformClassName(domainClassName), "Domain");
   }
 
@@ -72,7 +72,7 @@ public interface NameConventionFunctions {
     return StringFunctions.replaceTailOrElseThrow(transformClassName(domainClassName), "Domain", "Handle");
   }
 
-  static String getUnmovablePureObjectTypename(String domainClassName, boolean replaceKeyDomain) {
+  static String getUnmovableSimpleObjectTypename(String domainClassName, boolean replaceKeyDomain) {
     if (replaceKeyDomain) {
       KeyDomain keyDomain = Jaquarius.settings().getKeyDomainByName(convertToDomainName(domainClassName));
       if (keyDomain != null && keyDomain.delegateClassName() != null && (
@@ -89,7 +89,7 @@ public interface NameConventionFunctions {
         StringFunctions.removeTailOrElseThrow(transformClassName(domainClassName), "Domain"));
   }
 
-  static String getMovablePureObjectTypename(String domainClassName, boolean replaceKeyDomain) {
+  static String getMovableSimpleObjectTypename(String domainClassName, boolean replaceKeyDomain) {
     if (replaceKeyDomain) {
       KeyDomain keyDomain = Jaquarius.settings().getKeyDomainByName(convertToDomainName(domainClassName));
       if (keyDomain != null && keyDomain.delegateClassName() != null && (

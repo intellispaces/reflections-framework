@@ -10,6 +10,6 @@ public abstract class AbstractSimpleObjectGenerator extends AbstractObjectGenera
   }
 
   protected String getUndefinedOriginHandleClassName() {
-    return addImportAndGetSimpleName(NameConventionFunctions.getUndefinedPureObjectTypename(sourceArtifact().className()));
+    return addImportAndGetSimpleName(NameConventionFunctions.getUndefinedSimpleObjectTypename(sourceArtifact().className()));
   }
 }

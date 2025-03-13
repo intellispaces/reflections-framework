@@ -13,9 +13,9 @@ import {{$importedClass}};
 @Unmovable
 {{$generatedAnnotation}}
 {{when $isAlias}}
-public interface {{$generatedArtifactSimpleName}}{{$handleTypeParamsFull}} extends {{$pureObject}}{{$handleTypeParamsBrief}}, {{$generalObjectHandle}}{{$handleTypeParamsBrief}}, {{$primaryObjectHandle}} {
+public interface {{$generatedArtifactSimpleName}}{{$handleTypeParamsFull}} extends {{$simpleObject}}{{$handleTypeParamsBrief}}, {{$generalObjectHandle}}{{$handleTypeParamsBrief}}, {{$primaryObjectHandle}} {
 {{else}}
-public interface {{$generatedArtifactSimpleName}}{{$handleTypeParamsFull}} extends {{$pureObject}}{{$handleTypeParamsBrief}}, {{$generalObjectHandle}}{{$handleTypeParamsBrief}}, UnmovableObjectHandle<{{$sourceArtifactSimpleName}}{{$domainTypeParamsBrief}}> {
+public interface {{$generatedArtifactSimpleName}}{{$handleTypeParamsFull}} extends {{$simpleObject}}{{$handleTypeParamsBrief}}, {{$generalObjectHandle}}{{$handleTypeParamsBrief}}, UnmovableObjectHandle<{{$sourceArtifactSimpleName}}{{$domainTypeParamsBrief}}> {
 {{end}}
 
 {{for method : $conversionMethods}}
@@ -27,11 +27,4 @@ public interface {{$generatedArtifactSimpleName}}{{$handleTypeParamsFull}} exten
   default {{$movableClassSimpleName}}{{$domainTypeParamsBrief}} asMovableOrElseThrow() {
     throw UnexpectedExceptions.withMessage("Unmovable object");
   }
-
-{{for method : $movableMethods}}
-  @Override
-  @Deprecated
-  {{$method."declaration"}};
-
-{{end}}
 }

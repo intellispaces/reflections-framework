@@ -197,7 +197,7 @@ public class ObjectReferenceFunctions {
     if (isDefaultObjectHandleType(domainType)) {
       return domainType.canonicalName();
     }
-    return NameConventionFunctions.getUndefinedPureObjectTypename(domainType.className());
+    return NameConventionFunctions.getUndefinedSimpleObjectTypename(domainType.className());
   }
 
   public static String getUndefinedObjectHandleTypename(CustomType domainType) {
@@ -497,7 +497,7 @@ public class ObjectReferenceFunctions {
     if (propertiesHandleClass == null) {
       KeyDomain keyDomain = Jaquarius.settings().getKeyDomainByPurpose(KeyDomainPurposes.Properties);
       String domainClassName = NameConventionFunctions.convertToDomainClassName(keyDomain.domainName());
-      String handleClassName = NameConventionFunctions.getUndefinedPureObjectTypename(domainClassName);
+      String handleClassName = NameConventionFunctions.getUndefinedSimpleObjectTypename(domainClassName);
       propertiesHandleClass = ClassFunctions.getClass(handleClassName).orElseThrow(() ->
           UnexpectedExceptions.withMessage("Could not get class {0}", handleClassName)
       );

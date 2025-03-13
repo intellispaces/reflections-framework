@@ -57,7 +57,7 @@ public class MovableObjectWrapperGenerator extends AbstractObjectWrapperGenerato
 
   @Override
   protected ObjectForm getObjectForm() {
-    return ObjectForms.Simple;
+    return ObjectForms.ObjectHandle;
   }
 
   @Override
@@ -127,11 +127,11 @@ public class MovableObjectWrapperGenerator extends AbstractObjectWrapperGenerato
             method.hasAnnotation(Movable.class) ||
             NameConventionFunctions.isConversionMethod(method)
     ) {
-      sb.append(buildObjectFormDeclaration(domainReturnType, ObjectForms.Simple, MovabilityTypes.Movable, true));
+      sb.append(buildObjectFormDeclaration(domainReturnType, ObjectForms.ObjectHandle, MovabilityTypes.Movable, true));
     } else if (method.hasAnnotation(Unmovable.class)) {
-      sb.append(buildObjectFormDeclaration(domainReturnType, ObjectForms.Simple, MovabilityTypes.Unmovable, true));
+      sb.append(buildObjectFormDeclaration(domainReturnType, ObjectForms.ObjectHandle, MovabilityTypes.Unmovable, true));
     } else {
-      sb.append(buildObjectFormDeclaration(domainReturnType, ObjectForms.Simple, MovabilityTypes.Undefined, true));
+      sb.append(buildObjectFormDeclaration(domainReturnType, ObjectForms.ObjectHandle, MovabilityTypes.Undefined, true));
     }
   }
 }

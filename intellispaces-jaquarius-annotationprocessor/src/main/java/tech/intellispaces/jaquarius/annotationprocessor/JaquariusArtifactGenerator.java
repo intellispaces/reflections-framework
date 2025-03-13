@@ -41,7 +41,7 @@ public abstract class JaquariusArtifactGenerator extends TemplatedJavaArtifactGe
 
     context.roundEnvironment().getElementsAnnotatedWith(Domain.class).stream()
         .map(e -> CustomTypes.of((TypeElement) e))
-        .map(c -> NameConventionFunctions.getUndefinedPureObjectTypename(c.canonicalName()))
+        .map(c -> NameConventionFunctions.getUndefinedSimpleObjectTypename(c.canonicalName()))
         .forEach(this::addHiddenImport);
   }
 

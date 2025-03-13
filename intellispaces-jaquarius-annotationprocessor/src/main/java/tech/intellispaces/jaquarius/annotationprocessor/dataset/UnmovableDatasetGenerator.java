@@ -95,7 +95,7 @@ public class UnmovableDatasetGenerator extends AbstractObjectGenerator {
     analyzeTypeParams();
     analyzeProjections();
 
-    addVariable("objectHandleClassName", NameConventionFunctions.getUnmovablePureObjectTypename(sourceArtifact().className(), true));
+    addVariable("objectHandleClassName", NameConventionFunctions.getUnmovableSimpleObjectTypename(sourceArtifact().className(), true));
     addVariable("typeParamsBrief", typeParamsBrief);
     addVariable("projections", projectionProperties);
     addVariable("domainType", domainType);

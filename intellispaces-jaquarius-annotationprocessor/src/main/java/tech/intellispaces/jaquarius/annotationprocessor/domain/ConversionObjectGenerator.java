@@ -19,8 +19,8 @@ import tech.intellispaces.jaquarius.annotation.Movable;
 import tech.intellispaces.jaquarius.annotation.Unmovable;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
 import tech.intellispaces.jaquarius.object.reference.MovabilityTypes;
-import tech.intellispaces.jaquarius.object.reference.ObjectForm;
-import tech.intellispaces.jaquarius.object.reference.ObjectForms;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceFunctions;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
@@ -54,7 +54,7 @@ abstract class ConversionObjectGenerator extends AbstractObjectGenerator {
     domainClassSimpleName = addImportAndGetSimpleName(superDomainType.targetType().canonicalName());
     domainTypeParamsBrief = superDomainType.targetType().typeParametersBriefDeclaration();
     classTypeParams = ObjectReferenceFunctions.getObjectHandleTypeParams(
-        sourceArtifact(), ObjectForms.ObjectHandle, MovabilityTypes.Undefined, this::addImportAndGetSimpleName, false, true
+        sourceArtifact(), ObjectReferenceForms.ObjectHandle, MovabilityTypes.Undefined, this::addImportAndGetSimpleName, false, true
     );
     classTypeParamsBrief = sourceArtifact().typeParametersBriefDeclaration();
     domainTypeArguments = superDomainType.typeArgumentsDeclaration(this::addImportAndGetSimpleName);
@@ -94,7 +94,7 @@ abstract class ConversionObjectGenerator extends AbstractObjectGenerator {
 
   @Override
   protected Map<String, String> generateMethod(
-      MethodStatement method, ObjectForm targetForm, int methodOrdinal
+      MethodStatement method, ObjectReferenceForm targetForm, int methodOrdinal
   ) {
     if (method.hasAnnotation(Channel.class)) {
       return generateNormalMethod(method, targetForm, methodOrdinal);
@@ -104,7 +104,7 @@ abstract class ConversionObjectGenerator extends AbstractObjectGenerator {
   }
 
   private Map<String, String> generateNormalMethod(
-      MethodStatement method, ObjectForm targetForm, int methodOrdinal
+      MethodStatement method, ObjectReferenceForm targetForm, int methodOrdinal
   ) {
     var sb = new StringBuilder();
     sb.append("public ");
@@ -128,9 +128,9 @@ abstract class ConversionObjectGenerator extends AbstractObjectGenerator {
 
   @Override
   protected boolean includeMethodForm(
-      MethodStatement method, ObjectForm targetForm
+      MethodStatement method, ObjectReferenceForm targetForm
   ) {
-    if (ObjectForms.Primitive.is(targetForm)) {
+    if (ObjectReferenceForms.Primitive.is(targetForm)) {
       Optional<MethodStatement> actualMethod = superDomainType.targetType().actualMethod(
           method.name(), method.parameterTypes()
       );
@@ -168,7 +168,7 @@ abstract class ConversionObjectGenerator extends AbstractObjectGenerator {
     );
   }
 
-  private void buildReturnStatement(StringBuilder sb, MethodStatement method, ObjectForm targetForm) {
+  private void buildReturnStatement(StringBuilder sb, MethodStatement method, ObjectReferenceForm targetForm) {
     if (NameConventionFunctions.isConversionMethod(method)) {
       buildConversionChainReturnStatement(sb, method, targetForm);
       return;
@@ -205,7 +205,7 @@ abstract class ConversionObjectGenerator extends AbstractObjectGenerator {
   }
 
   private void buildConversionChainReturnStatement(
-      StringBuilder sb, MethodStatement method, ObjectForm targetForm
+      StringBuilder sb, MethodStatement method, ObjectReferenceForm targetForm
   ) {
     CustomType targetDomain = method.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow().targetType();
 
@@ -215,7 +215,7 @@ abstract class ConversionObjectGenerator extends AbstractObjectGenerator {
     sb.append(";");
   }
 
-  private void buildDirectReturnStatement(StringBuilder sb, MethodStatement method, ObjectForm targetForm) {
+  private void buildDirectReturnStatement(StringBuilder sb, MethodStatement method, ObjectReferenceForm targetForm) {
     sb.append("return ");
     sb.append("this.").append(childFieldName).append(".");
     sb.append(getObjectFormMethodName(method, targetForm));
@@ -226,7 +226,7 @@ abstract class ConversionObjectGenerator extends AbstractObjectGenerator {
     sb.append(");");
   }
 
-  private void buildCastReturnStatement(StringBuilder sb, MethodStatement method, ObjectForm targetForm) {
+  private void buildCastReturnStatement(StringBuilder sb, MethodStatement method, ObjectReferenceForm targetForm) {
     sb.append("return ");
     sb.append("(");
     appendObjectFormMethodReturnType(sb, method);
@@ -270,14 +270,14 @@ abstract class ConversionObjectGenerator extends AbstractObjectGenerator {
   protected void appendObjectFormMethodReturnType(StringBuilder sb, MethodStatement method) {
     TypeReference domainReturnType = method.returnType().orElseThrow();
     if (NameConventionFunctions.isConversionMethod(method)) {
-      sb.append(buildObjectFormDeclaration(domainReturnType, getObjectForm(), getMovabilityType(), true));
+      sb.append(buildObjectFormDeclaration(domainReturnType, getForm(), getMovabilityType(), true));
     } else {
       if (isMovable(method)) {
-        sb.append(buildObjectFormDeclaration(domainReturnType, ObjectForms.ObjectHandle, MovabilityTypes.Movable, true));
+        sb.append(buildObjectFormDeclaration(domainReturnType, ObjectReferenceForms.ObjectHandle, MovabilityTypes.Movable, true));
       } else if (isUnmovable(method)) {
-        sb.append(buildObjectFormDeclaration(domainReturnType, ObjectForms.ObjectHandle, MovabilityTypes.Unmovable, true));
+        sb.append(buildObjectFormDeclaration(domainReturnType, ObjectReferenceForms.ObjectHandle, MovabilityTypes.Unmovable, true));
       } else {
-        sb.append(buildObjectFormDeclaration(domainReturnType, ObjectForms.ObjectHandle, MovabilityTypes.Undefined, true));
+        sb.append(buildObjectFormDeclaration(domainReturnType, ObjectReferenceForms.ObjectHandle, MovabilityTypes.Undefined, true));
       }
     }
   }

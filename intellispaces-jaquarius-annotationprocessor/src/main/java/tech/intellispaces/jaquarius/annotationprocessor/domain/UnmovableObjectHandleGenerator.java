@@ -11,8 +11,8 @@ import tech.intellispaces.jaquarius.annotation.Unmovable;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
 import tech.intellispaces.jaquarius.object.reference.MovabilityType;
 import tech.intellispaces.jaquarius.object.reference.MovabilityTypes;
-import tech.intellispaces.jaquarius.object.reference.ObjectForm;
-import tech.intellispaces.jaquarius.object.reference.ObjectForms;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
 import tech.intellispaces.jaquarius.object.reference.UnmovableObjectHandle;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
@@ -38,8 +38,8 @@ public class UnmovableObjectHandleGenerator extends AbstractObjectGenerator {
   }
 
   @Override
-  protected ObjectForm getObjectForm() {
-    return ObjectForms.ObjectHandle;
+  protected ObjectReferenceForm getForm() {
+    return ObjectReferenceForms.ObjectHandle;
   }
 
   @Override
@@ -86,14 +86,14 @@ public class UnmovableObjectHandleGenerator extends AbstractObjectGenerator {
   }
 
   private String getSimpleObjectClassName() {
-    return addImportAndGetSimpleName(NameConventionFunctions.getUnmovableSimpleObjectTypename(sourceArtifact().className(), false));
+    return addImportAndGetSimpleName(NameConventionFunctions.getUnmovablePlainObjectTypename(sourceArtifact().className(), false));
   }
 
   private void analyzeAlias() {
     Optional<CustomTypeReference> equivalentDomain = DomainFunctions.getAliasNearNeighbourDomain(sourceArtifact());
     isAlias = equivalentDomain.isPresent();
     if (isAlias) {
-      baseObjectHandle = buildObjectFormDeclaration(equivalentDomain.get(), ObjectForms.ObjectHandle, MovabilityTypes.Unmovable, true);
+      baseObjectHandle = buildObjectFormDeclaration(equivalentDomain.get(), ObjectReferenceForms.ObjectHandle, MovabilityTypes.Unmovable, true);
     }
   }
 

@@ -6,7 +6,7 @@ import tech.intellispaces.commons.reflection.method.MethodStatement;
 import tech.intellispaces.jaquarius.exception.TraverseException;
 import tech.intellispaces.jaquarius.exception.TraverseExceptions;
 import tech.intellispaces.jaquarius.guide.GuideLogger;
-import tech.intellispaces.jaquarius.object.reference.ObjectForm;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.system.ObjectHandleWrapper;
 
 import java.util.stream.Collectors;
@@ -16,14 +16,14 @@ abstract class ObjectGuide4<S extends ObjectHandleWrapper, R, Q1, Q2, Q3, Q4> im
   private final String cid;
   private final MethodStatement guideMethod;
   private final int traverseOrdinal;
-  private final ObjectForm targetForm;
+  private final ObjectReferenceForm targetForm;
 
   ObjectGuide4(
       String cid,
       Class<S> objectHandleClass,
       MethodStatement guideMethod,
       int traverseOrdinal,
-      ObjectForm targetForm
+      ObjectReferenceForm targetForm
   ) {
     if (guideMethod.params().size() != 4) {
       throw UnexpectedExceptions.withMessage("Guide should have four qualifiers");
@@ -41,7 +41,7 @@ abstract class ObjectGuide4<S extends ObjectHandleWrapper, R, Q1, Q2, Q3, Q4> im
   }
 
   @Override
-  public ObjectForm targetForm() {
+  public ObjectReferenceForm targetForm() {
     return targetForm;
   }
 

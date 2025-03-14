@@ -1,7 +1,7 @@
 package tech.intellispaces.jaquarius.guide.n4;
 
 import tech.intellispaces.commons.reflection.method.MethodStatement;
-import tech.intellispaces.jaquarius.object.reference.ObjectForm;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.system.UnitWrapper;
 
 public class UnitMapperOfMoving4<S, T, Q1, Q2, Q3, Q4>
@@ -13,7 +13,7 @@ public class UnitMapperOfMoving4<S, T, Q1, Q2, Q3, Q4>
       UnitWrapper unitInstance,
       MethodStatement guideMethod,
       int guideOrdinal,
-      ObjectForm targetForm
+      ObjectReferenceForm targetForm
   ) {
     super(cid, unitInstance, guideMethod, guideOrdinal, targetForm);
   }

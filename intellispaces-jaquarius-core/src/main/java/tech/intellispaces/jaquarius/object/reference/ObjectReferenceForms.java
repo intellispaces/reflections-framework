@@ -5,12 +5,12 @@ import tech.intellispaces.commons.entity.Enumeration;
 /**
  * Object reference forms.
  */
-public enum ObjectForms implements ObjectForm, Enumeration<ObjectForm> {
+public enum ObjectReferenceForms implements ObjectReferenceForm, Enumeration<ObjectReferenceForm> {
 
   /**
-   * The object reference represented as simple object interface or primitive type.
+   * The object reference represented as plain object interface or primitive type.
    */
-  Simple,
+  Plain,
 
   /**
    * The object reference represented as object handle or primitive type.
@@ -27,9 +27,9 @@ public enum ObjectForms implements ObjectForm, Enumeration<ObjectForm> {
    */
   PrimitiveWrapper;
 
-  public static ObjectForms from(ObjectForm value) {
+  public static ObjectReferenceForms from(ObjectReferenceForm value) {
     return VALUES[value.ordinal()];
   }
 
-  private static final ObjectForms[] VALUES = values();
+  private static final ObjectReferenceForms[] VALUES = values();
 }

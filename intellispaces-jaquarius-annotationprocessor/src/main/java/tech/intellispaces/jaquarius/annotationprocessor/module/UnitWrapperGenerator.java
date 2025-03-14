@@ -26,7 +26,7 @@ import tech.intellispaces.jaquarius.exception.ConfigurationExceptions;
 import tech.intellispaces.jaquarius.guide.GuideFunctions;
 import tech.intellispaces.jaquarius.guide.GuideKinds;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
-import tech.intellispaces.jaquarius.object.reference.ObjectForms;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceFunctions;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.system.Modules;
@@ -87,7 +87,7 @@ public class UnitWrapperGenerator extends JaquariusArtifactGenerator {
         InjectionKinds.class,
         ProjectionReferences.class,
         GuideKinds.class,
-        ObjectForms.class
+        ObjectReferenceForms.class
     );
 
     methods = sourceArtifact().actualMethods();

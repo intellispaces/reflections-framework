@@ -16,8 +16,8 @@ import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
 import tech.intellispaces.jaquarius.object.reference.MovabilityType;
 import tech.intellispaces.jaquarius.object.reference.MovabilityTypes;
 import tech.intellispaces.jaquarius.object.reference.MovableObjectHandle;
-import tech.intellispaces.jaquarius.object.reference.ObjectForm;
-import tech.intellispaces.jaquarius.object.reference.ObjectForms;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandles;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
 import tech.intellispaces.jaquarius.traverse.MappingOfMovingTraverse;
@@ -39,8 +39,8 @@ public class MovableDownwardObjectGenerator extends ConversionObjectGenerator {
   }
 
   @Override
-  protected ObjectForm getObjectForm() {
-    return ObjectForms.ObjectHandle;
+  protected ObjectReferenceForm getForm() {
+    return ObjectReferenceForms.ObjectHandle;
   }
 
   @Override

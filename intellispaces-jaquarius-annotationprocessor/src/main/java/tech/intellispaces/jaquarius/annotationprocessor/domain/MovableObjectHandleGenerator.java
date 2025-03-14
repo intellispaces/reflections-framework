@@ -17,8 +17,8 @@ import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
 import tech.intellispaces.jaquarius.object.reference.MovabilityType;
 import tech.intellispaces.jaquarius.object.reference.MovabilityTypes;
 import tech.intellispaces.jaquarius.object.reference.MovableObjectHandle;
-import tech.intellispaces.jaquarius.object.reference.ObjectForm;
-import tech.intellispaces.jaquarius.object.reference.ObjectForms;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
 import tech.intellispaces.jaquarius.traverse.MappingOfMovingTraverse;
@@ -39,8 +39,8 @@ public class MovableObjectHandleGenerator extends AbstractObjectGenerator {
   }
 
   @Override
-  protected ObjectForm getObjectForm() {
-    return ObjectForms.ObjectHandle;
+  protected ObjectReferenceForm getForm() {
+    return ObjectReferenceForms.ObjectHandle;
   }
 
   @Override
@@ -93,7 +93,7 @@ public class MovableObjectHandleGenerator extends AbstractObjectGenerator {
   }
 
   private String getSimpleObjectClassName() {
-    return addImportAndGetSimpleName(NameConventionFunctions.getMovableSimpleObjectTypename(sourceArtifact().className(), false));
+    return addImportAndGetSimpleName(NameConventionFunctions.getMovablePlainObjectTypename(sourceArtifact().className(), false));
   }
 
   private void analyzeAlias() {
@@ -103,9 +103,9 @@ public class MovableObjectHandleGenerator extends AbstractObjectGenerator {
       CustomTypeReference nearEquivalentDomain = equivalentDomains.get(0);
       CustomTypeReference mainEquivalentDomain = equivalentDomains.get(equivalentDomains.size() - 1);
 
-      baseObjectHandle = buildObjectFormDeclaration(nearEquivalentDomain, ObjectForms.ObjectHandle, MovabilityTypes.Movable, true);
+      baseObjectHandle = buildObjectFormDeclaration(nearEquivalentDomain, ObjectReferenceForms.ObjectHandle, MovabilityTypes.Movable, true);
 
-      primaryObjectHandle = buildObjectFormDeclaration(mainEquivalentDomain, ObjectForms.ObjectHandle, MovabilityTypes.Undefined, true);
+      primaryObjectHandle = buildObjectFormDeclaration(mainEquivalentDomain, ObjectReferenceForms.ObjectHandle, MovabilityTypes.Undefined, true);
 
       primaryDomainSimpleName = addImportAndGetSimpleName(mainEquivalentDomain.targetType().canonicalName());
       primaryDomainTypeArguments = nearEquivalentDomain.typeArgumentsDeclaration(this::addImportAndGetSimpleName);
@@ -125,11 +125,11 @@ public class MovableObjectHandleGenerator extends AbstractObjectGenerator {
         ChannelFunctions.getTraverseTypes(method).stream().anyMatch(TraverseType::isMoving)
             || method.hasAnnotation(Movable.class)
     ) {
-      sb.append(buildObjectFormDeclaration(domainReturnType, ObjectForms.ObjectHandle, MovabilityTypes.Movable, true));
+      sb.append(buildObjectFormDeclaration(domainReturnType, ObjectReferenceForms.ObjectHandle, MovabilityTypes.Movable, true));
     } else if (method.hasAnnotation(Unmovable.class)) {
-      sb.append(buildObjectFormDeclaration(domainReturnType, ObjectForms.ObjectHandle, MovabilityTypes.Unmovable, true));
+      sb.append(buildObjectFormDeclaration(domainReturnType, ObjectReferenceForms.ObjectHandle, MovabilityTypes.Unmovable, true));
     } else {
-      sb.append(buildObjectFormDeclaration(domainReturnType, ObjectForms.ObjectHandle, MovabilityTypes.Undefined, true));
+      sb.append(buildObjectFormDeclaration(domainReturnType, ObjectReferenceForms.ObjectHandle, MovabilityTypes.Undefined, true));
     }
   }
 }

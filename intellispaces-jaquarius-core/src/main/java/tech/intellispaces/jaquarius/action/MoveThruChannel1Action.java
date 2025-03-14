@@ -4,19 +4,19 @@ import tech.intellispaces.commons.action.AbstractAction2;
 import tech.intellispaces.commons.type.Type;
 import tech.intellispaces.jaquarius.channel.Channel1;
 import tech.intellispaces.jaquarius.guide.n1.Mover1;
-import tech.intellispaces.jaquarius.object.reference.ObjectForm;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.system.Modules;
 
 class MoveThruChannel1Action<S, Q> extends AbstractAction2<S, S, Q> {
   private final Type<S> sourceType;
   private final Class<? extends Channel1> channelClass;
-  private final ObjectForm targetForm;
+  private final ObjectReferenceForm targetForm;
   private final Mover1<S, Q> autoMover;
 
   MoveThruChannel1Action(
       Type<S> sourceType,
       Class<? extends Channel1> channelClass,
-      ObjectForm targetForm
+      ObjectReferenceForm targetForm
   ) {
     this.sourceType = sourceType;
     this.channelClass = channelClass;

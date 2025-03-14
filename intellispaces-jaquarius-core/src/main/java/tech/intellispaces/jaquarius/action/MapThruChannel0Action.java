@@ -4,19 +4,19 @@ import tech.intellispaces.commons.action.AbstractAction1;
 import tech.intellispaces.commons.type.Type;
 import tech.intellispaces.jaquarius.channel.Channel0;
 import tech.intellispaces.jaquarius.guide.n0.Mapper0;
-import tech.intellispaces.jaquarius.object.reference.ObjectForm;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.system.Modules;
 
 class MapThruChannel0Action<T, S> extends AbstractAction1<T, S> {
   private final Type<S> sourceType;
   private final Class<? extends Channel0> channelClass;
-  private final ObjectForm targetForm;
+  private final ObjectReferenceForm targetForm;
   private final Mapper0<S, T> autoMapper;
 
   MapThruChannel0Action(
       Type<S> sourceType,
       Class<? extends Channel0> channelClass,
-      ObjectForm targetForm
+      ObjectReferenceForm targetForm
   ) {
     this.sourceType = sourceType;
     this.channelClass = channelClass;

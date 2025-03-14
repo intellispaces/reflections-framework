@@ -21,8 +21,8 @@ import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
 import tech.intellispaces.jaquarius.object.reference.MovabilityType;
 import tech.intellispaces.jaquarius.object.reference.MovabilityTypes;
 import tech.intellispaces.jaquarius.object.reference.MovableObjectHandle;
-import tech.intellispaces.jaquarius.object.reference.ObjectForm;
-import tech.intellispaces.jaquarius.object.reference.ObjectForms;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
 import tech.intellispaces.jaquarius.object.reference.UnmovableObjectHandle;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
 import tech.intellispaces.jaquarius.system.Modules;
@@ -61,8 +61,8 @@ public class UnmovableDatasetGenerator extends AbstractObjectGenerator {
   }
 
   @Override
-  protected ObjectForm getObjectForm() {
-    return ObjectForms.Simple;
+  protected ObjectReferenceForm getForm() {
+    return ObjectReferenceForms.Plain;
   }
 
   @Override
@@ -95,7 +95,7 @@ public class UnmovableDatasetGenerator extends AbstractObjectGenerator {
     analyzeTypeParams();
     analyzeProjections();
 
-    addVariable("objectHandleClassName", NameConventionFunctions.getUnmovableSimpleObjectTypename(sourceArtifact().className(), true));
+    addVariable("objectHandleClassName", NameConventionFunctions.getUnmovablePlainObjectTypename(sourceArtifact().className(), true));
     addVariable("typeParamsBrief", typeParamsBrief);
     addVariable("projections", projectionProperties);
     addVariable("domainType", domainType);
@@ -117,7 +117,7 @@ public class UnmovableDatasetGenerator extends AbstractObjectGenerator {
   private void analyzeProjections() {
     for (MethodStatement method : sourceArtifact().actualMethods()) {
       TypeReference type = method.returnType().orElseThrow();
-      String handleType = buildObjectFormDeclaration(type, ObjectForms.Simple, MovabilityTypes.Unmovable, true);
+      String handleType = buildObjectFormDeclaration(type, ObjectReferenceForms.Plain, MovabilityTypes.Unmovable, true);
 
       Map<String, String> properties = new HashMap<>();
       properties.put("type", handleType);

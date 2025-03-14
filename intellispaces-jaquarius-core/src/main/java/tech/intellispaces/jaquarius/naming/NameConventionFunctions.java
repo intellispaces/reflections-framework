@@ -15,8 +15,8 @@ import tech.intellispaces.jaquarius.annotation.ObjectHandle;
 import tech.intellispaces.jaquarius.annotation.Ontology;
 import tech.intellispaces.jaquarius.object.reference.MovabilityType;
 import tech.intellispaces.jaquarius.object.reference.MovabilityTypes;
-import tech.intellispaces.jaquarius.object.reference.ObjectForm;
-import tech.intellispaces.jaquarius.object.reference.ObjectForms;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
 import tech.intellispaces.jaquarius.settings.KeyDomain;
 import tech.intellispaces.jaquarius.settings.KeyDomainPurposes;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
@@ -37,7 +37,7 @@ public interface NameConventionFunctions {
     return channelName + "Channel";
   }
 
-  static String getDomainNameOfSimpleObjectForm(String objectCanonicalName) {
+  static String getDomainNameOfPlainObjectForm(String objectCanonicalName) {
     String simpleName = ClassNameFunctions.getSimpleName(objectCanonicalName);
     simpleName = StringFunctions.removeHeadIfPresent(simpleName, "Unmovable");
     simpleName = StringFunctions.removeHeadIfPresent(simpleName, "Movable");
@@ -46,13 +46,13 @@ public interface NameConventionFunctions {
   }
 
   static String getObjectTypename(
-      String domainClassName, ObjectForm objectForm, MovabilityType movabilityType, boolean replaceKeyDomain
+      String domainClassName, ObjectReferenceForm objectForm, MovabilityType movabilityType, boolean replaceKeyDomain
   ) {
-    return switch (ObjectForms.from(objectForm)) {
-      case Simple -> switch (MovabilityTypes.from(movabilityType)) {
-        case Undefined -> getUndefinedSimpleObjectTypename(domainClassName);
-        case Movable -> getMovableSimpleObjectTypename(domainClassName, replaceKeyDomain);
-        case Unmovable -> getUnmovableSimpleObjectTypename(domainClassName, replaceKeyDomain);
+    return switch (ObjectReferenceForms.from(objectForm)) {
+      case Plain -> switch (MovabilityTypes.from(movabilityType)) {
+        case Undefined -> getUndefinedPlainObjectTypename(domainClassName);
+        case Movable -> getMovablePlainObjectTypename(domainClassName, replaceKeyDomain);
+        case Unmovable -> getUnmovablePlainObjectTypename(domainClassName, replaceKeyDomain);
       };
       case ObjectHandle -> switch (MovabilityTypes.from(movabilityType)) {
         case Undefined -> getUndefinedObjectHandleTypename(domainClassName);
@@ -64,7 +64,7 @@ public interface NameConventionFunctions {
     };
   }
 
-  static String getUndefinedSimpleObjectTypename(String domainClassName) {
+  static String getUndefinedPlainObjectTypename(String domainClassName) {
     return StringFunctions.removeTailOrElseThrow(transformClassName(domainClassName), "Domain");
   }
 
@@ -72,7 +72,7 @@ public interface NameConventionFunctions {
     return StringFunctions.replaceTailOrElseThrow(transformClassName(domainClassName), "Domain", "Handle");
   }
 
-  static String getUnmovableSimpleObjectTypename(String domainClassName, boolean replaceKeyDomain) {
+  static String getUnmovablePlainObjectTypename(String domainClassName, boolean replaceKeyDomain) {
     if (replaceKeyDomain) {
       KeyDomain keyDomain = Jaquarius.settings().getKeyDomainByName(convertToDomainName(domainClassName));
       if (keyDomain != null && keyDomain.delegateClassName() != null && (
@@ -89,7 +89,7 @@ public interface NameConventionFunctions {
         StringFunctions.removeTailOrElseThrow(transformClassName(domainClassName), "Domain"));
   }
 
-  static String getMovableSimpleObjectTypename(String domainClassName, boolean replaceKeyDomain) {
+  static String getMovablePlainObjectTypename(String domainClassName, boolean replaceKeyDomain) {
     if (replaceKeyDomain) {
       KeyDomain keyDomain = Jaquarius.settings().getKeyDomainByName(convertToDomainName(domainClassName));
       if (keyDomain != null && keyDomain.delegateClassName() != null && (
@@ -317,12 +317,12 @@ public interface NameConventionFunctions {
   }
 
   static String getGuideClassCanonicalName(
-      ObjectForm targetForm, String spaceName, CustomType channelType, MethodStatement channelMethod
+      ObjectReferenceForm targetForm, String spaceName, CustomType channelType, MethodStatement channelMethod
   ) {
     String name = StringFunctions.replaceTailIfPresent(channelType.canonicalName(), "Channel", "Guide");
-    if (ObjectForms.Primitive.is(targetForm)) {
+    if (ObjectReferenceForms.Primitive.is(targetForm)) {
       name = name + "AsPrimitive";
-    } else if (ObjectForms.PrimitiveWrapper.is(targetForm)) {
+    } else if (ObjectReferenceForms.PrimitiveWrapper.is(targetForm)) {
       name = name + "AsObject";
     }
     return name;

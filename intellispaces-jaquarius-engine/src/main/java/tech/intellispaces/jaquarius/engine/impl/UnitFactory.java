@@ -16,7 +16,7 @@ import tech.intellispaces.jaquarius.guide.n2.UnitMapper2;
 import tech.intellispaces.jaquarius.guide.n2.UnitMapperOfMoving2;
 import tech.intellispaces.jaquarius.guide.n3.UnitMapper3;
 import tech.intellispaces.jaquarius.guide.n3.UnitMapperOfMoving3;
-import tech.intellispaces.jaquarius.object.reference.ObjectForm;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.system.Injection;
 import tech.intellispaces.jaquarius.system.UnitGuide;
 import tech.intellispaces.jaquarius.system.UnitProjectionDefinition;
@@ -234,7 +234,7 @@ class UnitFactory {
     String cid = methodDescriptor.guideCid();
     int guideOrdinal = methodDescriptor.guideOrdinal();
     int qualifiersCount = methodDescriptor.paramClasses().size();
-    ObjectForm targetForm = methodDescriptor.guideTargetForm();
+    ObjectReferenceForm targetForm = methodDescriptor.guideTargetForm();
     MethodStatement guideMethod = getGuideMethod(unitClass, methodDescriptor);
     return switch (qualifiersCount) {
       case 1 -> new UnitMapper0<>(cid, unitWrapper, guideMethod, guideOrdinal, targetForm);
@@ -259,7 +259,7 @@ class UnitFactory {
     String cid = methodDescriptor.guideCid();
     int guideOrdinal = methodDescriptor.guideOrdinal();
     int qualifiersCount = methodDescriptor.paramClasses().size();
-    ObjectForm targetForm = methodDescriptor.guideTargetForm();
+    ObjectReferenceForm targetForm = methodDescriptor.guideTargetForm();
     MethodStatement guideMethod = getGuideMethod(unitClass, methodDescriptor);
     return switch (qualifiersCount) {
       case 1 -> new UnitMapperOfMoving0<>(cid, unitWrapper, guideMethod, guideOrdinal, targetForm);

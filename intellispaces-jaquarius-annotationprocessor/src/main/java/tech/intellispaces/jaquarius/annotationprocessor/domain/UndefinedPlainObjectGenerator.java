@@ -12,8 +12,8 @@ import tech.intellispaces.jaquarius.annotation.Unmovable;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
 import tech.intellispaces.jaquarius.object.reference.MovabilityType;
 import tech.intellispaces.jaquarius.object.reference.MovabilityTypes;
-import tech.intellispaces.jaquarius.object.reference.ObjectForm;
-import tech.intellispaces.jaquarius.object.reference.ObjectForms;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
 import tech.intellispaces.jaquarius.object.reference.UnmovableObjectHandle;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
@@ -22,9 +22,9 @@ import tech.intellispaces.jaquarius.traverse.TraverseType;
 import java.util.Map;
 import java.util.stream.Stream;
 
-public class UndefinedSimpleObjectGenerator extends AbstractSimpleObjectGenerator {
+public class UndefinedPlainObjectGenerator extends AbstractPlainObjectGenerator {
 
-  public UndefinedSimpleObjectGenerator(CustomType domainType) {
+  public UndefinedPlainObjectGenerator(CustomType domainType) {
     super(domainType);
   }
 
@@ -34,8 +34,8 @@ public class UndefinedSimpleObjectGenerator extends AbstractSimpleObjectGenerato
   }
 
   @Override
-  protected ObjectForm getObjectForm() {
-    return ObjectForms.Simple;
+  protected ObjectReferenceForm getForm() {
+    return ObjectReferenceForms.Plain;
   }
 
   @Override
@@ -45,12 +45,12 @@ public class UndefinedSimpleObjectGenerator extends AbstractSimpleObjectGenerato
 
   @Override
   public String generatedArtifactName() {
-    return NameConventionFunctions.getUndefinedSimpleObjectTypename(sourceArtifact().className());
+    return NameConventionFunctions.getUndefinedPlainObjectTypename(sourceArtifact().className());
   }
 
   @Override
   protected String templateName() {
-    return "/undefined_clear_object.template";
+    return "/undefined_plain_object.template";
   }
 
   @Override
@@ -84,7 +84,7 @@ public class UndefinedSimpleObjectGenerator extends AbstractSimpleObjectGenerato
 
   @Override
   protected Map<String, String> generateMethod(
-      MethodStatement method, ObjectForm targetForm, int methodOrdinal
+      MethodStatement method, ObjectReferenceForm targetForm, int methodOrdinal
   ) {
     if (method.hasAnnotation(Channel.class)) {
       return super.generateMethod(method, targetForm, methodOrdinal);
@@ -113,11 +113,11 @@ public class UndefinedSimpleObjectGenerator extends AbstractSimpleObjectGenerato
   protected void appendObjectFormMethodReturnType(StringBuilder sb, MethodStatement method) {
     TypeReference domainReturnType = method.returnType().orElseThrow();
     if (method.hasAnnotation(Movable.class)) {
-      sb.append(buildObjectFormDeclaration(domainReturnType, ObjectForms.Simple, MovabilityTypes.Movable, true));
+      sb.append(buildObjectFormDeclaration(domainReturnType, ObjectReferenceForms.Plain, MovabilityTypes.Movable, true));
     } else if (method.hasAnnotation(Unmovable.class)) {
-      sb.append(buildObjectFormDeclaration(domainReturnType, ObjectForms.Simple, MovabilityTypes.Unmovable, true));
+      sb.append(buildObjectFormDeclaration(domainReturnType, ObjectReferenceForms.Plain, MovabilityTypes.Unmovable, true));
     } else {
-      sb.append(buildObjectFormDeclaration(domainReturnType, ObjectForms.Simple, MovabilityTypes.Undefined, true));
+      sb.append(buildObjectFormDeclaration(domainReturnType, ObjectReferenceForms.Plain, MovabilityTypes.Undefined, true));
     }
   }
 }

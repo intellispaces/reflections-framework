@@ -4,19 +4,19 @@ import tech.intellispaces.commons.action.AbstractAction4;
 import tech.intellispaces.commons.type.Type;
 import tech.intellispaces.jaquarius.channel.Channel3;
 import tech.intellispaces.jaquarius.guide.n3.MapperOfMoving3;
-import tech.intellispaces.jaquarius.object.reference.ObjectForm;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.system.Modules;
 
 class MapOfMovingThruChannel3Action<T, S, Q1, Q2, Q3> extends AbstractAction4<T, S, Q1, Q2, Q3> {
   private final Type<S> sourceType;
   private final Class<? extends Channel3> channelClass;
-  private final ObjectForm targetForm;
+  private final ObjectReferenceForm targetForm;
   private final MapperOfMoving3<S, T, Q1, Q2, Q3> autoMapper;
 
   MapOfMovingThruChannel3Action(
       Type<S> sourceType,
       Class<? extends Channel3> channelClass,
-      ObjectForm targetForm
+      ObjectReferenceForm targetForm
   ) {
     this.sourceType = sourceType;
     this.channelClass = channelClass;

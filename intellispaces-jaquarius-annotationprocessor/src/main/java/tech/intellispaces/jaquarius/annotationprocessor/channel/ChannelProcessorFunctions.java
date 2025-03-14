@@ -7,8 +7,8 @@ import tech.intellispaces.commons.reflection.reference.CustomTypeReference;
 import tech.intellispaces.commons.reflection.reference.TypeReference;
 import tech.intellispaces.commons.type.ClassFunctions;
 import tech.intellispaces.jaquarius.exception.ConfigurationExceptions;
-import tech.intellispaces.jaquarius.object.reference.ObjectForm;
-import tech.intellispaces.jaquarius.object.reference.ObjectForms;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
 import tech.intellispaces.jaquarius.traverse.MappingOfMovingTraverse;
 import tech.intellispaces.jaquarius.traverse.MappingTraverse;
 import tech.intellispaces.jaquarius.traverse.MovingTraverse;
@@ -57,14 +57,14 @@ public interface ChannelProcessorFunctions {
       MethodStatement channelMethod
   ) {
     List<ArtifactGenerator> generators = new ArrayList<>();
-    generators.add(makeGuideArtifactGenerators(ObjectForms.Simple, traverseType, channelType, channelMethod));
+    generators.add(makeGuideArtifactGenerators(ObjectReferenceForms.Plain, traverseType, channelType, channelMethod));
     if (channelMethod.returnType().isPresent()) {
       TypeReference returnType = channelMethod.returnType().get();
       if (returnType.isCustomTypeReference()) {
         CustomTypeReference customTypeReference = returnType.asCustomTypeReferenceOrElseThrow();
         if (ClassFunctions.isPrimitiveWrapperClass(customTypeReference.targetType().canonicalName())) {
           generators.add(makeGuideArtifactGenerators(
-              ObjectForms.ObjectHandle, traverseType, channelType, channelMethod
+              ObjectReferenceForms.ObjectHandle, traverseType, channelType, channelMethod
           ));
         }
       }
@@ -73,7 +73,7 @@ public interface ChannelProcessorFunctions {
   }
 
   static ArtifactGenerator makeGuideArtifactGenerators(
-      ObjectForm targetForm,
+      ObjectReferenceForm targetForm,
       TraverseType traverseType,
       CustomType channelType,
       MethodStatement channelMethod

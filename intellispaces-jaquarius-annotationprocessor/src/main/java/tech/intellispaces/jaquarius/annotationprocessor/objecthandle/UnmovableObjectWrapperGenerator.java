@@ -20,8 +20,8 @@ import tech.intellispaces.jaquarius.exception.TraverseException;
 import tech.intellispaces.jaquarius.object.reference.MovabilityType;
 import tech.intellispaces.jaquarius.object.reference.MovabilityTypes;
 import tech.intellispaces.jaquarius.object.reference.MovableObjectHandle;
-import tech.intellispaces.jaquarius.object.reference.ObjectForm;
-import tech.intellispaces.jaquarius.object.reference.ObjectForms;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.system.Modules;
 import tech.intellispaces.jaquarius.system.ObjectHandleWrapper;
@@ -52,8 +52,8 @@ public class UnmovableObjectWrapperGenerator extends AbstractObjectWrapperGenera
   }
 
   @Override
-  protected ObjectForm getObjectForm() {
-    return ObjectForms.ObjectHandle;
+  protected ObjectReferenceForm getForm() {
+    return ObjectReferenceForms.ObjectHandle;
   }
 
   @Override
@@ -118,7 +118,7 @@ public class UnmovableObjectWrapperGenerator extends AbstractObjectWrapperGenera
 
   @Override
   protected Map<String, String> generateMethod(
-      MethodStatement domainMethod, ObjectForm targetForm, int methodOrdinal
+      MethodStatement domainMethod, ObjectReferenceForm targetForm, int methodOrdinal
   ) {
     if (ChannelFunctions.isMovingBasedChannel(domainMethod)) {
       return Map.of();

@@ -19,8 +19,8 @@ import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
 import tech.intellispaces.jaquarius.object.reference.MovabilityType;
 import tech.intellispaces.jaquarius.object.reference.MovabilityTypes;
 import tech.intellispaces.jaquarius.object.reference.MovableObjectHandle;
-import tech.intellispaces.jaquarius.object.reference.ObjectForm;
-import tech.intellispaces.jaquarius.object.reference.ObjectForms;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandles;
 import tech.intellispaces.jaquarius.object.reference.UnmovableObjectHandle;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
@@ -44,8 +44,8 @@ public class UnmovableDownwardObjectGenerator extends ConversionObjectGenerator 
   }
 
   @Override
-  protected ObjectForm getObjectForm() {
-    return ObjectForms.ObjectHandle;
+  protected ObjectReferenceForm getForm() {
+    return ObjectReferenceForms.ObjectHandle;
   }
 
   @Override
@@ -83,7 +83,7 @@ public class UnmovableDownwardObjectGenerator extends ConversionObjectGenerator 
     );
 
     String unmovableObjectHandleName = addImportAndGetSimpleName(
-        NameConventionFunctions.getUnmovableSimpleObjectTypename(superDomainType.targetType().className(), false));
+        NameConventionFunctions.getUnmovablePlainObjectTypename(superDomainType.targetType().className(), false));
 
     analyzeDomain();
     analyzeChildObjectHandleType();

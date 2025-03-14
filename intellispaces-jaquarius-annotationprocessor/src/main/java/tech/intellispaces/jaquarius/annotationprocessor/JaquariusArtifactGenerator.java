@@ -13,7 +13,7 @@ import tech.intellispaces.jaquarius.Jaquarius;
 import tech.intellispaces.jaquarius.annotation.Domain;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
 import tech.intellispaces.jaquarius.object.reference.MovabilityType;
-import tech.intellispaces.jaquarius.object.reference.ObjectForm;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceFunctions;
 import tech.intellispaces.jaquarius.settings.KeyDomainPurposes;
 
@@ -41,7 +41,7 @@ public abstract class JaquariusArtifactGenerator extends TemplatedJavaArtifactGe
 
     context.roundEnvironment().getElementsAnnotatedWith(Domain.class).stream()
         .map(e -> CustomTypes.of((TypeElement) e))
-        .map(c -> NameConventionFunctions.getUndefinedSimpleObjectTypename(c.canonicalName()))
+        .map(c -> NameConventionFunctions.getUndefinedPlainObjectTypename(c.canonicalName()))
         .forEach(this::addHiddenImport);
   }
 
@@ -76,7 +76,7 @@ public abstract class JaquariusArtifactGenerator extends TemplatedJavaArtifactGe
   }
 
   protected String buildObjectFormDeclaration(
-      TypeReference domainType, ObjectForm objectForm, MovabilityType movabilityType, boolean replaceKeyDomain
+      TypeReference domainType, ObjectReferenceForm objectForm, MovabilityType movabilityType, boolean replaceKeyDomain
   ) {
     return ObjectReferenceFunctions.getObjectFormDeclaration(
         domainType, objectForm, movabilityType, replaceKeyDomain, this::addImportAndGetSimpleName

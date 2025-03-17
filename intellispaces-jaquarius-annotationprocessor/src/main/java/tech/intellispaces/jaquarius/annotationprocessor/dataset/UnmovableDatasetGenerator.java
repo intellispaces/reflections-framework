@@ -3,6 +3,7 @@ package tech.intellispaces.jaquarius.annotationprocessor.dataset;
 import tech.intellispaces.commons.action.runnable.RunnableAction;
 import tech.intellispaces.commons.action.text.StringActions;
 import tech.intellispaces.commons.annotation.processor.ArtifactGeneratorContext;
+import tech.intellispaces.commons.collection.ArraysFunctions;
 import tech.intellispaces.commons.exception.NotImplementedExceptions;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.commons.reflection.customtype.CustomType;
@@ -12,6 +13,7 @@ import tech.intellispaces.commons.reflection.reference.NamedReference;
 import tech.intellispaces.commons.reflection.reference.TypeReference;
 import tech.intellispaces.commons.type.Type;
 import tech.intellispaces.commons.type.Types;
+import tech.intellispaces.jaquarius.annotation.Channel;
 import tech.intellispaces.jaquarius.annotation.Name;
 import tech.intellispaces.jaquarius.annotation.ObjectHandle;
 import tech.intellispaces.jaquarius.annotationprocessor.domain.AbstractObjectGenerator;
@@ -27,6 +29,7 @@ import tech.intellispaces.jaquarius.object.reference.UnmovableObjectHandle;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
 import tech.intellispaces.jaquarius.system.Modules;
 import tech.intellispaces.jaquarius.traverse.MappingTraverse;
+import tech.intellispaces.jaquarius.traverse.TraverseTypes;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -116,6 +119,9 @@ public class UnmovableDatasetGenerator extends AbstractObjectGenerator {
 
   private void analyzeProjections() {
     for (MethodStatement method : sourceArtifact().actualMethods()) {
+      if (isMovingMethod(method)) {
+        continue;
+      }
       TypeReference type = method.returnType().orElseThrow();
       String handleType = buildObjectFormDeclaration(type, ObjectReferenceForms.Plain, MovabilityTypes.Unmovable, true);
 
@@ -124,6 +130,16 @@ public class UnmovableDatasetGenerator extends AbstractObjectGenerator {
       properties.put("name", method.name());
       projectionProperties.add(properties);
     }
+  }
+
+  private boolean isMovingMethod(MethodStatement method) {
+    Optional<Channel> channel = method.selectAnnotation(Channel.class);
+    if (channel.isEmpty()) {
+      return true;
+    }
+    return ArraysFunctions.containsAny(
+        channel.orElseThrow().allowedTraverse(), TraverseTypes.Moving, TraverseTypes.MappingOfMoving
+    );
   }
 
   protected void analyzeTypeParams() {

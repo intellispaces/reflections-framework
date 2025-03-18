@@ -155,6 +155,16 @@ public class ObjectReferenceFunctions {
     };
   }
 
+  public static String getObjectFormTypename(
+      ObjectReferenceForm form, TypeReference type, Function<TypeReference, TypeReference> typeReplacer
+  ) {
+    return switch (ObjectReferenceForms.from(form)) {
+      case Plain -> getUndefinedPlainObjectTypename(type, typeReplacer);
+      case ObjectHandle -> getUndefinedObjectHandleTypename(type, typeReplacer);
+      default -> throw NotImplementedExceptions.withCode("UoXguA");
+    };
+  }
+
   public static String getUndefinedObjectHandleTypename(TypeReference domainType) {
     return getUndefinedObjectHandleTypename(domainType, Function.identity());
   }

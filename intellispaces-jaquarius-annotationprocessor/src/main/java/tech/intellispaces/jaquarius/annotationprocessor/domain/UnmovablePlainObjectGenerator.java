@@ -9,6 +9,7 @@ import tech.intellispaces.commons.reflection.reference.TypeReference;
 import tech.intellispaces.jaquarius.annotation.Movable;
 import tech.intellispaces.jaquarius.annotation.ObjectHandle;
 import tech.intellispaces.jaquarius.annotation.Unmovable;
+import tech.intellispaces.jaquarius.annotationprocessor.ArtifactTypes;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
 import tech.intellispaces.jaquarius.object.reference.MovabilityType;
 import tech.intellispaces.jaquarius.object.reference.MovabilityTypes;
@@ -19,6 +20,7 @@ import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
 import tech.intellispaces.jaquarius.traverse.TraverseType;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -41,6 +43,11 @@ public class UnmovablePlainObjectGenerator extends AbstractPlainObjectGenerator 
   @Override
   protected MovabilityType getMovabilityType() {
     return MovabilityTypes.Unmovable;
+  }
+
+  @Override
+  protected List<ArtifactTypes> relatedArtifactTypes() {
+    return List.of(ArtifactTypes.UnmovablePlainObject);
   }
 
   @Override

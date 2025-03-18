@@ -8,6 +8,7 @@ import tech.intellispaces.commons.reflection.reference.TypeReference;
 import tech.intellispaces.jaquarius.annotation.Movable;
 import tech.intellispaces.jaquarius.annotation.ObjectHandle;
 import tech.intellispaces.jaquarius.annotation.Unmovable;
+import tech.intellispaces.jaquarius.annotationprocessor.ArtifactTypes;
 import tech.intellispaces.jaquarius.channel.Channel0;
 import tech.intellispaces.jaquarius.channel.Channel1;
 import tech.intellispaces.jaquarius.channel.ChannelFunction0;
@@ -46,6 +47,11 @@ public class MovableObjectHandleGenerator extends AbstractObjectGenerator {
   @Override
   protected MovabilityType getMovabilityType() {
     return MovabilityTypes.Movable;
+  }
+
+  @Override
+  protected List<ArtifactTypes> relatedArtifactTypes() {
+    return List.of(ArtifactTypes.MovableObjectHandle);
   }
 
   @Override

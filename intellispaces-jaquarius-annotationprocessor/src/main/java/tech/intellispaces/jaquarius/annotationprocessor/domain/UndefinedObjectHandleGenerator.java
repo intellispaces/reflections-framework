@@ -9,6 +9,7 @@ import tech.intellispaces.commons.type.Type;
 import tech.intellispaces.commons.type.Types;
 import tech.intellispaces.jaquarius.annotation.Channel;
 import tech.intellispaces.jaquarius.annotation.ObjectHandle;
+import tech.intellispaces.jaquarius.annotationprocessor.ArtifactTypes;
 import tech.intellispaces.jaquarius.channel.Channel1;
 import tech.intellispaces.jaquarius.exception.TraverseException;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
@@ -22,6 +23,7 @@ import tech.intellispaces.jaquarius.traverse.MappingTraverse;
 import tech.intellispaces.jaquarius.traverse.TraverseType;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
 public class UndefinedObjectHandleGenerator extends AbstractObjectGenerator {
@@ -44,6 +46,11 @@ public class UndefinedObjectHandleGenerator extends AbstractObjectGenerator {
   @Override
   protected MovabilityType getMovabilityType() {
     return MovabilityTypes.Undefined;
+  }
+
+  @Override
+  protected List<ArtifactTypes> relatedArtifactTypes() {
+    return List.of(ArtifactTypes.UndefinedObjectHandle);
   }
 
   @Override
@@ -122,7 +129,33 @@ public class UndefinedObjectHandleGenerator extends AbstractObjectGenerator {
         .filter(DomainFunctions::isNotDomainClassGetter)
         .filter(m -> excludeDeepConversionMethods(m, customType))
         .filter(m -> !ChannelFunctions.isChannelMethod(m)
-            || ChannelFunctions.getTraverseTypes(m).stream().noneMatch(TraverseType::isMovingBased))
-        .filter(m -> m.hasAnnotation(Channel.class));
+            || ChannelFunctions.getTraverseTypes(m).stream().noneMatch(TraverseType::isMovingBased));
+  }
+
+  @Override
+  protected Map<String, String> generateMethod(
+      MethodStatement method, ObjectReferenceForm targetForm, int methodOrdinal
+  ) {
+    if (method.hasAnnotation(Channel.class)) {
+      return super.generateMethod(method, targetForm, methodOrdinal);
+    } else {
+      return buildCustomizeMethod(method);
+    }
+  }
+
+  private Map<String, String> buildCustomizeMethod(MethodStatement method) {
+    var sb = new StringBuilder();
+    appendMethodTypeParameters(sb, method);
+    appendMethodReturnType(sb, method);
+    sb.append(" ");
+    sb.append(method.name());
+    sb.append("(");
+    appendMethodParams(sb, method);
+    sb.append(")");
+    appendMethodExceptions(sb, method);
+    return Map.of(
+        "javadoc", buildGeneratedMethodJavadoc(method.owner().canonicalName(), method),
+        "declaration", sb.toString()
+    );
   }
 }

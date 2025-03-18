@@ -9,6 +9,7 @@ import tech.intellispaces.jaquarius.annotation.Channel;
 import tech.intellispaces.jaquarius.annotation.Movable;
 import tech.intellispaces.jaquarius.annotation.ObjectHandle;
 import tech.intellispaces.jaquarius.annotation.Unmovable;
+import tech.intellispaces.jaquarius.annotationprocessor.ArtifactTypes;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
 import tech.intellispaces.jaquarius.object.reference.MovabilityType;
 import tech.intellispaces.jaquarius.object.reference.MovabilityTypes;
@@ -19,6 +20,7 @@ import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
 import tech.intellispaces.jaquarius.traverse.TraverseType;
 
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
@@ -41,6 +43,11 @@ public class UndefinedPlainObjectGenerator extends AbstractPlainObjectGenerator 
   @Override
   protected MovabilityType getMovabilityType() {
     return MovabilityTypes.Undefined;
+  }
+
+  @Override
+  protected List<ArtifactTypes> relatedArtifactTypes() {
+    return List.of(ArtifactTypes.UndefinedPlainObject);
   }
 
   @Override
@@ -79,7 +86,8 @@ public class UndefinedPlainObjectGenerator extends AbstractPlainObjectGenerator 
         .filter(DomainFunctions::isNotDomainClassGetter)
         .filter(m -> excludeDeepConversionMethods(m, customType))
         .filter(m -> !ChannelFunctions.isChannelMethod(m)
-            || ChannelFunctions.getTraverseTypes(m).stream().noneMatch(TraverseType::isMovingBased));
+            || ChannelFunctions.getTraverseTypes(m).stream().noneMatch(TraverseType::isMovingBased))
+        .filter(m -> m.hasAnnotation(Channel.class));
   }
 
   @Override
@@ -89,11 +97,11 @@ public class UndefinedPlainObjectGenerator extends AbstractPlainObjectGenerator 
     if (method.hasAnnotation(Channel.class)) {
       return super.generateMethod(method, targetForm, methodOrdinal);
     } else {
-      return buildAdditionalMethod(method);
+      return buildCustomizeMethod(method);
     }
   }
 
-  private Map<String, String> buildAdditionalMethod(MethodStatement method) {
+  private Map<String, String> buildCustomizeMethod(MethodStatement method) {
     var sb = new StringBuilder();
     appendMethodTypeParameters(sb, method);
     appendMethodReturnType(sb, method);

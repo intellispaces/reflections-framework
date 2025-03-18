@@ -9,6 +9,7 @@ import tech.intellispaces.commons.type.Type;
 import tech.intellispaces.commons.type.Types;
 import tech.intellispaces.jaquarius.annotation.Ordinal;
 import tech.intellispaces.jaquarius.annotation.Wrapper;
+import tech.intellispaces.jaquarius.annotationprocessor.ArtifactTypes;
 import tech.intellispaces.jaquarius.channel.Channel1;
 import tech.intellispaces.jaquarius.channel.ChannelFunction0;
 import tech.intellispaces.jaquarius.channel.ChannelFunction1;
@@ -28,6 +29,7 @@ import tech.intellispaces.jaquarius.system.ObjectHandleWrapper;
 import tech.intellispaces.jaquarius.traverse.MappingTraverse;
 import tech.intellispaces.jaquarius.traverse.TraverseTypes;
 
+import java.util.List;
 import java.util.Map;
 
 public class UnmovableObjectWrapperGenerator extends AbstractObjectWrapperGenerator {
@@ -59,6 +61,11 @@ public class UnmovableObjectWrapperGenerator extends AbstractObjectWrapperGenera
   @Override
   protected MovabilityType getMovabilityType() {
     return MovabilityTypes.Unmovable;
+  }
+
+  @Override
+  protected List<ArtifactTypes> relatedArtifactTypes() {
+    return List.of(ArtifactTypes.UnmovableObjectWrapper, ArtifactTypes.UndefinedObjectHandle, ArtifactTypes.UndefinedPlainObject);
   }
 
   @Override

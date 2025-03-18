@@ -68,6 +68,8 @@ public abstract class AbstractObjectGenerator extends JaquariusArtifactGenerator
 
   abstract protected MovabilityType getMovabilityType();
 
+  abstract protected List<ArtifactTypes> relatedArtifactTypes();
+
   protected String movableClassSimpleName() {
     return addImportAndGetSimpleName(
         NameConventionFunctions.getMovableObjectHandleTypename(sourceArtifact().className(), false)
@@ -287,31 +289,47 @@ public abstract class AbstractObjectGenerator extends JaquariusArtifactGenerator
         .filter(m -> DomainFunctions.isDomainType(m.owner()));
   }
 
-  protected CustomType buildActualType(CustomType domain, ArtifactGeneratorContext context) {
-    InterfaceType domainInterface = domain.asInterfaceOrElseThrow();
+  protected CustomType buildActualType(CustomType domainType, ArtifactGeneratorContext context) {
+    InterfaceType domain = domainType.asInterfaceOrElseThrow();
 
-    var builder = Interfaces.build(domainInterface);
-    getAdditionalOMethods(domainInterface, context.roundEnvironment()).forEach(builder::addDeclaredMethod);
+    var builder = Interfaces.build(domain);
+    getAdditionalOMethods(domain, context.roundEnvironment()).forEach(builder::addDeclaredMethod);
 
     var extendedInterfaces = new ArrayList<CustomTypeReference>();
-    for (CustomTypeReference superDomain : domainInterface.extendedInterfaces()) {
+    for (CustomTypeReference superDomain : domain.extendedInterfaces()) {
       extendedInterfaces.add(
-          CustomTypeReferences.get(buildActualType( superDomain.targetType(), context), superDomain.typeArguments())
+          CustomTypeReferences.get(buildActualType(superDomain.targetType(), context), superDomain.typeArguments())
       );
     }
+    extendedInterfaces.addAll(getAdditionalInterfaces(domain, context.roundEnvironment()));
     builder.extendedInterfaces(extendedInterfaces);
     return builder.get();
   }
 
   private List<MethodStatement> getAdditionalOMethods(CustomType customType, RoundEnvironment roundEnv) {
     List<MethodStatement> methods = new ArrayList<>();
-    List<CustomType> artifactAddOns = ArtifactGenerationAnnotationFunctions.findArtifactCustomizers(
-        customType, ArtifactTypes.UndefinedSimpleObject, roundEnv
-    );
-    for (CustomType artifactAddOn : artifactAddOns) {
-      methods.addAll(artifactAddOn.declaredMethods());
+    for (ArtifactTypes artifactType : relatedArtifactTypes()) {
+      List<CustomType> customizers = ArtifactGenerationAnnotationFunctions.findArtifactCustomizers(
+          customType, artifactType, roundEnv
+      );
+      for (CustomType customizer : customizers) {
+        methods.addAll(customizer.declaredMethods());
+      }
     }
     return methods;
+  }
+
+  private List<CustomTypeReference> getAdditionalInterfaces(CustomType customType, RoundEnvironment roundEnv) {
+    var additionalInterfaces = new ArrayList<CustomTypeReference>();
+    for (ArtifactTypes artifactType : relatedArtifactTypes()) {
+      List<CustomType> customizers = ArtifactGenerationAnnotationFunctions.findArtifactCustomizers(
+          customType, artifactType, roundEnv
+      );
+      for (CustomType customizer : customizers) {
+        additionalInterfaces.addAll(customizer.parentTypes());
+      }
+    }
+    return additionalInterfaces;
   }
 
   protected String buildDomainType(CustomType domainType, List<NotPrimitiveReference> typeQualifiers) {

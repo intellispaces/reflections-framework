@@ -6,19 +6,19 @@ package tech.intellispaces.jaquarius.annotationprocessor;
 public enum ArtifactTypes {
 
   /**
-   * The movable simple object interface.
+   * The movable plain object interface.
    */
-  MovableSimpleObject,
+  MovablePlainObject,
 
   /**
-   * The unmovable simple object interface.
+   * The unmovable plain object interface.
    */
-  UnmovableSimpleObject,
+  UnmovablePlainObject,
 
   /**
-   * The undefined simple object interface.
+   * The undefined plain object interface.
    */
-  UndefinedSimpleObject,
+  UndefinedPlainObject,
 
   /**
    * The movable object handle interface.
@@ -53,5 +53,30 @@ public enum ArtifactTypes {
   /**
    * The mapper of moving guide interface.
    */
-  MapperOfMoving
+  MapperOfMoving,
+
+  /**
+   * The unmovable dataset interface.
+   */
+  UnmovableDataset,
+
+  /**
+   * The unmovable downward object class.
+   */
+  UnmovableDownwardObject,
+
+  /**
+   * The movable downward object class.
+   */
+  MovableDownwardObject,
+
+  /**
+   * The unmovable object wrapper class.
+   */
+  UnmovableObjectWrapper,
+
+  /**
+   * The movable object wrapper class.
+   */
+  MovableObjectWrapper
 }

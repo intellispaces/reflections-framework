@@ -16,6 +16,7 @@ import tech.intellispaces.commons.type.Types;
 import tech.intellispaces.jaquarius.annotation.Channel;
 import tech.intellispaces.jaquarius.annotation.Name;
 import tech.intellispaces.jaquarius.annotation.ObjectHandle;
+import tech.intellispaces.jaquarius.annotationprocessor.ArtifactTypes;
 import tech.intellispaces.jaquarius.annotationprocessor.domain.AbstractObjectGenerator;
 import tech.intellispaces.jaquarius.channel.Channel1;
 import tech.intellispaces.jaquarius.exception.TraverseException;
@@ -74,6 +75,11 @@ public class UnmovableDatasetGenerator extends AbstractObjectGenerator {
   }
 
   @Override
+  protected List<ArtifactTypes> relatedArtifactTypes() {
+    return List.of(ArtifactTypes.UnmovableDataset, ArtifactTypes.UndefinedPlainObject, ArtifactTypes.UndefinedObjectHandle);
+  }
+
+  @Override
   protected boolean analyzeSourceArtifact(ArtifactGeneratorContext context) {
     if (sourceArtifact().isNested()) {
       addImport(sourceArtifactName());
@@ -98,7 +104,8 @@ public class UnmovableDatasetGenerator extends AbstractObjectGenerator {
     analyzeTypeParams();
     analyzeProjections();
 
-    addVariable("objectHandleClassName", NameConventionFunctions.getUnmovablePlainObjectTypename(sourceArtifact().className(), true));
+    addVariable("objectHandleClassName", NameConventionFunctions.getUnmovableObjectHandleTypename(sourceArtifact().className(), true));
+    addVariable("movableObjectHandleClassName", NameConventionFunctions.getMovableObjectHandleTypename(sourceArtifact().className(), true));
     addVariable("typeParamsBrief", typeParamsBrief);
     addVariable("projections", projectionProperties);
     addVariable("domainType", domainType);
@@ -123,7 +130,7 @@ public class UnmovableDatasetGenerator extends AbstractObjectGenerator {
         continue;
       }
       TypeReference type = method.returnType().orElseThrow();
-      String handleType = buildObjectFormDeclaration(type, ObjectReferenceForms.Plain, MovabilityTypes.Unmovable, true);
+      String handleType = buildObjectFormDeclaration(type, ObjectReferenceForms.ObjectHandle, MovabilityTypes.Unmovable, true);
 
       Map<String, String> properties = new HashMap<>();
       properties.put("type", handleType);

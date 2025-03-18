@@ -13,7 +13,7 @@ import {{$importedClass}};
  */
 @ObjectHandle({{$sourceArtifactSimpleName}}.class)
 {{$generatedAnnotation}}
-public class {{$generatedArtifactSimpleName}} implements {{$objectHandleClassName}}, UnmovableObjectHandle<{{$sourceArtifactSimpleName}}{{$typeParamsBrief}}> {
+public class {{$generatedArtifactSimpleName}} implements {{$objectHandleClassName}} {
 {{for projection : $projections}}
   private final {{$projection."type"}} {{$projection."name"}};
 {{end}}
@@ -55,7 +55,7 @@ public class {{$generatedArtifactSimpleName}} implements {{$objectHandleClassNam
   }
 
   @Override
-  public MovableObjectHandle<{{$sourceArtifactSimpleName}}{{$typeParamsBrief}}> asMovableOrElseThrow() {
+  public {{$movableObjectHandleClassName}} asMovableOrElseThrow() {
     throw UnexpectedExceptions.withMessage("Unmovable object");
   }
 

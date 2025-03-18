@@ -73,12 +73,12 @@ public class {{$generatedArtifactSimpleName}}{{$classTypeParams}} implements {{$
 
   @Override
   public void release() {
-    ObjectHandles.handle({{$childField}}, {{$sourceArtifactSimpleName}}.class).release();
+    ObjectHandles.handleOf({{$childField}}, {{$sourceArtifactSimpleName}}.class).release();
   }
 
   @Override
   public <T, Q, C extends Channel1 & MappingTraverse> T mapThru(Class<C> channelClass, Q qualifier) throws TraverseException {
-    return (T) ObjectHandles.handle({{$childField}}, {{$sourceArtifactSimpleName}}.class).mapThru(channelClass, qualifier);
+    return (T) ObjectHandles.handleOf({{$childField}}, {{$sourceArtifactSimpleName}}.class).mapThru(channelClass, qualifier);
   }
 
   @Override
@@ -134,7 +134,7 @@ public class {{$generatedArtifactSimpleName}}{{$classTypeParams}} implements {{$
 
   @Override
   public <R, Q> R mapOfMovingThru(java.lang.String cid, Q qualifier) throws TraverseException {
-    return (R) ObjectHandles.movableHandle({{$childField}}, {{$sourceArtifactSimpleName}}.class).mapOfMovingThru(cid, qualifier);
+    return (R) ObjectHandles.movableHandleOf({{$childField}}, {{$sourceArtifactSimpleName}}.class).mapOfMovingThru(cid, qualifier);
   }
 
 {{when $isAlias}}
@@ -165,21 +165,21 @@ public class {{$generatedArtifactSimpleName}}{{$classTypeParams}} implements {{$
 
   @Override
   public <TD, TH> void addProjection(Class<TD> targetDomain, TH target) {
-    ObjectHandles.handle({{$childField}}, {{$sourceArtifactSimpleName}}.class).addProjection(targetDomain, target);
+    ObjectHandles.handleOf({{$childField}}, {{$sourceArtifactSimpleName}}.class).addProjection(targetDomain, target);
   }
 
   @Override
   public <TD, TH> TH mapTo(Class<TD> targetDomain) {
-    return ObjectHandles.handle({{$childField}}, {{$sourceArtifactSimpleName}}.class).mapTo(targetDomain);
+    return ObjectHandles.handleOf({{$childField}}, {{$sourceArtifactSimpleName}}.class).mapTo(targetDomain);
   }
 
   @Override
   public <R> R mapOfMovingThru(Class<? extends Channel0> channelClass) throws TraverseException {
-    return (R) ObjectHandles.movableHandle({{$childField}}, {{$sourceArtifactSimpleName}}.class).mapOfMovingThru(channelClass);
+    return (R) ObjectHandles.movableHandleOf({{$childField}}, {{$sourceArtifactSimpleName}}.class).mapOfMovingThru(channelClass);
   }
 
   @Override
   public <R, Q, C extends Channel1 & MappingOfMovingTraverse> R mapOfMovingThru(Class<C> channelClass, Q qualifier) throws TraverseException {
-    return (R) ObjectHandles.movableHandle({{$childField}}, {{$sourceArtifactSimpleName}}.class).mapOfMovingThru(channelClass, qualifier);
+    return (R) ObjectHandles.movableHandleOf({{$childField}}, {{$sourceArtifactSimpleName}}.class).mapOfMovingThru(channelClass, qualifier);
   }
 }

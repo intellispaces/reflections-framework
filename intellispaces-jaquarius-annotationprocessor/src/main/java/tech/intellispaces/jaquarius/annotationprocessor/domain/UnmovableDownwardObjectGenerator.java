@@ -10,6 +10,7 @@ import tech.intellispaces.commons.type.Type;
 import tech.intellispaces.commons.type.Types;
 import tech.intellispaces.jaquarius.annotation.Channel;
 import tech.intellispaces.jaquarius.annotation.ObjectHandle;
+import tech.intellispaces.jaquarius.annotationprocessor.ArtifactTypes;
 import tech.intellispaces.jaquarius.channel.Channel0;
 import tech.intellispaces.jaquarius.channel.Channel1;
 import tech.intellispaces.jaquarius.channel.ChannelFunction0;
@@ -27,6 +28,7 @@ import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
 import tech.intellispaces.jaquarius.traverse.MappingTraverse;
 import tech.intellispaces.jaquarius.traverse.TraverseTypes;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -51,6 +53,11 @@ public class UnmovableDownwardObjectGenerator extends ConversionObjectGenerator 
   @Override
   protected MovabilityType getMovabilityType() {
     return MovabilityTypes.Unmovable;
+  }
+
+  @Override
+  protected List<ArtifactTypes> relatedArtifactTypes() {
+    return List.of(ArtifactTypes.UnmovableDownwardObject, ArtifactTypes.UndefinedObjectHandle, ArtifactTypes.UndefinedPlainObject);
   }
 
   @Override

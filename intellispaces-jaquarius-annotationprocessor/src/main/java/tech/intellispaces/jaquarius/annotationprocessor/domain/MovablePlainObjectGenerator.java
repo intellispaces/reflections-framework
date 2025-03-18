@@ -8,6 +8,7 @@ import tech.intellispaces.commons.reflection.reference.TypeReference;
 import tech.intellispaces.jaquarius.annotation.Movable;
 import tech.intellispaces.jaquarius.annotation.ObjectHandle;
 import tech.intellispaces.jaquarius.annotation.Unmovable;
+import tech.intellispaces.jaquarius.annotationprocessor.ArtifactTypes;
 import tech.intellispaces.jaquarius.channel.Channel0;
 import tech.intellispaces.jaquarius.channel.Channel1;
 import tech.intellispaces.jaquarius.channel.ChannelFunction0;
@@ -24,6 +25,7 @@ import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
 import tech.intellispaces.jaquarius.traverse.MappingOfMovingTraverse;
 import tech.intellispaces.jaquarius.traverse.TraverseType;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -46,6 +48,11 @@ public class MovablePlainObjectGenerator extends AbstractPlainObjectGenerator {
   @Override
   protected MovabilityType getMovabilityType() {
     return MovabilityTypes.Movable;
+  }
+
+  @Override
+  protected List<ArtifactTypes> relatedArtifactTypes() {
+    return List.of(ArtifactTypes.MovablePlainObject);
   }
 
   @Override

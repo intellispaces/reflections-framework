@@ -66,13 +66,13 @@ public interface DomainProcessorFunctions {
   private static void addSimpleObjectGenerators(
       CustomType domainType, List<ArtifactGenerator> generators, RoundEnvironment roundEnv
   ) {
-    if (ArtifactGenerationAnnotationFunctions.isAutoGenerationEnabled(domainType, ArtifactTypes.UndefinedSimpleObject, roundEnv)) {
+    if (ArtifactGenerationAnnotationFunctions.isAutoGenerationEnabled(domainType, ArtifactTypes.UndefinedPlainObject, roundEnv)) {
       generators.add(new UndefinedPlainObjectGenerator(domainType));
     }
-    if (ArtifactGenerationAnnotationFunctions.isAutoGenerationEnabled(domainType, ArtifactTypes.MovableSimpleObject, roundEnv)) {
+    if (ArtifactGenerationAnnotationFunctions.isAutoGenerationEnabled(domainType, ArtifactTypes.MovablePlainObject, roundEnv)) {
       generators.add(new MovablePlainObjectGenerator(domainType));
     }
-    if (ArtifactGenerationAnnotationFunctions.isAutoGenerationEnabled(domainType, ArtifactTypes.UnmovableSimpleObject, roundEnv)) {
+    if (ArtifactGenerationAnnotationFunctions.isAutoGenerationEnabled(domainType, ArtifactTypes.UnmovablePlainObject, roundEnv)) {
       generators.add(new UnmovablePlainObjectGenerator(domainType));
     }
   }

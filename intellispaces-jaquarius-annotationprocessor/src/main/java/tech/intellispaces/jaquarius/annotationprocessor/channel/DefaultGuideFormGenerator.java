@@ -53,7 +53,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 
-public class GuideGenerator extends JaquariusArtifactGenerator {
+public class DefaultGuideFormGenerator extends JaquariusArtifactGenerator {
   private final ObjectReferenceForm targetForm;
   private final TraverseType traverseType;
   private final MethodStatement channelMethod;
@@ -64,7 +64,7 @@ public class GuideGenerator extends JaquariusArtifactGenerator {
   private String traverseMethodPrimitiveFormLong;
   private String traverseMethodPrimitiveFormDouble;
 
-  public GuideGenerator(
+  public DefaultGuideFormGenerator(
       ObjectReferenceForm targetForm,
       TraverseType traverseType,
       CustomType channelType,
@@ -148,7 +148,7 @@ public class GuideGenerator extends JaquariusArtifactGenerator {
       if (param.type().isPrimitiveReference()) {
         sb.append(param.type().asPrimitiveReferenceOrElseThrow().primitiveType().typename());
       } else {
-        sb.append(buildObjectHandleDeclaration(param.type(), Function.identity()));
+        sb.append(buildObjectHandleDeclaration(ObjectReferenceForms.Plain, param.type(), Function.identity()));
       }
       sb.append(" ");
       sb.append(param.name());
@@ -223,7 +223,7 @@ public class GuideGenerator extends JaquariusArtifactGenerator {
     }
     for (MethodParam param : getQualifierMethodParams()) {
       sb.append(", ");
-      sb.append(buildObjectHandleDeclaration(param.type(), this::replaceNamedReference));
+      sb.append(buildObjectHandleDeclaration(ObjectReferenceForms.Plain, param.type(), this::replaceNamedReference));
     }
     sb.append(">");
     return sb.toString();
@@ -253,7 +253,7 @@ public class GuideGenerator extends JaquariusArtifactGenerator {
     sb.append(" ").append("source");
     for (MethodParam param : getQualifierMethodParams()) {
       sb.append(", ");
-      sb.append(buildObjectHandleDeclaration(param.type(), this::replaceNamedReference));
+      sb.append(buildObjectHandleDeclaration(ObjectReferenceForms.Plain, param.type(), this::replaceNamedReference));
       sb.append(" ");
       sb.append(param.name());
     }
@@ -286,7 +286,7 @@ public class GuideGenerator extends JaquariusArtifactGenerator {
     sb.append(" ").append("source");
     for (MethodParam param : getQualifierMethodParams()) {
       sb.append(", ");
-      sb.append(buildObjectHandleDeclaration(param.type(), this::replaceNamedReference));
+      sb.append(buildObjectHandleDeclaration(ObjectReferenceForms.Plain, param.type(), this::replaceNamedReference));
       sb.append(" ");
       sb.append(param.name());
     }
@@ -303,7 +303,7 @@ public class GuideGenerator extends JaquariusArtifactGenerator {
     sb.append(" ").append("source");
     for (MethodParam param : getQualifierMethodParams()) {
       sb.append(", ");
-      sb.append(buildObjectHandleDeclaration(param.type(), this::replaceNamedReference));
+      sb.append(buildObjectHandleDeclaration(ObjectReferenceForms.Plain, param.type(), this::replaceNamedReference));
       sb.append(" ");
       sb.append(param.name());
     }
@@ -364,15 +364,18 @@ public class GuideGenerator extends JaquariusArtifactGenerator {
     }
   }
 
-  protected String buildSourceObjectHandleDeclaration(boolean full) {
+  private String buildSourceObjectHandleDeclaration(boolean full) {
     return buildSourceObjectHandleDeclaration(Function.identity(), full);
   }
 
-  protected String buildSourceObjectHandleDeclaration(
+  private String buildSourceObjectHandleDeclaration(
       Function<TypeReference, TypeReference> typeReplacer, boolean full
   ) {
     return buildObjectHandleDeclaration(
-        channelMethod.params().get(0).type().asCustomTypeReferenceOrElseThrow(), typeReplacer, full
+        ObjectReferenceForms.Plain,
+        channelMethod.params().get(0).type().asCustomTypeReferenceOrElseThrow(),
+        typeReplacer,
+        full
     );
   }
 
@@ -380,11 +383,11 @@ public class GuideGenerator extends JaquariusArtifactGenerator {
       Function<TypeReference, TypeReference> typeReplacer, boolean full
   ) {
     TypeReference returnType = channelMethod.returnType().orElseThrow();
-    return buildObjectHandleDeclaration(returnType, typeReplacer, full);
+    return buildObjectHandleDeclaration(ObjectReferenceForms.ObjectHandle, returnType, typeReplacer, full);
   }
 
   private String buildTargetObjectHandleFormDeclaration() {
-    if (ObjectReferenceForms.Plain.is(targetForm)) {
+    if (ObjectReferenceForms.ObjectHandle.is(targetForm)) {
       return buildTargetObjectHandleDeclaration(Function.identity(), false);
     } else if (ObjectReferenceForms.Primitive.is(targetForm)) {
       return ClassFunctions.primitiveTypenameOfWrapper(
@@ -396,14 +399,14 @@ public class GuideGenerator extends JaquariusArtifactGenerator {
     throw UnexpectedExceptions.withMessage("Not supported guide form - {0}", targetForm.name());
   }
 
-  protected String buildObjectHandleDeclaration(
-      TypeReference type, Function<TypeReference, TypeReference> typeReplacer
+  private String buildObjectHandleDeclaration(
+      ObjectReferenceForm form, TypeReference type, Function<TypeReference, TypeReference> typeReplacer
   ) {
-    return buildObjectHandleDeclaration(type, typeReplacer, true);
+    return buildObjectHandleDeclaration(form, type, typeReplacer, true);
   }
 
-  protected String buildObjectHandleDeclaration(
-      TypeReference type, Function<TypeReference, TypeReference> typeReplacer, boolean full
+  private String buildObjectHandleDeclaration(
+      ObjectReferenceForm form, TypeReference type, Function<TypeReference, TypeReference> typeReplacer, boolean full
   ) {
     type = typeReplacer.apply(type);
     if (type.isNamedReference()) {
@@ -417,13 +420,13 @@ public class GuideGenerator extends JaquariusArtifactGenerator {
       RunnableAction commaAppender = StringActions.skipFirstTimeCommaAppender(sb);
       for (ReferenceBound bound : namedReference.extendedBounds()) {
         commaAppender.run();
-        sb.append(buildObjectHandleDeclaration(bound, typeReplacer, true));
+        sb.append(buildObjectHandleDeclaration(form, bound, typeReplacer, true));
       }
       return sb.toString();
     } else if (type.isPrimitiveReference()) {
       return ClassFunctions.wrapperClassOfPrimitive(type.asPrimitiveReferenceOrElseThrow().typename()).getSimpleName();
     } else {
-      String canonicalName = ObjectReferenceFunctions.getUndefinedPlainObjectTypename(type, typeReplacer);
+      String canonicalName = ObjectReferenceFunctions.getObjectFormTypename(form, type, typeReplacer);
       String name = type.isCustomTypeReference() ? addImportAndGetSimpleName(canonicalName) : canonicalName;
       if (type.isCustomTypeReference() && !type.asCustomTypeReferenceOrElseThrow().typeArguments().isEmpty()) {
         var sb = new StringBuilder();
@@ -432,7 +435,7 @@ public class GuideGenerator extends JaquariusArtifactGenerator {
         RunnableAction commaAppender = StringActions.skipFirstTimeCommaAppender(sb);
         for (NotPrimitiveReference typeArg : type.asCustomTypeReferenceOrElseThrow().typeArguments()) {
           commaAppender.run();
-          sb.append(buildObjectHandleDeclaration(typeArg, typeReplacer, full));
+          sb.append(buildObjectHandleDeclaration(form, typeArg, typeReplacer, full));
         }
         sb.append(">");
         return sb.toString();

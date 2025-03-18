@@ -77,21 +77,21 @@ public class {{$generatedArtifactSimpleName}}{{$classTypeParams}} implements {{$
 {{end}}
   @Override
   public void release() {
-    ObjectHandles.handle({{$childField}}, {{$sourceArtifactSimpleName}}.class).release();
+    ObjectHandles.handleOf({{$childField}}, {{$sourceArtifactSimpleName}}.class).release();
   }
 
   @Override
   public <TD, TH> void addProjection(Class<TD> targetDomain, TH target) {
-    ObjectHandles.handle({{$childField}}, {{$sourceArtifactSimpleName}}.class).addProjection(targetDomain, target);
+    ObjectHandles.handleOf({{$childField}}, {{$sourceArtifactSimpleName}}.class).addProjection(targetDomain, target);
   }
 
   @Override
   public <TD, TH> TH mapTo(Class<TD> targetDomain) {
-    return ObjectHandles.handle({{$childField}}, {{$sourceArtifactSimpleName}}.class).mapTo(targetDomain);
+    return ObjectHandles.handleOf({{$childField}}, {{$sourceArtifactSimpleName}}.class).mapTo(targetDomain);
   }
 
   @Override
   public <T, Q, C extends Channel1 & MappingTraverse> T mapThru(Class<C> channelClass, Q qualifier) throws TraverseException {
-    return (T) ObjectHandles.handle({{$childField}}, {{$sourceArtifactSimpleName}}.class).mapThru(channelClass, qualifier);
+    return (T) ObjectHandles.handleOf({{$childField}}, {{$sourceArtifactSimpleName}}.class).mapThru(channelClass, qualifier);
   }
 }

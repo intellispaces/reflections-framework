@@ -53,7 +53,7 @@ abstract class ConversionObjectGenerator extends AbstractObjectGenerator {
   protected void analyzeDomain() {
     domainClassSimpleName = addImportAndGetSimpleName(superDomainType.targetType().canonicalName());
     domainTypeParamsBrief = superDomainType.targetType().typeParametersBriefDeclaration();
-    classTypeParams = ObjectReferenceFunctions.getObjectHandleTypeParams(
+    classTypeParams = ObjectReferenceFunctions.getObjectFormTypeParamDeclaration(
         sourceArtifact(), ObjectReferenceForms.ObjectHandle, MovabilityTypes.Undefined, this::addImportAndGetSimpleName, false, true
     );
     classTypeParamsBrief = sourceArtifact().typeParametersBriefDeclaration();

@@ -454,7 +454,7 @@ public class ObjectReferenceFunctions {
     }
   }
 
-  public static String getObjectHandleTypeParams(
+  public static String getObjectFormTypeParamDeclaration(
       CustomType domainType,
       ObjectReferenceForm objectForm,
       MovabilityType movabilityType,

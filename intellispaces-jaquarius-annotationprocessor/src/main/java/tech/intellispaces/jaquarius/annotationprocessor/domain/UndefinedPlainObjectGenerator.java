@@ -3,8 +3,13 @@ package tech.intellispaces.jaquarius.annotationprocessor.domain;
 import tech.intellispaces.commons.annotation.processor.ArtifactGeneratorContext;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.commons.reflection.customtype.CustomType;
+import tech.intellispaces.commons.reflection.instance.AnnotationInstance;
 import tech.intellispaces.commons.reflection.method.MethodStatement;
+import tech.intellispaces.commons.reflection.reference.CustomTypeReference;
+import tech.intellispaces.commons.reflection.reference.NotPrimitiveReference;
 import tech.intellispaces.commons.reflection.reference.TypeReference;
+import tech.intellispaces.commons.reflection.reference.TypeReferenceFunctions;
+import tech.intellispaces.jaquarius.annotation.ArtifactCustomizer;
 import tech.intellispaces.jaquarius.annotation.Channel;
 import tech.intellispaces.jaquarius.annotation.Movable;
 import tech.intellispaces.jaquarius.annotation.ObjectHandle;
@@ -15,11 +20,13 @@ import tech.intellispaces.jaquarius.object.reference.MovabilityType;
 import tech.intellispaces.jaquarius.object.reference.MovabilityTypes;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceFunctions;
 import tech.intellispaces.jaquarius.object.reference.UnmovableObjectHandle;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
 import tech.intellispaces.jaquarius.traverse.TraverseType;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -76,7 +83,34 @@ public class UndefinedPlainObjectGenerator extends AbstractPlainObjectGenerator 
 
     addVariable("handleTypeParamsFull", typeParamsFull);
     addVariable("domainMethods", methods);
+    addVariable("parents", getParents(context));
     return true;
+  }
+
+  private List<String> getParents(ArtifactGeneratorContext context) {
+    var parents = new ArrayList<String>();
+    for (CustomTypeReference parent : sourceArtifact().parentTypes()) {
+      parents.add(ObjectReferenceFunctions.geUndefinedPlainObjectDeclaration(parent, false, this::addImportAndGetSimpleName)
+      );
+    }
+    addExtraInterfaces(parents, context);
+    return parents;
+  }
+
+  private void addExtraInterfaces(ArrayList<String> parents, ArtifactGeneratorContext context) {
+    List<CustomType> customizers = findCustomizers(sourceArtifact(), context.roundEnvironment());
+    for (CustomType customizer : customizers) {
+      AnnotationInstance annotation = customizer.selectAnnotation(ArtifactCustomizer.class.getCanonicalName()).orElseThrow();
+      CustomType domain = annotation.valueOf("origin").orElseThrow().asClass().orElseThrow().type();
+      Map<String, NotPrimitiveReference> parentTypeArgumentMapping = TypeReferenceFunctions.getTypeArgumentMapping(
+          sourceArtifact(), domain
+      );
+      for (CustomTypeReference customizerParent : customizer.parentTypes()) {
+        parents.add(
+          customizerParent.effective(parentTypeArgumentMapping).actualDeclaration(this::addImportAndGetSimpleName)
+        );
+      }
+    }
   }
 
   @Override
@@ -86,8 +120,7 @@ public class UndefinedPlainObjectGenerator extends AbstractPlainObjectGenerator 
         .filter(DomainFunctions::isNotDomainClassGetter)
         .filter(m -> excludeDeepConversionMethods(m, customType))
         .filter(m -> !ChannelFunctions.isChannelMethod(m)
-            || ChannelFunctions.getTraverseTypes(m).stream().noneMatch(TraverseType::isMovingBased))
-        .filter(m -> m.hasAnnotation(Channel.class));
+            || ChannelFunctions.getTraverseTypes(m).stream().noneMatch(TraverseType::isMovingBased));
   }
 
   @Override

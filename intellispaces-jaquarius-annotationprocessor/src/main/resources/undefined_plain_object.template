@@ -10,7 +10,7 @@ import {{$importedClass}};
  * This class was generated automatically. Don't try to change it.
  */
 {{$generatedAnnotation}}
-public interface {{$generatedArtifactSimpleName}}{{$handleTypeParamsFull}} {
+public interface {{$generatedArtifactSimpleName}}{{$handleTypeParamsFull}}{{when $parents.isNotEmpty()}} extends {{for parent : $parents}}{{$parent}}{{when $parent.isNotLast()}}, {{end}}{{end}}{{end}} {
 
 {{for method : $domainMethods}}
   {{$method."javadoc"}}

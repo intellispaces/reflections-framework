@@ -393,6 +393,9 @@ abstract class AbstractObjectWrapperGenerator extends AbstractObjectGenerator {
   }
 
   private String buildGuideParamClassName(TypeReference type) {
+    if (type.isNamedReference()) {
+      return addImportAndGetSimpleName(Object.class.getCanonicalName());
+    }
     return ObjectReferenceFunctions.getObjectFormDeclaration(
         AnnotationGeneratorFunctions.normalizeType(type),
         ObjectReferenceForms.Plain,

@@ -77,10 +77,10 @@ public abstract class AbstractObjectGenerator extends JaquariusArtifactGenerator
   }
 
   protected void analyzeDomain() {
-    typeParamsFull = ObjectReferenceFunctions.getObjectHandleTypeParams(
+    typeParamsFull = ObjectReferenceFunctions.getObjectFormTypeParamDeclaration(
         sourceArtifact(), ObjectReferenceForms.Plain, MovabilityTypes.Undefined, this::addImportAndGetSimpleName, false, true
     );
-    typeParamsBrief = ObjectReferenceFunctions.getObjectHandleTypeParams(
+    typeParamsBrief = ObjectReferenceFunctions.getObjectFormTypeParamDeclaration(
         sourceArtifact(), ObjectReferenceForms.Plain, MovabilityTypes.Undefined, this::addImportAndGetSimpleName, false, false
     );
     domainTypeParamsFull = sourceArtifact().typeParametersFullDeclaration();
@@ -293,7 +293,7 @@ public abstract class AbstractObjectGenerator extends JaquariusArtifactGenerator
     InterfaceType domain = domainType.asInterfaceOrElseThrow();
 
     var builder = Interfaces.build(domain);
-    getAdditionalOMethods(domain, context.roundEnvironment()).forEach(builder::addDeclaredMethod);
+    findExtraOMethods(domain, context.roundEnvironment()).forEach(builder::addDeclaredMethod);
 
     var extendedInterfaces = new ArrayList<CustomTypeReference>();
     for (CustomTypeReference superDomain : domain.extendedInterfaces()) {
@@ -301,35 +301,32 @@ public abstract class AbstractObjectGenerator extends JaquariusArtifactGenerator
           CustomTypeReferences.get(buildActualType(superDomain.targetType(), context), superDomain.typeArguments())
       );
     }
-    extendedInterfaces.addAll(getAdditionalInterfaces(domain, context.roundEnvironment()));
     builder.extendedInterfaces(extendedInterfaces);
     return builder.get();
   }
 
-  private List<MethodStatement> getAdditionalOMethods(CustomType customType, RoundEnvironment roundEnv) {
+  protected List<CustomType> findCustomizers(CustomType domainType, RoundEnvironment roundEnv) {
+    var allCustomizers = new ArrayList<CustomType>();
+    for (ArtifactTypes artifactType : relatedArtifactTypes()) {
+      List<CustomType> customizers = ArtifactGenerationAnnotationFunctions.findArtifactCustomizers(
+          domainType, artifactType, roundEnv
+      );
+      allCustomizers.addAll(customizers);
+    }
+    return allCustomizers;
+  }
+
+  private List<MethodStatement> findExtraOMethods(CustomType domainType, RoundEnvironment roundEnv) {
     List<MethodStatement> methods = new ArrayList<>();
     for (ArtifactTypes artifactType : relatedArtifactTypes()) {
       List<CustomType> customizers = ArtifactGenerationAnnotationFunctions.findArtifactCustomizers(
-          customType, artifactType, roundEnv
+          domainType, artifactType, roundEnv
       );
       for (CustomType customizer : customizers) {
         methods.addAll(customizer.declaredMethods());
       }
     }
     return methods;
-  }
-
-  private List<CustomTypeReference> getAdditionalInterfaces(CustomType customType, RoundEnvironment roundEnv) {
-    var additionalInterfaces = new ArrayList<CustomTypeReference>();
-    for (ArtifactTypes artifactType : relatedArtifactTypes()) {
-      List<CustomType> customizers = ArtifactGenerationAnnotationFunctions.findArtifactCustomizers(
-          customType, artifactType, roundEnv
-      );
-      for (CustomType customizer : customizers) {
-        additionalInterfaces.addAll(customizer.parentTypes());
-      }
-    }
-    return additionalInterfaces;
   }
 
   protected String buildDomainType(CustomType domainType, List<NotPrimitiveReference> typeQualifiers) {

@@ -78,5 +78,15 @@ public enum ArtifactTypes {
   /**
    * The movable object wrapper class.
    */
-  MovableObjectWrapper
+  MovableObjectWrapper,
+
+  /**
+   * The object provider.
+   */
+  ObjectProvider,
+
+  /**
+   * The dataset builder.
+   */
+  DatasetBuilder
 }

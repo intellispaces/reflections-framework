@@ -7,7 +7,7 @@ import tech.intellispaces.commons.annotation.processor.ArtifactProcessor;
 import tech.intellispaces.commons.annotation.processor.ArtifactValidator;
 import tech.intellispaces.commons.reflection.customtype.CustomType;
 import tech.intellispaces.jaquarius.annotation.Dataset;
-import tech.intellispaces.jaquarius.annotationprocessor.ArtifactGenerationAnnotationFunctions;
+import tech.intellispaces.jaquarius.annotationprocessor.AnnotationFunctions;
 import tech.intellispaces.jaquarius.annotationprocessor.JaquariusArtifactProcessor;
 
 import javax.annotation.processing.Processor;
@@ -23,7 +23,7 @@ public class DatasetProcessor extends ArtifactProcessor {
 
   @Override
   public boolean isApplicable(CustomType dataType) {
-    return ArtifactGenerationAnnotationFunctions.isAutoGenerationEnabled(dataType);
+    return AnnotationFunctions.isAutoGenerationEnabled(dataType);
   }
 
   @Override
@@ -32,7 +32,10 @@ public class DatasetProcessor extends ArtifactProcessor {
   }
 
   @Override
-  public List<ArtifactGenerator> makeGenerators(CustomType dataType, ArtifactGeneratorContext jobContext) {
-    return List.of(new UnmovableDatasetGenerator(dataType));
+  public List<ArtifactGenerator> makeGenerators(CustomType domainType, ArtifactGeneratorContext jobContext) {
+    return List.of(
+        new UnmovableDatasetGenerator(domainType),
+        new DatasetBuilderGenerator(domainType)
+    );
   }
 }

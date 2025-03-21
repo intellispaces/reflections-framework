@@ -7,7 +7,7 @@ import tech.intellispaces.commons.annotation.processor.ArtifactProcessor;
 import tech.intellispaces.commons.annotation.processor.ArtifactValidator;
 import tech.intellispaces.commons.reflection.customtype.CustomType;
 import tech.intellispaces.jaquarius.annotation.ObjectHandle;
-import tech.intellispaces.jaquarius.annotationprocessor.ArtifactGenerationAnnotationFunctions;
+import tech.intellispaces.jaquarius.annotationprocessor.AnnotationFunctions;
 import tech.intellispaces.jaquarius.annotationprocessor.JaquariusArtifactProcessor;
 
 import javax.annotation.processing.Processor;
@@ -23,7 +23,7 @@ public class ObjectHandleProcessor extends ArtifactProcessor {
 
   @Override
   public boolean isApplicable(CustomType objectHandleType) {
-    return objectHandleType.isAbstract() && ArtifactGenerationAnnotationFunctions.isAutoGenerationEnabled(objectHandleType);
+    return objectHandleType.isAbstract() && AnnotationFunctions.isAutoGenerationEnabled(objectHandleType);
   }
 
   @Override

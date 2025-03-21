@@ -72,6 +72,11 @@ public interface NameConventionFunctions {
     return StringFunctions.replaceTailOrElseThrow(transformClassName(domainClassName), "Domain", "Handle");
   }
 
+  static String getUnmovableObjectHandleTypename(String domainClassName) {
+    return ClassNameFunctions.addPrefixToSimpleName("Unmovable",
+        StringFunctions.replaceTailOrElseThrow(transformClassName(domainClassName), "Domain", "Handle"));
+  }
+
   static String getUnmovablePlainObjectTypename(String domainClassName, boolean replaceKeyDomain) {
     if (replaceKeyDomain) {
       KeyDomain keyDomain = Jaquarius.settings().getKeyDomainByName(convertToDomainName(domainClassName));
@@ -162,8 +167,13 @@ public interface NameConventionFunctions {
     return StringFunctions.replaceSingleOrElseThrow(transformClassName(guideClassName), "Guide", "AutoGuide");
   }
 
-  static String getDatasetClassName(String domainClassName) {
-    return StringFunctions.replaceTailOrElseThrow(transformClassName(domainClassName), "Domain", "Dataset");
+  static String getUnmovableDatasetClassName(String domainClassName) {
+    return ClassNameFunctions.addPrefixToSimpleName("Unmovable",
+      StringFunctions.replaceTailOrElseThrow(transformClassName(domainClassName), "Domain", "Dataset"));
+  }
+
+  static String getDatasetBuilderCanonicalName(String domainClassName) {
+    return StringFunctions.replaceTailOrElseThrow(transformClassName(domainClassName), "Domain", "Builder");
   }
 
   static String getChannelClassCanonicalName(MethodStatement channelMethod) {
@@ -326,6 +336,11 @@ public interface NameConventionFunctions {
       name = name + "AsObject";
     }
     return name;
+  }
+
+  static String getObjectProviderCanonicalName(CustomType domainType) {
+    String name = StringFunctions.removeTailOrElseThrow(domainType.canonicalName(), "Domain");
+    return name + "s";
   }
 
   static boolean isPrimitiveTargetForm(MethodStatement method) {

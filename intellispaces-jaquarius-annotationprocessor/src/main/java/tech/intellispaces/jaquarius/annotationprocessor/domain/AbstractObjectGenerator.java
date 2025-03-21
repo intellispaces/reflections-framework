@@ -22,7 +22,7 @@ import tech.intellispaces.jaquarius.Jaquarius;
 import tech.intellispaces.jaquarius.annotation.Movable;
 import tech.intellispaces.jaquarius.annotation.Unmovable;
 import tech.intellispaces.jaquarius.annotationprocessor.AnnotationGeneratorFunctions;
-import tech.intellispaces.jaquarius.annotationprocessor.ArtifactGenerationAnnotationFunctions;
+import tech.intellispaces.jaquarius.annotationprocessor.AnnotationFunctions;
 import tech.intellispaces.jaquarius.annotationprocessor.ArtifactTypes;
 import tech.intellispaces.jaquarius.annotationprocessor.JaquariusArtifactGenerator;
 import tech.intellispaces.jaquarius.exception.TraverseException;
@@ -308,7 +308,7 @@ public abstract class AbstractObjectGenerator extends JaquariusArtifactGenerator
   protected List<CustomType> findCustomizers(CustomType domainType, RoundEnvironment roundEnv) {
     var allCustomizers = new ArrayList<CustomType>();
     for (ArtifactTypes artifactType : relatedArtifactTypes()) {
-      List<CustomType> customizers = ArtifactGenerationAnnotationFunctions.findArtifactCustomizers(
+      List<CustomType> customizers = AnnotationFunctions.findArtifactCustomizers(
           domainType, artifactType, roundEnv
       );
       allCustomizers.addAll(customizers);
@@ -319,7 +319,7 @@ public abstract class AbstractObjectGenerator extends JaquariusArtifactGenerator
   private List<MethodStatement> findExtraOMethods(CustomType domainType, RoundEnvironment roundEnv) {
     List<MethodStatement> methods = new ArrayList<>();
     for (ArtifactTypes artifactType : relatedArtifactTypes()) {
-      List<CustomType> customizers = ArtifactGenerationAnnotationFunctions.findArtifactCustomizers(
+      List<CustomType> customizers = AnnotationFunctions.findArtifactCustomizers(
           domainType, artifactType, roundEnv
       );
       for (CustomType customizer : customizers) {

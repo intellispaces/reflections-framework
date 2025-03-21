@@ -1,0 +1,20 @@
+package {{$generatedArtifactPackageName}};
+
+{{for importedClass : $importedClasses}}
+import {{$importedClass}};
+{{end}}
+
+/**
+ * The provider of objects of domain  {@link {{$sourceArtifactSimpleName}}}.
+ * <p>
+ * This class was generated automatically. Don't try to change it.
+ */
+{{$generatedAnnotation}}
+public interface {{$generatedArtifactSimpleName}} {
+
+{{when $isDataset}}
+  static {{$datasetBuilderSimpleName}} build() {
+    return new {{$datasetBuilderSimpleName}}();
+  }
+{{end}}
+}

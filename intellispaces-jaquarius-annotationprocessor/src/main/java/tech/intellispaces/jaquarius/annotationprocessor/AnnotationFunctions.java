@@ -3,6 +3,7 @@ package tech.intellispaces.jaquarius.annotationprocessor;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.commons.reflection.AnnotatedStatement;
 import tech.intellispaces.commons.reflection.JavaStatements;
+import tech.intellispaces.commons.reflection.customtype.AnnotationType;
 import tech.intellispaces.commons.reflection.customtype.CustomType;
 import tech.intellispaces.commons.reflection.instance.AnnotationInstance;
 import tech.intellispaces.commons.reflection.instance.ClassInstance;
@@ -14,13 +15,16 @@ import tech.intellispaces.jaquarius.annotation.ArtifactCustomizer;
 import tech.intellispaces.jaquarius.annotation.ArtifactGeneration;
 
 import javax.annotation.processing.RoundEnvironment;
+import java.lang.annotation.Annotation;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * Functions related to artifact generation annotations.
  */
-public interface ArtifactGenerationAnnotationFunctions {
+public interface AnnotationFunctions {
 
   static boolean isAutoGenerationEnabled(CustomType annotatedType) {
     return annotatedType.selectAnnotation(ArtifactGeneration.class)
@@ -41,7 +45,7 @@ public interface ArtifactGenerationAnnotationFunctions {
     if (preprocessingAnnotations.isEmpty()) {
       return true;
     }
-    return preprocessingAnnotations.stream().allMatch(ArtifactGenerationAnnotationFunctions::isArtifactGenerationEnabled);
+    return preprocessingAnnotations.stream().allMatch(AnnotationFunctions::isArtifactGenerationEnabled);
   }
 
   static Class<?> getAnnotationProcessorClass(AnnotationProcessor annotationProcessor) {
@@ -124,5 +128,28 @@ public interface ArtifactGenerationAnnotationFunctions {
         .asPrimitive().orElseThrow()
         .value();
     return (Boolean.TRUE == enabled);
+  }
+
+  static boolean isAssignableAnnotation(AnnotatedStatement type, Class<? extends Annotation> annotationClass) {
+    return isAssignableAnnotation(type, annotationClass, new HashSet<>());
+  }
+
+  private static boolean isAssignableAnnotation(
+      AnnotatedStatement type, Class<? extends Annotation> annotationClass, Set<String> history
+  ) {
+    if (!history.add(((CustomType) type).canonicalName())) {
+      return false;
+    }
+
+    if (type.hasAnnotation(annotationClass)) {
+      return true;
+    }
+
+    for (AnnotationInstance annotation : type.annotations()) {
+      if (isAssignableAnnotation(annotation.annotationStatement(), annotationClass, history)) {
+        return true;
+      }
+    }
+    return false;
   }
 }

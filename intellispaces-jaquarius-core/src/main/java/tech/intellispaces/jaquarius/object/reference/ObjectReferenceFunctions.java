@@ -217,6 +217,13 @@ public class ObjectReferenceFunctions {
     return NameConventionFunctions.getUndefinedObjectHandleTypename(domainType.className());
   }
 
+  public static String getUnmovableObjectHandleTypename(CustomType domainType) {
+    if (isDefaultObjectHandleType(domainType)) {
+      return domainType.canonicalName();
+    }
+    return NameConventionFunctions.getUnmovableObjectHandleTypename(domainType.className());
+  }
+
   public static String getObjectTypename(
       CustomType customType, ObjectReferenceForm objectForm, MovabilityType movabilityType, boolean replaceKeyDomain
   ) {

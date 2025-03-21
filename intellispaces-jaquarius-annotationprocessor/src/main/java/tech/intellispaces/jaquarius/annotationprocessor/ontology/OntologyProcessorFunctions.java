@@ -5,7 +5,7 @@ import tech.intellispaces.commons.annotation.processor.ArtifactGeneratorContext;
 import tech.intellispaces.commons.reflection.customtype.CustomType;
 import tech.intellispaces.commons.reflection.method.MethodStatement;
 import tech.intellispaces.jaquarius.annotation.Channel;
-import tech.intellispaces.jaquarius.annotationprocessor.ArtifactGenerationAnnotationFunctions;
+import tech.intellispaces.jaquarius.annotationprocessor.AnnotationFunctions;
 import tech.intellispaces.jaquarius.annotationprocessor.ArtifactTypes;
 
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ public interface OntologyProcessorFunctions {
       if (!method.hasAnnotation(Channel.class)) {
         continue;
       }
-      if (ArtifactGenerationAnnotationFunctions.isAutoGenerationEnabled(
+      if (AnnotationFunctions.isAutoGenerationEnabled(
           ontologyType, ArtifactTypes.Channel, context.roundEnvironment()
       )) {
         generators.add(new OntologyChannelGenerator(

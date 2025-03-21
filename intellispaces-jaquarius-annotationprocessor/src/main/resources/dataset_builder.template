@@ -1,0 +1,32 @@
+package {{$generatedArtifactPackageName}};
+
+{{for importedClass : $importedClasses}}
+import {{$importedClass}};
+{{end}}
+
+/**
+ * The builder of objects of domain  {@link {{$sourceArtifactSimpleName}}}.
+ * <p>
+ * This class was generated automatically. Don't try to change it.
+ */
+{{$generatedAnnotation}}
+public class {{$generatedArtifactSimpleName}} {
+{{for projection : $projections}}
+  private {{$projection."type"}} {{$projection."name"}};
+{{end}}
+
+{{for projection : $projections}}
+  public {{$generatedArtifactSimpleName}} {{$projection."name"}}({{$projection."type"}} {{$projection."name"}}) {
+    this.{{$projection."name"}} = {{$projection."name"}};
+    return this;
+  }
+
+{{end}}
+  public {{$unmovableObjectHandleSimpleName}} getUnmovable() {
+    return new {{$unmovableDatasetSimpleName}}(
+{{for projection : $projections}}
+      this.{{$projection."name"}}{{when $projection.isNotLast()}},{{end}}
+{{end}}
+    );
+  }
+}

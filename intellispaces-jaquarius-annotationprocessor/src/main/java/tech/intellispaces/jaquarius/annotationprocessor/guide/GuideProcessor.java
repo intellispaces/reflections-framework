@@ -7,7 +7,7 @@ import tech.intellispaces.commons.annotation.processor.ArtifactProcessor;
 import tech.intellispaces.commons.annotation.processor.ArtifactValidator;
 import tech.intellispaces.commons.reflection.customtype.CustomType;
 import tech.intellispaces.jaquarius.annotation.Guide;
-import tech.intellispaces.jaquarius.annotationprocessor.ArtifactGenerationAnnotationFunctions;
+import tech.intellispaces.jaquarius.annotationprocessor.AnnotationFunctions;
 import tech.intellispaces.jaquarius.annotationprocessor.JaquariusArtifactProcessor;
 import tech.intellispaces.jaquarius.annotationprocessor.module.UnitWrapperGenerator;
 
@@ -25,7 +25,7 @@ public class GuideProcessor extends ArtifactProcessor {
 
   @Override
   public boolean isApplicable(CustomType moduleType) {
-    return ArtifactGenerationAnnotationFunctions.isAutoGenerationEnabled(moduleType);
+    return AnnotationFunctions.isAutoGenerationEnabled(moduleType);
   }
 
   @Override

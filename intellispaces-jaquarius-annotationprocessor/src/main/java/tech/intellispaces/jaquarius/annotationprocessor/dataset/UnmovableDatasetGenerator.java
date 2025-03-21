@@ -56,7 +56,7 @@ public class UnmovableDatasetGenerator extends AbstractObjectGenerator {
 
   @Override
   public String generatedArtifactName() {
-    return NameConventionFunctions.getDatasetClassName(sourceArtifact().className());
+    return NameConventionFunctions.getUnmovableDatasetClassName(sourceArtifact().className());
   }
 
   @Override

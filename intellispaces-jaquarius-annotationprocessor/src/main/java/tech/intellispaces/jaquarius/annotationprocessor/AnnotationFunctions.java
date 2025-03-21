@@ -3,7 +3,6 @@ package tech.intellispaces.jaquarius.annotationprocessor;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.commons.reflection.AnnotatedStatement;
 import tech.intellispaces.commons.reflection.JavaStatements;
-import tech.intellispaces.commons.reflection.customtype.AnnotationType;
 import tech.intellispaces.commons.reflection.customtype.CustomType;
 import tech.intellispaces.commons.reflection.instance.AnnotationInstance;
 import tech.intellispaces.commons.reflection.instance.ClassInstance;

@@ -19,13 +19,13 @@ import java.util.List;
 public class JaquariusSettingsFunctions {
 
   public static Dictionary readSettingsDictionary(String baseDirectory) throws IOException {
-    var path = Paths.get(baseDirectory, "src/main/resources/META-INF/jaquarius.properties");
+    var path = Paths.get(baseDirectory, "src/main/resources/META-INF/intellispaces/jaquarius.properties");
     String content = Files.readString(path, StandardCharsets.UTF_8);
     return Dictionaries.ofProperties(content);
   }
 
   public static Dictionary readSettingsDictionary(ClassLoader classLoader) throws IOException {
-    Enumeration<URL> enumeration = classLoader.getResources("META-INF/jaquarius.properties");
+    Enumeration<URL> enumeration = classLoader.getResources("META-INF/intellispaces/jaquarius.properties");
     List<URL> urls = CollectionFunctions.toList(enumeration);
     List<Dictionary> dictionaries = CollectionFunctions.mapEach(urls, url -> Dictionaries.ofProperties(
         ResourceFunctions.readResourceAsString(url)));
@@ -35,7 +35,7 @@ public class JaquariusSettingsFunctions {
     if (dictionaries.size() == 1) {
       return dictionaries.get(0);
     }
-    throw ConfigurationExceptions.withMessage("Multiple jaquarius.properties files are found in classpath");
+    throw ConfigurationExceptions.withMessage("Multiple intellispaces/jaquarius.properties files are found in classpath");
   }
 
   public static JaquariusSettings buildSettings(Dictionary dictionary) {

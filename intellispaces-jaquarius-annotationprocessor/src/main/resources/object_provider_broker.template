@@ -1,0 +1,32 @@
+package {{$generatedArtifactPackageName}};
+
+{{for importedClass : $importedClasses}}
+import {{$importedClass}};
+{{end}}
+
+/**
+ * The object provider broker. Domain  {@link {{$sourceArtifactSimpleName}}}.
+ * <p>
+ * This class was generated automatically. Don't try to change it.
+ */
+{{$generatedAnnotation}}
+public class {{$generatedArtifactSimpleName}} implements {{for customizer : $customizers}}{{$customizer}}{{when $customizer.isNotLast()}}, {{end}}{{end}} {
+
+{{for method : $customizeMethods}}
+  public {{$method."signature"}} {
+    return ({{$method."returnTypeDeclaration"}}) {{$method."actionName"}}.execute({{$method."paramNames"}});
+  }
+
+{{end}}
+{{for method : $customizeMethods}}
+  private final {{$method."actionType"}} {{$method."actionName"}} = JaquariusEngines.get().objectProviderAction(
+    {{$method."returnDomainClass"}}.class,
+    "{{$method."contractType"}}",
+{{for paramType : $method."paramTypes"}}
+    {{$paramType}},
+{{end}}
+    {{$method."returnType"}}
+  );
+
+{{end}}
+}

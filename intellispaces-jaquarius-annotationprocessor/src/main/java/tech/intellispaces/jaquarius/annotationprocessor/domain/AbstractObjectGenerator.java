@@ -293,7 +293,7 @@ public abstract class AbstractObjectGenerator extends JaquariusArtifactGenerator
     InterfaceType domain = domainType.asInterfaceOrElseThrow();
 
     var builder = Interfaces.build(domain);
-    findExtraOMethods(domain, context.roundEnvironment()).forEach(builder::addDeclaredMethod);
+    findExtraOMethods(domain, context.initialRoundEnvironment()).forEach(builder::addDeclaredMethod);
 
     var extendedInterfaces = new ArrayList<CustomTypeReference>();
     for (CustomTypeReference superDomain : domain.extendedInterfaces()) {

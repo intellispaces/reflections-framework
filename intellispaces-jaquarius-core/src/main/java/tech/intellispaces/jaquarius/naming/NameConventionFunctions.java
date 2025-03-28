@@ -198,6 +198,10 @@ public interface NameConventionFunctions {
     return assignChannelClassCanonicalName(spaceName, domain, channelMethod);
   }
 
+  static String getObjectProviderWrapperClassName(String objectProviderClassName) {
+    return transformClassName(objectProviderClassName) + "Wrapper";
+  }
+
   static String getUnmovableUpwardObjectTypename(CustomType domainType, CustomType baseDomainType) {
     String packageName = ClassNameFunctions.getPackageName(domainType.canonicalName());
     String simpleName = StringFunctions.removeTailOrElseThrow(domainType.simpleName(), "Domain") +
@@ -341,6 +345,11 @@ public interface NameConventionFunctions {
   static String getObjectProviderCanonicalName(CustomType domainType) {
     String name = StringFunctions.removeTailOrElseThrow(domainType.canonicalName(), "Domain");
     return name + "s";
+  }
+
+  static String getObjectProviderBrokerCanonicalName(CustomType domainType) {
+    String name = StringFunctions.removeTailOrElseThrow(domainType.canonicalName(), "Domain");
+    return name + "sBroker";
   }
 
   static boolean isPrimitiveTargetForm(MethodStatement method) {

@@ -461,7 +461,7 @@ public class ObjectReferenceFunctions {
     }
   }
 
-  public static String getObjectFormTypeParamDeclaration(
+  public static List<String> getObjectFormTypeParamDeclarations(
       CustomType domainType,
       ObjectReferenceForm objectForm,
       MovabilityType movabilityType,
@@ -470,17 +470,15 @@ public class ObjectReferenceFunctions {
       boolean full
   ) {
     if (domainType.typeParameters().isEmpty()) {
-      return "";
+      return List.of();
     }
 
-    var sb = new StringBuilder();
-    RunnableAction commaAppender = StringActions.skipFirstTimeCommaAppender(sb);
-    sb.append("<");
+    var params = new ArrayList<String>();
     for (NamedReference namedReference : domainType.typeParameters()) {
-      commaAppender.run();
       if (!full || namedReference.extendedBounds().isEmpty()) {
-        sb.append(namedReference.name());
+        params.add(namedReference.name());
       } else {
+        var sb = new StringBuilder();
         sb.append(namedReference.name());
         sb.append(" extends ");
         RunnableAction boundCommaAppender = StringActions.skipFirstTimeCommaAppender(sb);
@@ -488,7 +486,33 @@ public class ObjectReferenceFunctions {
           boundCommaAppender.run();
           sb.append(getObjectFormDeclaration(bound, objectForm, movabilityType, true, replaceKeyDomain, simpleNameMapping));
         }
+        params.add(sb.toString());
       }
+    }
+    return params;
+  }
+
+  public static String getObjectFormTypeParamDeclaration(
+      CustomType domainType,
+      ObjectReferenceForm objectForm,
+      MovabilityType movabilityType,
+      Function<String, String> simpleNameMapping,
+      boolean replaceKeyDomain,
+      boolean full
+  ) {
+    List<String> params = getObjectFormTypeParamDeclarations(
+        domainType, objectForm, movabilityType, simpleNameMapping, replaceKeyDomain, full
+    );
+    if (params.isEmpty()) {
+      return "";
+    }
+
+    var sb = new StringBuilder();
+    sb.append("<");
+    RunnableAction commaAppender = StringActions.skipFirstTimeCommaAppender(sb);
+    for (String param : params) {
+      commaAppender.run();
+      sb.append(param);
     }
     sb.append(">");
     return sb.toString();

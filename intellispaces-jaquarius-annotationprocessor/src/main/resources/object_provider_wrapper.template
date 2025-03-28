@@ -1,0 +1,34 @@
+package {{$generatedArtifactPackageName}};
+
+{{for importedClass : $importedClasses}}
+import {{$importedClass}};
+{{end}}
+
+/**
+ * The object provider wrapper.
+ * <p>
+ * This class was generated automatically. Don't try to change it.
+ */
+{{$generatedAnnotation}}
+public class {{$generatedArtifactSimpleName}} extends {{$sourceArtifactSimpleName}} implements ObjectProviderWrapper {
+
+  @Override
+  public List<ObjectProviderMethodDescription> methods() {
+    var methods = new ArrayList<ObjectProviderMethodDescription>();
+{{for method : $providerMethods}}
+    methods.add(
+      ObjectProviderMethods.objectProviderMethod(
+        this,
+        "{{$method."name"}}",
+        {{$method."returnedType"}},
+        {{$method."returnedDomainClass"}}.class,
+{{for paramType : $method."paramParamTypes"}}
+        {{$paramType}},
+{{end}}
+        {{$generatedArtifactSimpleName}}::{{$method."name"}}
+      )
+    );
+{{end}}
+    return methods;
+  }
+}

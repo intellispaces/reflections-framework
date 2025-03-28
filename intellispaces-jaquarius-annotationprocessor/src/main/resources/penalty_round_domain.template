@@ -1,0 +1,10 @@
+package {{$generatedArtifactPackageName}};
+
+{{for importedClass : $importedClasses}}
+import {{$importedClass}};
+{{end}}
+
+@Ignore
+@Domain("{{$did}}")
+public interface {{$generatedArtifactSimpleName}} {
+}

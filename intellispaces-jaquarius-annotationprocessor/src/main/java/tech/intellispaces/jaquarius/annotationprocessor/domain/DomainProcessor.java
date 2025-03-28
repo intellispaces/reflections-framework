@@ -13,9 +13,11 @@ import tech.intellispaces.jaquarius.annotationprocessor.JaquariusArtifactProcess
 import javax.annotation.processing.Processor;
 import javax.lang.model.element.ElementKind;
 import java.util.List;
+import java.util.Optional;
 
 @AutoService(Processor.class)
 public class DomainProcessor extends ArtifactProcessor {
+  private int index;
 
   public DomainProcessor() {
     super(ElementKind.INTERFACE, Domain.class, JaquariusArtifactProcessor.SOURCE_VERSION);
@@ -34,5 +36,10 @@ public class DomainProcessor extends ArtifactProcessor {
   @Override
   public List<ArtifactGenerator> makeGenerators(CustomType domainType, ArtifactGeneratorContext context) {
     return DomainProcessorFunctions.makeDomainArtifactGenerators(domainType, context);
+  }
+
+  @Override
+  protected Optional<ArtifactGenerator> penaltyRoundArtifactGenerator() {
+    return Optional.of(new PenaltyRoundDomainGenerator(index++));
   }
 }

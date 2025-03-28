@@ -2,9 +2,14 @@ package tech.intellispaces.jaquarius.engine.impl;
 
 import com.google.auto.service.AutoService;
 import tech.intellispaces.commons.action.Action;
+import tech.intellispaces.commons.action.Action0;
+import tech.intellispaces.commons.action.Action1;
+import tech.intellispaces.commons.action.Action2;
+import tech.intellispaces.commons.action.Action3;
 import tech.intellispaces.commons.action.cache.CachedSupplierActions;
 import tech.intellispaces.commons.action.delegate.DelegateActions;
 import tech.intellispaces.commons.exception.NotImplementedExceptions;
+import tech.intellispaces.commons.type.Type;
 import tech.intellispaces.jaquarius.action.TraverseActions;
 import tech.intellispaces.jaquarius.channel.Channel0;
 import tech.intellispaces.jaquarius.channel.Channel1;
@@ -31,6 +36,7 @@ import java.util.List;
 
 @AutoService(tech.intellispaces.jaquarius.engine.JaquariusEngine.class)
 public class JaquariusEngine implements tech.intellispaces.jaquarius.engine.JaquariusEngine {
+  private final ObjectProviderRegistry objectProviderRegistry = new ObjectProviderRegistry();
 
   @Override
   public Module createModule(List<Class<?>> unitClasses, String[] args) {
@@ -67,6 +73,63 @@ public class JaquariusEngine implements tech.intellispaces.jaquarius.engine.Jaqu
       W unitWrapper, Class<U> unitClass, UnitMethodDescription... methods
   ) {
     return UnitFactory.createModule(unitWrapper, unitClass, methods);
+  }
+
+  @Override
+  public <H> Action0<H> objectProviderAction(
+      Class<?> targetDomainClass,
+      String contractType,
+      Type<H> targetObjectHandleType
+  ) {
+    return objectProviderRegistry.objectProviderAction(targetDomainClass, contractType, targetObjectHandleType);
+  }
+
+  @Override
+  public <H, Q> Action1<H, Q> objectProviderAction(
+      Class<?> targetDomainClass,
+      String contractType,
+      Type<Q> contractQualifierType,
+      Type<H> targetObjectHandleType
+  ) {
+    return objectProviderRegistry.objectProviderAction(
+        targetDomainClass, contractType, contractQualifierType, targetObjectHandleType
+    );
+  }
+
+  @Override
+  public <H, Q1, Q2> Action2<H, Q1, Q2> objectProviderAction(
+      Class<?> targetDomainClass,
+      String contractType,
+      Type<Q1> contractQualifierType1,
+      Type<Q2> contractQualifierType2,
+      Type<H> targetObjectHandleType
+  ) {
+    return objectProviderRegistry.objectProviderAction(
+        targetDomainClass,
+        contractType,
+        contractQualifierType1,
+        contractQualifierType2,
+        targetObjectHandleType
+    );
+  }
+
+  @Override
+  public <H, Q1, Q2, Q3> Action3<H, Q1, Q2, Q3> objectProviderAction(
+      Class<?> targetDomainClass,
+      String contractType,
+      Type<Q1> contractQualifierType1,
+      Type<Q2> contractQualifierType2,
+      Type<Q3> contractQualifierType3,
+      Type<H> targetObjectHandleType
+  ) {
+    return objectProviderRegistry.objectProviderAction(
+        targetDomainClass,
+        contractType,
+        contractQualifierType1,
+        contractQualifierType2,
+        contractQualifierType3,
+        targetObjectHandleType
+    );
   }
 
   private Action[] buildMethodActions(Class<?> objectHandleClass, ObjectHandleMethodDescription... methods) {

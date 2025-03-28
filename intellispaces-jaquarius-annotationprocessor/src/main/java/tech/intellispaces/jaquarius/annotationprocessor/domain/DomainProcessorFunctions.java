@@ -11,6 +11,7 @@ import tech.intellispaces.commons.reflection.reference.CustomTypeReference;
 import tech.intellispaces.jaquarius.Jaquarius;
 import tech.intellispaces.jaquarius.annotation.AnnotationProcessor;
 import tech.intellispaces.jaquarius.annotation.Channel;
+import tech.intellispaces.jaquarius.annotation.Ignore;
 import tech.intellispaces.jaquarius.annotationprocessor.AnnotationFunctions;
 import tech.intellispaces.jaquarius.annotationprocessor.ArtifactTypes;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
@@ -24,21 +25,25 @@ public interface DomainProcessorFunctions {
   static List<ArtifactGenerator> makeDomainArtifactGenerators(
       CustomType domainType, ArtifactGeneratorContext context
   ) {
+    if (domainType.selectAnnotation(Ignore.class).isPresent()) {
+      return List.of();
+    }
+
     var generators = new ArrayList<ArtifactGenerator>();
     for (MethodStatement method : domainType.declaredMethods()) {
       if (method.hasAnnotation(Channel.class)) {
         if (AnnotationFunctions.isAutoGenerationEnabled(
-            domainType, ArtifactTypes.Channel, context.roundEnvironment())
+            domainType, ArtifactTypes.Channel, context.initialRoundEnvironment())
         ) {
           generators.add(new DomainChannelGenerator(domainType, method));
         }
       }
     }
-    addSimpleObjectGenerators(domainType, generators, context.roundEnvironment());
-    addObjectHandleGenerators(domainType, generators, context.roundEnvironment());
+    addSimpleObjectGenerators(domainType, generators, context.initialRoundEnvironment());
+    addObjectHandleGenerators(domainType, generators, context.initialRoundEnvironment());
     addDownwardObjectHandleGenerators(domainType, generators);
-    addObjectProviderGenerators(domainType, generators);
     addIncludedGenerators(domainType, generators, context);
+    addObjectProviderGenerators(domainType, generators);
     return generators;
   }
 
@@ -114,6 +119,7 @@ public interface DomainProcessorFunctions {
   private static void addObjectProviderGenerators(
       CustomType domainType, List<ArtifactGenerator> generators
   ) {
+    generators.add(new ObjectProviderBrokerGenerator(domainType));
     generators.add(new ObjectProviderGenerator(domainType));
   }
 }

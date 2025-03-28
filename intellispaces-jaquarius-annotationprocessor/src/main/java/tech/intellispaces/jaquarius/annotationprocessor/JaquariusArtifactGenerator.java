@@ -39,7 +39,7 @@ public abstract class JaquariusArtifactGenerator extends TemplatedJavaArtifactGe
     addHiddenImport(Jaquarius.settings().getKeyDomainByPurpose(KeyDomainPurposes.Float).domainName());
     addHiddenImport(Jaquarius.settings().getKeyDomainByPurpose(KeyDomainPurposes.Double).domainName());
 
-    context.roundEnvironment().getElementsAnnotatedWith(Domain.class).stream()
+    context.initialRoundEnvironment().getElementsAnnotatedWith(Domain.class).stream()
         .map(e -> CustomTypes.of((TypeElement) e))
         .map(c -> NameConventionFunctions.getUndefinedPlainObjectTypename(c.canonicalName()))
         .forEach(this::addHiddenImport);

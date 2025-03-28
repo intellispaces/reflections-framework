@@ -98,7 +98,7 @@ public class UndefinedPlainObjectGenerator extends AbstractPlainObjectGenerator 
   }
 
   private void addExtraInterfaces(ArrayList<String> parents, ArtifactGeneratorContext context) {
-    List<CustomType> customizers = findCustomizers(sourceArtifact(), context.roundEnvironment());
+    List<CustomType> customizers = findCustomizers(sourceArtifact(), context.initialRoundEnvironment());
     for (CustomType customizer : customizers) {
       AnnotationInstance annotation = customizer.selectAnnotation(ArtifactCustomizer.class.getCanonicalName()).orElseThrow();
       CustomType domain = annotation.valueOf("origin").orElseThrow().asClass().orElseThrow().type();

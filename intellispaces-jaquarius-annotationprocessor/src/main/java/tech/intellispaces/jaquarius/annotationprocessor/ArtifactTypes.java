@@ -86,6 +86,11 @@ public enum ArtifactTypes {
   ObjectProvider,
 
   /**
+   * The object provider broker.
+   */
+  ObjectProviderBroker,
+
+  /**
    * The dataset builder.
    */
   DatasetBuilder

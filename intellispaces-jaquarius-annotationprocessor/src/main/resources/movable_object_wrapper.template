@@ -17,7 +17,7 @@ public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sour
 
 {{for constructor : $constructors}}
   public {{$generatedArtifactSimpleName}}({{for param : $constructor."params"}}{{$param."type"}} {{$param."name"}}{{when $param.isNotLast()}}, {{end}}{{end}}) {
-    super({{for param : $constructor."params"}}{{$param."name"}}{{when $param.isNotLast()}},{{end}}{{end}});
+    super({{for param : $constructor."params"}}{{$param."name"}}{{when $param.isNotLast()}}, {{end}}{{end}});
     $broker = $registerObjectHandle();
   }
 

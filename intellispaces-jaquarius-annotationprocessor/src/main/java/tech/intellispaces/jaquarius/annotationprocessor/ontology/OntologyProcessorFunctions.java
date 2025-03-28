@@ -22,7 +22,7 @@ public interface OntologyProcessorFunctions {
         continue;
       }
       if (AnnotationFunctions.isAutoGenerationEnabled(
-          ontologyType, ArtifactTypes.Channel, context.roundEnvironment()
+          ontologyType, ArtifactTypes.Channel, context.initialRoundEnvironment()
       )) {
         generators.add(new OntologyChannelGenerator(
             ontologyType, method

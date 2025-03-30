@@ -41,6 +41,7 @@ public class ObjectProviderWrapperGenerator extends JaquariusArtifactGenerator {
     if (sourceArtifact().isNested()) {
       addImport(sourceArtifactName());
     }
+    addImport(List.class);
     addImport(ArrayList.class);
     addImport(ObjectProviderWrapper.class);
     addImport(ObjectProviderMethods.class);

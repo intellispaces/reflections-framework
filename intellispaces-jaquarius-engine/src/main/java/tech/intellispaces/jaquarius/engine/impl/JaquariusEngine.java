@@ -4,8 +4,15 @@ import com.google.auto.service.AutoService;
 import tech.intellispaces.commons.action.Action;
 import tech.intellispaces.commons.action.Action0;
 import tech.intellispaces.commons.action.Action1;
+import tech.intellispaces.commons.action.Action10;
 import tech.intellispaces.commons.action.Action2;
 import tech.intellispaces.commons.action.Action3;
+import tech.intellispaces.commons.action.Action4;
+import tech.intellispaces.commons.action.Action5;
+import tech.intellispaces.commons.action.Action6;
+import tech.intellispaces.commons.action.Action7;
+import tech.intellispaces.commons.action.Action8;
+import tech.intellispaces.commons.action.Action9;
 import tech.intellispaces.commons.action.cache.CachedSupplierActions;
 import tech.intellispaces.commons.action.delegate.DelegateActions;
 import tech.intellispaces.commons.exception.NotImplementedExceptions;
@@ -130,6 +137,196 @@ public class JaquariusEngine implements tech.intellispaces.jaquarius.engine.Jaqu
         contractQualifierType3,
         targetObjectHandleType
     );
+  }
+
+  @Override
+  public <H, Q1, Q2, Q3, Q4> Action4<H, Q1, Q2, Q3, Q4> objectProviderAction(
+      Class<?> targetDomainClass,
+      String contractType,
+      Type<Q1> contractQualifierType1,
+      Type<Q2> contractQualifierType2,
+      Type<Q3> contractQualifierType3,
+      Type<Q4> contractQualifierType4,
+      Type<H> targetObjectHandleType
+  ) {
+    return objectProviderRegistry.objectProviderAction(
+        targetDomainClass,
+        contractType,
+        contractQualifierType1,
+        contractQualifierType2,
+        contractQualifierType3,
+        contractQualifierType4,
+        targetObjectHandleType
+    );
+  }
+
+  @Override
+  public <H, Q1, Q2, Q3, Q4, Q5> Action5<H, Q1, Q2, Q3, Q4, Q5> objectProviderAction(
+      Class<?> targetDomainClass,
+      String contractType,
+      Type<Q1> contractQualifierType1,
+      Type<Q2> contractQualifierType2,
+      Type<Q3> contractQualifierType3,
+      Type<Q4> contractQualifierType4,
+      Type<Q5> contractQualifierType5,
+      Type<H> targetObjectHandleType
+  ) {
+    return objectProviderRegistry.objectProviderAction(
+        targetDomainClass,
+        contractType,
+        contractQualifierType1,
+        contractQualifierType2,
+        contractQualifierType3,
+        contractQualifierType4,
+        contractQualifierType5,
+        targetObjectHandleType
+    );
+  }
+
+  @Override
+  public <H, Q1, Q2, Q3, Q4, Q5, Q6> Action6<H, Q1, Q2, Q3, Q4, Q5, Q6> objectProviderAction(
+      Class<?> targetDomainClass,
+      String contractType,
+      Type<Q1> contractQualifierType1,
+      Type<Q2> contractQualifierType2,
+      Type<Q3> contractQualifierType3,
+      Type<Q4> contractQualifierType4,
+      Type<Q5> contractQualifierType5,
+      Type<Q6> contractQualifierType6,
+      Type<H> targetObjectHandleType
+  ) {
+    return objectProviderRegistry.objectProviderAction(
+        targetDomainClass,
+        contractType,
+        contractQualifierType1,
+        contractQualifierType2,
+        contractQualifierType3,
+        contractQualifierType4,
+        contractQualifierType5,
+        contractQualifierType6,
+        targetObjectHandleType
+    );
+  }
+
+  @Override
+  public <H, Q1, Q2, Q3, Q4, Q5, Q6, Q7> Action7<H, Q1, Q2, Q3, Q4, Q5, Q6, Q7> objectProviderAction(
+      Class<?> targetDomainClass,
+      String contractType,
+      Type<Q1> contractQualifierType1,
+      Type<Q2> contractQualifierType2,
+      Type<Q3> contractQualifierType3,
+      Type<Q4> contractQualifierType4,
+      Type<Q5> contractQualifierType5,
+      Type<Q6> contractQualifierType6,
+      Type<Q7> contractQualifierType7,
+      Type<H> targetObjectHandleType
+  ) {
+    return objectProviderRegistry.objectProviderAction(
+        targetDomainClass,
+        contractType,
+        contractQualifierType1,
+        contractQualifierType2,
+        contractQualifierType3,
+        contractQualifierType4,
+        contractQualifierType5,
+        contractQualifierType6,
+        contractQualifierType7,
+        targetObjectHandleType
+    );
+  }
+
+  @Override
+  public <H, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8> Action8<H, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8> objectProviderAction(
+      Class<?> targetDomainClass,
+      String contractType,
+      Type<Q1> contractQualifierType1,
+      Type<Q2> contractQualifierType2,
+      Type<Q3> contractQualifierType3,
+      Type<Q4> contractQualifierType4,
+      Type<Q5> contractQualifierType5,
+      Type<Q6> contractQualifierType6,
+      Type<Q7> contractQualifierType7,
+      Type<Q8> contractQualifierType8,
+      Type<H> targetObjectHandleType
+  ) {
+    return objectProviderRegistry.objectProviderAction(
+        targetDomainClass,
+        contractType,
+        contractQualifierType1,
+        contractQualifierType2,
+        contractQualifierType3,
+        contractQualifierType4,
+        contractQualifierType5,
+        contractQualifierType6,
+        contractQualifierType7,
+        contractQualifierType8,
+        targetObjectHandleType
+    );
+  }
+
+  @Override
+  public <H, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9> Action9<H, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9> objectProviderAction(
+      Class<?> targetDomainClass,
+      String contractType,
+      Type<Q1> contractQualifierType1,
+      Type<Q2> contractQualifierType2,
+      Type<Q3> contractQualifierType3,
+      Type<Q4> contractQualifierType4,
+      Type<Q5> contractQualifierType5,
+      Type<Q6> contractQualifierType6,
+      Type<Q7> contractQualifierType7,
+      Type<Q8> contractQualifierType8,
+      Type<Q9> contractQualifierType9,
+      Type<H> targetObjectHandleType
+  ) {
+    return objectProviderRegistry.objectProviderAction(
+        targetDomainClass,
+        contractType,
+        contractQualifierType1,
+        contractQualifierType2,
+        contractQualifierType3,
+        contractQualifierType4,
+        contractQualifierType5,
+        contractQualifierType6,
+        contractQualifierType7,
+        contractQualifierType8,
+        contractQualifierType9,
+        targetObjectHandleType
+    );
+  }
+
+  @Override
+  public <H, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9, Q10> Action10<H, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9, Q10> objectProviderAction(
+      Class<?> targetDomainClass,
+      String contractType,
+      Type<Q1> contractQualifierType1,
+      Type<Q2> contractQualifierType2,
+      Type<Q3> contractQualifierType3,
+      Type<Q4> contractQualifierType4,
+      Type<Q5> contractQualifierType5,
+      Type<Q6> contractQualifierType6,
+      Type<Q7> contractQualifierType7,
+      Type<Q8> contractQualifierType8,
+      Type<Q9> contractQualifierType9,
+      Type<Q10> contractQualifierType10,
+      Type<H> targetObjectHandleType
+  ) {
+    return objectProviderRegistry.objectProviderAction(
+        targetDomainClass,
+        contractType,
+        contractQualifierType1,
+        contractQualifierType2,
+        contractQualifierType3,
+        contractQualifierType4,
+        contractQualifierType5,
+        contractQualifierType6,
+        contractQualifierType7,
+        contractQualifierType8,
+        contractQualifierType9,
+        contractQualifierType10,
+        targetObjectHandleType
+    );
+
   }
 
   private Action[] buildMethodActions(Class<?> objectHandleClass, ObjectHandleMethodDescription... methods) {

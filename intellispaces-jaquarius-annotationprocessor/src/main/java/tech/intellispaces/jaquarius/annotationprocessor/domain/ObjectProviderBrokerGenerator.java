@@ -130,13 +130,13 @@ public class ObjectProviderBrokerGenerator extends JaquariusArtifactGenerator {
     var sb = new StringBuilder();
     sb.append(addImportAndGetSimpleName(Action.class.getCanonicalName() + method.params().size()));
     sb.append("<");
-    sb.append(method.returnType().orElseThrow().actualBlindDeclaration(this::addImportAndGetSimpleName));
+    sb.append(method.returnType().orElseThrow().actualRawDeclaration(this::addImportAndGetSimpleName));
     for (MethodParam param : method.params()) {
       sb.append(", ");
       if (param.type().isPrimitiveReference()) {
         sb.append(addImportAndGetSimpleName(param.type().asPrimitiveReferenceOrElseThrow().primitiveType().wrapperClass()));
       } else {
-        sb.append(param.type().actualBlindDeclaration(this::addImportAndGetSimpleName));
+        sb.append(param.type().actualRawDeclaration(this::addImportAndGetSimpleName));
       }
     }
     sb.append(">");

@@ -3,6 +3,7 @@ package tech.intellispaces.jaquarius.engine.description;
 import tech.intellispaces.commons.action.functional.FunctionActions;
 import tech.intellispaces.commons.function.QuadriFunction;
 import tech.intellispaces.commons.function.QuintiFunction;
+import tech.intellispaces.commons.function.SexiConsumer;
 import tech.intellispaces.commons.function.TriFunction;
 import tech.intellispaces.commons.type.Type;
 
@@ -96,6 +97,28 @@ public interface ObjectProviderMethods {
       Type<Q3> paramType3,
       Type<Q4> paramType4,
       QuintiFunction<P, Q1, Q2, Q3, Q4, R> function
+  ) {
+    return new ObjectProviderMethodDescriptionImpl(
+        objectProvider,
+        methodName,
+        returnType,
+        returnedDomainClass,
+        List.of(paramType1, paramType2, paramType3, paramType4),
+        FunctionActions.ofQuintiFunction(function)
+    );
+  }
+
+  static <P, R, Q1, Q2, Q3, Q4, Q5> ObjectProviderMethodDescription objectProviderMethod(
+      P objectProvider,
+      String methodName,
+      Type<R> returnType,
+      Class<?> returnedDomainClass,
+      Type<Q1> paramType1,
+      Type<Q2> paramType2,
+      Type<Q3> paramType3,
+      Type<Q4> paramType4,
+      Type<Q5> paramType5,
+      SexiConsumer<P, Q1, Q2, Q3, Q4, Q5, R> function
   ) {
     return new ObjectProviderMethodDescriptionImpl(
         objectProvider,

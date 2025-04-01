@@ -1,7 +1,7 @@
 package tech.intellispaces.jaquarius.guide.n1;
 
-import tech.intellispaces.commons.function.QuadriFunction;
-import tech.intellispaces.commons.function.TriFunction;
+import tech.intellispaces.commons.function.Function3;
+import tech.intellispaces.commons.function.Function4;
 import tech.intellispaces.jaquarius.exception.TraverseException;
 import tech.intellispaces.jaquarius.guide.MapperOfMoving;
 import tech.intellispaces.jaquarius.guide.n2.MapperOfMoving2;
@@ -29,12 +29,12 @@ public interface MapperOfMoving1<S, T, Q> extends
   BiFunction<S, Q, T> asBiFunction();
 
   @Override
-  default TriFunction<S, Q, Void, T> asTriFunction() {
+  default Function3<S, Q, Void, T> asFunction3() {
     return (source, qualifier1, qualifier2) -> map(source, qualifier1);
   }
 
   @Override
-  default QuadriFunction<S, Q, Void, Void, T> asQuadFunction() {
+  default Function4<S, Q, Void, Void, T> asQuadFunction() {
     return (source, qualifier1, qualifier2, qualifier3) -> map(source, qualifier1);
   }
 

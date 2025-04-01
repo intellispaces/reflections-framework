@@ -2,7 +2,7 @@ package tech.intellispaces.jaquarius.engine.description;
 
 import tech.intellispaces.commons.action.Action;
 import tech.intellispaces.commons.action.functional.FunctionActions;
-import tech.intellispaces.commons.function.QuintiFunction;
+import tech.intellispaces.commons.function.Function5;
 import tech.intellispaces.jaquarius.traverse.TraverseType;
 
 import java.util.List;
@@ -45,8 +45,8 @@ public class ObjectHandleMethodBuilder5<H, P1, P2, P3, P4> {
     return this;
   }
 
-  public <R> ObjectHandleMethodBuilder5<H, P1, P2, P3, P4> function(QuintiFunction<H, P1, P2, P3, P4, R> function) {
-    this.action = FunctionActions.ofQuintiFunction(function);
+  public <R> ObjectHandleMethodBuilder5<H, P1, P2, P3, P4> function(Function5<H, P1, P2, P3, P4, R> function) {
+    this.action = FunctionActions.ofFunction5(function);
     return this;
   }
 

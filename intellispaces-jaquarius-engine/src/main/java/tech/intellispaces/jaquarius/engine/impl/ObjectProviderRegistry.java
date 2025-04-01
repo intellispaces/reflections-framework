@@ -356,6 +356,12 @@ class ObjectProviderRegistry {
       case 1 -> makeAction1(description);
       case 2 -> makeAction2(description);
       case 3 -> makeAction3(description);
+      case 4 -> makeAction4(description);
+      case 5 -> makeAction5(description);
+      case 6 -> makeAction6(description);
+      case 7 -> makeAction7(description);
+      case 8 -> makeAction8(description);
+      case 9 -> makeAction9(description);
       default -> throw NotImplementedExceptions.withCode("h3he6A");
     };
   }
@@ -382,5 +388,41 @@ class ObjectProviderRegistry {
   private Action makeAction3(ObjectProviderMethodDescription description) {
     var originAction = (Action4<Object, Object, Object, Object, Object>) description.action();
     return originAction.convertToAction3(description.objectProvider());
+  }
+
+  @SuppressWarnings("unchecked")
+  private Action makeAction4(ObjectProviderMethodDescription description) {
+    var originAction = (Action5<Object, Object, Object, Object, Object, Object>) description.action();
+    return originAction.convertToAction4(description.objectProvider());
+  }
+
+  @SuppressWarnings("unchecked")
+  private Action makeAction5(ObjectProviderMethodDescription description) {
+    var originAction = (Action6<Object, Object, Object, Object, Object, Object, Object>) description.action();
+    return originAction.convertToAction5(description.objectProvider());
+  }
+
+  @SuppressWarnings("unchecked")
+  private Action makeAction6(ObjectProviderMethodDescription description) {
+    var originAction = (Action7<Object, Object, Object, Object, Object, Object, Object, Object>) description.action();
+    return originAction.convertToAction6(description.objectProvider());
+  }
+
+  @SuppressWarnings("unchecked")
+  private Action makeAction7(ObjectProviderMethodDescription description) {
+    var originAction = (Action8<Object, Object, Object, Object, Object, Object, Object, Object, Object>) description.action();
+    return originAction.convertToAction7(description.objectProvider());
+  }
+
+  @SuppressWarnings("unchecked")
+  private Action makeAction8(ObjectProviderMethodDescription description) {
+    var originAction = (Action9<Object, Object, Object, Object, Object, Object, Object, Object, Object, Object>) description.action();
+    return originAction.convertToAction8(description.objectProvider());
+  }
+
+  @SuppressWarnings("unchecked")
+  private Action makeAction9(ObjectProviderMethodDescription description) {
+    var originAction = (Action10<Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object>) description.action();
+    return originAction.convertToAction9(description.objectProvider());
   }
 }

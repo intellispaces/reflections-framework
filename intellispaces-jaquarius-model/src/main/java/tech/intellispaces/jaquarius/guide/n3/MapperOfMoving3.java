@@ -1,6 +1,6 @@
 package tech.intellispaces.jaquarius.guide.n3;
 
-import tech.intellispaces.commons.function.QuadriFunction;
+import tech.intellispaces.commons.function.Function4;
 import tech.intellispaces.jaquarius.exception.TraverseException;
 import tech.intellispaces.jaquarius.guide.MapperOfMoving;
 import tech.intellispaces.jaquarius.guide.n4.MapperOfMoving4;
@@ -21,7 +21,7 @@ public interface MapperOfMoving3<S, T, Q1, Q2, Q3> extends
     MapperOfMoving4<S, T, Q1, Q2, Q3, Void>,
     MapperOfMoving5<S, T, Q1, Q2, Q3, Void, Void>
 {
-  QuadriFunction<S, Q1, Q2, Q3, T> asQuadFunction();
+  Function4<S, Q1, Q2, Q3, T> asQuadFunction();
 
   default T map(S source, Q1 qualifier1, Q2 qualifier2, Q3 qualifier3) throws TraverseException {
     return traverse(source, qualifier1, qualifier2, qualifier3);

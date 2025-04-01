@@ -1,10 +1,14 @@
 package tech.intellispaces.jaquarius.engine.description;
 
 import tech.intellispaces.commons.action.functional.FunctionActions;
-import tech.intellispaces.commons.function.QuadriFunction;
-import tech.intellispaces.commons.function.QuintiFunction;
-import tech.intellispaces.commons.function.SexiConsumer;
-import tech.intellispaces.commons.function.TriFunction;
+import tech.intellispaces.commons.function.Function10;
+import tech.intellispaces.commons.function.Function3;
+import tech.intellispaces.commons.function.Function4;
+import tech.intellispaces.commons.function.Function5;
+import tech.intellispaces.commons.function.Function6;
+import tech.intellispaces.commons.function.Function7;
+import tech.intellispaces.commons.function.Function8;
+import tech.intellispaces.commons.function.Function9;
 import tech.intellispaces.commons.type.Type;
 
 import java.util.List;
@@ -55,7 +59,7 @@ public interface ObjectProviderMethods {
       Class<?> returnedDomainClass,
       Type<Q1> paramType1,
       Type<Q2> paramType2,
-      TriFunction<P, Q1, Q2, R> function
+      Function3<P, Q1, Q2, R> function
   ) {
     return new ObjectProviderMethodDescriptionImpl(
         objectProvider,
@@ -63,7 +67,7 @@ public interface ObjectProviderMethods {
         returnType,
         returnedDomainClass,
         List.of(paramType1, paramType2),
-        FunctionActions.ofTriFunction(function)
+        FunctionActions.ofFunction3(function)
     );
   }
 
@@ -75,7 +79,7 @@ public interface ObjectProviderMethods {
       Type<Q1> paramType1,
       Type<Q2> paramType2,
       Type<Q3> paramType3,
-      QuadriFunction<P, Q1, Q2, Q3, R> function
+      Function4<P, Q1, Q2, Q3, R> function
   ) {
     return new ObjectProviderMethodDescriptionImpl(
         objectProvider,
@@ -83,7 +87,7 @@ public interface ObjectProviderMethods {
         returnType,
         returnedDomainClass,
         List.of(paramType1, paramType2, paramType3),
-        FunctionActions.ofQuadriFunction(function)
+        FunctionActions.ofFunction4(function)
     );
   }
 
@@ -96,7 +100,7 @@ public interface ObjectProviderMethods {
       Type<Q2> paramType2,
       Type<Q3> paramType3,
       Type<Q4> paramType4,
-      QuintiFunction<P, Q1, Q2, Q3, Q4, R> function
+      Function5<P, Q1, Q2, Q3, Q4, R> function
   ) {
     return new ObjectProviderMethodDescriptionImpl(
         objectProvider,
@@ -104,7 +108,7 @@ public interface ObjectProviderMethods {
         returnType,
         returnedDomainClass,
         List.of(paramType1, paramType2, paramType3, paramType4),
-        FunctionActions.ofQuintiFunction(function)
+        FunctionActions.ofFunction5(function)
     );
   }
 
@@ -118,15 +122,113 @@ public interface ObjectProviderMethods {
       Type<Q3> paramType3,
       Type<Q4> paramType4,
       Type<Q5> paramType5,
-      SexiConsumer<P, Q1, Q2, Q3, Q4, Q5, R> function
+      Function6<P, Q1, Q2, Q3, Q4, Q5, R> function
   ) {
     return new ObjectProviderMethodDescriptionImpl(
         objectProvider,
         methodName,
         returnType,
         returnedDomainClass,
-        List.of(paramType1, paramType2, paramType3, paramType4),
-        FunctionActions.ofQuintiFunction(function)
+        List.of(paramType1, paramType2, paramType3, paramType4, paramType5),
+        FunctionActions.ofFunction6(function)
+    );
+  }
+
+  static <P, R, Q1, Q2, Q3, Q4, Q5, Q6> ObjectProviderMethodDescription objectProviderMethod(
+      P objectProvider,
+      String methodName,
+      Type<R> returnType,
+      Class<?> returnedDomainClass,
+      Type<Q1> paramType1,
+      Type<Q2> paramType2,
+      Type<Q3> paramType3,
+      Type<Q4> paramType4,
+      Type<Q5> paramType5,
+      Type<Q6> paramType6,
+      Function7<P, Q1, Q2, Q3, Q4, Q5, Q6, R> function
+  ) {
+    return new ObjectProviderMethodDescriptionImpl(
+        objectProvider,
+        methodName,
+        returnType,
+        returnedDomainClass,
+        List.of(paramType1, paramType2, paramType3, paramType4, paramType5, paramType6),
+        FunctionActions.ofFunction7(function)
+    );
+  }
+
+  static <P, R, Q1, Q2, Q3, Q4, Q5, Q6, Q7> ObjectProviderMethodDescription objectProviderMethod(
+      P objectProvider,
+      String methodName,
+      Type<R> returnType,
+      Class<?> returnedDomainClass,
+      Type<Q1> paramType1,
+      Type<Q2> paramType2,
+      Type<Q3> paramType3,
+      Type<Q4> paramType4,
+      Type<Q5> paramType5,
+      Type<Q6> paramType6,
+      Type<Q7> paramType7,
+      Function8<P, Q1, Q2, Q3, Q4, Q5, Q6, Q7, R> function
+  ) {
+    return new ObjectProviderMethodDescriptionImpl(
+        objectProvider,
+        methodName,
+        returnType,
+        returnedDomainClass,
+        List.of(paramType1, paramType2, paramType3, paramType4, paramType5, paramType6, paramType7),
+        FunctionActions.ofFunction8(function)
+    );
+  }
+
+  static <P, R, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8> ObjectProviderMethodDescription objectProviderMethod(
+      P objectProvider,
+      String methodName,
+      Type<R> returnType,
+      Class<?> returnedDomainClass,
+      Type<Q1> paramType1,
+      Type<Q2> paramType2,
+      Type<Q3> paramType3,
+      Type<Q4> paramType4,
+      Type<Q5> paramType5,
+      Type<Q6> paramType6,
+      Type<Q7> paramType7,
+      Type<Q8> paramType8,
+      Function9<P, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, R> function
+  ) {
+    return new ObjectProviderMethodDescriptionImpl(
+        objectProvider,
+        methodName,
+        returnType,
+        returnedDomainClass,
+        List.of(paramType1, paramType2, paramType3, paramType4, paramType5, paramType6, paramType7, paramType8),
+        FunctionActions.ofFunction9(function)
+    );
+  }
+
+  static <P, R, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9> ObjectProviderMethodDescription objectProviderMethod(
+      P objectProvider,
+      String methodName,
+      Type<R> returnType,
+      Class<?> returnedDomainClass,
+      Type<Q1> paramType1,
+      Type<Q2> paramType2,
+      Type<Q3> paramType3,
+      Type<Q4> paramType4,
+      Type<Q5> paramType5,
+      Type<Q6> paramType6,
+      Type<Q7> paramType7,
+      Type<Q8> paramType8,
+      Type<Q9> paramType9,
+      Function10<P, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9, R> function
+  ) {
+    return new ObjectProviderMethodDescriptionImpl(
+        objectProvider,
+        methodName,
+        returnType,
+        returnedDomainClass,
+        List.of(paramType1, paramType2, paramType3, paramType4, paramType5, paramType6, paramType7, paramType8, paramType9),
+        FunctionActions.ofFunction10(function)
     );
   }
 }

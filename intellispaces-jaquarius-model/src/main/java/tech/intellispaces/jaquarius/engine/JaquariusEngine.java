@@ -2,6 +2,7 @@ package tech.intellispaces.jaquarius.engine;
 
 import tech.intellispaces.commons.action.Action0;
 import tech.intellispaces.commons.action.Action1;
+import tech.intellispaces.commons.action.Action10;
 import tech.intellispaces.commons.action.Action2;
 import tech.intellispaces.commons.action.Action3;
 import tech.intellispaces.commons.action.Action4;
@@ -10,7 +11,6 @@ import tech.intellispaces.commons.action.Action6;
 import tech.intellispaces.commons.action.Action7;
 import tech.intellispaces.commons.action.Action8;
 import tech.intellispaces.commons.action.Action9;
-import tech.intellispaces.commons.action.Action10;
 import tech.intellispaces.commons.type.Type;
 import tech.intellispaces.jaquarius.engine.description.ObjectHandleMethodDescription;
 import tech.intellispaces.jaquarius.engine.description.ObjectHandleTypeDescription;

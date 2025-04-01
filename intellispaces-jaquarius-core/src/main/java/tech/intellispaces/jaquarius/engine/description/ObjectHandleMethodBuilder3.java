@@ -2,7 +2,7 @@ package tech.intellispaces.jaquarius.engine.description;
 
 import tech.intellispaces.commons.action.Action;
 import tech.intellispaces.commons.action.functional.FunctionActions;
-import tech.intellispaces.commons.function.TriFunction;
+import tech.intellispaces.commons.function.Function3;
 import tech.intellispaces.jaquarius.traverse.TraverseType;
 
 import java.util.List;
@@ -36,8 +36,8 @@ public class ObjectHandleMethodBuilder3<H, P1, P2> {
     return this;
   }
 
-  public <R> ObjectHandleMethodBuilder3<H, P1, P2> function(TriFunction<H, P1, P2, R> function) {
-    this.action = FunctionActions.ofTriFunction(function);
+  public <R> ObjectHandleMethodBuilder3<H, P1, P2> function(Function3<H, P1, P2, R> function) {
+    this.action = FunctionActions.ofFunction3(function);
     return this;
   }
 

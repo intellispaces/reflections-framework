@@ -1,8 +1,8 @@
 package tech.intellispaces.jaquarius.engine.description;
 
 import tech.intellispaces.commons.action.functional.FunctionActions;
-import tech.intellispaces.commons.function.TriConsumer;
-import tech.intellispaces.commons.function.TriFunction;
+import tech.intellispaces.commons.function.Consumer3;
+import tech.intellispaces.commons.function.Function3;
 
 import java.util.List;
 
@@ -14,14 +14,14 @@ public class UnitMethodDescriptionBuilder2<U, P1, P2> extends BaseUnitMethodDesc
     this.unit = unit;
   }
 
-  public <R> UnitMethodDescriptionBuilder2<U, P1, P2> function(TriFunction<U, P1, P2, R> function) {
-    this.action = FunctionActions.ofTriFunction(function)
+  public <R> UnitMethodDescriptionBuilder2<U, P1, P2> function(Function3<U, P1, P2, R> function) {
+    this.action = FunctionActions.ofFunction3(function)
         .convertToAction2(unit);
     return this;
   }
 
-  public <R> UnitMethodDescriptionBuilder2<U, P1, P2> consumer(TriConsumer<U, P1, P2> consumer) {
-    this.action = FunctionActions.ofTriConsumer(consumer)
+  public <R> UnitMethodDescriptionBuilder2<U, P1, P2> consumer(Consumer3<U, P1, P2> consumer) {
+    this.action = FunctionActions.ofConsumer3(consumer)
         .convertToAction2(unit);
     return this;
   }

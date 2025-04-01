@@ -1,6 +1,6 @@
 package tech.intellispaces.jaquarius.guide.n2;
 
-import tech.intellispaces.commons.function.TriFunction;
+import tech.intellispaces.commons.function.Function3;
 import tech.intellispaces.jaquarius.exception.TraverseException;
 import tech.intellispaces.jaquarius.guide.Mapper;
 import tech.intellispaces.jaquarius.guide.n3.Mapper3;
@@ -22,7 +22,7 @@ public interface Mapper2<S, T, Q1, Q2> extends
     Mapper4<S, T, Q1, Q2, Void, Void>,
     Mapper5<S, T, Q1, Q2, Void, Void, Void>
 {
-  TriFunction<S, Q1, Q2, T> asTriFunction();
+  Function3<S, Q1, Q2, T> asFunction3();
 
   default T map(S source, Q1 qualifier1, Q2 qualifier2) throws TraverseException {
     return traverse(source, qualifier1, qualifier2);

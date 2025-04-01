@@ -2,7 +2,7 @@ package tech.intellispaces.jaquarius.engine.description;
 
 import tech.intellispaces.commons.action.Action;
 import tech.intellispaces.commons.action.functional.FunctionActions;
-import tech.intellispaces.commons.function.QuadriFunction;
+import tech.intellispaces.commons.function.Function4;
 import tech.intellispaces.jaquarius.traverse.TraverseType;
 
 import java.util.List;
@@ -42,8 +42,8 @@ public class ObjectHandleMethodBuilder4<H, P1, P2, P3> {
     return this;
   }
 
-  public <R> ObjectHandleMethodBuilder4<H, P1, P2, P3> function(QuadriFunction<H, P1, P2, P3, R> function) {
-    this.action = FunctionActions.ofQuadriFunction(function);
+  public <R> ObjectHandleMethodBuilder4<H, P1, P2, P3> function(Function4<H, P1, P2, P3, R> function) {
+    this.action = FunctionActions.ofFunction4(function);
     return this;
   }
 

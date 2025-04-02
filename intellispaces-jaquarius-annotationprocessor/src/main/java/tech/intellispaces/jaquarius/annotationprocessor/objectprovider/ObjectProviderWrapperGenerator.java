@@ -54,6 +54,9 @@ public class ObjectProviderWrapperGenerator extends JaquariusArtifactGenerator {
   List<Map<String, Object>> getProviderMethods() {
     var methods = new ArrayList<Map<String, Object>>();
       for (MethodStatement method : sourceArtifact().declaredMethods()) {
+        if (method.isStatic()) {
+          continue;
+        }
         methods.add(Map.of(
             "name", method.name(),
             "returnedType", getMethodReturnedType(method),

@@ -344,6 +344,15 @@ public interface NameConventionFunctions {
 
   static String getObjectProviderCanonicalName(CustomType domainType) {
     String name = StringFunctions.removeTailOrElseThrow(domainType.canonicalName(), "Domain");
+    if (name.endsWith("ies")) {
+      return name + "s";
+    } else if (name.endsWith("es")) {
+      return name + "s";
+    } else if (name.endsWith("s") || name.endsWith("x") || name.endsWith("z") || name.endsWith("ch") || name.endsWith("sh")) {
+      return name + "es";
+    } else if (name.endsWith("y")) {
+      return name.substring(0, name.length() - 1) + "ies";
+    }
     return name + "s";
   }
 

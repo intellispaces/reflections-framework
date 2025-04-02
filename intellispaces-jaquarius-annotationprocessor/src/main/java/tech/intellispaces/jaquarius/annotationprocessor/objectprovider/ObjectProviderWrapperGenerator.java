@@ -16,9 +16,14 @@ import java.util.List;
 import java.util.Map;
 
 public class ObjectProviderWrapperGenerator extends JaquariusArtifactGenerator {
+  private final ObjectProviderMetaInfGenerator metaInfGenerator;
 
-  public ObjectProviderWrapperGenerator(CustomType objectProviderType) {
+  public ObjectProviderWrapperGenerator(
+      CustomType objectProviderType,
+      ObjectProviderMetaInfGenerator metaInfGenerator
+  ) {
     super(objectProviderType);
+    this.metaInfGenerator = metaInfGenerator;
   }
 
   @Override
@@ -48,6 +53,8 @@ public class ObjectProviderWrapperGenerator extends JaquariusArtifactGenerator {
     addImport(ObjectProviderMethodDescription.class);
 
     addVariable("providerMethods", getProviderMethods());
+
+    metaInfGenerator.addObjectFactory(generatedArtifactName());
     return true;
   }
 

@@ -20,6 +20,7 @@ import tech.intellispaces.jaquarius.object.provider.ObjectProviderFunctions;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceFunctions;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -48,7 +49,7 @@ public class ObjectProviderBrokerGenerator extends JaquariusArtifactGenerator {
 
   @Override
   protected boolean analyzeSourceArtifact(ArtifactGeneratorContext context) {
-    List<CustomType> customizers = findCustomizers(context);
+    Collection<CustomType> customizers = findCustomizers(context);
     if (customizers.isEmpty()) {
       return false;
     }
@@ -61,14 +62,14 @@ public class ObjectProviderBrokerGenerator extends JaquariusArtifactGenerator {
     return true;
   }
 
-  List<String> getCustomizers(List<CustomType> customizers) {
+  List<String> getCustomizers(Collection<CustomType> customizers) {
     return customizers.stream()
         .map(CustomType::canonicalName)
         .map(this::addImportAndGetSimpleName)
         .toList();
   }
 
-  List<Map<String, Object>> getCustomizeMethods(List<CustomType> customizers) {
+  List<Map<String, Object>> getCustomizeMethods(Collection<CustomType> customizers) {
     var methods = new ArrayList<Map<String, Object>>();
     for (CustomType customizer : customizers) {
       for (MethodStatement method : customizer.declaredMethods()) {
@@ -91,9 +92,9 @@ public class ObjectProviderBrokerGenerator extends JaquariusArtifactGenerator {
     return methods;
   }
 
-  List<CustomType> findCustomizers(ArtifactGeneratorContext context) {
+  Collection<CustomType> findCustomizers(ArtifactGeneratorContext context) {
     return AnnotationFunctions.findArtifactCustomizers(
-        sourceArtifact(), ArtifactTypes.ObjectProvider, context.initialRoundEnvironment()
+        sourceArtifact(), ArtifactTypes.ObjectProvider, context.roundEnvironments()
     );
   }
 

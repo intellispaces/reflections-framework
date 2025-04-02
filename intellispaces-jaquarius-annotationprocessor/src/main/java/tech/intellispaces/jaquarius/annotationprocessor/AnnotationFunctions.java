@@ -15,10 +15,13 @@ import tech.intellispaces.jaquarius.annotation.ArtifactGeneration;
 
 import javax.annotation.processing.RoundEnvironment;
 import java.lang.annotation.Annotation;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * Functions related to artifact generation annotations.
@@ -56,6 +59,15 @@ public interface AnnotationFunctions {
       return Classes.get(className).orElseThrow(() -> UnexpectedExceptions.withMessage("Could not find class {0}", className));
     }
     throw UnexpectedExceptions.withMessage("Invalid usage of annotation {0}", AnnotationProcessor.class.getSimpleName());
+  }
+
+  static Collection<CustomType> findArtifactCustomizers(
+      CustomType customType, ArtifactTypes targetArtifactType, List<RoundEnvironment> roundEnvironments
+  ) {
+    return roundEnvironments.stream()
+        .map(roundEnv -> findArtifactCustomizers(customType.canonicalName(), targetArtifactType, roundEnv))
+        .flatMap(List::stream)
+        .collect(Collectors.toMap(CustomType::canonicalName, Function.identity(), (c1, c2) -> c1)).values();
   }
 
   static List<CustomType> findArtifactCustomizers(

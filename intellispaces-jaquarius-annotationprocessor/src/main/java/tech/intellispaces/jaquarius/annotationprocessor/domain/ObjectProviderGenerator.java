@@ -23,6 +23,7 @@ import tech.intellispaces.jaquarius.object.reference.ObjectReferenceFunctions;
 import tech.intellispaces.jaquarius.system.Modules;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -118,9 +119,10 @@ public class ObjectProviderGenerator extends JaquariusArtifactGenerator {
 
   List<Map<String, Object>> getCustomizeMethods(ArtifactGeneratorContext context) {
     var methods = new ArrayList<Map<String, Object>>();
-    List<CustomType> customizers = AnnotationFunctions.findArtifactCustomizers(
-        sourceArtifact(), ArtifactTypes.ObjectProvider, context.initialRoundEnvironment()
+    Collection<CustomType> customizers = AnnotationFunctions.findArtifactCustomizers(
+        sourceArtifact(), ArtifactTypes.ObjectProvider, context.roundEnvironments()
     );
+
     for (CustomType customizer : customizers) {
       for (MethodStatement method : customizer.declaredMethods()) {
         methods.add(Map.of(

@@ -22,6 +22,7 @@ import tech.intellispaces.commons.type.Type;
 import tech.intellispaces.jaquarius.engine.ObjectProviderWrapper;
 import tech.intellispaces.jaquarius.engine.description.ObjectProviderMethodDescription;
 import tech.intellispaces.jaquarius.exception.ConfigurationExceptions;
+import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
 import tech.intellispaces.jaquarius.object.provider.ObjectProviderFunctions;
 
 import java.io.IOException;
@@ -284,7 +285,7 @@ class ObjectProviderRegistry {
     List<ObjectProviderMethodDescription> descriptions = new ArrayList<>();
     try {
       Enumeration<URL> enumeration = ObjectProviderRegistry.class.getClassLoader().getResources(
-          "META-INF/jaquarius/object.providers"
+          NameConventionFunctions.getObjectFactoriesResourceName()
       );
       List<URL> urls = CollectionFunctions.toList(enumeration);
       for (URL url : urls) {

@@ -202,6 +202,10 @@ public interface NameConventionFunctions {
     return transformClassName(objectProviderClassName) + "Wrapper";
   }
 
+  static String getObjectFactoriesResourceName() {
+    return "META-INF/jaquarius/object.providers";
+  }
+
   static String getUnmovableUpwardObjectTypename(CustomType domainType, CustomType baseDomainType) {
     String packageName = ClassNameFunctions.getPackageName(domainType.canonicalName());
     String simpleName = StringFunctions.removeTailOrElseThrow(domainType.simpleName(), "Domain") +

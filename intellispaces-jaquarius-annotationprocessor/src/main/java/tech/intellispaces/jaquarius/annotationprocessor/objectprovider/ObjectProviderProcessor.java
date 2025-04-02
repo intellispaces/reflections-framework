@@ -16,6 +16,7 @@ import java.util.List;
 
 @AutoService(Processor.class)
 public class ObjectProviderProcessor extends ArtifactProcessor {
+  private final ObjectProviderMetaInfGenerator metaInfGenerator = new ObjectProviderMetaInfGenerator();
 
   public ObjectProviderProcessor() {
     super(ElementKind.CLASS, ObjectProvider.class, JaquariusArtifactProcessor.SOURCE_VERSION);
@@ -33,6 +34,9 @@ public class ObjectProviderProcessor extends ArtifactProcessor {
 
   @Override
   public List<ArtifactGenerator> makeGenerators(CustomType objectProviderType, ArtifactGeneratorContext context) {
-    return List.of(new ObjectProviderWrapperGenerator(objectProviderType));
+    return List.of(
+        metaInfGenerator,
+        new ObjectProviderWrapperGenerator(objectProviderType, metaInfGenerator)
+    );
   }
 }

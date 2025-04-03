@@ -12,8 +12,8 @@ import tech.intellispaces.commons.reflection.reference.ArrayReference;
 import tech.intellispaces.commons.reflection.reference.TypeReference;
 import tech.intellispaces.commons.text.StringFunctions;
 import tech.intellispaces.jaquarius.annotationprocessor.AnnotationFunctions;
-import tech.intellispaces.jaquarius.annotationprocessor.ArtifactTypes;
 import tech.intellispaces.jaquarius.annotationprocessor.JaquariusArtifactGenerator;
+import tech.intellispaces.jaquarius.artifact.ArtifactTypes;
 import tech.intellispaces.jaquarius.engine.JaquariusEngines;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
 import tech.intellispaces.jaquarius.object.provider.ObjectProviderFunctions;
@@ -49,30 +49,30 @@ public class ObjectProviderBrokerGenerator extends JaquariusArtifactGenerator {
 
   @Override
   protected boolean analyzeSourceArtifact(ArtifactGeneratorContext context) {
-    Collection<CustomType> customizers = findCustomizers(context);
-    if (customizers.isEmpty()) {
+    Collection<CustomType> extensions = findExtensions(context);
+    if (extensions.isEmpty()) {
       return false;
     }
 
     addImport(JaquariusEngines.class);
     addImport(UnexpectedExceptions.class);
 
-    addVariable("customizers", getCustomizers(customizers));
-    addVariable("customizeMethods", getCustomizeMethods(customizers));
+    addVariable("extensions", getExtensions(extensions));
+    addVariable("extensionMethods", getExtensionMethods(extensions));
     return true;
   }
 
-  List<String> getCustomizers(Collection<CustomType> customizers) {
-    return customizers.stream()
+  List<String> getExtensions(Collection<CustomType> extensions) {
+    return extensions.stream()
         .map(CustomType::canonicalName)
         .map(this::addImportAndGetSimpleName)
         .toList();
   }
 
-  List<Map<String, Object>> getCustomizeMethods(Collection<CustomType> customizers) {
+  List<Map<String, Object>> getExtensionMethods(Collection<CustomType> extensions) {
     var methods = new ArrayList<Map<String, Object>>();
-    for (CustomType customizer : customizers) {
-      for (MethodStatement method : customizer.declaredMethods()) {
+    for (CustomType extension : extensions) {
+      for (MethodStatement method : extension.declaredMethods()) {
         if (method.isDefault()) {
           continue;
         }
@@ -92,8 +92,8 @@ public class ObjectProviderBrokerGenerator extends JaquariusArtifactGenerator {
     return methods;
   }
 
-  Collection<CustomType> findCustomizers(ArtifactGeneratorContext context) {
-    return AnnotationFunctions.findArtifactCustomizers(
+  Collection<CustomType> findExtensions(ArtifactGeneratorContext context) {
+    return AnnotationFunctions.findArtifactExtensions(
         sourceArtifact(), ArtifactTypes.ObjectProvider, context.roundEnvironments()
     );
   }

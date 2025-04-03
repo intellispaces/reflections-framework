@@ -6,9 +6,10 @@ import tech.intellispaces.commons.reflection.customtype.CustomType;
 import tech.intellispaces.commons.reflection.method.MethodSignatureDeclarations;
 import tech.intellispaces.commons.reflection.method.MethodStatement;
 import tech.intellispaces.commons.reflection.reference.CustomTypeReference;
+import tech.intellispaces.jaquarius.ArtifactType;
 import tech.intellispaces.jaquarius.annotation.ObjectHandle;
 import tech.intellispaces.jaquarius.annotation.Unmovable;
-import tech.intellispaces.jaquarius.annotationprocessor.ArtifactTypes;
+import tech.intellispaces.jaquarius.artifact.ArtifactTypes;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
 import tech.intellispaces.jaquarius.object.reference.MovabilityType;
 import tech.intellispaces.jaquarius.object.reference.MovabilityTypes;
@@ -49,7 +50,7 @@ public class UnmovableObjectHandleGenerator extends AbstractObjectGenerator {
   }
 
   @Override
-  protected List<ArtifactTypes> relatedArtifactTypes() {
+  protected List<ArtifactType> relatedArtifactTypes() {
     return List.of(ArtifactTypes.UnmovableObjectHandle);
   }
 

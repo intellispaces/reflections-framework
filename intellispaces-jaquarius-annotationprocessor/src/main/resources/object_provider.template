@@ -18,7 +18,7 @@ public class {{$generatedArtifactSimpleName}} {
   }
 {{end}}
 
-{{for method : $customizeMethods}}
+{{for method : $extensionMethods}}
   public static {{$method."signature"}} {
     return ({{$method."returnTypeDeclaration"}}) broker.{{$method."name"}}({{$method."paramNames"}});
   }
@@ -37,7 +37,7 @@ public class {{$generatedArtifactSimpleName}} {
 
   private {{$generatedArtifactSimpleName}}() {}
 
-{{when $customizeMethods.isNotEmpty()}}
+{{when $extensionMethods.isNotEmpty()}}
   private static final {{$brokerSimpleName}} broker = new {{$brokerSimpleName}}();
 {{end}}
 }

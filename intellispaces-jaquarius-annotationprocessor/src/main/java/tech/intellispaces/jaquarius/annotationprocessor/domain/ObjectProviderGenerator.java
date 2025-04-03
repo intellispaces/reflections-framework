@@ -14,8 +14,8 @@ import tech.intellispaces.commons.text.StringFunctions;
 import tech.intellispaces.commons.type.Type;
 import tech.intellispaces.jaquarius.annotation.Dataset;
 import tech.intellispaces.jaquarius.annotationprocessor.AnnotationFunctions;
-import tech.intellispaces.jaquarius.annotationprocessor.ArtifactTypes;
 import tech.intellispaces.jaquarius.annotationprocessor.JaquariusArtifactGenerator;
+import tech.intellispaces.jaquarius.artifact.ArtifactTypes;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
 import tech.intellispaces.jaquarius.object.reference.MovabilityTypes;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
@@ -64,7 +64,7 @@ public class ObjectProviderGenerator extends JaquariusArtifactGenerator {
     addVariable("undefinedObjectHandleSimpleName",
         addImportAndGetSimpleName(ObjectReferenceFunctions.getUndefinedObjectHandleTypename(sourceArtifact())));
     addTypeParamVariables();
-    addVariable("customizeMethods", getCustomizeMethods(context));
+    addVariable("extensionMethods", getExtensionMethods(context));
     return true;
   }
 
@@ -117,14 +117,14 @@ public class ObjectProviderGenerator extends JaquariusArtifactGenerator {
     return null;
   }
 
-  List<Map<String, Object>> getCustomizeMethods(ArtifactGeneratorContext context) {
+  List<Map<String, Object>> getExtensionMethods(ArtifactGeneratorContext context) {
     var methods = new ArrayList<Map<String, Object>>();
-    Collection<CustomType> customizers = AnnotationFunctions.findArtifactCustomizers(
+    Collection<CustomType> extensions = AnnotationFunctions.findArtifactExtensions(
         sourceArtifact(), ArtifactTypes.ObjectProvider, context.roundEnvironments()
     );
 
-    for (CustomType customizer : customizers) {
-      for (MethodStatement method : customizer.declaredMethods()) {
+    for (CustomType extension : extensions) {
+      for (MethodStatement method : extension.declaredMethods()) {
         methods.add(Map.of(
             "signature", MethodSignatureDeclarations.build(method).get(this::addImport, this::simpleNameOf),
             "name", method.name(),

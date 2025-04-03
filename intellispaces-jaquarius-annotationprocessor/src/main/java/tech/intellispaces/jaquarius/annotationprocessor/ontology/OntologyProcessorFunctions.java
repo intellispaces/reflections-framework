@@ -6,7 +6,7 @@ import tech.intellispaces.commons.reflection.customtype.CustomType;
 import tech.intellispaces.commons.reflection.method.MethodStatement;
 import tech.intellispaces.jaquarius.annotation.Channel;
 import tech.intellispaces.jaquarius.annotationprocessor.AnnotationFunctions;
-import tech.intellispaces.jaquarius.annotationprocessor.ArtifactTypes;
+import tech.intellispaces.jaquarius.artifact.ArtifactTypes;
 
 import java.util.ArrayList;
 import java.util.List;

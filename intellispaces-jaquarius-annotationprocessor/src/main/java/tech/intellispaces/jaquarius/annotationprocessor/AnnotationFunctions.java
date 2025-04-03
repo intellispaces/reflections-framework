@@ -9,9 +9,11 @@ import tech.intellispaces.commons.reflection.instance.ClassInstance;
 import tech.intellispaces.commons.reflection.instance.Instance;
 import tech.intellispaces.commons.text.StringFunctions;
 import tech.intellispaces.commons.type.Classes;
+import tech.intellispaces.jaquarius.ArtifactType;
 import tech.intellispaces.jaquarius.annotation.AnnotationProcessor;
-import tech.intellispaces.jaquarius.annotation.ArtifactCustomizer;
+import tech.intellispaces.jaquarius.annotation.ArtifactExtension;
 import tech.intellispaces.jaquarius.annotation.ArtifactGeneration;
+import tech.intellispaces.jaquarius.artifact.ArtifactTypes;
 
 import javax.annotation.processing.RoundEnvironment;
 import java.lang.annotation.Annotation;
@@ -61,37 +63,37 @@ public interface AnnotationFunctions {
     throw UnexpectedExceptions.withMessage("Invalid usage of annotation {0}", AnnotationProcessor.class.getSimpleName());
   }
 
-  static Collection<CustomType> findArtifactCustomizers(
-      CustomType customType, ArtifactTypes targetArtifactType, List<RoundEnvironment> roundEnvironments
+  static Collection<CustomType> findArtifactExtensions(
+      CustomType customType, ArtifactType targetArtifactType, List<RoundEnvironment> roundEnvironments
   ) {
     return roundEnvironments.stream()
-        .map(roundEnv -> findArtifactCustomizers(customType.canonicalName(), targetArtifactType, roundEnv))
+        .map(roundEnv -> findArtifactExtensions(customType.canonicalName(), targetArtifactType, roundEnv))
         .flatMap(List::stream)
         .collect(Collectors.toMap(CustomType::canonicalName, Function.identity(), (c1, c2) -> c1)).values();
   }
 
-  static List<CustomType> findArtifactCustomizers(
-      CustomType customType, ArtifactTypes targetArtifactType, RoundEnvironment roundEnv
+  static List<CustomType> findArtifactExtensions(
+      CustomType customType, ArtifactType targetArtifactType, RoundEnvironment roundEnv
   ) {
-    return findArtifactCustomizers(customType.canonicalName(), targetArtifactType, roundEnv);
+    return findArtifactExtensions(customType.canonicalName(), targetArtifactType, roundEnv);
   }
 
-  static List<CustomType> findArtifactCustomizers(
-      String canonicalName, ArtifactTypes targetArtifactType, RoundEnvironment roundEnv
+  static List<CustomType> findArtifactExtensions(
+      String canonicalName, ArtifactType targetArtifactType, RoundEnvironment roundEnv
   ) {
-    return roundEnv.getElementsAnnotatedWith(ArtifactCustomizer.class).stream()
+    return roundEnv.getElementsAnnotatedWith(ArtifactExtension.class).stream()
         .map(JavaStatements::statement)
         .map(stm -> (CustomType) stm)
-        .filter(stm -> isArtifactCustomizerFor(stm, canonicalName, targetArtifactType))
+        .filter(stm -> isExtensionFor(stm, canonicalName, targetArtifactType))
         .toList();
   }
 
-  static boolean isArtifactCustomizerFor(
-      CustomType customType, String canonicalName, ArtifactTypes targetArtifactType
+  private static boolean isExtensionFor(
+      CustomType customType, String canonicalName, ArtifactType targetArtifactType
   ) {
     return isAnnotationFor(
         customType,
-        customType.selectAnnotation(ArtifactCustomizer.class.getCanonicalName()).orElseThrow(),
+        customType.selectAnnotation(ArtifactExtension.class.getCanonicalName()).orElseThrow(),
         canonicalName,
         targetArtifactType
     );
@@ -108,11 +110,11 @@ public interface AnnotationFunctions {
       CustomType annotatedType,
       AnnotationInstance annotation,
       String canonicalClassName,
-      ArtifactTypes targetArtifactType
+      ArtifactType targetArtifactType
   ) {
     CustomType originArtifact = getOriginArtifact(annotatedType, annotation);
     if (canonicalClassName.equals(originArtifact.canonicalName())) {
-      return targetArtifactType.name().equals(getTargetArtifactType(annotation));
+      return targetArtifactType.name().equals(getTargetArtifactType(annotation).name());
     }
     return false;
   }
@@ -128,10 +130,12 @@ public interface AnnotationFunctions {
         .orElseThrow();
   }
 
-  static String getTargetArtifactType(AnnotationInstance annotation) {
-    return annotation.valueOf("target").orElseThrow()
-        .asString().orElseThrow()
-        .value();
+  static ArtifactType getTargetArtifactType(AnnotationInstance annotation) {
+    return ArtifactTypes.valueOf(
+        annotation.valueOf("target").orElseThrow()
+        .asEnum().orElseThrow()
+        .name()
+    );
   }
 
   static boolean isArtifactGenerationEnabled(AnnotationInstance artifactGenerationAnnotation) {

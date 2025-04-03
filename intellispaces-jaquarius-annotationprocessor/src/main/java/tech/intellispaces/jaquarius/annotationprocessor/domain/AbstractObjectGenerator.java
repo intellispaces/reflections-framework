@@ -18,12 +18,12 @@ import tech.intellispaces.commons.reflection.reference.NotPrimitiveReference;
 import tech.intellispaces.commons.reflection.reference.ReferenceBound;
 import tech.intellispaces.commons.reflection.reference.TypeReference;
 import tech.intellispaces.commons.type.ClassFunctions;
+import tech.intellispaces.jaquarius.ArtifactType;
 import tech.intellispaces.jaquarius.Jaquarius;
 import tech.intellispaces.jaquarius.annotation.Movable;
 import tech.intellispaces.jaquarius.annotation.Unmovable;
 import tech.intellispaces.jaquarius.annotationprocessor.AnnotationFunctions;
 import tech.intellispaces.jaquarius.annotationprocessor.AnnotationGeneratorFunctions;
-import tech.intellispaces.jaquarius.annotationprocessor.ArtifactTypes;
 import tech.intellispaces.jaquarius.annotationprocessor.JaquariusArtifactGenerator;
 import tech.intellispaces.jaquarius.exception.TraverseException;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
@@ -68,7 +68,7 @@ public abstract class AbstractObjectGenerator extends JaquariusArtifactGenerator
 
   abstract protected MovabilityType getMovabilityType();
 
-  abstract protected List<ArtifactTypes> relatedArtifactTypes();
+  abstract protected List<ArtifactType> relatedArtifactTypes();
 
   protected String movableClassSimpleName() {
     return addImportAndGetSimpleName(
@@ -293,7 +293,7 @@ public abstract class AbstractObjectGenerator extends JaquariusArtifactGenerator
     InterfaceType domain = domainType.asInterfaceOrElseThrow();
 
     var builder = Interfaces.build(domain);
-    findExtraOMethods(domain, context.initialRoundEnvironment()).forEach(builder::addDeclaredMethod);
+    findExtensionMethods(domain, context.initialRoundEnvironment()).forEach(builder::addDeclaredMethod);
 
     var extendedInterfaces = new ArrayList<CustomTypeReference>();
     for (CustomTypeReference superDomain : domain.extendedInterfaces()) {
@@ -305,25 +305,22 @@ public abstract class AbstractObjectGenerator extends JaquariusArtifactGenerator
     return builder.get();
   }
 
-  protected List<CustomType> findCustomizers(CustomType domainType, RoundEnvironment roundEnv) {
-    var allCustomizers = new ArrayList<CustomType>();
-    for (ArtifactTypes artifactType : relatedArtifactTypes()) {
-      List<CustomType> customizers = AnnotationFunctions.findArtifactCustomizers(
-          domainType, artifactType, roundEnv
-      );
-      allCustomizers.addAll(customizers);
+  protected List<CustomType> findExtensions(CustomType domainType, RoundEnvironment roundEnv) {
+    var extensions = new ArrayList<CustomType>();
+    for (ArtifactType artifactType : relatedArtifactTypes()) {
+      extensions.addAll(AnnotationFunctions.findArtifactExtensions(domainType, artifactType, roundEnv));
     }
-    return allCustomizers;
+    return extensions;
   }
 
-  private List<MethodStatement> findExtraOMethods(CustomType domainType, RoundEnvironment roundEnv) {
+  private List<MethodStatement> findExtensionMethods(CustomType domainType, RoundEnvironment roundEnv) {
     List<MethodStatement> methods = new ArrayList<>();
-    for (ArtifactTypes artifactType : relatedArtifactTypes()) {
-      List<CustomType> customizers = AnnotationFunctions.findArtifactCustomizers(
+    for (ArtifactType artifactType : relatedArtifactTypes()) {
+      List<CustomType> extensions = AnnotationFunctions.findArtifactExtensions(
           domainType, artifactType, roundEnv
       );
-      for (CustomType customizer : customizers) {
-        methods.addAll(customizer.declaredMethods());
+      for (CustomType extension : extensions) {
+        methods.addAll(extension.declaredMethods());
       }
     }
     return methods;

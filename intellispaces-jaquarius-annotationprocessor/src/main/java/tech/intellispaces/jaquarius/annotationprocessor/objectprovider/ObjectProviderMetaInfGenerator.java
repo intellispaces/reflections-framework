@@ -4,7 +4,7 @@ import tech.intellispaces.commons.annotation.processor.Artifact;
 import tech.intellispaces.commons.annotation.processor.ArtifactGenerator;
 import tech.intellispaces.commons.annotation.processor.ArtifactGeneratorContext;
 import tech.intellispaces.commons.annotation.processor.ArtifactImpl;
-import tech.intellispaces.commons.annotation.processor.ArtifactTypes;
+import tech.intellispaces.commons.annotation.processor.ArtifactKinds;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
 
 import java.util.ArrayList;
@@ -37,7 +37,7 @@ public class ObjectProviderMetaInfGenerator implements ArtifactGenerator {
       return Optional.empty();
     }
     return Optional.of(new ArtifactImpl(
-        ArtifactTypes.ResourceFile,
+        ArtifactKinds.ResourceFile,
         generatedArtifactName(),
         String.join("\n", objectFactories).toCharArray()
     ));

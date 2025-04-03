@@ -1,5 +1,7 @@
 package tech.intellispaces.jaquarius.annotation;
 
+import tech.intellispaces.jaquarius.artifact.ArtifactTypes;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -7,7 +9,7 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ArtifactCustomizer {
+public @interface ArtifactExtension {
 
   /**
    * The origin artifact.
@@ -17,7 +19,7 @@ public @interface ArtifactCustomizer {
   /**
    * The target artifact type.
    * <p/>
-   * See class {@link tech.intellispaces.jaquarius.annotationprocessor.ArtifactTypes}.
+   * See class {@link ArtifactTypes}.
    */
-  String target();
+  ArtifactTypes target();
 }

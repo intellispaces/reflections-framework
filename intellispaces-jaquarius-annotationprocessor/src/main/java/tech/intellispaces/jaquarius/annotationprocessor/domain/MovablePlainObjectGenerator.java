@@ -5,10 +5,11 @@ import tech.intellispaces.commons.reflection.customtype.CustomType;
 import tech.intellispaces.commons.reflection.method.MethodStatement;
 import tech.intellispaces.commons.reflection.reference.CustomTypeReference;
 import tech.intellispaces.commons.reflection.reference.TypeReference;
+import tech.intellispaces.jaquarius.ArtifactType;
 import tech.intellispaces.jaquarius.annotation.Movable;
 import tech.intellispaces.jaquarius.annotation.ObjectHandle;
 import tech.intellispaces.jaquarius.annotation.Unmovable;
-import tech.intellispaces.jaquarius.annotationprocessor.ArtifactTypes;
+import tech.intellispaces.jaquarius.artifact.ArtifactTypes;
 import tech.intellispaces.jaquarius.channel.Channel0;
 import tech.intellispaces.jaquarius.channel.Channel1;
 import tech.intellispaces.jaquarius.channel.ChannelFunction0;
@@ -51,7 +52,7 @@ public class MovablePlainObjectGenerator extends AbstractPlainObjectGenerator {
   }
 
   @Override
-  protected List<ArtifactTypes> relatedArtifactTypes() {
+  protected List<ArtifactType> relatedArtifactTypes() {
     return List.of(ArtifactTypes.MovablePlainObject);
   }
 

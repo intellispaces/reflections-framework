@@ -1,9 +1,11 @@
-package tech.intellispaces.jaquarius.annotationprocessor;
+package tech.intellispaces.jaquarius.artifact;
+
+import tech.intellispaces.jaquarius.ArtifactType;
 
 /**
  * The artifact types.
  */
-public enum ArtifactTypes {
+public enum ArtifactTypes implements ArtifactType {
 
   /**
    * The movable plain object interface.

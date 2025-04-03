@@ -9,12 +9,13 @@ import tech.intellispaces.commons.reflection.reference.CustomTypeReference;
 import tech.intellispaces.commons.reflection.reference.NotPrimitiveReference;
 import tech.intellispaces.commons.reflection.reference.TypeReference;
 import tech.intellispaces.commons.reflection.reference.TypeReferenceFunctions;
-import tech.intellispaces.jaquarius.annotation.ArtifactCustomizer;
+import tech.intellispaces.jaquarius.ArtifactType;
+import tech.intellispaces.jaquarius.annotation.ArtifactExtension;
 import tech.intellispaces.jaquarius.annotation.Channel;
 import tech.intellispaces.jaquarius.annotation.Movable;
 import tech.intellispaces.jaquarius.annotation.ObjectHandle;
 import tech.intellispaces.jaquarius.annotation.Unmovable;
-import tech.intellispaces.jaquarius.annotationprocessor.ArtifactTypes;
+import tech.intellispaces.jaquarius.artifact.ArtifactTypes;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
 import tech.intellispaces.jaquarius.object.reference.MovabilityType;
 import tech.intellispaces.jaquarius.object.reference.MovabilityTypes;
@@ -53,7 +54,7 @@ public class UndefinedPlainObjectGenerator extends AbstractPlainObjectGenerator 
   }
 
   @Override
-  protected List<ArtifactTypes> relatedArtifactTypes() {
+  protected List<ArtifactType> relatedArtifactTypes() {
     return List.of(ArtifactTypes.UndefinedPlainObject);
   }
 
@@ -98,16 +99,16 @@ public class UndefinedPlainObjectGenerator extends AbstractPlainObjectGenerator 
   }
 
   private void addExtraInterfaces(ArrayList<String> parents, ArtifactGeneratorContext context) {
-    List<CustomType> customizers = findCustomizers(sourceArtifact(), context.initialRoundEnvironment());
-    for (CustomType customizer : customizers) {
-      AnnotationInstance annotation = customizer.selectAnnotation(ArtifactCustomizer.class.getCanonicalName()).orElseThrow();
+    List<CustomType> extensions = findExtensions(sourceArtifact(), context.initialRoundEnvironment());
+    for (CustomType extension : extensions) {
+      AnnotationInstance annotation = extension.selectAnnotation(ArtifactExtension.class.getCanonicalName()).orElseThrow();
       CustomType domain = annotation.valueOf("origin").orElseThrow().asClass().orElseThrow().type();
       Map<String, NotPrimitiveReference> parentTypeArgumentMapping = TypeReferenceFunctions.getTypeArgumentMapping(
           sourceArtifact(), domain
       );
-      for (CustomTypeReference customizerParent : customizer.parentTypes()) {
+      for (CustomTypeReference extensionParent : extension.parentTypes()) {
         parents.add(
-          customizerParent.effective(parentTypeArgumentMapping).actualDeclaration(this::addImportAndGetSimpleName)
+          extensionParent.effective(parentTypeArgumentMapping).actualDeclaration(this::addImportAndGetSimpleName)
         );
       }
     }
@@ -130,11 +131,11 @@ public class UndefinedPlainObjectGenerator extends AbstractPlainObjectGenerator 
     if (method.hasAnnotation(Channel.class)) {
       return super.generateMethod(method, targetForm, methodOrdinal);
     } else {
-      return buildCustomizeMethod(method);
+      return buildExtensionMethod(method);
     }
   }
 
-  private Map<String, String> buildCustomizeMethod(MethodStatement method) {
+  private Map<String, String> buildExtensionMethod(MethodStatement method) {
     var sb = new StringBuilder();
     appendMethodTypeParameters(sb, method);
     appendMethodReturnType(sb, method);

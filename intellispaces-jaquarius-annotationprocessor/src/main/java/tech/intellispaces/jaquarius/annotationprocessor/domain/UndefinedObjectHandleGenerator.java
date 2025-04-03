@@ -7,9 +7,10 @@ import tech.intellispaces.commons.reflection.reference.CustomTypeReference;
 import tech.intellispaces.commons.text.StringFunctions;
 import tech.intellispaces.commons.type.Type;
 import tech.intellispaces.commons.type.Types;
+import tech.intellispaces.jaquarius.ArtifactType;
 import tech.intellispaces.jaquarius.annotation.Channel;
 import tech.intellispaces.jaquarius.annotation.ObjectHandle;
-import tech.intellispaces.jaquarius.annotationprocessor.ArtifactTypes;
+import tech.intellispaces.jaquarius.artifact.ArtifactTypes;
 import tech.intellispaces.jaquarius.channel.Channel1;
 import tech.intellispaces.jaquarius.exception.TraverseException;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
@@ -49,7 +50,7 @@ public class UndefinedObjectHandleGenerator extends AbstractObjectGenerator {
   }
 
   @Override
-  protected List<ArtifactTypes> relatedArtifactTypes() {
+  protected List<ArtifactType> relatedArtifactTypes() {
     return List.of(ArtifactTypes.UndefinedObjectHandle);
   }
 
@@ -139,11 +140,11 @@ public class UndefinedObjectHandleGenerator extends AbstractObjectGenerator {
     if (method.hasAnnotation(Channel.class)) {
       return super.generateMethod(method, targetForm, methodOrdinal);
     } else {
-      return buildCustomizeMethod(method);
+      return buildExtensionMethod(method);
     }
   }
 
-  private Map<String, String> buildCustomizeMethod(MethodStatement method) {
+  private Map<String, String> buildExtensionMethod(MethodStatement method) {
     var sb = new StringBuilder();
     appendMethodTypeParameters(sb, method);
     appendMethodReturnType(sb, method);

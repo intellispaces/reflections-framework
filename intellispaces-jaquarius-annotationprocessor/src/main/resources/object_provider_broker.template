@@ -10,15 +10,15 @@ import {{$importedClass}};
  * This class was generated automatically. Don't try to change it.
  */
 {{$generatedAnnotation}}
-public class {{$generatedArtifactSimpleName}} implements {{for customizer : $customizers}}{{$customizer}}{{when $customizer.isNotLast()}}, {{end}}{{end}} {
+public class {{$generatedArtifactSimpleName}} implements {{for extension : $extensions}}{{$extension}}{{when $extension.isNotLast()}}, {{end}}{{end}} {
 
-{{for method : $customizeMethods}}
+{{for method : $extensionMethods}}
   public {{$method."signature"}} {
     return ({{$method."returnTypeDeclaration"}}) {{$method."actionName"}}.execute({{$method."paramNames"}});
   }
 
 {{end}}
-{{for method : $customizeMethods}}
+{{for method : $extensionMethods}}
   private final {{$method."actionType"}} {{$method."actionName"}} = JaquariusEngines.get().objectProviderAction(
     {{$method."returnDomainClass"}}.class,
     "{{$method."contractType"}}",

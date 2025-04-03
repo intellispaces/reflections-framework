@@ -8,11 +8,12 @@ import tech.intellispaces.commons.reflection.reference.TypeReference;
 import tech.intellispaces.commons.type.PrimitiveFunctions;
 import tech.intellispaces.commons.type.Type;
 import tech.intellispaces.commons.type.Types;
+import tech.intellispaces.jaquarius.ArtifactType;
 import tech.intellispaces.jaquarius.annotation.Movable;
 import tech.intellispaces.jaquarius.annotation.Ordinal;
 import tech.intellispaces.jaquarius.annotation.Unmovable;
 import tech.intellispaces.jaquarius.annotation.Wrapper;
-import tech.intellispaces.jaquarius.annotationprocessor.ArtifactTypes;
+import tech.intellispaces.jaquarius.artifact.ArtifactTypes;
 import tech.intellispaces.jaquarius.channel.Channel0;
 import tech.intellispaces.jaquarius.channel.Channel1;
 import tech.intellispaces.jaquarius.channel.ChannelFunction0;
@@ -69,7 +70,7 @@ public class MovableObjectWrapperGenerator extends AbstractObjectWrapperGenerato
   }
 
   @Override
-  protected List<ArtifactTypes> relatedArtifactTypes() {
+  protected List<ArtifactType> relatedArtifactTypes() {
     return List.of(ArtifactTypes.MovableObjectWrapper, ArtifactTypes.UndefinedObjectHandle, ArtifactTypes.UndefinedPlainObject);
   }
 

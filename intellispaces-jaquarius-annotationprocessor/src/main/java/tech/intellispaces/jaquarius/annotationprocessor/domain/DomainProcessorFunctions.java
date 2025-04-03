@@ -13,7 +13,7 @@ import tech.intellispaces.jaquarius.annotation.AnnotationProcessor;
 import tech.intellispaces.jaquarius.annotation.Channel;
 import tech.intellispaces.jaquarius.annotation.Ignore;
 import tech.intellispaces.jaquarius.annotationprocessor.AnnotationFunctions;
-import tech.intellispaces.jaquarius.annotationprocessor.ArtifactTypes;
+import tech.intellispaces.jaquarius.artifact.ArtifactTypes;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
 
 import javax.annotation.processing.RoundEnvironment;

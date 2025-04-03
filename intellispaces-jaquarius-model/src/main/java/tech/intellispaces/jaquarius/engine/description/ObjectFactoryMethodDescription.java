@@ -6,14 +6,14 @@ import tech.intellispaces.commons.type.Type;
 import java.util.List;
 
 /**
- * The object provider method description.
+ * The object factory method description.
  */
-public interface ObjectProviderMethodDescription {
+public interface ObjectFactoryMethodDescription {
 
   /**
-   * The object provider instance.
+   * The object factory instance.
    */
-  Object objectProvider();
+  Object objectFactory();
 
   /**
    * The method name.

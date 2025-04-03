@@ -1,4 +1,4 @@
-package tech.intellispaces.jaquarius.annotationprocessor.objecthandle;
+package tech.intellispaces.jaquarius.annotationprocessor.object.handle;
 
 import tech.intellispaces.commons.annotation.processor.ArtifactGeneratorContext;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;

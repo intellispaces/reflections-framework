@@ -1,4 +1,4 @@
-package tech.intellispaces.jaquarius.annotationprocessor.objecthandle;
+package tech.intellispaces.jaquarius.annotationprocessor.object.handle;
 
 import tech.intellispaces.commons.action.runnable.RunnableAction;
 import tech.intellispaces.commons.action.text.StringActions;

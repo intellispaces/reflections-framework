@@ -83,14 +83,14 @@ public enum ArtifactTypes implements ArtifactType {
   MovableObjectWrapper,
 
   /**
-   * The object provider.
+   * The object assistant.
    */
-  ObjectProvider,
+  ObjectAssistant,
 
   /**
-   * The object provider broker.
+   * The object assistant broker.
    */
-  ObjectProviderBroker,
+  ObjectAssistantBroker,
 
   /**
    * The dataset builder.

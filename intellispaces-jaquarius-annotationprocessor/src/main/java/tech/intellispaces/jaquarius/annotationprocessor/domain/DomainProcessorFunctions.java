@@ -43,7 +43,7 @@ public interface DomainProcessorFunctions {
     addObjectHandleGenerators(domainType, generators, context.initialRoundEnvironment());
     addDownwardObjectHandleGenerators(domainType, generators);
     addIncludedGenerators(domainType, generators, context);
-    addObjectProviderGenerators(domainType, generators);
+    addObjectAssistantGenerators(domainType, generators);
     return generators;
   }
 
@@ -116,10 +116,10 @@ public interface DomainProcessorFunctions {
     }
   }
 
-  private static void addObjectProviderGenerators(
+  private static void addObjectAssistantGenerators(
       CustomType domainType, List<ArtifactGenerator> generators
   ) {
-    generators.add(new ObjectProviderBrokerGenerator(domainType));
-    generators.add(new ObjectProviderGenerator(domainType));
+    generators.add(new ObjectAssistantBrokerGenerator(domainType));
+    generators.add(new ObjectAssistantGenerator(domainType));
   }
 }

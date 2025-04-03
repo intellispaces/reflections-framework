@@ -16,7 +16,7 @@ import tech.intellispaces.jaquarius.annotationprocessor.JaquariusArtifactGenerat
 import tech.intellispaces.jaquarius.artifact.ArtifactTypes;
 import tech.intellispaces.jaquarius.engine.JaquariusEngines;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
-import tech.intellispaces.jaquarius.object.provider.ObjectProviderFunctions;
+import tech.intellispaces.jaquarius.object.factory.ObjectFactoryFunctions;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceFunctions;
 
 import java.util.ArrayList;
@@ -25,25 +25,25 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class ObjectProviderBrokerGenerator extends JaquariusArtifactGenerator {
+public class ObjectAssistantBrokerGenerator extends JaquariusArtifactGenerator {
 
-  public ObjectProviderBrokerGenerator(CustomType domainType) {
+  public ObjectAssistantBrokerGenerator(CustomType domainType) {
     super(domainType);
   }
 
   @Override
   protected String templateName() {
-    return "/object_provider_broker.template";
+    return "/object_assistant_broker.template";
   }
 
   @Override
   public String generatedArtifactName() {
-    return NameConventionFunctions.getObjectProviderBrokerCanonicalName(sourceArtifact());
+    return NameConventionFunctions.getObjectAssistantBrokerCanonicalName(sourceArtifact());
   }
 
   @Override
   public boolean isRelevant(ArtifactGeneratorContext context) {
-    // Starts the Object Provider generator after all other types of generators
+    // Starts the Object Assistant generator after all other types of generators
     return context.isPenaltyRound();
   }
 
@@ -85,7 +85,7 @@ public class ObjectProviderBrokerGenerator extends JaquariusArtifactGenerator {
             "actionType", makeActionType(method),
             "returnType", makeReturnType(method),
             "paramTypes", makeParamTypes(method),
-            "contractType", ObjectProviderFunctions.getContractType(method)
+            "contractType", ObjectFactoryFunctions.getContractType(method)
         ));
       }
     }
@@ -94,7 +94,7 @@ public class ObjectProviderBrokerGenerator extends JaquariusArtifactGenerator {
 
   Collection<CustomType> findExtensions(ArtifactGeneratorContext context) {
     return AnnotationFunctions.findArtifactExtensions(
-        sourceArtifact(), ArtifactTypes.ObjectProvider, context.roundEnvironments()
+        sourceArtifact(), ArtifactTypes.ObjectAssistant, context.roundEnvironments()
     );
   }
 
@@ -107,7 +107,7 @@ public class ObjectProviderBrokerGenerator extends JaquariusArtifactGenerator {
         appendActionNameParam(sb, param.type());
       }
     }
-    sb.append("ObjectProviderAction");
+    sb.append("ObjectFactoryAction");
     return sb.toString();
   }
 

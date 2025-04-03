@@ -1,4 +1,4 @@
-package tech.intellispaces.jaquarius.annotationprocessor.objecthandle;
+package tech.intellispaces.jaquarius.annotationprocessor.object.handle;
 
 import com.google.auto.service.AutoService;
 import tech.intellispaces.commons.annotation.processor.ArtifactGenerator;

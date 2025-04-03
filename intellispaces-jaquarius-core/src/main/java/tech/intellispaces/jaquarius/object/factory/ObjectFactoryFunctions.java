@@ -1,9 +1,9 @@
-package tech.intellispaces.jaquarius.object.provider;
+package tech.intellispaces.jaquarius.object.factory;
 
 import tech.intellispaces.commons.reflection.method.MethodStatement;
 import tech.intellispaces.commons.text.StringFunctions;
 
-public interface ObjectProviderFunctions {
+public interface ObjectFactoryFunctions {
 
   static String getContractType(MethodStatement method) {
     return getContractType(method.name());

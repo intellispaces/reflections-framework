@@ -28,25 +28,25 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class ObjectProviderGenerator extends JaquariusArtifactGenerator {
+public class ObjectAssistantGenerator extends JaquariusArtifactGenerator {
 
-  public ObjectProviderGenerator(CustomType domainType) {
+  public ObjectAssistantGenerator(CustomType domainType) {
     super(domainType);
   }
 
   @Override
   protected String templateName() {
-    return "/object_provider.template";
+    return "/object_assistant.template";
   }
 
   @Override
   public String generatedArtifactName() {
-    return NameConventionFunctions.getObjectProviderCanonicalName(sourceArtifact());
+    return NameConventionFunctions.getObjectAssistantCanonicalName(sourceArtifact());
   }
 
   @Override
   public boolean isRelevant(ArtifactGeneratorContext context) {
-    // Starts the Object Provider generator after all other types of generators
+    // Starts the Object Assistant generator after all other types of generators
     return context.isPenaltyRound();
   }
 
@@ -55,7 +55,7 @@ public class ObjectProviderGenerator extends JaquariusArtifactGenerator {
     addImport(Modules.class);
     addImport(UnexpectedExceptions.class);
 
-    addVariable("brokerSimpleName", addImportAndGetSimpleName(NameConventionFunctions.getObjectProviderBrokerCanonicalName(sourceArtifact())));
+    addVariable("brokerSimpleName", addImportAndGetSimpleName(NameConventionFunctions.getObjectAssistantBrokerCanonicalName(sourceArtifact())));
     addVariable("isDataset", AnnotationFunctions.isAssignableAnnotation(sourceArtifact(), Dataset.class));
     addVariable("plainFirstLetterLowercaseSimpleName",
         StringFunctions.lowercaseFirstLetter(StringFunctions.removeTailOrElseThrow(sourceArtifactSimpleName(), "Domain")));
@@ -120,7 +120,7 @@ public class ObjectProviderGenerator extends JaquariusArtifactGenerator {
   List<Map<String, Object>> getExtensionMethods(ArtifactGeneratorContext context) {
     var methods = new ArrayList<Map<String, Object>>();
     Collection<CustomType> extensions = AnnotationFunctions.findArtifactExtensions(
-        sourceArtifact(), ArtifactTypes.ObjectProvider, context.roundEnvironments()
+        sourceArtifact(), ArtifactTypes.ObjectAssistant, context.roundEnvironments()
     );
 
     for (CustomType extension : extensions) {

@@ -1,4 +1,4 @@
-package tech.intellispaces.jaquarius.annotationprocessor.objectprovider;
+package tech.intellispaces.jaquarius.annotationprocessor.object.factory;
 
 import tech.intellispaces.commons.annotation.processor.Artifact;
 import tech.intellispaces.commons.annotation.processor.ArtifactGenerator;
@@ -11,10 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class ObjectProviderMetaInfGenerator implements ArtifactGenerator {
+public class ObjectFactoryMetaInfGenerator implements ArtifactGenerator {
   private final List<String> objectFactories = new ArrayList<>();
 
-  public ObjectProviderMetaInfGenerator() {
+  public ObjectFactoryMetaInfGenerator() {
   }
 
   @Override

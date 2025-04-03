@@ -1,13 +1,13 @@
-package tech.intellispaces.jaquarius.annotationprocessor.objectprovider;
+package tech.intellispaces.jaquarius.annotationprocessor.object.factory;
 
 import tech.intellispaces.commons.annotation.processor.ArtifactGeneratorContext;
 import tech.intellispaces.commons.reflection.customtype.CustomType;
 import tech.intellispaces.commons.reflection.method.MethodParam;
 import tech.intellispaces.commons.reflection.method.MethodStatement;
 import tech.intellispaces.jaquarius.annotationprocessor.JaquariusArtifactGenerator;
-import tech.intellispaces.jaquarius.engine.ObjectProviderWrapper;
-import tech.intellispaces.jaquarius.engine.description.ObjectProviderMethodDescription;
-import tech.intellispaces.jaquarius.engine.description.ObjectProviderMethods;
+import tech.intellispaces.jaquarius.engine.ObjectFactoryWrapper;
+import tech.intellispaces.jaquarius.engine.description.ObjectFactoryMethodDescription;
+import tech.intellispaces.jaquarius.engine.description.ObjectFactoryMethods;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceFunctions;
 
@@ -15,14 +15,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class ObjectProviderWrapperGenerator extends JaquariusArtifactGenerator {
-  private final ObjectProviderMetaInfGenerator metaInfGenerator;
+public class ObjectFactoryWrapperGenerator extends JaquariusArtifactGenerator {
+  private final ObjectFactoryMetaInfGenerator metaInfGenerator;
 
-  public ObjectProviderWrapperGenerator(
-      CustomType objectProviderType,
-      ObjectProviderMetaInfGenerator metaInfGenerator
+  public ObjectFactoryWrapperGenerator(
+      CustomType objectFactoryType,
+      ObjectFactoryMetaInfGenerator metaInfGenerator
   ) {
-    super(objectProviderType);
+    super(objectFactoryType);
     this.metaInfGenerator = metaInfGenerator;
   }
 
@@ -33,12 +33,12 @@ public class ObjectProviderWrapperGenerator extends JaquariusArtifactGenerator {
 
   @Override
   public String generatedArtifactName() {
-    return NameConventionFunctions.getObjectProviderWrapperClassName(sourceArtifact().className());
+    return NameConventionFunctions.getObjectFactoryWrapperClassName(sourceArtifact().className());
   }
 
   @Override
   protected String templateName() {
-    return "/object_provider_wrapper.template";
+    return "/object_factory_wrapper.template";
   }
 
   @Override
@@ -48,17 +48,17 @@ public class ObjectProviderWrapperGenerator extends JaquariusArtifactGenerator {
     }
     addImport(List.class);
     addImport(ArrayList.class);
-    addImport(ObjectProviderWrapper.class);
-    addImport(ObjectProviderMethods.class);
-    addImport(ObjectProviderMethodDescription.class);
+    addImport(ObjectFactoryWrapper.class);
+    addImport(ObjectFactoryMethods.class);
+    addImport(ObjectFactoryMethodDescription.class);
 
-    addVariable("providerMethods", getProviderMethods());
+    addVariable("factoryMethods", getFactoryMethods());
 
     metaInfGenerator.addObjectFactory(generatedArtifactName());
     return true;
   }
 
-  List<Map<String, Object>> getProviderMethods() {
+  List<Map<String, Object>> getFactoryMethods() {
     var methods = new ArrayList<Map<String, Object>>();
       for (MethodStatement method : sourceArtifact().declaredMethods()) {
         if (method.isStatic()) {

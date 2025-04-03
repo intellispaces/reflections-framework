@@ -19,11 +19,11 @@ import tech.intellispaces.commons.object.Objects;
 import tech.intellispaces.commons.resource.ResourceFunctions;
 import tech.intellispaces.commons.type.Classes;
 import tech.intellispaces.commons.type.Type;
-import tech.intellispaces.jaquarius.engine.ObjectProviderWrapper;
-import tech.intellispaces.jaquarius.engine.description.ObjectProviderMethodDescription;
+import tech.intellispaces.jaquarius.engine.ObjectFactoryWrapper;
+import tech.intellispaces.jaquarius.engine.description.ObjectFactoryMethodDescription;
 import tech.intellispaces.jaquarius.exception.ConfigurationExceptions;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
-import tech.intellispaces.jaquarius.object.provider.ObjectProviderFunctions;
+import tech.intellispaces.jaquarius.object.factory.ObjectFactoryFunctions;
 
 import java.io.IOException;
 import java.net.URL;
@@ -34,47 +34,47 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-class ObjectProviderRegistry {
+class ObjectFactoryRegistry {
   private boolean isLoaded;
-  private Map<Class<?>, List<ObjectProviderMethodDescription>> domainToDescriptions = Map.of();
+  private Map<Class<?>, List<ObjectFactoryMethodDescription>> domainToDescriptions = Map.of();
 
   @SuppressWarnings("unchecked")
-  public <H> Action0<H> objectProviderAction(
+  public <H> Action0<H> objectAssistantAction(
       Class<?> targetDomainClass,
       String contractType,
       Type<H> targetObjectHandleType
   ) {
-    loadObjectProviders();
+    loadObjectFactories();
     return (Action0<H>) makeAction(targetDomainClass, contractType, List.of());
   }
 
   @SuppressWarnings("unchecked")
-  public <H, Q> Action1<H, Q> objectProviderAction(
+  public <H, Q> Action1<H, Q> objectAssistantAction(
       Class<?> targetDomainClass,
       String contractType,
       Type<Q> contractQualifierType,
       Type<H> targetObjectHandleType
   ) {
-    loadObjectProviders();
+    loadObjectFactories();
     return (Action1<H, Q>) makeAction(targetDomainClass, contractType, List.of(contractQualifierType));
   }
 
   @SuppressWarnings("unchecked")
-  public <H, Q1, Q2> Action2<H, Q1, Q2> objectProviderAction(
+  public <H, Q1, Q2> Action2<H, Q1, Q2> objectAssistantAction(
       Class<?> targetDomainClass,
       String contractType,
       Type<Q1> contractQualifierType1,
       Type<Q2> contractQualifierType2,
       Type<H> targetObjectHandleType
   ) {
-    loadObjectProviders();
+    loadObjectFactories();
     return (Action2<H, Q1, Q2>) makeAction(
         targetDomainClass, contractType, List.of(contractQualifierType1, contractQualifierType2
     ));
   }
 
   @SuppressWarnings("unchecked")
-  public <H, Q1, Q2, Q3> Action3<H, Q1, Q2, Q3> objectProviderAction(
+  public <H, Q1, Q2, Q3> Action3<H, Q1, Q2, Q3> objectAssistantAction(
       Class<?> targetDomainClass,
       String contractType,
       Type<Q1> contractQualifierType1,
@@ -82,14 +82,14 @@ class ObjectProviderRegistry {
       Type<Q3> contractQualifierType3,
       Type<H> targetObjectHandleType
   ) {
-    loadObjectProviders();
+    loadObjectFactories();
     return (Action3<H, Q1, Q2, Q3>) makeAction(
         targetDomainClass, contractType, List.of(contractQualifierType1, contractQualifierType2, contractQualifierType3
     ));
   }
 
   @SuppressWarnings("unchecked")
-  public <H, Q1, Q2, Q3, Q4> Action4<H, Q1, Q2, Q3, Q4> objectProviderAction(
+  public <H, Q1, Q2, Q3, Q4> Action4<H, Q1, Q2, Q3, Q4> objectAssistantAction(
       Class<?> targetDomainClass,
       String contractType,
       Type<Q1> contractQualifierType1,
@@ -98,7 +98,7 @@ class ObjectProviderRegistry {
       Type<Q4> contractQualifierType4,
       Type<H> targetObjectHandleType
   ) {
-    loadObjectProviders();
+    loadObjectFactories();
     return (Action4<H, Q1, Q2, Q3, Q4>) makeAction(
         targetDomainClass,
         contractType, List.of(
@@ -110,7 +110,7 @@ class ObjectProviderRegistry {
   }
 
   @SuppressWarnings("unchecked")
-  public <H, Q1, Q2, Q3, Q4, Q5> Action5<H, Q1, Q2, Q3, Q4, Q5> objectProviderAction(
+  public <H, Q1, Q2, Q3, Q4, Q5> Action5<H, Q1, Q2, Q3, Q4, Q5> objectAssistantAction(
       Class<?> targetDomainClass,
       String contractType,
       Type<Q1> contractQualifierType1,
@@ -120,7 +120,7 @@ class ObjectProviderRegistry {
       Type<Q5> contractQualifierType5,
       Type<H> targetObjectHandleType
   ) {
-    loadObjectProviders();
+    loadObjectFactories();
     return (Action5<H, Q1, Q2, Q3, Q4, Q5>) makeAction(
         targetDomainClass,
         contractType, List.of(
@@ -133,7 +133,7 @@ class ObjectProviderRegistry {
   }
 
   @SuppressWarnings("unchecked")
-  public <H, Q1, Q2, Q3, Q4, Q5, Q6> Action6<H, Q1, Q2, Q3, Q4, Q5, Q6> objectProviderAction(
+  public <H, Q1, Q2, Q3, Q4, Q5, Q6> Action6<H, Q1, Q2, Q3, Q4, Q5, Q6> objectAssistantAction(
       Class<?> targetDomainClass,
       String contractType,
       Type<Q1> contractQualifierType1,
@@ -144,7 +144,7 @@ class ObjectProviderRegistry {
       Type<Q6> contractQualifierType6,
       Type<H> targetObjectHandleType
   ) {
-    loadObjectProviders();
+    loadObjectFactories();
     return (Action6<H, Q1, Q2, Q3, Q4, Q5, Q6>) makeAction(
         targetDomainClass,
         contractType, List.of(
@@ -158,7 +158,7 @@ class ObjectProviderRegistry {
   }
 
   @SuppressWarnings("unchecked")
-  public <H, Q1, Q2, Q3, Q4, Q5, Q6, Q7> Action7<H, Q1, Q2, Q3, Q4, Q5, Q6, Q7> objectProviderAction(
+  public <H, Q1, Q2, Q3, Q4, Q5, Q6, Q7> Action7<H, Q1, Q2, Q3, Q4, Q5, Q6, Q7> objectAssistantAction(
       Class<?> targetDomainClass,
       String contractType,
       Type<Q1> contractQualifierType1,
@@ -170,7 +170,7 @@ class ObjectProviderRegistry {
       Type<Q7> contractQualifierType7,
       Type<H> targetObjectHandleType
   ) {
-    loadObjectProviders();
+    loadObjectFactories();
     return (Action7<H, Q1, Q2, Q3, Q4, Q5, Q6, Q7>) makeAction(
         targetDomainClass,
         contractType, List.of(
@@ -185,7 +185,7 @@ class ObjectProviderRegistry {
   }
 
   @SuppressWarnings("unchecked")
-  public <H, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8> Action8<H, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8> objectProviderAction(
+  public <H, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8> Action8<H, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8> objectAssistantAction(
       Class<?> targetDomainClass,
       String contractType,
       Type<Q1> contractQualifierType1,
@@ -198,7 +198,7 @@ class ObjectProviderRegistry {
       Type<Q8> contractQualifierType8,
       Type<H> targetObjectHandleType
   ) {
-    loadObjectProviders();
+    loadObjectFactories();
     return (Action8<H, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8>) makeAction(
         targetDomainClass,
         contractType, List.of(
@@ -214,7 +214,7 @@ class ObjectProviderRegistry {
   }
 
   @SuppressWarnings("unchecked")
-  public <H, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9> Action9<H, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9> objectProviderAction(
+  public <H, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9> Action9<H, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9> objectAssistantAction(
       Class<?> targetDomainClass,
       String contractType,
       Type<Q1> contractQualifierType1,
@@ -228,7 +228,7 @@ class ObjectProviderRegistry {
       Type<Q9> contractQualifierType9,
       Type<H> targetObjectHandleType
   ) {
-    loadObjectProviders();
+    loadObjectFactories();
     return (Action9<H, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9>) makeAction(
         targetDomainClass,
         contractType, List.of(
@@ -245,7 +245,7 @@ class ObjectProviderRegistry {
   }
 
   @SuppressWarnings("unchecked")
-  public <H, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9, Q10> Action10<H, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9, Q10> objectProviderAction(
+  public <H, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9, Q10> Action10<H, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9, Q10> objectAssistantAction(
       Class<?> targetDomainClass,
       String contractType,
       Type<Q1> contractQualifierType1,
@@ -260,7 +260,7 @@ class ObjectProviderRegistry {
       Type<Q10> contractQualifierType10,
       Type<H> targetObjectHandleType
   ) {
-    loadObjectProviders();
+    loadObjectFactories();
     return (Action10<H, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9, Q10>) makeAction(
         targetDomainClass,
         contractType, List.of(
@@ -277,52 +277,52 @@ class ObjectProviderRegistry {
     ));
   }
 
-  void loadObjectProviders() {
+  void loadObjectFactories() {
     if (isLoaded) {
       return;
     }
 
-    List<ObjectProviderMethodDescription> descriptions = new ArrayList<>();
+    List<ObjectFactoryMethodDescription> descriptions = new ArrayList<>();
     try {
-      Enumeration<URL> enumeration = ObjectProviderRegistry.class.getClassLoader().getResources(
+      Enumeration<URL> enumeration = ObjectFactoryRegistry.class.getClassLoader().getResources(
           NameConventionFunctions.getObjectFactoriesResourceName()
       );
       List<URL> urls = CollectionFunctions.toList(enumeration);
       for (URL url : urls) {
         String content = ResourceFunctions.readResourceAsString(url);
-        for (String providerClassName : content.split("\n")) {
-          providerClassName = providerClassName.trim();
-          if (providerClassName.isEmpty()) {
+        for (String factoryClassName : content.split("\n")) {
+          factoryClassName = factoryClassName.trim();
+          if (factoryClassName.isEmpty()) {
             continue;
           }
-          Optional<Class<?>> providerClass = Classes.get(providerClassName);
-          if (providerClass.isEmpty()) {
-            throw UnexpectedExceptions.withMessage("Unable to load object providers class {0}", providerClassName);
+          Optional<Class<?>> factoryClass = Classes.get(factoryClassName);
+          if (factoryClass.isEmpty()) {
+            throw UnexpectedExceptions.withMessage("Unable to load object factory class {0}", factoryClassName);
           }
-          var wrapper = (ObjectProviderWrapper) Objects.get(providerClass.get());
+          var wrapper = (ObjectFactoryWrapper) Objects.get(factoryClass.get());
           descriptions.addAll(wrapper.methods());
         }
       }
     } catch (IOException e) {
-      throw UnexpectedExceptions.withCauseAndMessage(e, "Unable to load object providers");
+      throw UnexpectedExceptions.withCauseAndMessage(e, "Unable to load object factories");
     }
 
     domainToDescriptions = descriptions.stream()
-        .collect(Collectors.groupingBy(ObjectProviderMethodDescription::returnedDomainClass));
+        .collect(Collectors.groupingBy(ObjectFactoryMethodDescription::returnedDomainClass));
     isLoaded = true;
   }
 
   boolean isMatchContractQualifiers(
-      ObjectProviderMethodDescription description, List<Type<?>> requiredQualifierTypes
+      ObjectFactoryMethodDescription description, List<Type<?>> requiredQualifierTypes
   ) {
-    List<Type<?>> providerQualifierTypes = description.paramTypes();
-    if (providerQualifierTypes.size() != requiredQualifierTypes.size()) {
+    List<Type<?>> factoryQualifierTypes = description.paramTypes();
+    if (factoryQualifierTypes.size() != requiredQualifierTypes.size()) {
       return false;
     }
-    for (int index = 0; index < providerQualifierTypes.size(); index++) {
-      Type<?> providerQualifierType = providerQualifierTypes.get(index);
+    for (int index = 0; index < factoryQualifierTypes.size(); index++) {
+      Type<?> factoryQualifierType = factoryQualifierTypes.get(index);
       Type<?> requiredQualifierType = requiredQualifierTypes.get(index);
-      if (!providerQualifierType.equals(requiredQualifierType)) {
+      if (!factoryQualifierType.equals(requiredQualifierType)) {
         return false;
       }
     }
@@ -334,14 +334,14 @@ class ObjectProviderRegistry {
       String contractType,
       List<Type<?>> contractQualifierTypes
   ) {
-    List<ObjectProviderMethodDescription> descriptions = domainToDescriptions.get(targetDomainClass);
+    List<ObjectFactoryMethodDescription> descriptions = domainToDescriptions.get(targetDomainClass);
     if (descriptions == null) {
       throw ConfigurationExceptions.withMessage("No object providers of domain {0} were found",
           targetDomainClass.getCanonicalName());
     }
-    for (ObjectProviderMethodDescription description : descriptions) {
+    for (ObjectFactoryMethodDescription description : descriptions) {
       if (
-          ObjectProviderFunctions.getContractType(description.name()).equals(contractType) &&
+          ObjectFactoryFunctions.getContractType(description.name()).equals(contractType) &&
               isMatchContractQualifiers(description, contractQualifierTypes)
       ) {
         return makeAction(description);
@@ -351,7 +351,7 @@ class ObjectProviderRegistry {
         targetDomainClass.getCanonicalName(), contractType);
   }
 
-  Action makeAction(ObjectProviderMethodDescription description) {
+  Action makeAction(ObjectFactoryMethodDescription description) {
     return switch (description.paramTypes().size()) {
       case 0 -> makeAction0(description);
       case 1 -> makeAction1(description);
@@ -368,62 +368,62 @@ class ObjectProviderRegistry {
   }
 
   @SuppressWarnings("unchecked")
-  private Action makeAction0(ObjectProviderMethodDescription description) {
+  private Action makeAction0(ObjectFactoryMethodDescription description) {
     var originAction = (Action1<Object, Object>) description.action();
-    return originAction.convertToAction0(description.objectProvider());
+    return originAction.convertToAction0(description.objectFactory());
   }
 
   @SuppressWarnings("unchecked")
-  private Action makeAction1(ObjectProviderMethodDescription description) {
+  private Action makeAction1(ObjectFactoryMethodDescription description) {
     var originAction = (Action2<Object, Object, Object>) description.action();
-    return originAction.convertToAction1(description.objectProvider());
+    return originAction.convertToAction1(description.objectFactory());
   }
 
   @SuppressWarnings("unchecked")
-  private Action makeAction2(ObjectProviderMethodDescription description) {
+  private Action makeAction2(ObjectFactoryMethodDescription description) {
     var originAction = (Action3<Object, Object, Object, Object>) description.action();
-    return originAction.convertToAction2(description.objectProvider());
+    return originAction.convertToAction2(description.objectFactory());
   }
 
   @SuppressWarnings("unchecked")
-  private Action makeAction3(ObjectProviderMethodDescription description) {
+  private Action makeAction3(ObjectFactoryMethodDescription description) {
     var originAction = (Action4<Object, Object, Object, Object, Object>) description.action();
-    return originAction.convertToAction3(description.objectProvider());
+    return originAction.convertToAction3(description.objectFactory());
   }
 
   @SuppressWarnings("unchecked")
-  private Action makeAction4(ObjectProviderMethodDescription description) {
+  private Action makeAction4(ObjectFactoryMethodDescription description) {
     var originAction = (Action5<Object, Object, Object, Object, Object, Object>) description.action();
-    return originAction.convertToAction4(description.objectProvider());
+    return originAction.convertToAction4(description.objectFactory());
   }
 
   @SuppressWarnings("unchecked")
-  private Action makeAction5(ObjectProviderMethodDescription description) {
+  private Action makeAction5(ObjectFactoryMethodDescription description) {
     var originAction = (Action6<Object, Object, Object, Object, Object, Object, Object>) description.action();
-    return originAction.convertToAction5(description.objectProvider());
+    return originAction.convertToAction5(description.objectFactory());
   }
 
   @SuppressWarnings("unchecked")
-  private Action makeAction6(ObjectProviderMethodDescription description) {
+  private Action makeAction6(ObjectFactoryMethodDescription description) {
     var originAction = (Action7<Object, Object, Object, Object, Object, Object, Object, Object>) description.action();
-    return originAction.convertToAction6(description.objectProvider());
+    return originAction.convertToAction6(description.objectFactory());
   }
 
   @SuppressWarnings("unchecked")
-  private Action makeAction7(ObjectProviderMethodDescription description) {
+  private Action makeAction7(ObjectFactoryMethodDescription description) {
     var originAction = (Action8<Object, Object, Object, Object, Object, Object, Object, Object, Object>) description.action();
-    return originAction.convertToAction7(description.objectProvider());
+    return originAction.convertToAction7(description.objectFactory());
   }
 
   @SuppressWarnings("unchecked")
-  private Action makeAction8(ObjectProviderMethodDescription description) {
+  private Action makeAction8(ObjectFactoryMethodDescription description) {
     var originAction = (Action9<Object, Object, Object, Object, Object, Object, Object, Object, Object, Object>) description.action();
-    return originAction.convertToAction8(description.objectProvider());
+    return originAction.convertToAction8(description.objectFactory());
   }
 
   @SuppressWarnings("unchecked")
-  private Action makeAction9(ObjectProviderMethodDescription description) {
+  private Action makeAction9(ObjectFactoryMethodDescription description) {
     var originAction = (Action10<Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object>) description.action();
-    return originAction.convertToAction9(description.objectProvider());
+    return originAction.convertToAction9(description.objectFactory());
   }
 }

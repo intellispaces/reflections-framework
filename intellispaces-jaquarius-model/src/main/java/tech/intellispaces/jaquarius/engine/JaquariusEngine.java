@@ -75,20 +75,20 @@ public interface JaquariusEngine {
    */
   <U, W extends UnitWrapper> UnitBroker registerUnit(W unitWrapper, Class<U> unitClass, UnitMethodDescription... methods);
 
-  <H> Action0<H> objectProviderAction(
+  <H> Action0<H> objectAssistantAction(
       Class<?> targetDomainClass,
       String contractType,
       Type<H> targetObjectHandleType
   );
 
-  <H, Q> Action1<H, Q> objectProviderAction(
+  <H, Q> Action1<H, Q> objectAssistantAction(
       Class<?> targetDomainClass,
       String contractType,
       Type<Q> contractQualifierType,
       Type<H> targetObjectHandleType
   );
 
-  <H, Q1, Q2> Action2<H, Q1, Q2> objectProviderAction(
+  <H, Q1, Q2> Action2<H, Q1, Q2> objectAssistantAction(
       Class<?> targetDomainClass,
       String contractType,
       Type<Q1> contractQualifierType1,
@@ -96,7 +96,7 @@ public interface JaquariusEngine {
       Type<H> targetObjectHandleType
   );
 
-  <H, Q1, Q2, Q3> Action3<H, Q1, Q2, Q3> objectProviderAction(
+  <H, Q1, Q2, Q3> Action3<H, Q1, Q2, Q3> objectAssistantAction(
       Class<?> targetDomainClass,
       String contractType,
       Type<Q1> contractQualifierType1,
@@ -105,7 +105,7 @@ public interface JaquariusEngine {
       Type<H> targetObjectHandleType
   );
 
-  <H, Q1, Q2, Q3, Q4> Action4<H, Q1, Q2, Q3, Q4> objectProviderAction(
+  <H, Q1, Q2, Q3, Q4> Action4<H, Q1, Q2, Q3, Q4> objectAssistantAction(
       Class<?> targetDomainClass,
       String contractType,
       Type<Q1> contractQualifierType1,
@@ -115,7 +115,7 @@ public interface JaquariusEngine {
       Type<H> targetObjectHandleType
   );
 
-  <H, Q1, Q2, Q3, Q4, Q5> Action5<H, Q1, Q2, Q3, Q4, Q5> objectProviderAction(
+  <H, Q1, Q2, Q3, Q4, Q5> Action5<H, Q1, Q2, Q3, Q4, Q5> objectAssistantAction(
       Class<?> targetDomainClass,
       String contractType,
       Type<Q1> contractQualifierType1,
@@ -126,7 +126,7 @@ public interface JaquariusEngine {
       Type<H> targetObjectHandleType
   );
 
-  <H, Q1, Q2, Q3, Q4, Q5, Q6> Action6<H, Q1, Q2, Q3, Q4, Q5, Q6> objectProviderAction(
+  <H, Q1, Q2, Q3, Q4, Q5, Q6> Action6<H, Q1, Q2, Q3, Q4, Q5, Q6> objectAssistantAction(
       Class<?> targetDomainClass,
       String contractType,
       Type<Q1> contractQualifierType1,
@@ -138,7 +138,7 @@ public interface JaquariusEngine {
       Type<H> targetObjectHandleType
   );
 
-  <H, Q1, Q2, Q3, Q4, Q5, Q6, Q7> Action7<H, Q1, Q2, Q3, Q4, Q5, Q6, Q7> objectProviderAction(
+  <H, Q1, Q2, Q3, Q4, Q5, Q6, Q7> Action7<H, Q1, Q2, Q3, Q4, Q5, Q6, Q7> objectAssistantAction(
       Class<?> targetDomainClass,
       String contractType,
       Type<Q1> contractQualifierType1,
@@ -151,7 +151,7 @@ public interface JaquariusEngine {
       Type<H> targetObjectHandleType
   );
 
-  <H, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8> Action8<H, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8> objectProviderAction(
+  <H, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8> Action8<H, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8> objectAssistantAction(
       Class<?> targetDomainClass,
       String contractType,
       Type<Q1> contractQualifierType1,
@@ -165,7 +165,7 @@ public interface JaquariusEngine {
       Type<H> targetObjectHandleType
   );
 
-  <H, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9> Action9<H, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9> objectProviderAction(
+  <H, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9> Action9<H, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9> objectAssistantAction(
       Class<?> targetDomainClass,
       String contractType,
       Type<Q1> contractQualifierType1,
@@ -180,7 +180,7 @@ public interface JaquariusEngine {
       Type<H> targetObjectHandleType
   );
 
-  <H, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9, Q10> Action10<H, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9, Q10> objectProviderAction(
+  <H, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9, Q10> Action10<H, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9, Q10> objectAssistantAction(
       Class<?> targetDomainClass,
       String contractType,
       Type<Q1> contractQualifierType1,

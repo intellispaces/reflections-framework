@@ -5,19 +5,19 @@ import {{$importedClass}};
 {{end}}
 
 /**
- * The object provider wrapper.
+ * The object factory wrapper.
  * <p>
  * This class was generated automatically. Don't try to change it.
  */
 {{$generatedAnnotation}}
-public class {{$generatedArtifactSimpleName}} extends {{$sourceArtifactSimpleName}} implements ObjectProviderWrapper {
+public class {{$generatedArtifactSimpleName}} extends {{$sourceArtifactSimpleName}} implements ObjectFactoryWrapper {
 
   @Override
-  public List<ObjectProviderMethodDescription> methods() {
-    var methods = new ArrayList<ObjectProviderMethodDescription>();
-{{for method : $providerMethods}}
+  public List<ObjectFactoryMethodDescription> methods() {
+    var methods = new ArrayList<ObjectFactoryMethodDescription>();
+{{for method : $factoryMethods}}
     methods.add(
-      ObjectProviderMethods.objectProviderMethod(
+      ObjectFactoryMethods.objectFactoryMethod(
         this,
         "{{$method."name"}}",
         {{$method."returnedType"}},

@@ -5,23 +5,23 @@ import tech.intellispaces.commons.type.Type;
 
 import java.util.List;
 
-public class ObjectProviderMethodDescriptionImpl implements ObjectProviderMethodDescription {
-  private final Object objectProvider;
+public class ObjectFactoryMethodDescriptionImpl implements ObjectFactoryMethodDescription {
+  private final Object objectFactory;
   private final String name;
   private final Type<?> returnedType;
   private final Class<?> returnedDomainClass;
   private final List<Type<?>> paramTypes;
   private final Action action;
 
-  public ObjectProviderMethodDescriptionImpl(
-      Object objectProvider,
+  public ObjectFactoryMethodDescriptionImpl(
+      Object objectFactory,
       String name,
       Type<?> returnedType,
       Class<?> returnedDomainClass,
       List<Type<?>> paramTypes,
       Action action
   ) {
-    this.objectProvider = objectProvider;
+    this.objectFactory = objectFactory;
     this.name = name;
     this.returnedType = returnedType;
     this.returnedDomainClass = returnedDomainClass;
@@ -30,8 +30,8 @@ public class ObjectProviderMethodDescriptionImpl implements ObjectProviderMethod
   }
 
   @Override
-  public Object objectProvider() {
-    return objectProvider;
+  public Object objectFactory() {
+    return objectFactory;
   }
 
   @Override

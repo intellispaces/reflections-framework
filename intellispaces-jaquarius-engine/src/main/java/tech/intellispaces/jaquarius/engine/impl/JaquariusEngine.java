@@ -43,7 +43,7 @@ import java.util.List;
 
 @AutoService(tech.intellispaces.jaquarius.engine.JaquariusEngine.class)
 public class JaquariusEngine implements tech.intellispaces.jaquarius.engine.JaquariusEngine {
-  private final ObjectProviderRegistry objectProviderRegistry = new ObjectProviderRegistry();
+  private final ObjectFactoryRegistry objectFactoryRegistry = new ObjectFactoryRegistry();
 
   @Override
   public Module createModule(List<Class<?>> unitClasses, String[] args) {
@@ -83,35 +83,35 @@ public class JaquariusEngine implements tech.intellispaces.jaquarius.engine.Jaqu
   }
 
   @Override
-  public <H> Action0<H> objectProviderAction(
+  public <H> Action0<H> objectAssistantAction(
       Class<?> targetDomainClass,
       String contractType,
       Type<H> targetObjectHandleType
   ) {
-    return objectProviderRegistry.objectProviderAction(targetDomainClass, contractType, targetObjectHandleType);
+    return objectFactoryRegistry.objectAssistantAction(targetDomainClass, contractType, targetObjectHandleType);
   }
 
   @Override
-  public <H, Q> Action1<H, Q> objectProviderAction(
+  public <H, Q> Action1<H, Q> objectAssistantAction(
       Class<?> targetDomainClass,
       String contractType,
       Type<Q> contractQualifierType,
       Type<H> targetObjectHandleType
   ) {
-    return objectProviderRegistry.objectProviderAction(
+    return objectFactoryRegistry.objectAssistantAction(
         targetDomainClass, contractType, contractQualifierType, targetObjectHandleType
     );
   }
 
   @Override
-  public <H, Q1, Q2> Action2<H, Q1, Q2> objectProviderAction(
+  public <H, Q1, Q2> Action2<H, Q1, Q2> objectAssistantAction(
       Class<?> targetDomainClass,
       String contractType,
       Type<Q1> contractQualifierType1,
       Type<Q2> contractQualifierType2,
       Type<H> targetObjectHandleType
   ) {
-    return objectProviderRegistry.objectProviderAction(
+    return objectFactoryRegistry.objectAssistantAction(
         targetDomainClass,
         contractType,
         contractQualifierType1,
@@ -121,7 +121,7 @@ public class JaquariusEngine implements tech.intellispaces.jaquarius.engine.Jaqu
   }
 
   @Override
-  public <H, Q1, Q2, Q3> Action3<H, Q1, Q2, Q3> objectProviderAction(
+  public <H, Q1, Q2, Q3> Action3<H, Q1, Q2, Q3> objectAssistantAction(
       Class<?> targetDomainClass,
       String contractType,
       Type<Q1> contractQualifierType1,
@@ -129,7 +129,7 @@ public class JaquariusEngine implements tech.intellispaces.jaquarius.engine.Jaqu
       Type<Q3> contractQualifierType3,
       Type<H> targetObjectHandleType
   ) {
-    return objectProviderRegistry.objectProviderAction(
+    return objectFactoryRegistry.objectAssistantAction(
         targetDomainClass,
         contractType,
         contractQualifierType1,
@@ -140,7 +140,7 @@ public class JaquariusEngine implements tech.intellispaces.jaquarius.engine.Jaqu
   }
 
   @Override
-  public <H, Q1, Q2, Q3, Q4> Action4<H, Q1, Q2, Q3, Q4> objectProviderAction(
+  public <H, Q1, Q2, Q3, Q4> Action4<H, Q1, Q2, Q3, Q4> objectAssistantAction(
       Class<?> targetDomainClass,
       String contractType,
       Type<Q1> contractQualifierType1,
@@ -149,7 +149,7 @@ public class JaquariusEngine implements tech.intellispaces.jaquarius.engine.Jaqu
       Type<Q4> contractQualifierType4,
       Type<H> targetObjectHandleType
   ) {
-    return objectProviderRegistry.objectProviderAction(
+    return objectFactoryRegistry.objectAssistantAction(
         targetDomainClass,
         contractType,
         contractQualifierType1,
@@ -161,7 +161,7 @@ public class JaquariusEngine implements tech.intellispaces.jaquarius.engine.Jaqu
   }
 
   @Override
-  public <H, Q1, Q2, Q3, Q4, Q5> Action5<H, Q1, Q2, Q3, Q4, Q5> objectProviderAction(
+  public <H, Q1, Q2, Q3, Q4, Q5> Action5<H, Q1, Q2, Q3, Q4, Q5> objectAssistantAction(
       Class<?> targetDomainClass,
       String contractType,
       Type<Q1> contractQualifierType1,
@@ -171,7 +171,7 @@ public class JaquariusEngine implements tech.intellispaces.jaquarius.engine.Jaqu
       Type<Q5> contractQualifierType5,
       Type<H> targetObjectHandleType
   ) {
-    return objectProviderRegistry.objectProviderAction(
+    return objectFactoryRegistry.objectAssistantAction(
         targetDomainClass,
         contractType,
         contractQualifierType1,
@@ -184,7 +184,7 @@ public class JaquariusEngine implements tech.intellispaces.jaquarius.engine.Jaqu
   }
 
   @Override
-  public <H, Q1, Q2, Q3, Q4, Q5, Q6> Action6<H, Q1, Q2, Q3, Q4, Q5, Q6> objectProviderAction(
+  public <H, Q1, Q2, Q3, Q4, Q5, Q6> Action6<H, Q1, Q2, Q3, Q4, Q5, Q6> objectAssistantAction(
       Class<?> targetDomainClass,
       String contractType,
       Type<Q1> contractQualifierType1,
@@ -195,7 +195,7 @@ public class JaquariusEngine implements tech.intellispaces.jaquarius.engine.Jaqu
       Type<Q6> contractQualifierType6,
       Type<H> targetObjectHandleType
   ) {
-    return objectProviderRegistry.objectProviderAction(
+    return objectFactoryRegistry.objectAssistantAction(
         targetDomainClass,
         contractType,
         contractQualifierType1,
@@ -209,7 +209,7 @@ public class JaquariusEngine implements tech.intellispaces.jaquarius.engine.Jaqu
   }
 
   @Override
-  public <H, Q1, Q2, Q3, Q4, Q5, Q6, Q7> Action7<H, Q1, Q2, Q3, Q4, Q5, Q6, Q7> objectProviderAction(
+  public <H, Q1, Q2, Q3, Q4, Q5, Q6, Q7> Action7<H, Q1, Q2, Q3, Q4, Q5, Q6, Q7> objectAssistantAction(
       Class<?> targetDomainClass,
       String contractType,
       Type<Q1> contractQualifierType1,
@@ -221,7 +221,7 @@ public class JaquariusEngine implements tech.intellispaces.jaquarius.engine.Jaqu
       Type<Q7> contractQualifierType7,
       Type<H> targetObjectHandleType
   ) {
-    return objectProviderRegistry.objectProviderAction(
+    return objectFactoryRegistry.objectAssistantAction(
         targetDomainClass,
         contractType,
         contractQualifierType1,
@@ -236,7 +236,7 @@ public class JaquariusEngine implements tech.intellispaces.jaquarius.engine.Jaqu
   }
 
   @Override
-  public <H, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8> Action8<H, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8> objectProviderAction(
+  public <H, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8> Action8<H, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8> objectAssistantAction(
       Class<?> targetDomainClass,
       String contractType,
       Type<Q1> contractQualifierType1,
@@ -249,7 +249,7 @@ public class JaquariusEngine implements tech.intellispaces.jaquarius.engine.Jaqu
       Type<Q8> contractQualifierType8,
       Type<H> targetObjectHandleType
   ) {
-    return objectProviderRegistry.objectProviderAction(
+    return objectFactoryRegistry.objectAssistantAction(
         targetDomainClass,
         contractType,
         contractQualifierType1,
@@ -265,7 +265,7 @@ public class JaquariusEngine implements tech.intellispaces.jaquarius.engine.Jaqu
   }
 
   @Override
-  public <H, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9> Action9<H, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9> objectProviderAction(
+  public <H, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9> Action9<H, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9> objectAssistantAction(
       Class<?> targetDomainClass,
       String contractType,
       Type<Q1> contractQualifierType1,
@@ -279,7 +279,7 @@ public class JaquariusEngine implements tech.intellispaces.jaquarius.engine.Jaqu
       Type<Q9> contractQualifierType9,
       Type<H> targetObjectHandleType
   ) {
-    return objectProviderRegistry.objectProviderAction(
+    return objectFactoryRegistry.objectAssistantAction(
         targetDomainClass,
         contractType,
         contractQualifierType1,
@@ -296,7 +296,7 @@ public class JaquariusEngine implements tech.intellispaces.jaquarius.engine.Jaqu
   }
 
   @Override
-  public <H, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9, Q10> Action10<H, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9, Q10> objectProviderAction(
+  public <H, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9, Q10> Action10<H, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9, Q10> objectAssistantAction(
       Class<?> targetDomainClass,
       String contractType,
       Type<Q1> contractQualifierType1,
@@ -311,7 +311,7 @@ public class JaquariusEngine implements tech.intellispaces.jaquarius.engine.Jaqu
       Type<Q10> contractQualifierType10,
       Type<H> targetObjectHandleType
   ) {
-    return objectProviderRegistry.objectProviderAction(
+    return objectFactoryRegistry.objectAssistantAction(
         targetDomainClass,
         contractType,
         contractQualifierType1,

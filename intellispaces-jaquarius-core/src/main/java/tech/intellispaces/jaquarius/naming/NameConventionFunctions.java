@@ -198,12 +198,12 @@ public interface NameConventionFunctions {
     return assignChannelClassCanonicalName(spaceName, domain, channelMethod);
   }
 
-  static String getObjectProviderWrapperClassName(String objectProviderClassName) {
-    return transformClassName(objectProviderClassName) + "Wrapper";
+  static String getObjectFactoryWrapperClassName(String objectFactoryClassName) {
+    return transformClassName(objectFactoryClassName) + "Wrapper";
   }
 
   static String getObjectFactoriesResourceName() {
-    return "META-INF/jaquarius/object.providers";
+    return "META-INF/jaquarius/object_factories";
   }
 
   static String getUnmovableUpwardObjectTypename(CustomType domainType, CustomType baseDomainType) {
@@ -346,7 +346,7 @@ public interface NameConventionFunctions {
     return name;
   }
 
-  static String getObjectProviderCanonicalName(CustomType domainType) {
+  static String getObjectAssistantCanonicalName(CustomType domainType) {
     String name = StringFunctions.removeTailOrElseThrow(domainType.canonicalName(), "Domain");
     if (name.endsWith("ies")) {
       return name + "s";
@@ -360,7 +360,7 @@ public interface NameConventionFunctions {
     return name + "s";
   }
 
-  static String getObjectProviderBrokerCanonicalName(CustomType domainType) {
+  static String getObjectAssistantBrokerCanonicalName(CustomType domainType) {
     String name = StringFunctions.removeTailOrElseThrow(domainType.canonicalName(), "Domain");
     return name + "sBroker";
   }

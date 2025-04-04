@@ -20,6 +20,8 @@ import javax.annotation.processing.RoundEnvironment;
 import java.util.ArrayList;
 import java.util.List;
 
+import static tech.intellispaces.commons.reflection.customtype.AnnotationFunctions.allAnnotationsOf;
+
 public interface DomainProcessorFunctions {
 
   static List<ArtifactGenerator> makeDomainArtifactGenerators(
@@ -42,17 +44,15 @@ public interface DomainProcessorFunctions {
     addSimpleObjectGenerators(domainType, generators, context.initialRoundEnvironment());
     addObjectHandleGenerators(domainType, generators, context.initialRoundEnvironment());
     addDownwardObjectHandleGenerators(domainType, generators);
-    addIncludedGenerators(domainType, generators, context);
+    addAttachedAnnotationGenerators(domainType, generators, context);
     addObjectAssistantGenerators(domainType, generators);
     return generators;
   }
 
-  private static void addIncludedGenerators(
+  private static void addAttachedAnnotationGenerators(
       CustomType annotatedType, List<ArtifactGenerator> generators, ArtifactGeneratorContext context
   ) {
-    List<ArtifactProcessor> processors = tech.intellispaces.commons.reflection.customtype.AnnotationFunctions.allAnnotationsOf(
-        annotatedType, AnnotationProcessor.class
-    ).stream()
+    List<ArtifactProcessor> processors = allAnnotationsOf(annotatedType, AnnotationProcessor.class).stream()
         .map(AnnotationFunctions::getAnnotationProcessorClass)
         .distinct()
         .map(c -> (ArtifactProcessor) Objects.get(c))

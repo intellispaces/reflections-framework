@@ -10,7 +10,7 @@ import tech.intellispaces.commons.reflection.reference.NotPrimitiveReference;
 import tech.intellispaces.commons.reflection.reference.TypeReference;
 import tech.intellispaces.commons.reflection.reference.TypeReferenceFunctions;
 import tech.intellispaces.jaquarius.ArtifactType;
-import tech.intellispaces.jaquarius.annotation.ArtifactExtension;
+import tech.intellispaces.jaquarius.annotation.Extension;
 import tech.intellispaces.jaquarius.annotation.Channel;
 import tech.intellispaces.jaquarius.annotation.Movable;
 import tech.intellispaces.jaquarius.annotation.ObjectHandle;
@@ -101,7 +101,7 @@ public class UndefinedPlainObjectGenerator extends AbstractPlainObjectGenerator 
   private void addExtraInterfaces(ArrayList<String> parents, ArtifactGeneratorContext context) {
     List<CustomType> extensions = findExtensions(sourceArtifact(), context.initialRoundEnvironment());
     for (CustomType extension : extensions) {
-      AnnotationInstance annotation = extension.selectAnnotation(ArtifactExtension.class.getCanonicalName()).orElseThrow();
+      AnnotationInstance annotation = extension.selectAnnotation(Extension.class.getCanonicalName()).orElseThrow();
       CustomType domain = annotation.valueOf("origin").orElseThrow().asClass().orElseThrow().type();
       Map<String, NotPrimitiveReference> parentTypeArgumentMapping = TypeReferenceFunctions.getTypeArgumentMapping(
           sourceArtifact(), domain

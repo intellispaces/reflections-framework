@@ -95,5 +95,7 @@ public enum ArtifactTypes implements ArtifactType {
   /**
    * The dataset builder.
    */
-  DatasetBuilder
+  DatasetBuilder,
+
+  NotSpecified
 }

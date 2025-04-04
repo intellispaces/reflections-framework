@@ -1,25 +1,19 @@
 package tech.intellispaces.jaquarius.annotation;
 
-import tech.intellispaces.jaquarius.artifact.ArtifactTypes;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * The Object Assistant extension.
+ */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ArtifactExtension {
+public @interface AssistantExtension {
 
   /**
-   * The origin artifact.
+   * The origin domain.
    */
-  Class<?> origin() default Void.class;
-
-  /**
-   * The target artifact type.
-   * <p/>
-   * See class {@link ArtifactTypes}.
-   */
-  ArtifactTypes target();
+  Class<?> value();
 }

@@ -11,12 +11,14 @@ import tech.intellispaces.commons.text.StringFunctions;
 import tech.intellispaces.commons.type.Classes;
 import tech.intellispaces.jaquarius.ArtifactType;
 import tech.intellispaces.jaquarius.annotation.AnnotationProcessor;
-import tech.intellispaces.jaquarius.annotation.ArtifactExtension;
+import tech.intellispaces.jaquarius.annotation.AssistantExtension;
+import tech.intellispaces.jaquarius.annotation.Extension;
 import tech.intellispaces.jaquarius.annotation.ArtifactGeneration;
 import tech.intellispaces.jaquarius.artifact.ArtifactTypes;
 
 import javax.annotation.processing.RoundEnvironment;
 import java.lang.annotation.Annotation;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -37,14 +39,14 @@ public interface AnnotationFunctions {
   }
 
   static boolean isAutoGenerationEnabled(
-      CustomType annotatedType, ArtifactTypes targetArtifactType, RoundEnvironment roundEnv
+      CustomType sourceArtifact, ArtifactType targetArtifactType, RoundEnvironment roundEnv
   ) {
     List<AnnotationInstance> preprocessingAnnotations = roundEnv.getElementsAnnotatedWith(ArtifactGeneration.class).stream()
         .map(JavaStatements::statement)
         .map(stm -> (AnnotatedStatement) stm)
-        .map(stm -> stm.selectAnnotation(ArtifactGeneration.class.getCanonicalName()))
+        .map(astm -> astm.selectAnnotation(ArtifactGeneration.class.getCanonicalName()))
         .map(Optional::orElseThrow)
-        .filter(ann -> isAnnotationFor(annotatedType, ann, annotatedType.canonicalName()))
+        .filter(ann -> isExtensionFor(sourceArtifact, ann))
         .toList();
     if (preprocessingAnnotations.isEmpty()) {
       return true;
@@ -64,56 +66,74 @@ public interface AnnotationFunctions {
   }
 
   static Collection<CustomType> findArtifactExtensions(
-      CustomType customType, ArtifactType targetArtifactType, List<RoundEnvironment> roundEnvironments
+      CustomType sourceArtifact, ArtifactType targetArtifactType, List<RoundEnvironment> roundEnvironments
   ) {
     return roundEnvironments.stream()
-        .map(roundEnv -> findArtifactExtensions(customType.canonicalName(), targetArtifactType, roundEnv))
+        .map(roundEnv -> findArtifactExtensionInternal(sourceArtifact, targetArtifactType, roundEnv))
         .flatMap(List::stream)
         .collect(Collectors.toMap(CustomType::canonicalName, Function.identity(), (c1, c2) -> c1)).values();
   }
 
   static List<CustomType> findArtifactExtensions(
-      CustomType customType, ArtifactType targetArtifactType, RoundEnvironment roundEnv
+      CustomType sourceArtifact, ArtifactType targetArtifactType, RoundEnvironment roundEnv
   ) {
-    return findArtifactExtensions(customType.canonicalName(), targetArtifactType, roundEnv);
+    return findArtifactExtensionInternal(sourceArtifact, targetArtifactType, roundEnv);
   }
 
-  static List<CustomType> findArtifactExtensions(
-      String canonicalName, ArtifactType targetArtifactType, RoundEnvironment roundEnv
+  private static List<CustomType> findArtifactExtensionInternal(
+      CustomType sourceArtifact, ArtifactType targetArtifactType, RoundEnvironment roundEnv
   ) {
-    return roundEnv.getElementsAnnotatedWith(ArtifactExtension.class).stream()
+    var extensions = new ArrayList<CustomType>();
+    roundEnv.getElementsAnnotatedWith(Extension.class).stream()
         .map(JavaStatements::statement)
         .map(stm -> (CustomType) stm)
-        .filter(stm -> isExtensionFor(stm, canonicalName, targetArtifactType))
-        .toList();
+        .filter(ct -> isExtensionFor(ct, sourceArtifact, targetArtifactType))
+        .forEach(extensions::add);
+    if (ArtifactTypes.ObjectAssistant == targetArtifactType) {
+      roundEnv.getElementsAnnotatedWith(AssistantExtension.class).stream()
+          .map(JavaStatements::statement)
+          .map(stm -> (CustomType) stm)
+          .filter(ct -> isAssistantExtensionFor(ct, sourceArtifact))
+          .forEach(extensions::add);
+    }
+    return extensions;
+  }
+
+  private static boolean isExtensionFor(CustomType sourceArtifact, AnnotationInstance annotation) {
+    CustomType originArtifact = getOriginArtifact(sourceArtifact, annotation);
+    return sourceArtifact.canonicalName().equals(originArtifact.canonicalName());
   }
 
   private static boolean isExtensionFor(
-      CustomType customType, String canonicalName, ArtifactType targetArtifactType
+      CustomType extensionType, CustomType sourceArtifact, ArtifactType targetArtifactType
   ) {
-    return isAnnotationFor(
-        customType,
-        customType.selectAnnotation(ArtifactExtension.class.getCanonicalName()).orElseThrow(),
-        canonicalName,
+    return isExtensionAnnotationFor(
+        extensionType.selectAnnotation(Extension.class.getCanonicalName()).orElseThrow(),
+        extensionType,
+        sourceArtifact,
         targetArtifactType
     );
   }
 
-  static boolean isAnnotationFor(
-      CustomType customType, AnnotationInstance annotation, String canonicalClassName
-  ) {
-    CustomType originArtifact = getOriginArtifact(customType, annotation);
-    return canonicalClassName.equals(originArtifact.canonicalName());
+  private static boolean isAssistantExtensionFor(CustomType extensionType, CustomType sourceArtifact) {
+    AnnotationInstance annotation = extensionType.selectAnnotation(AssistantExtension.class.getCanonicalName())
+        .orElseThrow();
+    return annotation.valueOf("value")
+        .map(Instance::asClass)
+        .map(Optional::orElseThrow)
+        .map(ClassInstance::type)
+        .orElseThrow()
+        .canonicalName().equals(sourceArtifact.canonicalName());
   }
 
-  static boolean isAnnotationFor(
-      CustomType annotatedType,
+  private static boolean isExtensionAnnotationFor(
       AnnotationInstance annotation,
-      String canonicalClassName,
+      CustomType extensionType,
+      CustomType sourceArtifact,
       ArtifactType targetArtifactType
   ) {
-    CustomType originArtifact = getOriginArtifact(annotatedType, annotation);
-    if (canonicalClassName.equals(originArtifact.canonicalName())) {
+    CustomType originArtifact = getOriginArtifact(extensionType, annotation);
+    if (sourceArtifact.canonicalName().equals(originArtifact.canonicalName())) {
       return targetArtifactType.name().equals(getTargetArtifactType(annotation).name());
     }
     return false;
@@ -130,7 +150,7 @@ public interface AnnotationFunctions {
         .orElseThrow();
   }
 
-  static ArtifactType getTargetArtifactType(AnnotationInstance annotation) {
+  private static ArtifactType getTargetArtifactType(AnnotationInstance annotation) {
     return ArtifactTypes.valueOf(
         annotation.valueOf("target").orElseThrow()
         .asEnum().orElseThrow()

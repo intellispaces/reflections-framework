@@ -1,10 +1,10 @@
 package tech.intellispaces.jaquarius.action;
 
-import tech.intellispaces.commons.action.Action1;
-import tech.intellispaces.commons.action.Action2;
-import tech.intellispaces.commons.action.Action3;
-import tech.intellispaces.commons.action.Action4;
-import tech.intellispaces.commons.action.Action5;
+import tech.intellispaces.actions.Action1;
+import tech.intellispaces.actions.Action2;
+import tech.intellispaces.actions.Action3;
+import tech.intellispaces.actions.Action4;
+import tech.intellispaces.actions.Action5;
 import tech.intellispaces.commons.type.Type;
 import tech.intellispaces.commons.type.Types;
 import tech.intellispaces.jaquarius.channel.Channel0;

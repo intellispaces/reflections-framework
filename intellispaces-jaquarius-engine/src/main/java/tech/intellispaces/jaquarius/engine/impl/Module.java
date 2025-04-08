@@ -2,8 +2,8 @@ package tech.intellispaces.jaquarius.engine.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import tech.intellispaces.commons.action.cache.CachedSupplierActions;
-import tech.intellispaces.commons.action.supplier.SupplierAction;
+import tech.intellispaces.actions.cache.CachedSupplierActions;
+import tech.intellispaces.actions.supplier.SupplierAction;
 import tech.intellispaces.commons.type.Type;
 import tech.intellispaces.commons.type.Types;
 import tech.intellispaces.jaquarius.channel.Channel0;

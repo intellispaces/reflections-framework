@@ -1,17 +1,10 @@
 package tech.intellispaces.jaquarius.annotationprocessor;
 
-import tech.intellispaces.commons.action.runnable.RunnableAction;
-import tech.intellispaces.commons.action.text.StringActions;
-import tech.intellispaces.commons.annotation.processor.TemplatedJavaArtifactGenerator;
+import tech.intellispaces.actions.runnable.RunnableAction;
+import tech.intellispaces.actions.text.StringActions;
+import tech.intellispaces.annotationprocessor.TemplatedJavaArtifactGenerator;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.commons.object.ObjectFunctions;
-import tech.intellispaces.commons.reflection.customtype.CustomType;
-import tech.intellispaces.commons.reflection.method.MethodParam;
-import tech.intellispaces.commons.reflection.method.MethodStatement;
-import tech.intellispaces.commons.reflection.reference.NamedReference;
-import tech.intellispaces.commons.reflection.reference.PrimitiveReference;
-import tech.intellispaces.commons.reflection.reference.PrimitiveReferences;
-import tech.intellispaces.commons.reflection.reference.TypeReference;
 import tech.intellispaces.commons.type.ClassFunctions;
 import tech.intellispaces.commons.type.PrimitiveType;
 import tech.intellispaces.commons.type.PrimitiveTypes;
@@ -22,6 +15,13 @@ import tech.intellispaces.jaquarius.annotation.Shutdown;
 import tech.intellispaces.jaquarius.annotation.Startup;
 import tech.intellispaces.jaquarius.guide.GuideFunctions;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceFunctions;
+import tech.intellispaces.reflection.customtype.CustomType;
+import tech.intellispaces.reflection.method.MethodParam;
+import tech.intellispaces.reflection.method.MethodStatement;
+import tech.intellispaces.reflection.reference.NamedReference;
+import tech.intellispaces.reflection.reference.PrimitiveReference;
+import tech.intellispaces.reflection.reference.PrimitiveReferences;
+import tech.intellispaces.reflection.reference.TypeReference;
 
 import java.util.ArrayList;
 import java.util.List;

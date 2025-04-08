@@ -1,7 +1,6 @@
 package tech.intellispaces.jaquarius.system.settings;
 
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
-import tech.intellispaces.commons.reflection.method.MethodStatement;
 import tech.intellispaces.commons.type.Types;
 import tech.intellispaces.jaquarius.Jaquarius;
 import tech.intellispaces.jaquarius.annotation.Properties;
@@ -13,6 +12,7 @@ import tech.intellispaces.jaquarius.settings.KeyChannelPurposes;
 import tech.intellispaces.jaquarius.system.Module;
 import tech.intellispaces.jaquarius.system.Modules;
 import tech.intellispaces.jaquarius.system.projection.InjectedMethodProjectionSupplier;
+import tech.intellispaces.reflection.method.MethodStatement;
 
 public class ModulePropertiesProjectionSupplier extends InjectedMethodProjectionSupplier {
 

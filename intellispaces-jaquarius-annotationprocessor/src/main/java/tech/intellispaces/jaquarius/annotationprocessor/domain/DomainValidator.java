@@ -1,14 +1,6 @@
 package tech.intellispaces.jaquarius.annotationprocessor.domain;
 
-import tech.intellispaces.commons.annotation.processor.ArtifactValidator;
-import tech.intellispaces.commons.reflection.customtype.CustomType;
-import tech.intellispaces.commons.reflection.method.MethodFunctions;
-import tech.intellispaces.commons.reflection.method.MethodParam;
-import tech.intellispaces.commons.reflection.method.MethodStatement;
-import tech.intellispaces.commons.reflection.reference.CustomTypeReference;
-import tech.intellispaces.commons.reflection.reference.NotPrimitiveReference;
-import tech.intellispaces.commons.reflection.reference.ReferenceBound;
-import tech.intellispaces.commons.reflection.reference.TypeReference;
+import tech.intellispaces.annotationprocessor.ArtifactValidator;
 import tech.intellispaces.commons.text.StringFunctions;
 import tech.intellispaces.commons.type.ClassFunctions;
 import tech.intellispaces.jaquarius.annotation.Channel;
@@ -17,6 +9,14 @@ import tech.intellispaces.jaquarius.annotation.Ontology;
 import tech.intellispaces.jaquarius.exception.JaquariusExceptions;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
+import tech.intellispaces.reflection.customtype.CustomType;
+import tech.intellispaces.reflection.method.MethodFunctions;
+import tech.intellispaces.reflection.method.MethodParam;
+import tech.intellispaces.reflection.method.MethodStatement;
+import tech.intellispaces.reflection.reference.CustomTypeReference;
+import tech.intellispaces.reflection.reference.NotPrimitiveReference;
+import tech.intellispaces.reflection.reference.ReferenceBound;
+import tech.intellispaces.reflection.reference.TypeReference;
 
 import java.util.List;
 import java.util.Optional;

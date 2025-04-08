@@ -1,18 +1,9 @@
 package tech.intellispaces.jaquarius.annotationprocessor.module;
 
-import tech.intellispaces.commons.action.runnable.RunnableAction;
-import tech.intellispaces.commons.action.text.StringActions;
-import tech.intellispaces.commons.annotation.processor.ArtifactGeneratorContext;
+import tech.intellispaces.actions.runnable.RunnableAction;
+import tech.intellispaces.actions.text.StringActions;
+import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
-import tech.intellispaces.commons.reflection.customtype.CustomType;
-import tech.intellispaces.commons.reflection.instance.AnnotationInstance;
-import tech.intellispaces.commons.reflection.instance.ClassInstance;
-import tech.intellispaces.commons.reflection.instance.Instance;
-import tech.intellispaces.commons.reflection.method.MethodParam;
-import tech.intellispaces.commons.reflection.method.MethodStatement;
-import tech.intellispaces.commons.reflection.method.Methods;
-import tech.intellispaces.commons.reflection.reference.NamedReference;
-import tech.intellispaces.commons.reflection.reference.TypeReference;
 import tech.intellispaces.jaquarius.annotation.Ordinal;
 import tech.intellispaces.jaquarius.annotation.Projection;
 import tech.intellispaces.jaquarius.annotation.ProjectionSupplier;
@@ -34,6 +25,15 @@ import tech.intellispaces.jaquarius.system.ProjectionInjection;
 import tech.intellispaces.jaquarius.system.UnitWrapper;
 import tech.intellispaces.jaquarius.system.injection.InjectionKinds;
 import tech.intellispaces.jaquarius.system.projection.ProjectionReferences;
+import tech.intellispaces.reflection.customtype.CustomType;
+import tech.intellispaces.reflection.instance.AnnotationInstance;
+import tech.intellispaces.reflection.instance.ClassInstance;
+import tech.intellispaces.reflection.instance.Instance;
+import tech.intellispaces.reflection.method.MethodParam;
+import tech.intellispaces.reflection.method.MethodStatement;
+import tech.intellispaces.reflection.method.Methods;
+import tech.intellispaces.reflection.reference.NamedReference;
+import tech.intellispaces.reflection.reference.TypeReference;
 
 import java.util.ArrayList;
 import java.util.HashMap;

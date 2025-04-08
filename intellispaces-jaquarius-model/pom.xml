@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>tech.intellispaces.jaquarius</groupId>
+        <groupId>tech.intellispaces</groupId>
         <artifactId>intellispaces-jaquarius-parent</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
@@ -26,16 +26,16 @@
     <dependencies>
         <!-- Intellispaces -->
         <dependency>
-            <groupId>tech.intellispaces.commons</groupId>
+            <groupId>tech.intellispaces</groupId>
             <artifactId>intellispaces-commons-model</artifactId>
         </dependency>
         <dependency>
-            <groupId>tech.intellispaces.commons</groupId>
-            <artifactId>intellispaces-commons-action-model</artifactId>
+            <groupId>tech.intellispaces</groupId>
+            <artifactId>intellispaces-actions-model</artifactId>
         </dependency>
         <dependency>
-            <groupId>tech.intellispaces.commons</groupId>
-            <artifactId>intellispaces-commons-reflection-model</artifactId>
+            <groupId>tech.intellispaces</groupId>
+            <artifactId>intellispaces-reflection-model</artifactId>
         </dependency>
     </dependencies>
 </project>

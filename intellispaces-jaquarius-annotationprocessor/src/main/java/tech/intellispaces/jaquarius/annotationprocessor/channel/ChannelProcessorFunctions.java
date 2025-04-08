@@ -1,10 +1,6 @@
 package tech.intellispaces.jaquarius.annotationprocessor.channel;
 
-import tech.intellispaces.commons.annotation.processor.ArtifactGenerator;
-import tech.intellispaces.commons.reflection.customtype.CustomType;
-import tech.intellispaces.commons.reflection.method.MethodStatement;
-import tech.intellispaces.commons.reflection.reference.CustomTypeReference;
-import tech.intellispaces.commons.reflection.reference.TypeReference;
+import tech.intellispaces.annotationprocessor.ArtifactGenerator;
 import tech.intellispaces.commons.type.ClassFunctions;
 import tech.intellispaces.jaquarius.exception.ConfigurationExceptions;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
@@ -14,6 +10,10 @@ import tech.intellispaces.jaquarius.traverse.MappingTraverse;
 import tech.intellispaces.jaquarius.traverse.MovingTraverse;
 import tech.intellispaces.jaquarius.traverse.TraverseType;
 import tech.intellispaces.jaquarius.traverse.TraverseTypes;
+import tech.intellispaces.reflection.customtype.CustomType;
+import tech.intellispaces.reflection.method.MethodStatement;
+import tech.intellispaces.reflection.reference.CustomTypeReference;
+import tech.intellispaces.reflection.reference.TypeReference;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,7 +1,7 @@
 package tech.intellispaces.jaquarius.aop;
 
-import tech.intellispaces.commons.action.Action;
-import tech.intellispaces.commons.action.wrapper.WrapperAction;
+import tech.intellispaces.actions.Action;
+import tech.intellispaces.actions.wrapper.WrapperAction;
 
 public interface Advice extends WrapperAction {
 

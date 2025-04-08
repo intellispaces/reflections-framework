@@ -2,12 +2,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>tech.intellispaces.parent</groupId>
+        <groupId>tech.intellispaces</groupId>
         <artifactId>intellispaces-parent-pom</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <groupId>tech.intellispaces.jaquarius</groupId>
     <artifactId>intellispaces-jaquarius-parent</artifactId>
     <packaging>pom</packaging>
 
@@ -22,58 +21,58 @@
         <dependencies>
             <!-- Intellispaces-->
             <dependency>
-                <groupId>tech.intellispaces.jaquarius</groupId>
+                <groupId>tech.intellispaces</groupId>
                 <artifactId>intellispaces-jaquarius-model</artifactId>
                 <version>0.0.1-SNAPSHOT</version>
             </dependency>
             <dependency>
-                <groupId>tech.intellispaces.jaquarius</groupId>
+                <groupId>tech.intellispaces</groupId>
                 <artifactId>intellispaces-jaquarius-core</artifactId>
                 <version>0.0.1-SNAPSHOT</version>
             </dependency>
             <dependency>
-                <groupId>tech.intellispaces.commons</groupId>
+                <groupId>tech.intellispaces</groupId>
                 <artifactId>intellispaces-commons</artifactId>
                 <version>0.0.1-SNAPSHOT</version>
             </dependency>
             <dependency>
-                <groupId>tech.intellispaces.commons</groupId>
+                <groupId>tech.intellispaces</groupId>
                 <artifactId>intellispaces-commons-model</artifactId>
                 <version>0.0.1-SNAPSHOT</version>
             </dependency>
             <dependency>
-                <groupId>tech.intellispaces.commons</groupId>
-                <artifactId>intellispaces-commons-reflection-model</artifactId>
+                <groupId>tech.intellispaces</groupId>
+                <artifactId>intellispaces-reflection-model</artifactId>
                 <version>0.0.1-SNAPSHOT</version>
             </dependency>
             <dependency>
-                <groupId>tech.intellispaces.commons</groupId>
-                <artifactId>intellispaces-commons-reflection</artifactId>
+                <groupId>tech.intellispaces</groupId>
+                <artifactId>intellispaces-reflection</artifactId>
                 <version>0.0.1-SNAPSHOT</version>
             </dependency>
             <dependency>
-                <groupId>tech.intellispaces.commons</groupId>
-                <artifactId>intellispaces-commons-action</artifactId>
+                <groupId>tech.intellispaces</groupId>
+                <artifactId>intellispaces-actions</artifactId>
                 <version>0.0.1-SNAPSHOT</version>
             </dependency>
             <dependency>
-                <groupId>tech.intellispaces.commons</groupId>
-                <artifactId>intellispaces-commons-action-model</artifactId>
+                <groupId>tech.intellispaces</groupId>
+                <artifactId>intellispaces-actions-model</artifactId>
                 <version>0.0.1-SNAPSHOT</version>
             </dependency>
             <dependency>
-                <groupId>tech.intellispaces.commons</groupId>
-                <artifactId>intellispaces-commons-action-base</artifactId>
+                <groupId>tech.intellispaces</groupId>
+                <artifactId>intellispaces-actions-common</artifactId>
                 <version>0.0.1-SNAPSHOT</version>
             </dependency>
             <dependency>
-                <groupId>tech.intellispaces.commons</groupId>
-                <artifactId>intellispaces-commons-annotation-processor</artifactId>
+                <groupId>tech.intellispaces</groupId>
+                <artifactId>intellispaces-annotationprocessor</artifactId>
                 <version>0.0.1-SNAPSHOT</version>
             </dependency>
             <dependency>
-                <groupId>tech.intellispaces.commons</groupId>
-                <artifactId>intellispaces-commons-proxy</artifactId>
+                <groupId>tech.intellispaces</groupId>
+                <artifactId>intellispaces-proxies</artifactId>
                 <version>0.0.1-SNAPSHOT</version>
             </dependency>
         </dependencies>

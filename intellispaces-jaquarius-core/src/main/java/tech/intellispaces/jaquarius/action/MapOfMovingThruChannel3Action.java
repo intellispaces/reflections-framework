@@ -1,6 +1,6 @@
 package tech.intellispaces.jaquarius.action;
 
-import tech.intellispaces.commons.action.AbstractAction4;
+import tech.intellispaces.actions.AbstractAction4;
 import tech.intellispaces.commons.type.Type;
 import tech.intellispaces.jaquarius.channel.Channel3;
 import tech.intellispaces.jaquarius.guide.n3.MapperOfMoving3;

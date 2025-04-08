@@ -1,6 +1,6 @@
 package tech.intellispaces.jaquarius.engine.impl;
 
-import tech.intellispaces.commons.action.Action;
+import tech.intellispaces.actions.Action;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.jaquarius.engine.description.ObjectHandleTypeDescription;
 import tech.intellispaces.jaquarius.system.Injection;

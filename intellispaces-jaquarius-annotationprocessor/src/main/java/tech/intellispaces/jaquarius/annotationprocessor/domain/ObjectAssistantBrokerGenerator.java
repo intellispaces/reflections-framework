@@ -1,15 +1,9 @@
 package tech.intellispaces.jaquarius.annotationprocessor.domain;
 
-import tech.intellispaces.commons.action.Action;
-import tech.intellispaces.commons.annotation.processor.ArtifactGeneratorContext;
+import tech.intellispaces.actions.Action;
+import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
 import tech.intellispaces.commons.exception.NotImplementedExceptions;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
-import tech.intellispaces.commons.reflection.customtype.CustomType;
-import tech.intellispaces.commons.reflection.method.MethodParam;
-import tech.intellispaces.commons.reflection.method.MethodSignatureDeclarations;
-import tech.intellispaces.commons.reflection.method.MethodStatement;
-import tech.intellispaces.commons.reflection.reference.ArrayReference;
-import tech.intellispaces.commons.reflection.reference.TypeReference;
 import tech.intellispaces.commons.text.StringFunctions;
 import tech.intellispaces.jaquarius.annotationprocessor.AnnotationFunctions;
 import tech.intellispaces.jaquarius.annotationprocessor.JaquariusArtifactGenerator;
@@ -18,6 +12,12 @@ import tech.intellispaces.jaquarius.engine.JaquariusEngines;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
 import tech.intellispaces.jaquarius.object.factory.ObjectFactoryFunctions;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceFunctions;
+import tech.intellispaces.reflection.customtype.CustomType;
+import tech.intellispaces.reflection.method.MethodParam;
+import tech.intellispaces.reflection.method.MethodSignatureDeclarations;
+import tech.intellispaces.reflection.method.MethodStatement;
+import tech.intellispaces.reflection.reference.ArrayReference;
+import tech.intellispaces.reflection.reference.TypeReference;
 
 import java.util.ArrayList;
 import java.util.Collection;

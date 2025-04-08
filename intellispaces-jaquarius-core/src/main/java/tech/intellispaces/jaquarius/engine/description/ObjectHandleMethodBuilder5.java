@@ -1,7 +1,7 @@
 package tech.intellispaces.jaquarius.engine.description;
 
-import tech.intellispaces.commons.action.Action;
-import tech.intellispaces.commons.action.functional.FunctionActions;
+import tech.intellispaces.actions.Action;
+import tech.intellispaces.actions.functional.FunctionActions;
 import tech.intellispaces.commons.function.Function5;
 import tech.intellispaces.jaquarius.traverse.TraverseType;
 

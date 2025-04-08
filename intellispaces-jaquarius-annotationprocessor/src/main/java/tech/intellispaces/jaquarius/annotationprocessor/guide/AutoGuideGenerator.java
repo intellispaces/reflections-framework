@@ -1,16 +1,12 @@
 package tech.intellispaces.jaquarius.annotationprocessor.guide;
 
-import tech.intellispaces.commons.action.Action;
-import tech.intellispaces.commons.action.cache.CachedSupplierActions;
-import tech.intellispaces.commons.action.delegate.DelegateActions;
-import tech.intellispaces.commons.action.runnable.RunnableAction;
-import tech.intellispaces.commons.action.text.StringActions;
-import tech.intellispaces.commons.annotation.processor.ArtifactGeneratorContext;
+import tech.intellispaces.actions.Action;
+import tech.intellispaces.actions.cache.CachedSupplierActions;
+import tech.intellispaces.actions.delegate.DelegateActions;
+import tech.intellispaces.actions.runnable.RunnableAction;
+import tech.intellispaces.actions.text.StringActions;
+import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
 import tech.intellispaces.commons.exception.NotImplementedExceptions;
-import tech.intellispaces.commons.reflection.customtype.CustomType;
-import tech.intellispaces.commons.reflection.method.MethodParam;
-import tech.intellispaces.commons.reflection.method.MethodStatement;
-import tech.intellispaces.commons.reflection.reference.TypeReference;
 import tech.intellispaces.commons.text.StringFunctions;
 import tech.intellispaces.commons.type.Types;
 import tech.intellispaces.jaquarius.action.TraverseActions;
@@ -19,6 +15,10 @@ import tech.intellispaces.jaquarius.guide.GuideFunctions;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
+import tech.intellispaces.reflection.customtype.CustomType;
+import tech.intellispaces.reflection.method.MethodParam;
+import tech.intellispaces.reflection.method.MethodStatement;
+import tech.intellispaces.reflection.reference.TypeReference;
 
 import java.util.HashMap;
 import java.util.List;

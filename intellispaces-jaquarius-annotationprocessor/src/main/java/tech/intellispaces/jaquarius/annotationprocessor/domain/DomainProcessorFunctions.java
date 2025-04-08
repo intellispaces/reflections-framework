@@ -1,13 +1,10 @@
 package tech.intellispaces.jaquarius.annotationprocessor.domain;
 
-import tech.intellispaces.commons.annotation.processor.ArtifactGenerator;
-import tech.intellispaces.commons.annotation.processor.ArtifactGeneratorContext;
-import tech.intellispaces.commons.annotation.processor.ArtifactProcessor;
-import tech.intellispaces.commons.annotation.processor.ArtifactValidator;
+import tech.intellispaces.annotationprocessor.ArtifactGenerator;
+import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
+import tech.intellispaces.annotationprocessor.ArtifactProcessor;
+import tech.intellispaces.annotationprocessor.ArtifactValidator;
 import tech.intellispaces.commons.object.Objects;
-import tech.intellispaces.commons.reflection.customtype.CustomType;
-import tech.intellispaces.commons.reflection.method.MethodStatement;
-import tech.intellispaces.commons.reflection.reference.CustomTypeReference;
 import tech.intellispaces.jaquarius.Jaquarius;
 import tech.intellispaces.jaquarius.annotation.AnnotationProcessor;
 import tech.intellispaces.jaquarius.annotation.Channel;
@@ -15,12 +12,15 @@ import tech.intellispaces.jaquarius.annotation.Ignore;
 import tech.intellispaces.jaquarius.annotationprocessor.AnnotationFunctions;
 import tech.intellispaces.jaquarius.artifact.ArtifactTypes;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
+import tech.intellispaces.reflection.customtype.CustomType;
+import tech.intellispaces.reflection.method.MethodStatement;
+import tech.intellispaces.reflection.reference.CustomTypeReference;
 
 import javax.annotation.processing.RoundEnvironment;
 import java.util.ArrayList;
 import java.util.List;
 
-import static tech.intellispaces.commons.reflection.customtype.AnnotationFunctions.allAnnotationsOf;
+import static tech.intellispaces.reflection.customtype.AnnotationFunctions.allAnnotationsOf;
 
 public interface DomainProcessorFunctions {
 

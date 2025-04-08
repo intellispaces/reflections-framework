@@ -1,10 +1,10 @@
 package tech.intellispaces.jaquarius.aop;
 
-import tech.intellispaces.commons.action.Action;
+import tech.intellispaces.actions.Action;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
-import tech.intellispaces.commons.reflection.method.MethodStatement;
 import tech.intellispaces.jaquarius.annotation.ApplyAdvice;
 import tech.intellispaces.jaquarius.system.ProjectionProvider;
+import tech.intellispaces.reflection.method.MethodStatement;
 
 import java.lang.reflect.Constructor;
 import java.util.List;

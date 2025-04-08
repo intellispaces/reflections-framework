@@ -1,10 +1,10 @@
 package tech.intellispaces.jaquarius.annotationprocessor.domain;
 
-import tech.intellispaces.commons.annotation.processor.ArtifactGeneratorContext;
-import tech.intellispaces.commons.reflection.customtype.CustomTypes;
+import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
 import tech.intellispaces.jaquarius.annotation.Domain;
 import tech.intellispaces.jaquarius.annotation.Ignore;
 import tech.intellispaces.jaquarius.annotationprocessor.JaquariusArtifactGenerator;
+import tech.intellispaces.reflection.customtype.CustomTypes;
 
 import java.util.UUID;
 

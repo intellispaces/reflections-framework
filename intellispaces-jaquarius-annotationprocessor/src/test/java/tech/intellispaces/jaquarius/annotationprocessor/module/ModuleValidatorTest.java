@@ -6,9 +6,9 @@ import com.google.testing.compile.Compiler;
 import com.google.testing.compile.JavaFileObjects;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
-import tech.intellispaces.commons.reflection.customtype.CustomType;
 import tech.intellispaces.jaquarius.annotationprocessor.SampleAnnotatedTypeProcessor;
 import tech.intellispaces.jaquarius.exception.JaquariusException;
+import tech.intellispaces.reflection.customtype.CustomType;
 
 import javax.tools.JavaFileObject;
 

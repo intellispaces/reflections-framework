@@ -1,17 +1,10 @@
 package tech.intellispaces.jaquarius.annotationprocessor.domain;
 
-import tech.intellispaces.commons.annotation.processor.ArtifactGeneratorContext;
+import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
-import tech.intellispaces.commons.reflection.customtype.CustomType;
-import tech.intellispaces.commons.reflection.instance.AnnotationInstance;
-import tech.intellispaces.commons.reflection.method.MethodStatement;
-import tech.intellispaces.commons.reflection.reference.CustomTypeReference;
-import tech.intellispaces.commons.reflection.reference.NotPrimitiveReference;
-import tech.intellispaces.commons.reflection.reference.TypeReference;
-import tech.intellispaces.commons.reflection.reference.TypeReferenceFunctions;
 import tech.intellispaces.jaquarius.ArtifactType;
-import tech.intellispaces.jaquarius.annotation.Extension;
 import tech.intellispaces.jaquarius.annotation.Channel;
+import tech.intellispaces.jaquarius.annotation.Extension;
 import tech.intellispaces.jaquarius.annotation.Movable;
 import tech.intellispaces.jaquarius.annotation.ObjectHandle;
 import tech.intellispaces.jaquarius.annotation.Unmovable;
@@ -26,6 +19,13 @@ import tech.intellispaces.jaquarius.object.reference.UnmovableObjectHandle;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
 import tech.intellispaces.jaquarius.traverse.TraverseType;
+import tech.intellispaces.reflection.customtype.CustomType;
+import tech.intellispaces.reflection.instance.AnnotationInstance;
+import tech.intellispaces.reflection.method.MethodStatement;
+import tech.intellispaces.reflection.reference.CustomTypeReference;
+import tech.intellispaces.reflection.reference.NotPrimitiveReference;
+import tech.intellispaces.reflection.reference.TypeReference;
+import tech.intellispaces.reflection.reference.TypeReferenceFunctions;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,13 +1,13 @@
 package tech.intellispaces.jaquarius.action;
 
-import tech.intellispaces.commons.action.AbstractAction0;
-import tech.intellispaces.commons.action.Action;
+import tech.intellispaces.actions.AbstractAction0;
+import tech.intellispaces.actions.Action;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
-import tech.intellispaces.commons.reflection.method.MethodParam;
-import tech.intellispaces.commons.reflection.method.MethodStatement;
 import tech.intellispaces.jaquarius.exception.ConfigurationExceptions;
 import tech.intellispaces.jaquarius.system.Modules;
 import tech.intellispaces.jaquarius.system.UnitWrapper;
+import tech.intellispaces.reflection.method.MethodParam;
+import tech.intellispaces.reflection.method.MethodStatement;
 
 import java.util.ArrayList;
 

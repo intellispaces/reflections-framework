@@ -1,10 +1,10 @@
 package tech.intellispaces.jaquarius.annotationprocessor.object.factory;
 
-import tech.intellispaces.commons.annotation.processor.Artifact;
-import tech.intellispaces.commons.annotation.processor.ArtifactGenerator;
-import tech.intellispaces.commons.annotation.processor.ArtifactGeneratorContext;
-import tech.intellispaces.commons.annotation.processor.ArtifactImpl;
-import tech.intellispaces.commons.annotation.processor.ArtifactKinds;
+import tech.intellispaces.annotationprocessor.Artifact;
+import tech.intellispaces.annotationprocessor.ArtifactGenerator;
+import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
+import tech.intellispaces.annotationprocessor.ArtifactImpl;
+import tech.intellispaces.annotationprocessor.ArtifactKinds;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
 
 import java.util.ArrayList;

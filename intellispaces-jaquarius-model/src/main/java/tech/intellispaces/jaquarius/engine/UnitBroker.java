@@ -1,6 +1,6 @@
 package tech.intellispaces.jaquarius.engine;
 
-import tech.intellispaces.commons.action.Action;
+import tech.intellispaces.actions.Action;
 import tech.intellispaces.jaquarius.system.Injection;
 
 /**

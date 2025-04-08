@@ -1,15 +1,15 @@
 package tech.intellispaces.jaquarius.annotationprocessor.object.factory;
 
-import tech.intellispaces.commons.annotation.processor.ArtifactGeneratorContext;
-import tech.intellispaces.commons.reflection.customtype.CustomType;
-import tech.intellispaces.commons.reflection.method.MethodParam;
-import tech.intellispaces.commons.reflection.method.MethodStatement;
+import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
 import tech.intellispaces.jaquarius.annotationprocessor.JaquariusArtifactGenerator;
 import tech.intellispaces.jaquarius.engine.ObjectFactoryWrapper;
 import tech.intellispaces.jaquarius.engine.description.ObjectFactoryMethodDescription;
 import tech.intellispaces.jaquarius.engine.description.ObjectFactoryMethods;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceFunctions;
+import tech.intellispaces.reflection.customtype.CustomType;
+import tech.intellispaces.reflection.method.MethodParam;
+import tech.intellispaces.reflection.method.MethodStatement;
 
 import java.util.ArrayList;
 import java.util.List;

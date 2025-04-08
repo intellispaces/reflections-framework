@@ -1,7 +1,7 @@
 package tech.intellispaces.jaquarius.annotationprocessor.domain;
 
-import tech.intellispaces.commons.reflection.customtype.CustomType;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
+import tech.intellispaces.reflection.customtype.CustomType;
 
 public abstract class AbstractPlainObjectGenerator extends AbstractObjectGenerator {
 

@@ -1,11 +1,11 @@
 package tech.intellispaces.jaquarius.system;
 
 import tech.intellispaces.commons.collection.ArraysFunctions;
-import tech.intellispaces.commons.reflection.customtype.CustomType;
-import tech.intellispaces.commons.reflection.instance.AnnotationInstance;
-import tech.intellispaces.commons.reflection.instance.Instance;
 import tech.intellispaces.jaquarius.annotation.Configuration;
 import tech.intellispaces.jaquarius.annotation.Module;
+import tech.intellispaces.reflection.customtype.CustomType;
+import tech.intellispaces.reflection.instance.AnnotationInstance;
+import tech.intellispaces.reflection.instance.Instance;
 
 import java.util.HashMap;
 import java.util.HashSet;

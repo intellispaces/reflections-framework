@@ -8,9 +8,9 @@ import tech.intellispaces.commons.entity.Enumeration;
 public enum MovabilityTypes implements MovabilityType, Enumeration<MovabilityType> {
 
   /**
-   * The undefined object type (movable or unmovable).
+   * The general object type (movable or unmovable).
    */
-  Undefined,
+  General,
 
   /**
    * The unmovable object type.

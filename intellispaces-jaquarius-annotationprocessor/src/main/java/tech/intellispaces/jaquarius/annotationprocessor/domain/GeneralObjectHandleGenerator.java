@@ -27,11 +27,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
-public class UndefinedObjectHandleGenerator extends AbstractObjectGenerator {
+public class GeneralObjectHandleGenerator extends AbstractObjectGenerator {
 
-  public UndefinedObjectHandleGenerator(CustomType domainType) {
+  public GeneralObjectHandleGenerator(CustomType domainType) {
     super(domainType);
-    addHiddenImport(NameConventionFunctions.getUndefinedPlainObjectTypename(domainType.className()));
+    addHiddenImport(NameConventionFunctions.getGeneralPlainObjectTypename(domainType.className()));
   }
 
   @Override
@@ -46,22 +46,22 @@ public class UndefinedObjectHandleGenerator extends AbstractObjectGenerator {
 
   @Override
   protected MovabilityType getMovabilityType() {
-    return MovabilityTypes.Undefined;
+    return MovabilityTypes.General;
   }
 
   @Override
   protected List<ArtifactType> relatedArtifactTypes() {
-    return List.of(ArtifactTypes.UndefinedObjectHandle);
+    return List.of(ArtifactTypes.ObjectHandle);
   }
 
   @Override
   public String generatedArtifactName() {
-    return NameConventionFunctions.getObjectTypename(sourceArtifact().className(), ObjectReferenceForms.ObjectHandle, MovabilityTypes.Undefined, false);
+    return NameConventionFunctions.getObjectTypename(sourceArtifact().className(), ObjectReferenceForms.ObjectHandle, MovabilityTypes.General, false);
   }
 
   @Override
   protected String templateName() {
-    return "/undefined_object_handle.template";
+    return "/general_object_handle.template";
   }
 
   @Override
@@ -96,7 +96,7 @@ public class UndefinedObjectHandleGenerator extends AbstractObjectGenerator {
   }
 
   private String getSimpleObjectClassName() {
-    return addImportAndGetSimpleName(NameConventionFunctions.getUndefinedPlainObjectTypename(sourceArtifact().className()));
+    return addImportAndGetSimpleName(NameConventionFunctions.getGeneralPlainObjectTypename(sourceArtifact().className()));
   }
 
   private String getSimpleHandleName() {
@@ -112,7 +112,7 @@ public class UndefinedObjectHandleGenerator extends AbstractObjectGenerator {
       CustomTypeReference nearEquivalentDomain = equivalentDomains.get(0);
       CustomTypeReference mainEquivalentDomain = equivalentDomains.get(equivalentDomains.size() - 1);
 
-      baseObjectHandle = buildObjectFormDeclaration(nearEquivalentDomain, ObjectReferenceForms.ObjectHandle, MovabilityTypes.Undefined, true);
+      baseObjectHandle = buildObjectFormDeclaration(nearEquivalentDomain, ObjectReferenceForms.ObjectHandle, MovabilityTypes.General, true);
       primaryDomainTypeArguments = getDomainTypeParamsBrief(nearEquivalentDomain);
       primaryDomainSimpleName = addImportAndGetSimpleName(mainEquivalentDomain.targetType().canonicalName());
       domainType = buildDomainType(mainEquivalentDomain.targetType(), mainEquivalentDomain.typeArguments());

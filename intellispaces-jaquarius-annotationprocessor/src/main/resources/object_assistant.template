@@ -25,12 +25,12 @@ public class {{$generatedArtifactSimpleName}} {
 
 {{end}}
   @SuppressWarnings("unchecked")
-  public static {{$typeParamsFull}} {{$undefinedObjectHandleSimpleName}}{{$typeParamsBrief}} {{$plainFirstLetterLowercaseSimpleName}}Handle(Object object{{for typeParam : $typeParams}}, Class<{{$typeParam."type"}}> {{$typeParam."name"}}{{end}}) {
+  public static {{$typeParamsFull}} {{$generalObjectHandleSimpleName}}{{$typeParamsBrief}} {{$plainFirstLetterLowercaseSimpleName}}Handle(Object object{{for typeParam : $typeParams}}, Class<{{$typeParam."type"}}> {{$typeParam."name"}}{{end}}) {
     if (object == null) {
       return null;
     }
-    if ({{$undefinedObjectHandleSimpleName}}.class.isAssignableFrom(object.getClass())) {
-      return ({{$undefinedObjectHandleSimpleName}}{{$typeParamsBrief}}) object;
+    if ({{$generalObjectHandleSimpleName}}.class.isAssignableFrom(object.getClass())) {
+      return ({{$generalObjectHandleSimpleName}}{{$typeParamsBrief}}) object;
     }
     throw UnexpectedExceptions.withMessage("The object is not a object handle of the domain {{$sourceArtifactSimpleName}}");
   }

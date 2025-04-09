@@ -78,15 +78,15 @@ public abstract class AbstractObjectGenerator extends JaquariusArtifactGenerator
 
   protected void analyzeDomain() {
     typeParamsFull = ObjectReferenceFunctions.getObjectFormTypeParamDeclaration(
-        sourceArtifact(), ObjectReferenceForms.Plain, MovabilityTypes.Undefined, this::addImportAndGetSimpleName, false, true
+        sourceArtifact(), ObjectReferenceForms.Plain, MovabilityTypes.General, this::addImportAndGetSimpleName, false, true
     );
     typeParamsBrief = ObjectReferenceFunctions.getObjectFormTypeParamDeclaration(
-        sourceArtifact(), ObjectReferenceForms.Plain, MovabilityTypes.Undefined, this::addImportAndGetSimpleName, false, false
+        sourceArtifact(), ObjectReferenceForms.Plain, MovabilityTypes.General, this::addImportAndGetSimpleName, false, false
     );
     domainTypeParamsFull = sourceArtifact().typeParametersFullDeclaration();
     domainTypeParamsBrief = sourceArtifact().typeParametersBriefDeclaration();
     generalObjectHandle = addImportAndGetSimpleName(
-        NameConventionFunctions.getUndefinedObjectHandleTypename(sourceArtifact().className())
+        NameConventionFunctions.getGeneralObjectHandleTypename(sourceArtifact().className())
     );
   }
 
@@ -252,7 +252,7 @@ public abstract class AbstractObjectGenerator extends JaquariusArtifactGenerator
       commaAppender.run();
       if (DomainFunctions.isDomainType(param.type())) {
         sb.append("(");
-        sb.append(ObjectReferenceFunctions.getObjectFormDeclaration(param.type(), ObjectReferenceForms.Plain, MovabilityTypes.Undefined, true, this::addImportAndGetSimpleName));
+        sb.append(ObjectReferenceFunctions.getObjectFormDeclaration(param.type(), ObjectReferenceForms.Plain, MovabilityTypes.General, true, this::addImportAndGetSimpleName));
         sb.append(") ");
       }
       sb.append(param.name());
@@ -396,7 +396,7 @@ public abstract class AbstractObjectGenerator extends JaquariusArtifactGenerator
       } else if (method.hasAnnotation(Unmovable.class)) {
         sb.append(buildObjectFormDeclaration(domainReturnType, getForm(), MovabilityTypes.Unmovable, true));
       } else {
-        sb.append(buildObjectFormDeclaration(domainReturnType, getForm(), MovabilityTypes.Undefined, true));
+        sb.append(buildObjectFormDeclaration(domainReturnType, getForm(), MovabilityTypes.General, true));
       }
     }
   }
@@ -420,7 +420,7 @@ public abstract class AbstractObjectGenerator extends JaquariusArtifactGenerator
       sb.append(buildObjectFormDeclaration(
           AnnotationGeneratorFunctions.normalizeType(param.type()),
           ObjectReferenceForms.Plain,
-          MovabilityTypes.Undefined,
+          MovabilityTypes.General,
           true
       ));
       sb.append(" ");

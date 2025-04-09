@@ -71,7 +71,7 @@ public class MovableObjectWrapperGenerator extends AbstractObjectWrapperGenerato
 
   @Override
   protected List<ArtifactType> relatedArtifactTypes() {
-    return List.of(ArtifactTypes.MovableObjectWrapper, ArtifactTypes.UndefinedObjectHandle, ArtifactTypes.UndefinedPlainObject);
+    return List.of(ArtifactTypes.MovableObjectWrapper, ArtifactTypes.ObjectHandle, ArtifactTypes.PlainObject);
   }
 
   @Override
@@ -140,7 +140,7 @@ public class MovableObjectWrapperGenerator extends AbstractObjectWrapperGenerato
     } else if (method.hasAnnotation(Unmovable.class)) {
       sb.append(buildObjectFormDeclaration(domainReturnType, ObjectReferenceForms.ObjectHandle, MovabilityTypes.Unmovable, true));
     } else {
-      sb.append(buildObjectFormDeclaration(domainReturnType, ObjectReferenceForms.ObjectHandle, MovabilityTypes.Undefined, true));
+      sb.append(buildObjectFormDeclaration(domainReturnType, ObjectReferenceForms.ObjectHandle, MovabilityTypes.General, true));
     }
   }
 }

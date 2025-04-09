@@ -66,7 +66,7 @@ public class UnmovableObjectWrapperGenerator extends AbstractObjectWrapperGenera
 
   @Override
   protected List<ArtifactType> relatedArtifactTypes() {
-    return List.of(ArtifactTypes.UnmovableObjectWrapper, ArtifactTypes.UndefinedObjectHandle, ArtifactTypes.UndefinedPlainObject);
+    return List.of(ArtifactTypes.UnmovableObjectWrapper, ArtifactTypes.ObjectHandle, ArtifactTypes.PlainObject);
   }
 
   @Override

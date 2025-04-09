@@ -11,7 +11,7 @@ public class MobilityTypesTest {
 
   @Test
   public void testOrdinal() {
-    assertThat(MovabilityTypes.Undefined.ordinal()).isEqualTo(0);
+    assertThat(MovabilityTypes.General.ordinal()).isEqualTo(0);
     assertThat(MovabilityTypes.Unmovable.ordinal()).isEqualTo(1);
     assertThat(MovabilityTypes.Movable.ordinal()).isEqualTo(2);
   }

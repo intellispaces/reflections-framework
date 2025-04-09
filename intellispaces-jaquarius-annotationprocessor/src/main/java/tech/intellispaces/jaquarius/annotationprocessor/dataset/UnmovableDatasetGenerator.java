@@ -77,7 +77,7 @@ public class UnmovableDatasetGenerator extends AbstractObjectGenerator {
 
   @Override
   protected List<ArtifactType> relatedArtifactTypes() {
-    return List.of(ArtifactTypes.UnmovableDataset, ArtifactTypes.UndefinedPlainObject, ArtifactTypes.UndefinedObjectHandle);
+    return List.of(ArtifactTypes.UnmovableDataset, ArtifactTypes.PlainObject, ArtifactTypes.ObjectHandle);
   }
 
   @Override

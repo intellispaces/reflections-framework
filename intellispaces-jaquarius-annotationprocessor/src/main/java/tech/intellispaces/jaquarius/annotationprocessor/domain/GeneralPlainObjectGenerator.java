@@ -32,9 +32,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
-public class UndefinedPlainObjectGenerator extends AbstractPlainObjectGenerator {
+public class GeneralPlainObjectGenerator extends AbstractPlainObjectGenerator {
 
-  public UndefinedPlainObjectGenerator(CustomType domainType) {
+  public GeneralPlainObjectGenerator(CustomType domainType) {
     super(domainType);
   }
 
@@ -50,22 +50,22 @@ public class UndefinedPlainObjectGenerator extends AbstractPlainObjectGenerator 
 
   @Override
   protected MovabilityType getMovabilityType() {
-    return MovabilityTypes.Undefined;
+    return MovabilityTypes.General;
   }
 
   @Override
   protected List<ArtifactType> relatedArtifactTypes() {
-    return List.of(ArtifactTypes.UndefinedPlainObject);
+    return List.of(ArtifactTypes.PlainObject);
   }
 
   @Override
   public String generatedArtifactName() {
-    return NameConventionFunctions.getUndefinedPlainObjectTypename(sourceArtifact().className());
+    return NameConventionFunctions.getGeneralPlainObjectTypename(sourceArtifact().className());
   }
 
   @Override
   protected String templateName() {
-    return "/undefined_plain_object.template";
+    return "/general_plain_object.template";
   }
 
   @Override
@@ -91,7 +91,7 @@ public class UndefinedPlainObjectGenerator extends AbstractPlainObjectGenerator 
   private List<String> getParents(ArtifactGeneratorContext context) {
     var parents = new ArrayList<String>();
     for (CustomTypeReference parent : sourceArtifact().parentTypes()) {
-      parents.add(ObjectReferenceFunctions.geUndefinedPlainObjectDeclaration(parent, false, this::addImportAndGetSimpleName)
+      parents.add(ObjectReferenceFunctions.geGeneralPlainObjectDeclaration(parent, false, this::addImportAndGetSimpleName)
       );
     }
     addExtraInterfaces(parents, context);
@@ -159,7 +159,7 @@ public class UndefinedPlainObjectGenerator extends AbstractPlainObjectGenerator 
     } else if (method.hasAnnotation(Unmovable.class)) {
       sb.append(buildObjectFormDeclaration(domainReturnType, ObjectReferenceForms.Plain, MovabilityTypes.Unmovable, true));
     } else {
-      sb.append(buildObjectFormDeclaration(domainReturnType, ObjectReferenceForms.Plain, MovabilityTypes.Undefined, true));
+      sb.append(buildObjectFormDeclaration(domainReturnType, ObjectReferenceForms.Plain, MovabilityTypes.General, true));
     }
   }
 }

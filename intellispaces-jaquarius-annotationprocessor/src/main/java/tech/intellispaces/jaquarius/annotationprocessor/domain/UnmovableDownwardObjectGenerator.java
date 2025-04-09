@@ -58,7 +58,7 @@ public class UnmovableDownwardObjectGenerator extends ConversionObjectGenerator 
 
   @Override
   protected List<ArtifactType> relatedArtifactTypes() {
-    return List.of(ArtifactTypes.UnmovableDownwardObject, ArtifactTypes.UndefinedObjectHandle, ArtifactTypes.UndefinedPlainObject);
+    return List.of(ArtifactTypes.UnmovableDownwardObject, ArtifactTypes.ObjectHandle, ArtifactTypes.PlainObject);
   }
 
   @Override

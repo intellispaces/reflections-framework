@@ -112,7 +112,7 @@ public class MovableObjectHandleGenerator extends AbstractObjectGenerator {
 
       baseObjectHandle = buildObjectFormDeclaration(nearEquivalentDomain, ObjectReferenceForms.ObjectHandle, MovabilityTypes.Movable, true);
 
-      primaryObjectHandle = buildObjectFormDeclaration(mainEquivalentDomain, ObjectReferenceForms.ObjectHandle, MovabilityTypes.Undefined, true);
+      primaryObjectHandle = buildObjectFormDeclaration(mainEquivalentDomain, ObjectReferenceForms.ObjectHandle, MovabilityTypes.General, true);
 
       primaryDomainSimpleName = addImportAndGetSimpleName(mainEquivalentDomain.targetType().canonicalName());
       primaryDomainTypeArguments = nearEquivalentDomain.typeArgumentsDeclaration(this::addImportAndGetSimpleName);
@@ -136,7 +136,7 @@ public class MovableObjectHandleGenerator extends AbstractObjectGenerator {
     } else if (method.hasAnnotation(Unmovable.class)) {
       sb.append(buildObjectFormDeclaration(domainReturnType, ObjectReferenceForms.ObjectHandle, MovabilityTypes.Unmovable, true));
     } else {
-      sb.append(buildObjectFormDeclaration(domainReturnType, ObjectReferenceForms.ObjectHandle, MovabilityTypes.Undefined, true));
+      sb.append(buildObjectFormDeclaration(domainReturnType, ObjectReferenceForms.ObjectHandle, MovabilityTypes.General, true));
     }
   }
 }

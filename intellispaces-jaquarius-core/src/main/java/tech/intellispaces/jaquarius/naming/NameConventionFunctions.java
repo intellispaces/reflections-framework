@@ -50,12 +50,12 @@ public interface NameConventionFunctions {
   ) {
     return switch (ObjectReferenceForms.from(objectForm)) {
       case Plain -> switch (MovabilityTypes.from(movabilityType)) {
-        case Undefined -> getUndefinedPlainObjectTypename(domainClassName);
+        case General -> getGeneralPlainObjectTypename(domainClassName);
         case Movable -> getMovablePlainObjectTypename(domainClassName, replaceKeyDomain);
         case Unmovable -> getUnmovablePlainObjectTypename(domainClassName, replaceKeyDomain);
       };
       case ObjectHandle -> switch (MovabilityTypes.from(movabilityType)) {
-        case Undefined -> getUndefinedObjectHandleTypename(domainClassName);
+        case General -> getGeneralObjectHandleTypename(domainClassName);
         case Movable -> getMovableObjectHandleTypename(domainClassName, replaceKeyDomain);
         case Unmovable -> getUnmovableObjectHandleTypename(domainClassName, replaceKeyDomain);
       };
@@ -64,11 +64,11 @@ public interface NameConventionFunctions {
     };
   }
 
-  static String getUndefinedPlainObjectTypename(String domainClassName) {
+  static String getGeneralPlainObjectTypename(String domainClassName) {
     return StringFunctions.removeTailOrElseThrow(transformClassName(domainClassName), "Domain");
   }
 
-  static String getUndefinedObjectHandleTypename(String domainClassName) {
+  static String getGeneralObjectHandleTypename(String domainClassName) {
     return StringFunctions.replaceTailOrElseThrow(transformClassName(domainClassName), "Domain", "Handle");
   }
 
@@ -124,7 +124,7 @@ public interface NameConventionFunctions {
         return keyDomain.delegateClassName();
       }
     }
-    return ClassNameFunctions.addPrefixToSimpleName("Unmovable", getUndefinedObjectHandleTypename(domainClassName));
+    return ClassNameFunctions.addPrefixToSimpleName("Unmovable", getGeneralObjectHandleTypename(domainClassName));
   }
 
   static String getMovableObjectHandleTypename(String domainClassName, boolean replaceKeyDomain) {
@@ -140,7 +140,7 @@ public interface NameConventionFunctions {
         return keyDomain.delegateClassName();
       }
     }
-    return ClassNameFunctions.addPrefixToSimpleName("Movable", getUndefinedObjectHandleTypename(domainClassName));
+    return ClassNameFunctions.addPrefixToSimpleName("Movable", getGeneralObjectHandleTypename(domainClassName));
   }
 
   static String getObjectHandleWrapperCanonicalName(CustomType objectHandleType) {
@@ -218,13 +218,13 @@ public interface NameConventionFunctions {
       CustomType domainType, CustomType baseDomainType, MovabilityType movabilityType
   ) {
     return switch (MovabilityTypes.from(movabilityType)) {
-      case Undefined -> getUndefinedDownwardObjectTypename(domainType, baseDomainType);
+      case General -> getGeneralDownwardObjectTypename(domainType, baseDomainType);
       case Unmovable -> getUnmovableDownwardObjectTypename(domainType, baseDomainType);
       case Movable -> getMovableDownwardObjectTypename(domainType, baseDomainType);
     };
   }
 
-  static String getUndefinedDownwardObjectTypename(CustomType domainType, CustomType baseDomainType) {
+  static String getGeneralDownwardObjectTypename(CustomType domainType, CustomType baseDomainType) {
     String packageName = ClassNameFunctions.getPackageName(domainType.canonicalName());
     String simpleName = StringFunctions.capitalizeFirstLetter(StringFunctions.removeTailOrElseThrow(baseDomainType.simpleName(), "Domain")) +
         "BasedOn" + StringFunctions.capitalizeFirstLetter(domainType.simpleName());

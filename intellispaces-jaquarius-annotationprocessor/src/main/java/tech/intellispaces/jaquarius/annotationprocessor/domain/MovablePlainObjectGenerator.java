@@ -91,7 +91,7 @@ public class MovablePlainObjectGenerator extends AbstractPlainObjectGenerator {
     addVariable("handleTypeParamsBrief", typeParamsBrief);
     addVariable("conversionMethods", conversionMethods);
     addVariable("domainMethods", methods);
-    addVariable("undefinedPureObjectHandle", getUndefinedOriginHandleClassName());
+    addVariable("generalPureObjectHandle", getGeneralOriginHandleClassName());
     return true;
   }
 
@@ -120,7 +120,7 @@ public class MovablePlainObjectGenerator extends AbstractPlainObjectGenerator {
     } else if (method.hasAnnotation(Unmovable.class)) {
       sb.append(buildObjectFormDeclaration(domainReturnType, ObjectReferenceForms.Plain, MovabilityTypes.Unmovable, true));
     } else {
-      sb.append(buildObjectFormDeclaration(domainReturnType, ObjectReferenceForms.Plain, MovabilityTypes.Undefined, true));
+      sb.append(buildObjectFormDeclaration(domainReturnType, ObjectReferenceForms.Plain, MovabilityTypes.General, true));
     }
   }
 }

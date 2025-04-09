@@ -12,9 +12,9 @@ import {{$importedClass}};
 @Movable
 {{$generatedAnnotation}}
 {{when $isAlias}}
-public interface {{$generatedArtifactSimpleName}}{{$handleTypeParamsFull}} extends {{$undefinedPureObjectHandle}}{{$handleTypeParamsBrief}}, {{$primaryObject}} {
+public interface {{$generatedArtifactSimpleName}}{{$handleTypeParamsFull}} extends {{$generalPureObjectHandle}}{{$handleTypeParamsBrief}}, {{$primaryObject}} {
 {{else}}
-public interface {{$generatedArtifactSimpleName}}{{$handleTypeParamsFull}} extends {{$undefinedPureObjectHandle}}{{$handleTypeParamsBrief}} {
+public interface {{$generatedArtifactSimpleName}}{{$handleTypeParamsFull}} extends {{$generalPureObjectHandle}}{{$handleTypeParamsBrief}} {
 {{end}}
 
 {{for method : $conversionMethods}}

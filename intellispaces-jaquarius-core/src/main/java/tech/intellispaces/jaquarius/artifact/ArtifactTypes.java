@@ -18,9 +18,9 @@ public enum ArtifactTypes implements ArtifactType {
   UnmovablePlainObject,
 
   /**
-   * The undefined plain object interface.
+   * The general plain object interface.
    */
-  UndefinedPlainObject,
+  PlainObject,
 
   /**
    * The movable object handle interface.
@@ -33,9 +33,9 @@ public enum ArtifactTypes implements ArtifactType {
   UnmovableObjectHandle,
 
   /**
-   * The undefined object handle interface.
+   * The general object handle interface.
    */
-  UndefinedObjectHandle,
+  ObjectHandle,
 
   /**
    * The channel interface.

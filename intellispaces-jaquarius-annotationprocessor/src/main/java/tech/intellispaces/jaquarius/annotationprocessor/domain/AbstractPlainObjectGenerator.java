@@ -9,7 +9,7 @@ public abstract class AbstractPlainObjectGenerator extends AbstractObjectGenerat
     super(domainType);
   }
 
-  protected String getUndefinedOriginHandleClassName() {
-    return addImportAndGetSimpleName(NameConventionFunctions.getUndefinedPlainObjectTypename(sourceArtifact().className()));
+  protected String getGeneralOriginHandleClassName() {
+    return addImportAndGetSimpleName(NameConventionFunctions.getGeneralPlainObjectTypename(sourceArtifact().className()));
   }
 }

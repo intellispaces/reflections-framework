@@ -61,8 +61,8 @@ public class ObjectAssistantGenerator extends JaquariusArtifactGenerator {
         StringFunctions.lowercaseFirstLetter(StringFunctions.removeTailOrElseThrow(sourceArtifactSimpleName(), "Domain")));
     addVariable("datasetBuilderSimpleName",
         addImportAndGetSimpleName(NameConventionFunctions.getDatasetBuilderCanonicalName(sourceArtifact().className())));
-    addVariable("undefinedObjectHandleSimpleName",
-        addImportAndGetSimpleName(ObjectReferenceFunctions.getUndefinedObjectHandleTypename(sourceArtifact())));
+    addVariable("generalObjectHandleSimpleName",
+        addImportAndGetSimpleName(ObjectReferenceFunctions.getGeneralObjectHandleTypename(sourceArtifact())));
     addTypeParamVariables();
     addVariable("extensionMethods", getExtensionMethods(context));
     return true;
@@ -72,14 +72,14 @@ public class ObjectAssistantGenerator extends JaquariusArtifactGenerator {
     addVariable("typeParamsFull", ObjectReferenceFunctions.getObjectFormTypeParamDeclaration(
         sourceArtifact(),
         ObjectReferenceForms.Plain,
-        MovabilityTypes.Undefined,
+        MovabilityTypes.General,
         this::addImportAndGetSimpleName,
         true,
         true));
     addVariable("typeParamsBrief", ObjectReferenceFunctions.getObjectFormTypeParamDeclaration(
         sourceArtifact(),
         ObjectReferenceForms.Plain,
-        MovabilityTypes.Undefined,
+        MovabilityTypes.General,
         this::addImportAndGetSimpleName,
         true,
         false));

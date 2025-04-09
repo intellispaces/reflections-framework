@@ -54,7 +54,7 @@ abstract class ConversionObjectGenerator extends AbstractObjectGenerator {
     domainClassSimpleName = addImportAndGetSimpleName(superDomainType.targetType().canonicalName());
     domainTypeParamsBrief = superDomainType.targetType().typeParametersBriefDeclaration();
     classTypeParams = ObjectReferenceFunctions.getObjectFormTypeParamDeclaration(
-        sourceArtifact(), ObjectReferenceForms.ObjectHandle, MovabilityTypes.Undefined, this::addImportAndGetSimpleName, false, true
+        sourceArtifact(), ObjectReferenceForms.ObjectHandle, MovabilityTypes.General, this::addImportAndGetSimpleName, false, true
     );
     classTypeParamsBrief = sourceArtifact().typeParametersBriefDeclaration();
     domainTypeArguments = superDomainType.typeArgumentsDeclaration(this::addImportAndGetSimpleName);
@@ -277,7 +277,7 @@ abstract class ConversionObjectGenerator extends AbstractObjectGenerator {
       } else if (isUnmovable(method)) {
         sb.append(buildObjectFormDeclaration(domainReturnType, ObjectReferenceForms.ObjectHandle, MovabilityTypes.Unmovable, true));
       } else {
-        sb.append(buildObjectFormDeclaration(domainReturnType, ObjectReferenceForms.ObjectHandle, MovabilityTypes.Undefined, true));
+        sb.append(buildObjectFormDeclaration(domainReturnType, ObjectReferenceForms.ObjectHandle, MovabilityTypes.General, true));
       }
     }
   }

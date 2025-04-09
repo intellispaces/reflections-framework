@@ -5,7 +5,7 @@ import {{$importedClass}};
 {{end}}
 
 /**
- * Undefined object handle for domain {@link {{$sourceArtifactSimpleName}}}.
+ * General object handle for domain {@link {{$sourceArtifactSimpleName}}}.
  * <p>
  * This class was generated automatically. Don't try to change it.
  */

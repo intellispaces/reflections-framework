@@ -131,7 +131,7 @@ public class DefaultGuideFormGenerator extends JaquariusArtifactGenerator {
         if (!typeParam.extendedBounds().isEmpty()) {
           sb.append(" extends ");
           for (ReferenceBound bound : typeParam.extendedBounds()) {
-            sb.append(ObjectReferenceFunctions.getUndefinedObjectHandleTypename(bound));
+            sb.append(ObjectReferenceFunctions.getGeneralObjectHandleTypename(bound));
           }
         }
       }

@@ -116,9 +116,9 @@ public interface ChannelFunctions {
             "in class {0}", channelType.canonicalName()));
   }
 
-  static String getUnitGuideCid(MethodStatement guideMethod) {
+  static String getUnitGuideChannelId(MethodStatement guideMethod) {
     String cid = guideMethod.selectAnnotation(Mapper.class.getCanonicalName())
-        .map(ChannelFunctions::extractCid)
+        .map(ChannelFunctions::extractChannelId)
         .orElse(null);
     if (cid != null) {
       return cid;
@@ -127,7 +127,7 @@ public interface ChannelFunctions {
         .map(m -> m.selectAnnotation(Mapper.class.getCanonicalName()))
         .filter(Optional::isPresent)
         .map(Optional::get)
-        .map(ChannelFunctions::extractCid)
+        .map(ChannelFunctions::extractChannelId)
         .filter(Objects::nonNull)
         .findFirst()
         .orElse(null);
@@ -136,7 +136,7 @@ public interface ChannelFunctions {
     }
 
     cid = guideMethod.selectAnnotation(Mover.class.getCanonicalName())
-        .map(ChannelFunctions::extractCid)
+        .map(ChannelFunctions::extractChannelId)
         .orElse(null);
     if (cid != null) {
       return cid;
@@ -145,7 +145,7 @@ public interface ChannelFunctions {
         .map(m -> m.selectAnnotation(Mover.class.getCanonicalName()))
         .filter(Optional::isPresent)
         .map(Optional::get)
-        .map(ChannelFunctions::extractCid)
+        .map(ChannelFunctions::extractChannelId)
         .filter(Objects::nonNull)
         .findFirst()
         .orElse(null);
@@ -154,7 +154,7 @@ public interface ChannelFunctions {
     }
 
     cid = guideMethod.selectAnnotation(MapperOfMoving.class.getCanonicalName())
-        .map(ChannelFunctions::extractCid)
+        .map(ChannelFunctions::extractChannelId)
         .orElse(null);
     if (cid != null) {
       return cid;
@@ -163,7 +163,7 @@ public interface ChannelFunctions {
         .map(m -> m.selectAnnotation(MapperOfMoving.class.getCanonicalName()))
         .filter(Optional::isPresent)
         .map(Optional::get)
-        .map(ChannelFunctions::extractCid)
+        .map(ChannelFunctions::extractChannelId)
         .filter(Objects::nonNull)
         .findFirst()
         .orElse(null);
@@ -184,20 +184,20 @@ public interface ChannelFunctions {
     return channel.value();
   }
 
-  static String getUnitGuideCid(Object unit, MethodStatement guideMethod) {
-    String cid = getUnitGuideCid(guideMethod);
+  static String getUnitGuideChannelId(Object unit, MethodStatement guideMethod) {
+    String cid = getUnitGuideChannelId(guideMethod);
     if (cid != null) {
       return cid;
     }
 
     if (unit instanceof tech.intellispaces.jaquarius.guide.Guide) {
       var guide = (tech.intellispaces.jaquarius.guide.Guide<?, ?>) unit;
-      return guide.cid();
+      return guide.channelId();
     }
     throw UnexpectedExceptions.withMessage("Could not define guide channel ID");
   }
 
-  private static String extractCid(AnnotationInstance annotation) {
+  private static String extractChannelId(AnnotationInstance annotation) {
     Optional<Instance> value = annotation.value();
     if (value.isEmpty()) {
       return null;

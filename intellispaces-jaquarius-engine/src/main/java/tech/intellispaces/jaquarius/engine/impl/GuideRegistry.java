@@ -45,18 +45,18 @@ class GuideRegistry {
   }
 
   public List<Guide<?, ?>> findGuides(
-      GuideKind kind, Class<?> objectHandleClass, String cid, ObjectReferenceForm targetForm
+      GuideKind kind, Class<?> objectHandleClass, String channelId, ObjectReferenceForm targetForm
   ) {
     var guides = new ArrayList<Guide<?, ?>>();
 
-    List<Guide<?, ?>> objectGuides = objectGuideRegistry.getGuides(kind, objectHandleClass, cid);
+    List<Guide<?, ?>> objectGuides = objectGuideRegistry.getGuides(kind, objectHandleClass, channelId);
     for (Guide<?, ?> guide : objectGuides) {
       if (guide.targetForm() == targetForm) {
         guides.add(guide);
       }
     }
 
-    List<Guide<?, ?>> unitGuides = unitGuideRegistry.findGuides(kind, cid);
+    List<Guide<?, ?>> unitGuides = unitGuideRegistry.findGuides(kind, channelId);
     for (Guide<?, ?> guide : unitGuides) {
       if (guide.targetForm() == targetForm) {
         guides.add(guide);

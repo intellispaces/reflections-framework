@@ -144,7 +144,7 @@ class UnitMethodDescriptionImpl implements UnitMethodDescription {
   }
 
   @Override
-  public String guideCid() {
+  public String guideChannelId() {
     return guideCid;
   }
 

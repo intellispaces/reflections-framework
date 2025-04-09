@@ -55,7 +55,7 @@ public interface UnitMethodDescription {
 
   GuideKind guideKind();
 
-  String guideCid();
+  String guideChannelId();
 
   ObjectReferenceForm guideTargetForm();
 }

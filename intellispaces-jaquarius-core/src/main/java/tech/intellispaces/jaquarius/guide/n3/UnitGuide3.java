@@ -38,7 +38,7 @@ abstract class UnitGuide3<S, R, Q1, Q2, Q3> implements Guide3<S, R, Q1, Q2, Q3>,
   }
 
   @Override
-  public String cid() {
+  public String channelId() {
     return cid;
   }
 

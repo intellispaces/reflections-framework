@@ -5,6 +5,6 @@ import {{$importedClass}};
 {{end}}
 
 @Ignore
-@Domain("{{$did}}")
+@Domain("{{$id}}")
 public interface {{$generatedArtifactSimpleName}} {
 }

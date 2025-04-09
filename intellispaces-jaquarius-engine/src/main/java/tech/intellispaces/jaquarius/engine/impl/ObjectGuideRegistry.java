@@ -14,13 +14,13 @@ import java.util.WeakHashMap;
 class ObjectGuideRegistry {
   private final Map<Class<?>, HandleDescription> handleDescriptions = new WeakHashMap<>();
 
-  public List<Guide<?, ?>> getGuides(GuideKind kind, Class<?> objectHandleClass, String cid) {
+  public List<Guide<?, ?>> getGuides(GuideKind kind, Class<?> objectHandleClass, String channelId) {
     if (!ObjectReferenceFunctions.isCustomObjectFormClass(objectHandleClass) || objectHandleClass.isInterface()) {
       return List.of();
     }
     HandleDescription description = handleDescriptions.computeIfAbsent(
         objectHandleClass, this::createHandleDescription);
-    return description.getGuides(kind, cid);
+    return description.getGuides(kind, channelId);
   }
 
   private HandleDescription createHandleDescription(Class<?> objectHandleClass) {
@@ -48,25 +48,25 @@ class ObjectGuideRegistry {
       return objectHandleClass;
     }
 
-    List<Guide<?, ?>> getGuides(GuideKind kind, String cid) {
+    List<Guide<?, ?>> getGuides(GuideKind kind, String channelId) {
       List<Guide<?, ?>> guides = null;
       if (kind.isMapper()) {
-        guides = mapperGuides.get(cid);
+        guides = mapperGuides.get(channelId);
       } else if (kind.isMover()) {
-        guides = moverGuides.get(cid);
+        guides = moverGuides.get(channelId);
       } else if (kind.isMapperOfMoving()) {
-        guides = mapperOfMovingGuides.get(cid);
+        guides = mapperOfMovingGuides.get(channelId);
       }
       return guides != null ? guides : List.of();
     }
 
     void addGuide(Guide<?, ?> guide) {
       if (guide.kind().isMapper()) {
-        mapperGuides.computeIfAbsent(guide.cid(), k -> new ArrayList<>()).add(guide);
+        mapperGuides.computeIfAbsent(guide.channelId(), k -> new ArrayList<>()).add(guide);
       } else if (guide.kind().isMover()) {
-        moverGuides.computeIfAbsent(guide.cid(), k -> new ArrayList<>()).add(guide);
+        moverGuides.computeIfAbsent(guide.channelId(), k -> new ArrayList<>()).add(guide);
       } else if (guide.kind().isMapperOfMoving()) {
-        mapperOfMovingGuides.computeIfAbsent(guide.cid(), k -> new ArrayList<>()).add(guide);
+        mapperOfMovingGuides.computeIfAbsent(guide.channelId(), k -> new ArrayList<>()).add(guide);
       }
     }
   }

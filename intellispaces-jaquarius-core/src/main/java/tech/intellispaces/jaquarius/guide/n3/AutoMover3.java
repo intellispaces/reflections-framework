@@ -30,7 +30,7 @@ public class AutoMover3<S, Q1, Q2, Q3> implements AbstractMover3<S, Q1, Q2, Q3> 
   }
 
   @Override
-  public String cid() {
+  public String channelId() {
     return cid;
   }
 

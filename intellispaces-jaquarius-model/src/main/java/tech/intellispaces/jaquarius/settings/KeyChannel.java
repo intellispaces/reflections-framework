@@ -13,7 +13,7 @@ public interface KeyChannel {
   /**
    * The key channel CID.
    */
-  String cid();
+  String channelId();
 
   String alias();
 }

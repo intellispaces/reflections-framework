@@ -231,7 +231,7 @@ class UnitFactory {
   static UnitGuide<?, ?> createMapper(
       UnitWrapper unitWrapper, Class<?> unitClass, UnitMethodDescription methodDescriptor
   ) {
-    String cid = methodDescriptor.guideCid();
+    String cid = methodDescriptor.guideChannelId();
     int guideOrdinal = methodDescriptor.guideOrdinal();
     int qualifiersCount = methodDescriptor.paramClasses().size();
     ObjectReferenceForm targetForm = methodDescriptor.guideTargetForm();
@@ -249,14 +249,14 @@ class UnitFactory {
   static UnitGuide<?, ?> createMover(
       UnitWrapper unitWrapper, Class<?> unitClass, UnitMethodDescription methodDescriptor
   ) {
-    String cid = methodDescriptor.guideCid();
+    String cid = methodDescriptor.guideChannelId();
     throw NotImplementedExceptions.withCode("4GL2+g");
   }
 
   static UnitGuide<?, ?> createUnitMapperOfMoving(
       UnitWrapper unitWrapper, Class<?> unitClass, UnitMethodDescription methodDescriptor
   ) {
-    String cid = methodDescriptor.guideCid();
+    String cid = methodDescriptor.guideChannelId();
     int guideOrdinal = methodDescriptor.guideOrdinal();
     int qualifiersCount = methodDescriptor.paramClasses().size();
     ObjectReferenceForm targetForm = methodDescriptor.guideTargetForm();

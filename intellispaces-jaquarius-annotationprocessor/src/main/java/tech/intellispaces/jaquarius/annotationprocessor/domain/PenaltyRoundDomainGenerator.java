@@ -35,7 +35,7 @@ public class PenaltyRoundDomainGenerator extends JaquariusArtifactGenerator {
   protected boolean analyzeSourceArtifact(ArtifactGeneratorContext context) {
     addImport(Domain.class);
     addImport(Ignore.class);
-    addVariable("did", UUID.randomUUID().toString());
+    addVariable("id", UUID.randomUUID().toString());
     return true;
   }
 }

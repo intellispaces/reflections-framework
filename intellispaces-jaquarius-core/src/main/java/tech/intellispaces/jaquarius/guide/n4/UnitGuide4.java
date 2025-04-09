@@ -44,7 +44,7 @@ abstract class UnitGuide4<S, R, Q1, Q2, Q3, Q4> implements Guide4<S, R, Q1, Q2, 
   }
 
   @Override
-  public String cid() {
+  public String channelId() {
     return cid;
   }
 

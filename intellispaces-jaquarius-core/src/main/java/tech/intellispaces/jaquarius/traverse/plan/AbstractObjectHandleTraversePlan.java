@@ -24,7 +24,7 @@ public abstract class AbstractObjectHandleTraversePlan implements ObjectHandleTr
   }
 
   @Override
-  public String cid() {
+  public String channelId() {
     return cid;
   }
 

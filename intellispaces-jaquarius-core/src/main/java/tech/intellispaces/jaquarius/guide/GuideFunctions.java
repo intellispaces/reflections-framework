@@ -187,7 +187,7 @@ public final class GuideFunctions {
   }
 
   public static String getUnitGuideCid(Object unit, MethodStatement guideMethod) {
-    return ChannelFunctions.getUnitGuideCid(unit, guideMethod);
+    return ChannelFunctions.getUnitGuideChannelId(unit, guideMethod);
   }
 
   public static List<Guide<?, ?>> loadObjectGuides(Class<?> objectHandleClass) {

@@ -33,7 +33,7 @@ public class AutoMapperOfMoving4<S, T, Q1, Q2,  Q3, Q4> implements AbstractMappe
   }
 
   @Override
-  public String cid() {
+  public String channelId() {
     return cid;
   }
 

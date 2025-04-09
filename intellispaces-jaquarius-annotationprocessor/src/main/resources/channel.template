@@ -9,7 +9,7 @@ import {{$importedClass}};
  * <p>
  * This class was generated automatically. Don't try to change it.
  */
-@Channel("{{$cid}}")
+@Channel("{{$id}}")
 {{$generatedAnnotation}}
 public interface {{$generatedArtifactSimpleName}} extends {{$channelClasses}} {
 

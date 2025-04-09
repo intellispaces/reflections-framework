@@ -267,7 +267,7 @@ public class UnitWrapperGenerator extends JaquariusArtifactGenerator {
 
     map.put("guideOrdinal", guideOrdinal);
     map.put("guideKind", GuideFunctions.getGuideKind(method).name());
-    map.put("guideCid", ChannelFunctions.getUnitGuideCid(method));
+    map.put("guideCid", ChannelFunctions.getUnitGuideChannelId(method));
     map.put("guideTargetForm", GuideFunctions.getTargetForm(method).name());
     return map;
   }

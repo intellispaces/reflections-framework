@@ -53,7 +53,7 @@ public abstract class AbstractChannelGenerator extends JaquariusArtifactGenerato
     addVariable("channelMethod", buildChannelMethodSignature());
     addVariable("channelClasses", buildChannelClassesDeclaration());
     addVariable("channelMethodName", channelMethod.name());
-    addVariable("cid", getCid());
+    addVariable("id", getCid());
     return true;
   }
 

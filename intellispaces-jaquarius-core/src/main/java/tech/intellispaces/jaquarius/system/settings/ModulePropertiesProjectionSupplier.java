@@ -53,18 +53,18 @@ public class ModulePropertiesProjectionSupplier extends InjectedMethodProjection
     String settingsText = ModuleSettingsFunctions.getSettingsText(module, filename);
     if (filename.toLowerCase().endsWith(".yaml")) {
       KeyChannel keyChannel = Jaquarius.settings().getKeyChannelByPurpose(KeyChannelPurposes.YamlStringToProperties);
-      return module.mapThruChannel0(settingsText, keyChannel.cid());
+      return module.mapThruChannel0(settingsText, keyChannel.channelId());
     }
     throw ConfigurationExceptions.withMessage("Unsupported module settings file format. File {0}", filename);
   }
 
   private Object traverseToValue(Object settingsProperties, String valuePath, Module module) {
     KeyChannel keyChannel = Jaquarius.settings().getKeyChannelByPurpose(KeyChannelPurposes.PropertiesToValue);
-    return module.mapThruChannel1(settingsProperties, keyChannel.cid(), valuePath);
+    return module.mapThruChannel1(settingsProperties, keyChannel.channelId(), valuePath);
   }
 
   private Object traverseToData(Object settingsValue, Class<?> expectedReturnClass, Module module) {
     KeyChannel keyChannel = Jaquarius.settings().getKeyChannelByPurpose(KeyChannelPurposes.PropertiesToData);
-    return module.mapThruChannel1(settingsValue, keyChannel.cid(), Types.get(expectedReturnClass));
+    return module.mapThruChannel1(settingsValue, keyChannel.channelId(), Types.get(expectedReturnClass));
   }
 }

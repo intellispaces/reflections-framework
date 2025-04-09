@@ -30,7 +30,7 @@ public class AutoMover2<S, Q1, Q2> implements AbstractMover2<S, Q1, Q2> {
   }
 
   @Override
-  public String cid() {
+  public String channelId() {
     return cid;
   }
 

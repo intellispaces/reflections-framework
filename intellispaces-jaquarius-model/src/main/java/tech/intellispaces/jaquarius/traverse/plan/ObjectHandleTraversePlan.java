@@ -13,7 +13,7 @@ public interface ObjectHandleTraversePlan extends DeclarativeTraversePlan {
   /**
    * Channel ID.
    */
-  String cid();
+  String channelId();
 
   ExecutionTraversePlan getExecutionPlan(Class<?> sourceClass);
 

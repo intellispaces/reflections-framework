@@ -28,7 +28,7 @@ public interface Guide<S, R> {
    *
    * Related channel defined guide capability.
    */
-  String cid();
+  String channelId();
 
   /**
    * Guide form.

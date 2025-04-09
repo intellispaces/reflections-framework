@@ -229,7 +229,7 @@ class TraverseAnalyzer implements tech.intellispaces.jaquarius.traverse.plan.Tra
       ObjectHandleTraversePlan plan, Class<?> objectHandleClass, ObjectReferenceForm targetForm
   ) {
     GuideKinds guideKind = getGuideKind(plan.type());
-    List<Guide<?, ?>> guides = findGuides(guideKind, objectHandleClass, plan.cid(), targetForm);
+    List<Guide<?, ?>> guides = findGuides(guideKind, objectHandleClass, plan.channelId(), targetForm);
     if (guides.isEmpty()) {
       return null;
     }

@@ -127,8 +127,8 @@ public class JaquariusSettingsFunctions {
     return buildKeyChannel(purpose, cid, alias);
   }
 
-  static KeyChannel buildKeyChannel(KeyChannelPurposes purpose, String cid, String alias) {
-    return new KeyChannelImpl(purpose, cid, alias);
+  static KeyChannel buildKeyChannel(KeyChannelPurposes purpose, String channelId, String alias) {
+    return new KeyChannelImpl(purpose, channelId, alias);
   }
 
   private JaquariusSettingsFunctions() {}

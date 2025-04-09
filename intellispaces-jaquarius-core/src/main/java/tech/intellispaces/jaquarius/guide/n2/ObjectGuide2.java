@@ -36,7 +36,7 @@ abstract class ObjectGuide2<S extends ObjectHandleWrapper, R, Q1, Q2> implements
   }
 
   @Override
-  public String cid() {
+  public String channelId() {
     return cid;
   }
 

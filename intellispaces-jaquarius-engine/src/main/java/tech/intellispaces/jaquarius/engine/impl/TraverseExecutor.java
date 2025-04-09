@@ -98,7 +98,7 @@ class TraverseExecutor implements tech.intellispaces.jaquarius.traverse.plan.Tra
     ExecutionTraversePlan executionPlan = traverseAnalyzer.getExecutionPlan(plan, source.getClass(), ObjectReferenceForms.ObjectHandle);
     if (executionPlan == null) {
       throw TraverseExceptions.withMessage("Cannot to build traverse plan to map object of class {0} through " +
-              "channel {1}. Suitable guide has not been found", source.getClass().getCanonicalName(), plan.cid());
+              "channel {1}. Suitable guide has not been found", source.getClass().getCanonicalName(), plan.channelId());
     }
     return executionPlan.execute(source, this);
   }
@@ -108,7 +108,7 @@ class TraverseExecutor implements tech.intellispaces.jaquarius.traverse.plan.Tra
     ExecutionTraversePlan executionPlan = traverseAnalyzer.getExecutionPlan(plan, source.getClass(), ObjectReferenceForms.Primitive);
     if (executionPlan == null) {
       throw TraverseExceptions.withMessage("Cannot to build traverse plan to map object of class {0} through " +
-          "channel {1}. Suitable guide has not been found", source.getClass().getCanonicalName(), plan.cid());
+          "channel {1}. Suitable guide has not been found", source.getClass().getCanonicalName(), plan.channelId());
     }
     return executionPlan.executeReturnInt(source, this);
   }
@@ -118,7 +118,7 @@ class TraverseExecutor implements tech.intellispaces.jaquarius.traverse.plan.Tra
     ExecutionTraversePlan executionPlan = traverseAnalyzer.getExecutionPlan(plan, source.getClass(), ObjectReferenceForms.Primitive);
     if (executionPlan == null) {
       throw TraverseExceptions.withMessage("Cannot to build traverse plan to map object of class {0} through " +
-          "channel {1}. Suitable guide has not been found", source.getClass().getCanonicalName(), plan.cid());
+          "channel {1}. Suitable guide has not been found", source.getClass().getCanonicalName(), plan.channelId());
     }
     return executionPlan.executeReturnDouble(source, this);
   }
@@ -130,7 +130,7 @@ class TraverseExecutor implements tech.intellispaces.jaquarius.traverse.plan.Tra
     ExecutionTraversePlan executionPlan = traverseAnalyzer.getExecutionPlan(plan, source.getClass(), ObjectReferenceForms.ObjectHandle);
     if (executionPlan == null) {
       throw TraverseExceptions.withMessage("Cannot to build traverse plan to map object of class {0} through " +
-          "channel {1}. Suitable guide has not been found", source.getClass().getCanonicalName(), plan.cid());
+          "channel {1}. Suitable guide has not been found", source.getClass().getCanonicalName(), plan.channelId());
     }
     return executionPlan.execute(source, qualifier, this);
   }
@@ -142,7 +142,7 @@ class TraverseExecutor implements tech.intellispaces.jaquarius.traverse.plan.Tra
     ExecutionTraversePlan executionPlan = traverseAnalyzer.getExecutionPlan(plan, source.getClass(), ObjectReferenceForms.ObjectHandle);
     if (executionPlan == null) {
       throw TraverseExceptions.withMessage("Cannot to build traverse plan to map object of class {0} through " +
-          "channel {1}. Suitable guide has not been found", source.getClass().getCanonicalName(), plan.cid());
+          "channel {1}. Suitable guide has not been found", source.getClass().getCanonicalName(), plan.channelId());
     }
     return executionPlan.execute(source, qualifier1, qualifier2, this);
   }
@@ -154,7 +154,7 @@ class TraverseExecutor implements tech.intellispaces.jaquarius.traverse.plan.Tra
     ExecutionTraversePlan executionPlan = traverseAnalyzer.getExecutionPlan(plan, source.getClass(), ObjectReferenceForms.ObjectHandle);
     if (executionPlan == null) {
       throw TraverseExceptions.withMessage("Cannot to build traverse plan to map object of class {0} through " +
-              "channel {1}. Suitable guide has not been found", source.getClass().getCanonicalName(), plan.cid());
+              "channel {1}. Suitable guide has not been found", source.getClass().getCanonicalName(), plan.channelId());
     }
     return executionPlan.execute(source, qualifier1, qualifier2, qualifier3, this);
   }
@@ -164,7 +164,7 @@ class TraverseExecutor implements tech.intellispaces.jaquarius.traverse.plan.Tra
     ExecutionTraversePlan executionPlan = traverseAnalyzer.getExecutionPlan(plan, source.getClass(), ObjectReferenceForms.ObjectHandle);
     if (executionPlan == null) {
       throw TraverseExceptions.withMessage("Cannot to build traverse plan to move object of class {0} through " +
-          "channel {1}. Suitable guide has not been found", source.getClass().getCanonicalName(), plan.cid());
+          "channel {1}. Suitable guide has not been found", source.getClass().getCanonicalName(), plan.channelId());
     }
     return executionPlan.execute(source, this);
   }
@@ -176,7 +176,7 @@ class TraverseExecutor implements tech.intellispaces.jaquarius.traverse.plan.Tra
     ExecutionTraversePlan executionPlan = traverseAnalyzer.getExecutionPlan(plan, source.getClass(), ObjectReferenceForms.ObjectHandle);
     if (executionPlan == null) {
       throw TraverseExceptions.withMessage("Cannot to build traverse plan to move object of class {0} through " +
-          "channel {1}. Suitable guide has not been found", source.getClass().getCanonicalName(), plan.cid());
+          "channel {1}. Suitable guide has not been found", source.getClass().getCanonicalName(), plan.channelId());
     }
     return executionPlan.execute(source, qualifier, this);
   }
@@ -188,7 +188,7 @@ class TraverseExecutor implements tech.intellispaces.jaquarius.traverse.plan.Tra
     ExecutionTraversePlan executionPlan = traverseAnalyzer.getExecutionPlan(plan, source.getClass(), ObjectReferenceForms.ObjectHandle);
     if (executionPlan == null) {
       throw TraverseExceptions.withMessage("Cannot to build traverse plan to move object of class {0} through " +
-          "channel {1}. Suitable guide has not been found", source.getClass().getCanonicalName(), plan.cid());
+          "channel {1}. Suitable guide has not been found", source.getClass().getCanonicalName(), plan.channelId());
     }
     return executionPlan.execute(source, qualifier1, qualifier2, this);
   }
@@ -200,7 +200,7 @@ class TraverseExecutor implements tech.intellispaces.jaquarius.traverse.plan.Tra
     ExecutionTraversePlan executionPlan = traverseAnalyzer.getExecutionPlan(plan, source.getClass(), ObjectReferenceForms.ObjectHandle);
     if (executionPlan == null) {
       throw TraverseExceptions.withMessage("Cannot to build traverse plan to move object of class {0} through " +
-              "channel {1}. Suitable guide has not been found", source.getClass().getCanonicalName(), plan.cid());
+              "channel {1}. Suitable guide has not been found", source.getClass().getCanonicalName(), plan.channelId());
     }
     return executionPlan.execute(source, qualifier1, qualifier2, qualifier3, this);
   }
@@ -212,7 +212,7 @@ class TraverseExecutor implements tech.intellispaces.jaquarius.traverse.plan.Tra
     ExecutionTraversePlan executionPlan = traverseAnalyzer.getExecutionPlan(plan, source.getClass(), ObjectReferenceForms.ObjectHandle);
     if (executionPlan == null) {
       throw TraverseExceptions.withMessage("Cannot to build traverse plan to map object of class {0} through " +
-          "channel {1}. Suitable guide has not been found", source.getClass().getCanonicalName(), plan.cid());
+          "channel {1}. Suitable guide has not been found", source.getClass().getCanonicalName(), plan.channelId());
     }
     return executionPlan.execute(source, this);
   }
@@ -222,7 +222,7 @@ class TraverseExecutor implements tech.intellispaces.jaquarius.traverse.plan.Tra
     ExecutionTraversePlan executionPlan = traverseAnalyzer.getExecutionPlan(plan, source.getClass(), ObjectReferenceForms.ObjectHandle);
     if (executionPlan == null) {
       throw TraverseExceptions.withMessage("Cannot to build traverse plan to map object of class {0} through " +
-          "channel {1}. Suitable guide has not been found", source.getClass().getCanonicalName(), plan.cid());
+          "channel {1}. Suitable guide has not been found", source.getClass().getCanonicalName(), plan.channelId());
     }
     return executionPlan.executeReturnInt(source, this);
   }
@@ -232,7 +232,7 @@ class TraverseExecutor implements tech.intellispaces.jaquarius.traverse.plan.Tra
     ExecutionTraversePlan executionPlan = traverseAnalyzer.getExecutionPlan(plan, source.getClass(), ObjectReferenceForms.ObjectHandle);
     if (executionPlan == null) {
       throw TraverseExceptions.withMessage("Cannot to build traverse plan to map object of class {0} through " +
-          "channel {1}. Suitable guide has not been found", source.getClass().getCanonicalName(), plan.cid());
+          "channel {1}. Suitable guide has not been found", source.getClass().getCanonicalName(), plan.channelId());
     }
     return executionPlan.executeReturnDouble(source, this);
   }
@@ -244,7 +244,7 @@ class TraverseExecutor implements tech.intellispaces.jaquarius.traverse.plan.Tra
     ExecutionTraversePlan executionPlan = traverseAnalyzer.getExecutionPlan(plan, source.getClass(), ObjectReferenceForms.ObjectHandle);
     if (executionPlan == null) {
       throw TraverseExceptions.withMessage("Cannot to build traverse plan to map object of class {0} through " +
-          "channel {1}. Suitable guide has not been found", source.getClass().getCanonicalName(), plan.cid());
+          "channel {1}. Suitable guide has not been found", source.getClass().getCanonicalName(), plan.channelId());
     }
     return executionPlan.execute(source, qualifier, this);
   }
@@ -256,7 +256,7 @@ class TraverseExecutor implements tech.intellispaces.jaquarius.traverse.plan.Tra
     ExecutionTraversePlan executionPlan = traverseAnalyzer.getExecutionPlan(plan, source.getClass(), ObjectReferenceForms.ObjectHandle);
     if (executionPlan == null) {
       throw TraverseExceptions.withMessage("Cannot to build traverse plan to map object of class {0} through " +
-          "channel {1}. Suitable guide has not been found", source.getClass().getCanonicalName(), plan.cid());
+          "channel {1}. Suitable guide has not been found", source.getClass().getCanonicalName(), plan.channelId());
     }
     return executionPlan.execute(source, qualifier1, qualifier2, this);
   }
@@ -268,7 +268,7 @@ class TraverseExecutor implements tech.intellispaces.jaquarius.traverse.plan.Tra
     ExecutionTraversePlan executionPlan = traverseAnalyzer.getExecutionPlan(plan, source.getClass(), ObjectReferenceForms.ObjectHandle);
     if (executionPlan == null) {
       throw TraverseExceptions.withMessage("Cannot to build traverse plan to map object of class {0} through " +
-          "channel {1}. Suitable guide has not been found", source.getClass().getCanonicalName(), plan.cid());
+          "channel {1}. Suitable guide has not been found", source.getClass().getCanonicalName(), plan.channelId());
     }
     return executionPlan.execute(source, qualifier1, qualifier2, qualifier3, this);
   }
@@ -280,7 +280,7 @@ class TraverseExecutor implements tech.intellispaces.jaquarius.traverse.plan.Tra
     ExecutionTraversePlan executionPlan = traverseAnalyzer.getExecutionPlan(plan, source.getClass(), ObjectReferenceForms.ObjectHandle);
     if (executionPlan == null) {
       throw TraverseExceptions.withMessage("Cannot to build traverse plan to map object of class {0} through " +
-          "channel {1}. Suitable guide has not been found", source.getClass().getCanonicalName(), plan.cid());
+          "channel {1}. Suitable guide has not been found", source.getClass().getCanonicalName(), plan.channelId());
     }
     return executionPlan.execute(source, qualifier1, qualifier2, qualifier3, qualifier4, this);
   }

@@ -30,7 +30,7 @@ public class AutoMapper1<S, T, Q> implements AbstractMapper1<S, T, Q> {
   }
 
   @Override
-  public String cid() {
+  public String channelId() {
     return cid;
   }
 

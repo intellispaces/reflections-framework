@@ -28,7 +28,7 @@ public class AutoMover0<S> implements AbstractMover0<S> {
   }
 
   @Override
-  public String cid() {
+  public String channelId() {
     return cid;
   }
 

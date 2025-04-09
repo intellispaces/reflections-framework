@@ -18,7 +18,7 @@ public interface {{$generatedArtifactSimpleName}}{{$handleTypeParamsFull}} exten
 {{end}}
 
 {{for method : $conversionMethods}}
-  {{$method."declaration"}};
+  {{$method["declaration"]}};
 
 {{end}}
 }

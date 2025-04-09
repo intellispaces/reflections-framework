@@ -63,14 +63,14 @@ public class {{$generatedArtifactSimpleName}}{{$classTypeParams}} implements {{$
   }
 
 {{for method : $methods}}
-  {{$method."javadoc"}}
+  {{$method["javadoc"]}}
   @Override
-  {{$method."declaration"}};
+  {{$method["declaration"]}};
 
 {{end}}
 {{for method : $domainMethods}}
   @Override
-  {{$method."declaration"}};
+  {{$method["declaration"]}};
 
 {{end}}
 

@@ -13,8 +13,8 @@ import {{$importedClass}};
 public interface {{$generatedArtifactSimpleName}}{{$handleTypeParamsFull}}{{when $parents.isNotEmpty()}} extends {{for parent : $parents}}{{$parent}}{{when $parent.isNotLast()}}, {{end}}{{end}}{{end}} {
 
 {{for method : $domainMethods}}
-  {{$method."javadoc"}}
-  {{$method."declaration"}};
+  {{$method["javadoc"]}}
+  {{$method["declaration"]}};
 
 {{end}}
 }

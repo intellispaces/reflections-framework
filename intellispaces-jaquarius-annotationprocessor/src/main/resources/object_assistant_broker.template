@@ -13,19 +13,19 @@ import {{$importedClass}};
 public class {{$generatedArtifactSimpleName}} implements {{for extension : $extensions}}{{$extension}}{{when $extension.isNotLast()}}, {{end}}{{end}} {
 
 {{for method : $extensionMethods}}
-  public {{$method."signature"}} {
-    return ({{$method."returnTypeDeclaration"}}) {{$method."actionName"}}.execute({{$method."paramNames"}});
+  public {{$method["signature"]}} {
+    return ({{$method["returnTypeDeclaration"]}}) {{$method["actionName"]}}.execute({{$method["paramNames"]}});
   }
 
 {{end}}
 {{for method : $extensionMethods}}
-  private final {{$method."actionType"}} {{$method."actionName"}} = JaquariusEngines.get().objectAssistantAction(
-    {{$method."returnDomainClass"}}.class,
-    "{{$method."contractType"}}",
-{{for paramType : $method."paramTypes"}}
+  private final {{$method["actionType"]}} {{$method["actionName"]}} = JaquariusEngines.get().objectAssistantAction(
+    {{$method["returnDomainClass"]}}.class,
+    "{{$method["contractType"]}}",
+{{for paramType : $method["paramTypes"]}}
     {{$paramType}},
 {{end}}
-    {{$method."returnType"}}
+    {{$method["returnType"]}}
   );
 
 {{end}}

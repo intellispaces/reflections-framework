@@ -16,8 +16,8 @@ public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sour
   private final ObjectHandleBroker $broker;
 
 {{for constructor : $constructors}}
-  public {{$generatedArtifactSimpleName}}({{for param : $constructor."params"}}{{$param."type"}} {{$param."name"}}{{when $param.isNotLast()}}, {{end}}{{end}}) {
-    super({{for param : $constructor."params"}}{{$param."name"}}{{when $param.isNotLast()}}, {{end}}{{end}});
+  public {{$generatedArtifactSimpleName}}({{for param : $constructor["params"]}}{{$param["type"]}} {{$param["name"]}}{{when $param.isNotLast()}}, {{end}}{{end}}) {
+    super({{for param : $constructor["params"]}}{{$param["name"]}}{{when $param.isNotLast()}}, {{end}}{{end}});
     $broker = $registerObjectHandle();
   }
 
@@ -60,30 +60,30 @@ public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sour
   }
 
 {{for method : $conversionMethods}}
-  {{$method."declaration"}}
+  {{$method["declaration"]}}
 
 {{end}}
 {{for method : $handleMethods}}
   @Override
-  {{$method."declaration"}}
+  {{$method["declaration"]}}
 
 {{end}}
 {{for method : $domainMethods}}
   @Override
-  {{$method."declaration"}};
+  {{$method["declaration"]}};
 
 {{end}}
 {{for method : $injectionMethods}}
-  {{$method."javadoc"}}
-{{for annotation : $method."annotations"}}
+  {{$method["javadoc"]}}
+{{for annotation : $method["annotations"]}}
   @{{$annotation}}
 {{end}}
-  public {{$method."signature"}} {
-    {{$method."body"}}
+  public {{$method["signature"]}} {
+    {{$method["body"]}}
   }
 {{end}}
 {{for method : $guideActionMethods}}
-  {{$method."declaration"}}
+  {{$method["declaration"]}}
 
 {{end}}
 {{when $notImplRelease}}
@@ -120,29 +120,29 @@ public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sour
         {{$generatedArtifactSimpleName}}.class,
         {{$sourceArtifactSimpleName}}.class{{when $methodDescriptions.isNotEmpty()}},{{end}}
 {{for method : $methodDescriptions}}
-        objectHandleMethod({{$generatedArtifactSimpleName}}.class, "{{$method."name"}}"{{for param : $method."params"}}, {{$param}}.class{{end}})
-            .purpose(ObjectHandleMethodPurposes.{{$method."purpose"}})
-            .function({{$generatedArtifactSimpleName}}::{{$method."name"}})
-{{when $method."traverseOrdinal".isNotVoid()}}
-            .traverseOrdinal({{$method."traverseOrdinal"}})
+        objectHandleMethod({{$generatedArtifactSimpleName}}.class, "{{$method["name"]}}"{{for param : $method["params"]}}, {{$param}}.class{{end}})
+            .purpose(ObjectHandleMethodPurposes.{{$method["purpose"]}})
+            .function({{$generatedArtifactSimpleName}}::{{$method["name"]}})
+{{when $method["traverseOrdinal"].isNotVoid()}}
+            .traverseOrdinal({{$method["traverseOrdinal"]}})
 {{end}}
-{{when $method."channelClass".isNotVoid()}}
-            .channelClass({{$method."channelClass"}}.class)
+{{when $method["channelClass"].isNotVoid()}}
+            .channelClass({{$method["channelClass"]}}.class)
 {{end}}
-{{when $method."traverseType".isNotVoid()}}
-            .traverseType(TraverseTypes.{{$method."traverseType"}})
+{{when $method["traverseType"].isNotVoid()}}
+            .traverseType(TraverseTypes.{{$method["traverseType"]}})
 {{end}}
-{{when $method."injectionKind".isNotVoid()}}
-            .injectionKind("{{$method."injectionKind"}}")
+{{when $method["injectionKind"].isNotVoid()}}
+            .injectionKind("{{$method["injectionKind"]}}")
 {{end}}
-{{when $method."injectionOrdinal".isNotVoid()}}
-            .injectionOrdinal({{$method."injectionOrdinal"}})
+{{when $method["injectionOrdinal"].isNotVoid()}}
+            .injectionOrdinal({{$method["injectionOrdinal"]}})
 {{end}}
-{{when $method."injectionName".isNotVoid()}}
-            .injectionName("{{$method."injectionName"}}")
+{{when $method["injectionName"].isNotVoid()}}
+            .injectionName("{{$method["injectionName"]}}")
 {{end}}
-{{when $method."injectionType".isNotVoid()}}
-            .injectionType({{$method."injectionType"}}.class)
+{{when $method["injectionType"].isNotVoid()}}
+            .injectionType({{$method["injectionType"]}}.class)
 {{end}}
             .get(){{when $method.isNotLast()}},{{end}}
 {{end}}

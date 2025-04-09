@@ -13,14 +13,14 @@ import {{$importedClass}};
 public class {{$generatedArtifactSimpleName}}{{$typeParamsFullDeclaration}} implements {{$sourceArtifactSimpleName}}{{$typeParamsBriefDeclaration}} {
 
 {{for method : $guideMethods}}
-  private final Action {{$method."actionName"}} = {{$method."actionDeclaration"}};
+  private final Action {{$method["actionName"]}} = {{$method["actionDeclaration"]}};
 
 {{end}}
 
 {{for method : $guideMethods}}
   @Override
-  public {{$method."signature"}} {
-    {{$method."body"}}
+  public {{$method["signature"]}} {
+    {{$method["body"]}}
   }
 
 {{end}}

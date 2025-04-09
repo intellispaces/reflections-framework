@@ -19,13 +19,13 @@ public class {{$generatedArtifactSimpleName}} extends {{$sourceArtifactSimpleNam
     methods.add(
       ObjectFactoryMethods.objectFactoryMethod(
         this,
-        "{{$method."name"}}",
-        {{$method."returnedType"}},
-        {{$method."returnedDomainClass"}}.class,
-{{for paramType : $method."paramParamTypes"}}
+        "{{$method["name"]}}",
+        {{$method["returnedType"]}},
+        {{$method["returnedDomainClass"]}}.class,
+{{for paramType : $method["paramParamTypes"]}}
         {{$paramType}},
 {{end}}
-        {{$generatedArtifactSimpleName}}::{{$method."name"}}
+        {{$generatedArtifactSimpleName}}::{{$method["name"]}}
       )
     );
 {{end}}

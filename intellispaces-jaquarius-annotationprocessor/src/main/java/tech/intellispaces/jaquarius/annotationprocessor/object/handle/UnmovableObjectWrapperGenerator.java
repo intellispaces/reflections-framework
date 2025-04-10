@@ -100,7 +100,7 @@ public class UnmovableObjectWrapperGenerator extends AbstractObjectWrapperGenera
     analyzeInjectedGuides();
     analyzeObjectHandleMethods();
     analyzeConversionMethods(domainType);
-    analyzeReleaseMethod();
+    analyzeUnbindMethod();
 
     addVariable("typeParamsFull", typeParamsFull);
     addVariable("typeParamsBrief", typeParamsBrief);

@@ -34,6 +34,7 @@ import tech.intellispaces.jaquarius.traverse.TraverseType;
 import tech.intellispaces.jaquarius.traverse.TraverseTypes;
 import tech.intellispaces.reflection.customtype.CustomType;
 import tech.intellispaces.reflection.method.MethodStatement;
+import tech.intellispaces.reflection.reference.CustomTypeReferences;
 import tech.intellispaces.reflection.reference.TypeReference;
 
 import java.util.List;
@@ -107,7 +108,7 @@ public class MovableObjectWrapperGenerator extends AbstractObjectWrapperGenerato
     analyzeInjectedGuides();
     analyzeObjectHandleMethods();
     analyzeConversionMethods(domainType);
-    analyzeReleaseMethod();
+    analyzeUnbindMethod();
 
     addVariable("typeParamsFull", typeParamsFull);
     addVariable("typeParamsBrief", typeParamsBrief);
@@ -131,11 +132,10 @@ public class MovableObjectWrapperGenerator extends AbstractObjectWrapperGenerato
 
   protected void appendObjectFormMethodReturnType(StringBuilder sb, MethodStatement method) {
     TypeReference domainReturnType = method.returnType().orElseThrow();
-    if (
-        ChannelFunctions.getTraverseTypes(method).stream().anyMatch(TraverseType::isMoving) ||
-            method.hasAnnotation(Movable.class) ||
-            NameConventionFunctions.isConversionMethod(method)
-    ) {
+    if (ChannelFunctions.getTraverseTypes(method).stream().anyMatch(TraverseType::isMoving)) {
+      TypeReference dDomainTypeReference = CustomTypeReferences.get(domainType);
+      sb.append(buildObjectFormDeclaration(dDomainTypeReference, ObjectReferenceForms.ObjectHandle, MovabilityTypes.Movable, true));
+    } else if (method.hasAnnotation(Movable.class) || NameConventionFunctions.isConversionMethod(method)) {
       sb.append(buildObjectFormDeclaration(domainReturnType, ObjectReferenceForms.ObjectHandle, MovabilityTypes.Movable, true));
     } else if (method.hasAnnotation(Unmovable.class)) {
       sb.append(buildObjectFormDeclaration(domainReturnType, ObjectReferenceForms.ObjectHandle, MovabilityTypes.Unmovable, true));

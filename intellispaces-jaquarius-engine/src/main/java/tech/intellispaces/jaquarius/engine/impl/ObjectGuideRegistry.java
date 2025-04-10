@@ -48,14 +48,14 @@ class ObjectGuideRegistry {
       return objectHandleClass;
     }
 
-    List<Guide<?, ?>> getGuides(GuideKind kind, String channelId) {
+    List<Guide<?, ?>> getGuides(GuideKind kind, String cid) {
       List<Guide<?, ?>> guides = null;
       if (kind.isMapper()) {
-        guides = mapperGuides.get(channelId);
+        guides = mapperGuides.get(cid);
       } else if (kind.isMover()) {
-        guides = moverGuides.get(channelId);
+        guides = moverGuides.get(cid);
       } else if (kind.isMapperOfMoving()) {
-        guides = mapperOfMovingGuides.get(channelId);
+        guides = mapperOfMovingGuides.get(cid);
       }
       return guides != null ? guides : List.of();
     }

@@ -76,8 +76,8 @@ public class {{$generatedArtifactSimpleName}}{{$classTypeParams}} implements {{$
 
 {{end}}
   @Override
-  public void release() {
-    ObjectHandles.handleOf({{$childField}}, {{$sourceArtifactSimpleName}}.class).release();
+  public void unbind() {
+    ObjectHandles.handleOf({{$childField}}, {{$sourceArtifactSimpleName}}.class).unbind();
   }
 
   @Override

@@ -72,8 +72,8 @@ public class {{$generatedArtifactSimpleName}}{{$classTypeParams}} implements {{$
 {{end}}
 
   @Override
-  public void release() {
-    ObjectHandles.handleOf({{$childField}}, {{$sourceArtifactSimpleName}}.class).release();
+  public void unbind() {
+    ObjectHandles.handleOf({{$childField}}, {{$sourceArtifactSimpleName}}.class).unbind();
   }
 
   @Override
@@ -83,9 +83,8 @@ public class {{$generatedArtifactSimpleName}}{{$classTypeParams}} implements {{$
 
   @Override
   public <Q> {{$movableObjectHandleName}}{{$domainTypeArguments}} moveThru(java.lang.String cid, Q qualifier) throws TraverseException {
-    throw NotImplementedExceptions.withCode("U4Y1FQ");
-    // {{$childField}}.moveThru(cid, qualifier);
-    // return this;
+    {{$childField}}.moveThru(cid, qualifier);
+    return this;
   }
 
 {{when $isAlias}}
@@ -112,9 +111,8 @@ public class {{$generatedArtifactSimpleName}}{{$classTypeParams}} implements {{$
 
   @Override
   public <Q> {{$movableObjectHandleName}}{{$domainTypeArguments}} moveThru(ChannelFunction1<{{$domainClassSimpleName}}{{$domainTypeArguments}}, {{$domainClassSimpleName}}{{$domainTypeArguments}}, Q> channelFunction, Q qualifier) throws TraverseException {
-    throw NotImplementedExceptions.withCode("A2IHpg");
-    // {{$childField}}.moveThru(channelFunction, qualifier);
-    // return this;
+    java.lang.String cid = ChannelFunctions.getChannelId(new TypeOf<{{$domainClassSimpleName}}{{$domainTypeArguments}}>() {}, channelFunction, qualifier);
+    return moveThru(cid, qualifier);
   }
 {{end}}
 
@@ -127,9 +125,8 @@ public class {{$generatedArtifactSimpleName}}{{$classTypeParams}} implements {{$
 
   @Override
   public <Q> {{$movableObjectHandleName}}{{$domainTypeArguments}} moveThru(Class<? extends Channel1> channelClass, Q qualifier) throws TraverseException {
-    throw NotImplementedExceptions.withCode("8SdVYg");
-    // {{$childField}}.moveThru(channelClass, qualifier);
-    // return this;
+    {{$childField}}.moveThru(channelClass, qualifier);
+    return this;
   }
 
   @Override

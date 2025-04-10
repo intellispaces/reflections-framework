@@ -3,6 +3,7 @@ package tech.intellispaces.jaquarius.space.channel;
 import tech.intellispaces.commons.exception.NotImplementedExceptions;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.commons.text.StringFunctions;
+import tech.intellispaces.commons.type.Type;
 import tech.intellispaces.jaquarius.annotation.Channel;
 import tech.intellispaces.jaquarius.annotation.Guide;
 import tech.intellispaces.jaquarius.annotation.Mapper;
@@ -70,7 +71,7 @@ public interface ChannelFunctions {
     return method.hasAnnotation(Channel.class);
   }
 
-  static String getCid(MethodStatement channelMethod) {
+  static String getChannelId(MethodStatement channelMethod) {
     return channelMethod.selectAnnotation(Channel.class).orElseThrow().value();
   }
 
@@ -94,6 +95,13 @@ public interface ChannelFunctions {
         (trackedObject) -> channelFunction.traverse(trackedObject, qualifierAnyValidValue));
   }
 
+  static <S, R, Q> String getChannelId(
+      Type<S> domain, ChannelFunction1<? super S, R, Q> channelFunction, Q qualifierAnyValidValue
+  ) {
+    return findChannelId(domain, channelFunction,
+        (trackedObject) -> channelFunction.traverse(trackedObject, qualifierAnyValidValue));
+  }
+
   static String computedChannelId(String channelClassCanonicalName) {
     return new RepetableUuidIdentifierGenerator(channelClassCanonicalName).next();
   }
@@ -106,6 +114,14 @@ public interface ChannelFunctions {
     trackedObjectProcessor.accept(trackedObject);
     List<Method> trackedMethods = tracker.getInvokedMethods();
     return extractChannelId(trackedMethods, sourceDomain, channelFunction);
+  }
+
+  @SuppressWarnings("unchecked")
+  private static <S> String findChannelId(
+      Type<S> sourceDomainType, Object channelFunction, Consumer<S> trackedObjectProcessor
+  ) {
+    Class<S> sourceDomainClass = (Class<S>) sourceDomainType.asClassType().baseClass();;
+    return findChannelId(sourceDomainClass, channelFunction, trackedObjectProcessor);
   }
 
   static MethodStatement getChannelMethod(CustomType channelType) {

@@ -99,7 +99,7 @@ abstract class ConversionObjectGenerator extends AbstractObjectGenerator {
     if (method.hasAnnotation(Channel.class)) {
       return generateNormalMethod(method, targetForm, methodOrdinal);
     } else {
-      return generatePrototypeMethod(convertMethodBeforeGenerate(method));
+      return generateExtensionMethod(convertMethodBeforeGenerate(method));
     }
   }
 
@@ -144,7 +144,7 @@ abstract class ConversionObjectGenerator extends AbstractObjectGenerator {
     return super.includeMethodForm(method, targetForm);
   }
 
-  private Map<String, String> generatePrototypeMethod(MethodStatement method) {
+  private Map<String, String> generateExtensionMethod(MethodStatement method) {
     var sb = new StringBuilder();
     sb.append("public ");
     appendMethodTypeParameters(sb, method);
@@ -184,7 +184,11 @@ abstract class ConversionObjectGenerator extends AbstractObjectGenerator {
     TypeReference childReturnTypeRef = actualChildMethod.returnType().orElseThrow();
 
     if (TypeReferenceFunctions.isEqualTypes(parentReturnTypeRef, childReturnTypeRef)) {
-      buildDirectReturnStatement(sb, method, targetForm);
+      if (isMovableMethod(method)) {
+        buildMovableDirectReturnStatement(sb, method, targetForm);
+      } else {
+        buildDirectReturnStatement(sb, method, targetForm);
+      }
     } else {
       if (parentReturnTypeRef.isCustomTypeReference() && childReturnTypeRef.isCustomTypeReference()) {
         CustomType expectedReturnType = parentReturnTypeRef.asCustomTypeReferenceOrElseThrow().targetType();
@@ -224,6 +228,17 @@ abstract class ConversionObjectGenerator extends AbstractObjectGenerator {
         .map(MethodParam::name)
         .collect(Collectors.joining(", ")));
     sb.append(");");
+  }
+
+  private void buildMovableDirectReturnStatement(StringBuilder sb, MethodStatement method, ObjectReferenceForm targetForm) {
+    sb.append("this.").append(childFieldName).append(".");
+    sb.append(getObjectFormMethodName(method, targetForm));
+    sb.append("(");
+    sb.append(method.params().stream()
+        .map(MethodParam::name)
+        .collect(Collectors.joining(", ")));
+    sb.append(");\n");
+    sb.append("  return this;");
   }
 
   private void buildCastReturnStatement(StringBuilder sb, MethodStatement method, ObjectReferenceForm targetForm) {
@@ -272,7 +287,7 @@ abstract class ConversionObjectGenerator extends AbstractObjectGenerator {
     if (NameConventionFunctions.isConversionMethod(method)) {
       sb.append(buildObjectFormDeclaration(domainReturnType, getForm(), getMovabilityType(), true));
     } else {
-      if (isMovable(method)) {
+      if (isMovableMethodOrTarget(method)) {
         sb.append(buildObjectFormDeclaration(domainReturnType, ObjectReferenceForms.ObjectHandle, MovabilityTypes.Movable, true));
       } else if (isUnmovable(method)) {
         sb.append(buildObjectFormDeclaration(domainReturnType, ObjectReferenceForms.ObjectHandle, MovabilityTypes.Unmovable, true));
@@ -301,7 +316,11 @@ abstract class ConversionObjectGenerator extends AbstractObjectGenerator {
     return addImportAndGetSimpleName(NameConventionFunctions.getMovableObjectHandleTypename(superDomainCanonicalName, false));
   }
 
-  private boolean isMovable(MethodStatement method) {
+  private boolean isMovableMethod(MethodStatement method) {
+    return ChannelFunctions.getTraverseTypes(method).stream().anyMatch(TraverseType::isMoving);
+  }
+
+  private boolean isMovableMethodOrTarget(MethodStatement method) {
     return ChannelFunctions.getTraverseTypes(method).stream().anyMatch(TraverseType::isMoving)
         || method.hasAnnotation(Movable.class);
   }

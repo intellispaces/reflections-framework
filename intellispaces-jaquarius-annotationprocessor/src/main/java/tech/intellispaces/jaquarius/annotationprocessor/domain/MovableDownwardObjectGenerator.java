@@ -18,12 +18,14 @@ import tech.intellispaces.jaquarius.object.reference.MovableObjectHandle;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandles;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
+import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
 import tech.intellispaces.jaquarius.traverse.MappingOfMovingTraverse;
 import tech.intellispaces.jaquarius.traverse.MappingTraverse;
 import tech.intellispaces.reflection.customtype.CustomType;
 import tech.intellispaces.reflection.method.MethodStatement;
 import tech.intellispaces.reflection.reference.CustomTypeReference;
+import tech.intellispaces.reflection.type.TypeOf;
 
 import java.util.List;
 import java.util.stream.Stream;
@@ -75,12 +77,14 @@ public class MovableDownwardObjectGenerator extends ConversionObjectGenerator {
         ObjectHandles.class,
         Type.class,
         Types.class,
+        TypeOf.class,
         Channel0.class,
         Channel1.class,
         ChannelFunction0.class,
         ChannelFunction1.class,
         MappingTraverse.class,
         MappingOfMovingTraverse.class,
+        ChannelFunctions.class,
         TraverseException.class
     );
 

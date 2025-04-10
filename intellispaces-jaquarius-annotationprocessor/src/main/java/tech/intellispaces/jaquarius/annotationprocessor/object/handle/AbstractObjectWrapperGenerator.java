@@ -227,9 +227,9 @@ abstract class AbstractObjectWrapperGenerator extends AbstractObjectGenerator {
     }
   }
 
-  protected void analyzeReleaseMethod() {
-    Optional<MethodStatement> releaseMethod = sourceArtifact().declaredMethod("release", List.of());
-    implRelease = releaseMethod.isPresent() && !releaseMethod.get().isAbstract();
+  protected void analyzeUnbindMethod() {
+    Optional<MethodStatement> unbindMethod = sourceArtifact().declaredMethod("unbind", List.of());
+    implRelease = unbindMethod.isPresent() && !unbindMethod.get().isAbstract();
   }
 
   private void addAutoGuideInjectionMethod(MethodStatement method) {

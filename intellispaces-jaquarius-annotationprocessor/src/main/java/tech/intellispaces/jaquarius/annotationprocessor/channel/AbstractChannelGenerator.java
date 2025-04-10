@@ -85,7 +85,7 @@ public abstract class AbstractChannelGenerator extends JaquariusArtifactGenerato
   }
 
   private String getCid() {
-    return ChannelFunctions.getCid(channelMethod);
+    return ChannelFunctions.getChannelId(channelMethod);
   }
 
   private List<TraverseType> getTraverseTypes() {

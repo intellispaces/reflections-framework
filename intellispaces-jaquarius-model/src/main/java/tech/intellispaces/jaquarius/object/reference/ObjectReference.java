@@ -56,7 +56,7 @@ public interface ObjectReference<D> {
 //  <T, R extends T> R mapThru(ChannelFunction0<? super D, T> channelFunction) throws TraverseException;
 
   /**
-   * Releases any system resources associated with this object reference, if any.
+   * Unbinds object reference and connected object.
    */
-  void release();
+  void unbind();
 }

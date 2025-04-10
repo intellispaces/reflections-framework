@@ -88,7 +88,7 @@ public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sour
 {{end}}
 {{when $notImplRelease}}
   @Override
-  public void release() {
+  public void unbind() {
     // do nothing
   }
 {{end}}

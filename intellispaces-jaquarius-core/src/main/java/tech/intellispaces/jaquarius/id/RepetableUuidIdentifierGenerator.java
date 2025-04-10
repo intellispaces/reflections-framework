@@ -10,6 +10,10 @@ public class RepetableUuidIdentifierGenerator implements IdentifierGenerator {
   private final byte[] bytes = new byte[16];
   private final SecureRandom random;
 
+  public RepetableUuidIdentifierGenerator(byte[] seed) {
+    random = new SecureRandom(seed);
+  }
+
   public RepetableUuidIdentifierGenerator(String seed) {
     random = new SecureRandom(seed.getBytes(StandardCharsets.UTF_8));
   }

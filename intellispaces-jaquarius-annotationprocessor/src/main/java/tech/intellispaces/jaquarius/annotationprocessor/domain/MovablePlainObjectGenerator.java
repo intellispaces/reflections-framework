@@ -24,6 +24,7 @@ import tech.intellispaces.jaquarius.traverse.TraverseType;
 import tech.intellispaces.reflection.customtype.CustomType;
 import tech.intellispaces.reflection.method.MethodStatement;
 import tech.intellispaces.reflection.reference.CustomTypeReference;
+import tech.intellispaces.reflection.reference.CustomTypeReferences;
 import tech.intellispaces.reflection.reference.TypeReference;
 
 import java.util.List;
@@ -112,10 +113,10 @@ public class MovablePlainObjectGenerator extends AbstractPlainObjectGenerator {
   @Override
   protected void appendObjectFormMethodReturnType(StringBuilder sb, MethodStatement method) {
     TypeReference domainReturnType = method.returnType().orElseThrow();
-    if (
-        ChannelFunctions.getTraverseTypes(method).stream().anyMatch(TraverseType::isMoving)
-            || method.hasAnnotation(Movable.class)
-    ) {
+    if (ChannelFunctions.getTraverseTypes(method).stream().anyMatch(TraverseType::isMoving)) {
+      TypeReference sourceDomainReference = CustomTypeReferences.get(sourceArtifact());
+      sb.append(buildObjectFormDeclaration(sourceDomainReference, ObjectReferenceForms.Plain, MovabilityTypes.Movable, true));
+    } else if (method.hasAnnotation(Movable.class)) {
       sb.append(buildObjectFormDeclaration(domainReturnType, ObjectReferenceForms.Plain, MovabilityTypes.Movable, true));
     } else if (method.hasAnnotation(Unmovable.class)) {
       sb.append(buildObjectFormDeclaration(domainReturnType, ObjectReferenceForms.Plain, MovabilityTypes.Unmovable, true));

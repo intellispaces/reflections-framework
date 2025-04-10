@@ -546,22 +546,22 @@ public class ObjectReferenceFunctions {
     return propertiesHandleClass;
   }
 
-  public static void releaseSilently(ObjectReference<?> objectReference) {
+  public static void unbindSilently(ObjectReference<?> objectReference) {
     if (objectReference == null) {
       return;
     }
     try {
-      objectReference.release();
+      objectReference.unbind();
     } catch (Exception e) {
-      LOG.error("Could not release object reference", e);
+      LOG.error("Could not unbind object reference", e);
     }
   }
 
-  public static void releaseEach(List<ObjectReference<?>> objectReferences) {
+  public static void unbindEach(List<ObjectReference<?>> objectReferences) {
     List<Exception> exceptions = null;
     for (var objectReference : objectReferences) {
       try {
-        objectReference.release();
+        objectReference.unbind();
       } catch (Exception e) {
         if (exceptions == null) {
           exceptions = new ArrayList<>();
@@ -570,7 +570,7 @@ public class ObjectReferenceFunctions {
       }
     }
     if (exceptions != null) {
-      UnexpectedException ue = UnexpectedExceptions.withMessage("Could not release object handles");
+      UnexpectedException ue = UnexpectedExceptions.withMessage("Could not unbind object handles");
       exceptions.forEach(ue::addSuppressed);
       throw ue;
     }

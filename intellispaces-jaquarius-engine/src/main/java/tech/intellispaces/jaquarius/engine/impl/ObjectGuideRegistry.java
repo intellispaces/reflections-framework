@@ -4,6 +4,7 @@ import tech.intellispaces.jaquarius.guide.Guide;
 import tech.intellispaces.jaquarius.guide.GuideFunctions;
 import tech.intellispaces.jaquarius.guide.GuideKind;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceFunctions;
+import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,13 +15,13 @@ import java.util.WeakHashMap;
 class ObjectGuideRegistry {
   private final Map<Class<?>, HandleDescription> handleDescriptions = new WeakHashMap<>();
 
-  public List<Guide<?, ?>> getGuides(GuideKind kind, Class<?> objectHandleClass, String channelId) {
+  public List<Guide<?, ?>> findGuides(GuideKind kind, Class<?> objectHandleClass, String channelId) {
     if (!ObjectReferenceFunctions.isCustomObjectFormClass(objectHandleClass) || objectHandleClass.isInterface()) {
       return List.of();
     }
     HandleDescription description = handleDescriptions.computeIfAbsent(
         objectHandleClass, this::createHandleDescription);
-    return description.getGuides(kind, channelId);
+    return description.findGuides(kind, channelId);
   }
 
   private HandleDescription createHandleDescription(Class<?> objectHandleClass) {
@@ -48,7 +49,7 @@ class ObjectGuideRegistry {
       return objectHandleClass;
     }
 
-    List<Guide<?, ?>> getGuides(GuideKind kind, String cid) {
+    List<Guide<?, ?>> findGuides(GuideKind kind, String cid) {
       List<Guide<?, ?>> guides = null;
       if (kind.isMapper()) {
         guides = mapperGuides.get(cid);
@@ -56,6 +57,22 @@ class ObjectGuideRegistry {
         guides = moverGuides.get(cid);
       } else if (kind.isMapperOfMoving()) {
         guides = mapperOfMovingGuides.get(cid);
+      }
+      if (guides != null) {
+        return guides;
+      }
+
+      Class<?> domainClass = ObjectReferenceFunctions.getDomainClassOfObjectHandle(objectHandleClass);
+      String originDomainChannelId = ChannelFunctions.getOriginDomainChannelId(domainClass, cid);
+      if (originDomainChannelId == null) {
+        return List.of();
+      }
+      if (kind.isMapper()) {
+        guides = mapperGuides.get(originDomainChannelId);
+      } else if (kind.isMover()) {
+        guides = moverGuides.get(originDomainChannelId);
+      } else if (kind.isMapperOfMoving()) {
+        guides = mapperOfMovingGuides.get(originDomainChannelId);
       }
       return guides != null ? guides : List.of();
     }

@@ -4,6 +4,7 @@ import tech.intellispaces.commons.exception.NotImplementedExceptions;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.commons.text.StringFunctions;
 import tech.intellispaces.commons.type.Type;
+import tech.intellispaces.core.id.IdentifierFunctions;
 import tech.intellispaces.jaquarius.annotation.Channel;
 import tech.intellispaces.jaquarius.annotation.Guide;
 import tech.intellispaces.jaquarius.annotation.Mapper;
@@ -26,6 +27,7 @@ import tech.intellispaces.proxies.tracker.Tracker;
 import tech.intellispaces.proxies.tracker.TrackerFunctions;
 import tech.intellispaces.proxies.tracker.Trackers;
 import tech.intellispaces.reflection.customtype.CustomType;
+import tech.intellispaces.reflection.customtype.CustomTypes;
 import tech.intellispaces.reflection.instance.AnnotationInstance;
 import tech.intellispaces.reflection.instance.ClassInstance;
 import tech.intellispaces.reflection.instance.Instance;
@@ -102,8 +104,42 @@ public interface ChannelFunctions {
         (trackedObject) -> channelFunction.traverse(trackedObject, qualifierAnyValidValue));
   }
 
+  static String getOriginDomainChannelId(Class<?> domainClass, String cid) {
+    CustomType domainType = CustomTypes.of(domainClass);
+    return getOriginDomainChannelId(domainType, domainType, cid);
+  }
+
+  private static String getOriginDomainChannelId(CustomType originDomain, CustomType domain, String cid) {
+    for (CustomTypeReference parentDomain : domain.parentTypes()) {
+      for (MethodStatement method : parentDomain.targetType().declaredMethods()) {
+        if (method.hasAnnotation(Channel.class)) {
+          String curCid = method.selectAnnotation(Channel.class).orElseThrow().value();
+          if (cid.equals(curCid)) {
+            Optional<MethodStatement> originDomainMethod = originDomain.declaredMethod(
+                method.name(), method.parameterTypes());
+            if (originDomainMethod.isPresent()) {
+              Optional<Channel> originChannelAnnotation = originDomainMethod.orElseThrow().selectAnnotation(Channel.class);
+              if (originChannelAnnotation.isPresent()) {
+                return originChannelAnnotation.get().value();
+              }
+            }
+          }
+        }
+      }
+    }
+    for (CustomTypeReference parentDomain : domain.parentTypes()) {
+      String originCid = getOriginDomainChannelId(originDomain, parentDomain.targetType(), cid);
+      if (originCid != null) {
+        return originCid;
+      }
+    }
+    return null;
+  }
+
   static String computedChannelId(String channelClassCanonicalName) {
-    return new RepetableUuidIdentifierGenerator(channelClassCanonicalName).next();
+    return IdentifierFunctions.convertToHexString(
+        new RepetableUuidIdentifierGenerator(channelClassCanonicalName).next()
+    );
   }
 
   private static <S> String findChannelId(

@@ -49,7 +49,7 @@ class GuideRegistry {
   ) {
     var guides = new ArrayList<Guide<?, ?>>();
 
-    List<Guide<?, ?>> objectGuides = objectGuideRegistry.getGuides(kind, objectHandleClass, cid);
+    List<Guide<?, ?>> objectGuides = objectGuideRegistry.findGuides(kind, objectHandleClass, cid);
     for (Guide<?, ?> guide : objectGuides) {
       if (guide.targetForm() == targetForm) {
         guides.add(guide);

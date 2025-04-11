@@ -23,8 +23,8 @@ public class RepetableUuidIdentifierGenerator implements IdentifierGenerator {
   }
 
   @Override
-  public String next() {
+  public byte[] next() {
     random.nextBytes(bytes);
-    return UUID.nameUUIDFromBytes(bytes).toString();
+    return UuidFunctions.uuidToBytes(UUID.nameUUIDFromBytes(bytes));
   }
 }

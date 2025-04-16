@@ -1,5 +1,7 @@
 package tech.intellispaces.jaquarius.object.reference;
 
+import java.util.List;
+
 /**
  * The focused object reference.
  *
@@ -30,4 +32,14 @@ public interface ObjectHandle<D> extends ObjectReference<D> {
    * @param <T> target object reference type.
    */
   <TD, T> void addProjection(Class<TD> targetDomain, T target);
+
+  /**
+   * Returns nearest known underlying object handles or <code>null</code> if its are unknown.
+   */
+  List<? extends ObjectHandle<?>> underlyingHandles();
+
+  /**
+   * Returns nearest known overlying object handle or <code>null</code> if it is unknown.
+   */
+  ObjectHandle<?> overlyingHandle();
 }

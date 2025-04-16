@@ -123,7 +123,8 @@ public class MovableDownwardObjectGenerator extends ConversionObjectGenerator {
   protected Stream<MethodStatement> getObjectFormMethods(
       CustomType customType, ArtifactGeneratorContext context
   ) {
-    return buildActualType(superDomainType.targetType(), context).actualMethods().stream()
+    return buildActualType(superDomainType.targetType(), context, true).actualMethods().stream()
+        .filter(m -> !m.isDefault())
         .filter(m -> excludeDeepConversionMethods(m, customType))
         .filter(DomainFunctions::isNotDomainClassGetter);
   }

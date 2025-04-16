@@ -15,7 +15,7 @@ public interface ObjectHandleTraversePlan extends DeclarativeTraversePlan {
    */
   String channelId();
 
-  ExecutionTraversePlan getExecutionPlan(Class<?> sourceClass);
+  ExecutionTraversePlan cachedExecutionPlan(Class<?> sourceClass);
 
-  void addExecutionPlan(Class<?> sourceClass, ExecutionTraversePlan traversePlan);
+  void cacheExecutionPlan(Class<?> sourceClass, ExecutionTraversePlan traversePlan);
 }

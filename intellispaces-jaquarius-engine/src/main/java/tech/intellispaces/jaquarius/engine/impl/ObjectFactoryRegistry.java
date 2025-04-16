@@ -336,7 +336,7 @@ class ObjectFactoryRegistry {
   ) {
     List<ObjectFactoryMethodDescription> descriptions = domainToDescriptions.get(targetDomainClass);
     if (descriptions == null) {
-      throw ConfigurationExceptions.withMessage("No object providers of domain {0} were found",
+      throw ConfigurationExceptions.withMessage("No factory to domain {0} were found",
           targetDomainClass.getCanonicalName());
     }
     for (ObjectFactoryMethodDescription description : descriptions) {
@@ -347,7 +347,7 @@ class ObjectFactoryRegistry {
         return makeAction(description);
       }
     }
-    throw ConfigurationExceptions.withMessage("No object providers of domain {0} and contract type {1} were found",
+    throw ConfigurationExceptions.withMessage("No factory to domain {0} and contract type {1} were found",
         targetDomainClass.getCanonicalName(), contractType);
   }
 

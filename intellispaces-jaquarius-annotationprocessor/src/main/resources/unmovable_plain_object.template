@@ -16,9 +16,4 @@ public interface {{$generatedArtifactSimpleName}}{{$handleTypeParamsFull}} exten
 {{else}}
 public interface {{$generatedArtifactSimpleName}}{{$handleTypeParamsFull}} extends {{$generalPureObjectHandle}}{{$handleTypeParamsBrief}} {
 {{end}}
-
-{{for method : $conversionMethods}}
-  {{$method["declaration"]}};
-
-{{end}}
 }

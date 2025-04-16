@@ -2,6 +2,7 @@ package tech.intellispaces.jaquarius.annotationprocessor;
 
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.commons.text.StringFunctions;
+import tech.intellispaces.commons.type.ClassFunctions;
 import tech.intellispaces.commons.type.Classes;
 import tech.intellispaces.jaquarius.ArtifactType;
 import tech.intellispaces.jaquarius.annotation.AnnotationProcessor;
@@ -9,9 +10,11 @@ import tech.intellispaces.jaquarius.annotation.ArtifactGeneration;
 import tech.intellispaces.jaquarius.annotation.AssistantExtension;
 import tech.intellispaces.jaquarius.annotation.Extension;
 import tech.intellispaces.jaquarius.artifact.ArtifactTypes;
+import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
 import tech.intellispaces.reflection.AnnotatedStatement;
 import tech.intellispaces.reflection.JavaStatements;
 import tech.intellispaces.reflection.customtype.CustomType;
+import tech.intellispaces.reflection.customtype.CustomTypes;
 import tech.intellispaces.reflection.instance.AnnotationInstance;
 import tech.intellispaces.reflection.instance.ClassInstance;
 import tech.intellispaces.reflection.instance.Instance;
@@ -20,6 +23,7 @@ import javax.annotation.processing.RoundEnvironment;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -83,20 +87,32 @@ public interface AnnotationFunctions {
   private static List<CustomType> findArtifactExtensionInternal(
       CustomType sourceArtifact, ArtifactType targetArtifactType, RoundEnvironment roundEnv
   ) {
-    var extensions = new ArrayList<CustomType>();
+    var extensions = new HashMap<String, CustomType>();
     roundEnv.getElementsAnnotatedWith(Extension.class).stream()
         .map(JavaStatements::statement)
         .map(stm -> (CustomType) stm)
         .filter(ct -> isExtensionFor(ct, sourceArtifact, targetArtifactType))
-        .forEach(extensions::add);
+        .forEach(ct -> extensions.put(ct.canonicalName(), ct));
     if (ArtifactTypes.ObjectAssistant == targetArtifactType) {
       roundEnv.getElementsAnnotatedWith(AssistantExtension.class).stream()
           .map(JavaStatements::statement)
           .map(stm -> (CustomType) stm)
           .filter(ct -> isAssistantExtensionFor(ct, sourceArtifact))
-          .forEach(extensions::add);
+          .forEach(ct -> extensions.put(ct.canonicalName(), ct));
     }
-    return extensions;
+
+    Optional<Class<?>> extensionClass = ClassFunctions.getClass(
+        NameConventionFunctions.getExtensionCanonicalName(sourceArtifact, targetArtifactType)
+    );
+    if (extensionClass.isPresent()) {
+      Class<?> aClass = extensionClass.get();
+      if (aClass.isAnnotationPresent(Extension.class)) {
+        if (isExtensionFor(CustomTypes.of(aClass), sourceArtifact, targetArtifactType)) {
+          extensions.put(aClass.getCanonicalName(), CustomTypes.of(aClass));
+        }
+      }
+    }
+    return new ArrayList<>(extensions.values());
   }
 
   private static boolean isExtensionFor(CustomType sourceArtifact, AnnotationInstance annotation) {

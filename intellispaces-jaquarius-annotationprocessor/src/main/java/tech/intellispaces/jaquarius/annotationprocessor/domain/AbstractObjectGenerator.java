@@ -35,6 +35,7 @@ import tech.intellispaces.reflection.reference.NamedReference;
 import tech.intellispaces.reflection.reference.NotPrimitiveReference;
 import tech.intellispaces.reflection.reference.ReferenceBound;
 import tech.intellispaces.reflection.reference.TypeReference;
+import tech.intellispaces.reflection.reference.TypeReferenceFunctions;
 
 import javax.annotation.processing.RoundEnvironment;
 import java.util.ArrayList;
@@ -59,6 +60,7 @@ public abstract class AbstractObjectGenerator extends JaquariusArtifactGenerator
   protected final List<Map<String, String>> methods = new ArrayList<>();
   protected final List<Map<String, String>> conversionMethods = new ArrayList<>();
   protected final List<Map<String, String>> rawDomainMethods = new ArrayList<>();
+  protected final List<String> underlyingTypes = new ArrayList<>();
 
   public AbstractObjectGenerator(CustomType domainType) {
     super(domainType);
@@ -123,7 +125,9 @@ public abstract class AbstractObjectGenerator extends JaquariusArtifactGenerator
 
   private Map<String, String> buildConversionMethod(CustomTypeReference parent) {
     var sb = new StringBuilder();
-    sb.append(buildObjectFormDeclaration(parent, getForm(), getMovabilityType(), true));
+    String targetType = buildObjectFormDeclaration(parent, getForm(), getMovabilityType(), true);
+    underlyingTypes.add(targetType);
+    sb.append(targetType);
     sb.append(" ");
     sb.append(NameConventionFunctions.getConversionMethodName(parent));
     sb.append("()");
@@ -290,19 +294,7 @@ public abstract class AbstractObjectGenerator extends JaquariusArtifactGenerator
   }
 
   protected CustomType buildActualType(CustomType domainType, ArtifactGeneratorContext context) {
-    InterfaceType domain = domainType.asInterfaceOrElseThrow();
-
-    var builder = Interfaces.build(domain);
-    findExtensionMethods(domain, context.initialRoundEnvironment()).forEach(builder::addDeclaredMethod);
-
-    var extendedInterfaces = new ArrayList<CustomTypeReference>();
-    for (CustomTypeReference superDomain : domain.extendedInterfaces()) {
-      extendedInterfaces.add(
-          CustomTypeReferences.get(buildActualType(superDomain.targetType(), context), superDomain.typeArguments())
-      );
-    }
-    builder.extendedInterfaces(extendedInterfaces);
-    return builder.get();
+    return buildActualType(domainType, context, false);
   }
 
   protected List<CustomType> findExtensions(CustomType domainType, RoundEnvironment roundEnv) {
@@ -313,17 +305,70 @@ public abstract class AbstractObjectGenerator extends JaquariusArtifactGenerator
     return extensions;
   }
 
-  private List<MethodStatement> findExtensionMethods(CustomType domainType, RoundEnvironment roundEnv) {
+  protected CustomType buildActualType(
+      CustomType domainType, ArtifactGeneratorContext context, boolean includeInheritedMethods
+  ) {
+    var builder = Interfaces.build(domainType.asInterfaceOrElseThrow());
+    findExtensionMethods(domainType, context.initialRoundEnvironment(), includeInheritedMethods)
+        .forEach(builder::addDeclaredMethod);
+
+    var extendedInterfaces = new ArrayList<CustomTypeReference>();
+    for (CustomTypeReference superDomain : domainType.parentTypes()) {
+      extendedInterfaces.add(
+          CustomTypeReferences.get(buildActualType(superDomain.targetType(), context, false), superDomain.typeArguments())
+      );
+    }
+    builder.extendedInterfaces(extendedInterfaces);
+    return builder.get();
+  }
+
+  private List<MethodStatement> findExtensionMethods(
+      CustomType domainType, RoundEnvironment roundEnv, boolean includeInheritedMethods
+  ) {
     List<MethodStatement> methods = new ArrayList<>();
+    addExtensionMethods(methods, domainType, roundEnv, Map.of(), includeInheritedMethods);
+    return methods;
+  }
+
+  private void addExtensionMethods(
+      List<MethodStatement> methods,
+      CustomType domainType,
+      RoundEnvironment roundEnv,
+      Map<String, NotPrimitiveReference> initialTypeMapping,
+      boolean includeInheritedMethods
+  ) {
     for (ArtifactType artifactType : relatedArtifactTypes()) {
       List<CustomType> extensions = AnnotationFunctions.findArtifactExtensions(
           domainType, artifactType, roundEnv
       );
       for (CustomType extension : extensions) {
         methods.addAll(extension.declaredMethods());
+        if (includeInheritedMethods) {
+          addInheritedMethods(extension, methods, initialTypeMapping);
+        }
       }
     }
-    return methods;
+
+    if (includeInheritedMethods) {
+      for (CustomTypeReference parent : domainType.parentTypes()) {
+        Map<String, NotPrimitiveReference> typeMapping = TypeReferenceFunctions.mergeTypeArgumentMapping(
+            parent, initialTypeMapping
+        );
+        addExtensionMethods(methods, parent.targetType(), roundEnv, typeMapping, true);
+      }
+    }
+  }
+
+  private void addInheritedMethods(
+      CustomType type, List<MethodStatement> methods, Map<String, NotPrimitiveReference> initialTypeMapping
+  ) {
+    for (CustomTypeReference parent : type.parentTypes()) {
+      Map<String, NotPrimitiveReference> typeMapping = TypeReferenceFunctions.mergeTypeArgumentMapping(parent, initialTypeMapping);
+      for (MethodStatement method : parent.targetType().declaredMethods()) {
+        methods.add(method.effective(typeMapping));
+      }
+      addInheritedMethods(parent.targetType(), methods, initialTypeMapping);
+    }
   }
 
   protected String buildDomainType(CustomType domainType, List<NotPrimitiveReference> typeQualifiers) {

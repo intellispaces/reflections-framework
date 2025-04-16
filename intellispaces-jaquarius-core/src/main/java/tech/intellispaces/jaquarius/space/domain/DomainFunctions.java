@@ -245,7 +245,7 @@ public final class DomainFunctions {
       CustomTypeReference parent = parents.next();
       CustomTypeReference effectiveParent = effectiveParents.next();
       if (!DomainFunctions.isAliasOf(parent, customType)) {
-        superDomains.add(CustomTypeReferences.get(effectiveParent.effectiveTargetType()));
+        superDomains.add(effectiveParent);
       }
       getEffectiveSuperDomains(parent.targetType(), effectiveParent.effectiveTargetType(), superDomains);
     }

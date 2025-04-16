@@ -1,5 +1,7 @@
 package tech.intellispaces.jaquarius.object.reference;
 
+import java.util.List;
+
 /**
  * The handle of the unmovable object.<p/>
  *
@@ -13,4 +15,10 @@ public interface UnmovableObjectHandle<D> extends ObjectHandle<D> {
   default boolean isMovable() {
     return false;
   }
+
+  @Override
+  List<UnmovableObjectHandle<?>> underlyingHandles();
+
+  @Override
+  UnmovableObjectHandle<?> overlyingHandle();
 }

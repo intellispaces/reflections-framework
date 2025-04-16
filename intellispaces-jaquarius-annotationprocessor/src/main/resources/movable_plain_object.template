@@ -12,15 +12,11 @@ import {{$importedClass}};
 @Movable
 {{$generatedAnnotation}}
 {{when $isAlias}}
-public interface {{$generatedArtifactSimpleName}}{{$handleTypeParamsFull}} extends {{$generalPureObjectHandle}}{{$handleTypeParamsBrief}}, {{$primaryObject}} {
+public interface {{$generatedArtifactSimpleName}}{{$handleTypeParamsFull}} extends {{$generalPureObjectHandle}}{{$handleTypeParamsBrief}}, {{$primaryObject}}{{$underlyingTypes}} {
 {{else}}
-public interface {{$generatedArtifactSimpleName}}{{$handleTypeParamsFull}} extends {{$generalPureObjectHandle}}{{$handleTypeParamsBrief}} {
+public interface {{$generatedArtifactSimpleName}}{{$handleTypeParamsFull}} extends {{$generalPureObjectHandle}}{{$handleTypeParamsBrief}}{{$underlyingTypes}} {
 {{end}}
 
-{{for method : $conversionMethods}}
-  {{$method["declaration"]}};
-
-{{end}}
 {{for method : $domainMethods}}
   {{$method["javadoc"]}}
   {{$method["declaration"]}};

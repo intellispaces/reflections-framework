@@ -77,7 +77,6 @@ public class UnmovablePlainObjectGenerator extends AbstractPlainObjectGenerator 
 
     addVariable("handleTypeParamsBrief", typeParamsBrief);
     addVariable("handleTypeParamsFull", typeParamsFull);
-    addVariable("conversionMethods", conversionMethods);
     addVariable("generalPureObjectHandle", getGeneralOriginHandleClassName());
     addVariable("isAlias", isAlias);
     addVariable("primaryObject", baseObjectHandle);

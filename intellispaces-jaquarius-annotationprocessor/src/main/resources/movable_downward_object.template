@@ -166,6 +166,16 @@ public class {{$generatedArtifactSimpleName}}{{$classTypeParams}} implements {{$
   }
 
   @Override
+  public java.util.List<MovableObjectHandle<?>> underlyingHandles() {
+    throw NotImplementedExceptions.withCode("1w7SnA");
+  }
+
+  @Override
+  public MovableObjectHandle<?> overlyingHandle() {
+    throw NotImplementedExceptions.withCode("jFU7h9oR");
+  }
+
+  @Override
   public <TD, TH> TH mapTo(Class<TD> targetDomain) {
     return ObjectHandles.handleOf({{$childField}}, {{$sourceArtifactSimpleName}}.class).mapTo(targetDomain);
   }

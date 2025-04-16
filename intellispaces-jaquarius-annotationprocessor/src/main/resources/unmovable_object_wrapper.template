@@ -11,7 +11,7 @@ import static tech.intellispaces.jaquarius.engine.description.ObjectHandleMethod
  */
 @Wrapper({{$sourceArtifactSimpleName}}.class)
 {{$generatedAnnotation}}
-public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sourceArtifactSimpleName}}{{$typeParamsBrief}} implements {{$objectHandleClassSimpleName}}{{$typeParamsBrief}}, ObjectHandleWrapper {
+public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sourceArtifactSimpleName}}{{$typeParamsBrief}} implements {{$objectHandleClassSimpleName}}{{$typeParamsBrief}}, ObjectHandleWrapper, OverlyingHandleController {
   private static ObjectHandleTypeDescription $TYPE;
   private final ObjectHandleBroker $broker;
 
@@ -96,6 +96,21 @@ public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sour
   @Override
   public <TD, TH> void addProjection(Class<TD> targetDomain, TH target) {
     $broker.addProjection(targetDomain, target);
+  }
+
+  @Override
+  public java.util.List<UnmovableObjectHandle<?>> underlyingHandles() {
+    return (java.util.List<UnmovableObjectHandle<?>>) $broker.underlyingHandles();
+  }
+
+  @Override
+  public UnmovableObjectHandle<?> overlyingHandle() {
+    return (UnmovableObjectHandle<?>) $broker.overlyingHandle();
+  }
+
+  @Override
+  public void setOverlyingHandle(ObjectHandle<?> overlyingHandle) {
+    throw NotImplementedExceptions.withCode("Gxgitg");
   }
 
   @Override

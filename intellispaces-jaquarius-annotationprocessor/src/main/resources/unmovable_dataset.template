@@ -80,6 +80,16 @@ public class {{$generatedArtifactSimpleName}} implements {{$objectHandleClassNam
   }
 
   @Override
+  public java.util.List<UnmovableObjectHandle<?>> underlyingHandles() {
+    throw NotImplementedExceptions.withCode("VCEdng");
+  }
+
+  @Override
+  public UnmovableObjectHandle<?> overlyingHandle() {
+    throw NotImplementedExceptions.withCode("Gl2z4f8y");
+  }
+
+  @Override
   public <TD, TH> TH mapTo(Class<TD> targetDomain) {
     throw NotImplementedExceptions.withCode("zGRjYw");
   }

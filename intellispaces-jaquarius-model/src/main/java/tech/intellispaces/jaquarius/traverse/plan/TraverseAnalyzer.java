@@ -30,5 +30,7 @@ public interface TraverseAnalyzer {
 
   MapOfMovingObjectHandleThruChannel4Plan buildMapOfMovingObjectHandleThruChannel4Plan(Class<?> sourceClass, String cid, ObjectReferenceForm targetForm);
 
+  ExecutionTraversePlan getExecutionPlan(ObjectHandleTraversePlan declarativePlan, Object source, ObjectReferenceForm targetForm);
+
   ExecutionTraversePlan getExecutionPlan(ObjectHandleTraversePlan declarativePlan, Class<?> sourceClass, ObjectReferenceForm targetForm);
 }

@@ -7,6 +7,8 @@ import tech.intellispaces.jaquarius.channel.ChannelFunction1;
 import tech.intellispaces.jaquarius.exception.TraverseException;
 import tech.intellispaces.jaquarius.traverse.MappingOfMovingTraverse;
 
+import java.util.List;
+
 /**
  * The handle of the movable object.<p/>
  *
@@ -40,4 +42,10 @@ public interface MovableObjectHandle<D> extends ObjectHandle<D> {
   <R, Q> R mapOfMovingThru(ChannelFunction1<D, R, Q> channelFunction, Q qualifier) throws TraverseException;
 
   <R, Q, C extends Channel1 & MappingOfMovingTraverse> R mapOfMovingThru(Class<C> channelClass, Q qualifier) throws TraverseException;
+
+  @Override
+  List<MovableObjectHandle<?>> underlyingHandles();
+
+  @Override
+  MovableObjectHandle<?> overlyingHandle();
 }

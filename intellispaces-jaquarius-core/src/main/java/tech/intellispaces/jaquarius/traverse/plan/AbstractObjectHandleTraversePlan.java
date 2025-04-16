@@ -29,17 +29,19 @@ public abstract class AbstractObjectHandleTraversePlan implements ObjectHandleTr
   }
 
   @Override
-  public ExecutionTraversePlan getExecutionPlan(Class<?> sourceClass) {
+  public ExecutionTraversePlan cachedExecutionPlan(Class<?> sourceClass) {
     if (lastSourceClass != null && lastSourceClass == sourceClass) {
       return lastExecutionPlan;
     }
-    lastSourceClass = sourceClass;
-    lastExecutionPlan = executionPlans.get(lastSourceClass);
+    lastExecutionPlan = executionPlans.get(sourceClass);
+    if (lastExecutionPlan != null) {
+      lastSourceClass = sourceClass;
+    }
     return lastExecutionPlan;
   }
 
   @Override
-  public void addExecutionPlan(Class<?> sourceClass, ExecutionTraversePlan traversePlan) {
+  public void cacheExecutionPlan(Class<?> sourceClass, ExecutionTraversePlan traversePlan) {
     if (!ObjectReferenceFunctions.isObjectHandleClass(sourceClass)) {
       throw UnexpectedExceptions.withMessage("Expected object handle class");
     }

@@ -29,6 +29,7 @@ import tech.intellispaces.reflection.reference.TypeReference;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class MovablePlainObjectGenerator extends AbstractPlainObjectGenerator {
@@ -90,9 +91,9 @@ public class MovablePlainObjectGenerator extends AbstractPlainObjectGenerator {
     addVariable("primaryObject", baseObjectHandle);
     addVariable("handleTypeParamsFull", typeParamsFull);
     addVariable("handleTypeParamsBrief", typeParamsBrief);
-    addVariable("conversionMethods", conversionMethods);
     addVariable("domainMethods", methods);
     addVariable("generalPureObjectHandle", getGeneralOriginHandleClassName());
+    addVariable("underlyingTypes", underlyingTypes.isEmpty() ? "" : ", " + String.join(", ", underlyingTypes));
     return true;
   }
 

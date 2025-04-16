@@ -1,11 +1,14 @@
 package tech.intellispaces.jaquarius.engine.impl;
 
 import tech.intellispaces.actions.Action;
+import tech.intellispaces.commons.exception.NotImplementedExceptions;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.jaquarius.engine.description.ObjectHandleTypeDescription;
+import tech.intellispaces.jaquarius.object.reference.ObjectHandle;
 import tech.intellispaces.jaquarius.system.Injection;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ObjectHandleBroker implements tech.intellispaces.jaquarius.engine.ObjectHandleBroker {
@@ -14,6 +17,7 @@ public class ObjectHandleBroker implements tech.intellispaces.jaquarius.engine.O
   private final Action[] guideActions;
   private final Injection[] injections;
   private final Map<Class<?>, Object> projections = new HashMap<>();
+  private ObjectHandle<?> overlyingHandle;
 
   public ObjectHandleBroker(
       ObjectHandleTypeDescription type,
@@ -54,6 +58,21 @@ public class ObjectHandleBroker implements tech.intellispaces.jaquarius.engine.O
   @Override
   public <D, H> void addProjection(Class<D> targetDomain, H target) {
     projections.put(targetDomain, target);
+  }
+
+  @Override
+  public List<? extends ObjectHandle<?>> underlyingHandles() {
+    throw NotImplementedExceptions.withCode("KDpzfXvh");
+  }
+
+  @Override
+  public ObjectHandle<?> overlyingHandle() {
+    return overlyingHandle;
+  }
+
+  @Override
+  public void setOverlyingHandle(ObjectHandle<?> overlyingHandle) {
+    this.overlyingHandle = overlyingHandle;
   }
 
   @Override

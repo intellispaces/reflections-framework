@@ -546,6 +546,10 @@ public class ObjectReferenceFunctions {
     return propertiesHandleClass;
   }
 
+  public static void unbindSilently(Object objectReference) {
+    unbindSilently(ObjectHandles.handle(objectReference));
+  }
+
   public static void unbindSilently(ObjectReference<?> objectReference) {
     if (objectReference == null) {
       return;

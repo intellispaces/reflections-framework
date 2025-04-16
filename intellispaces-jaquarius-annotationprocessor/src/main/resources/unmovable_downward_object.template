@@ -86,6 +86,16 @@ public class {{$generatedArtifactSimpleName}}{{$classTypeParams}} implements {{$
   }
 
   @Override
+  public java.util.List<UnmovableObjectHandle<?>> underlyingHandles() {
+    throw NotImplementedExceptions.withCode("ZBPIpw");
+  }
+
+  @Override
+  public UnmovableObjectHandle<?> overlyingHandle() {
+    throw NotImplementedExceptions.withCode("tNghxqGi");
+  }
+
+  @Override
   public <TD, TH> TH mapTo(Class<TD> targetDomain) {
     return ObjectHandles.handleOf({{$childField}}, {{$sourceArtifactSimpleName}}.class).mapTo(targetDomain);
   }

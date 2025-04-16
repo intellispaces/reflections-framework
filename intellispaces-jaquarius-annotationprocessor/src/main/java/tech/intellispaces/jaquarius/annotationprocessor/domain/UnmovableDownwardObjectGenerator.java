@@ -2,6 +2,7 @@ package tech.intellispaces.jaquarius.annotationprocessor.domain;
 
 import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
 import tech.intellispaces.commons.collection.ArraysFunctions;
+import tech.intellispaces.commons.exception.NotImplementedExceptions;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.commons.type.Type;
 import tech.intellispaces.commons.type.Types;
@@ -87,7 +88,8 @@ public class UnmovableDownwardObjectGenerator extends ConversionObjectGenerator 
         MovableObjectHandle.class,
         ObjectHandles.class,
         TraverseException.class,
-        UnexpectedExceptions.class
+        UnexpectedExceptions.class,
+        NotImplementedExceptions.class
     );
 
     String unmovableObjectHandleName = addImportAndGetSimpleName(
@@ -127,11 +129,8 @@ public class UnmovableDownwardObjectGenerator extends ConversionObjectGenerator 
   protected Stream<MethodStatement> getObjectFormMethods(
       CustomType customType, ArtifactGeneratorContext context
   ) {
-    return extractNotMovingMethods(customType, context);
-  }
-
-  private Stream<MethodStatement> extractNotMovingMethods(CustomType customType, ArtifactGeneratorContext context) {
-    return buildActualType(superDomainType.targetType(), context).actualMethods().stream()
+    return buildActualType(superDomainType.targetType(), context, true).actualMethods().stream()
+        .filter(m -> !m.isDefault())
         .filter(m -> excludeDeepConversionMethods(m, customType))
         .filter(this::isNotMovingMethod)
         .filter(DomainFunctions::isNotDomainClassGetter);

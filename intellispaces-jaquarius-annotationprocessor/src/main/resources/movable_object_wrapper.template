@@ -11,7 +11,7 @@ import static tech.intellispaces.jaquarius.engine.description.ObjectHandleMethod
  */
 @Wrapper({{$sourceArtifactSimpleName}}.class)
 {{$generatedAnnotation}}
-public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sourceArtifactSimpleName}}{{$typeParamsBrief}} implements {{$objectHandleClassSimpleName}}{{$typeParamsBrief}}, ObjectHandleWrapper {
+public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sourceArtifactSimpleName}}{{$typeParamsBrief}} implements {{$objectHandleClassSimpleName}}{{$typeParamsBrief}}, ObjectHandleWrapper, OverlyingHandleController, PostRegistrationHandleProcessor {
   private static ObjectHandleTypeDescription $TYPE;
   private final ObjectHandleBroker $broker;
 
@@ -19,6 +19,7 @@ public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sour
   public {{$generatedArtifactSimpleName}}({{for param : $constructor["params"]}}{{$param["type"]}} {{$param["name"]}}{{when $param.isNotLast()}}, {{end}}{{end}}) {
     super({{for param : $constructor["params"]}}{{$param["name"]}}{{when $param.isNotLast()}}, {{end}}{{end}});
     $broker = $registerObjectHandle();
+    postRegistration();
   }
 
 {{end}}
@@ -85,6 +86,21 @@ public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sour
   }
 
   @Override
+  public java.util.List<MovableObjectHandle<?>> underlyingHandles() {
+    return (java.util.List<MovableObjectHandle<?>>) $broker.underlyingHandles();
+  }
+
+  @Override
+  public MovableObjectHandle<?> overlyingHandle() {
+    return (MovableObjectHandle<?>) $broker.overlyingHandle();
+  }
+
+  @Override
+  public void setOverlyingHandle(ObjectHandle<?> overlyingHandle) {
+    $broker.setOverlyingHandle(overlyingHandle);
+  }
+
+  @Override
   public <TD, TH> TH mapTo(Class<TD> targetDomain) {
     return $broker.mapTo(targetDomain);
   }
@@ -139,7 +155,7 @@ public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sour
 
   @Override
   public <R, Q> R mapOfMovingThru(java.lang.String cid, Q qualifier) throws TraverseException {
-    throw NotImplementedExceptions.withCode("MzYmFw");
+    return Modules.current().mapOfMovingThruChannel1(this, cid, qualifier);
   }
 
 {{when $isAlias}}

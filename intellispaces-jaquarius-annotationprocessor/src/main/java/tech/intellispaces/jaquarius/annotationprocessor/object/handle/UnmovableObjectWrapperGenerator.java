@@ -1,6 +1,7 @@
 package tech.intellispaces.jaquarius.annotationprocessor.object.handle;
 
 import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
+import tech.intellispaces.commons.exception.NotImplementedExceptions;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.commons.type.PrimitiveFunctions;
 import tech.intellispaces.commons.type.Type;
@@ -20,8 +21,11 @@ import tech.intellispaces.jaquarius.exception.TraverseException;
 import tech.intellispaces.jaquarius.object.reference.MovabilityType;
 import tech.intellispaces.jaquarius.object.reference.MovabilityTypes;
 import tech.intellispaces.jaquarius.object.reference.MovableObjectHandle;
+import tech.intellispaces.jaquarius.object.reference.ObjectHandle;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
+import tech.intellispaces.jaquarius.object.reference.OverlyingHandleController;
+import tech.intellispaces.jaquarius.object.reference.UnmovableObjectHandle;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.system.Modules;
 import tech.intellispaces.jaquarius.system.ObjectHandleWrapper;
@@ -77,8 +81,11 @@ public class UnmovableObjectWrapperGenerator extends AbstractObjectWrapperGenera
         Modules.class,
         Type.class,
         Types.class,
+        ObjectHandle.class,
         ObjectHandleWrapper.class,
         MovableObjectHandle.class,
+        UnmovableObjectHandle.class,
+        OverlyingHandleController.class,
         Channel1.class,
         ChannelFunction0.class,
         ChannelFunction1.class,
@@ -90,7 +97,8 @@ public class UnmovableObjectWrapperGenerator extends AbstractObjectWrapperGenera
         TraverseTypes.class,
         ObjectHandleMethodPurposes.class,
         TraverseException.class,
-        UnexpectedExceptions.class
+        UnexpectedExceptions.class,
+        NotImplementedExceptions.class
     );
 
     analyzeDomain();

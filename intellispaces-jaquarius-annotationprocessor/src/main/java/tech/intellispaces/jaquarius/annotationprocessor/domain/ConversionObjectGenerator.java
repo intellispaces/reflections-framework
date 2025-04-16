@@ -148,7 +148,11 @@ abstract class ConversionObjectGenerator extends AbstractObjectGenerator {
     var sb = new StringBuilder();
     sb.append("public ");
     appendMethodTypeParameters(sb, method);
-    appendMethodReturnType(sb, method);
+    if (method.returnType().isPresent()) {
+      appendMethodReturnType(sb, method);
+    } else {
+      sb.append("void");
+    }
     sb.append(" ");
     sb.append(method.name());
     sb.append("(");
@@ -156,7 +160,10 @@ abstract class ConversionObjectGenerator extends AbstractObjectGenerator {
     sb.append(")");
     appendMethodExceptions(sb, method);
     sb.append(" {\n");
-    sb.append("  return this.")
+    if (method.returnType().isPresent()) {
+      sb.append("  return ");
+    }
+    sb.append("this.")
         .append(childFieldName)
         .append(".")
         .append(method.name())

@@ -29,5 +29,7 @@ public class TraversePlanTypesTest {
     assertThat(TraversePlanTypes.MapOfMovingObjectHandleThruChannel2.ordinal()).isEqualTo(15);
     assertThat(TraversePlanTypes.MapOfMovingObjectHandleThruChannel3.ordinal()).isEqualTo(16);
     assertThat(TraversePlanTypes.MapOfMovingObjectHandleThruChannel4.ordinal()).isEqualTo(17);
+    assertThat(TraversePlanTypes.AscendAndExecute0.ordinal()).isEqualTo(18);
+    assertThat(TraversePlanTypes.AscendAndExecute1.ordinal()).isEqualTo(19);
   }
 }

@@ -21,6 +21,8 @@ public interface TraverseExecutor {
 
   Object execute(CallGuide4Plan plan, Object source, Object qualifier1, Object qualifier2, Object qualifier3, Object qualifier4) throws TraverseException;
 
+  Object execute(AscendAndExecutePlan1 plan, Object source, Object qualifier) throws TraverseException;
+
   Object execute(MapObjectHandleThruChannel0Plan plan, Object source) throws TraverseException;
 
   int executeReturnInt(MapObjectHandleThruChannel0Plan plan, Object source) throws TraverseException;

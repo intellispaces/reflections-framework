@@ -23,8 +23,12 @@ import tech.intellispaces.jaquarius.exception.TraverseException;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
 import tech.intellispaces.jaquarius.object.reference.MovabilityType;
 import tech.intellispaces.jaquarius.object.reference.MovabilityTypes;
+import tech.intellispaces.jaquarius.object.reference.MovableObjectHandle;
+import tech.intellispaces.jaquarius.object.reference.ObjectHandle;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
+import tech.intellispaces.jaquarius.object.reference.OverlyingHandleController;
+import tech.intellispaces.jaquarius.object.reference.PostRegistrationHandleProcessor;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.system.Modules;
 import tech.intellispaces.jaquarius.system.ObjectHandleWrapper;
@@ -83,7 +87,11 @@ public class MovableObjectWrapperGenerator extends AbstractObjectWrapperGenerato
         Type.class,
         Types.class,
         Modules.class,
+        ObjectHandle.class,
         ObjectHandleWrapper.class,
+        MovableObjectHandle.class,
+        OverlyingHandleController.class,
+        PostRegistrationHandleProcessor.class,
         Channel0.class,
         Channel1.class,
         ChannelFunction0.class,

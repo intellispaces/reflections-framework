@@ -3,13 +3,13 @@ package tech.intellispaces.jaquarius.annotationprocessor.domain;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
 import tech.intellispaces.reflection.customtype.CustomType;
 
-public abstract class AbstractPlainObjectGenerator extends AbstractObjectGenerator {
+public abstract class AbstractRegularObjectGenerator extends AbstractObjectGenerator {
 
-  public AbstractPlainObjectGenerator(CustomType domainType) {
+  public AbstractRegularObjectGenerator(CustomType domainType) {
     super(domainType);
   }
 
   protected String getGeneralOriginHandleClassName() {
-    return addImportAndGetSimpleName(NameConventionFunctions.getGeneralPlainObjectTypename(sourceArtifact().className()));
+    return addImportAndGetSimpleName(NameConventionFunctions.getGeneralRegularObjectTypename(sourceArtifact().className()));
   }
 }

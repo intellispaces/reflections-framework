@@ -93,7 +93,7 @@ public class UnmovableObjectHandleGenerator extends AbstractObjectGenerator {
   }
 
   private String getSimpleObjectClassName() {
-    return addImportAndGetSimpleName(NameConventionFunctions.getUnmovablePlainObjectTypename(sourceArtifact().className(), false));
+    return addImportAndGetSimpleName(NameConventionFunctions.getUnmovableRegularObjectTypename(sourceArtifact().className(), false));
   }
 
   private void analyzeAlias() {

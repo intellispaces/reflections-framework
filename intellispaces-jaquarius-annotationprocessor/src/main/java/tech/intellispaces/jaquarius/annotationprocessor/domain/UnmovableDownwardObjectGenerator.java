@@ -59,7 +59,7 @@ public class UnmovableDownwardObjectGenerator extends ConversionObjectGenerator 
 
   @Override
   protected List<ArtifactType> relatedArtifactTypes() {
-    return List.of(ArtifactTypes.UnmovableDownwardObject, ArtifactTypes.ObjectHandle, ArtifactTypes.PlainObject);
+    return List.of(ArtifactTypes.UnmovableDownwardObject, ArtifactTypes.ObjectHandle, ArtifactTypes.RegularObject);
   }
 
   @Override
@@ -93,7 +93,7 @@ public class UnmovableDownwardObjectGenerator extends ConversionObjectGenerator 
     );
 
     String unmovableObjectHandleName = addImportAndGetSimpleName(
-        NameConventionFunctions.getUnmovablePlainObjectTypename(superDomainType.targetType().className(), false));
+        NameConventionFunctions.getUnmovableRegularObjectTypename(superDomainType.targetType().className(), false));
 
     analyzeDomain();
     analyzeChildObjectHandleType();

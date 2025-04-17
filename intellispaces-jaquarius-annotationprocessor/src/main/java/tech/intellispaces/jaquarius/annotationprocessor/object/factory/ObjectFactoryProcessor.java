@@ -5,7 +5,7 @@ import tech.intellispaces.annotationprocessor.ArtifactGenerator;
 import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
 import tech.intellispaces.annotationprocessor.ArtifactProcessor;
 import tech.intellispaces.annotationprocessor.ArtifactValidator;
-import tech.intellispaces.jaquarius.annotation.ObjectFactory;
+import tech.intellispaces.jaquarius.annotation.Factory;
 import tech.intellispaces.jaquarius.annotationprocessor.AnnotationFunctions;
 import tech.intellispaces.jaquarius.annotationprocessor.JaquariusArtifactProcessor;
 import tech.intellispaces.reflection.customtype.CustomType;
@@ -19,7 +19,7 @@ public class ObjectFactoryProcessor extends ArtifactProcessor {
   private final ObjectFactoryMetaInfGenerator metaInfGenerator = new ObjectFactoryMetaInfGenerator();
 
   public ObjectFactoryProcessor() {
-    super(ElementKind.CLASS, ObjectFactory.class, JaquariusArtifactProcessor.SOURCE_VERSION);
+    super(ElementKind.CLASS, Factory.class, JaquariusArtifactProcessor.SOURCE_VERSION);
   }
 
   @Override

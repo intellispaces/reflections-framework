@@ -101,7 +101,7 @@ public class MovableObjectHandleGenerator extends AbstractObjectGenerator {
   }
 
   private String getSimpleObjectClassName() {
-    return addImportAndGetSimpleName(NameConventionFunctions.getMovablePlainObjectTypename(sourceArtifact().className(), false));
+    return addImportAndGetSimpleName(NameConventionFunctions.getMovableRegularObjectTypename(sourceArtifact().className(), false));
   }
 
   private void analyzeAlias() {

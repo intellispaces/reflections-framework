@@ -76,7 +76,7 @@ public class MovableObjectWrapperGenerator extends AbstractObjectWrapperGenerato
 
   @Override
   protected List<ArtifactType> relatedArtifactTypes() {
-    return List.of(ArtifactTypes.MovableObjectWrapper, ArtifactTypes.ObjectHandle, ArtifactTypes.PlainObject);
+    return List.of(ArtifactTypes.MovableObjectWrapper, ArtifactTypes.ObjectHandle, ArtifactTypes.RegularObject);
   }
 
   @Override

@@ -8,11 +8,11 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * The artifact extension.
+ * The generated artifact customizer.
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Extension {
+public @interface Customizer {
 
   /**
    * The origin artifact.

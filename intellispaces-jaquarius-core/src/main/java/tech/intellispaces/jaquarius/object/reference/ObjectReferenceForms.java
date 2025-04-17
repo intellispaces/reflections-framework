@@ -8,9 +8,9 @@ import tech.intellispaces.commons.entity.Enumeration;
 public enum ObjectReferenceForms implements ObjectReferenceForm, Enumeration<ObjectReferenceForm> {
 
   /**
-   * The object reference represented as plain object interface or primitive type.
+   * The object reference represented as regular object interface or primitive type.
    */
-  Plain,
+  Regular,
 
   /**
    * The object reference represented as object handle or primitive type.
@@ -27,7 +27,7 @@ public enum ObjectReferenceForms implements ObjectReferenceForm, Enumeration<Obj
    */
   PrimitiveWrapper;
 
-  public static ObjectReferenceForms from(ObjectReferenceForm value) {
+  public static ObjectReferenceForms of(ObjectReferenceForm value) {
     return VALUES[value.ordinal()];
   }
 

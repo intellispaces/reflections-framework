@@ -4,7 +4,7 @@ import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.jaquarius.ArtifactType;
 import tech.intellispaces.jaquarius.annotation.Channel;
-import tech.intellispaces.jaquarius.annotation.Extension;
+import tech.intellispaces.jaquarius.annotation.Customizer;
 import tech.intellispaces.jaquarius.annotation.Movable;
 import tech.intellispaces.jaquarius.annotation.ObjectHandle;
 import tech.intellispaces.jaquarius.annotation.Unmovable;
@@ -32,9 +32,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
-public class GeneralPlainObjectGenerator extends AbstractPlainObjectGenerator {
+public class GeneralRegularObjectGenerator extends AbstractRegularObjectGenerator {
 
-  public GeneralPlainObjectGenerator(CustomType domainType) {
+  public GeneralRegularObjectGenerator(CustomType domainType) {
     super(domainType);
   }
 
@@ -45,7 +45,7 @@ public class GeneralPlainObjectGenerator extends AbstractPlainObjectGenerator {
 
   @Override
   protected ObjectReferenceForm getForm() {
-    return ObjectReferenceForms.Plain;
+    return ObjectReferenceForms.Regular;
   }
 
   @Override
@@ -55,17 +55,17 @@ public class GeneralPlainObjectGenerator extends AbstractPlainObjectGenerator {
 
   @Override
   protected List<ArtifactType> relatedArtifactTypes() {
-    return List.of(ArtifactTypes.PlainObject);
+    return List.of(ArtifactTypes.RegularObject);
   }
 
   @Override
   public String generatedArtifactName() {
-    return NameConventionFunctions.getGeneralPlainObjectTypename(sourceArtifact().className());
+    return NameConventionFunctions.getGeneralRegularObjectTypename(sourceArtifact().className());
   }
 
   @Override
   protected String templateName() {
-    return "/general_plain_object.template";
+    return "/general_regular_object.template";
   }
 
   @Override
@@ -91,7 +91,7 @@ public class GeneralPlainObjectGenerator extends AbstractPlainObjectGenerator {
   private List<String> getParents(ArtifactGeneratorContext context) {
     var parents = new ArrayList<String>();
     for (CustomTypeReference parent : sourceArtifact().parentTypes()) {
-      parents.add(ObjectReferenceFunctions.geGeneralPlainObjectDeclaration(parent, false, this::addImportAndGetSimpleName)
+      parents.add(ObjectReferenceFunctions.geGeneralRegularObjectDeclaration(parent, false, this::addImportAndGetSimpleName)
       );
     }
     addExtraInterfaces(parents, context);
@@ -99,16 +99,16 @@ public class GeneralPlainObjectGenerator extends AbstractPlainObjectGenerator {
   }
 
   private void addExtraInterfaces(ArrayList<String> parents, ArtifactGeneratorContext context) {
-    List<CustomType> extensions = findExtensions(sourceArtifact(), context.initialRoundEnvironment());
-    for (CustomType extension : extensions) {
-      AnnotationInstance annotation = extension.selectAnnotation(Extension.class.getCanonicalName()).orElseThrow();
+    List<CustomType> customizers = findCustomizers(sourceArtifact(), context.initialRoundEnvironment());
+    for (CustomType customizer : customizers) {
+      AnnotationInstance annotation = customizer.selectAnnotation(Customizer.class.getCanonicalName()).orElseThrow();
       CustomType domain = annotation.valueOf("origin").orElseThrow().asClass().orElseThrow().type();
       Map<String, NotPrimitiveReference> parentTypeArgumentMapping = TypeReferenceFunctions.getTypeArgumentMapping(
           sourceArtifact(), domain
       );
-      for (CustomTypeReference extensionParent : extension.parentTypes()) {
+      for (CustomTypeReference customizerParent : customizer.parentTypes()) {
         parents.add(
-          extensionParent.effective(parentTypeArgumentMapping).actualDeclaration(this::addImportAndGetSimpleName)
+          customizerParent.effective(parentTypeArgumentMapping).actualDeclaration(this::addImportAndGetSimpleName)
         );
       }
     }
@@ -131,11 +131,11 @@ public class GeneralPlainObjectGenerator extends AbstractPlainObjectGenerator {
     if (method.hasAnnotation(Channel.class)) {
       return super.generateMethod(method, targetForm, methodOrdinal);
     } else {
-      return buildExtensionMethod(method);
+      return buildCustomizerMethod(method);
     }
   }
 
-  private Map<String, String> buildExtensionMethod(MethodStatement method) {
+  private Map<String, String> buildCustomizerMethod(MethodStatement method) {
     var sb = new StringBuilder();
     appendMethodTypeParameters(sb, method);
     appendMethodReturnType(sb, method);
@@ -155,11 +155,11 @@ public class GeneralPlainObjectGenerator extends AbstractPlainObjectGenerator {
   protected void appendObjectFormMethodReturnType(StringBuilder sb, MethodStatement method) {
     TypeReference domainReturnType = method.returnType().orElseThrow();
     if (method.hasAnnotation(Movable.class)) {
-      sb.append(buildObjectFormDeclaration(domainReturnType, ObjectReferenceForms.Plain, MovabilityTypes.Movable, true));
+      sb.append(buildObjectFormDeclaration(domainReturnType, ObjectReferenceForms.Regular, MovabilityTypes.Movable, true));
     } else if (method.hasAnnotation(Unmovable.class)) {
-      sb.append(buildObjectFormDeclaration(domainReturnType, ObjectReferenceForms.Plain, MovabilityTypes.Unmovable, true));
+      sb.append(buildObjectFormDeclaration(domainReturnType, ObjectReferenceForms.Regular, MovabilityTypes.Unmovable, true));
     } else {
-      sb.append(buildObjectFormDeclaration(domainReturnType, ObjectReferenceForms.Plain, MovabilityTypes.General, true));
+      sb.append(buildObjectFormDeclaration(domainReturnType, ObjectReferenceForms.Regular, MovabilityTypes.General, true));
     }
   }
 }

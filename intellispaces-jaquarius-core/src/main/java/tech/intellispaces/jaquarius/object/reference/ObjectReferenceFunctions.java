@@ -72,7 +72,7 @@ public class ObjectReferenceFunctions {
       return true;
     }
     Optional<Class<?>> domainClass = Classes.get(
-        NameConventionFunctions.getDomainNameOfPlainObjectForm(aClass.getCanonicalName())
+        NameConventionFunctions.getDomainNameOfRegularObjectForm(aClass.getCanonicalName())
     );
     return domainClass.isPresent();
   }
@@ -105,7 +105,7 @@ public class ObjectReferenceFunctions {
       return true;
     };
     Optional<Class<?>> domainClass = Classes.get(
-        NameConventionFunctions.getDomainNameOfPlainObjectForm(aClass.getCanonicalName())
+        NameConventionFunctions.getDomainNameOfRegularObjectForm(aClass.getCanonicalName())
     );
     return domainClass.isPresent();
   }
@@ -148,7 +148,7 @@ public class ObjectReferenceFunctions {
   }
 
   public static Class<?> getObjectHandleClass(MovabilityType movabilityType) {
-    return switch (MovabilityTypes.from(movabilityType)) {
+    return switch (MovabilityTypes.of(movabilityType)) {
       case General -> tech.intellispaces.jaquarius.object.reference.ObjectHandle.class;
       case Unmovable -> UnmovableObjectHandle.class;
       case Movable -> MovableObjectHandle.class;
@@ -158,8 +158,8 @@ public class ObjectReferenceFunctions {
   public static String getObjectFormTypename(
       ObjectReferenceForm form, TypeReference type, Function<TypeReference, TypeReference> typeReplacer
   ) {
-    return switch (ObjectReferenceForms.from(form)) {
-      case Plain -> getGeneralPlainObjectTypename(type, typeReplacer);
+    return switch (ObjectReferenceForms.of(form)) {
+      case Regular -> getGeneralRegularObjectTypename(type, typeReplacer);
       case ObjectHandle -> getGeneralObjectHandleTypename(type, typeReplacer);
       default -> throw NotImplementedExceptions.withCode("UoXguA");
     };
@@ -186,7 +186,7 @@ public class ObjectReferenceFunctions {
     return getGeneralObjectHandleTypename(type.asCustomTypeReferenceOrElseThrow().targetType());
   }
 
-  public static String getGeneralPlainObjectTypename(
+  public static String getGeneralRegularObjectTypename(
       TypeReference type, Function<TypeReference, TypeReference> typeReplacer
   ) {
     type = typeReplacer.apply(type);
@@ -198,16 +198,16 @@ public class ObjectReferenceFunctions {
       if (type.asWildcardOrElseThrow().extendedBound().isEmpty()) {
         return "?";
       }
-      return "? extends " + getGeneralPlainObjectTypename(type.asWildcardOrElseThrow().extendedBound().get(), typeReplacer);
+      return "? extends " + getGeneralRegularObjectTypename(type.asWildcardOrElseThrow().extendedBound().get(), typeReplacer);
     }
-    return getGeneralPlainObjectTypename(type.asCustomTypeReferenceOrElseThrow().targetType());
+    return getGeneralRegularObjectTypename(type.asCustomTypeReferenceOrElseThrow().targetType());
   }
 
-  public static String getGeneralPlainObjectTypename(CustomType domainType) {
+  public static String getGeneralRegularObjectTypename(CustomType domainType) {
     if (isDefaultObjectHandleType(domainType)) {
       return domainType.canonicalName();
     }
-    return NameConventionFunctions.getGeneralPlainObjectTypename(domainType.className());
+    return NameConventionFunctions.getGeneralRegularObjectTypename(domainType.className());
   }
 
   public static String getGeneralObjectHandleTypename(CustomType domainType) {
@@ -311,7 +311,7 @@ public class ObjectReferenceFunctions {
     }
 
     Optional<Class<?>> domainClass = Classes.get(
-        NameConventionFunctions.getDomainNameOfPlainObjectForm(objectFormType.canonicalName())
+        NameConventionFunctions.getDomainNameOfRegularObjectForm(objectFormType.canonicalName())
     );
     return domainClass.map(CustomTypes::of);
   }
@@ -340,7 +340,7 @@ public class ObjectReferenceFunctions {
     }
 
     Optional<Class<?>> domainClass = Classes.get(
-        NameConventionFunctions.getDomainNameOfPlainObjectForm(objectHandleClass.getCanonicalName())
+        NameConventionFunctions.getDomainNameOfRegularObjectForm(objectHandleClass.getCanonicalName())
     );
     if (domainClass.isPresent()) {
       return domainClass.get();
@@ -382,10 +382,10 @@ public class ObjectReferenceFunctions {
     return null;
   }
 
-  public static String geGeneralPlainObjectDeclaration(
+  public static String geGeneralRegularObjectDeclaration(
       TypeReference domainType, boolean replaceKeyDomain, Function<String, String> simpleNameMapping
   ) {
-    return getObjectFormDeclaration(domainType, ObjectReferenceForms.Plain, MovabilityTypes.General, replaceKeyDomain, simpleNameMapping);
+    return getObjectFormDeclaration(domainType, ObjectReferenceForms.Regular, MovabilityTypes.General, replaceKeyDomain, simpleNameMapping);
   }
 
   public static String getObjectFormDeclaration(
@@ -439,7 +439,7 @@ public class ObjectReferenceFunctions {
           for (NotPrimitiveReference argType : customTypeReference.typeArguments()) {
             commaAppender.run();
             sb.append(getObjectFormDeclaration(
-                argType, ObjectReferenceForms.Plain, MovabilityTypes.General, true, replaceKeyDomain, simpleNameMapping
+                argType, ObjectReferenceForms.Regular, MovabilityTypes.General, true, replaceKeyDomain, simpleNameMapping
             ));
           }
           sb.append(">");
@@ -538,7 +538,7 @@ public class ObjectReferenceFunctions {
     if (propertiesHandleClass == null) {
       KeyDomain keyDomain = Jaquarius.settings().getKeyDomainByPurpose(KeyDomainPurposes.Properties);
       String domainClassName = NameConventionFunctions.convertToDomainClassName(keyDomain.domainName());
-      String handleClassName = NameConventionFunctions.getGeneralPlainObjectTypename(domainClassName);
+      String handleClassName = NameConventionFunctions.getGeneralRegularObjectTypename(domainClassName);
       propertiesHandleClass = ClassFunctions.getClass(handleClassName).orElseThrow(() ->
           UnexpectedExceptions.withMessage("Could not get class {0}", handleClassName)
       );

@@ -10,6 +10,7 @@ import tech.intellispaces.jaquarius.annotation.Channel;
 import tech.intellispaces.jaquarius.annotation.Domain;
 import tech.intellispaces.jaquarius.annotation.ObjectHandle;
 import tech.intellispaces.jaquarius.annotation.Ontology;
+import tech.intellispaces.jaquarius.artifact.ArtifactTypes;
 import tech.intellispaces.jaquarius.object.reference.MovabilityType;
 import tech.intellispaces.jaquarius.object.reference.MovabilityTypes;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
@@ -24,25 +25,25 @@ import tech.intellispaces.reflection.reference.CustomTypeReference;
 
 import java.util.Optional;
 
-public class NameConventionFunctions {
+public interface NameConventionFunctions {
 
-  public static boolean isDomainName(String canonicalName) {
+  static boolean isDomainName(String canonicalName) {
     return canonicalName.endsWith(DOMAIN);
   }
 
-  public static String convertToDomainClassName(String domainName) {
+  static String convertToDomainClassName(String domainName) {
     return domainName + DOMAIN;
   }
 
-  public static String convertToDomainName(String domainClassName) {
+  static String convertToDomainName(String domainClassName) {
     return StringFunctions.removeTailIfPresent(domainClassName, DOMAIN);
   }
 
-  public static String convertToChannelClassName(String channelName) {
+  static String convertToChannelClassName(String channelName) {
     return channelName + CHANNEL;
   }
 
-  public static String getDomainNameOfPlainObjectForm(String objectCanonicalName) {
+  static String getDomainNameOfRegularObjectForm(String objectCanonicalName) {
     String simpleName = ClassNameFunctions.getSimpleName(objectCanonicalName);
     simpleName = StringFunctions.removeHeadIfPresent(simpleName, UNMOVABLE);
     simpleName = StringFunctions.removeHeadIfPresent(simpleName, MOVABLE);
@@ -50,16 +51,16 @@ public class NameConventionFunctions {
     return ClassNameFunctions.replaceSimpleName(objectCanonicalName, simpleName);
   }
 
-  public static String getObjectTypename(
+  static String getObjectTypename(
       String domainClassName, ObjectReferenceForm objectForm, MovabilityType movabilityType, boolean replaceKeyDomain
   ) {
-    return switch (ObjectReferenceForms.from(objectForm)) {
-      case Plain -> switch (MovabilityTypes.from(movabilityType)) {
-        case General -> getGeneralPlainObjectTypename(domainClassName);
-        case Movable -> getMovablePlainObjectTypename(domainClassName, replaceKeyDomain);
-        case Unmovable -> getUnmovablePlainObjectTypename(domainClassName, replaceKeyDomain);
+    return switch (ObjectReferenceForms.of(objectForm)) {
+      case Regular -> switch (MovabilityTypes.of(movabilityType)) {
+        case General -> getGeneralRegularObjectTypename(domainClassName);
+        case Movable -> getMovableRegularObjectTypename(domainClassName, replaceKeyDomain);
+        case Unmovable -> getUnmovableRegularObjectTypename(domainClassName, replaceKeyDomain);
       };
-      case ObjectHandle -> switch (MovabilityTypes.from(movabilityType)) {
+      case ObjectHandle -> switch (MovabilityTypes.of(movabilityType)) {
         case General -> getGeneralObjectHandleTypename(domainClassName);
         case Movable -> getMovableObjectHandleTypename(domainClassName, replaceKeyDomain);
         case Unmovable -> getUnmovableObjectHandleTypename(domainClassName, replaceKeyDomain);
@@ -69,20 +70,20 @@ public class NameConventionFunctions {
     };
   }
 
-  public static String getGeneralPlainObjectTypename(String domainClassName) {
+  static String getGeneralRegularObjectTypename(String domainClassName) {
     return StringFunctions.removeTailOrElseThrow(transformClassName(domainClassName), DOMAIN);
   }
 
-  public static String getGeneralObjectHandleTypename(String domainClassName) {
+  static String getGeneralObjectHandleTypename(String domainClassName) {
     return StringFunctions.replaceTailOrElseThrow(transformClassName(domainClassName), DOMAIN, HANDLE);
   }
 
-  public static String getUnmovableObjectHandleTypename(String domainClassName) {
+  static String getUnmovableObjectHandleTypename(String domainClassName) {
     return ClassNameFunctions.addPrefixToSimpleName(UNMOVABLE,
         StringFunctions.replaceTailOrElseThrow(transformClassName(domainClassName), DOMAIN, HANDLE));
   }
 
-  public static String getUnmovablePlainObjectTypename(String domainClassName, boolean replaceKeyDomain) {
+  static String getUnmovableRegularObjectTypename(String domainClassName, boolean replaceKeyDomain) {
     if (replaceKeyDomain) {
       KeyDomain keyDomain = Jaquarius.settings().getKeyDomainByName(convertToDomainName(domainClassName));
       if (keyDomain != null && keyDomain.delegateClassName() != null && (
@@ -99,7 +100,7 @@ public class NameConventionFunctions {
         StringFunctions.removeTailOrElseThrow(transformClassName(domainClassName), DOMAIN));
   }
 
-  public static String getMovablePlainObjectTypename(String domainClassName, boolean replaceKeyDomain) {
+  static String getMovableRegularObjectTypename(String domainClassName, boolean replaceKeyDomain) {
     if (replaceKeyDomain) {
       KeyDomain keyDomain = Jaquarius.settings().getKeyDomainByName(convertToDomainName(domainClassName));
       if (keyDomain != null && keyDomain.delegateClassName() != null && (
@@ -116,7 +117,7 @@ public class NameConventionFunctions {
         StringFunctions.removeTailOrElseThrow(transformClassName(domainClassName), DOMAIN));
   }
 
-  public static String getUnmovableObjectHandleTypename(String domainClassName, boolean replaceKeyDomain) {
+  static String getUnmovableObjectHandleTypename(String domainClassName, boolean replaceKeyDomain) {
     if (replaceKeyDomain) {
       KeyDomain keyDomain = Jaquarius.settings().getKeyDomainByName(convertToDomainName(domainClassName));
       if (keyDomain != null && keyDomain.delegateClassName() != null && (
@@ -132,7 +133,7 @@ public class NameConventionFunctions {
     return ClassNameFunctions.addPrefixToSimpleName(UNMOVABLE, getGeneralObjectHandleTypename(domainClassName));
   }
 
-  public static String getMovableObjectHandleTypename(String domainClassName, boolean replaceKeyDomain) {
+  static String getMovableObjectHandleTypename(String domainClassName, boolean replaceKeyDomain) {
     if (replaceKeyDomain) {
       KeyDomain keyDomain = Jaquarius.settings().getKeyDomainByName(convertToDomainName(domainClassName));
       if (keyDomain != null && keyDomain.delegateClassName() != null && (
@@ -148,7 +149,7 @@ public class NameConventionFunctions {
     return ClassNameFunctions.addPrefixToSimpleName(MOVABLE, getGeneralObjectHandleTypename(domainClassName));
   }
 
-  public static String getObjectHandleWrapperCanonicalName(CustomType objectHandleType) {
+  static String getObjectHandleWrapperCanonicalName(CustomType objectHandleType) {
     Optional<ObjectHandle> oha = objectHandleType.selectAnnotation(ObjectHandle.class);
     if (oha.isPresent() && StringFunctions.isNotBlank(oha.get().name())) {
       return ClassNameFunctions.replaceSimpleName(objectHandleType.canonicalName(), oha.get().name());
@@ -156,7 +157,7 @@ public class NameConventionFunctions {
     return objectHandleType.canonicalName() + WRAPPER;
   }
 
-  public static String getObjectHandleWrapperCanonicalName(Class<?> objectHandleClass) {
+  static String getObjectHandleWrapperCanonicalName(Class<?> objectHandleClass) {
     ObjectHandle oha = objectHandleClass.getAnnotation(ObjectHandle.class);
     if (oha != null && StringFunctions.isNotBlank(oha.name())) {
       return ClassNameFunctions.replaceSimpleName(objectHandleClass.getCanonicalName(), oha.name());
@@ -164,24 +165,24 @@ public class NameConventionFunctions {
     return objectHandleClass.getCanonicalName() + WRAPPER;
   }
 
-  public static String getUnitWrapperCanonicalName(String unitClassName) {
+  static String getUnitWrapperCanonicalName(String unitClassName) {
     return transformClassName(unitClassName) + WRAPPER;
   }
 
-  public static String getAutoGuiderCanonicalName(String guideClassName) {
+  static String getAutoGuiderCanonicalName(String guideClassName) {
     return StringFunctions.replaceSingleOrElseThrow(transformClassName(guideClassName), GUIDE, AUTO_GUIDE);
   }
 
-  public static String getUnmovableDatasetClassName(String domainClassName) {
+  static String getUnmovableDatasetClassName(String domainClassName) {
     return ClassNameFunctions.addPrefixToSimpleName(UNMOVABLE,
       StringFunctions.replaceTailOrElseThrow(transformClassName(domainClassName), DOMAIN, DATASET));
   }
 
-  public static String getDatasetBuilderCanonicalName(String domainClassName) {
+  static String getDatasetBuilderCanonicalName(String domainClassName) {
     return StringFunctions.replaceTailOrElseThrow(transformClassName(domainClassName), DOMAIN, BUILDER);
   }
 
-  public static String getChannelClassCanonicalName(MethodStatement channelMethod) {
+  static String getChannelClassCanonicalName(MethodStatement channelMethod) {
     String spaceName = channelMethod.owner().packageName();
     CustomType owner = channelMethod.owner();
     if (!owner.hasAnnotation(Domain.class) && !owner.hasAnnotation(Ontology.class)) {
@@ -193,7 +194,7 @@ public class NameConventionFunctions {
     return getChannelClassCanonicalName(spaceName, owner, channelMethod);
   }
 
-  public static String getChannelClassCanonicalName(
+  static String getChannelClassCanonicalName(
       String spaceName, CustomType domain, MethodStatement channelMethod
   ) {
     String channelSimpleName = channelMethod.selectAnnotation(Channel.class).orElseThrow().name();
@@ -203,15 +204,15 @@ public class NameConventionFunctions {
     return assignChannelClassCanonicalName(spaceName, domain, channelMethod);
   }
 
-  public static String getObjectFactoryWrapperClassName(String objectFactoryClassName) {
+  static String getObjectFactoryWrapperClassName(String objectFactoryClassName) {
     return transformClassName(objectFactoryClassName) + WRAPPER;
   }
 
-  public static String getObjectFactoriesResourceName() {
+  static String getObjectFactoriesResourceName() {
     return "META-INF/jaquarius/object_factories";
   }
 
-  public static String getUnmovableUpwardObjectTypename(CustomType domainType, CustomType baseDomainType) {
+  static String getUnmovableUpwardObjectTypename(CustomType domainType, CustomType baseDomainType) {
     String packageName = ClassNameFunctions.getPackageName(domainType.canonicalName());
     String simpleName = StringFunctions.removeTailOrElseThrow(domainType.simpleName(), DOMAIN) +
         "BasedOn" +
@@ -219,24 +220,24 @@ public class NameConventionFunctions {
     return ClassNameFunctions.joinPackageAndSimpleName(packageName, simpleName);
   }
 
-  public static String getDownwardObjectHandleTypename(
+  static String getDownwardObjectHandleTypename(
       CustomType domainType, CustomType baseDomainType, MovabilityType movabilityType
   ) {
-    return switch (MovabilityTypes.from(movabilityType)) {
+    return switch (MovabilityTypes.of(movabilityType)) {
       case General -> getGeneralDownwardObjectTypename(domainType, baseDomainType);
       case Unmovable -> getUnmovableDownwardObjectTypename(domainType, baseDomainType);
       case Movable -> getMovableDownwardObjectTypename(domainType, baseDomainType);
     };
   }
 
-  public static String getGeneralDownwardObjectTypename(CustomType domainType, CustomType baseDomainType) {
+  static String getGeneralDownwardObjectTypename(CustomType domainType, CustomType baseDomainType) {
     String packageName = ClassNameFunctions.getPackageName(domainType.canonicalName());
     String simpleName = StringFunctions.capitalizeFirstLetter(StringFunctions.removeTailOrElseThrow(baseDomainType.simpleName(), DOMAIN)) +
         "BasedOn" + StringFunctions.capitalizeFirstLetter(domainType.simpleName());
     return ClassNameFunctions.joinPackageAndSimpleName(packageName, simpleName);
   }
 
-  public static String getMovableDownwardObjectTypename(CustomType domainType, CustomType baseDomainType) {
+  static String getMovableDownwardObjectTypename(CustomType domainType, CustomType baseDomainType) {
     String packageName = ClassNameFunctions.getPackageName(domainType.canonicalName());
     String simpleName = MOVABLE +
         StringFunctions.capitalizeFirstLetter(StringFunctions.removeTailOrElseThrow(baseDomainType.simpleName(), DOMAIN)) +
@@ -244,7 +245,7 @@ public class NameConventionFunctions {
     return ClassNameFunctions.joinPackageAndSimpleName(packageName, simpleName);
   }
 
-  public static String getUnmovableDownwardObjectTypename(CustomType domainType, CustomType baseDomainType) {
+  static String getUnmovableDownwardObjectTypename(CustomType domainType, CustomType baseDomainType) {
     String packageName = ClassNameFunctions.getPackageName(domainType.canonicalName());
     String simpleName = UNMOVABLE +
         StringFunctions.capitalizeFirstLetter(StringFunctions.removeTailOrElseThrow(baseDomainType.simpleName(), DOMAIN)) +
@@ -252,7 +253,7 @@ public class NameConventionFunctions {
     return ClassNameFunctions.joinPackageAndSimpleName(packageName, simpleName);
   }
 
-  public static String getMovableDownwardObjectTypename(Class<?> domainClass, Class<?> baseDomainClass) {
+  static String getMovableDownwardObjectTypename(Class<?> domainClass, Class<?> baseDomainClass) {
     String packageName = ClassNameFunctions.getPackageName(domainClass.getCanonicalName());
     String simpleName = MOVABLE +
         StringFunctions.capitalizeFirstLetter(StringFunctions.removeTailOrElseThrow(baseDomainClass.getSimpleName(), DOMAIN)) +
@@ -260,11 +261,11 @@ public class NameConventionFunctions {
     return ClassNameFunctions.joinPackageAndSimpleName(packageName, simpleName);
   }
 
-  public static String getConversionMethodName(CustomTypeReference reference) {
+  static String getConversionMethodName(CustomTypeReference reference) {
     return getConversionMethodName(reference.targetType());
   }
 
-  public static String getConversionMethodName(CustomType targetType) {
+  static String getConversionMethodName(CustomType targetType) {
     KeyDomain keyDomain = Jaquarius.settings().getKeyDomainByDelegateClass(targetType.canonicalName());
     if (keyDomain != null) {
       return "as" + StringFunctions.capitalizeFirstLetter(targetType.simpleName());
@@ -273,7 +274,7 @@ public class NameConventionFunctions {
         StringFunctions.removeTailOrElseThrow(targetType.simpleName(), DOMAIN));
   }
 
-  public static boolean isConversionMethod(MethodStatement method) {
+  static boolean isConversionMethod(MethodStatement method) {
     return method.name().length() > 2
         && method.name().startsWith("as")
         && Character.isUpperCase(method.name().charAt(2));
@@ -312,7 +313,7 @@ public class NameConventionFunctions {
     return simpleName;
   }
 
-  public static String joinMethodNameAndParameterTypes(MethodStatement method) {
+  static String joinMethodNameAndParameterTypes(MethodStatement method) {
     if (method.params().isEmpty()) {
       return method.name();
     }
@@ -335,11 +336,11 @@ public class NameConventionFunctions {
     return (name.length() > 3 && name.startsWith("as") && Character.isUpperCase(name.charAt(2)));
   }
 
-  public static String getDefaultChannelClassSimpleName(MethodStatement channelMethod) {
+  static String getDefaultChannelClassSimpleName(MethodStatement channelMethod) {
     return StringFunctions.capitalizeFirstLetter(channelMethod.name()) + CHANNEL;
   }
 
-  public static String getGuideClassCanonicalName(
+  static String getGuideClassCanonicalName(
       ObjectReferenceForm targetForm, String spaceName, CustomType channelType, MethodStatement channelMethod
   ) {
     String name = StringFunctions.replaceTailIfPresent(channelType.canonicalName(), CHANNEL, GUIDE);
@@ -351,7 +352,7 @@ public class NameConventionFunctions {
     return name;
   }
 
-  public static String getObjectAssistantCanonicalName(CustomType domainType) {
+  static String getObjectAssistantCanonicalName(CustomType domainType) {
     String name = StringFunctions.removeTailOrElseThrow(domainType.canonicalName(), DOMAIN);
     if (name.endsWith("ies")) {
       return name + "s";
@@ -365,12 +366,12 @@ public class NameConventionFunctions {
     return name + "s";
   }
 
-  public static String getObjectAssistantBrokerCanonicalName(CustomType domainType) {
+  static String getObjectAssistantBrokerCanonicalName(CustomType domainType) {
     String name = StringFunctions.removeTailOrElseThrow(domainType.canonicalName(), DOMAIN);
     return name + "sBroker";
   }
 
-  public static boolean isPrimitiveTargetForm(MethodStatement method) {
+  static boolean isPrimitiveTargetForm(MethodStatement method) {
     return method.name().endsWith("AsPrimitive");
   }
 
@@ -382,28 +383,36 @@ public class NameConventionFunctions {
     return className.replace("$", "");
   }
 
-  public static String getExtensionCanonicalName(CustomType sourceArtifact, ArtifactType targetArtifactType) {
-    final String name;
-    if (isDomainName(sourceArtifact.canonicalName())) {
-      name = StringFunctions.replaceTailOrElseThrow(sourceArtifact.canonicalName(), DOMAIN, EXTENSION);
-
-      return name;
-    } else {
-      throw NotImplementedExceptions.withCode("9kDR9g");
+  static String getCustomizerCanonicalName(CustomType originArtifact, ArtifactType targetArtifactType) {
+    final String name = StringFunctions.removeTailOrElseThrow(originArtifact.canonicalName(), DOMAIN);
+    if (isDomainName(originArtifact.canonicalName())) {
+      return switch (ArtifactTypes.of(targetArtifactType)) {
+        case RegularObject -> name + CUSTOMIZER;
+        case MovableRegularObject -> ClassNameFunctions.addPrefixToSimpleName(MOVABLE, name) + CUSTOMIZER;
+        case UnmovableRegularObject -> ClassNameFunctions.addPrefixToSimpleName(UNMOVABLE, name) + CUSTOMIZER;
+        case ObjectHandle -> name + HANDLE + CUSTOMIZER;
+        case MovableObjectHandle -> name + MOVABLE_HANDLE + CUSTOMIZER;
+        case UnmovableObjectHandle -> name + UNMOVABLE_HANDLE + CUSTOMIZER;
+        case ObjectAssistant -> name + ASSISTANT + CUSTOMIZER;
+        default -> name;
+      };
     }
+    throw NotImplementedExceptions.withCodeAndMessage("9kDR9g", "Origin artifact {0}, target artifact type {}",
+        originArtifact.canonicalName(), targetArtifactType.name());
   }
 
-  private static final String DOMAIN = "Domain";
-  private static final String CHANNEL = "Channel";
-  private static final String HANDLE = "Handle";
-  private static final String UNMOVABLE = "Unmovable";
-  private static final String MOVABLE = "Movable";
-  private static final String WRAPPER = "Wrapper";
-  private static final String GUIDE = "Guide";
-  private static final String AUTO_GUIDE = "AutoGuide";
-  private static final String DATASET = "Dataset";
-  private static final String BUILDER = "Builder";
-  private static final String EXTENSION = "Extension";
-
-  private NameConventionFunctions() {}
+  String DOMAIN = "Domain";
+  String CHANNEL = "Channel";
+  String UNMOVABLE = "Unmovable";
+  String MOVABLE = "Movable";
+  String HANDLE = "Handle";
+  String MOVABLE_HANDLE = MOVABLE + HANDLE;
+  String UNMOVABLE_HANDLE = UNMOVABLE + HANDLE;
+  String WRAPPER = "Wrapper";
+  String GUIDE = "Guide";
+  String AUTO_GUIDE = "AutoGuide";
+  String DATASET = "Dataset";
+  String BUILDER = "Builder";
+  String CUSTOMIZER = "Customizer";
+  String ASSISTANT = "Assistant";
 }

@@ -99,7 +99,7 @@ abstract class ConversionObjectGenerator extends AbstractObjectGenerator {
     if (method.hasAnnotation(Channel.class)) {
       return generateNormalMethod(method, targetForm, methodOrdinal);
     } else {
-      return generateExtensionMethod(convertMethodBeforeGenerate(method));
+      return generateCustomizerMethod(convertMethodBeforeGenerate(method));
     }
   }
 
@@ -144,7 +144,7 @@ abstract class ConversionObjectGenerator extends AbstractObjectGenerator {
     return super.includeMethodForm(method, targetForm);
   }
 
-  private Map<String, String> generateExtensionMethod(MethodStatement method) {
+  private Map<String, String> generateCustomizerMethod(MethodStatement method) {
     var sb = new StringBuilder();
     sb.append("public ");
     appendMethodTypeParameters(sb, method);

@@ -148,7 +148,7 @@ public class DefaultGuideFormGenerator extends JaquariusArtifactGenerator {
       if (param.type().isPrimitiveReference()) {
         sb.append(param.type().asPrimitiveReferenceOrElseThrow().primitiveType().typename());
       } else {
-        sb.append(buildObjectHandleDeclaration(ObjectReferenceForms.Plain, param.type(), Function.identity()));
+        sb.append(buildObjectHandleDeclaration(ObjectReferenceForms.Regular, param.type(), Function.identity()));
       }
       sb.append(" ");
       sb.append(param.name());
@@ -223,7 +223,7 @@ public class DefaultGuideFormGenerator extends JaquariusArtifactGenerator {
     }
     for (MethodParam param : getQualifierMethodParams()) {
       sb.append(", ");
-      sb.append(buildObjectHandleDeclaration(ObjectReferenceForms.Plain, param.type(), this::replaceNamedReference));
+      sb.append(buildObjectHandleDeclaration(ObjectReferenceForms.Regular, param.type(), this::replaceNamedReference));
     }
     sb.append(">");
     return sb.toString();
@@ -253,7 +253,7 @@ public class DefaultGuideFormGenerator extends JaquariusArtifactGenerator {
     sb.append(" ").append("source");
     for (MethodParam param : getQualifierMethodParams()) {
       sb.append(", ");
-      sb.append(buildObjectHandleDeclaration(ObjectReferenceForms.Plain, param.type(), this::replaceNamedReference));
+      sb.append(buildObjectHandleDeclaration(ObjectReferenceForms.Regular, param.type(), this::replaceNamedReference));
       sb.append(" ");
       sb.append(param.name());
     }
@@ -286,7 +286,7 @@ public class DefaultGuideFormGenerator extends JaquariusArtifactGenerator {
     sb.append(" ").append("source");
     for (MethodParam param : getQualifierMethodParams()) {
       sb.append(", ");
-      sb.append(buildObjectHandleDeclaration(ObjectReferenceForms.Plain, param.type(), this::replaceNamedReference));
+      sb.append(buildObjectHandleDeclaration(ObjectReferenceForms.Regular, param.type(), this::replaceNamedReference));
       sb.append(" ");
       sb.append(param.name());
     }
@@ -303,7 +303,7 @@ public class DefaultGuideFormGenerator extends JaquariusArtifactGenerator {
     sb.append(" ").append("source");
     for (MethodParam param : getQualifierMethodParams()) {
       sb.append(", ");
-      sb.append(buildObjectHandleDeclaration(ObjectReferenceForms.Plain, param.type(), this::replaceNamedReference));
+      sb.append(buildObjectHandleDeclaration(ObjectReferenceForms.Regular, param.type(), this::replaceNamedReference));
       sb.append(" ");
       sb.append(param.name());
     }
@@ -372,7 +372,7 @@ public class DefaultGuideFormGenerator extends JaquariusArtifactGenerator {
       Function<TypeReference, TypeReference> typeReplacer, boolean full
   ) {
     return buildObjectHandleDeclaration(
-        ObjectReferenceForms.Plain,
+        ObjectReferenceForms.Regular,
         channelMethod.params().get(0).type().asCustomTypeReferenceOrElseThrow(),
         typeReplacer,
         full

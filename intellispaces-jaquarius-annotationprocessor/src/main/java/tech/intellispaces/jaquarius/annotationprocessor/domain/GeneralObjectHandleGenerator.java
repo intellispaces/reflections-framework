@@ -31,7 +31,7 @@ public class GeneralObjectHandleGenerator extends AbstractObjectGenerator {
 
   public GeneralObjectHandleGenerator(CustomType domainType) {
     super(domainType);
-    addHiddenImport(NameConventionFunctions.getGeneralPlainObjectTypename(domainType.className()));
+    addHiddenImport(NameConventionFunctions.getGeneralRegularObjectTypename(domainType.className()));
   }
 
   @Override
@@ -96,7 +96,7 @@ public class GeneralObjectHandleGenerator extends AbstractObjectGenerator {
   }
 
   private String getSimpleObjectClassName() {
-    return addImportAndGetSimpleName(NameConventionFunctions.getGeneralPlainObjectTypename(sourceArtifact().className()));
+    return addImportAndGetSimpleName(NameConventionFunctions.getGeneralRegularObjectTypename(sourceArtifact().className()));
   }
 
   private String getSimpleHandleName() {
@@ -140,11 +140,11 @@ public class GeneralObjectHandleGenerator extends AbstractObjectGenerator {
     if (method.hasAnnotation(Channel.class)) {
       return super.generateMethod(method, targetForm, methodOrdinal);
     } else {
-      return buildExtensionMethod(method);
+      return buildCustomizerMethod(method);
     }
   }
 
-  private Map<String, String> buildExtensionMethod(MethodStatement method) {
+  private Map<String, String> buildCustomizerMethod(MethodStatement method) {
     var sb = new StringBuilder();
     appendMethodTypeParameters(sb, method);
     appendMethodReturnType(sb, method);

@@ -29,12 +29,11 @@ import tech.intellispaces.reflection.reference.TypeReference;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class MovablePlainObjectGenerator extends AbstractPlainObjectGenerator {
+public class MovableRegularObjectGenerator extends AbstractRegularObjectGenerator {
 
-  public MovablePlainObjectGenerator(CustomType domainType) {
+  public MovableRegularObjectGenerator(CustomType domainType) {
     super(domainType);
   }
 
@@ -45,7 +44,7 @@ public class MovablePlainObjectGenerator extends AbstractPlainObjectGenerator {
 
   @Override
   protected ObjectReferenceForm getForm() {
-    return ObjectReferenceForms.Plain;
+    return ObjectReferenceForms.Regular;
   }
 
   @Override
@@ -55,17 +54,17 @@ public class MovablePlainObjectGenerator extends AbstractPlainObjectGenerator {
 
   @Override
   protected List<ArtifactType> relatedArtifactTypes() {
-    return List.of(ArtifactTypes.MovablePlainObject);
+    return List.of(ArtifactTypes.MovableRegularObject);
   }
 
   @Override
   public String generatedArtifactName() {
-    return NameConventionFunctions.getMovablePlainObjectTypename(sourceArtifact().className(), false);
+    return NameConventionFunctions.getMovableRegularObjectTypename(sourceArtifact().className(), false);
   }
 
   @Override
   protected String templateName() {
-    return "/movable_plain_object.template";
+    return "/movable_regular_object.template";
   }
 
   @Override
@@ -101,7 +100,7 @@ public class MovablePlainObjectGenerator extends AbstractPlainObjectGenerator {
     Optional<CustomTypeReference> equivalentDomain = DomainFunctions.getAliasNearNeighbourDomain(sourceArtifact());
     isAlias = equivalentDomain.isPresent();
     if (isAlias) {
-      baseObjectHandle = buildObjectFormDeclaration(equivalentDomain.get(), ObjectReferenceForms.Plain, MovabilityTypes.Movable, true);
+      baseObjectHandle = buildObjectFormDeclaration(equivalentDomain.get(), ObjectReferenceForms.Regular, MovabilityTypes.Movable, true);
     }
   }
 
@@ -116,13 +115,13 @@ public class MovablePlainObjectGenerator extends AbstractPlainObjectGenerator {
     TypeReference domainReturnType = method.returnType().orElseThrow();
     if (ChannelFunctions.getTraverseTypes(method).stream().anyMatch(TraverseType::isMoving)) {
       TypeReference sourceDomainReference = CustomTypeReferences.get(sourceArtifact());
-      sb.append(buildObjectFormDeclaration(sourceDomainReference, ObjectReferenceForms.Plain, MovabilityTypes.Movable, true));
+      sb.append(buildObjectFormDeclaration(sourceDomainReference, ObjectReferenceForms.Regular, MovabilityTypes.Movable, true));
     } else if (method.hasAnnotation(Movable.class)) {
-      sb.append(buildObjectFormDeclaration(domainReturnType, ObjectReferenceForms.Plain, MovabilityTypes.Movable, true));
+      sb.append(buildObjectFormDeclaration(domainReturnType, ObjectReferenceForms.Regular, MovabilityTypes.Movable, true));
     } else if (method.hasAnnotation(Unmovable.class)) {
-      sb.append(buildObjectFormDeclaration(domainReturnType, ObjectReferenceForms.Plain, MovabilityTypes.Unmovable, true));
+      sb.append(buildObjectFormDeclaration(domainReturnType, ObjectReferenceForms.Regular, MovabilityTypes.Unmovable, true));
     } else {
-      sb.append(buildObjectFormDeclaration(domainReturnType, ObjectReferenceForms.Plain, MovabilityTypes.General, true));
+      sb.append(buildObjectFormDeclaration(domainReturnType, ObjectReferenceForms.Regular, MovabilityTypes.General, true));
     }
   }
 }

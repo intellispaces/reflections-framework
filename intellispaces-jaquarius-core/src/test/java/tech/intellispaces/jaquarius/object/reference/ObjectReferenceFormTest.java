@@ -11,7 +11,7 @@ public class ObjectReferenceFormTest {
 
   @Test
   public void testOrdinal() {
-    assertThat(ObjectReferenceForms.Plain.ordinal()).isEqualTo(0);
+    assertThat(ObjectReferenceForms.Regular.ordinal()).isEqualTo(0);
     assertThat(ObjectReferenceForms.ObjectHandle.ordinal()).isEqualTo(1);
     assertThat(ObjectReferenceForms.Primitive.ordinal()).isEqualTo(2);
     assertThat(ObjectReferenceForms.PrimitiveWrapper.ordinal()).isEqualTo(3);

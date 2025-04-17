@@ -1,26 +1,27 @@
 package tech.intellispaces.jaquarius.artifact;
 
+import tech.intellispaces.commons.entity.Enumeration;
 import tech.intellispaces.jaquarius.ArtifactType;
 
 /**
  * The artifact types.
  */
-public enum ArtifactTypes implements ArtifactType {
+public enum ArtifactTypes implements ArtifactType, Enumeration<ArtifactType> {
 
   /**
-   * The movable plain object interface.
+   * The movable regular object interface.
    */
-  MovablePlainObject,
+  MovableRegularObject,
 
   /**
-   * The unmovable plain object interface.
+   * The unmovable regular object interface.
    */
-  UnmovablePlainObject,
+  UnmovableRegularObject,
 
   /**
-   * The general plain object interface.
+   * The general regular object interface.
    */
-  PlainObject,
+  RegularObject,
 
   /**
    * The movable object handle interface.
@@ -97,5 +98,11 @@ public enum ArtifactTypes implements ArtifactType {
    */
   DatasetBuilder,
 
-  NotSpecified
+  NotSpecified;
+
+  public static ArtifactTypes of(ArtifactType value) {
+    return VALUES[value.ordinal()];
+  }
+
+  private static final ArtifactTypes[] VALUES = values();
 }

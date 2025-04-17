@@ -18,14 +18,14 @@ public class {{$generatedArtifactSimpleName}} {
   }
 {{end}}
 
-{{for method : $extensionMethods}}
+{{for method : $customizerMethods}}
   public static {{$method["signature"]}} {
     return ({{$method["returnTypeDeclaration"]}}) broker.{{$method["name"]}}({{$method["paramNames"]}});
   }
 
 {{end}}
   @SuppressWarnings("unchecked")
-  public static {{$typeParamsFull}} {{$generalObjectHandleSimpleName}}{{$typeParamsBrief}} {{$plainFirstLetterLowercaseSimpleName}}Handle(Object object{{for typeParam : $typeParams}}, Class<{{$typeParam["type"]}}> {{$typeParam["name"]}}{{end}}) {
+  public static {{$typeParamsFull}} {{$generalObjectHandleSimpleName}}{{$typeParamsBrief}} {{$regularFirstLetterLowercaseSimpleName}}Handle(Object object{{for typeParam : $typeParams}}, Class<{{$typeParam["type"]}}> {{$typeParam["name"]}}{{end}}) {
     if (object == null) {
       return null;
     }
@@ -37,7 +37,7 @@ public class {{$generatedArtifactSimpleName}} {
 
   private {{$generatedArtifactSimpleName}}() {}
 
-{{when $extensionMethods.isNotEmpty()}}
+{{when $customizerMethods.isNotEmpty()}}
   private static final {{$brokerSimpleName}} broker = new {{$brokerSimpleName}}();
 {{end}}
 }

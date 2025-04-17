@@ -291,7 +291,7 @@ abstract class AbstractObjectWrapperGenerator extends AbstractObjectGenerator {
     for (int i = 0; i < domainMethodParams.size(); i++) {
       MethodParam domainParam = domainMethodParams.get(i);
       String domainMethodParamDeclaration = ObjectReferenceFunctions.getObjectFormDeclaration(
-          domainParam.type(), ObjectReferenceForms.Plain, MovabilityTypes.General, true, false, Function.identity()
+          domainParam.type(), ObjectReferenceForms.Regular, MovabilityTypes.General, true, false, Function.identity()
       );
 
       MethodParam guideParam = guideMethodParams.get(i);
@@ -398,7 +398,7 @@ abstract class AbstractObjectWrapperGenerator extends AbstractObjectGenerator {
     }
     return ObjectReferenceFunctions.getObjectFormDeclaration(
         AnnotationGeneratorFunctions.normalizeType(type),
-        ObjectReferenceForms.Plain,
+        ObjectReferenceForms.Regular,
         MovabilityTypes.General,
         false,
         true,

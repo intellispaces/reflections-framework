@@ -25,9 +25,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-public class UnmovablePlainObjectGenerator extends AbstractPlainObjectGenerator {
+public class UnmovableRegularObjectGenerator extends AbstractRegularObjectGenerator {
 
-  public UnmovablePlainObjectGenerator(CustomType domainType) {
+  public UnmovableRegularObjectGenerator(CustomType domainType) {
     super(domainType);
   }
 
@@ -38,7 +38,7 @@ public class UnmovablePlainObjectGenerator extends AbstractPlainObjectGenerator 
 
   @Override
   protected ObjectReferenceForm getForm() {
-    return ObjectReferenceForms.Plain;
+    return ObjectReferenceForms.Regular;
   }
 
   @Override
@@ -48,17 +48,17 @@ public class UnmovablePlainObjectGenerator extends AbstractPlainObjectGenerator 
 
   @Override
   protected List<ArtifactType> relatedArtifactTypes() {
-    return List.of(ArtifactTypes.UnmovablePlainObject);
+    return List.of(ArtifactTypes.UnmovableRegularObject);
   }
 
   @Override
   public String generatedArtifactName() {
-    return NameConventionFunctions.getUnmovablePlainObjectTypename(sourceArtifact().className(), false);
+    return NameConventionFunctions.getUnmovableRegularObjectTypename(sourceArtifact().className(), false);
   }
 
   @Override
   protected String templateName() {
-    return "/unmovable_plain_object.template";
+    return "/unmovable_regular_object.template";
   }
 
   @Override
@@ -87,7 +87,7 @@ public class UnmovablePlainObjectGenerator extends AbstractPlainObjectGenerator 
     Optional<CustomTypeReference> equivalentDomain = DomainFunctions.getAliasNearNeighbourDomain(sourceArtifact());
     isAlias = equivalentDomain.isPresent();
     if (isAlias) {
-      baseObjectHandle = buildObjectFormDeclaration(equivalentDomain.get(), ObjectReferenceForms.Plain, MovabilityTypes.Unmovable, true);
+      baseObjectHandle = buildObjectFormDeclaration(equivalentDomain.get(), ObjectReferenceForms.Regular, MovabilityTypes.Unmovable, true);
     }
   }
 
@@ -104,11 +104,11 @@ public class UnmovablePlainObjectGenerator extends AbstractPlainObjectGenerator 
         ChannelFunctions.getTraverseTypes(method).stream().anyMatch(TraverseType::isMoving)
             || method.hasAnnotation(Movable.class)
     ) {
-      sb.append(buildObjectFormDeclaration(domainReturnType, ObjectReferenceForms.Plain, MovabilityTypes.Movable, true));
+      sb.append(buildObjectFormDeclaration(domainReturnType, ObjectReferenceForms.Regular, MovabilityTypes.Movable, true));
     } else if (method.hasAnnotation(Unmovable.class)) {
-      sb.append(buildObjectFormDeclaration(domainReturnType, ObjectReferenceForms.Plain, MovabilityTypes.Unmovable, true));
+      sb.append(buildObjectFormDeclaration(domainReturnType, ObjectReferenceForms.Regular, MovabilityTypes.Unmovable, true));
     } else {
-      sb.append(buildObjectFormDeclaration(domainReturnType, ObjectReferenceForms.Plain, MovabilityTypes.General, true));
+      sb.append(buildObjectFormDeclaration(domainReturnType, ObjectReferenceForms.Regular, MovabilityTypes.General, true));
     }
   }
 }

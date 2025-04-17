@@ -55,7 +55,7 @@ public class MovableDownwardObjectGenerator extends ConversionObjectGenerator {
 
   @Override
   protected List<ArtifactType> relatedArtifactTypes() {
-    return List.of(ArtifactTypes.MovableDownwardObject, ArtifactTypes.ObjectHandle, ArtifactTypes.PlainObject);
+    return List.of(ArtifactTypes.MovableDownwardObject, ArtifactTypes.ObjectHandle, ArtifactTypes.RegularObject);
   }
 
   @Override

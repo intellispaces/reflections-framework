@@ -104,7 +104,7 @@ public enum TraversePlanTypes implements TraversePlanType, Enumeration<TraverseP
    */
   AscendAndExecute1;
 
-  public static TraversePlanTypes from(TraversePlanType value) {
+  public static TraversePlanTypes of(TraversePlanType value) {
     return VALUES[value.ordinal()];
   }
 

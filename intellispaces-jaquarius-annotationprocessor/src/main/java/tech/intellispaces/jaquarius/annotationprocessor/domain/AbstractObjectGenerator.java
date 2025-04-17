@@ -24,7 +24,6 @@ import tech.intellispaces.jaquarius.settings.KeyDomain;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
 import tech.intellispaces.reflection.customtype.CustomType;
-import tech.intellispaces.reflection.customtype.InterfaceType;
 import tech.intellispaces.reflection.customtype.Interfaces;
 import tech.intellispaces.reflection.method.MethodParam;
 import tech.intellispaces.reflection.method.MethodSignatureDeclarations;
@@ -80,10 +79,10 @@ public abstract class AbstractObjectGenerator extends JaquariusArtifactGenerator
 
   protected void analyzeDomain() {
     typeParamsFull = ObjectReferenceFunctions.getObjectFormTypeParamDeclaration(
-        sourceArtifact(), ObjectReferenceForms.Plain, MovabilityTypes.General, this::addImportAndGetSimpleName, false, true
+        sourceArtifact(), ObjectReferenceForms.Regular, MovabilityTypes.General, this::addImportAndGetSimpleName, false, true
     );
     typeParamsBrief = ObjectReferenceFunctions.getObjectFormTypeParamDeclaration(
-        sourceArtifact(), ObjectReferenceForms.Plain, MovabilityTypes.General, this::addImportAndGetSimpleName, false, false
+        sourceArtifact(), ObjectReferenceForms.Regular, MovabilityTypes.General, this::addImportAndGetSimpleName, false, false
     );
     domainTypeParamsFull = sourceArtifact().typeParametersFullDeclaration();
     domainTypeParamsBrief = sourceArtifact().typeParametersBriefDeclaration();
@@ -143,8 +142,8 @@ public abstract class AbstractObjectGenerator extends JaquariusArtifactGenerator
       MethodStatement effectiveMethod = convertMethodBeforeGenerate(method);
       analyzeRawDomainMethod(effectiveMethod);
       if (hasMethodNormalForm(effectiveMethod)) {
-        if (includeMethodForm(effectiveMethod, ObjectReferenceForms.Plain)) {
-          analyzeMethod(effectiveMethod, ObjectReferenceForms.Plain, methodOrdinal++);
+        if (includeMethodForm(effectiveMethod, ObjectReferenceForms.Regular)) {
+          analyzeMethod(effectiveMethod, ObjectReferenceForms.Regular, methodOrdinal++);
         }
       }
       if (includeMethodForm(effectiveMethod, ObjectReferenceForms.ObjectHandle)) {
@@ -160,8 +159,8 @@ public abstract class AbstractObjectGenerator extends JaquariusArtifactGenerator
   }
 
   protected boolean includeMethodForm(MethodStatement method, ObjectReferenceForm targetForm) {
-    if (ObjectReferenceForms.Plain.is(targetForm)) {
-      return ObjectReferenceForms.Plain.is(getForm());
+    if (ObjectReferenceForms.Regular.is(targetForm)) {
+      return ObjectReferenceForms.Regular.is(getForm());
     } else if (ObjectReferenceForms.ObjectHandle.is(targetForm)) {
       return ObjectReferenceForms.ObjectHandle.is(getForm());
     } else if (ObjectReferenceForms.Primitive.is(targetForm)) {
@@ -256,7 +255,7 @@ public abstract class AbstractObjectGenerator extends JaquariusArtifactGenerator
       commaAppender.run();
       if (DomainFunctions.isDomainType(param.type())) {
         sb.append("(");
-        sb.append(ObjectReferenceFunctions.getObjectFormDeclaration(param.type(), ObjectReferenceForms.Plain, MovabilityTypes.General, true, this::addImportAndGetSimpleName));
+        sb.append(ObjectReferenceFunctions.getObjectFormDeclaration(param.type(), ObjectReferenceForms.Regular, MovabilityTypes.General, true, this::addImportAndGetSimpleName));
         sb.append(") ");
       }
       sb.append(param.name());
@@ -297,19 +296,19 @@ public abstract class AbstractObjectGenerator extends JaquariusArtifactGenerator
     return buildActualType(domainType, context, false);
   }
 
-  protected List<CustomType> findExtensions(CustomType domainType, RoundEnvironment roundEnv) {
-    var extensions = new ArrayList<CustomType>();
+  protected List<CustomType> findCustomizers(CustomType domainType, RoundEnvironment roundEnv) {
+    var customizers = new ArrayList<CustomType>();
     for (ArtifactType artifactType : relatedArtifactTypes()) {
-      extensions.addAll(AnnotationFunctions.findArtifactExtensions(domainType, artifactType, roundEnv));
+      customizers.addAll(AnnotationFunctions.findCustomizer(domainType, artifactType, roundEnv));
     }
-    return extensions;
+    return customizers;
   }
 
   protected CustomType buildActualType(
       CustomType domainType, ArtifactGeneratorContext context, boolean includeInheritedMethods
   ) {
     var builder = Interfaces.build(domainType.asInterfaceOrElseThrow());
-    findExtensionMethods(domainType, context.initialRoundEnvironment(), includeInheritedMethods)
+    findCustomizerMethods(domainType, context.initialRoundEnvironment(), includeInheritedMethods)
         .forEach(builder::addDeclaredMethod);
 
     var extendedInterfaces = new ArrayList<CustomTypeReference>();
@@ -322,15 +321,15 @@ public abstract class AbstractObjectGenerator extends JaquariusArtifactGenerator
     return builder.get();
   }
 
-  private List<MethodStatement> findExtensionMethods(
+  private List<MethodStatement> findCustomizerMethods(
       CustomType domainType, RoundEnvironment roundEnv, boolean includeInheritedMethods
   ) {
-    List<MethodStatement> methods = new ArrayList<>();
-    addExtensionMethods(methods, domainType, roundEnv, Map.of(), includeInheritedMethods);
+    var methods = new ArrayList<MethodStatement>();
+    addCustomizerMethods(methods, domainType, roundEnv, Map.of(), includeInheritedMethods);
     return methods;
   }
 
-  private void addExtensionMethods(
+  private void addCustomizerMethods(
       List<MethodStatement> methods,
       CustomType domainType,
       RoundEnvironment roundEnv,
@@ -338,13 +337,13 @@ public abstract class AbstractObjectGenerator extends JaquariusArtifactGenerator
       boolean includeInheritedMethods
   ) {
     for (ArtifactType artifactType : relatedArtifactTypes()) {
-      List<CustomType> extensions = AnnotationFunctions.findArtifactExtensions(
+      List<CustomType> customizers = AnnotationFunctions.findCustomizer(
           domainType, artifactType, roundEnv
       );
-      for (CustomType extension : extensions) {
-        methods.addAll(extension.declaredMethods());
+      for (CustomType customizer : customizers) {
+        methods.addAll(customizer.declaredMethods());
         if (includeInheritedMethods) {
-          addInheritedMethods(extension, methods, initialTypeMapping);
+          addInheritedMethods(customizer, methods, initialTypeMapping);
         }
       }
     }
@@ -354,7 +353,7 @@ public abstract class AbstractObjectGenerator extends JaquariusArtifactGenerator
         Map<String, NotPrimitiveReference> typeMapping = TypeReferenceFunctions.mergeTypeArgumentMapping(
             parent, initialTypeMapping
         );
-        addExtensionMethods(methods, parent.targetType(), roundEnv, typeMapping, true);
+        addCustomizerMethods(methods, parent.targetType(), roundEnv, typeMapping, true);
       }
     }
   }
@@ -407,7 +406,7 @@ public abstract class AbstractObjectGenerator extends JaquariusArtifactGenerator
   }
 
   protected String getObjectFormMethodName(MethodStatement domainMethod, ObjectReferenceForm targetForm) {
-    if (ObjectReferenceForms.Plain.is(targetForm) || ObjectReferenceForms.ObjectHandle.is(targetForm)) {
+    if (ObjectReferenceForms.Regular.is(targetForm) || ObjectReferenceForms.ObjectHandle.is(targetForm)) {
       return domainMethod.name();
     } else if (ObjectReferenceForms.Primitive.is(targetForm)) {
       return domainMethod.name() + "AsPrimitive";
@@ -421,7 +420,7 @@ public abstract class AbstractObjectGenerator extends JaquariusArtifactGenerator
   protected void appendMethodReturnTypeDeclaration(
       StringBuilder sb, MethodStatement method, ObjectReferenceForm targetForm
   ) {
-    if (ObjectReferenceForms.Plain.is(targetForm) || ObjectReferenceForms.ObjectHandle.is(targetForm)) {
+    if (ObjectReferenceForms.Regular.is(targetForm) || ObjectReferenceForms.ObjectHandle.is(targetForm)) {
       appendObjectFormMethodReturnType(sb, method);
     } else if (ObjectReferenceForms.Primitive.is(targetForm)) {
       CustomType returnType = method.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow().targetType();
@@ -464,7 +463,7 @@ public abstract class AbstractObjectGenerator extends JaquariusArtifactGenerator
       commaAppender.run();
       sb.append(buildObjectFormDeclaration(
           AnnotationGeneratorFunctions.normalizeType(param.type()),
-          ObjectReferenceForms.Plain,
+          ObjectReferenceForms.Regular,
           MovabilityTypes.General,
           true
       ));

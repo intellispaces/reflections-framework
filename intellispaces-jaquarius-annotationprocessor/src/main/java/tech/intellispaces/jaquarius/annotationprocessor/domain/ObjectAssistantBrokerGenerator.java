@@ -49,30 +49,30 @@ public class ObjectAssistantBrokerGenerator extends JaquariusArtifactGenerator {
 
   @Override
   protected boolean analyzeSourceArtifact(ArtifactGeneratorContext context) {
-    Collection<CustomType> extensions = findExtensions(context);
-    if (extensions.isEmpty()) {
+    Collection<CustomType> customizers = findCustomizers(context);
+    if (customizers.isEmpty()) {
       return false;
     }
 
     addImport(JaquariusEngines.class);
     addImport(UnexpectedExceptions.class);
 
-    addVariable("extensions", getExtensions(extensions));
-    addVariable("extensionMethods", getExtensionMethods(extensions));
+    addVariable("customizers", getCustomizers(customizers));
+    addVariable("customizerMethods", getCustomizerMethods(customizers));
     return true;
   }
 
-  List<String> getExtensions(Collection<CustomType> extensions) {
-    return extensions.stream()
+  List<String> getCustomizers(Collection<CustomType> customizers) {
+    return customizers.stream()
         .map(CustomType::canonicalName)
         .map(this::addImportAndGetSimpleName)
         .toList();
   }
 
-  List<Map<String, Object>> getExtensionMethods(Collection<CustomType> extensions) {
+  List<Map<String, Object>> getCustomizerMethods(Collection<CustomType> customizers) {
     var methods = new ArrayList<Map<String, Object>>();
-    for (CustomType extension : extensions) {
-      for (MethodStatement method : extension.declaredMethods()) {
+    for (CustomType customizer : customizers) {
+      for (MethodStatement method : customizer.declaredMethods()) {
         if (method.isDefault()) {
           continue;
         }
@@ -92,8 +92,8 @@ public class ObjectAssistantBrokerGenerator extends JaquariusArtifactGenerator {
     return methods;
   }
 
-  Collection<CustomType> findExtensions(ArtifactGeneratorContext context) {
-    return AnnotationFunctions.findArtifactExtensions(
+  Collection<CustomType> findCustomizers(ArtifactGeneratorContext context) {
+    return AnnotationFunctions.findCustomizer(
         sourceArtifact(), ArtifactTypes.ObjectAssistant, context.roundEnvironments()
     );
   }

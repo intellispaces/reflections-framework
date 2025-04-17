@@ -57,28 +57,28 @@ public class ObjectAssistantGenerator extends JaquariusArtifactGenerator {
 
     addVariable("brokerSimpleName", addImportAndGetSimpleName(NameConventionFunctions.getObjectAssistantBrokerCanonicalName(sourceArtifact())));
     addVariable("isDataset", AnnotationFunctions.isAssignableAnnotation(sourceArtifact(), Dataset.class));
-    addVariable("plainFirstLetterLowercaseSimpleName",
+    addVariable("regularFirstLetterLowercaseSimpleName",
         StringFunctions.lowercaseFirstLetter(StringFunctions.removeTailOrElseThrow(sourceArtifactSimpleName(), "Domain")));
     addVariable("datasetBuilderSimpleName",
         addImportAndGetSimpleName(NameConventionFunctions.getDatasetBuilderCanonicalName(sourceArtifact().className())));
     addVariable("generalObjectHandleSimpleName",
         addImportAndGetSimpleName(ObjectReferenceFunctions.getGeneralObjectHandleTypename(sourceArtifact())));
     addTypeParamVariables();
-    addVariable("extensionMethods", getExtensionMethods(context));
+    addVariable("customizerMethods", getCustomizerMethods(context));
     return true;
   }
 
   void addTypeParamVariables() {
     addVariable("typeParamsFull", ObjectReferenceFunctions.getObjectFormTypeParamDeclaration(
         sourceArtifact(),
-        ObjectReferenceForms.Plain,
+        ObjectReferenceForms.Regular,
         MovabilityTypes.General,
         this::addImportAndGetSimpleName,
         true,
         true));
     addVariable("typeParamsBrief", ObjectReferenceFunctions.getObjectFormTypeParamDeclaration(
         sourceArtifact(),
-        ObjectReferenceForms.Plain,
+        ObjectReferenceForms.Regular,
         MovabilityTypes.General,
         this::addImportAndGetSimpleName,
         true,
@@ -117,14 +117,14 @@ public class ObjectAssistantGenerator extends JaquariusArtifactGenerator {
     return null;
   }
 
-  List<Map<String, Object>> getExtensionMethods(ArtifactGeneratorContext context) {
+  List<Map<String, Object>> getCustomizerMethods(ArtifactGeneratorContext context) {
     var methods = new ArrayList<Map<String, Object>>();
-    Collection<CustomType> extensions = AnnotationFunctions.findArtifactExtensions(
+    Collection<CustomType> customizers = AnnotationFunctions.findCustomizer(
         sourceArtifact(), ArtifactTypes.ObjectAssistant, context.roundEnvironments()
     );
 
-    for (CustomType extension : extensions) {
-      for (MethodStatement method : extension.declaredMethods()) {
+    for (CustomType customizer : customizers) {
+      for (MethodStatement method : customizer.declaredMethods()) {
         methods.add(Map.of(
             "signature", MethodSignatureDeclarations.build(method).get(this::addImport, this::simpleNameOf),
             "name", method.name(),

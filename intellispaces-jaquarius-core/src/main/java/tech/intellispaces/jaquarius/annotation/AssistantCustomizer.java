@@ -6,11 +6,11 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * The Object Assistant extension.
+ * The Object Assistant customizer.
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface AssistantExtension {
+public @interface AssistantCustomizer {
 
   /**
    * The origin domain.

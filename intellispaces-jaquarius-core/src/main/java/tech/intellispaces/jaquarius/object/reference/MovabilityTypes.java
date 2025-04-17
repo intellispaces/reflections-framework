@@ -22,7 +22,7 @@ public enum MovabilityTypes implements MovabilityType, Enumeration<MovabilityTyp
    */
   Movable;
 
-  public static MovabilityTypes from(MovabilityType value) {
+  public static MovabilityTypes of(MovabilityType value) {
     return VALUES[value.ordinal()];
   }
 

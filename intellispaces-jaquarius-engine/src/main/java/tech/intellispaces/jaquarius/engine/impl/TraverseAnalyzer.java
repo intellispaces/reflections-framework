@@ -295,7 +295,7 @@ class TraverseAnalyzer implements tech.intellispaces.jaquarius.traverse.plan.Tra
   }
 
   private GuideKinds getGuideKind(TraversePlanType planType) {
-    return switch (TraversePlanTypes.from(planType)) {
+    return switch (TraversePlanTypes.of(planType)) {
       case MapObjectHandleThruChannel0 -> GuideKinds.Mapper0;
       case MapObjectHandleThruChannel1 -> GuideKinds.Mapper1;
       case MapObjectHandleThruChannel2 -> GuideKinds.Mapper2;

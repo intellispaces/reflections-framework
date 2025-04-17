@@ -67,7 +67,7 @@ public class UnmovableDatasetGenerator extends AbstractObjectGenerator {
 
   @Override
   protected ObjectReferenceForm getForm() {
-    return ObjectReferenceForms.Plain;
+    return ObjectReferenceForms.Regular;
   }
 
   @Override
@@ -77,7 +77,7 @@ public class UnmovableDatasetGenerator extends AbstractObjectGenerator {
 
   @Override
   protected List<ArtifactType> relatedArtifactTypes() {
-    return List.of(ArtifactTypes.UnmovableDataset, ArtifactTypes.PlainObject, ArtifactTypes.ObjectHandle);
+    return List.of(ArtifactTypes.UnmovableDataset, ArtifactTypes.RegularObject, ArtifactTypes.ObjectHandle);
   }
 
   @Override

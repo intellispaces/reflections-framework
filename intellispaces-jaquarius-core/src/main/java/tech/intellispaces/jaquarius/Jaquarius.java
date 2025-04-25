@@ -1,6 +1,6 @@
 package tech.intellispaces.jaquarius;
 
-import tech.intellispaces.commons.data.Dictionary;
+import tech.intellispaces.commons.properties.PropertiesSet;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.jaquarius.settings.JaquariusSettings;
 import tech.intellispaces.jaquarius.settings.JaquariusSettingsFunctions;
@@ -12,8 +12,8 @@ public class Jaquarius {
   public static JaquariusSettings settings() {
     if (SETTINGS == null) {
       try {
-        Dictionary dictionary = JaquariusSettingsFunctions.readSettingsDictionary(Jaquarius.class.getClassLoader());
-        SETTINGS = JaquariusSettingsFunctions.buildSettings(dictionary);
+        PropertiesSet properties = JaquariusSettingsFunctions.readSettingsDictionary(Jaquarius.class.getClassLoader());
+        SETTINGS = JaquariusSettingsFunctions.buildSettings(properties);
       } catch (IOException e) {
         throw UnexpectedExceptions.withCauseAndMessage(e, "Unable to read jaquarius settings");
       }

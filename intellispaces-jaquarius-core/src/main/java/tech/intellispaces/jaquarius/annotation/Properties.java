@@ -16,12 +16,12 @@ import java.lang.annotation.Target;
 public @interface Properties {
 
   /**
-   * The filename.
-   */
-  String filename() default "/module.yaml";
-
-  /**
-   * The property path.
+   * The property name.
    */
   String value() default "";
+
+  /**
+   * The properties file path.
+   */
+  String path() default "/module.yaml";
 }

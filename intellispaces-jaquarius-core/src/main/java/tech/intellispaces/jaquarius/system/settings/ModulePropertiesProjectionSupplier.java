@@ -24,32 +24,32 @@ public class ModulePropertiesProjectionSupplier extends InjectedMethodProjection
   public Object get() {
     Module module = Modules.current();
     Properties annotation = injectedMethod.selectAnnotation(Properties.class).orElseThrow();
-    Object settingsProperties = parseSettingsFile(annotation.filename(), module);
-    Object settingsValue = traverseToValue(settingsProperties, annotation.value(), module);
+    Object props = readPropertiesFile(annotation.path(), module);
+    Object propertyValue = traverseToPropertyValue(props, annotation.value(), module);
 
     Class<?> expectedReturnClass = injectedMethod.returnType().orElseThrow()
         .asCustomTypeReferenceOrElseThrow()
         .targetClass();
-    if (settingsValue.getClass() == expectedReturnClass) {
-      return settingsValue;
+    if (propertyValue.getClass() == expectedReturnClass) {
+      return propertyValue;
     }
     if (ObjectReferenceFunctions.propertiesHandleClass().getCanonicalName().equals(expectedReturnClass.getCanonicalName())) {
-      if (!ObjectReferenceFunctions.propertiesHandleClass().isAssignableFrom(settingsValue.getClass())) {
+      if (!ObjectReferenceFunctions.propertiesHandleClass().isAssignableFrom(propertyValue.getClass())) {
         throw UnexpectedExceptions.withMessage("Invalid return type of method '{0}' in class {1}",
             injectedMethod.name(), injectedMethod.owner().canonicalName());
       }
-      return settingsValue;
+      return propertyValue;
     }
     if (ObjectReferenceFunctions.isObjectFormClass(expectedReturnClass)) {
       if (DatasetFunctions.isDatasetObjectHandle(expectedReturnClass)) {
-        return traverseToData(settingsValue, expectedReturnClass, module);
+        return traverseToData(propertyValue, expectedReturnClass, module);
       }
     }
     throw UnexpectedExceptions.withMessage("Invalid return type of method '{0}' in class {1}. Expected any object form",
         injectedMethod.name(), injectedMethod.owner().canonicalName());
   }
 
-  private Object parseSettingsFile(String filename, Module module) {
+  private Object readPropertiesFile(String filename, Module module) {
     String settingsText = ModuleSettingsFunctions.getSettingsText(module, filename);
     if (filename.toLowerCase().endsWith(".yaml")) {
       KeyChannel keyChannel = Jaquarius.settings().getKeyChannelByPurpose(KeyChannelPurposes.YamlStringToProperties);
@@ -58,13 +58,13 @@ public class ModulePropertiesProjectionSupplier extends InjectedMethodProjection
     throw ConfigurationExceptions.withMessage("Unsupported module settings file format. File {0}", filename);
   }
 
-  private Object traverseToValue(Object settingsProperties, String valuePath, Module module) {
+  private Object traverseToPropertyValue(Object props, String traversePath, Module module) {
     KeyChannel keyChannel = Jaquarius.settings().getKeyChannelByPurpose(KeyChannelPurposes.PropertiesToValue);
-    return module.mapThruChannel1(settingsProperties, keyChannel.channelId(), valuePath);
+    return module.mapThruChannel1(props, keyChannel.channelId(), traversePath);
   }
 
-  private Object traverseToData(Object settingsValue, Class<?> expectedReturnClass, Module module) {
+  private Object traverseToData(Object propsValue, Class<?> expectedReturnClass, Module module) {
     KeyChannel keyChannel = Jaquarius.settings().getKeyChannelByPurpose(KeyChannelPurposes.PropertiesToData);
-    return module.mapThruChannel1(settingsValue, keyChannel.channelId(), Types.get(expectedReturnClass));
+    return module.mapThruChannel1(propsValue, keyChannel.channelId(), Types.get(expectedReturnClass));
   }
 }

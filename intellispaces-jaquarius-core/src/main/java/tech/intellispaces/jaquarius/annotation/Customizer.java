@@ -1,11 +1,11 @@
 package tech.intellispaces.jaquarius.annotation;
 
-import tech.intellispaces.jaquarius.artifact.ArtifactTypes;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+
+import tech.intellispaces.jaquarius.artifact.ArtifactTypes;
 
 /**
  * The generated artifact customizer.

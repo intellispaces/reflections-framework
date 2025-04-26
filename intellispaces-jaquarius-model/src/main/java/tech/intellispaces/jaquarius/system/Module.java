@@ -1,5 +1,7 @@
 package tech.intellispaces.jaquarius.system;
 
+import java.util.List;
+
 import tech.intellispaces.commons.type.Type;
 import tech.intellispaces.jaquarius.channel.Channel0;
 import tech.intellispaces.jaquarius.channel.Channel1;
@@ -22,8 +24,6 @@ import tech.intellispaces.jaquarius.guide.n4.MapperOfMoving4;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.traverse.MappingOfMovingTraverse;
 import tech.intellispaces.jaquarius.traverse.MappingTraverse;
-
-import java.util.List;
 
 /**
  * The system module.

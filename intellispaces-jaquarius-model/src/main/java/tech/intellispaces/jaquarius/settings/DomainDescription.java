@@ -1,17 +1,17 @@
 package tech.intellispaces.jaquarius.settings;
 
 /**
- * The key domain.
+ * The domain description.
  */
-public interface KeyDomain {
+public interface DomainDescription {
 
   /**
-   * The key domain purpose.
+   * The domain type.
    */
-  KeyDomainPurpose purpose();
+  DomainType type();
 
   /**
-   * The key domain full qualified name.
+   * The full qualified name.
    */
   String domainName();
 

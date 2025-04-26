@@ -1,5 +1,7 @@
 package tech.intellispaces.jaquarius.annotationprocessor.ontology;
 
+import java.util.List;
+
 import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
 import tech.intellispaces.jaquarius.annotationprocessor.channel.AbstractChannelGenerator;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
@@ -7,8 +9,6 @@ import tech.intellispaces.reflection.customtype.CustomType;
 import tech.intellispaces.reflection.method.MethodParam;
 import tech.intellispaces.reflection.method.MethodStatement;
 import tech.intellispaces.reflection.reference.TypeReference;
-
-import java.util.List;
 
 public class OntologyChannelGenerator extends AbstractChannelGenerator {
 

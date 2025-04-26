@@ -1,5 +1,11 @@
 package tech.intellispaces.jaquarius.annotationprocessor.domain;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import tech.intellispaces.actions.Action;
 import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
 import tech.intellispaces.commons.exception.NotImplementedExceptions;
@@ -18,12 +24,6 @@ import tech.intellispaces.reflection.method.MethodSignatureDeclarations;
 import tech.intellispaces.reflection.method.MethodStatement;
 import tech.intellispaces.reflection.reference.ArrayReference;
 import tech.intellispaces.reflection.reference.TypeReference;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 public class ObjectAssistantBrokerGenerator extends JaquariusArtifactGenerator {
 

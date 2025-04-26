@@ -1,13 +1,13 @@
 package tech.intellispaces.jaquarius.system.settings;
 
-import tech.intellispaces.commons.exception.UnexpectedExceptions;
-import tech.intellispaces.commons.resource.ResourceFunctions;
-import tech.intellispaces.jaquarius.system.Module;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.WeakHashMap;
+
+import tech.intellispaces.commons.exception.UnexpectedExceptions;
+import tech.intellispaces.commons.resource.ResourceFunctions;
+import tech.intellispaces.jaquarius.system.Module;
 
 public class ModuleSettingsFunctions {
 

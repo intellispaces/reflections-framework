@@ -1,15 +1,15 @@
 package tech.intellispaces.jaquarius.engine.impl;
 
-import tech.intellispaces.jaquarius.exception.ConfigurationExceptions;
-import tech.intellispaces.jaquarius.guide.Guide;
-import tech.intellispaces.jaquarius.guide.GuideKind;
-import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
+
+import tech.intellispaces.jaquarius.exception.ConfigurationExceptions;
+import tech.intellispaces.jaquarius.guide.Guide;
+import tech.intellispaces.jaquarius.guide.GuideKind;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 
 /**
  * The guide register.

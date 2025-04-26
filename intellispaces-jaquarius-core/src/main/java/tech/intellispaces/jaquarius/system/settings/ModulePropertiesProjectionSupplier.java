@@ -7,8 +7,8 @@ import tech.intellispaces.jaquarius.annotation.Properties;
 import tech.intellispaces.jaquarius.dataset.DatasetFunctions;
 import tech.intellispaces.jaquarius.exception.ConfigurationExceptions;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceFunctions;
-import tech.intellispaces.jaquarius.settings.KeyChannel;
-import tech.intellispaces.jaquarius.settings.KeyChannelPurposes;
+import tech.intellispaces.jaquarius.settings.ChannelDescription;
+import tech.intellispaces.jaquarius.settings.ChannelTypes;
 import tech.intellispaces.jaquarius.system.Module;
 import tech.intellispaces.jaquarius.system.Modules;
 import tech.intellispaces.jaquarius.system.projection.InjectedMethodProjectionSupplier;
@@ -52,19 +52,19 @@ public class ModulePropertiesProjectionSupplier extends InjectedMethodProjection
   private Object readPropertiesFile(String filename, Module module) {
     String settingsText = ModuleSettingsFunctions.getSettingsText(module, filename);
     if (filename.toLowerCase().endsWith(".yaml")) {
-      KeyChannel keyChannel = Jaquarius.settings().getKeyChannelByPurpose(KeyChannelPurposes.YamlStringToProperties);
-      return module.mapThruChannel0(settingsText, keyChannel.channelId());
+      ChannelDescription channelDescription = Jaquarius.ontologyDescription().getChannelByType(ChannelTypes.YamlStringToProperties);
+      return module.mapThruChannel0(settingsText, channelDescription.channelId());
     }
     throw ConfigurationExceptions.withMessage("Unsupported module settings file format. File {0}", filename);
   }
 
   private Object traverseToPropertyValue(Object props, String traversePath, Module module) {
-    KeyChannel keyChannel = Jaquarius.settings().getKeyChannelByPurpose(KeyChannelPurposes.PropertiesToValue);
-    return module.mapThruChannel1(props, keyChannel.channelId(), traversePath);
+    ChannelDescription channelDescription = Jaquarius.ontologyDescription().getChannelByType(ChannelTypes.PropertiesToValue);
+    return module.mapThruChannel1(props, channelDescription.channelId(), traversePath);
   }
 
   private Object traverseToData(Object propsValue, Class<?> expectedReturnClass, Module module) {
-    KeyChannel keyChannel = Jaquarius.settings().getKeyChannelByPurpose(KeyChannelPurposes.PropertiesToData);
-    return module.mapThruChannel1(propsValue, keyChannel.channelId(), Types.get(expectedReturnClass));
+    ChannelDescription channelDescription = Jaquarius.ontologyDescription().getChannelByType(ChannelTypes.PropertiesToData);
+    return module.mapThruChannel1(propsValue, channelDescription.channelId(), Types.get(expectedReturnClass));
   }
 }

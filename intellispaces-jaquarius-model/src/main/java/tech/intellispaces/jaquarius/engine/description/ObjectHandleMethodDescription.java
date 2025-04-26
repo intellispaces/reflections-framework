@@ -1,9 +1,9 @@
 package tech.intellispaces.jaquarius.engine.description;
 
+import java.util.List;
+
 import tech.intellispaces.actions.Action;
 import tech.intellispaces.jaquarius.traverse.TraverseType;
-
-import java.util.List;
 
 /**
  * The object handle wrapper method description.

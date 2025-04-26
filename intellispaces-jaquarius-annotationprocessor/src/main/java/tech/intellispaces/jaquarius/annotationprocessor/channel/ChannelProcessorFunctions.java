@@ -1,5 +1,8 @@
 package tech.intellispaces.jaquarius.annotationprocessor.channel;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import tech.intellispaces.annotationprocessor.ArtifactGenerator;
 import tech.intellispaces.commons.type.ClassFunctions;
 import tech.intellispaces.jaquarius.exception.ConfigurationExceptions;
@@ -14,9 +17,6 @@ import tech.intellispaces.reflection.customtype.CustomType;
 import tech.intellispaces.reflection.method.MethodStatement;
 import tech.intellispaces.reflection.reference.CustomTypeReference;
 import tech.intellispaces.reflection.reference.TypeReference;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public interface ChannelProcessorFunctions {
 

@@ -1,5 +1,13 @@
 package tech.intellispaces.jaquarius.annotationprocessor.domain;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import javax.annotation.processing.RoundEnvironment;
+
 import tech.intellispaces.actions.runnable.RunnableAction;
 import tech.intellispaces.actions.text.StringActions;
 import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
@@ -20,7 +28,7 @@ import tech.intellispaces.jaquarius.object.reference.MovabilityTypes;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceFunctions;
-import tech.intellispaces.jaquarius.settings.KeyDomain;
+import tech.intellispaces.jaquarius.settings.DomainDescription;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
 import tech.intellispaces.reflection.customtype.CustomType;
@@ -35,14 +43,6 @@ import tech.intellispaces.reflection.reference.NotPrimitiveReference;
 import tech.intellispaces.reflection.reference.ReferenceBound;
 import tech.intellispaces.reflection.reference.TypeReference;
 import tech.intellispaces.reflection.reference.TypeReferenceFunctions;
-
-import javax.annotation.processing.RoundEnvironment;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public abstract class AbstractObjectGenerator extends JaquariusArtifactGenerator {
   protected boolean isAlias;
@@ -280,9 +280,9 @@ public abstract class AbstractObjectGenerator extends JaquariusArtifactGenerator
   }
 
   private String convertName(String name) {
-    KeyDomain keyDomain = Jaquarius.settings().getKeyDomainByName(NameConventionFunctions.convertToDomainName(name));
-    if (keyDomain != null && keyDomain.delegateClassName() != null) {
-      return addImportAndGetSimpleName(keyDomain.delegateClassName());
+    DomainDescription domainDescription = Jaquarius.ontologyDescription().getDomainByName(NameConventionFunctions.convertToDomainName(name));
+    if (domainDescription != null && domainDescription.delegateClassName() != null) {
+      return addImportAndGetSimpleName(domainDescription.delegateClassName());
     }
     return addImportAndGetSimpleName(name);
   }

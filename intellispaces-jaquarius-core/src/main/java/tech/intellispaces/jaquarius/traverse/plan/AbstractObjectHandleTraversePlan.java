@@ -1,10 +1,10 @@
 package tech.intellispaces.jaquarius.traverse.plan;
 
-import tech.intellispaces.commons.exception.UnexpectedExceptions;
-import tech.intellispaces.jaquarius.object.reference.ObjectReferenceFunctions;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import tech.intellispaces.commons.exception.UnexpectedExceptions;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceFunctions;
 
 public abstract class AbstractObjectHandleTraversePlan implements ObjectHandleTraversePlan {
   private final Class<?> objectHandleClass;

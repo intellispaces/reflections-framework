@@ -1,8 +1,8 @@
 package tech.intellispaces.jaquarius.settings;
 
-record KeyChannelImpl(
-    KeyChannelPurpose purpose,
+record ChannelDescriptionImpl(
+    ChannelType type,
     String channelId,
     String alias
-) implements KeyChannel {
+) implements ChannelDescription {
 }

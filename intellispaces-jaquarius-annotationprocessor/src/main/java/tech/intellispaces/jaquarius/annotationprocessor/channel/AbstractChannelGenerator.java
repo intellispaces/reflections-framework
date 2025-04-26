@@ -1,5 +1,7 @@
 package tech.intellispaces.jaquarius.annotationprocessor.channel;
 
+import java.util.List;
+
 import tech.intellispaces.actions.runnable.RunnableAction;
 import tech.intellispaces.actions.text.StringActions;
 import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
@@ -14,8 +16,6 @@ import tech.intellispaces.jaquarius.traverse.TraverseType;
 import tech.intellispaces.reflection.customtype.CustomType;
 import tech.intellispaces.reflection.method.MethodStatement;
 import tech.intellispaces.reflection.reference.TypeReference;
-
-import java.util.List;
 
 public abstract class AbstractChannelGenerator extends JaquariusArtifactGenerator {
   protected final MethodStatement channelMethod;

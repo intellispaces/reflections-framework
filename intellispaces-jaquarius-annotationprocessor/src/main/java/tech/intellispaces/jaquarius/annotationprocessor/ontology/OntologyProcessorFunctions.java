@@ -1,5 +1,8 @@
 package tech.intellispaces.jaquarius.annotationprocessor.ontology;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import tech.intellispaces.annotationprocessor.ArtifactGenerator;
 import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
 import tech.intellispaces.jaquarius.annotation.Channel;
@@ -7,9 +10,6 @@ import tech.intellispaces.jaquarius.annotationprocessor.AnnotationFunctions;
 import tech.intellispaces.jaquarius.artifact.ArtifactTypes;
 import tech.intellispaces.reflection.customtype.CustomType;
 import tech.intellispaces.reflection.method.MethodStatement;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public interface OntologyProcessorFunctions {
 

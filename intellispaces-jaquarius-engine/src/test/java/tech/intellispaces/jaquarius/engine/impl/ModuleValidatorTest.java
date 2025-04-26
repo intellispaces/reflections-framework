@@ -1,16 +1,17 @@
 package tech.intellispaces.jaquarius.engine.impl;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+
 import tech.intellispaces.jaquarius.exception.ConfigurationException;
 import tech.intellispaces.jaquarius.samples.system.EmptyTestModule;
 import tech.intellispaces.jaquarius.samples.system.EmptyTestUnit;
 import tech.intellispaces.jaquarius.system.ProjectionInjection;
 import tech.intellispaces.jaquarius.system.UnitProjectionDefinition;
 import tech.intellispaces.jaquarius.system.injection.InjectionKinds;
-
-import java.util.List;
-import java.util.Optional;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;

@@ -1,5 +1,12 @@
 package tech.intellispaces.jaquarius.annotationprocessor.dataset;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+
 import tech.intellispaces.actions.runnable.RunnableAction;
 import tech.intellispaces.actions.text.StringActions;
 import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
@@ -32,13 +39,6 @@ import tech.intellispaces.reflection.method.MethodStatement;
 import tech.intellispaces.reflection.reference.CustomTypeReference;
 import tech.intellispaces.reflection.reference.NamedReference;
 import tech.intellispaces.reflection.reference.TypeReference;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
 
 public class UnmovableDatasetGenerator extends AbstractObjectGenerator {
   private String typeParamsBrief;

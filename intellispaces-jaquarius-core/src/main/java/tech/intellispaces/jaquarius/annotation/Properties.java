@@ -1,11 +1,11 @@
 package tech.intellispaces.jaquarius.annotation;
 
-import tech.intellispaces.jaquarius.system.settings.ModulePropertiesProjectionSupplier;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+
+import tech.intellispaces.jaquarius.system.settings.ModulePropertiesProjectionSupplier;
 
 /**
  * The module properties.

@@ -1,5 +1,8 @@
 package tech.intellispaces.jaquarius.annotationprocessor.domain;
 
+import java.util.List;
+import java.util.stream.Stream;
+
 import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
 import tech.intellispaces.commons.type.Type;
 import tech.intellispaces.commons.type.Types;
@@ -26,9 +29,6 @@ import tech.intellispaces.reflection.customtype.CustomType;
 import tech.intellispaces.reflection.method.MethodStatement;
 import tech.intellispaces.reflection.reference.CustomTypeReference;
 import tech.intellispaces.reflection.type.TypeOf;
-
-import java.util.List;
-import java.util.stream.Stream;
 
 public class MovableDownwardObjectGenerator extends ConversionObjectGenerator {
 

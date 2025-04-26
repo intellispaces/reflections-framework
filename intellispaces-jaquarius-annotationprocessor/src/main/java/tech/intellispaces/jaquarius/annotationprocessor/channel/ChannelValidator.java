@@ -1,11 +1,11 @@
 package tech.intellispaces.jaquarius.annotationprocessor.channel;
 
+import java.util.Optional;
+
 import tech.intellispaces.annotationprocessor.ArtifactValidator;
 import tech.intellispaces.jaquarius.annotation.Ontology;
 import tech.intellispaces.jaquarius.exception.JaquariusExceptions;
 import tech.intellispaces.reflection.customtype.CustomType;
-
-import java.util.Optional;
 
 /**
  * The channel type validator.

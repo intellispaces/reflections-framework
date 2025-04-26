@@ -1,21 +1,5 @@
 package tech.intellispaces.jaquarius.space.domain;
 
-import tech.intellispaces.commons.exception.UnexpectedExceptions;
-import tech.intellispaces.commons.type.ClassFunctions;
-import tech.intellispaces.jaquarius.Jaquarius;
-import tech.intellispaces.jaquarius.annotation.Domain;
-import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
-import tech.intellispaces.jaquarius.settings.KeyChannelPurposes;
-import tech.intellispaces.reflection.JavaStatements;
-import tech.intellispaces.reflection.customtype.CustomType;
-import tech.intellispaces.reflection.method.MethodStatement;
-import tech.intellispaces.reflection.reference.CustomTypeReference;
-import tech.intellispaces.reflection.reference.CustomTypeReferences;
-import tech.intellispaces.reflection.reference.NamedReference;
-import tech.intellispaces.reflection.reference.NotPrimitiveReference;
-import tech.intellispaces.reflection.reference.TypeReference;
-import tech.intellispaces.reflection.reference.TypeReferenceFunctions;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -26,6 +10,22 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import tech.intellispaces.commons.exception.UnexpectedExceptions;
+import tech.intellispaces.commons.type.ClassFunctions;
+import tech.intellispaces.jaquarius.Jaquarius;
+import tech.intellispaces.jaquarius.annotation.Domain;
+import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
+import tech.intellispaces.jaquarius.settings.ChannelTypes;
+import tech.intellispaces.reflection.JavaStatements;
+import tech.intellispaces.reflection.customtype.CustomType;
+import tech.intellispaces.reflection.method.MethodStatement;
+import tech.intellispaces.reflection.reference.CustomTypeReference;
+import tech.intellispaces.reflection.reference.CustomTypeReferences;
+import tech.intellispaces.reflection.reference.NamedReference;
+import tech.intellispaces.reflection.reference.NotPrimitiveReference;
+import tech.intellispaces.reflection.reference.TypeReference;
+import tech.intellispaces.reflection.reference.TypeReferenceFunctions;
 
 /**
  * Domain functions.
@@ -184,7 +184,7 @@ public final class DomainFunctions {
 
   public static boolean isNotDomainClassGetter(MethodStatement method) {
     return !method.name().equals("domainClass") &&
-        !method.name().equals(Jaquarius.settings().getKeyChannelByPurpose(KeyChannelPurposes.PointToDomain).alias());
+        !method.name().equals(Jaquarius.ontologyDescription().getChannelByType(ChannelTypes.PointToDomain).alias());
   }
 
   public static boolean isDefaultDomainType(CustomType type) {

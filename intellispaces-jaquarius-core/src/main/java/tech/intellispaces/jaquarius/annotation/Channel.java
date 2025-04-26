@@ -1,11 +1,11 @@
 package tech.intellispaces.jaquarius.annotation;
 
-import tech.intellispaces.jaquarius.traverse.TraverseTypes;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+
+import tech.intellispaces.jaquarius.traverse.TraverseTypes;
 
 /**
  * Specifies that the interface or method is a semantic space chanel.

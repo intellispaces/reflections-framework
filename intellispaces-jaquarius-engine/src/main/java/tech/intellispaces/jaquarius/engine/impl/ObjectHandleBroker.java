@@ -1,15 +1,15 @@
 package tech.intellispaces.jaquarius.engine.impl;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import tech.intellispaces.actions.Action;
 import tech.intellispaces.commons.exception.NotImplementedExceptions;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.jaquarius.engine.description.ObjectHandleTypeDescription;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandle;
 import tech.intellispaces.jaquarius.system.Injection;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class ObjectHandleBroker implements tech.intellispaces.jaquarius.engine.ObjectHandleBroker {
   private final ObjectHandleTypeDescription type;

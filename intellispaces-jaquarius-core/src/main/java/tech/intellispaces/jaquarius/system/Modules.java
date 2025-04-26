@@ -1,12 +1,12 @@
 package tech.intellispaces.jaquarius.system;
 
-import tech.intellispaces.jaquarius.engine.JaquariusEngines;
-import tech.intellispaces.jaquarius.exception.ConfigurationExceptions;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
+
+import tech.intellispaces.jaquarius.engine.JaquariusEngines;
+import tech.intellispaces.jaquarius.exception.ConfigurationExceptions;
 
 /**
  * System modules provider.
@@ -21,8 +21,8 @@ public class Modules {
    * @param args command line arguments.
    * @return the created module.
    */
-  public static Module load(Class<?> moduleClass, String[] args) {
-    return load(() -> JaquariusEngines.get().createModule(List.of(moduleClass), args));
+  public static Module create(Class<?> moduleClass, String[] args) {
+    return create(() -> JaquariusEngines.get().createModule(List.of(moduleClass), args));
   }
 
   /**
@@ -31,8 +31,8 @@ public class Modules {
    * @param unitClasses unit classes.
    * @return the created module.
    */
-  public static Module load(Class<?>... unitClasses) {
-    return load(() -> JaquariusEngines.get().createModule(Arrays.stream(unitClasses).toList(), new String[0]));
+  public static Module create(Class<?>... unitClasses) {
+    return create(() -> JaquariusEngines.get().createModule(Arrays.stream(unitClasses).toList(), new String[0]));
   }
 
   /**
@@ -42,11 +42,11 @@ public class Modules {
    * @param args command line arguments.
    * @return the created module.
    */
-  public static Module load(List<Class<?>> unitClasses, String[] args) {
-    return load(() -> JaquariusEngines.get().createModule(unitClasses, new String[0]));
+  public static Module create(List<Class<?>> unitClasses, String[] args) {
+    return create(() -> JaquariusEngines.get().createModule(unitClasses, new String[0]));
   }
 
-  private static Module load(Supplier<Module> moduleSupplier) {
+  private static Module create(Supplier<Module> moduleSupplier) {
     if (MODULE.get() != null) {
       throw ConfigurationExceptions.withMessage("The module has already been uploaded to the application");
     }
@@ -70,14 +70,6 @@ public class Modules {
   public static void unload(Module module) {
     module.stop();
     MODULE.set(null);
-  }
-
-  public static void flare(Class<?>... unitClasses) {
-    try {
-      Modules.load(unitClasses).start();
-    } finally {
-      Modules.unload();
-    }
   }
 
   /**

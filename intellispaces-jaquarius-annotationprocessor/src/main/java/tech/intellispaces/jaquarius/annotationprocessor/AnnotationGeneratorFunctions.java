@@ -1,5 +1,10 @@
 package tech.intellispaces.jaquarius.annotationprocessor;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
 import tech.intellispaces.actions.runnable.RunnableAction;
 import tech.intellispaces.actions.text.StringActions;
 import tech.intellispaces.annotationprocessor.TemplatedJavaArtifactGenerator;
@@ -22,11 +27,6 @@ import tech.intellispaces.reflection.reference.NamedReference;
 import tech.intellispaces.reflection.reference.PrimitiveReference;
 import tech.intellispaces.reflection.reference.PrimitiveReferences;
 import tech.intellispaces.reflection.reference.TypeReference;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 /**
  * Common annotation generator functions.

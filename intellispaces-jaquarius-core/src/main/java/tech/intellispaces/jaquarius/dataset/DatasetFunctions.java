@@ -1,11 +1,11 @@
 package tech.intellispaces.jaquarius.dataset;
 
-import tech.intellispaces.jaquarius.annotation.Dataset;
-import tech.intellispaces.jaquarius.object.reference.ObjectReferenceFunctions;
-
 import java.lang.annotation.Annotation;
 import java.util.HashSet;
 import java.util.Set;
+
+import tech.intellispaces.jaquarius.annotation.Dataset;
+import tech.intellispaces.jaquarius.object.reference.ObjectReferenceFunctions;
 
 public interface DatasetFunctions {
 

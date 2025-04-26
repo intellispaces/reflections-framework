@@ -1,5 +1,12 @@
 package tech.intellispaces.jaquarius.guide;
 
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
 import tech.intellispaces.commons.exception.NotImplementedExceptions;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.commons.type.ClassFunctions;
@@ -52,13 +59,6 @@ import tech.intellispaces.reflection.method.MethodFunctions;
 import tech.intellispaces.reflection.method.MethodStatement;
 import tech.intellispaces.reflection.method.Methods;
 import tech.intellispaces.reflection.reference.TypeReference;
-
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 public final class GuideFunctions {
 

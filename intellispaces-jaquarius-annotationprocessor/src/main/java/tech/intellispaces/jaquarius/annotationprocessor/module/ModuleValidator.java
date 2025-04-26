@@ -1,5 +1,8 @@
 package tech.intellispaces.jaquarius.annotationprocessor.module;
 
+import java.util.List;
+import java.util.Optional;
+
 import tech.intellispaces.annotationprocessor.ArtifactValidator;
 import tech.intellispaces.jaquarius.annotation.Configuration;
 import tech.intellispaces.jaquarius.annotation.Guide;
@@ -17,9 +20,6 @@ import tech.intellispaces.reflection.instance.AnnotationInstance;
 import tech.intellispaces.reflection.method.MethodParam;
 import tech.intellispaces.reflection.method.MethodStatement;
 import tech.intellispaces.reflection.reference.TypeReference;
-
-import java.util.List;
-import java.util.Optional;
 
 /**
  * Module type validator.

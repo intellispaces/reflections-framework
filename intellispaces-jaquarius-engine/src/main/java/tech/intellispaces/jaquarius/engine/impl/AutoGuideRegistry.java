@@ -1,12 +1,12 @@
 package tech.intellispaces.jaquarius.engine.impl;
 
+import java.util.Map;
+import java.util.WeakHashMap;
+
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.commons.object.Objects;
 import tech.intellispaces.commons.type.ClassFunctions;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
-
-import java.util.Map;
-import java.util.WeakHashMap;
 
 class AutoGuideRegistry {
   private final Map<Class<?>, Object> autoGuide = new WeakHashMap<>();

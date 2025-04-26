@@ -1,5 +1,8 @@
 package tech.intellispaces.jaquarius.engine.impl;
 
+import java.util.List;
+import java.util.Optional;
+
 import tech.intellispaces.actions.Action;
 import tech.intellispaces.actions.Actions;
 import tech.intellispaces.actions.supplier.ResettableSupplierAction;
@@ -8,9 +11,6 @@ import tech.intellispaces.jaquarius.system.Injection;
 import tech.intellispaces.jaquarius.system.UnitGuide;
 import tech.intellispaces.jaquarius.system.UnitProjectionDefinition;
 import tech.intellispaces.jaquarius.system.UnitWrapper;
-
-import java.util.List;
-import java.util.Optional;
 
 class Unit implements tech.intellispaces.jaquarius.system.Unit, UnitBroker {
   private boolean main;

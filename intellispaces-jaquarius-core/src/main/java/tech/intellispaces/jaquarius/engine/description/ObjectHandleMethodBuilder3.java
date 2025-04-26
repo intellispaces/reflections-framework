@@ -1,11 +1,11 @@
 package tech.intellispaces.jaquarius.engine.description;
 
+import java.util.List;
+
 import tech.intellispaces.actions.Action;
 import tech.intellispaces.actions.functional.FunctionActions;
 import tech.intellispaces.commons.function.Function3;
 import tech.intellispaces.jaquarius.traverse.TraverseType;
-
-import java.util.List;
 
 public class ObjectHandleMethodBuilder3<H, P1, P2> {
   private final String name;

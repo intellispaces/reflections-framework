@@ -1,5 +1,7 @@
 package tech.intellispaces.jaquarius.annotationprocessor.domain;
 
+import java.util.List;
+
 import tech.intellispaces.actions.runnable.RunnableAction;
 import tech.intellispaces.actions.text.StringActions;
 import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
@@ -10,8 +12,6 @@ import tech.intellispaces.reflection.method.MethodParam;
 import tech.intellispaces.reflection.method.MethodStatement;
 import tech.intellispaces.reflection.reference.NamedReference;
 import tech.intellispaces.reflection.reference.TypeReference;
-
-import java.util.List;
 
 public class DomainChannelGenerator extends AbstractChannelGenerator {
 

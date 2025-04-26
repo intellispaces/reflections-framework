@@ -1,5 +1,20 @@
 package tech.intellispaces.jaquarius.engine.impl;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.IdentityHashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
 import tech.intellispaces.actions.Action;
 import tech.intellispaces.commons.exception.ExceptionFunctions;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
@@ -20,21 +35,6 @@ import tech.intellispaces.jaquarius.system.projection.ProjectionDefinitionBasedO
 import tech.intellispaces.jaquarius.system.projection.ProjectionDefinitionBasedOnProviderClass;
 import tech.intellispaces.jaquarius.system.projection.ProjectionDefinitionKinds;
 import tech.intellispaces.jaquarius.system.projection.ProjectionFunctions;
-
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.IdentityHashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 /**
  * The projection register.

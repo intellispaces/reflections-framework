@@ -1,6 +1,6 @@
 package tech.intellispaces.jaquarius.artifact;
 
-import tech.intellispaces.commons.entity.Enumeration;
+import tech.intellispaces.commons.abstraction.Enumeration;
 import tech.intellispaces.jaquarius.ArtifactType;
 
 /**

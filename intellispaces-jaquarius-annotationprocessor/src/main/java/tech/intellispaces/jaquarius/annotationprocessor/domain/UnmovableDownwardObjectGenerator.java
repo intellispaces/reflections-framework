@@ -1,5 +1,9 @@
 package tech.intellispaces.jaquarius.annotationprocessor.domain;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Stream;
+
 import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
 import tech.intellispaces.commons.collection.ArraysFunctions;
 import tech.intellispaces.commons.exception.NotImplementedExceptions;
@@ -29,10 +33,6 @@ import tech.intellispaces.jaquarius.traverse.TraverseTypes;
 import tech.intellispaces.reflection.customtype.CustomType;
 import tech.intellispaces.reflection.method.MethodStatement;
 import tech.intellispaces.reflection.reference.CustomTypeReference;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Stream;
 
 public class UnmovableDownwardObjectGenerator extends ConversionObjectGenerator {
 

@@ -1,5 +1,11 @@
 package tech.intellispaces.jaquarius.annotationprocessor.dataset;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
 import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
 import tech.intellispaces.commons.collection.ArraysFunctions;
 import tech.intellispaces.jaquarius.annotation.Channel;
@@ -12,12 +18,6 @@ import tech.intellispaces.jaquarius.traverse.TraverseTypes;
 import tech.intellispaces.reflection.customtype.CustomType;
 import tech.intellispaces.reflection.method.MethodStatement;
 import tech.intellispaces.reflection.reference.TypeReference;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 public class DatasetBuilderGenerator extends JaquariusArtifactGenerator {
   private final List<Map<String, String>> projectionProperties = new ArrayList<>();

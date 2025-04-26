@@ -1,5 +1,8 @@
 package tech.intellispaces.jaquarius.engine.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import tech.intellispaces.actions.Action;
 import tech.intellispaces.commons.exception.NotImplementedExceptions;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
@@ -16,9 +19,6 @@ import tech.intellispaces.jaquarius.system.UnitWrapper;
 import tech.intellispaces.jaquarius.system.empty.EmptyModule;
 import tech.intellispaces.jaquarius.system.empty.EmptyModuleWrapper;
 import tech.intellispaces.reflection.method.MethodStatement;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * The module factory.

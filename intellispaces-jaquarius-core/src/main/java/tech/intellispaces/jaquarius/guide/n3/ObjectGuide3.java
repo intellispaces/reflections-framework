@@ -1,5 +1,7 @@
 package tech.intellispaces.jaquarius.guide.n3;
 
+import java.util.stream.Collectors;
+
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.jaquarius.exception.TraverseException;
 import tech.intellispaces.jaquarius.exception.TraverseExceptions;
@@ -8,8 +10,6 @@ import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.system.ObjectHandleWrapper;
 import tech.intellispaces.reflection.method.MethodParam;
 import tech.intellispaces.reflection.method.MethodStatement;
-
-import java.util.stream.Collectors;
 
 abstract class ObjectGuide3<S extends ObjectHandleWrapper, R, Q1, Q2, Q3> implements Guide3<S, R, Q1, Q2, Q3> {
   private final Class<S> objectHandleClass;

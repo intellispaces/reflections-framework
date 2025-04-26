@@ -1,13 +1,13 @@
 package tech.intellispaces.jaquarius.annotationprocessor.dataset;
 
+import java.util.Optional;
+
 import tech.intellispaces.annotationprocessor.ArtifactValidator;
 import tech.intellispaces.jaquarius.annotation.Dataset;
 import tech.intellispaces.jaquarius.annotation.Domain;
 import tech.intellispaces.jaquarius.annotation.Ontology;
 import tech.intellispaces.jaquarius.exception.JaquariusExceptions;
 import tech.intellispaces.reflection.customtype.CustomType;
-
-import java.util.Optional;
 
 /**
  * The dataset type validator.

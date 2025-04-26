@@ -1,7 +1,11 @@
 package tech.intellispaces.jaquarius.engine.impl;
 
+import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import tech.intellispaces.actions.cache.CachedSupplierActions;
 import tech.intellispaces.actions.supplier.SupplierAction;
 import tech.intellispaces.commons.type.Type;
@@ -47,9 +51,6 @@ import tech.intellispaces.jaquarius.traverse.plan.DeclarativeTraversePlan;
 import tech.intellispaces.jaquarius.traverse.plan.TraverseAnalyzer;
 import tech.intellispaces.jaquarius.traverse.plan.TraverseExecutor;
 import tech.intellispaces.jaquarius.traverse.plan.TraversePlan;
-
-import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 class Module implements tech.intellispaces.jaquarius.system.Module {
   private final List<Unit> units;

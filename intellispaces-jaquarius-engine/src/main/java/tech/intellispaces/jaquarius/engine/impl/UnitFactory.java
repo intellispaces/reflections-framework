@@ -1,5 +1,10 @@
 package tech.intellispaces.jaquarius.engine.impl;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+
 import tech.intellispaces.actions.Action;
 import tech.intellispaces.commons.exception.NotImplementedExceptions;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
@@ -26,11 +31,6 @@ import tech.intellispaces.jaquarius.system.injection.ProjectionInjections;
 import tech.intellispaces.jaquarius.system.projection.ProjectionDefinitionBasedOnMethodActions;
 import tech.intellispaces.reflection.method.MethodStatement;
 import tech.intellispaces.reflection.method.Methods;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
 
 /**
  * The unit factory.

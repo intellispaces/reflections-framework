@@ -1,14 +1,14 @@
 package tech.intellispaces.jaquarius.annotationprocessor;
 
+import java.util.List;
+import java.util.Set;
+import javax.lang.model.element.ElementKind;
+
 import tech.intellispaces.annotationprocessor.ArtifactGenerator;
 import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
 import tech.intellispaces.annotationprocessor.ArtifactProcessor;
 import tech.intellispaces.annotationprocessor.ArtifactValidator;
 import tech.intellispaces.reflection.customtype.CustomType;
-
-import javax.lang.model.element.ElementKind;
-import java.util.List;
-import java.util.Set;
 
 public class SampleAnnotatedTypeProcessor extends ArtifactProcessor {
   private CustomType annotatedType;

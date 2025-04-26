@@ -1,5 +1,9 @@
 package tech.intellispaces.jaquarius.annotationprocessor.domain;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.Future;
+
 import tech.intellispaces.annotationprocessor.ArtifactValidator;
 import tech.intellispaces.commons.text.StringFunctions;
 import tech.intellispaces.commons.type.ClassFunctions;
@@ -17,10 +21,6 @@ import tech.intellispaces.reflection.reference.CustomTypeReference;
 import tech.intellispaces.reflection.reference.NotPrimitiveReference;
 import tech.intellispaces.reflection.reference.ReferenceBound;
 import tech.intellispaces.reflection.reference.TypeReference;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.concurrent.Future;
 
 /**
  * The domain type validator.

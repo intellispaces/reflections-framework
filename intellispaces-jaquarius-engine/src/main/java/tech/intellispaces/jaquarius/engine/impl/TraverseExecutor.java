@@ -9,6 +9,7 @@ import tech.intellispaces.jaquarius.guide.n3.Guide3;
 import tech.intellispaces.jaquarius.guide.n4.Guide4;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandle;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
+import tech.intellispaces.jaquarius.traverse.plan.AscendAndExecutePlan1;
 import tech.intellispaces.jaquarius.traverse.plan.CallGuide0Plan;
 import tech.intellispaces.jaquarius.traverse.plan.CallGuide1Plan;
 import tech.intellispaces.jaquarius.traverse.plan.CallGuide2Plan;
@@ -28,7 +29,6 @@ import tech.intellispaces.jaquarius.traverse.plan.MoveObjectHandleThruChannel0Pl
 import tech.intellispaces.jaquarius.traverse.plan.MoveObjectHandleThruChannel1Plan;
 import tech.intellispaces.jaquarius.traverse.plan.MoveObjectHandleThruChannel2Plan;
 import tech.intellispaces.jaquarius.traverse.plan.MoveObjectHandleThruChannel3Plan;
-import tech.intellispaces.jaquarius.traverse.plan.AscendAndExecutePlan1;
 import tech.intellispaces.jaquarius.traverse.plan.TraverseAnalyzer;
 
 class TraverseExecutor implements tech.intellispaces.jaquarius.traverse.plan.TraverseExecutor {

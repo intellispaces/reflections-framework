@@ -1,5 +1,9 @@
 package tech.intellispaces.jaquarius.annotationprocessor;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import javax.lang.model.element.TypeElement;
+
 import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
 import tech.intellispaces.annotationprocessor.TemplatedJavaArtifactGenerator;
 import tech.intellispaces.commons.type.ClassFunctions;
@@ -9,17 +13,13 @@ import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
 import tech.intellispaces.jaquarius.object.reference.MovabilityType;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceFunctions;
-import tech.intellispaces.jaquarius.settings.KeyDomainPurposes;
+import tech.intellispaces.jaquarius.settings.DomainTypes;
 import tech.intellispaces.reflection.customtype.CustomType;
 import tech.intellispaces.reflection.customtype.CustomTypes;
 import tech.intellispaces.reflection.method.MethodParam;
 import tech.intellispaces.reflection.method.MethodSignatureDeclarations;
 import tech.intellispaces.reflection.method.MethodStatement;
 import tech.intellispaces.reflection.reference.TypeReference;
-
-import javax.lang.model.element.TypeElement;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public abstract class JaquariusArtifactGenerator extends TemplatedJavaArtifactGenerator {
 
@@ -28,16 +28,16 @@ public abstract class JaquariusArtifactGenerator extends TemplatedJavaArtifactGe
   }
 
   protected void addHiddenImports(ArtifactGeneratorContext context) {
-    addHiddenImport(Jaquarius.settings().getKeyDomainByPurpose(KeyDomainPurposes.Point).domainName());
-    addHiddenImport(Jaquarius.settings().getKeyDomainByPurpose(KeyDomainPurposes.Boolean).domainName());
-    addHiddenImport(Jaquarius.settings().getKeyDomainByPurpose(KeyDomainPurposes.String).domainName());
-    addHiddenImport(Jaquarius.settings().getKeyDomainByPurpose(KeyDomainPurposes.Number).domainName());
-    addHiddenImport(Jaquarius.settings().getKeyDomainByPurpose(KeyDomainPurposes.Byte).domainName());
-    addHiddenImport(Jaquarius.settings().getKeyDomainByPurpose(KeyDomainPurposes.Short).domainName());
-    addHiddenImport(Jaquarius.settings().getKeyDomainByPurpose(KeyDomainPurposes.Integer).domainName());
-    addHiddenImport(Jaquarius.settings().getKeyDomainByPurpose(KeyDomainPurposes.Long).domainName());
-    addHiddenImport(Jaquarius.settings().getKeyDomainByPurpose(KeyDomainPurposes.Float).domainName());
-    addHiddenImport(Jaquarius.settings().getKeyDomainByPurpose(KeyDomainPurposes.Double).domainName());
+    addHiddenImport(Jaquarius.ontologyDescription().getDomainByType(DomainTypes.Point).domainName());
+    addHiddenImport(Jaquarius.ontologyDescription().getDomainByType(DomainTypes.Boolean).domainName());
+    addHiddenImport(Jaquarius.ontologyDescription().getDomainByType(DomainTypes.String).domainName());
+    addHiddenImport(Jaquarius.ontologyDescription().getDomainByType(DomainTypes.Number).domainName());
+    addHiddenImport(Jaquarius.ontologyDescription().getDomainByType(DomainTypes.Byte).domainName());
+    addHiddenImport(Jaquarius.ontologyDescription().getDomainByType(DomainTypes.Short).domainName());
+    addHiddenImport(Jaquarius.ontologyDescription().getDomainByType(DomainTypes.Integer).domainName());
+    addHiddenImport(Jaquarius.ontologyDescription().getDomainByType(DomainTypes.Long).domainName());
+    addHiddenImport(Jaquarius.ontologyDescription().getDomainByType(DomainTypes.Float).domainName());
+    addHiddenImport(Jaquarius.ontologyDescription().getDomainByType(DomainTypes.Double).domainName());
 
     context.initialRoundEnvironment().getElementsAnnotatedWith(Domain.class).stream()
         .map(e -> CustomTypes.of((TypeElement) e))

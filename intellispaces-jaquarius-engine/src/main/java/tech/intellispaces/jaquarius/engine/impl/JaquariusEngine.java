@@ -1,6 +1,12 @@
 package tech.intellispaces.jaquarius.engine.impl;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+
 import com.google.auto.service.AutoService;
+
 import tech.intellispaces.actions.Action;
 import tech.intellispaces.actions.Action0;
 import tech.intellispaces.actions.Action1;
@@ -35,11 +41,6 @@ import tech.intellispaces.jaquarius.system.Module;
 import tech.intellispaces.jaquarius.system.UnitWrapper;
 import tech.intellispaces.jaquarius.system.injection.AutoGuideInjections;
 import tech.intellispaces.jaquarius.system.injection.GuideInjections;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
 
 @AutoService(tech.intellispaces.jaquarius.engine.JaquariusEngine.class)
 public class JaquariusEngine implements tech.intellispaces.jaquarius.engine.JaquariusEngine {

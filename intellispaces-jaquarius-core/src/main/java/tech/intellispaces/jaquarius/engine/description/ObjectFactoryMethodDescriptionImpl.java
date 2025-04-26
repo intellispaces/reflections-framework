@@ -1,9 +1,9 @@
 package tech.intellispaces.jaquarius.engine.description;
 
+import java.util.List;
+
 import tech.intellispaces.actions.Action;
 import tech.intellispaces.commons.type.Type;
-
-import java.util.List;
 
 public class ObjectFactoryMethodDescriptionImpl implements ObjectFactoryMethodDescription {
   private final Object objectFactory;

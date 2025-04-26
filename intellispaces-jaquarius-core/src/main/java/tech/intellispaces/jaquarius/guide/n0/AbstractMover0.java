@@ -1,13 +1,13 @@
 package tech.intellispaces.jaquarius.guide.n0;
 
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+
 import tech.intellispaces.commons.exception.WrappedExceptions;
 import tech.intellispaces.jaquarius.exception.TraverseException;
 import tech.intellispaces.jaquarius.exception.TraverseExceptions;
 import tech.intellispaces.jaquarius.guide.GuideKind;
 import tech.intellispaces.jaquarius.guide.GuideKinds;
-
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 
 public interface AbstractMover0<S> extends Mover0<S> {
 

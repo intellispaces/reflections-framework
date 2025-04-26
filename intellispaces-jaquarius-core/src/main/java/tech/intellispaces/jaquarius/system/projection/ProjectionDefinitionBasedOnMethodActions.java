@@ -1,8 +1,8 @@
 package tech.intellispaces.jaquarius.system.projection;
 
-import tech.intellispaces.actions.Action;
-
 import java.util.List;
+
+import tech.intellispaces.actions.Action;
 
 public interface ProjectionDefinitionBasedOnMethodActions {
 

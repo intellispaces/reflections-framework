@@ -1,11 +1,11 @@
 package tech.intellispaces.jaquarius.annotationprocessor.object.handle;
 
+import java.util.List;
+
 import tech.intellispaces.annotationprocessor.ArtifactGenerator;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceFunctions;
 import tech.intellispaces.reflection.customtype.CustomType;
-
-import java.util.List;
 
 public interface ObjectHandleProcessorFunctions {
 

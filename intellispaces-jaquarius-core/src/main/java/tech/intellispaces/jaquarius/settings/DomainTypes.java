@@ -1,8 +1,8 @@
 package tech.intellispaces.jaquarius.settings;
 
-import tech.intellispaces.commons.entity.Enumeration;
+import tech.intellispaces.commons.abstraction.Enumeration;
 
-public enum KeyDomainPurposes implements Enumeration<KeyDomainPurpose>, KeyDomainPurpose {
+public enum DomainTypes implements Enumeration<DomainType>, DomainType {
 
   /**
    * The domain of points.
@@ -71,7 +71,7 @@ public enum KeyDomainPurposes implements Enumeration<KeyDomainPurpose>, KeyDomai
 
   private final String delegateClassName;
 
-  KeyDomainPurposes(java.lang.String delegateClassName) {
+  DomainTypes(java.lang.String delegateClassName) {
     this.delegateClassName = delegateClassName;
   }
 

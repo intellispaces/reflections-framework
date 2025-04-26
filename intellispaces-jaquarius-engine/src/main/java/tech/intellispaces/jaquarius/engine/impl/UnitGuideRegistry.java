@@ -1,13 +1,13 @@
 package tech.intellispaces.jaquarius.engine.impl;
 
-import tech.intellispaces.jaquarius.guide.Guide;
-import tech.intellispaces.jaquarius.guide.GuideKind;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import tech.intellispaces.jaquarius.guide.Guide;
+import tech.intellispaces.jaquarius.guide.GuideKind;
 
 class UnitGuideRegistry {
   private final Map<String, List<Guide<?, ?>>> mapperGuides = new HashMap<>();

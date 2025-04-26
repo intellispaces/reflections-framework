@@ -1,6 +1,12 @@
 package tech.intellispaces.jaquarius.annotationprocessor.guide;
 
+import java.util.List;
+import java.util.Set;
+import javax.annotation.processing.Processor;
+import javax.lang.model.element.ElementKind;
+
 import com.google.auto.service.AutoService;
+
 import tech.intellispaces.annotationprocessor.ArtifactGenerator;
 import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
 import tech.intellispaces.annotationprocessor.ArtifactProcessor;
@@ -10,11 +16,6 @@ import tech.intellispaces.jaquarius.annotationprocessor.AnnotationFunctions;
 import tech.intellispaces.jaquarius.annotationprocessor.JaquariusArtifactProcessor;
 import tech.intellispaces.jaquarius.annotationprocessor.module.UnitWrapperGenerator;
 import tech.intellispaces.reflection.customtype.CustomType;
-
-import javax.annotation.processing.Processor;
-import javax.lang.model.element.ElementKind;
-import java.util.List;
-import java.util.Set;
 
 @AutoService(Processor.class)
 public class GuideProcessor extends ArtifactProcessor {

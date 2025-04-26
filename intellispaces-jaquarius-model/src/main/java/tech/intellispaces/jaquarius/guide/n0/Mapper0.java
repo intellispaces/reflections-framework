@@ -1,5 +1,8 @@
 package tech.intellispaces.jaquarius.guide.n0;
 
+import java.util.function.BiFunction;
+import java.util.function.Function;
+
 import tech.intellispaces.jaquarius.exception.TraverseException;
 import tech.intellispaces.jaquarius.guide.Mapper;
 import tech.intellispaces.jaquarius.guide.n1.Mapper1;
@@ -7,9 +10,6 @@ import tech.intellispaces.jaquarius.guide.n2.Mapper2;
 import tech.intellispaces.jaquarius.guide.n3.Mapper3;
 import tech.intellispaces.jaquarius.guide.n4.Mapper4;
 import tech.intellispaces.jaquarius.guide.n5.Mapper5;
-
-import java.util.function.BiFunction;
-import java.util.function.Function;
 
 /**
  * Mapper guide without qualifiers.

@@ -1,10 +1,10 @@
 package tech.intellispaces.jaquarius.engine.impl;
 
+import java.util.List;
+
 import tech.intellispaces.actions.Action;
 import tech.intellispaces.jaquarius.engine.description.ObjectHandleMethodDescription;
 import tech.intellispaces.jaquarius.system.Injection;
-
-import java.util.List;
 
 public class ObjectHandleTypeDescription implements tech.intellispaces.jaquarius.engine.description.ObjectHandleTypeDescription {
   private final Class<?> objctHandleClass;

@@ -1,15 +1,15 @@
 package tech.intellispaces.jaquarius.annotationprocessor.object.factory;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import tech.intellispaces.annotationprocessor.Artifact;
 import tech.intellispaces.annotationprocessor.ArtifactGenerator;
 import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
 import tech.intellispaces.annotationprocessor.ArtifactImpl;
 import tech.intellispaces.annotationprocessor.ArtifactKinds;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 public class ObjectFactoryMetaInfGenerator implements ArtifactGenerator {
   private final List<String> objectFactories = new ArrayList<>();

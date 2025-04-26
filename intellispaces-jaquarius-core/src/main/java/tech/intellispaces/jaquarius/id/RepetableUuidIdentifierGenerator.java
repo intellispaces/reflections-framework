@@ -1,10 +1,10 @@
 package tech.intellispaces.jaquarius.id;
 
-import tech.intellispaces.commons.data.UuidFunctions;
-
 import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.util.UUID;
+
+import tech.intellispaces.commons.data.UuidFunctions;
 
 public class RepetableUuidIdentifierGenerator implements IdentifierGenerator {
   private final byte[] bytes = new byte[16];

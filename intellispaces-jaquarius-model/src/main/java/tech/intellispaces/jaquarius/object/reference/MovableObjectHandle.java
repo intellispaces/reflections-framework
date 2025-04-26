@@ -1,13 +1,13 @@
 package tech.intellispaces.jaquarius.object.reference;
 
+import java.util.List;
+
 import tech.intellispaces.jaquarius.channel.Channel0;
 import tech.intellispaces.jaquarius.channel.Channel1;
 import tech.intellispaces.jaquarius.channel.ChannelFunction0;
 import tech.intellispaces.jaquarius.channel.ChannelFunction1;
 import tech.intellispaces.jaquarius.exception.TraverseException;
 import tech.intellispaces.jaquarius.traverse.MappingOfMovingTraverse;
-
-import java.util.List;
 
 /**
  * The handle of the movable object.<p/>

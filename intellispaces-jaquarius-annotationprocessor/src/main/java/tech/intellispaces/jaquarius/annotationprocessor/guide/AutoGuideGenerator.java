@@ -1,5 +1,9 @@
 package tech.intellispaces.jaquarius.annotationprocessor.guide;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import tech.intellispaces.actions.Action;
 import tech.intellispaces.actions.cache.CachedSupplierActions;
 import tech.intellispaces.actions.delegate.DelegateActions;
@@ -19,10 +23,6 @@ import tech.intellispaces.reflection.customtype.CustomType;
 import tech.intellispaces.reflection.method.MethodParam;
 import tech.intellispaces.reflection.method.MethodStatement;
 import tech.intellispaces.reflection.reference.TypeReference;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class AutoGuideGenerator extends JaquariusArtifactGenerator {
   private List<Map<String, Object>> guideMethods;

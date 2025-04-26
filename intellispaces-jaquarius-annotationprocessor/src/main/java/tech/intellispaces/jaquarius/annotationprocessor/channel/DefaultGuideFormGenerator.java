@@ -1,5 +1,9 @@
 package tech.intellispaces.jaquarius.annotationprocessor.channel;
 
+import java.util.List;
+import java.util.Objects;
+import java.util.function.Function;
+
 import tech.intellispaces.actions.runnable.RunnableAction;
 import tech.intellispaces.actions.text.StringActions;
 import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
@@ -48,10 +52,6 @@ import tech.intellispaces.reflection.reference.PrimitiveReference;
 import tech.intellispaces.reflection.reference.ReferenceBound;
 import tech.intellispaces.reflection.reference.TypeReference;
 import tech.intellispaces.reflection.reference.Wildcards;
-
-import java.util.List;
-import java.util.Objects;
-import java.util.function.Function;
 
 public class DefaultGuideFormGenerator extends JaquariusArtifactGenerator {
   private final ObjectReferenceForm targetForm;

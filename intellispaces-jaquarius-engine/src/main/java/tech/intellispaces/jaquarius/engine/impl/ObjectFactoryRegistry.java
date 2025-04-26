@@ -1,5 +1,14 @@
 package tech.intellispaces.jaquarius.engine.impl;
 
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 import tech.intellispaces.actions.Action;
 import tech.intellispaces.actions.Action0;
 import tech.intellispaces.actions.Action1;
@@ -24,15 +33,6 @@ import tech.intellispaces.jaquarius.engine.description.ObjectFactoryMethodDescri
 import tech.intellispaces.jaquarius.exception.ConfigurationExceptions;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
 import tech.intellispaces.jaquarius.object.factory.ObjectFactoryFunctions;
-
-import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 class ObjectFactoryRegistry {
   private boolean isLoaded;

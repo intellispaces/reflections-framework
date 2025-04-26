@@ -1,10 +1,11 @@
 package tech.intellispaces.jaquarius.guide;
 
+import java.lang.reflect.Method;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import tech.intellispaces.reflection.method.MethodStatement;
 
-import java.lang.reflect.Method;
+import tech.intellispaces.reflection.method.MethodStatement;
 
 public final class GuideLogger {
   private static final Logger LOG = LoggerFactory.getLogger(GuideLogger.class);

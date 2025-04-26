@@ -1,7 +1,15 @@
 package tech.intellispaces.jaquarius.object.reference;
 
+import java.lang.reflect.Constructor;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.function.Function;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import tech.intellispaces.actions.runnable.RunnableAction;
 import tech.intellispaces.actions.text.StringActions;
 import tech.intellispaces.commons.exception.NotImplementedExceptions;
@@ -17,8 +25,8 @@ import tech.intellispaces.jaquarius.annotation.ObjectHandle;
 import tech.intellispaces.jaquarius.annotation.Unmovable;
 import tech.intellispaces.jaquarius.annotation.Wrapper;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
-import tech.intellispaces.jaquarius.settings.KeyDomain;
-import tech.intellispaces.jaquarius.settings.KeyDomainPurposes;
+import tech.intellispaces.jaquarius.settings.DomainDescription;
+import tech.intellispaces.jaquarius.settings.DomainTypes;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
 import tech.intellispaces.reflection.JavaStatements;
 import tech.intellispaces.reflection.customtype.AnnotationFunctions;
@@ -33,13 +41,6 @@ import tech.intellispaces.reflection.reference.NotPrimitiveReference;
 import tech.intellispaces.reflection.reference.ReferenceBound;
 import tech.intellispaces.reflection.reference.TypeReference;
 import tech.intellispaces.reflection.reference.WildcardReference;
-
-import java.lang.reflect.Constructor;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.function.Function;
 
 public class ObjectReferenceFunctions {
   private static final Logger LOG = LoggerFactory.getLogger(ObjectReferenceFunctions.class);
@@ -536,8 +537,8 @@ public class ObjectReferenceFunctions {
 
   public static Class<?> propertiesHandleClass() {
     if (propertiesHandleClass == null) {
-      KeyDomain keyDomain = Jaquarius.settings().getKeyDomainByPurpose(KeyDomainPurposes.Properties);
-      String domainClassName = NameConventionFunctions.convertToDomainClassName(keyDomain.domainName());
+      DomainDescription domainDescription = Jaquarius.ontologyDescription().getDomainByType(DomainTypes.Properties);
+      String domainClassName = NameConventionFunctions.convertToDomainClassName(domainDescription.domainName());
       String handleClassName = NameConventionFunctions.getGeneralRegularObjectTypename(domainClassName);
       propertiesHandleClass = ClassFunctions.getClass(handleClassName).orElseThrow(() ->
           UnexpectedExceptions.withMessage("Could not get class {0}", handleClassName)

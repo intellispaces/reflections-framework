@@ -1,6 +1,6 @@
 package tech.intellispaces.jaquarius.traverse.plan;
 
-import tech.intellispaces.commons.entity.Enumeration;
+import tech.intellispaces.commons.abstraction.Enumeration;
 
 public enum TraversePlanTypes implements TraversePlanType, Enumeration<TraversePlanType> {
 

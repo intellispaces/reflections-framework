@@ -1,5 +1,9 @@
 package tech.intellispaces.jaquarius.annotationprocessor.domain;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Stream;
+
 import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
 import tech.intellispaces.jaquarius.ArtifactType;
 import tech.intellispaces.jaquarius.annotation.Movable;
@@ -26,10 +30,6 @@ import tech.intellispaces.reflection.method.MethodStatement;
 import tech.intellispaces.reflection.reference.CustomTypeReference;
 import tech.intellispaces.reflection.reference.CustomTypeReferences;
 import tech.intellispaces.reflection.reference.TypeReference;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Stream;
 
 public class MovableRegularObjectGenerator extends AbstractRegularObjectGenerator {
 

@@ -1,5 +1,9 @@
 package tech.intellispaces.jaquarius.annotationprocessor.domain;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Stream;
+
 import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.jaquarius.ArtifactType;
@@ -20,10 +24,6 @@ import tech.intellispaces.reflection.customtype.CustomType;
 import tech.intellispaces.reflection.method.MethodStatement;
 import tech.intellispaces.reflection.reference.CustomTypeReference;
 import tech.intellispaces.reflection.reference.TypeReference;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Stream;
 
 public class UnmovableRegularObjectGenerator extends AbstractRegularObjectGenerator {
 

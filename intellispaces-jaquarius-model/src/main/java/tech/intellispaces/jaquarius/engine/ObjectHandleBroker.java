@@ -1,11 +1,11 @@
 package tech.intellispaces.jaquarius.engine;
 
+import java.util.List;
+
 import tech.intellispaces.actions.Action;
 import tech.intellispaces.jaquarius.engine.description.ObjectHandleTypeDescription;
 import tech.intellispaces.jaquarius.object.reference.ObjectHandle;
 import tech.intellispaces.jaquarius.system.Injection;
-
-import java.util.List;
 
 /**
  * The object handle broker.

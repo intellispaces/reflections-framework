@@ -1,8 +1,8 @@
 package tech.intellispaces.jaquarius.engine;
 
-import tech.intellispaces.commons.exception.UnexpectedExceptions;
-
 import java.util.ServiceLoader;
+
+import tech.intellispaces.commons.exception.UnexpectedExceptions;
 
 public class JaquariusEngines {
   private static JaquariusEngine ENGINE = null;

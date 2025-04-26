@@ -1,5 +1,9 @@
 package tech.intellispaces.jaquarius.annotationprocessor.object.factory;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
 import tech.intellispaces.jaquarius.annotationprocessor.JaquariusArtifactGenerator;
 import tech.intellispaces.jaquarius.engine.ObjectFactoryWrapper;
@@ -10,10 +14,6 @@ import tech.intellispaces.jaquarius.object.reference.ObjectReferenceFunctions;
 import tech.intellispaces.reflection.customtype.CustomType;
 import tech.intellispaces.reflection.method.MethodParam;
 import tech.intellispaces.reflection.method.MethodStatement;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 public class ObjectFactoryWrapperGenerator extends JaquariusArtifactGenerator {
   private final ObjectFactoryMetaInfGenerator metaInfGenerator;

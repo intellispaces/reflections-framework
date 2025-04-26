@@ -1,13 +1,13 @@
 package tech.intellispaces.jaquarius.system.projection;
 
+import java.lang.reflect.Method;
+import java.util.List;
+
 import tech.intellispaces.actions.Action;
 import tech.intellispaces.commons.exception.NotImplementedExceptions;
 import tech.intellispaces.jaquarius.system.ProjectionDefinitionKind;
 import tech.intellispaces.jaquarius.system.ProjectionReference;
 import tech.intellispaces.jaquarius.system.UnitProjectionDefinition;
-
-import java.lang.reflect.Method;
-import java.util.List;
 
 public class ProjectionDefinitionBasedOnMethodAction implements UnitProjectionDefinition {
   private final Class<?> unitClass;

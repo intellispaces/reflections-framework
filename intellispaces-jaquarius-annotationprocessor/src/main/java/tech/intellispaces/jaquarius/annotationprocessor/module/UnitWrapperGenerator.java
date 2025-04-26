@@ -1,5 +1,12 @@
 package tech.intellispaces.jaquarius.annotationprocessor.module;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import tech.intellispaces.actions.runnable.RunnableAction;
 import tech.intellispaces.actions.text.StringActions;
 import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
@@ -34,13 +41,6 @@ import tech.intellispaces.reflection.method.MethodStatement;
 import tech.intellispaces.reflection.method.Methods;
 import tech.intellispaces.reflection.reference.NamedReference;
 import tech.intellispaces.reflection.reference.TypeReference;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class UnitWrapperGenerator extends JaquariusArtifactGenerator {
   private String typeParamsFullDeclaration;

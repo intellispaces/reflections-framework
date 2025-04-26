@@ -1,5 +1,7 @@
 package tech.intellispaces.jaquarius.annotationprocessor.customizer;
 
+import java.util.Optional;
+
 import tech.intellispaces.annotationprocessor.ArtifactValidator;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.commons.type.ClassNameFunctions;
@@ -12,8 +14,6 @@ import tech.intellispaces.jaquarius.exception.JaquariusExceptions;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
 import tech.intellispaces.reflection.customtype.CustomType;
 import tech.intellispaces.reflection.instance.AnnotationInstance;
-
-import java.util.Optional;
 
 /**
  * The channel type validator.

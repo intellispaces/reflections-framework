@@ -1,5 +1,7 @@
 package tech.intellispaces.jaquarius.annotationprocessor.object.handle;
 
+import java.util.List;
+
 import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
 import tech.intellispaces.commons.exception.NotImplementedExceptions;
 import tech.intellispaces.commons.type.PrimitiveFunctions;
@@ -40,8 +42,6 @@ import tech.intellispaces.reflection.customtype.CustomType;
 import tech.intellispaces.reflection.method.MethodStatement;
 import tech.intellispaces.reflection.reference.CustomTypeReferences;
 import tech.intellispaces.reflection.reference.TypeReference;
-
-import java.util.List;
 
 public class MovableObjectWrapperGenerator extends AbstractObjectWrapperGenerator {
 

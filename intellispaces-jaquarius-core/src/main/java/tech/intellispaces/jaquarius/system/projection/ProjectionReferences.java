@@ -1,8 +1,8 @@
 package tech.intellispaces.jaquarius.system.projection;
 
-import tech.intellispaces.jaquarius.system.ProjectionReference;
-
 import java.util.List;
+
+import tech.intellispaces.jaquarius.system.ProjectionReference;
 
 public interface ProjectionReferences {
 

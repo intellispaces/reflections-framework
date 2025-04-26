@@ -1,16 +1,17 @@
 package tech.intellispaces.jaquarius.annotationprocessor.module;
 
+import javax.tools.JavaFileObject;
+
 import com.google.testing.compile.Compilation;
 import com.google.testing.compile.CompilationSubject;
 import com.google.testing.compile.Compiler;
 import com.google.testing.compile.JavaFileObjects;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+
 import tech.intellispaces.jaquarius.annotationprocessor.SampleAnnotatedTypeProcessor;
 import tech.intellispaces.jaquarius.exception.JaquariusException;
 import tech.intellispaces.reflection.customtype.CustomType;
-
-import javax.tools.JavaFileObject;
 
 /**
  * Tests for {@link ModuleValidator} class.

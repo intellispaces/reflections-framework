@@ -1,5 +1,9 @@
 package tech.intellispaces.jaquarius.engine.description;
 
+import java.util.List;
+import java.util.function.BiFunction;
+import java.util.function.Function;
+
 import tech.intellispaces.actions.functional.FunctionActions;
 import tech.intellispaces.commons.function.Function10;
 import tech.intellispaces.commons.function.Function3;
@@ -10,10 +14,6 @@ import tech.intellispaces.commons.function.Function7;
 import tech.intellispaces.commons.function.Function8;
 import tech.intellispaces.commons.function.Function9;
 import tech.intellispaces.commons.type.Type;
-
-import java.util.List;
-import java.util.function.BiFunction;
-import java.util.function.Function;
 
 public interface ObjectFactoryMethods {
 

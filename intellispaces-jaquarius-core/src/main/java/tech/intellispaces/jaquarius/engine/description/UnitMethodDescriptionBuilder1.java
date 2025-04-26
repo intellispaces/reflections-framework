@@ -1,10 +1,10 @@
 package tech.intellispaces.jaquarius.engine.description;
 
-import tech.intellispaces.actions.functional.FunctionActions;
-
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
+
+import tech.intellispaces.actions.functional.FunctionActions;
 
 public class UnitMethodDescriptionBuilder1<U, P> extends BaseUnitMethodDescriptionBuilder<UnitMethodDescriptionBuilder1<U, P>> {
   private final U unit;

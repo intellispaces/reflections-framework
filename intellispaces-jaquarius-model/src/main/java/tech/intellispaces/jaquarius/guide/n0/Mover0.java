@@ -1,5 +1,7 @@
 package tech.intellispaces.jaquarius.guide.n0;
 
+import java.util.function.Consumer;
+
 import tech.intellispaces.jaquarius.exception.TraverseException;
 import tech.intellispaces.jaquarius.guide.Mover;
 import tech.intellispaces.jaquarius.guide.n1.Mover1;
@@ -7,8 +9,6 @@ import tech.intellispaces.jaquarius.guide.n2.Mover2;
 import tech.intellispaces.jaquarius.guide.n3.Mover3;
 import tech.intellispaces.jaquarius.guide.n4.Mover4;
 import tech.intellispaces.jaquarius.guide.n5.Mover5;
-
-import java.util.function.Consumer;
 
 /**
  * Mover guide without qualifiers.

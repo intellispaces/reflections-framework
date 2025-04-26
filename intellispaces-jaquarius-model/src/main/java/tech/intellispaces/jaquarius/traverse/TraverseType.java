@@ -1,6 +1,6 @@
 package tech.intellispaces.jaquarius.traverse;
 
-import tech.intellispaces.commons.entity.Enumerable;
+import tech.intellispaces.commons.abstraction.Enumerable;
 
 /**
  * The traverse type.

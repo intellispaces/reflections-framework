@@ -1,5 +1,8 @@
 package tech.intellispaces.jaquarius.engine.impl;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import tech.intellispaces.commons.exception.NotImplementedExceptions;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.jaquarius.guide.Guide;
@@ -14,6 +17,7 @@ import tech.intellispaces.jaquarius.object.reference.ObjectHandle;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceFunctions;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
+import tech.intellispaces.jaquarius.traverse.plan.AscendAndExecutePlan1Impl;
 import tech.intellispaces.jaquarius.traverse.plan.CallGuide0PlanImpl;
 import tech.intellispaces.jaquarius.traverse.plan.CallGuide1PlanImpl;
 import tech.intellispaces.jaquarius.traverse.plan.CallGuide2PlanImpl;
@@ -47,12 +51,8 @@ import tech.intellispaces.jaquarius.traverse.plan.MoveObjectHandleThruChannel2Pl
 import tech.intellispaces.jaquarius.traverse.plan.MoveObjectHandleThruChannel3Plan;
 import tech.intellispaces.jaquarius.traverse.plan.MoveObjectHandleThruChannel3PlanImpl;
 import tech.intellispaces.jaquarius.traverse.plan.ObjectHandleTraversePlan;
-import tech.intellispaces.jaquarius.traverse.plan.AscendAndExecutePlan1Impl;
 import tech.intellispaces.jaquarius.traverse.plan.TraversePlanType;
 import tech.intellispaces.jaquarius.traverse.plan.TraversePlanTypes;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 class TraverseAnalyzer implements tech.intellispaces.jaquarius.traverse.plan.TraverseAnalyzer {
   private final GuideRegistry guideRegistry;

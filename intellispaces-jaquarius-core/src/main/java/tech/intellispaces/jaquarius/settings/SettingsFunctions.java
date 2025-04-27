@@ -20,133 +20,134 @@ import tech.intellispaces.commons.text.StringFunctions;
 
 public class SettingsFunctions {
 
-  public static PropertiesSet loadOntologyDescriptionProps(String baseDirectory) throws IOException {
-    var path = Paths.get(baseDirectory, "src/main/resources/META-INF/jaquarius/ontology.description");
+  public static OntologyReferences loadOntologyReferences(String baseDirectory) throws IOException {
+    var path = Paths.get(baseDirectory, "src/main/resources/META-INF/jaquarius/ontology.references");
     String source = Files.readString(path, StandardCharsets.UTF_8);
-    return PropertiesSets.parseProperties(source, "");
+    PropertiesSet props = PropertiesSets.parseProperties(source, "");
+    return parseOntologyProps(props);
   }
 
-  public static List<PropertiesSet> loadOntologyDescriptionProps(ClassLoader classLoader) throws IOException {
-    Enumeration<URL> enumeration = classLoader.getResources("META-INF/jaquarius/ontology.description");
+  public static List<OntologyReferences> loadOntologyReferences(ClassLoader classLoader) throws IOException {
+    Enumeration<URL> enumeration = classLoader.getResources("META-INF/jaquarius/ontology.references");
     List<URL> urls = CollectionFunctions.toList(enumeration);
-    List<PropertiesSet> properties = CollectionFunctions.mapEach(urls, url -> PropertiesSets.parseProperties(
+    List<PropertiesSet> propsList = CollectionFunctions.mapEach(urls, url -> PropertiesSets.parseProperties(
         ResourceFunctions.readResourceAsString(url), ""));
-    return properties;
+    return CollectionFunctions.mapEach(propsList, SettingsFunctions::parseOntologyProps);
   }
 
-  public static OntologyDescription parseOntologyDescription(PropertiesSet props) {
-    var keyDomains = new ArrayList<DomainDescription>();
-    var keyChannels = new ArrayList<ChannelDescription>();
-    props.propertiesNames().forEach(
-        propertyName -> parseProperty(props, propertyName, keyDomains, keyChannels)
-    );
-    return new OntologyDescriptionImpl(keyDomains, keyChannels);
-  }
-
-  public static OntologyDescription mergeOntologyDescriptions(List<OntologyDescription> ontologyDescriptions) {
+  public static OntologyReferences mergeOntologyReferences(List<OntologyReferences> ontologyReferences) {
     Set<DomainType> domainTypes = new HashSet<>();
     Set<ChannelType> channelTypes = new HashSet<>();
-    List<DomainDescription> domains = new ArrayList<>();
-    List<ChannelDescription> channels = new ArrayList<>();
-    for (OntologyDescription ontology : ontologyDescriptions) {
-      for (DomainDescription domain : ontology.getDomains()) {
+    List<DomainReference> domains = new ArrayList<>();
+    List<ChannelReference> channels = new ArrayList<>();
+    for (OntologyReferences ontology : ontologyReferences) {
+      for (DomainReference domain : ontology.getDomains()) {
         if (!domainTypes.add(domain.type())) {
           throw UnexpectedExceptions.withMessage("Domain type {0} is already registered", domain.type().name());
         }
         domains.add(domain);
       }
-      for (ChannelDescription channel : ontology.getChannels()) {
+      for (ChannelReference channel : ontology.getChannels()) {
         if (!channelTypes.add(channel.type())) {
           throw UnexpectedExceptions.withMessage("Channel type {0} is already registered", channel.type().name());
         }
         channels.add(channel);
       }
     }
-    return new OntologyDescriptionImpl(domains, channels);
+    return new OntologyReferencesImpl(domains, channels);
+  }
+
+  static OntologyReferences parseOntologyProps(PropertiesSet props) {
+    var keyDomains = new ArrayList<DomainReference>();
+    var keyChannels = new ArrayList<ChannelReference>();
+    props.propertiesNames().forEach(
+        propertyName -> parseProperty(props, propertyName, keyDomains, keyChannels)
+    );
+    return new OntologyReferencesImpl(keyDomains, keyChannels);
   }
 
   static void parseProperty(
       PropertiesSet props,
       String propertyName,
-      List<DomainDescription> domainDescriptions,
-      List<ChannelDescription> channelDescriptions
+      List<DomainReference> domainReferences,
+      List<ChannelReference> channelReferences
   ) {
     switch (propertyName.trim()) {
-      case "point.domain.name":
-        domainDescriptions.add(parseDomain(props, propertyName, DomainTypes.Point));
+      case "notion.domainName":
+        domainReferences.add(parseDomain(props, propertyName, DomainTypes.Notion));
         break;
-      case "domain.domain.name":
-        domainDescriptions.add(parseDomain(props, propertyName, DomainTypes.Domain));
+      case "domain.domainName":
+        domainReferences.add(parseDomain(props, propertyName, DomainTypes.Domain));
         break;
-      case "boolean.domain.name":
-        domainDescriptions.add(parseDomain(props, propertyName, DomainTypes.Boolean));
+      case "boolean.domainName":
+        domainReferences.add(parseDomain(props, propertyName, DomainTypes.Boolean));
         break;
-      case "string.domain.name":
-        domainDescriptions.add(parseDomain(props, propertyName, DomainTypes.String));
+      case "string.domainName":
+        domainReferences.add(parseDomain(props, propertyName, DomainTypes.String));
         break;
-      case "number.domain.name":
-        domainDescriptions.add(parseDomain(props, propertyName, DomainTypes.Number));
+      case "number.domainName":
+        domainReferences.add(parseDomain(props, propertyName, DomainTypes.Number));
         break;
-      case "byte.domain.name":
-        domainDescriptions.add(parseDomain(props, propertyName, DomainTypes.Byte));
+      case "byte.domainName":
+        domainReferences.add(parseDomain(props, propertyName, DomainTypes.Byte));
         break;
-      case "short.domain.name":
-        domainDescriptions.add(parseDomain(props, propertyName, DomainTypes.Short));
+      case "short.domainName":
+        domainReferences.add(parseDomain(props, propertyName, DomainTypes.Short));
         break;
-      case "integer.domain.name":
-        domainDescriptions.add(parseDomain(props, propertyName, DomainTypes.Integer));
+      case "integer.domainName":
+        domainReferences.add(parseDomain(props, propertyName, DomainTypes.Integer));
         break;
-      case "long.domain.name":
-        domainDescriptions.add(parseDomain(props, propertyName, DomainTypes.Long));
+      case "long.domainName":
+        domainReferences.add(parseDomain(props, propertyName, DomainTypes.Long));
         break;
-      case "float.domain.name":
-        domainDescriptions.add(parseDomain(props, propertyName, DomainTypes.Float));
+      case "float.domainName":
+        domainReferences.add(parseDomain(props, propertyName, DomainTypes.Float));
         break;
-      case "double.domain.name":
-        domainDescriptions.add(parseDomain(props, propertyName, DomainTypes.Double));
+      case "double.domainName":
+        domainReferences.add(parseDomain(props, propertyName, DomainTypes.Double));
         break;
-      case "properties.domain.name":
-        domainDescriptions.add(parseDomain(props, propertyName, DomainTypes.Properties));
+      case "propertiesSet.domainName":
+        domainReferences.add(parseDomain(props, propertyName, DomainTypes.PropertiesSet));
         break;
-      case "dataset.domain.name":
-        domainDescriptions.add(parseDomain(props, propertyName, DomainTypes.Dataset));
+      case "dataset.domainName":
+        domainReferences.add(parseDomain(props, propertyName, DomainTypes.Dataset));
         break;
-      case "pointToDomain.channel.alias":
-        channelDescriptions.add(parseChannel(props, "pointToDomain.channel", ChannelTypes.PointToDomain));
+      case "notionToDomain.channelAlias":
+        channelReferences.add(parseChannel(props, "notionToDomain.channel", ChannelTypes.PointToDomain));
         break;
-      case "yamlStringToProperties.channel.id":
-        channelDescriptions.add(parseChannel(props, "yamlStringToProperties.channel", ChannelTypes.YamlStringToProperties));
+      case "yamlStringToPropertiesSet.channelId":
+        channelReferences.add(parseChannel(props, "yamlStringToPropertiesSet.channel", ChannelTypes.YamlStringToPropertiesSet));
         break;
-      case "propertiesToValue.channel.id":
-        channelDescriptions.add(parseChannel(props, "propertiesToValue.channel", ChannelTypes.PropertiesToValue));
+      case "propertiesSetToValue.channelId":
+        channelReferences.add(parseChannel(props, "propertiesSetToValue.channel", ChannelTypes.PropertiesSetToValue));
         break;
-      case "propertiesToData.channel.id":
-        channelDescriptions.add(parseChannel(props, "propertiesToData.channel", ChannelTypes.PropertiesToData));
+      case "propertiesSetToData.channelId":
+        channelReferences.add(parseChannel(props, "propertiesSetToData.channel", ChannelTypes.PropertiesSetToData));
         break;
     };
   }
 
-  static DomainDescription parseDomain(
+  static DomainReference parseDomain(
       PropertiesSet props, String propertyName, DomainTypes type
   ) {
     String domainName = props.traverseToStringOrThrow(propertyName).trim();
     return buildDomain(type, domainName);
   }
 
-  static DomainDescription buildDomain(DomainTypes type, String domainName) {
-    return new DomainDescriptionImpl(type, domainName);
+  static DomainReference buildDomain(DomainTypes type, String domainName) {
+    return new DomainReferenceImpl(type, domainName);
   }
 
-  static ChannelDescription parseChannel(
+  static ChannelReference parseChannel(
       PropertiesSet props, String propertyName, ChannelTypes type
   ) {
-    String cid = StringFunctions.trim(props.traverseToString(propertyName + ".id"));
-    String alias = StringFunctions.trim(props.traverseToString(propertyName + ".alias"));
+    String cid = StringFunctions.trim(props.traverseToString(propertyName + "Id"));
+    String alias = StringFunctions.trim(props.traverseToString(propertyName + "Alias"));
     return buildChannel(type, cid, alias);
   }
 
-  static ChannelDescription buildChannel(ChannelTypes purpose, String channelId, String alias) {
-    return new ChannelDescriptionImpl(purpose, channelId, alias);
+  static ChannelReference buildChannel(ChannelTypes purpose, String channelId, String alias) {
+    return new ChannelReferenceImpl(purpose, channelId, alias);
   }
 
   private SettingsFunctions() {}

@@ -1,9 +1,9 @@
 package tech.intellispaces.jaquarius.settings;
 
 /**
- * The domain description.
+ * The domain reference.
  */
-public interface DomainDescription {
+public interface DomainReference {
 
   /**
    * The domain type.

@@ -4,8 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
-import tech.intellispaces.commons.properties.PropertiesSet;
-import tech.intellispaces.jaquarius.settings.OntologyDescription;
+import tech.intellispaces.jaquarius.settings.OntologyReferences;
 import tech.intellispaces.jaquarius.settings.SettingsFunctions;
 import tech.intellispaces.jaquarius.system.Module;
 import tech.intellispaces.jaquarius.system.Modules;
@@ -64,26 +63,23 @@ public class Jaquarius {
   }
 
   /**
-   * Returns ontology description.
+   * Returns ontology references.
    */
-  public static OntologyDescription ontologyDescription() {
-    if (ONTOLOGY_DESCRIPTION == null) {
+  public static OntologyReferences ontologyReferences() {
+    if (ONTOLOGY_REFERENCES == null) {
       try {
-        List<PropertiesSet> propsList = SettingsFunctions.loadOntologyDescriptionProps(Jaquarius.class.getClassLoader());
-        List<OntologyDescription> ontologyDescriptions = propsList.stream()
-                .map(SettingsFunctions::parseOntologyDescription)
-                .toList();
-        ONTOLOGY_DESCRIPTION = SettingsFunctions.mergeOntologyDescriptions(ontologyDescriptions);
+        List<OntologyReferences> ontologyReferencesList = SettingsFunctions.loadOntologyReferences(Jaquarius.class.getClassLoader());
+        ONTOLOGY_REFERENCES = SettingsFunctions.mergeOntologyReferences(ontologyReferencesList);
       } catch (IOException e) {
-        throw UnexpectedExceptions.withCauseAndMessage(e, "Unable to load Jaquarius settings");
+        throw UnexpectedExceptions.withCauseAndMessage(e, "Unable to load ontology references");
       }
     }
-    return ONTOLOGY_DESCRIPTION;
+    return ONTOLOGY_REFERENCES;
   }
 
-  public static void ontologyDescription(OntologyDescription ontologyDescription) {
-    ONTOLOGY_DESCRIPTION = ontologyDescription;
+  public static void ontologyReferences(OntologyReferences ontologyReferences) {
+    ONTOLOGY_REFERENCES = ontologyReferences;
   }
 
-  private static OntologyDescription ONTOLOGY_DESCRIPTION = null;
+  private static OntologyReferences ONTOLOGY_REFERENCES = null;
 }

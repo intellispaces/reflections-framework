@@ -6,9 +6,9 @@ public enum ChannelTypes implements Enumeration<ChannelType>, ChannelType {
 
   PointToDomain,
 
-  YamlStringToProperties,
+  YamlStringToPropertiesSet,
 
-  PropertiesToValue,
+  PropertiesSetToValue,
 
-  PropertiesToData;
+  PropertiesSetToData;
 }

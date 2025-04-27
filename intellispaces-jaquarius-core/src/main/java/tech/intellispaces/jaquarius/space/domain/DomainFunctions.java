@@ -184,7 +184,7 @@ public final class DomainFunctions {
 
   public static boolean isNotDomainClassGetter(MethodStatement method) {
     return !method.name().equals("domainClass") &&
-        !method.name().equals(Jaquarius.ontologyDescription().getChannelByType(ChannelTypes.PointToDomain).alias());
+        !method.name().equals(Jaquarius.ontologyReferences().getChannelByType(ChannelTypes.PointToDomain).alias());
   }
 
   public static boolean isDefaultDomainType(CustomType type) {

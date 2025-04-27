@@ -17,7 +17,7 @@ import tech.intellispaces.jaquarius.object.reference.MovabilityType;
 import tech.intellispaces.jaquarius.object.reference.MovabilityTypes;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
-import tech.intellispaces.jaquarius.settings.DomainDescription;
+import tech.intellispaces.jaquarius.settings.DomainReference;
 import tech.intellispaces.jaquarius.settings.DomainTypes;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.reflection.customtype.CustomType;
@@ -85,15 +85,15 @@ public interface NameConventionFunctions {
 
   static String getUnmovableRegularObjectTypename(String domainClassName, boolean replaceKeyDomain) {
     if (replaceKeyDomain) {
-      DomainDescription domainDescription = Jaquarius.ontologyDescription().getDomainByName(convertToDomainName(domainClassName));
-      if (domainDescription != null && domainDescription.delegateClassName() != null && (
-          DomainTypes.Number.is(domainDescription.type()) ||
-              DomainTypes.Short.is(domainDescription.type()) ||
-              DomainTypes.Integer.is(domainDescription.type()) ||
-              DomainTypes.Float.is(domainDescription.type()) ||
-              DomainTypes.Double.is(domainDescription.type())
+      DomainReference domainReference = Jaquarius.ontologyReferences().getDomainByName(convertToDomainName(domainClassName));
+      if (domainReference != null && domainReference.delegateClassName() != null && (
+          DomainTypes.Number.is(domainReference.type()) ||
+              DomainTypes.Short.is(domainReference.type()) ||
+              DomainTypes.Integer.is(domainReference.type()) ||
+              DomainTypes.Float.is(domainReference.type()) ||
+              DomainTypes.Double.is(domainReference.type())
       )) {
-        return domainDescription.delegateClassName();
+        return domainReference.delegateClassName();
       }
     }
     return ClassNameFunctions.addPrefixToSimpleName(UNMOVABLE,
@@ -102,15 +102,15 @@ public interface NameConventionFunctions {
 
   static String getMovableRegularObjectTypename(String domainClassName, boolean replaceKeyDomain) {
     if (replaceKeyDomain) {
-      DomainDescription domainDescription = Jaquarius.ontologyDescription().getDomainByName(convertToDomainName(domainClassName));
-      if (domainDescription != null && domainDescription.delegateClassName() != null && (
-          DomainTypes.Number.is(domainDescription.type()) ||
-              DomainTypes.Short.is(domainDescription.type()) ||
-              DomainTypes.Integer.is(domainDescription.type()) ||
-              DomainTypes.Float.is(domainDescription.type()) ||
-              DomainTypes.Double.is(domainDescription.type())
+      DomainReference domainReference = Jaquarius.ontologyReferences().getDomainByName(convertToDomainName(domainClassName));
+      if (domainReference != null && domainReference.delegateClassName() != null && (
+          DomainTypes.Number.is(domainReference.type()) ||
+              DomainTypes.Short.is(domainReference.type()) ||
+              DomainTypes.Integer.is(domainReference.type()) ||
+              DomainTypes.Float.is(domainReference.type()) ||
+              DomainTypes.Double.is(domainReference.type())
       )) {
-        return domainDescription.delegateClassName();
+        return domainReference.delegateClassName();
       }
     }
     return ClassNameFunctions.addPrefixToSimpleName(MOVABLE,
@@ -119,15 +119,15 @@ public interface NameConventionFunctions {
 
   static String getUnmovableObjectHandleTypename(String domainClassName, boolean replaceKeyDomain) {
     if (replaceKeyDomain) {
-      DomainDescription domainDescription = Jaquarius.ontologyDescription().getDomainByName(convertToDomainName(domainClassName));
-      if (domainDescription != null && domainDescription.delegateClassName() != null && (
-          DomainTypes.Number.is(domainDescription.type()) ||
-              DomainTypes.Short.is(domainDescription.type()) ||
-              DomainTypes.Integer.is(domainDescription.type()) ||
-              DomainTypes.Float.is(domainDescription.type()) ||
-              DomainTypes.Double.is(domainDescription.type())
+      DomainReference domainReference = Jaquarius.ontologyReferences().getDomainByName(convertToDomainName(domainClassName));
+      if (domainReference != null && domainReference.delegateClassName() != null && (
+          DomainTypes.Number.is(domainReference.type()) ||
+              DomainTypes.Short.is(domainReference.type()) ||
+              DomainTypes.Integer.is(domainReference.type()) ||
+              DomainTypes.Float.is(domainReference.type()) ||
+              DomainTypes.Double.is(domainReference.type())
       )) {
-        return domainDescription.delegateClassName();
+        return domainReference.delegateClassName();
       }
     }
     return ClassNameFunctions.addPrefixToSimpleName(UNMOVABLE, getGeneralObjectHandleTypename(domainClassName));
@@ -135,15 +135,15 @@ public interface NameConventionFunctions {
 
   static String getMovableObjectHandleTypename(String domainClassName, boolean replaceKeyDomain) {
     if (replaceKeyDomain) {
-      DomainDescription domainDescription = Jaquarius.ontologyDescription().getDomainByName(convertToDomainName(domainClassName));
-      if (domainDescription != null && domainDescription.delegateClassName() != null && (
-          DomainTypes.Number.is(domainDescription.type()) ||
-            DomainTypes.Short.is(domainDescription.type()) ||
-            DomainTypes.Integer.is(domainDescription.type()) ||
-            DomainTypes.Float.is(domainDescription.type()) ||
-            DomainTypes.Double.is(domainDescription.type())
+      DomainReference domainReference = Jaquarius.ontologyReferences().getDomainByName(convertToDomainName(domainClassName));
+      if (domainReference != null && domainReference.delegateClassName() != null && (
+          DomainTypes.Number.is(domainReference.type()) ||
+            DomainTypes.Short.is(domainReference.type()) ||
+            DomainTypes.Integer.is(domainReference.type()) ||
+            DomainTypes.Float.is(domainReference.type()) ||
+            DomainTypes.Double.is(domainReference.type())
       )) {
-        return domainDescription.delegateClassName();
+        return domainReference.delegateClassName();
       }
     }
     return ClassNameFunctions.addPrefixToSimpleName(MOVABLE, getGeneralObjectHandleTypename(domainClassName));
@@ -266,8 +266,8 @@ public interface NameConventionFunctions {
   }
 
   static String getConversionMethodName(CustomType targetType) {
-    DomainDescription domainDescription = Jaquarius.ontologyDescription().getDomainByDelegateClass(targetType.canonicalName());
-    if (domainDescription != null) {
+    DomainReference domainReference = Jaquarius.ontologyReferences().getDomainByDelegateClass(targetType.canonicalName());
+    if (domainReference != null) {
       return "as" + StringFunctions.capitalizeFirstLetter(targetType.simpleName());
     }
     return "as" + StringFunctions.capitalizeFirstLetter(

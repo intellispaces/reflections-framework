@@ -7,7 +7,7 @@ import tech.intellispaces.jaquarius.annotation.Properties;
 import tech.intellispaces.jaquarius.dataset.DatasetFunctions;
 import tech.intellispaces.jaquarius.exception.ConfigurationExceptions;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceFunctions;
-import tech.intellispaces.jaquarius.settings.ChannelDescription;
+import tech.intellispaces.jaquarius.settings.ChannelReference;
 import tech.intellispaces.jaquarius.settings.ChannelTypes;
 import tech.intellispaces.jaquarius.system.Module;
 import tech.intellispaces.jaquarius.system.Modules;
@@ -52,19 +52,19 @@ public class ModulePropertiesProjectionSupplier extends InjectedMethodProjection
   private Object readPropertiesFile(String filename, Module module) {
     String settingsText = ModuleSettingsFunctions.getSettingsText(module, filename);
     if (filename.toLowerCase().endsWith(".yaml")) {
-      ChannelDescription channelDescription = Jaquarius.ontologyDescription().getChannelByType(ChannelTypes.YamlStringToProperties);
-      return module.mapThruChannel0(settingsText, channelDescription.channelId());
+      ChannelReference channelReference = Jaquarius.ontologyReferences().getChannelByType(ChannelTypes.YamlStringToPropertiesSet);
+      return module.mapThruChannel0(settingsText, channelReference.channelId());
     }
     throw ConfigurationExceptions.withMessage("Unsupported module settings file format. File {0}", filename);
   }
 
   private Object traverseToPropertyValue(Object props, String traversePath, Module module) {
-    ChannelDescription channelDescription = Jaquarius.ontologyDescription().getChannelByType(ChannelTypes.PropertiesToValue);
-    return module.mapThruChannel1(props, channelDescription.channelId(), traversePath);
+    ChannelReference channelReference = Jaquarius.ontologyReferences().getChannelByType(ChannelTypes.PropertiesSetToValue);
+    return module.mapThruChannel1(props, channelReference.channelId(), traversePath);
   }
 
   private Object traverseToData(Object propsValue, Class<?> expectedReturnClass, Module module) {
-    ChannelDescription channelDescription = Jaquarius.ontologyDescription().getChannelByType(ChannelTypes.PropertiesToData);
-    return module.mapThruChannel1(propsValue, channelDescription.channelId(), Types.get(expectedReturnClass));
+    ChannelReference channelReference = Jaquarius.ontologyReferences().getChannelByType(ChannelTypes.PropertiesSetToData);
+    return module.mapThruChannel1(propsValue, channelReference.channelId(), Types.get(expectedReturnClass));
   }
 }

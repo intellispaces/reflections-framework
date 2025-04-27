@@ -28,7 +28,7 @@ import tech.intellispaces.jaquarius.object.reference.MovabilityTypes;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceFunctions;
-import tech.intellispaces.jaquarius.settings.DomainDescription;
+import tech.intellispaces.jaquarius.settings.DomainReference;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
 import tech.intellispaces.reflection.customtype.CustomType;
@@ -280,9 +280,9 @@ public abstract class AbstractObjectGenerator extends JaquariusArtifactGenerator
   }
 
   private String convertName(String name) {
-    DomainDescription domainDescription = Jaquarius.ontologyDescription().getDomainByName(NameConventionFunctions.convertToDomainName(name));
-    if (domainDescription != null && domainDescription.delegateClassName() != null) {
-      return addImportAndGetSimpleName(domainDescription.delegateClassName());
+    DomainReference domainReference = Jaquarius.ontologyReferences().getDomainByName(NameConventionFunctions.convertToDomainName(name));
+    if (domainReference != null && domainReference.delegateClassName() != null) {
+      return addImportAndGetSimpleName(domainReference.delegateClassName());
     }
     return addImportAndGetSimpleName(name);
   }

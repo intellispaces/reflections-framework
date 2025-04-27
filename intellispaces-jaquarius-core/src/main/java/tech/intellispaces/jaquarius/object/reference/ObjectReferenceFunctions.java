@@ -25,7 +25,7 @@ import tech.intellispaces.jaquarius.annotation.ObjectHandle;
 import tech.intellispaces.jaquarius.annotation.Unmovable;
 import tech.intellispaces.jaquarius.annotation.Wrapper;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
-import tech.intellispaces.jaquarius.settings.DomainDescription;
+import tech.intellispaces.jaquarius.settings.DomainReference;
 import tech.intellispaces.jaquarius.settings.DomainTypes;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
 import tech.intellispaces.reflection.JavaStatements;
@@ -537,8 +537,8 @@ public class ObjectReferenceFunctions {
 
   public static Class<?> propertiesHandleClass() {
     if (propertiesHandleClass == null) {
-      DomainDescription domainDescription = Jaquarius.ontologyDescription().getDomainByType(DomainTypes.Properties);
-      String domainClassName = NameConventionFunctions.convertToDomainClassName(domainDescription.domainName());
+      DomainReference domainReference = Jaquarius.ontologyReferences().getDomainByType(DomainTypes.PropertiesSet);
+      String domainClassName = NameConventionFunctions.convertToDomainClassName(domainReference.domainName());
       String handleClassName = NameConventionFunctions.getGeneralRegularObjectTypename(domainClassName);
       propertiesHandleClass = ClassFunctions.getClass(handleClassName).orElseThrow(() ->
           UnexpectedExceptions.withMessage("Could not get class {0}", handleClassName)

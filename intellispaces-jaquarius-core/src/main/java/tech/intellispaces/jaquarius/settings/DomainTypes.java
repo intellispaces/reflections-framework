@@ -7,7 +7,7 @@ public enum DomainTypes implements Enumeration<DomainType>, DomainType {
   /**
    * The domain of points.
    */
-  Point("java.lang.Object"),
+  Notion("java.lang.Object"),
 
   /**
    * The domain of domains.
@@ -60,9 +60,9 @@ public enum DomainTypes implements Enumeration<DomainType>, DomainType {
   Double("java.lang.Double"),
 
   /**
-   * The properties domain.
+   * The properties set domain.
    */
-  Properties(null),
+  PropertiesSet(null),
 
   /**
    * The dataset domain.

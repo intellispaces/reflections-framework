@@ -28,16 +28,16 @@ public abstract class JaquariusArtifactGenerator extends TemplatedJavaArtifactGe
   }
 
   protected void addHiddenImports(ArtifactGeneratorContext context) {
-    addHiddenImport(Jaquarius.ontologyDescription().getDomainByType(DomainTypes.Point).domainName());
-    addHiddenImport(Jaquarius.ontologyDescription().getDomainByType(DomainTypes.Boolean).domainName());
-    addHiddenImport(Jaquarius.ontologyDescription().getDomainByType(DomainTypes.String).domainName());
-    addHiddenImport(Jaquarius.ontologyDescription().getDomainByType(DomainTypes.Number).domainName());
-    addHiddenImport(Jaquarius.ontologyDescription().getDomainByType(DomainTypes.Byte).domainName());
-    addHiddenImport(Jaquarius.ontologyDescription().getDomainByType(DomainTypes.Short).domainName());
-    addHiddenImport(Jaquarius.ontologyDescription().getDomainByType(DomainTypes.Integer).domainName());
-    addHiddenImport(Jaquarius.ontologyDescription().getDomainByType(DomainTypes.Long).domainName());
-    addHiddenImport(Jaquarius.ontologyDescription().getDomainByType(DomainTypes.Float).domainName());
-    addHiddenImport(Jaquarius.ontologyDescription().getDomainByType(DomainTypes.Double).domainName());
+    addHiddenImport(Jaquarius.ontologyReferences().getDomainByType(DomainTypes.Notion).domainName());
+    addHiddenImport(Jaquarius.ontologyReferences().getDomainByType(DomainTypes.Boolean).domainName());
+    addHiddenImport(Jaquarius.ontologyReferences().getDomainByType(DomainTypes.String).domainName());
+    addHiddenImport(Jaquarius.ontologyReferences().getDomainByType(DomainTypes.Number).domainName());
+    addHiddenImport(Jaquarius.ontologyReferences().getDomainByType(DomainTypes.Byte).domainName());
+    addHiddenImport(Jaquarius.ontologyReferences().getDomainByType(DomainTypes.Short).domainName());
+    addHiddenImport(Jaquarius.ontologyReferences().getDomainByType(DomainTypes.Integer).domainName());
+    addHiddenImport(Jaquarius.ontologyReferences().getDomainByType(DomainTypes.Long).domainName());
+    addHiddenImport(Jaquarius.ontologyReferences().getDomainByType(DomainTypes.Float).domainName());
+    addHiddenImport(Jaquarius.ontologyReferences().getDomainByType(DomainTypes.Double).domainName());
 
     context.initialRoundEnvironment().getElementsAnnotatedWith(Domain.class).stream()
         .map(e -> CustomTypes.of((TypeElement) e))

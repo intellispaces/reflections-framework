@@ -1,9 +1,9 @@
 package tech.intellispaces.jaquarius.settings;
 
 /**
- * The channel description.
+ * The channel reference.
  */
-public interface ChannelDescription {
+public interface ChannelReference {
 
   /**
    * The type.

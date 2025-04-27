@@ -1,10 +1,10 @@
 package tech.intellispaces.jaquarius.settings;
 
-class DomainDescriptionImpl implements DomainDescription {
+class DomainReferenceImpl implements DomainReference {
   private final DomainTypes type;
   private final String name;
 
-  DomainDescriptionImpl(DomainTypes type, String name) {
+  DomainReferenceImpl(DomainTypes type, String name) {
     this.type = type;
     this.name = name;
   }

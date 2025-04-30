@@ -31,7 +31,6 @@ public class GeneralObjectHandleGenerator extends AbstractObjectGenerator {
 
   public GeneralObjectHandleGenerator(CustomType domainType) {
     super(domainType);
-    addHiddenImport(NameConventionFunctions.getGeneralRegularObjectTypename(domainType.className()));
   }
 
   @Override
@@ -74,7 +73,6 @@ public class GeneralObjectHandleGenerator extends AbstractObjectGenerator {
         MappingTraverse.class,
         TraverseException.class
     );
-    addHiddenImports(context);
 
     analyzeDomain();
     analyzeAlias();
@@ -96,7 +94,8 @@ public class GeneralObjectHandleGenerator extends AbstractObjectGenerator {
   }
 
   private String getSimpleObjectClassName() {
-    return addImportAndGetSimpleName(NameConventionFunctions.getGeneralRegularObjectTypename(sourceArtifact().className()));
+    return addImportAndGetSimpleName(
+        NameConventionFunctions.getGeneralRegularObjectTypename(sourceArtifact().className(), false));
   }
 
   private String getSimpleHandleName() {

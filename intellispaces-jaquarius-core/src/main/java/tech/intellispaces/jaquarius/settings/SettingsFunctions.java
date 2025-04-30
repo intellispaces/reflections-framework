@@ -20,50 +20,50 @@ import tech.intellispaces.commons.text.StringFunctions;
 
 public class SettingsFunctions {
 
-  public static OntologyReferences loadOntologyReferences(String baseDirectory) throws IOException {
-    var path = Paths.get(baseDirectory, "src/main/resources/META-INF/jaquarius/ontology.references");
+  public static OntologyReference loadOntologyReference(String baseDirectory) throws IOException {
+    var path = Paths.get(baseDirectory, "src/main/resources/META-INF/jaquarius/ontology.reference");
     String source = Files.readString(path, StandardCharsets.UTF_8);
     PropertiesSet props = PropertiesSets.parseProperties(source, "");
     return parseOntologyProps(props);
   }
 
-  public static List<OntologyReferences> loadOntologyReferences(ClassLoader classLoader) throws IOException {
-    Enumeration<URL> enumeration = classLoader.getResources("META-INF/jaquarius/ontology.references");
+  public static List<OntologyReference> loadOntologyReferences(ClassLoader classLoader) throws IOException {
+    Enumeration<URL> enumeration = classLoader.getResources("META-INF/jaquarius/ontology.reference");
     List<URL> urls = CollectionFunctions.toList(enumeration);
     List<PropertiesSet> propsList = CollectionFunctions.mapEach(urls, url -> PropertiesSets.parseProperties(
         ResourceFunctions.readResourceAsString(url), ""));
     return CollectionFunctions.mapEach(propsList, SettingsFunctions::parseOntologyProps);
   }
 
-  public static OntologyReferences mergeOntologyReferences(List<OntologyReferences> ontologyReferences) {
+  public static OntologyReference mergeOntologyReferences(List<OntologyReference> ontologyReferences) {
     Set<DomainType> domainTypes = new HashSet<>();
     Set<ChannelType> channelTypes = new HashSet<>();
     List<DomainReference> domains = new ArrayList<>();
     List<ChannelReference> channels = new ArrayList<>();
-    for (OntologyReferences ontology : ontologyReferences) {
+    for (OntologyReference ontology : ontologyReferences) {
       for (DomainReference domain : ontology.getDomains()) {
         if (!domainTypes.add(domain.type())) {
-          throw UnexpectedExceptions.withMessage("Domain type {0} is already registered", domain.type().name());
+          throw UnexpectedExceptions.withMessage("Domain reference {0} is already registered", domain.type().name());
         }
         domains.add(domain);
       }
       for (ChannelReference channel : ontology.getChannels()) {
         if (!channelTypes.add(channel.type())) {
-          throw UnexpectedExceptions.withMessage("Channel type {0} is already registered", channel.type().name());
+          throw UnexpectedExceptions.withMessage("Channel reference {0} is already registered", channel.type().name());
         }
         channels.add(channel);
       }
     }
-    return new OntologyReferencesImpl(domains, channels);
+    return new OntologyReferenceImpl(domains, channels);
   }
 
-  static OntologyReferences parseOntologyProps(PropertiesSet props) {
-    var keyDomains = new ArrayList<DomainReference>();
-    var keyChannels = new ArrayList<ChannelReference>();
+  static OntologyReference parseOntologyProps(PropertiesSet props) {
+    var domains = new ArrayList<DomainReference>();
+    var channels = new ArrayList<ChannelReference>();
     props.propertiesNames().forEach(
-        propertyName -> parseProperty(props, propertyName, keyDomains, keyChannels)
+        propertyName -> parseProperty(props, propertyName, domains, channels)
     );
-    return new OntologyReferencesImpl(keyDomains, keyChannels);
+    return new OntologyReferenceImpl(domains, channels);
   }
 
   static void parseProperty(

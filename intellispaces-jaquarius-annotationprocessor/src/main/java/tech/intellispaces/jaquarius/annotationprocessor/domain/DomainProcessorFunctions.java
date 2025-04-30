@@ -105,7 +105,7 @@ public interface DomainProcessorFunctions {
   private static void addDownwardObjectHandleGenerators(
       CustomType domainType, List<ArtifactGenerator> generators
   ) {
-    if (Jaquarius.ontologyReferences().getDomainByName(NameConventionFunctions.convertToDomainName(domainType.canonicalName())) != null) {
+    if (Jaquarius.ontologyReference().getDomainByName(NameConventionFunctions.convertToDomainName(domainType.canonicalName())) != null) {
       return;
     }
 

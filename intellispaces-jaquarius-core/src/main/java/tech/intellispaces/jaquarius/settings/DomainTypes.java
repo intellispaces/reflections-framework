@@ -5,7 +5,7 @@ import tech.intellispaces.commons.abstraction.Enumeration;
 public enum DomainTypes implements Enumeration<DomainType>, DomainType {
 
   /**
-   * The domain of points.
+   * The domain of notions.
    */
   Notion("java.lang.Object"),
 

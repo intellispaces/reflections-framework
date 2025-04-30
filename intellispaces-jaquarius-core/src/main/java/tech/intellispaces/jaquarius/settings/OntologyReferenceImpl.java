@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
 
-class OntologyReferencesImpl implements OntologyReferences {
+class OntologyReferenceImpl implements OntologyReference {
   private final List<DomainReference> domains;
   private final List<ChannelReference> channels;
   private final Map<DomainType, DomainReference> domainIndexByType;
@@ -15,7 +15,7 @@ class OntologyReferencesImpl implements OntologyReferences {
   private final Map<String, DomainReference> domainIndexByDelegateClass;
   private final Map<ChannelType, ChannelReference> channelIndexByType;
 
-  OntologyReferencesImpl(List<DomainReference> domains, List<ChannelReference> channels) {
+  OntologyReferenceImpl(List<DomainReference> domains, List<ChannelReference> channels) {
     this.domains = domains;
     this.channels = channels;
     this.domainIndexByType = domains.stream().collect(Collectors.toMap(DomainReference::type, Function.identity()));
@@ -36,6 +36,11 @@ class OntologyReferencesImpl implements OntologyReferences {
   @Override
   public List<ChannelReference> getChannels() {
     return channels;
+  }
+
+  @Override
+  public boolean isDomainReferenceSpecified(DomainType domainType) {
+    return domainIndexByType.get(domainType) != null;
   }
 
   @Override

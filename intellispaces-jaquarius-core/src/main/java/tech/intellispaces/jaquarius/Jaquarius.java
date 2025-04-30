@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
-import tech.intellispaces.jaquarius.settings.OntologyReferences;
+import tech.intellispaces.jaquarius.settings.OntologyReference;
 import tech.intellispaces.jaquarius.settings.SettingsFunctions;
 import tech.intellispaces.jaquarius.system.Module;
 import tech.intellispaces.jaquarius.system.Modules;
@@ -63,23 +63,24 @@ public class Jaquarius {
   }
 
   /**
-   * Returns ontology references.
+   * Returns ontology reference.
    */
-  public static OntologyReferences ontologyReferences() {
-    if (ONTOLOGY_REFERENCES == null) {
+  public static OntologyReference ontologyReference() {
+    if (ONTOLOGY_REFERENCE == null) {
       try {
-        List<OntologyReferences> ontologyReferencesList = SettingsFunctions.loadOntologyReferences(Jaquarius.class.getClassLoader());
-        ONTOLOGY_REFERENCES = SettingsFunctions.mergeOntologyReferences(ontologyReferencesList);
+        List<OntologyReference> ontologyReferences = SettingsFunctions.loadOntologyReferences(
+            Jaquarius.class.getClassLoader());
+        ONTOLOGY_REFERENCE = SettingsFunctions.mergeOntologyReferences(ontologyReferences);
       } catch (IOException e) {
-        throw UnexpectedExceptions.withCauseAndMessage(e, "Unable to load ontology references");
+        throw UnexpectedExceptions.withCauseAndMessage(e, "Unable to load ontology reference");
       }
     }
-    return ONTOLOGY_REFERENCES;
+    return ONTOLOGY_REFERENCE;
   }
 
-  public static void ontologyReferences(OntologyReferences ontologyReferences) {
-    ONTOLOGY_REFERENCES = ontologyReferences;
+  public static void ontologyReference(OntologyReference ontologyReference) {
+    ONTOLOGY_REFERENCE = ontologyReference;
   }
 
-  private static OntologyReferences ONTOLOGY_REFERENCES = null;
+  private static OntologyReference ONTOLOGY_REFERENCE = null;
 }

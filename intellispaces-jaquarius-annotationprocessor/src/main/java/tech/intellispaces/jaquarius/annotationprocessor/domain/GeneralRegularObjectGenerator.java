@@ -10,7 +10,6 @@ import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.jaquarius.ArtifactType;
 import tech.intellispaces.jaquarius.annotation.Channel;
 import tech.intellispaces.jaquarius.annotation.Customizer;
-import tech.intellispaces.jaquarius.annotation.Movable;
 import tech.intellispaces.jaquarius.annotation.ObjectHandle;
 import tech.intellispaces.jaquarius.annotation.Unmovable;
 import tech.intellispaces.jaquarius.artifact.ArtifactTypes;
@@ -29,7 +28,6 @@ import tech.intellispaces.reflection.instance.AnnotationInstance;
 import tech.intellispaces.reflection.method.MethodStatement;
 import tech.intellispaces.reflection.reference.CustomTypeReference;
 import tech.intellispaces.reflection.reference.NotPrimitiveReference;
-import tech.intellispaces.reflection.reference.TypeReference;
 import tech.intellispaces.reflection.reference.TypeReferenceFunctions;
 
 public class GeneralRegularObjectGenerator extends AbstractRegularObjectGenerator {
@@ -60,7 +58,7 @@ public class GeneralRegularObjectGenerator extends AbstractRegularObjectGenerato
 
   @Override
   public String generatedArtifactName() {
-    return NameConventionFunctions.getGeneralRegularObjectTypename(sourceArtifact().className());
+    return NameConventionFunctions.getGeneralRegularObjectTypename(sourceArtifact().className(), false);
   }
 
   @Override
@@ -76,7 +74,6 @@ public class GeneralRegularObjectGenerator extends AbstractRegularObjectGenerato
         UnmovableObjectHandle.class,
         UnexpectedExceptions.class
     );
-    addHiddenImports(context);
 
     analyzeDomain();
     analyzeObjectFormMethods(sourceArtifact(), context);
@@ -149,17 +146,5 @@ public class GeneralRegularObjectGenerator extends AbstractRegularObjectGenerato
         "javadoc", buildGeneratedMethodJavadoc(method.owner().canonicalName(), method),
         "declaration", sb.toString()
     );
-  }
-
-  @Override
-  protected void appendObjectFormMethodReturnType(StringBuilder sb, MethodStatement method) {
-    TypeReference domainReturnType = method.returnType().orElseThrow();
-    if (method.hasAnnotation(Movable.class)) {
-      sb.append(buildObjectFormDeclaration(domainReturnType, ObjectReferenceForms.Regular, MovabilityTypes.Movable, true));
-    } else if (method.hasAnnotation(Unmovable.class)) {
-      sb.append(buildObjectFormDeclaration(domainReturnType, ObjectReferenceForms.Regular, MovabilityTypes.Unmovable, true));
-    } else {
-      sb.append(buildObjectFormDeclaration(domainReturnType, ObjectReferenceForms.Regular, MovabilityTypes.General, true));
-    }
   }
 }

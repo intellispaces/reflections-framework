@@ -208,14 +208,14 @@ public class ObjectReferenceFunctions {
     if (isDefaultObjectHandleType(domainType)) {
       return domainType.canonicalName();
     }
-    return NameConventionFunctions.getGeneralRegularObjectTypename(domainType.className());
+    return NameConventionFunctions.getGeneralRegularObjectTypename(domainType.className(), false);
   }
 
   public static String getGeneralObjectHandleTypename(CustomType domainType) {
     if (isDefaultObjectHandleType(domainType)) {
       return domainType.canonicalName();
     }
-    return NameConventionFunctions.getGeneralObjectHandleTypename(domainType.className());
+    return NameConventionFunctions.getGeneralObjectHandleTypename(domainType.className(), false);
   }
 
   public static String getUnmovableObjectHandleTypename(CustomType domainType) {
@@ -226,7 +226,7 @@ public class ObjectReferenceFunctions {
   }
 
   public static String getObjectTypename(
-      CustomType customType, ObjectReferenceForm objectForm, MovabilityType movabilityType, boolean replaceKeyDomain
+      CustomType customType, ObjectReferenceForm objectForm, MovabilityType movabilityType, boolean replaceDomainWithDelegate
   ) {
     if (isDefaultObjectHandleType(customType)) {
       return customType.canonicalName();
@@ -234,7 +234,7 @@ public class ObjectReferenceFunctions {
     if (!DomainFunctions.isDomainType(customType)) {
       return customType.canonicalName();
     }
-    return NameConventionFunctions.getObjectTypename(customType.className(), objectForm, movabilityType, replaceKeyDomain);
+    return NameConventionFunctions.getObjectTypename(customType.className(), objectForm, movabilityType, replaceDomainWithDelegate);
   }
 
   public static String getObjectTypename(String canonicalName, ObjectReferenceForm objectForm, MovabilityType movabilityType) {
@@ -384,19 +384,19 @@ public class ObjectReferenceFunctions {
   }
 
   public static String geGeneralRegularObjectDeclaration(
-      TypeReference domainType, boolean replaceKeyDomain, Function<String, String> simpleNameMapping
+      TypeReference domainType, boolean replaceDomainWithDelegate, Function<String, String> simpleNameMapping
   ) {
-    return getObjectFormDeclaration(domainType, ObjectReferenceForms.Regular, MovabilityTypes.General, replaceKeyDomain, simpleNameMapping);
+    return getObjectFormDeclaration(domainType, ObjectReferenceForms.Regular, MovabilityTypes.General, replaceDomainWithDelegate, simpleNameMapping);
   }
 
   public static String getObjectFormDeclaration(
       TypeReference domainType,
       ObjectReferenceForm objectForm,
       MovabilityType movabilityType,
-      boolean replaceKeyDomain,
+      boolean replaceDomainWithDelegate,
       Function<String, String> simpleNameMapping
   ) {
-    return getObjectFormDeclaration(domainType, objectForm, movabilityType, true, replaceKeyDomain, simpleNameMapping);
+    return getObjectFormDeclaration(domainType, objectForm, movabilityType, true, replaceDomainWithDelegate, simpleNameMapping);
   }
 
   public static String getObjectFormDeclaration(
@@ -404,7 +404,7 @@ public class ObjectReferenceFunctions {
       ObjectReferenceForm objectForm,
       MovabilityType movabilityType,
       boolean includeTypeParams,
-      boolean replaceKeyDomain,
+      boolean replaceDomainWithDelegate,
       Function<String, String> simpleNameMapping
   ) {
     if (domainType.isPrimitiveReference()) {
@@ -431,7 +431,7 @@ public class ObjectReferenceFunctions {
         return targetType.simpleName();
       } else {
         var sb = new StringBuilder();
-        String canonicalName = getObjectTypename(targetType, objectForm, movabilityType, replaceKeyDomain);
+        String canonicalName = getObjectTypename(targetType, objectForm, movabilityType, replaceDomainWithDelegate);
         String simpleName = simpleNameMapping.apply(canonicalName);
         sb.append(simpleName);
         if (includeTypeParams && !customTypeReference.typeArguments().isEmpty()) {
@@ -440,7 +440,7 @@ public class ObjectReferenceFunctions {
           for (NotPrimitiveReference argType : customTypeReference.typeArguments()) {
             commaAppender.run();
             sb.append(getObjectFormDeclaration(
-                argType, ObjectReferenceForms.Regular, MovabilityTypes.General, true, replaceKeyDomain, simpleNameMapping
+                argType, ObjectReferenceForms.Regular, MovabilityTypes.General, true, replaceDomainWithDelegate, simpleNameMapping
             ));
           }
           sb.append(">");
@@ -450,13 +450,13 @@ public class ObjectReferenceFunctions {
     } else if (domainType.isWildcard()) {
       WildcardReference wildcardTypeReference = domainType.asWildcardOrElseThrow();
       if (wildcardTypeReference.extendedBound().isPresent()) {
-        return getObjectFormDeclaration(wildcardTypeReference.extendedBound().get(), objectForm, movabilityType, replaceKeyDomain, simpleNameMapping);
+        return getObjectFormDeclaration(wildcardTypeReference.extendedBound().get(), objectForm, movabilityType, replaceDomainWithDelegate, simpleNameMapping);
       } else {
         return Object.class.getCanonicalName();
       }
     } else if (domainType.isArrayReference()) {
       TypeReference elementType = domainType.asArrayReferenceOrElseThrow().elementType();
-      return getObjectFormDeclaration(elementType, objectForm, movabilityType, replaceKeyDomain, simpleNameMapping) + "[]";
+      return getObjectFormDeclaration(elementType, objectForm, movabilityType, replaceDomainWithDelegate, simpleNameMapping) + "[]";
     } else {
       throw new UnsupportedOperationException("Unsupported type - " + domainType.actualDeclaration());
     }
@@ -467,7 +467,7 @@ public class ObjectReferenceFunctions {
       ObjectReferenceForm objectForm,
       MovabilityType movabilityType,
       Function<String, String> simpleNameMapping,
-      boolean replaceKeyDomain,
+      boolean replaceDomainWithDelegate,
       boolean full
   ) {
     if (domainType.typeParameters().isEmpty()) {
@@ -485,7 +485,7 @@ public class ObjectReferenceFunctions {
         RunnableAction boundCommaAppender = StringActions.skipFirstTimeCommaAppender(sb);
         for (ReferenceBound bound : namedReference.extendedBounds()) {
           boundCommaAppender.run();
-          sb.append(getObjectFormDeclaration(bound, objectForm, movabilityType, true, replaceKeyDomain, simpleNameMapping));
+          sb.append(getObjectFormDeclaration(bound, objectForm, movabilityType, true, replaceDomainWithDelegate, simpleNameMapping));
         }
         params.add(sb.toString());
       }
@@ -498,11 +498,11 @@ public class ObjectReferenceFunctions {
       ObjectReferenceForm objectForm,
       MovabilityType movabilityType,
       Function<String, String> simpleNameMapping,
-      boolean replaceKeyDomain,
+      boolean replaceDomainWithDelegate,
       boolean full
   ) {
     List<String> params = getObjectFormTypeParamDeclarations(
-        domainType, objectForm, movabilityType, simpleNameMapping, replaceKeyDomain, full
+        domainType, objectForm, movabilityType, simpleNameMapping, replaceDomainWithDelegate, full
     );
     if (params.isEmpty()) {
       return "";
@@ -537,9 +537,9 @@ public class ObjectReferenceFunctions {
 
   public static Class<?> propertiesHandleClass() {
     if (propertiesHandleClass == null) {
-      DomainReference domainReference = Jaquarius.ontologyReferences().getDomainByType(DomainTypes.PropertiesSet);
+      DomainReference domainReference = Jaquarius.ontologyReference().getDomainByType(DomainTypes.PropertiesSet);
       String domainClassName = NameConventionFunctions.convertToDomainClassName(domainReference.domainName());
-      String handleClassName = NameConventionFunctions.getGeneralRegularObjectTypename(domainClassName);
+      String handleClassName = NameConventionFunctions.getGeneralRegularObjectTypename(domainClassName, false);
       propertiesHandleClass = ClassFunctions.getClass(handleClassName).orElseThrow(() ->
           UnexpectedExceptions.withMessage("Could not get class {0}", handleClassName)
       );

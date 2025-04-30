@@ -29,6 +29,7 @@ import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceFunctions;
 import tech.intellispaces.jaquarius.settings.DomainReference;
+import tech.intellispaces.jaquarius.settings.DomainTypes;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
 import tech.intellispaces.reflection.customtype.CustomType;
@@ -87,7 +88,7 @@ public abstract class AbstractObjectGenerator extends JaquariusArtifactGenerator
     domainTypeParamsFull = sourceArtifact().typeParametersFullDeclaration();
     domainTypeParamsBrief = sourceArtifact().typeParametersBriefDeclaration();
     generalObjectHandle = addImportAndGetSimpleName(
-        NameConventionFunctions.getGeneralObjectHandleTypename(sourceArtifact().className())
+        NameConventionFunctions.getGeneralObjectHandleTypename(sourceArtifact().className(), false)
     );
   }
 
@@ -125,7 +126,14 @@ public abstract class AbstractObjectGenerator extends JaquariusArtifactGenerator
   private Map<String, String> buildConversionMethod(CustomTypeReference parent) {
     var sb = new StringBuilder();
     String targetType = buildObjectFormDeclaration(parent, getForm(), getMovabilityType(), true);
-    underlyingTypes.add(targetType);
+
+    DomainReference domain = Jaquarius.ontologyReference().getDomainByType(DomainTypes.Number);
+    String domainClassName = NameConventionFunctions.convertToDomainClassName(domain.domainName());
+    if (parent.targetType().canonicalName().equals(domainClassName)) {
+      underlyingTypes.add(domain.domainName());
+    } else {
+      underlyingTypes.add(targetType);
+    }
     sb.append(targetType);
     sb.append(" ");
     sb.append(NameConventionFunctions.getConversionMethodName(parent));
@@ -280,7 +288,7 @@ public abstract class AbstractObjectGenerator extends JaquariusArtifactGenerator
   }
 
   private String convertName(String name) {
-    DomainReference domainReference = Jaquarius.ontologyReferences().getDomainByName(NameConventionFunctions.convertToDomainName(name));
+    DomainReference domainReference = Jaquarius.ontologyReference().getDomainByName(NameConventionFunctions.convertToDomainName(name));
     if (domainReference != null && domainReference.delegateClassName() != null) {
       return addImportAndGetSimpleName(domainReference.delegateClassName());
     }

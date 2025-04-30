@@ -52,29 +52,53 @@ public interface NameConventionFunctions {
   }
 
   static String getObjectTypename(
-      String domainClassName, ObjectReferenceForm objectForm, MovabilityType movabilityType, boolean replaceKeyDomain
+      String domainClassName, ObjectReferenceForm objectForm, MovabilityType movabilityType, boolean replaceDomainWithDelegate
   ) {
     return switch (ObjectReferenceForms.of(objectForm)) {
       case Regular -> switch (MovabilityTypes.of(movabilityType)) {
-        case General -> getGeneralRegularObjectTypename(domainClassName);
-        case Movable -> getMovableRegularObjectTypename(domainClassName, replaceKeyDomain);
-        case Unmovable -> getUnmovableRegularObjectTypename(domainClassName, replaceKeyDomain);
+        case General -> getGeneralRegularObjectTypename(domainClassName, replaceDomainWithDelegate);
+        case Movable -> getMovableRegularObjectTypename(domainClassName, replaceDomainWithDelegate);
+        case Unmovable -> getUnmovableRegularObjectTypename(domainClassName, replaceDomainWithDelegate);
       };
       case ObjectHandle -> switch (MovabilityTypes.of(movabilityType)) {
-        case General -> getGeneralObjectHandleTypename(domainClassName);
-        case Movable -> getMovableObjectHandleTypename(domainClassName, replaceKeyDomain);
-        case Unmovable -> getUnmovableObjectHandleTypename(domainClassName, replaceKeyDomain);
+        case General -> getGeneralObjectHandleTypename(domainClassName, replaceDomainWithDelegate);
+        case Movable -> getMovableObjectHandleTypename(domainClassName, replaceDomainWithDelegate);
+        case Unmovable -> getUnmovableObjectHandleTypename(domainClassName, replaceDomainWithDelegate);
       };
       case Primitive -> throw NotImplementedExceptions.withCode("LXc75Q");
       case PrimitiveWrapper -> throw NotImplementedExceptions.withCode("XGDuuQ");
     };
   }
 
-  static String getGeneralRegularObjectTypename(String domainClassName) {
+  static String getGeneralRegularObjectTypename(String domainClassName, boolean replaceDomainWithDelegate) {
+    if (replaceDomainWithDelegate) {
+      String domainName = convertToDomainName(domainClassName);
+      DomainReference domain = Jaquarius.ontologyReference().getDomainByName(domainName);
+      if (domain != null) {
+        return domain.delegateClassName() != null ? domain.delegateClassName() : domainName;
+      }
+    } else {
+      DomainReference domain = Jaquarius.ontologyReference().getDomainByName(domainClassName);
+      if (domain != null) {
+        return domain.domainName();
+      }
+    }
     return StringFunctions.removeTailOrElseThrow(transformClassName(domainClassName), DOMAIN);
   }
 
-  static String getGeneralObjectHandleTypename(String domainClassName) {
+  static String getGeneralObjectHandleTypename(String domainClassName, boolean replaceDomainWithDelegate) {
+    if (replaceDomainWithDelegate) {
+      String domainName = convertToDomainName(domainClassName);
+      DomainReference domain = Jaquarius.ontologyReference().getDomainByName(domainName);
+      if (domain != null) {
+        return domain.delegateClassName() != null ? domain.delegateClassName() : domainName;
+      }
+    } else {
+      DomainReference domain = Jaquarius.ontologyReference().getDomainByName(domainClassName);
+      if (domain != null) {
+        return domain.domainName();
+      }
+    }
     return StringFunctions.replaceTailOrElseThrow(transformClassName(domainClassName), DOMAIN, HANDLE);
   }
 
@@ -83,70 +107,70 @@ public interface NameConventionFunctions {
         StringFunctions.replaceTailOrElseThrow(transformClassName(domainClassName), DOMAIN, HANDLE));
   }
 
-  static String getUnmovableRegularObjectTypename(String domainClassName, boolean replaceKeyDomain) {
-    if (replaceKeyDomain) {
-      DomainReference domainReference = Jaquarius.ontologyReferences().getDomainByName(convertToDomainName(domainClassName));
-      if (domainReference != null && domainReference.delegateClassName() != null && (
-          DomainTypes.Number.is(domainReference.type()) ||
-              DomainTypes.Short.is(domainReference.type()) ||
-              DomainTypes.Integer.is(domainReference.type()) ||
-              DomainTypes.Float.is(domainReference.type()) ||
-              DomainTypes.Double.is(domainReference.type())
+  static String getUnmovableRegularObjectTypename(String domainClassName, boolean replaceDomainWithDelegate) {
+    if (replaceDomainWithDelegate) {
+      DomainReference domain = Jaquarius.ontologyReference().getDomainByName(convertToDomainName(domainClassName));
+      if (domain != null && domain.delegateClassName() != null && (
+          DomainTypes.Number.is(domain.type()) ||
+              DomainTypes.Short.is(domain.type()) ||
+              DomainTypes.Integer.is(domain.type()) ||
+              DomainTypes.Float.is(domain.type()) ||
+              DomainTypes.Double.is(domain.type())
       )) {
-        return domainReference.delegateClassName();
+        return domain.delegateClassName();
       }
     }
     return ClassNameFunctions.addPrefixToSimpleName(UNMOVABLE,
         StringFunctions.removeTailOrElseThrow(transformClassName(domainClassName), DOMAIN));
   }
 
-  static String getMovableRegularObjectTypename(String domainClassName, boolean replaceKeyDomain) {
-    if (replaceKeyDomain) {
-      DomainReference domainReference = Jaquarius.ontologyReferences().getDomainByName(convertToDomainName(domainClassName));
-      if (domainReference != null && domainReference.delegateClassName() != null && (
-          DomainTypes.Number.is(domainReference.type()) ||
-              DomainTypes.Short.is(domainReference.type()) ||
-              DomainTypes.Integer.is(domainReference.type()) ||
-              DomainTypes.Float.is(domainReference.type()) ||
-              DomainTypes.Double.is(domainReference.type())
+  static String getMovableRegularObjectTypename(String domainClassName, boolean replaceDomainWithDelegate) {
+    if (replaceDomainWithDelegate) {
+      DomainReference domain = Jaquarius.ontologyReference().getDomainByName(convertToDomainName(domainClassName));
+      if (domain != null && domain.delegateClassName() != null && (
+          DomainTypes.Number.is(domain.type()) ||
+              DomainTypes.Short.is(domain.type()) ||
+              DomainTypes.Integer.is(domain.type()) ||
+              DomainTypes.Float.is(domain.type()) ||
+              DomainTypes.Double.is(domain.type())
       )) {
-        return domainReference.delegateClassName();
+        return domain.delegateClassName();
       }
     }
     return ClassNameFunctions.addPrefixToSimpleName(MOVABLE,
         StringFunctions.removeTailOrElseThrow(transformClassName(domainClassName), DOMAIN));
   }
 
-  static String getUnmovableObjectHandleTypename(String domainClassName, boolean replaceKeyDomain) {
-    if (replaceKeyDomain) {
-      DomainReference domainReference = Jaquarius.ontologyReferences().getDomainByName(convertToDomainName(domainClassName));
-      if (domainReference != null && domainReference.delegateClassName() != null && (
-          DomainTypes.Number.is(domainReference.type()) ||
-              DomainTypes.Short.is(domainReference.type()) ||
-              DomainTypes.Integer.is(domainReference.type()) ||
-              DomainTypes.Float.is(domainReference.type()) ||
-              DomainTypes.Double.is(domainReference.type())
+  static String getUnmovableObjectHandleTypename(String domainClassName, boolean replaceDomainWithDelegate) {
+    if (replaceDomainWithDelegate) {
+      DomainReference domain = Jaquarius.ontologyReference().getDomainByName(convertToDomainName(domainClassName));
+      if (domain != null && domain.delegateClassName() != null && (
+          DomainTypes.Number.is(domain.type()) ||
+              DomainTypes.Short.is(domain.type()) ||
+              DomainTypes.Integer.is(domain.type()) ||
+              DomainTypes.Float.is(domain.type()) ||
+              DomainTypes.Double.is(domain.type())
       )) {
-        return domainReference.delegateClassName();
+        return domain.delegateClassName();
       }
     }
-    return ClassNameFunctions.addPrefixToSimpleName(UNMOVABLE, getGeneralObjectHandleTypename(domainClassName));
+    return ClassNameFunctions.addPrefixToSimpleName(UNMOVABLE, getGeneralObjectHandleTypename(domainClassName, false));
   }
 
-  static String getMovableObjectHandleTypename(String domainClassName, boolean replaceKeyDomain) {
-    if (replaceKeyDomain) {
-      DomainReference domainReference = Jaquarius.ontologyReferences().getDomainByName(convertToDomainName(domainClassName));
-      if (domainReference != null && domainReference.delegateClassName() != null && (
-          DomainTypes.Number.is(domainReference.type()) ||
-            DomainTypes.Short.is(domainReference.type()) ||
-            DomainTypes.Integer.is(domainReference.type()) ||
-            DomainTypes.Float.is(domainReference.type()) ||
-            DomainTypes.Double.is(domainReference.type())
+  static String getMovableObjectHandleTypename(String domainClassName, boolean replaceDomainWithDelegate) {
+    if (replaceDomainWithDelegate) {
+      DomainReference domain = Jaquarius.ontologyReference().getDomainByName(convertToDomainName(domainClassName));
+      if (domain != null && domain.delegateClassName() != null && (
+          DomainTypes.Number.is(domain.type()) ||
+              DomainTypes.Short.is(domain.type()) ||
+              DomainTypes.Integer.is(domain.type()) ||
+              DomainTypes.Float.is(domain.type()) ||
+              DomainTypes.Double.is(domain.type())
       )) {
-        return domainReference.delegateClassName();
+        return domain.delegateClassName();
       }
     }
-    return ClassNameFunctions.addPrefixToSimpleName(MOVABLE, getGeneralObjectHandleTypename(domainClassName));
+    return ClassNameFunctions.addPrefixToSimpleName(MOVABLE, getGeneralObjectHandleTypename(domainClassName, false));
   }
 
   static String getObjectHandleWrapperCanonicalName(CustomType objectHandleType) {
@@ -175,7 +199,7 @@ public interface NameConventionFunctions {
 
   static String getUnmovableDatasetClassName(String domainClassName) {
     return ClassNameFunctions.addPrefixToSimpleName(UNMOVABLE,
-      StringFunctions.replaceTailOrElseThrow(transformClassName(domainClassName), DOMAIN, DATASET));
+        StringFunctions.replaceTailOrElseThrow(transformClassName(domainClassName), DOMAIN, DATASET));
   }
 
   static String getDatasetBuilderCanonicalName(String domainClassName) {
@@ -266,8 +290,8 @@ public interface NameConventionFunctions {
   }
 
   static String getConversionMethodName(CustomType targetType) {
-    DomainReference domainReference = Jaquarius.ontologyReferences().getDomainByDelegateClass(targetType.canonicalName());
-    if (domainReference != null) {
+    DomainReference domain = Jaquarius.ontologyReference().getDomainByDelegateClass(targetType.canonicalName());
+    if (domain != null) {
       return "as" + StringFunctions.capitalizeFirstLetter(targetType.simpleName());
     }
     return "as" + StringFunctions.capitalizeFirstLetter(

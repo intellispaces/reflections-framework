@@ -10,6 +10,8 @@ public abstract class AbstractRegularObjectGenerator extends AbstractObjectGener
   }
 
   protected String getGeneralOriginHandleClassName() {
-    return addImportAndGetSimpleName(NameConventionFunctions.getGeneralRegularObjectTypename(sourceArtifact().className()));
+    return addImportAndGetSimpleName(
+        NameConventionFunctions.getGeneralRegularObjectTypename(sourceArtifact().className(), false)
+    );
   }
 }

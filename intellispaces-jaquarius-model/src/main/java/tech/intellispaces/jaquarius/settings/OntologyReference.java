@@ -3,13 +3,15 @@ package tech.intellispaces.jaquarius.settings;
 import java.util.List;
 
 /**
- * The ontology references.
+ * The ontology reference description.
  */
-public interface OntologyReferences {
+public interface OntologyReference {
 
   List<DomainReference> getDomains();
 
   List<ChannelReference> getChannels();
+
+  boolean isDomainReferenceSpecified(DomainType domainType);
 
   DomainReference getDomainByType(DomainType domainType);
 

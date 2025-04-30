@@ -1,7 +1,7 @@
 package tech.intellispaces.jaquarius.settings;
 
 /**
- * The domain reference.
+ * The domain reference description.
  */
 public interface DomainReference {
 

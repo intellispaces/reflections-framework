@@ -28,12 +28,12 @@ import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForms;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceFunctions;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
-import tech.intellispaces.reflection.customtype.CustomType;
-import tech.intellispaces.reflection.method.MethodParam;
-import tech.intellispaces.reflection.method.MethodStatement;
-import tech.intellispaces.reflection.reference.CustomTypeReference;
-import tech.intellispaces.reflection.reference.NamedReference;
-import tech.intellispaces.reflection.reference.TypeReference;
+import tech.intellispaces.statementsj.customtype.CustomType;
+import tech.intellispaces.statementsj.method.MethodParam;
+import tech.intellispaces.statementsj.method.MethodStatement;
+import tech.intellispaces.statementsj.reference.CustomTypeReference;
+import tech.intellispaces.statementsj.reference.NamedReference;
+import tech.intellispaces.statementsj.reference.TypeReference;
 
 abstract class AbstractObjectWrapperGenerator extends AbstractObjectGenerator {
   protected String domainSimpleClassName;

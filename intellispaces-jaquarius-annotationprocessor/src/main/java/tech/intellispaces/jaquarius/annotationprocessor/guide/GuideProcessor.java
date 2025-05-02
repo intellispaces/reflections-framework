@@ -15,7 +15,7 @@ import tech.intellispaces.jaquarius.annotation.Guide;
 import tech.intellispaces.jaquarius.annotationprocessor.AnnotationFunctions;
 import tech.intellispaces.jaquarius.annotationprocessor.JaquariusArtifactProcessor;
 import tech.intellispaces.jaquarius.annotationprocessor.module.UnitWrapperGenerator;
-import tech.intellispaces.reflection.customtype.CustomType;
+import tech.intellispaces.statementsj.customtype.CustomType;
 
 @AutoService(Processor.class)
 public class GuideProcessor extends ArtifactProcessor {

@@ -17,15 +17,15 @@ import tech.intellispaces.jaquarius.Jaquarius;
 import tech.intellispaces.jaquarius.annotation.Domain;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
 import tech.intellispaces.jaquarius.settings.ChannelTypes;
-import tech.intellispaces.reflection.JavaStatements;
-import tech.intellispaces.reflection.customtype.CustomType;
-import tech.intellispaces.reflection.method.MethodStatement;
-import tech.intellispaces.reflection.reference.CustomTypeReference;
-import tech.intellispaces.reflection.reference.CustomTypeReferences;
-import tech.intellispaces.reflection.reference.NamedReference;
-import tech.intellispaces.reflection.reference.NotPrimitiveReference;
-import tech.intellispaces.reflection.reference.TypeReference;
-import tech.intellispaces.reflection.reference.TypeReferenceFunctions;
+import tech.intellispaces.statementsj.JavaStatements;
+import tech.intellispaces.statementsj.customtype.CustomType;
+import tech.intellispaces.statementsj.method.MethodStatement;
+import tech.intellispaces.statementsj.reference.CustomTypeReference;
+import tech.intellispaces.statementsj.reference.CustomTypeReferences;
+import tech.intellispaces.statementsj.reference.NamedReference;
+import tech.intellispaces.statementsj.reference.NotPrimitiveReference;
+import tech.intellispaces.statementsj.reference.TypeReference;
+import tech.intellispaces.statementsj.reference.TypeReferenceFunctions;
 
 /**
  * Domain functions.

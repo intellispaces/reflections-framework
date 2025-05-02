@@ -10,9 +10,9 @@ import java.util.Set;
 import tech.intellispaces.commons.collection.ArraysFunctions;
 import tech.intellispaces.jaquarius.annotation.Configuration;
 import tech.intellispaces.jaquarius.annotation.Module;
-import tech.intellispaces.reflection.customtype.CustomType;
-import tech.intellispaces.reflection.instance.AnnotationInstance;
-import tech.intellispaces.reflection.instance.Instance;
+import tech.intellispaces.statementsj.customtype.CustomType;
+import tech.intellispaces.statementsj.instance.AnnotationInstance;
+import tech.intellispaces.statementsj.instance.Instance;
 
 public interface ModuleFunctions {
 

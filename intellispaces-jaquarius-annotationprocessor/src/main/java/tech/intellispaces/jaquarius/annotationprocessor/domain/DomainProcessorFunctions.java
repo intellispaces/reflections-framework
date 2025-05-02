@@ -16,11 +16,11 @@ import tech.intellispaces.jaquarius.annotation.Ignore;
 import tech.intellispaces.jaquarius.annotationprocessor.AnnotationFunctions;
 import tech.intellispaces.jaquarius.artifact.ArtifactTypes;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
-import tech.intellispaces.reflection.customtype.CustomType;
-import tech.intellispaces.reflection.method.MethodStatement;
-import tech.intellispaces.reflection.reference.CustomTypeReference;
+import tech.intellispaces.statementsj.customtype.CustomType;
+import tech.intellispaces.statementsj.method.MethodStatement;
+import tech.intellispaces.statementsj.reference.CustomTypeReference;
 
-import static tech.intellispaces.reflection.customtype.AnnotationFunctions.allAnnotationsOf;
+import static tech.intellispaces.statementsj.customtype.AnnotationFunctions.allAnnotationsOf;
 
 public interface DomainProcessorFunctions {
 

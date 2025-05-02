@@ -2,7 +2,7 @@ package tech.intellispaces.jaquarius.guide.n4;
 
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.system.UnitWrapper;
-import tech.intellispaces.reflection.method.MethodStatement;
+import tech.intellispaces.statementsj.method.MethodStatement;
 
 public class UnitMapperOfMoving4<S, T, Q1, Q2, Q3, Q4>
     extends UnitGuide4<S, T, Q1, Q2, Q3, Q4>

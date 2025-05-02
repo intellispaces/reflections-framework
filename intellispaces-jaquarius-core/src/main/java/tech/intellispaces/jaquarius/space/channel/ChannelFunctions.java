@@ -33,19 +33,19 @@ import tech.intellispaces.jaquarius.traverse.TraverseType;
 import tech.intellispaces.proxies.tracker.Tracker;
 import tech.intellispaces.proxies.tracker.TrackerFunctions;
 import tech.intellispaces.proxies.tracker.Trackers;
-import tech.intellispaces.reflection.customtype.CustomType;
-import tech.intellispaces.reflection.customtype.CustomTypes;
-import tech.intellispaces.reflection.instance.AnnotationInstance;
-import tech.intellispaces.reflection.instance.ClassInstance;
-import tech.intellispaces.reflection.instance.Instance;
-import tech.intellispaces.reflection.method.MethodParam;
-import tech.intellispaces.reflection.method.MethodSignature;
-import tech.intellispaces.reflection.method.MethodSignatures;
-import tech.intellispaces.reflection.method.MethodStatement;
-import tech.intellispaces.reflection.reference.CustomTypeReference;
-import tech.intellispaces.reflection.reference.CustomTypeReferences;
-import tech.intellispaces.reflection.reference.TypeReference;
-import tech.intellispaces.reflection.reference.TypeReferenceFunctions;
+import tech.intellispaces.statementsj.customtype.CustomType;
+import tech.intellispaces.statementsj.customtype.CustomTypes;
+import tech.intellispaces.statementsj.instance.AnnotationInstance;
+import tech.intellispaces.statementsj.instance.ClassInstance;
+import tech.intellispaces.statementsj.instance.Instance;
+import tech.intellispaces.statementsj.method.MethodParam;
+import tech.intellispaces.statementsj.method.MethodSignature;
+import tech.intellispaces.statementsj.method.MethodSignatures;
+import tech.intellispaces.statementsj.method.MethodStatement;
+import tech.intellispaces.statementsj.reference.CustomTypeReference;
+import tech.intellispaces.statementsj.reference.CustomTypeReferences;
+import tech.intellispaces.statementsj.reference.TypeReference;
+import tech.intellispaces.statementsj.reference.TypeReferenceFunctions;
 
 /**
  * Channel related functions.

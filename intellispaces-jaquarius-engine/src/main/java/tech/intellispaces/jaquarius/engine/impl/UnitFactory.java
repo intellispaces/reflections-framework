@@ -29,8 +29,8 @@ import tech.intellispaces.jaquarius.system.injection.GuideInjections;
 import tech.intellispaces.jaquarius.system.injection.InjectionKinds;
 import tech.intellispaces.jaquarius.system.injection.ProjectionInjections;
 import tech.intellispaces.jaquarius.system.projection.ProjectionDefinitionBasedOnMethodActions;
-import tech.intellispaces.reflection.method.MethodStatement;
-import tech.intellispaces.reflection.method.Methods;
+import tech.intellispaces.statementsj.method.MethodStatement;
+import tech.intellispaces.statementsj.method.Methods;
 
 /**
  * The unit factory.

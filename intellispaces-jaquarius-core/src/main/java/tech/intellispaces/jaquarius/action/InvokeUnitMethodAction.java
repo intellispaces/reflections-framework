@@ -8,8 +8,8 @@ import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.jaquarius.exception.ConfigurationExceptions;
 import tech.intellispaces.jaquarius.system.Modules;
 import tech.intellispaces.jaquarius.system.UnitWrapper;
-import tech.intellispaces.reflection.method.MethodParam;
-import tech.intellispaces.reflection.method.MethodStatement;
+import tech.intellispaces.statementsj.method.MethodParam;
+import tech.intellispaces.statementsj.method.MethodStatement;
 
 public class InvokeUnitMethodAction<R> extends AbstractAction0<R> {
   private final UnitWrapper unit;

@@ -1,7 +1,7 @@
 package tech.intellispaces.jaquarius.object.factory;
 
 import tech.intellispaces.commons.text.StringFunctions;
-import tech.intellispaces.reflection.method.MethodStatement;
+import tech.intellispaces.statementsj.method.MethodStatement;
 
 public interface ObjectFactoryFunctions {
 

@@ -6,7 +6,7 @@ import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
 import tech.intellispaces.jaquarius.annotation.Domain;
 import tech.intellispaces.jaquarius.annotation.Ignore;
 import tech.intellispaces.jaquarius.annotationprocessor.JaquariusArtifactGenerator;
-import tech.intellispaces.reflection.customtype.CustomTypes;
+import tech.intellispaces.statementsj.customtype.CustomTypes;
 
 public class PenaltyRoundDomainGenerator extends JaquariusArtifactGenerator {
   private final int index;

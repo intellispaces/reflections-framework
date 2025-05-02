@@ -20,13 +20,13 @@ import tech.intellispaces.jaquarius.annotation.Shutdown;
 import tech.intellispaces.jaquarius.annotation.Startup;
 import tech.intellispaces.jaquarius.guide.GuideFunctions;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceFunctions;
-import tech.intellispaces.reflection.customtype.CustomType;
-import tech.intellispaces.reflection.method.MethodParam;
-import tech.intellispaces.reflection.method.MethodStatement;
-import tech.intellispaces.reflection.reference.NamedReference;
-import tech.intellispaces.reflection.reference.PrimitiveReference;
-import tech.intellispaces.reflection.reference.PrimitiveReferences;
-import tech.intellispaces.reflection.reference.TypeReference;
+import tech.intellispaces.statementsj.customtype.CustomType;
+import tech.intellispaces.statementsj.method.MethodParam;
+import tech.intellispaces.statementsj.method.MethodStatement;
+import tech.intellispaces.statementsj.reference.NamedReference;
+import tech.intellispaces.statementsj.reference.PrimitiveReference;
+import tech.intellispaces.statementsj.reference.PrimitiveReferences;
+import tech.intellispaces.statementsj.reference.TypeReference;
 
 /**
  * Common annotation generator functions.

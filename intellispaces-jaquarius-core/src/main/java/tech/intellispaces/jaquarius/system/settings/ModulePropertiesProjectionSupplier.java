@@ -12,7 +12,7 @@ import tech.intellispaces.jaquarius.settings.ChannelTypes;
 import tech.intellispaces.jaquarius.system.Module;
 import tech.intellispaces.jaquarius.system.Modules;
 import tech.intellispaces.jaquarius.system.projection.InjectedMethodProjectionSupplier;
-import tech.intellispaces.reflection.method.MethodStatement;
+import tech.intellispaces.statementsj.method.MethodStatement;
 
 public class ModulePropertiesProjectionSupplier extends InjectedMethodProjectionSupplier {
 

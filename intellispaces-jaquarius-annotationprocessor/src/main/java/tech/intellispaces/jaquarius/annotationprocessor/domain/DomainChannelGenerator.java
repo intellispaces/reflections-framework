@@ -7,11 +7,11 @@ import tech.intellispaces.actions.text.StringActions;
 import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
 import tech.intellispaces.jaquarius.annotationprocessor.channel.AbstractChannelGenerator;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
-import tech.intellispaces.reflection.customtype.CustomType;
-import tech.intellispaces.reflection.method.MethodParam;
-import tech.intellispaces.reflection.method.MethodStatement;
-import tech.intellispaces.reflection.reference.NamedReference;
-import tech.intellispaces.reflection.reference.TypeReference;
+import tech.intellispaces.statementsj.customtype.CustomType;
+import tech.intellispaces.statementsj.method.MethodParam;
+import tech.intellispaces.statementsj.method.MethodStatement;
+import tech.intellispaces.statementsj.reference.NamedReference;
+import tech.intellispaces.statementsj.reference.TypeReference;
 
 public class DomainChannelGenerator extends AbstractChannelGenerator {
 

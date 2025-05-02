@@ -23,13 +23,13 @@ import tech.intellispaces.jaquarius.annotation.AssistantCustomizer;
 import tech.intellispaces.jaquarius.annotation.Customizer;
 import tech.intellispaces.jaquarius.artifact.ArtifactTypes;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
-import tech.intellispaces.reflection.AnnotatedStatement;
-import tech.intellispaces.reflection.JavaStatements;
-import tech.intellispaces.reflection.customtype.CustomType;
-import tech.intellispaces.reflection.customtype.CustomTypes;
-import tech.intellispaces.reflection.instance.AnnotationInstance;
-import tech.intellispaces.reflection.instance.ClassInstance;
-import tech.intellispaces.reflection.instance.Instance;
+import tech.intellispaces.statementsj.AnnotatedStatement;
+import tech.intellispaces.statementsj.JavaStatements;
+import tech.intellispaces.statementsj.customtype.CustomType;
+import tech.intellispaces.statementsj.customtype.CustomTypes;
+import tech.intellispaces.statementsj.instance.AnnotationInstance;
+import tech.intellispaces.statementsj.instance.ClassInstance;
+import tech.intellispaces.statementsj.instance.Instance;
 
 /**
  * Functions related to artifact generation annotations.

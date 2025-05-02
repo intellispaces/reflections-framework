@@ -2,7 +2,7 @@ package tech.intellispaces.jaquarius.system;
 
 import tech.intellispaces.jaquarius.annotation.Configuration;
 import tech.intellispaces.jaquarius.annotation.Guide;
-import tech.intellispaces.reflection.customtype.CustomType;
+import tech.intellispaces.statementsj.customtype.CustomType;
 
 public interface UnitFunctions {
 

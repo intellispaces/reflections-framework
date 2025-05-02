@@ -12,8 +12,8 @@ import tech.intellispaces.jaquarius.annotationprocessor.AnnotationFunctions;
 import tech.intellispaces.jaquarius.artifact.ArtifactTypes;
 import tech.intellispaces.jaquarius.exception.JaquariusExceptions;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
-import tech.intellispaces.reflection.customtype.CustomType;
-import tech.intellispaces.reflection.instance.AnnotationInstance;
+import tech.intellispaces.statementsj.customtype.CustomType;
+import tech.intellispaces.statementsj.instance.AnnotationInstance;
 
 /**
  * The channel type validator.

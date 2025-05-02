@@ -21,15 +21,15 @@ import tech.intellispaces.jaquarius.object.reference.ObjectReferenceFunctions;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.space.domain.DomainFunctions;
 import tech.intellispaces.jaquarius.traverse.TraverseType;
-import tech.intellispaces.reflection.common.LanguageFunctions;
-import tech.intellispaces.reflection.customtype.CustomType;
-import tech.intellispaces.reflection.method.MethodParam;
-import tech.intellispaces.reflection.method.MethodStatement;
-import tech.intellispaces.reflection.reference.CustomTypeReference;
-import tech.intellispaces.reflection.reference.CustomTypeReferences;
-import tech.intellispaces.reflection.reference.NotPrimitiveReference;
-import tech.intellispaces.reflection.reference.TypeReference;
-import tech.intellispaces.reflection.reference.TypeReferenceFunctions;
+import tech.intellispaces.statementsj.common.LanguageFunctions;
+import tech.intellispaces.statementsj.customtype.CustomType;
+import tech.intellispaces.statementsj.method.MethodParam;
+import tech.intellispaces.statementsj.method.MethodStatement;
+import tech.intellispaces.statementsj.reference.CustomTypeReference;
+import tech.intellispaces.statementsj.reference.CustomTypeReferences;
+import tech.intellispaces.statementsj.reference.NotPrimitiveReference;
+import tech.intellispaces.statementsj.reference.TypeReference;
+import tech.intellispaces.statementsj.reference.TypeReferenceFunctions;
 
 abstract class ConversionObjectGenerator extends AbstractObjectGenerator {
   protected String domainClassSimpleName;

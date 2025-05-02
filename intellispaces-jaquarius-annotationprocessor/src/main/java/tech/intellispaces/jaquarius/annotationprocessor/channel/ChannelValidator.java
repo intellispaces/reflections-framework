@@ -5,7 +5,7 @@ import java.util.Optional;
 import tech.intellispaces.annotationprocessor.ArtifactValidator;
 import tech.intellispaces.jaquarius.annotation.Ontology;
 import tech.intellispaces.jaquarius.exception.JaquariusExceptions;
-import tech.intellispaces.reflection.customtype.CustomType;
+import tech.intellispaces.statementsj.customtype.CustomType;
 
 /**
  * The channel type validator.

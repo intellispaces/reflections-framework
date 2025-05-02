@@ -2,7 +2,7 @@ package tech.intellispaces.jaquarius.guide.n1;
 
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceForm;
 import tech.intellispaces.jaquarius.system.UnitWrapper;
-import tech.intellispaces.reflection.method.MethodStatement;
+import tech.intellispaces.statementsj.method.MethodStatement;
 
 /**
  * Unit method mapper with one qualifier.

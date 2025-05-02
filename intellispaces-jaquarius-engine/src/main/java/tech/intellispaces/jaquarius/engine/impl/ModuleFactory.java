@@ -18,7 +18,7 @@ import tech.intellispaces.jaquarius.system.UnitFunctions;
 import tech.intellispaces.jaquarius.system.UnitWrapper;
 import tech.intellispaces.jaquarius.system.empty.EmptyModule;
 import tech.intellispaces.jaquarius.system.empty.EmptyModuleWrapper;
-import tech.intellispaces.reflection.method.MethodStatement;
+import tech.intellispaces.statementsj.method.MethodStatement;
 
 /**
  * The module factory.

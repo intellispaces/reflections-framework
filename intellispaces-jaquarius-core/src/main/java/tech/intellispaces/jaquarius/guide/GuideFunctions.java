@@ -48,17 +48,17 @@ import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.system.UnitWrapper;
 import tech.intellispaces.jaquarius.traverse.TraverseType;
 import tech.intellispaces.jaquarius.traverse.TraverseTypes;
-import tech.intellispaces.reflection.customtype.Classes;
-import tech.intellispaces.reflection.customtype.CustomType;
-import tech.intellispaces.reflection.customtype.CustomTypes;
-import tech.intellispaces.reflection.customtype.Interfaces;
-import tech.intellispaces.reflection.instance.AnnotationInstance;
-import tech.intellispaces.reflection.instance.ClassInstance;
-import tech.intellispaces.reflection.instance.Instance;
-import tech.intellispaces.reflection.method.MethodFunctions;
-import tech.intellispaces.reflection.method.MethodStatement;
-import tech.intellispaces.reflection.method.Methods;
-import tech.intellispaces.reflection.reference.TypeReference;
+import tech.intellispaces.statementsj.customtype.Classes;
+import tech.intellispaces.statementsj.customtype.CustomType;
+import tech.intellispaces.statementsj.customtype.CustomTypes;
+import tech.intellispaces.statementsj.customtype.Interfaces;
+import tech.intellispaces.statementsj.instance.AnnotationInstance;
+import tech.intellispaces.statementsj.instance.ClassInstance;
+import tech.intellispaces.statementsj.instance.Instance;
+import tech.intellispaces.statementsj.method.MethodFunctions;
+import tech.intellispaces.statementsj.method.MethodStatement;
+import tech.intellispaces.statementsj.method.Methods;
+import tech.intellispaces.statementsj.reference.TypeReference;
 
 public final class GuideFunctions {
 

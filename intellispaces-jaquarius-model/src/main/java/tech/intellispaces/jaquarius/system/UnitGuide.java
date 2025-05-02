@@ -1,7 +1,7 @@
 package tech.intellispaces.jaquarius.system;
 
 import tech.intellispaces.jaquarius.guide.Guide;
-import tech.intellispaces.reflection.method.MethodStatement;
+import tech.intellispaces.statementsj.method.MethodStatement;
 
 /**
  * The system unit guide.

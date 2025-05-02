@@ -11,9 +11,9 @@ import tech.intellispaces.jaquarius.engine.description.ObjectFactoryMethodDescri
 import tech.intellispaces.jaquarius.engine.description.ObjectFactoryMethods;
 import tech.intellispaces.jaquarius.naming.NameConventionFunctions;
 import tech.intellispaces.jaquarius.object.reference.ObjectReferenceFunctions;
-import tech.intellispaces.reflection.customtype.CustomType;
-import tech.intellispaces.reflection.method.MethodParam;
-import tech.intellispaces.reflection.method.MethodStatement;
+import tech.intellispaces.statementsj.customtype.CustomType;
+import tech.intellispaces.statementsj.method.MethodParam;
+import tech.intellispaces.statementsj.method.MethodStatement;
 
 public class ObjectFactoryWrapperGenerator extends JaquariusArtifactGenerator {
   private final ObjectFactoryMetaInfGenerator metaInfGenerator;

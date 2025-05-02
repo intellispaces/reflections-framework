@@ -32,15 +32,15 @@ import tech.intellispaces.jaquarius.system.ProjectionInjection;
 import tech.intellispaces.jaquarius.system.UnitWrapper;
 import tech.intellispaces.jaquarius.system.injection.InjectionKinds;
 import tech.intellispaces.jaquarius.system.projection.ProjectionReferences;
-import tech.intellispaces.reflection.customtype.CustomType;
-import tech.intellispaces.reflection.instance.AnnotationInstance;
-import tech.intellispaces.reflection.instance.ClassInstance;
-import tech.intellispaces.reflection.instance.Instance;
-import tech.intellispaces.reflection.method.MethodParam;
-import tech.intellispaces.reflection.method.MethodStatement;
-import tech.intellispaces.reflection.method.Methods;
-import tech.intellispaces.reflection.reference.NamedReference;
-import tech.intellispaces.reflection.reference.TypeReference;
+import tech.intellispaces.statementsj.customtype.CustomType;
+import tech.intellispaces.statementsj.instance.AnnotationInstance;
+import tech.intellispaces.statementsj.instance.ClassInstance;
+import tech.intellispaces.statementsj.instance.Instance;
+import tech.intellispaces.statementsj.method.MethodParam;
+import tech.intellispaces.statementsj.method.MethodStatement;
+import tech.intellispaces.statementsj.method.Methods;
+import tech.intellispaces.statementsj.reference.NamedReference;
+import tech.intellispaces.statementsj.reference.TypeReference;
 
 public class UnitWrapperGenerator extends JaquariusArtifactGenerator {
   private String typeParamsFullDeclaration;

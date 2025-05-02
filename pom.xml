@@ -47,12 +47,12 @@
             </dependency>
             <dependency>
                 <groupId>tech.intellispaces</groupId>
-                <artifactId>intellispaces-reflection-model</artifactId>
+                <artifactId>intellispaces-statementsj-model</artifactId>
                 <version>0.0.1-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>tech.intellispaces</groupId>
-                <artifactId>intellispaces-reflection</artifactId>
+                <artifactId>intellispaces-statementsj</artifactId>
                 <version>0.0.1-SNAPSHOT</version>
             </dependency>
             <dependency>

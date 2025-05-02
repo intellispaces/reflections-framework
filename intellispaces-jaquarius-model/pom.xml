@@ -35,7 +35,7 @@
         </dependency>
         <dependency>
             <groupId>tech.intellispaces</groupId>
-            <artifactId>intellispaces-reflection-model</artifactId>
+            <artifactId>intellispaces-statementsj-model</artifactId>
         </dependency>
     </dependencies>
 </project>

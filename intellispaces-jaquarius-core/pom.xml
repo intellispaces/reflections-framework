@@ -55,7 +55,7 @@
         </dependency>
         <dependency>
             <groupId>tech.intellispaces</groupId>
-            <artifactId>intellispaces-reflection</artifactId>
+            <artifactId>intellispaces-statementsj</artifactId>
         </dependency>
 
         <!-- Logging -->

@@ -42,16 +42,16 @@ import tech.intellispaces.jaquarius.object.reference.ObjectReferenceFunctions;
 import tech.intellispaces.jaquarius.space.channel.ChannelFunctions;
 import tech.intellispaces.jaquarius.traverse.TraverseType;
 import tech.intellispaces.jaquarius.traverse.TraverseTypes;
-import tech.intellispaces.reflection.customtype.CustomType;
-import tech.intellispaces.reflection.method.MethodParam;
-import tech.intellispaces.reflection.method.MethodStatement;
-import tech.intellispaces.reflection.reference.CustomTypeReferences;
-import tech.intellispaces.reflection.reference.NamedReference;
-import tech.intellispaces.reflection.reference.NotPrimitiveReference;
-import tech.intellispaces.reflection.reference.PrimitiveReference;
-import tech.intellispaces.reflection.reference.ReferenceBound;
-import tech.intellispaces.reflection.reference.TypeReference;
-import tech.intellispaces.reflection.reference.Wildcards;
+import tech.intellispaces.statementsj.customtype.CustomType;
+import tech.intellispaces.statementsj.method.MethodParam;
+import tech.intellispaces.statementsj.method.MethodStatement;
+import tech.intellispaces.statementsj.reference.CustomTypeReferences;
+import tech.intellispaces.statementsj.reference.NamedReference;
+import tech.intellispaces.statementsj.reference.NotPrimitiveReference;
+import tech.intellispaces.statementsj.reference.PrimitiveReference;
+import tech.intellispaces.statementsj.reference.ReferenceBound;
+import tech.intellispaces.statementsj.reference.TypeReference;
+import tech.intellispaces.statementsj.reference.Wildcards;
 
 public class DefaultGuideFormGenerator extends JaquariusArtifactGenerator {
   private final ObjectReferenceForm targetForm;

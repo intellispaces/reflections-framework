@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import tech.intellispaces.jaquarius.annotationprocessor.SampleAnnotatedTypeProcessor;
 import tech.intellispaces.jaquarius.exception.JaquariusException;
-import tech.intellispaces.reflection.customtype.CustomType;
+import tech.intellispaces.statementsj.customtype.CustomType;
 
 /**
  * Tests for {@link ModuleValidator} class.

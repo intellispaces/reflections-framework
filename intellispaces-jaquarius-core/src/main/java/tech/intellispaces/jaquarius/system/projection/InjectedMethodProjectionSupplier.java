@@ -1,7 +1,7 @@
 package tech.intellispaces.jaquarius.system.projection;
 
 import tech.intellispaces.jaquarius.system.ProjectionSupplier;
-import tech.intellispaces.reflection.method.MethodStatement;
+import tech.intellispaces.statementsj.method.MethodStatement;
 
 public abstract class InjectedMethodProjectionSupplier implements ProjectionSupplier {
   protected final MethodStatement injectedMethod;

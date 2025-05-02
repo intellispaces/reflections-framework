@@ -10,6 +10,6 @@ import java.lang.annotation.Target;
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@AnnotationProcessor(name = "tech.intellispaces.jaquarius.annotationprocessor.dataset.DatasetProcessor")
+@AnnotationProcessor(name = "tech.intellispaces.reflectionsj.annotationprocessor.dataset.DatasetProcessor")
 public @interface Dataset {
 }

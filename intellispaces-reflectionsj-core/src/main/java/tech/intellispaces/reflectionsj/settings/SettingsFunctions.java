@@ -21,14 +21,14 @@ import tech.intellispaces.commons.text.StringFunctions;
 public class SettingsFunctions {
 
   public static OntologyReference loadOntologyReference(String baseDirectory) throws IOException {
-    var path = Paths.get(baseDirectory, "src/main/resources/META-INF/jaquarius/ontology.reference");
+    var path = Paths.get(baseDirectory, "src/main/resources/META-INF/reflectionsj/ontology.reference");
     String source = Files.readString(path, StandardCharsets.UTF_8);
     PropertiesSet props = PropertiesSets.parseProperties(source, "");
     return parseOntologyProps(props);
   }
 
   public static List<OntologyReference> loadOntologyReferences(ClassLoader classLoader) throws IOException {
-    Enumeration<URL> enumeration = classLoader.getResources("META-INF/jaquarius/ontology.reference");
+    Enumeration<URL> enumeration = classLoader.getResources("META-INF/reflectionsj/ontology.reference");
     List<URL> urls = CollectionFunctions.toList(enumeration);
     List<PropertiesSet> propsList = CollectionFunctions.mapEach(urls, url -> PropertiesSets.parseProperties(
         ResourceFunctions.readResourceAsString(url), ""));

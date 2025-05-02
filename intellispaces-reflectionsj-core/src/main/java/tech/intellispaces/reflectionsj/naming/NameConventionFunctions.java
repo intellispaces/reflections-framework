@@ -233,7 +233,7 @@ public interface NameConventionFunctions {
   }
 
   static String getObjectFactoriesResourceName() {
-    return "META-INF/jaquarius/object_factories";
+    return "META-INF/reflectionsj/object_factories";
   }
 
   static String getUnmovableUpwardObjectTypename(CustomType domainType, CustomType baseDomainType) {

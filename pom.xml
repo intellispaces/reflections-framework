@@ -7,14 +7,14 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>intellispaces-jaquarius-parent</artifactId>
+    <artifactId>intellispaces-reflectionsj-parent</artifactId>
     <packaging>pom</packaging>
 
     <modules>
-        <module>intellispaces-jaquarius-model</module>
-        <module>intellispaces-jaquarius-core</module>
-        <module>intellispaces-jaquarius-annotationprocessor</module>
-        <module>intellispaces-jaquarius-engine</module>
+        <module>intellispaces-reflectionsj-model</module>
+        <module>intellispaces-reflectionsj-core</module>
+        <module>intellispaces-reflectionsj-annotationprocessor</module>
+        <module>intellispaces-reflectionsj-engine</module>
     </modules>
 
     <dependencyManagement>
@@ -27,12 +27,12 @@
             </dependency>
             <dependency>
                 <groupId>tech.intellispaces</groupId>
-                <artifactId>intellispaces-jaquarius-model</artifactId>
+                <artifactId>intellispaces-reflectionsj-model</artifactId>
                 <version>0.0.1-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>tech.intellispaces</groupId>
-                <artifactId>intellispaces-jaquarius-core</artifactId>
+                <artifactId>intellispaces-reflectionsj-core</artifactId>
                 <version>0.0.1-SNAPSHOT</version>
             </dependency>
             <dependency>

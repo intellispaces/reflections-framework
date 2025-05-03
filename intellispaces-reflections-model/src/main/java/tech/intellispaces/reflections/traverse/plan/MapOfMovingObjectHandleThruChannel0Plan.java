@@ -1,0 +1,7 @@
+package tech.intellispaces.reflections.traverse.plan;
+
+/**
+ * The declarative traverse plan to map of moving object handle through one-parametrized channel.
+ */
+public interface MapOfMovingObjectHandleThruChannel0Plan extends ObjectHandleTraversePlan {
+}

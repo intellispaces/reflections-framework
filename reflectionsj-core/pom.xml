@@ -3,11 +3,11 @@
 
     <parent>
         <groupId>tech.intellispaces</groupId>
-        <artifactId>intellispaces-reflectionsj-parent</artifactId>
+        <artifactId>reflectionsj-parent</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>intellispaces-reflectionsj-engine</artifactId>
+    <artifactId>reflectionsj-core</artifactId>
     <packaging>jar</packaging>
 	
     <build>
@@ -31,11 +31,19 @@
         <!-- Intellispaces -->
         <dependency>
             <groupId>tech.intellispaces</groupId>
-            <artifactId>intellispaces-reflectionsj-model</artifactId>
+            <artifactId>intellispaces-core</artifactId>
         </dependency>
         <dependency>
             <groupId>tech.intellispaces</groupId>
-            <artifactId>intellispaces-reflectionsj-core</artifactId>
+            <artifactId>reflectionsj-model</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>tech.intellispaces</groupId>
+            <artifactId>intellispaces-commons</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>tech.intellispaces</groupId>
+            <artifactId>intellispaces-proxies</artifactId>
         </dependency>
         <dependency>
             <groupId>tech.intellispaces</groupId>
@@ -45,11 +53,9 @@
             <groupId>tech.intellispaces</groupId>
             <artifactId>intellispaces-actions-common</artifactId>
         </dependency>
-
-        <!-- Auto-service library -->
         <dependency>
-            <groupId>com.google.auto.service</groupId>
-            <artifactId>auto-service</artifactId>
+            <groupId>tech.intellispaces</groupId>
+            <artifactId>intellispaces-statementsj</artifactId>
         </dependency>
 
         <!-- Logging -->
@@ -59,12 +65,6 @@
         </dependency>
 
         <!-- Testing -->
-        <dependency>
-            <groupId>tech.intellispaces</groupId>
-            <artifactId>intellispaces-reflectionsj-annotationprocessor</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-            <scope>test</scope>
-        </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>

@@ -3,11 +3,11 @@
 
     <parent>
         <groupId>tech.intellispaces</groupId>
-        <artifactId>intellispaces-reflectionsj-parent</artifactId>
+        <artifactId>reflectionsj-parent</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>intellispaces-reflectionsj-model</artifactId>
+    <artifactId>reflectionsj-model</artifactId>
     <packaging>jar</packaging>
 	
     <build>

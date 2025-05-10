@@ -1,7 +1,7 @@
 package samples;
 
-import tech.intellispaces.reflectionsframework.annotation.Module;
-import tech.intellispaces.reflectionsframework.annotation.Shutdown;
+import tech.intellispaces.reflections.framework.annotation.Module;
+import tech.intellispaces.reflections.framework.annotation.Shutdown;
 import tech.intellispaces.reflectionsframework.annotation.validator.Sample;
 
 @Sample

@@ -1,8 +1,8 @@
 package samples;
 
-import tech.intellispaces.reflectionsframework.annotation.Module;
-import tech.intellispaces.reflectionsframework.annotation.Projection;
-import tech.intellispaces.reflectionsframework.annotation.Properties;
+import tech.intellispaces.reflections.framework.annotation.Module;
+import tech.intellispaces.reflections.framework.annotation.Projection;
+import tech.intellispaces.reflections.framework.annotation.Properties;
 import tech.intellispaces.reflectionsframework.annotation.validator.Sample;
 
 @Sample

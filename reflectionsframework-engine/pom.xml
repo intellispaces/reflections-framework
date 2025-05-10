@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>tech.intellispaces.reflectionsframework</groupId>
+        <groupId>tech.intellispaces.reflections</groupId>
         <artifactId>reflectionsframework-parent</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
@@ -30,11 +30,11 @@
     <dependencies>
         <!-- Intellispaces -->
         <dependency>
-            <groupId>tech.intellispaces.reflectionsframework</groupId>
+            <groupId>tech.intellispaces.reflections</groupId>
             <artifactId>reflectionsframework-model</artifactId>
         </dependency>
         <dependency>
-            <groupId>tech.intellispaces.reflectionsframework</groupId>
+            <groupId>tech.intellispaces.reflections</groupId>
             <artifactId>reflectionsframework</artifactId>
         </dependency>
         <dependency>
@@ -60,8 +60,8 @@
 
         <!-- Testing -->
         <dependency>
-            <groupId>tech.intellispaces.reflectionsframework</groupId>
-            <artifactId>reflectionsframework-annotationprocessor</artifactId>
+            <groupId>tech.intellispaces.reflections</groupId>
+            <artifactId>reflections-annotationprocessor</artifactId>
             <version>0.0.1-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>

@@ -1,0 +1,45 @@
+package {{$generatedArtifactPackageName}};
+
+{{for importedClass : $importedClasses}}
+import {{$importedClass}};
+{{end}}
+
+/**
+ * General object handle for domain {@link {{$sourceArtifactSimpleName}}}.
+ * <p>
+ * This class was generated automatically. Don't try to change it.
+ */
+@ObjectHandle({{$sourceArtifactSimpleName}}.class)
+{{$generatedAnnotation}}
+{{when $isAlias}}
+public interface {{$generatedArtifactSimpleName}}{{$handleTypeParamsFull}} extends {{$simpleObject}}{{$handleTypeParamsBrief}}, {{$primaryObjectHandle}} {
+
+  default Type<{{$primaryDomainSimpleName}}{{$primaryDomainTypeArguments}}> domain() {
+    return {{$domainType}}
+  }
+{{else}}
+public interface {{$generatedArtifactSimpleName}}{{$handleTypeParamsFull}} extends {{$simpleObject}}{{$handleTypeParamsBrief}}, reference.object.tech.intellispaces.reflections.framework.ObjectHandle<{{$sourceArtifactSimpleName}}{{$domainTypeParamsBrief}}> {
+
+  default Type<{{$sourceArtifactSimpleName}}{{$domainTypeParamsBrief}}> domain() {
+    return {{$domainType}}
+  }
+
+  default Class<?> domainAsClass() {
+    return {{$sourceArtifactSimpleName}}.class;
+  }
+{{end}}
+
+  @Override
+  default boolean isFocused() {
+    return true;
+  }
+
+{{for method : $domainMethods}}
+  {{$method["javadoc"]}}
+  {{$method["declaration"]}};
+
+{{end}}
+  {{$movableClassSimpleName}}{{$handleTypeParamsBrief}} asMovableOrElseThrow();
+
+  <T, Q, C extends Channel1 & MappingTraverse> T mapThru(Class<C> channelClass, Q qualifier) throws TraverseException;
+}

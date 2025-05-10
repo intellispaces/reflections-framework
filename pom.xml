@@ -7,14 +7,14 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <groupId>tech.intellispaces.reflectionsframework</groupId>
+    <groupId>tech.intellispaces.reflections</groupId>
     <artifactId>reflectionsframework-parent</artifactId>
     <packaging>pom</packaging>
 
     <modules>
         <module>reflectionsframework-model</module>
         <module>reflectionsframework</module>
-        <module>reflectionsframework-annotationprocessor</module>
+        <module>reflections-annotationprocessor</module>
         <module>reflectionsframework-engine</module>
     </modules>
 
@@ -27,12 +27,12 @@
                 <version>0.0.1-SNAPSHOT</version>
             </dependency>
             <dependency>
-                <groupId>tech.intellispaces.reflectionsframework</groupId>
+                <groupId>tech.intellispaces.reflections</groupId>
                 <artifactId>reflectionsframework-model</artifactId>
                 <version>0.0.1-SNAPSHOT</version>
             </dependency>
             <dependency>
-                <groupId>tech.intellispaces.reflectionsframework</groupId>
+                <groupId>tech.intellispaces.reflections</groupId>
                 <artifactId>reflectionsframework</artifactId>
                 <version>0.0.1-SNAPSHOT</version>
             </dependency>

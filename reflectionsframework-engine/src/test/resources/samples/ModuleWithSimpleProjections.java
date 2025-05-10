@@ -1,9 +1,9 @@
 package samples;
 
-import tech.intellispaces.reflectionsframework.annotation.Module;
-import tech.intellispaces.reflectionsframework.annotation.Projection;
+import tech.intellispaces.reflections.framework.annotation.Module;
+import tech.intellispaces.reflections.framework.annotation.Projection;
 import tech.intellispaces.reflectionsframework.annotation.validator.Sample;
-import tech.intellispaces.reflectionsframework.samples.object.ObjectReferenceOfEmptyDomain;
+import tech.intellispaces.reflections.framework.samples.object.ObjectReferenceOfEmptyDomain;
 
 @Sample
 @Module

@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>tech.intellispaces.reflectionsframework</groupId>
+        <groupId>tech.intellispaces.reflections</groupId>
         <artifactId>reflectionsframework-parent</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>

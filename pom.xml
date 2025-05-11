@@ -8,14 +8,14 @@
     </parent>
 
     <groupId>tech.intellispaces.reflections</groupId>
-    <artifactId>reflectionsframework-parent</artifactId>
+    <artifactId>reflections-framework-parent</artifactId>
     <packaging>pom</packaging>
 
     <modules>
-        <module>reflectionsframework-model</module>
-        <module>reflectionsframework</module>
+        <module>reflections-framework-model</module>
+        <module>reflections-framework</module>
         <module>reflections-annotationprocessor</module>
-        <module>reflectionsframework-engine</module>
+        <module>reflections-framework-engine</module>
     </modules>
 
     <dependencyManagement>
@@ -28,12 +28,12 @@
             </dependency>
             <dependency>
                 <groupId>tech.intellispaces.reflections</groupId>
-                <artifactId>reflectionsframework-model</artifactId>
+                <artifactId>reflections-framework-model</artifactId>
                 <version>0.0.1-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>tech.intellispaces.reflections</groupId>
-                <artifactId>reflectionsframework</artifactId>
+                <artifactId>reflections-framework</artifactId>
                 <version>0.0.1-SNAPSHOT</version>
             </dependency>
             <dependency>

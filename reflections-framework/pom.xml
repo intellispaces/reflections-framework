@@ -3,11 +3,11 @@
 
     <parent>
         <groupId>tech.intellispaces.reflections</groupId>
-        <artifactId>reflectionsframework-parent</artifactId>
+        <artifactId>reflections-framework-parent</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>reflectionsframework-engine</artifactId>
+    <artifactId>reflections-framework</artifactId>
     <packaging>jar</packaging>
 	
     <build>
@@ -30,12 +30,20 @@
     <dependencies>
         <!-- Intellispaces -->
         <dependency>
-            <groupId>tech.intellispaces.reflections</groupId>
-            <artifactId>reflectionsframework-model</artifactId>
+            <groupId>tech.intellispaces.core</groupId>
+            <artifactId>intellispaces-core</artifactId>
         </dependency>
         <dependency>
             <groupId>tech.intellispaces.reflections</groupId>
-            <artifactId>reflectionsframework</artifactId>
+            <artifactId>reflections-framework-model</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>tech.intellispaces.commons</groupId>
+            <artifactId>intellispaces-commons</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>tech.intellispaces.commons</groupId>
+            <artifactId>intellispaces-proxies</artifactId>
         </dependency>
         <dependency>
             <groupId>tech.intellispaces.commons</groupId>
@@ -45,11 +53,9 @@
             <groupId>tech.intellispaces.commons</groupId>
             <artifactId>intellispaces-actions-common</artifactId>
         </dependency>
-
-        <!-- Auto-service library -->
         <dependency>
-            <groupId>com.google.auto.service</groupId>
-            <artifactId>auto-service</artifactId>
+            <groupId>tech.intellispaces.commons</groupId>
+            <artifactId>intellispaces-jstatements</artifactId>
         </dependency>
 
         <!-- Logging -->
@@ -59,12 +65,6 @@
         </dependency>
 
         <!-- Testing -->
-        <dependency>
-            <groupId>tech.intellispaces.reflections</groupId>
-            <artifactId>reflections-annotationprocessor</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-            <scope>test</scope>
-        </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>

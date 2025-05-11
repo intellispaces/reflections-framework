@@ -3,7 +3,7 @@
 
     <parent>
         <groupId>tech.intellispaces.reflections</groupId>
-        <artifactId>reflectionsframework-parent</artifactId>
+        <artifactId>reflections-framework-parent</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
@@ -31,11 +31,11 @@
         <!-- Intellispaces -->
         <dependency>
             <groupId>tech.intellispaces.reflections</groupId>
-            <artifactId>reflectionsframework-model</artifactId>
+            <artifactId>reflections-framework-model</artifactId>
         </dependency>
         <dependency>
             <groupId>tech.intellispaces.reflections</groupId>
-            <artifactId>reflectionsframework</artifactId>
+            <artifactId>reflections-framework</artifactId>
         </dependency>
         <dependency>
             <groupId>tech.intellispaces.commons</groupId>

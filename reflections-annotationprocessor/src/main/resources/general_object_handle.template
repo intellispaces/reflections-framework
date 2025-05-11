@@ -18,7 +18,7 @@ public interface {{$generatedArtifactSimpleName}}{{$handleTypeParamsFull}} exten
     return {{$domainType}}
   }
 {{else}}
-public interface {{$generatedArtifactSimpleName}}{{$handleTypeParamsFull}} extends {{$simpleObject}}{{$handleTypeParamsBrief}}, reference.object.tech.intellispaces.reflections.framework.ObjectHandle<{{$sourceArtifactSimpleName}}{{$domainTypeParamsBrief}}> {
+public interface {{$generatedArtifactSimpleName}}{{$handleTypeParamsFull}} extends {{$simpleObject}}{{$handleTypeParamsBrief}}, tech.intellispaces.reflections.framework.object.reference.ObjectHandle<{{$sourceArtifactSimpleName}}{{$domainTypeParamsBrief}}> {
 
   default Type<{{$sourceArtifactSimpleName}}{{$domainTypeParamsBrief}}> domain() {
     return {{$domainType}}

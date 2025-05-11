@@ -4,7 +4,7 @@ package {{$generatedArtifactPackageName}};
 import {{$importedClass}};
 {{end}}
 
-import static description.engine.tech.intellispaces.reflections.framework.ObjectHandleMethods.objectHandleMethod;
+import static tech.intellispaces.reflections.framework.engine.description.ObjectHandleMethods.objectHandleMethod;
 
 /**
  * This class was generated automatically. Don't try to change it.

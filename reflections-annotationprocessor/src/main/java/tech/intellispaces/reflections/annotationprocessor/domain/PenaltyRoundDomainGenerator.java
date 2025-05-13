@@ -23,7 +23,7 @@ public class PenaltyRoundDomainGenerator extends JaquariusArtifactGenerator {
 
   @Override
   public String generatedArtifactName() {
-    return "rounds.PenaltyRound" + index + "Domain";
+    return "annotationprocessor.PenaltyRound" + index + "Domain";
   }
 
   @Override

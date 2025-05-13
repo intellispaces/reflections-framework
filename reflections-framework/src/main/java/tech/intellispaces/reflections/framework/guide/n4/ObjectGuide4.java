@@ -6,7 +6,7 @@ import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.reflections.framework.exception.TraverseException;
 import tech.intellispaces.reflections.framework.exception.TraverseExceptions;
 import tech.intellispaces.reflections.framework.guide.GuideLogger;
-import tech.intellispaces.reflections.framework.object.reference.ObjectReferenceForm;
+import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 import tech.intellispaces.reflections.framework.system.ObjectHandleWrapper;
 import tech.intellispaces.jstatements.method.MethodParam;
 import tech.intellispaces.jstatements.method.MethodStatement;
@@ -16,14 +16,14 @@ abstract class ObjectGuide4<S extends ObjectHandleWrapper, R, Q1, Q2, Q3, Q4> im
   private final String cid;
   private final MethodStatement guideMethod;
   private final int traverseOrdinal;
-  private final ObjectReferenceForm targetForm;
+  private final ReflectionForm targetForm;
 
   ObjectGuide4(
       String cid,
       Class<S> objectHandleClass,
       MethodStatement guideMethod,
       int traverseOrdinal,
-      ObjectReferenceForm targetForm
+      ReflectionForm targetForm
   ) {
     if (guideMethod.params().size() != 4) {
       throw UnexpectedExceptions.withMessage("Guide should have four qualifiers");
@@ -41,7 +41,7 @@ abstract class ObjectGuide4<S extends ObjectHandleWrapper, R, Q1, Q2, Q3, Q4> im
   }
 
   @Override
-  public ObjectReferenceForm targetForm() {
+  public ReflectionForm targetForm() {
     return targetForm;
   }
 

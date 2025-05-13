@@ -2,15 +2,15 @@ package tech.intellispaces.reflections.framework.engine.description;
 
 public interface ObjectHandleMethods {
 
-  static <H> ObjectHandleMethodBuilder1<H> objectHandleMethod(
-      Class<H> objectHandleClass,
+  static <R> ObjectHandleMethodBuilder1<R> objectHandleMethod(
+      Class<R> objectHandleClass,
       String name
   ) {
     return new ObjectHandleMethodBuilder1<>(objectHandleClass, name);
   }
 
-  static <H, P> ObjectHandleMethodBuilder2<H, P> objectHandleMethod(
-      Class<H> objectHandleClass,
+  static <R, P> ObjectHandleMethodBuilder2<R, P> objectHandleMethod(
+      Class<R> objectHandleClass,
       String name,
       Class<P> paramClass
   ) {
@@ -19,8 +19,8 @@ public interface ObjectHandleMethods {
     );
   }
 
-  static <H, P1, P2> ObjectHandleMethodBuilder3<H, P1, P2> objectHandleMethod(
-      Class<H> objectHandleClass,
+  static <R, P1, P2> ObjectHandleMethodBuilder3<R, P1, P2> objectHandleMethod(
+      Class<R> objectHandleClass,
       String name,
       Class<P1> paramClass1,
       Class<P2> paramClass2
@@ -30,8 +30,8 @@ public interface ObjectHandleMethods {
     );
   }
 
-  static <H, P1, P2, P3> ObjectHandleMethodBuilder4<H, P1, P2, P3> objectHandleMethod(
-      Class<H> objectHandleClass,
+  static <R, P1, P2, P3> ObjectHandleMethodBuilder4<R, P1, P2, P3> objectHandleMethod(
+      Class<R> objectHandleClass,
       String name,
       Class<P1> paramClass1,
       Class<P2> paramClass2,
@@ -42,8 +42,8 @@ public interface ObjectHandleMethods {
     );
   }
 
-  static <H, P1, P2, P3, P4> ObjectHandleMethodBuilder5<H, P1, P2, P3, P4> objectHandleMethod(
-      Class<H> objectHandleClass,
+  static <R, P1, P2, P3, P4> ObjectHandleMethodBuilder5<R, P1, P2, P3, P4> objectHandleMethod(
+      Class<R> objectHandleClass,
       String name,
       Class<P1> paramClass1,
       Class<P2> paramClass2,

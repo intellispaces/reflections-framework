@@ -23,7 +23,7 @@ import tech.intellispaces.reflections.framework.annotation.Projection;
 import tech.intellispaces.reflections.framework.exception.ConfigurationException;
 import tech.intellispaces.reflections.framework.exception.ConfigurationExceptions;
 import tech.intellispaces.reflections.framework.exception.CyclicDependencyExceptions;
-import tech.intellispaces.reflections.framework.object.reference.ObjectReferenceFunctions;
+import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
 import tech.intellispaces.reflections.framework.system.ModuleProjection;
 import tech.intellispaces.reflections.framework.system.ProjectionDefinition;
 import tech.intellispaces.reflections.framework.system.ProjectionProvider;
@@ -136,11 +136,11 @@ class ProjectionRegistry implements ProjectionProvider {
     if (projection == null) {
       return null;
     }
-    if (projection.target() != null && ObjectReferenceFunctions.isCompatibleObjectType(targetObjectHandleClass, projection.target().getClass())) {
+    if (projection.target() != null && ReflectionFunctions.isCompatibleObjectType(targetObjectHandleClass, projection.target().getClass())) {
       return (T) projection.target();
     }
-    if (!ObjectReferenceFunctions.isCompatibleObjectType(targetObjectHandleClass, projection.type())) {
-      T downgradedProjection = ObjectReferenceFunctions.tryDowngrade(projection.target(), targetObjectHandleClass);
+    if (!ReflectionFunctions.isCompatibleObjectType(targetObjectHandleClass, projection.type())) {
+      T downgradedProjection = ReflectionFunctions.tryDowngrade(projection.target(), targetObjectHandleClass);
       if (downgradedProjection != null) {
         return downgradedProjection;
       }

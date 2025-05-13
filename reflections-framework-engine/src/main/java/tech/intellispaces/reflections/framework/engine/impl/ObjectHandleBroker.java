@@ -8,7 +8,7 @@ import tech.intellispaces.actions.Action;
 import tech.intellispaces.commons.exception.NotImplementedExceptions;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.reflections.framework.engine.description.ObjectHandleTypeDescription;
-import tech.intellispaces.reflections.framework.object.reference.ObjectHandle;
+import tech.intellispaces.reflections.framework.reflection.Reflection;
 import tech.intellispaces.reflections.framework.system.Injection;
 
 public class ObjectHandleBroker implements tech.intellispaces.reflections.framework.engine.ObjectHandleBroker {
@@ -17,7 +17,7 @@ public class ObjectHandleBroker implements tech.intellispaces.reflections.framew
   private final Action[] guideActions;
   private final Injection[] injections;
   private final Map<Class<?>, Object> projections = new HashMap<>();
-  private ObjectHandle<?> overlyingHandle;
+  private Reflection<?> overlyingHandle;
 
   public ObjectHandleBroker(
       ObjectHandleTypeDescription type,
@@ -56,28 +56,28 @@ public class ObjectHandleBroker implements tech.intellispaces.reflections.framew
   }
 
   @Override
-  public <D, H> void addProjection(Class<D> targetDomain, H target) {
+  public <D, R> void addProjection(Class<D> targetDomain, R target) {
     projections.put(targetDomain, target);
   }
 
   @Override
-  public List<? extends ObjectHandle<?>> underlyingHandles() {
+  public List<? extends Reflection<?>> underlyingHandles() {
     throw NotImplementedExceptions.withCode("KDpzfXvh");
   }
 
   @Override
-  public ObjectHandle<?> overlyingHandle() {
+  public Reflection<?> overlyingHandle() {
     return overlyingHandle;
   }
 
   @Override
-  public void setOverlyingHandle(ObjectHandle<?> overlyingHandle) {
+  public void setOverlyingHandle(Reflection<?> overlyingHandle) {
     this.overlyingHandle = overlyingHandle;
   }
 
   @Override
   @SuppressWarnings("unchecked")
-  public <D, H> H mapTo(Class<D> targetDomain) {
-    return (H) projections.get(targetDomain);
+  public <D, R> R mapTo(Class<D> targetDomain) {
+    return (R) projections.get(targetDomain);
   }
 }

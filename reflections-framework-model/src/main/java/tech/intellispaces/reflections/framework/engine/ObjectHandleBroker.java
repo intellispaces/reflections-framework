@@ -4,7 +4,7 @@ import java.util.List;
 
 import tech.intellispaces.actions.Action;
 import tech.intellispaces.reflections.framework.engine.description.ObjectHandleTypeDescription;
-import tech.intellispaces.reflections.framework.object.reference.ObjectHandle;
+import tech.intellispaces.reflections.framework.reflection.Reflection;
 import tech.intellispaces.reflections.framework.system.Injection;
 
 /**
@@ -20,13 +20,13 @@ public interface ObjectHandleBroker {
 
   Injection injection(int ordinal);
 
-  <D, H> void addProjection(Class<D> targetDomain, H target);
+  <D, R> void addProjection(Class<D> targetDomain, R target);
 
-  List<? extends ObjectHandle<?>> underlyingHandles();
+  List<? extends Reflection<?>> underlyingHandles();
 
-  ObjectHandle<?> overlyingHandle();
+  Reflection<?> overlyingHandle();
 
-  void setOverlyingHandle(ObjectHandle<?> overlyingHandle);
+  void setOverlyingHandle(Reflection<?> overlyingHandle);
 
-  <D, H> H mapTo(Class<D> targetDomain);
+  <D, R> R mapTo(Class<D> targetDomain);
 }

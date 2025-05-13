@@ -1,6 +1,6 @@
 package tech.intellispaces.reflections.framework.guide.n0;
 
-import tech.intellispaces.reflections.framework.object.reference.ObjectReferenceForm;
+import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 import tech.intellispaces.reflections.framework.system.UnitWrapper;
 import tech.intellispaces.jstatements.method.MethodStatement;
 
@@ -16,7 +16,7 @@ public class UnitMapper0<S, T> extends UnitGuide0<S, T> implements AbstractMappe
       UnitWrapper unitInstance,
       MethodStatement guideMethod,
       int guideOrdinal,
-      ObjectReferenceForm targetForm
+      ReflectionForm targetForm
   ) {
     super(cid, unitInstance, guideMethod, guideOrdinal, targetForm);
   }

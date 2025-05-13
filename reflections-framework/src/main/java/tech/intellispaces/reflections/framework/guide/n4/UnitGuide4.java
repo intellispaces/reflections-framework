@@ -4,7 +4,7 @@ import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.reflections.framework.exception.TraverseException;
 import tech.intellispaces.reflections.framework.exception.TraverseExceptions;
 import tech.intellispaces.reflections.framework.guide.GuideLogger;
-import tech.intellispaces.reflections.framework.object.reference.ObjectReferenceForm;
+import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 import tech.intellispaces.reflections.framework.system.UnitGuide;
 import tech.intellispaces.reflections.framework.system.UnitWrapper;
 import tech.intellispaces.jstatements.method.MethodStatement;
@@ -14,14 +14,14 @@ abstract class UnitGuide4<S, R, Q1, Q2, Q3, Q4> implements Guide4<S, R, Q1, Q2, 
   private final UnitWrapper unit;
   private final MethodStatement guideMethod;
   private final int guideOrdinal;
-  private final ObjectReferenceForm targetForm;
+  private final ReflectionForm targetForm;
 
   UnitGuide4(
       String cid,
       UnitWrapper unit,
       MethodStatement guideMethod,
       int guideOrdinal,
-      ObjectReferenceForm targetForm
+      ReflectionForm targetForm
   ) {
     if (guideMethod.params().size() != 5) {
       throw UnexpectedExceptions.withMessage("Guide method should have four parameters: source and four qualifiers");
@@ -49,7 +49,7 @@ abstract class UnitGuide4<S, R, Q1, Q2, Q3, Q4> implements Guide4<S, R, Q1, Q2, 
   }
 
   @Override
-  public ObjectReferenceForm targetForm() {
+  public ReflectionForm targetForm() {
     return targetForm;
   }
 

@@ -7,7 +7,7 @@ import tech.intellispaces.actions.Action;
 import tech.intellispaces.actions.functional.FunctionActions;
 import tech.intellispaces.reflections.framework.traverse.TraverseType;
 
-public class ObjectHandleMethodBuilder2<H, P> {
+public class ObjectHandleMethodBuilder2<R, P> {
   private final String name;
   private final Class<P> paramClass;
   private Action action;
@@ -22,52 +22,52 @@ public class ObjectHandleMethodBuilder2<H, P> {
   private String injectionName;
   private Class<?> injectionType;
 
-  public ObjectHandleMethodBuilder2(Class<H> objectHandleClass, String name, Class<P> paramClass) {
+  public ObjectHandleMethodBuilder2(Class<R> objectHandleClass, String name, Class<P> paramClass) {
     this.name = name;
     this.paramClass = paramClass;
   }
 
-  public ObjectHandleMethodBuilder2<H, P> purpose(ObjectHandleMethodPurpose purpose) {
+  public ObjectHandleMethodBuilder2<R, P> purpose(ObjectHandleMethodPurpose purpose) {
     this.purpose = purpose;
     return this;
   }
 
-  public <R> ObjectHandleMethodBuilder2<H, P> function(BiFunction<H, P, R> function) {
+  public <T> ObjectHandleMethodBuilder2<R, P> function(BiFunction<R, P, T> function) {
     this.action = FunctionActions.ofBiFunction(function);
     return this;
   }
 
-  public ObjectHandleMethodBuilder2<H, P> traverseOrdinal(int ordinal) {
+  public ObjectHandleMethodBuilder2<R, P> traverseOrdinal(int ordinal) {
     this.traverseOrdinal = ordinal;
     return this;
   }
 
-  public ObjectHandleMethodBuilder2<H, P> channelClass(Class<?> channelClass) {
+  public ObjectHandleMethodBuilder2<R, P> channelClass(Class<?> channelClass) {
     this.channelClass = channelClass;
     return this;
   }
 
-  public ObjectHandleMethodBuilder2<H, P> traverseType(TraverseType traverseType) {
+  public ObjectHandleMethodBuilder2<R, P> traverseType(TraverseType traverseType) {
     this.traverseType = traverseType;
     return this;
   }
 
-  public ObjectHandleMethodBuilder2<H, P> injectionKind(String kind) {
+  public ObjectHandleMethodBuilder2<R, P> injectionKind(String kind) {
     this.injectionKind = kind;
     return this;
   }
 
-  public ObjectHandleMethodBuilder2<H, P> injectionOrdinal(int ordinal) {
+  public ObjectHandleMethodBuilder2<R, P> injectionOrdinal(int ordinal) {
     this.injectionOrdinal = ordinal;
     return this;
   }
 
-  public ObjectHandleMethodBuilder2<H, P> injectionName(String injectionName) {
+  public ObjectHandleMethodBuilder2<R, P> injectionName(String injectionName) {
     this.injectionName = injectionName;
     return this;
   }
 
-  public ObjectHandleMethodBuilder2<H, P> injectionType(Class<?> injectionType) {
+  public ObjectHandleMethodBuilder2<R, P> injectionType(Class<?> injectionType) {
     this.injectionType = injectionType;
     return this;
   }

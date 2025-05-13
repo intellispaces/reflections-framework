@@ -6,7 +6,7 @@ import tech.intellispaces.reflections.framework.Jaquarius;
 import tech.intellispaces.reflections.framework.annotation.Properties;
 import tech.intellispaces.reflections.framework.dataset.DatasetFunctions;
 import tech.intellispaces.reflections.framework.exception.ConfigurationExceptions;
-import tech.intellispaces.reflections.framework.object.reference.ObjectReferenceFunctions;
+import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
 import tech.intellispaces.reflections.framework.settings.ChannelReference;
 import tech.intellispaces.reflections.framework.settings.ChannelTypes;
 import tech.intellispaces.reflections.framework.system.Module;
@@ -33,14 +33,14 @@ public class ModulePropertiesProjectionSupplier extends InjectedMethodProjection
     if (propertyValue.getClass() == expectedReturnClass) {
       return propertyValue;
     }
-    if (ObjectReferenceFunctions.propertiesHandleClass().getCanonicalName().equals(expectedReturnClass.getCanonicalName())) {
-      if (!ObjectReferenceFunctions.propertiesHandleClass().isAssignableFrom(propertyValue.getClass())) {
+    if (ReflectionFunctions.propertiesHandleClass().getCanonicalName().equals(expectedReturnClass.getCanonicalName())) {
+      if (!ReflectionFunctions.propertiesHandleClass().isAssignableFrom(propertyValue.getClass())) {
         throw UnexpectedExceptions.withMessage("Invalid return type of method '{0}' in class {1}",
             injectedMethod.name(), injectedMethod.owner().canonicalName());
       }
       return propertyValue;
     }
-    if (ObjectReferenceFunctions.isObjectFormClass(expectedReturnClass)) {
+    if (ReflectionFunctions.isObjectFormClass(expectedReturnClass)) {
       if (DatasetFunctions.isDatasetObjectHandle(expectedReturnClass)) {
         return traverseToData(propertyValue, expectedReturnClass, module);
       }

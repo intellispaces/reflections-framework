@@ -4,7 +4,7 @@ import java.util.List;
 
 import tech.intellispaces.actions.Action;
 import tech.intellispaces.reflections.framework.guide.GuideKind;
-import tech.intellispaces.reflections.framework.object.reference.ObjectReferenceForm;
+import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 import tech.intellispaces.reflections.framework.system.InjectionKind;
 import tech.intellispaces.reflections.framework.system.ProjectionReference;
 
@@ -25,7 +25,7 @@ class UnitMethodDescriptionImpl implements UnitMethodDescription {
   private final int guideOrdinal;
   private final GuideKind guideKind;
   private final String guideCid;
-  private final ObjectReferenceForm guideTargetForm;
+  private final ReflectionForm guideTargetForm;
 
   UnitMethodDescriptionImpl(
       String name,
@@ -44,7 +44,7 @@ class UnitMethodDescriptionImpl implements UnitMethodDescription {
       int guideOrdinal,
       GuideKind guideKind,
       String guideCid,
-      ObjectReferenceForm guideTargetForm
+      ReflectionForm guideTargetForm
   ) {
     this.name = name;
     this.paramClasses = paramClasses;
@@ -149,7 +149,7 @@ class UnitMethodDescriptionImpl implements UnitMethodDescription {
   }
 
   @Override
-  public ObjectReferenceForm guideTargetForm() {
+  public ReflectionForm guideTargetForm() {
     return guideTargetForm;
   }
 }

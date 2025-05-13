@@ -39,67 +39,67 @@ class ObjectFactoryRegistry {
   private Map<Class<?>, List<ObjectFactoryMethodDescription>> domainToDescriptions = Map.of();
 
   @SuppressWarnings("unchecked")
-  public <H> Action0<H> objectAssistantAction(
+  public <R> Action0<R> objectAssistantAction(
       Class<?> targetDomainClass,
       String contractType,
-      Type<H> targetObjectHandleType
+      Type<R> targetObjectHandleType
   ) {
     loadObjectFactories();
-    return (Action0<H>) makeAction(targetDomainClass, contractType, List.of());
+    return (Action0<R>) makeAction(targetDomainClass, contractType, List.of());
   }
 
   @SuppressWarnings("unchecked")
-  public <H, Q> Action1<H, Q> objectAssistantAction(
+  public <R, Q> Action1<R, Q> objectAssistantAction(
       Class<?> targetDomainClass,
       String contractType,
       Type<Q> contractQualifierType,
-      Type<H> targetObjectHandleType
+      Type<R> targetObjectHandleType
   ) {
     loadObjectFactories();
-    return (Action1<H, Q>) makeAction(targetDomainClass, contractType, List.of(contractQualifierType));
+    return (Action1<R, Q>) makeAction(targetDomainClass, contractType, List.of(contractQualifierType));
   }
 
   @SuppressWarnings("unchecked")
-  public <H, Q1, Q2> Action2<H, Q1, Q2> objectAssistantAction(
+  public <R, Q1, Q2> Action2<R, Q1, Q2> objectAssistantAction(
       Class<?> targetDomainClass,
       String contractType,
       Type<Q1> contractQualifierType1,
       Type<Q2> contractQualifierType2,
-      Type<H> targetObjectHandleType
+      Type<R> targetObjectHandleType
   ) {
     loadObjectFactories();
-    return (Action2<H, Q1, Q2>) makeAction(
+    return (Action2<R, Q1, Q2>) makeAction(
         targetDomainClass, contractType, List.of(contractQualifierType1, contractQualifierType2
     ));
   }
 
   @SuppressWarnings("unchecked")
-  public <H, Q1, Q2, Q3> Action3<H, Q1, Q2, Q3> objectAssistantAction(
+  public <R, Q1, Q2, Q3> Action3<R, Q1, Q2, Q3> objectAssistantAction(
       Class<?> targetDomainClass,
       String contractType,
       Type<Q1> contractQualifierType1,
       Type<Q2> contractQualifierType2,
       Type<Q3> contractQualifierType3,
-      Type<H> targetObjectHandleType
+      Type<R> targetObjectHandleType
   ) {
     loadObjectFactories();
-    return (Action3<H, Q1, Q2, Q3>) makeAction(
+    return (Action3<R, Q1, Q2, Q3>) makeAction(
         targetDomainClass, contractType, List.of(contractQualifierType1, contractQualifierType2, contractQualifierType3
     ));
   }
 
   @SuppressWarnings("unchecked")
-  public <H, Q1, Q2, Q3, Q4> Action4<H, Q1, Q2, Q3, Q4> objectAssistantAction(
+  public <R, Q1, Q2, Q3, Q4> Action4<R, Q1, Q2, Q3, Q4> objectAssistantAction(
       Class<?> targetDomainClass,
       String contractType,
       Type<Q1> contractQualifierType1,
       Type<Q2> contractQualifierType2,
       Type<Q3> contractQualifierType3,
       Type<Q4> contractQualifierType4,
-      Type<H> targetObjectHandleType
+      Type<R> targetObjectHandleType
   ) {
     loadObjectFactories();
-    return (Action4<H, Q1, Q2, Q3, Q4>) makeAction(
+    return (Action4<R, Q1, Q2, Q3, Q4>) makeAction(
         targetDomainClass,
         contractType, List.of(
             contractQualifierType1,
@@ -110,7 +110,7 @@ class ObjectFactoryRegistry {
   }
 
   @SuppressWarnings("unchecked")
-  public <H, Q1, Q2, Q3, Q4, Q5> Action5<H, Q1, Q2, Q3, Q4, Q5> objectAssistantAction(
+  public <R, Q1, Q2, Q3, Q4, Q5> Action5<R, Q1, Q2, Q3, Q4, Q5> objectAssistantAction(
       Class<?> targetDomainClass,
       String contractType,
       Type<Q1> contractQualifierType1,
@@ -118,10 +118,10 @@ class ObjectFactoryRegistry {
       Type<Q3> contractQualifierType3,
       Type<Q4> contractQualifierType4,
       Type<Q5> contractQualifierType5,
-      Type<H> targetObjectHandleType
+      Type<R> targetObjectHandleType
   ) {
     loadObjectFactories();
-    return (Action5<H, Q1, Q2, Q3, Q4, Q5>) makeAction(
+    return (Action5<R, Q1, Q2, Q3, Q4, Q5>) makeAction(
         targetDomainClass,
         contractType, List.of(
             contractQualifierType1,
@@ -133,7 +133,7 @@ class ObjectFactoryRegistry {
   }
 
   @SuppressWarnings("unchecked")
-  public <H, Q1, Q2, Q3, Q4, Q5, Q6> Action6<H, Q1, Q2, Q3, Q4, Q5, Q6> objectAssistantAction(
+  public <R, Q1, Q2, Q3, Q4, Q5, Q6> Action6<R, Q1, Q2, Q3, Q4, Q5, Q6> objectAssistantAction(
       Class<?> targetDomainClass,
       String contractType,
       Type<Q1> contractQualifierType1,
@@ -142,10 +142,10 @@ class ObjectFactoryRegistry {
       Type<Q4> contractQualifierType4,
       Type<Q5> contractQualifierType5,
       Type<Q6> contractQualifierType6,
-      Type<H> targetObjectHandleType
+      Type<R> targetObjectHandleType
   ) {
     loadObjectFactories();
-    return (Action6<H, Q1, Q2, Q3, Q4, Q5, Q6>) makeAction(
+    return (Action6<R, Q1, Q2, Q3, Q4, Q5, Q6>) makeAction(
         targetDomainClass,
         contractType, List.of(
             contractQualifierType1,
@@ -158,7 +158,7 @@ class ObjectFactoryRegistry {
   }
 
   @SuppressWarnings("unchecked")
-  public <H, Q1, Q2, Q3, Q4, Q5, Q6, Q7> Action7<H, Q1, Q2, Q3, Q4, Q5, Q6, Q7> objectAssistantAction(
+  public <R, Q1, Q2, Q3, Q4, Q5, Q6, Q7> Action7<R, Q1, Q2, Q3, Q4, Q5, Q6, Q7> objectAssistantAction(
       Class<?> targetDomainClass,
       String contractType,
       Type<Q1> contractQualifierType1,
@@ -168,10 +168,10 @@ class ObjectFactoryRegistry {
       Type<Q5> contractQualifierType5,
       Type<Q6> contractQualifierType6,
       Type<Q7> contractQualifierType7,
-      Type<H> targetObjectHandleType
+      Type<R> targetObjectHandleType
   ) {
     loadObjectFactories();
-    return (Action7<H, Q1, Q2, Q3, Q4, Q5, Q6, Q7>) makeAction(
+    return (Action7<R, Q1, Q2, Q3, Q4, Q5, Q6, Q7>) makeAction(
         targetDomainClass,
         contractType, List.of(
             contractQualifierType1,
@@ -185,7 +185,7 @@ class ObjectFactoryRegistry {
   }
 
   @SuppressWarnings("unchecked")
-  public <H, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8> Action8<H, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8> objectAssistantAction(
+  public <R, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8> Action8<R, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8> objectAssistantAction(
       Class<?> targetDomainClass,
       String contractType,
       Type<Q1> contractQualifierType1,
@@ -196,10 +196,10 @@ class ObjectFactoryRegistry {
       Type<Q6> contractQualifierType6,
       Type<Q7> contractQualifierType7,
       Type<Q8> contractQualifierType8,
-      Type<H> targetObjectHandleType
+      Type<R> targetObjectHandleType
   ) {
     loadObjectFactories();
-    return (Action8<H, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8>) makeAction(
+    return (Action8<R, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8>) makeAction(
         targetDomainClass,
         contractType, List.of(
             contractQualifierType1,
@@ -214,7 +214,7 @@ class ObjectFactoryRegistry {
   }
 
   @SuppressWarnings("unchecked")
-  public <H, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9> Action9<H, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9> objectAssistantAction(
+  public <R, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9> Action9<R, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9> objectAssistantAction(
       Class<?> targetDomainClass,
       String contractType,
       Type<Q1> contractQualifierType1,
@@ -226,10 +226,10 @@ class ObjectFactoryRegistry {
       Type<Q7> contractQualifierType7,
       Type<Q8> contractQualifierType8,
       Type<Q9> contractQualifierType9,
-      Type<H> targetObjectHandleType
+      Type<R> targetObjectHandleType
   ) {
     loadObjectFactories();
-    return (Action9<H, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9>) makeAction(
+    return (Action9<R, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9>) makeAction(
         targetDomainClass,
         contractType, List.of(
             contractQualifierType1,
@@ -245,7 +245,7 @@ class ObjectFactoryRegistry {
   }
 
   @SuppressWarnings("unchecked")
-  public <H, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9, Q10> Action10<H, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9, Q10> objectAssistantAction(
+  public <R, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9, Q10> Action10<R, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9, Q10> objectAssistantAction(
       Class<?> targetDomainClass,
       String contractType,
       Type<Q1> contractQualifierType1,
@@ -258,10 +258,10 @@ class ObjectFactoryRegistry {
       Type<Q8> contractQualifierType8,
       Type<Q9> contractQualifierType9,
       Type<Q10> contractQualifierType10,
-      Type<H> targetObjectHandleType
+      Type<R> targetObjectHandleType
   ) {
     loadObjectFactories();
-    return (Action10<H, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9, Q10>) makeAction(
+    return (Action10<R, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9, Q10>) makeAction(
         targetDomainClass,
         contractType, List.of(
             contractQualifierType1,

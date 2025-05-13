@@ -35,7 +35,7 @@ import tech.intellispaces.reflections.framework.engine.description.ObjectHandleM
 import tech.intellispaces.reflections.framework.engine.description.ObjectHandleMethodPurposes;
 import tech.intellispaces.reflections.framework.engine.description.ObjectHandleTypeDescription;
 import tech.intellispaces.reflections.framework.engine.description.UnitMethodDescription;
-import tech.intellispaces.reflections.framework.object.reference.ObjectReferenceForms;
+import tech.intellispaces.reflections.framework.reflection.ReflectionForms;
 import tech.intellispaces.reflections.framework.system.Injection;
 import tech.intellispaces.reflections.framework.system.Module;
 import tech.intellispaces.reflections.framework.system.UnitWrapper;
@@ -52,8 +52,8 @@ public class JaquariusEngine implements tech.intellispaces.reflections.framework
   }
 
   @Override
-  public <H, W extends H> ObjectHandleTypeDescription registerObjectHandleType(
-      Class<W> wrapperClass, Class<H> objectHandleClass, ObjectHandleMethodDescription... methods
+  public <R, W extends R> ObjectHandleTypeDescription registerObjectHandleType(
+      Class<W> wrapperClass, Class<R> objectHandleClass, ObjectHandleMethodDescription... methods
   ) {
     return new tech.intellispaces.reflections.framework.engine.impl.ObjectHandleTypeDescription(
         objectHandleClass,
@@ -84,20 +84,20 @@ public class JaquariusEngine implements tech.intellispaces.reflections.framework
   }
 
   @Override
-  public <H> Action0<H> objectAssistantAction(
+  public <R> Action0<R> objectAssistantAction(
       Class<?> targetDomainClass,
       String contractType,
-      Type<H> targetObjectHandleType
+      Type<R> targetObjectHandleType
   ) {
     return objectFactoryRegistry.objectAssistantAction(targetDomainClass, contractType, targetObjectHandleType);
   }
 
   @Override
-  public <H, Q> Action1<H, Q> objectAssistantAction(
+  public <R, Q> Action1<R, Q> objectAssistantAction(
       Class<?> targetDomainClass,
       String contractType,
       Type<Q> contractQualifierType,
-      Type<H> targetObjectHandleType
+      Type<R> targetObjectHandleType
   ) {
     return objectFactoryRegistry.objectAssistantAction(
         targetDomainClass, contractType, contractQualifierType, targetObjectHandleType
@@ -105,12 +105,12 @@ public class JaquariusEngine implements tech.intellispaces.reflections.framework
   }
 
   @Override
-  public <H, Q1, Q2> Action2<H, Q1, Q2> objectAssistantAction(
+  public <R, Q1, Q2> Action2<R, Q1, Q2> objectAssistantAction(
       Class<?> targetDomainClass,
       String contractType,
       Type<Q1> contractQualifierType1,
       Type<Q2> contractQualifierType2,
-      Type<H> targetObjectHandleType
+      Type<R> targetObjectHandleType
   ) {
     return objectFactoryRegistry.objectAssistantAction(
         targetDomainClass,
@@ -122,13 +122,13 @@ public class JaquariusEngine implements tech.intellispaces.reflections.framework
   }
 
   @Override
-  public <H, Q1, Q2, Q3> Action3<H, Q1, Q2, Q3> objectAssistantAction(
+  public <R, Q1, Q2, Q3> Action3<R, Q1, Q2, Q3> objectAssistantAction(
       Class<?> targetDomainClass,
       String contractType,
       Type<Q1> contractQualifierType1,
       Type<Q2> contractQualifierType2,
       Type<Q3> contractQualifierType3,
-      Type<H> targetObjectHandleType
+      Type<R> targetObjectHandleType
   ) {
     return objectFactoryRegistry.objectAssistantAction(
         targetDomainClass,
@@ -141,14 +141,14 @@ public class JaquariusEngine implements tech.intellispaces.reflections.framework
   }
 
   @Override
-  public <H, Q1, Q2, Q3, Q4> Action4<H, Q1, Q2, Q3, Q4> objectAssistantAction(
+  public <R, Q1, Q2, Q3, Q4> Action4<R, Q1, Q2, Q3, Q4> objectAssistantAction(
       Class<?> targetDomainClass,
       String contractType,
       Type<Q1> contractQualifierType1,
       Type<Q2> contractQualifierType2,
       Type<Q3> contractQualifierType3,
       Type<Q4> contractQualifierType4,
-      Type<H> targetObjectHandleType
+      Type<R> targetObjectHandleType
   ) {
     return objectFactoryRegistry.objectAssistantAction(
         targetDomainClass,
@@ -162,7 +162,7 @@ public class JaquariusEngine implements tech.intellispaces.reflections.framework
   }
 
   @Override
-  public <H, Q1, Q2, Q3, Q4, Q5> Action5<H, Q1, Q2, Q3, Q4, Q5> objectAssistantAction(
+  public <R, Q1, Q2, Q3, Q4, Q5> Action5<R, Q1, Q2, Q3, Q4, Q5> objectAssistantAction(
       Class<?> targetDomainClass,
       String contractType,
       Type<Q1> contractQualifierType1,
@@ -170,7 +170,7 @@ public class JaquariusEngine implements tech.intellispaces.reflections.framework
       Type<Q3> contractQualifierType3,
       Type<Q4> contractQualifierType4,
       Type<Q5> contractQualifierType5,
-      Type<H> targetObjectHandleType
+      Type<R> targetObjectHandleType
   ) {
     return objectFactoryRegistry.objectAssistantAction(
         targetDomainClass,
@@ -185,7 +185,7 @@ public class JaquariusEngine implements tech.intellispaces.reflections.framework
   }
 
   @Override
-  public <H, Q1, Q2, Q3, Q4, Q5, Q6> Action6<H, Q1, Q2, Q3, Q4, Q5, Q6> objectAssistantAction(
+  public <R, Q1, Q2, Q3, Q4, Q5, Q6> Action6<R, Q1, Q2, Q3, Q4, Q5, Q6> objectAssistantAction(
       Class<?> targetDomainClass,
       String contractType,
       Type<Q1> contractQualifierType1,
@@ -194,7 +194,7 @@ public class JaquariusEngine implements tech.intellispaces.reflections.framework
       Type<Q4> contractQualifierType4,
       Type<Q5> contractQualifierType5,
       Type<Q6> contractQualifierType6,
-      Type<H> targetObjectHandleType
+      Type<R> targetObjectHandleType
   ) {
     return objectFactoryRegistry.objectAssistantAction(
         targetDomainClass,
@@ -210,7 +210,7 @@ public class JaquariusEngine implements tech.intellispaces.reflections.framework
   }
 
   @Override
-  public <H, Q1, Q2, Q3, Q4, Q5, Q6, Q7> Action7<H, Q1, Q2, Q3, Q4, Q5, Q6, Q7> objectAssistantAction(
+  public <R, Q1, Q2, Q3, Q4, Q5, Q6, Q7> Action7<R, Q1, Q2, Q3, Q4, Q5, Q6, Q7> objectAssistantAction(
       Class<?> targetDomainClass,
       String contractType,
       Type<Q1> contractQualifierType1,
@@ -220,7 +220,7 @@ public class JaquariusEngine implements tech.intellispaces.reflections.framework
       Type<Q5> contractQualifierType5,
       Type<Q6> contractQualifierType6,
       Type<Q7> contractQualifierType7,
-      Type<H> targetObjectHandleType
+      Type<R> targetObjectHandleType
   ) {
     return objectFactoryRegistry.objectAssistantAction(
         targetDomainClass,
@@ -237,7 +237,7 @@ public class JaquariusEngine implements tech.intellispaces.reflections.framework
   }
 
   @Override
-  public <H, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8> Action8<H, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8> objectAssistantAction(
+  public <R, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8> Action8<R, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8> objectAssistantAction(
       Class<?> targetDomainClass,
       String contractType,
       Type<Q1> contractQualifierType1,
@@ -248,7 +248,7 @@ public class JaquariusEngine implements tech.intellispaces.reflections.framework
       Type<Q6> contractQualifierType6,
       Type<Q7> contractQualifierType7,
       Type<Q8> contractQualifierType8,
-      Type<H> targetObjectHandleType
+      Type<R> targetObjectHandleType
   ) {
     return objectFactoryRegistry.objectAssistantAction(
         targetDomainClass,
@@ -266,7 +266,7 @@ public class JaquariusEngine implements tech.intellispaces.reflections.framework
   }
 
   @Override
-  public <H, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9> Action9<H, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9> objectAssistantAction(
+  public <R, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9> Action9<R, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9> objectAssistantAction(
       Class<?> targetDomainClass,
       String contractType,
       Type<Q1> contractQualifierType1,
@@ -278,7 +278,7 @@ public class JaquariusEngine implements tech.intellispaces.reflections.framework
       Type<Q7> contractQualifierType7,
       Type<Q8> contractQualifierType8,
       Type<Q9> contractQualifierType9,
-      Type<H> targetObjectHandleType
+      Type<R> targetObjectHandleType
   ) {
     return objectFactoryRegistry.objectAssistantAction(
         targetDomainClass,
@@ -297,7 +297,7 @@ public class JaquariusEngine implements tech.intellispaces.reflections.framework
   }
 
   @Override
-  public <H, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9, Q10> Action10<H, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9, Q10> objectAssistantAction(
+  public <R, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9, Q10> Action10<R, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9, Q10> objectAssistantAction(
       Class<?> targetDomainClass,
       String contractType,
       Type<Q1> contractQualifierType1,
@@ -310,7 +310,7 @@ public class JaquariusEngine implements tech.intellispaces.reflections.framework
       Type<Q8> contractQualifierType8,
       Type<Q9> contractQualifierType9,
       Type<Q10> contractQualifierType10,
-      Type<H> targetObjectHandleType
+      Type<R> targetObjectHandleType
   ) {
     return objectFactoryRegistry.objectAssistantAction(
         targetDomainClass,
@@ -358,19 +358,19 @@ public class JaquariusEngine implements tech.intellispaces.reflections.framework
       return DelegateActions.delegateAction1(CachedSupplierActions.get(TraverseActions::mapThruChannel0,
           objectHandleClass,
           (Class<Channel0>) method.channelClass(),
-          ObjectReferenceForms.ObjectHandle)
+          ReflectionForms.Reflection)
       );
     } else if (method.traverseType().isMoving()) {
       return DelegateActions.delegateAction1(CachedSupplierActions.get(TraverseActions::moveThruChannel0,
           objectHandleClass,
           (Class<Channel0>) method.channelClass(),
-          ObjectReferenceForms.ObjectHandle)
+          ReflectionForms.Reflection)
       );
     } else {
       return DelegateActions.delegateAction1(CachedSupplierActions.get(TraverseActions::mapOfMovingThruChannel0,
           objectHandleClass,
           (Class<Channel0>) method.channelClass(),
-          ObjectReferenceForms.ObjectHandle)
+          ReflectionForms.Reflection)
       );
     }
   }
@@ -381,19 +381,19 @@ public class JaquariusEngine implements tech.intellispaces.reflections.framework
       return DelegateActions.delegateAction2(CachedSupplierActions.get(TraverseActions::mapThruChannel1,
           objectHandleClass,
           (Class<Channel1>) method.channelClass(),
-          ObjectReferenceForms.ObjectHandle)
+          ReflectionForms.Reflection)
       );
     } else if (method.traverseType().isMoving()) {
       return DelegateActions.delegateAction2(CachedSupplierActions.get(TraverseActions::moveThruChannel1,
           objectHandleClass,
           (Class<Channel1>) method.channelClass(),
-          ObjectReferenceForms.ObjectHandle)
+          ReflectionForms.Reflection)
       );
     } else {
       return DelegateActions.delegateAction2(CachedSupplierActions.get(TraverseActions::mapOfMovingThruChannel1,
           objectHandleClass,
           (Class<Channel1>) method.channelClass(),
-          ObjectReferenceForms.ObjectHandle)
+          ReflectionForms.Reflection)
       );
     }
   }
@@ -404,19 +404,19 @@ public class JaquariusEngine implements tech.intellispaces.reflections.framework
       return DelegateActions.delegateAction3(CachedSupplierActions.get(TraverseActions::mapThruChannel2,
           objectHandleClass,
           (Class<Channel2>) method.channelClass(),
-          ObjectReferenceForms.ObjectHandle)
+          ReflectionForms.Reflection)
       );
     } else if (method.traverseType().isMoving()) {
       return DelegateActions.delegateAction3(CachedSupplierActions.get(TraverseActions::moveThruChannel2,
           objectHandleClass,
           (Class<Channel2>) method.channelClass(),
-          ObjectReferenceForms.ObjectHandle)
+          ReflectionForms.Reflection)
       );
     } else {
       return DelegateActions.delegateAction3(CachedSupplierActions.get(TraverseActions::mapOfMovingThruChannel2,
           objectHandleClass,
           (Class<Channel2>) method.channelClass(),
-          ObjectReferenceForms.ObjectHandle)
+          ReflectionForms.Reflection)
       );
     }
   }
@@ -427,19 +427,19 @@ public class JaquariusEngine implements tech.intellispaces.reflections.framework
       return DelegateActions.delegateAction4(CachedSupplierActions.get(TraverseActions::mapThruChannel3,
           objectHandleClass,
           (Class<Channel3>) method.channelClass(),
-          ObjectReferenceForms.ObjectHandle)
+          ReflectionForms.Reflection)
       );
     } else if (method.traverseType().isMoving()) {
       return DelegateActions.delegateAction4(CachedSupplierActions.get(TraverseActions::moveThruChannel3,
           objectHandleClass,
           (Class<Channel3>) method.channelClass(),
-          ObjectReferenceForms.ObjectHandle)
+          ReflectionForms.Reflection)
       );
     } else {
       return DelegateActions.delegateAction4(CachedSupplierActions.get(TraverseActions::mapOfMovingThruChannel3,
           objectHandleClass,
           (Class<Channel3>) method.channelClass(),
-          ObjectReferenceForms.ObjectHandle)
+          ReflectionForms.Reflection)
       );
     }
   }
@@ -454,7 +454,7 @@ public class JaquariusEngine implements tech.intellispaces.reflections.framework
       return DelegateActions.delegateAction5(CachedSupplierActions.get(TraverseActions::mapOfMovingThruChannel4,
           objectHandleClass,
           (Class<Channel4>) method.channelClass(),
-          ObjectReferenceForms.ObjectHandle)
+          ReflectionForms.Reflection)
       );
     }
   }

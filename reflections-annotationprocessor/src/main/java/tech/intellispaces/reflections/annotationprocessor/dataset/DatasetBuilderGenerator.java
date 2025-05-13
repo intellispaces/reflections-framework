@@ -11,9 +11,9 @@ import tech.intellispaces.commons.collection.ArraysFunctions;
 import tech.intellispaces.reflections.framework.annotation.Channel;
 import tech.intellispaces.reflections.annotationprocessor.JaquariusArtifactGenerator;
 import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
-import tech.intellispaces.reflections.framework.object.reference.MovabilityTypes;
-import tech.intellispaces.reflections.framework.object.reference.ObjectReferenceForms;
-import tech.intellispaces.reflections.framework.object.reference.ObjectReferenceFunctions;
+import tech.intellispaces.reflections.framework.reflection.MovabilityTypes;
+import tech.intellispaces.reflections.framework.reflection.ReflectionForms;
+import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
 import tech.intellispaces.reflections.framework.traverse.TraverseTypes;
 import tech.intellispaces.jstatements.customtype.CustomType;
 import tech.intellispaces.jstatements.method.MethodStatement;
@@ -46,8 +46,8 @@ public class DatasetBuilderGenerator extends JaquariusArtifactGenerator {
     analyzeProjections();
 
     addVariable("projections", projectionProperties);
-    addVariable("unmovableObjectHandleSimpleName",
-        addImportAndGetSimpleName(ObjectReferenceFunctions.getUnmovableObjectHandleTypename(sourceArtifact())));
+    addVariable("unmovableReflectionSimpleName",
+        addImportAndGetSimpleName(ReflectionFunctions.getUnmovableObjectHandleTypename(sourceArtifact())));
     addVariable("unmovableDatasetSimpleName",
         addImportAndGetSimpleName(NameConventionFunctions.getUnmovableDatasetClassName(sourceArtifactName())));
     return true;
@@ -59,7 +59,7 @@ public class DatasetBuilderGenerator extends JaquariusArtifactGenerator {
         continue;
       }
       TypeReference type = method.returnType().orElseThrow();
-      String handleType = buildObjectFormDeclaration(type, ObjectReferenceForms.ObjectHandle, MovabilityTypes.Unmovable, true);
+      String handleType = buildObjectFormDeclaration(type, ReflectionForms.Reflection, MovabilityTypes.Unmovable, true);
 
       Map<String, String> properties = new HashMap<>();
       properties.put("type", handleType);

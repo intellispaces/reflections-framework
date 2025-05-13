@@ -1,7 +1,7 @@
 package tech.intellispaces.reflections.framework.guide.n0;
 
 import tech.intellispaces.reflections.framework.exception.TraverseException;
-import tech.intellispaces.reflections.framework.object.reference.ObjectReferenceForm;
+import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 import tech.intellispaces.reflections.framework.traverse.plan.TraverseExecutor;
 import tech.intellispaces.reflections.framework.traverse.plan.TraversePlan;
 
@@ -16,11 +16,11 @@ import tech.intellispaces.reflections.framework.traverse.plan.TraversePlan;
 public class AutoMapperOfMoving0<S, T> implements AbstractMapperOfMoving0<S, T> {
   private final String cid;
   private final TraversePlan traversePlan;
-  private final ObjectReferenceForm targetForm;
+  private final ReflectionForm targetForm;
   private final TraverseExecutor traverseExecutor;
 
   public AutoMapperOfMoving0(
-      String cid, TraversePlan traversePlan, ObjectReferenceForm targetForm, TraverseExecutor traverseExecutor
+          String cid, TraversePlan traversePlan, ReflectionForm targetForm, TraverseExecutor traverseExecutor
   ) {
     this.cid = cid;
     this.traversePlan = traversePlan;
@@ -34,7 +34,7 @@ public class AutoMapperOfMoving0<S, T> implements AbstractMapperOfMoving0<S, T> 
   }
 
   @Override
-  public ObjectReferenceForm targetForm() {
+  public ReflectionForm targetForm() {
     return targetForm;
   }
 

@@ -103,7 +103,7 @@ public class {{$generatedArtifactSimpleName}}{{$typeParamsFullDeclaration}} exte
         .guideCid("{{$method["guideCid"]}}")
 {{end}}
 {{when $method["guideTargetForm"].isNotVoid()}}
-        .guideTargetForm(ObjectReferenceForms.{{$method["guideTargetForm"]}})
+        .guideTargetForm(ReflectionForms.{{$method["guideTargetForm"]}})
 {{end}}
         .get(){{when $method.isNotLast()}},{{end}}
 {{end}}

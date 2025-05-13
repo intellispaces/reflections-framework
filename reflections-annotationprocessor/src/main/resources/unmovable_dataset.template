@@ -11,7 +11,7 @@ import {{$importedClass}};
  * <p>
  * This class was generated automatically. Don't try to change it.
  */
-@ObjectHandle({{$sourceArtifactSimpleName}}.class)
+@Reflection({{$sourceArtifactSimpleName}}.class)
 {{$generatedAnnotation}}
 public class {{$generatedArtifactSimpleName}} implements {{$objectHandleClassName}} {
 {{for projection : $projections}}
@@ -60,12 +60,12 @@ public class {{$generatedArtifactSimpleName}} implements {{$objectHandleClassNam
   }
 
   @Override
-  public Type<{{$sourceArtifactSimpleName}}{{$typeParamsBrief}}> domain() {
+  public Type<{{$sourceArtifactSimpleName}}{{$typeParamsBrief}}> domainType() {
     return {{$domainType}}
   }
 
   @Override
-  public Class<{{$sourceArtifactSimpleName}}> domainAsClass() {
+  public Class<{{$sourceArtifactSimpleName}}> domainClass() {
     return {{$sourceArtifactSimpleName}}.class;
   }
 
@@ -80,12 +80,12 @@ public class {{$generatedArtifactSimpleName}} implements {{$objectHandleClassNam
   }
 
   @Override
-  public java.util.List<UnmovableObjectHandle<?>> underlyingHandles() {
+  public java.util.List<UnmovableReflection<?>> underlyingHandles() {
     throw NotImplementedExceptions.withCode("VCEdng");
   }
 
   @Override
-  public UnmovableObjectHandle<?> overlyingHandle() {
+  public UnmovableReflection<?> overlyingHandle() {
     throw NotImplementedExceptions.withCode("Gl2z4f8y");
   }
 

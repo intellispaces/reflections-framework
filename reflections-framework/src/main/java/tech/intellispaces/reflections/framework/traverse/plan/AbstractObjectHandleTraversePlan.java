@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
-import tech.intellispaces.reflections.framework.object.reference.ObjectReferenceFunctions;
+import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
 
 public abstract class AbstractObjectHandleTraversePlan implements ObjectHandleTraversePlan {
   private final Class<?> objectHandleClass;
@@ -42,7 +42,7 @@ public abstract class AbstractObjectHandleTraversePlan implements ObjectHandleTr
 
   @Override
   public void cacheExecutionPlan(Class<?> sourceClass, ExecutionTraversePlan traversePlan) {
-    if (!ObjectReferenceFunctions.isObjectHandleClass(sourceClass)) {
+    if (!ReflectionFunctions.isObjectHandleClass(sourceClass)) {
       throw UnexpectedExceptions.withMessage("Expected object handle class");
     }
     if (this.objectHandleClass != sourceClass && !this.objectHandleClass.isAssignableFrom(sourceClass)) {

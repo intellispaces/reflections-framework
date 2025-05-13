@@ -36,9 +36,9 @@ import tech.intellispaces.reflections.framework.guide.n5.Mapper5;
 import tech.intellispaces.reflections.framework.guide.n5.MapperOfMoving5;
 import tech.intellispaces.reflections.framework.guide.n5.Mover5;
 import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
-import tech.intellispaces.reflections.framework.object.reference.ObjectReferenceForm;
-import tech.intellispaces.reflections.framework.object.reference.ObjectReferenceForms;
-import tech.intellispaces.reflections.framework.object.reference.ObjectReferenceFunctions;
+import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
+import tech.intellispaces.reflections.framework.reflection.ReflectionForms;
+import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
 import tech.intellispaces.reflections.framework.space.channel.ChannelFunctions;
 import tech.intellispaces.reflections.framework.traverse.TraverseType;
 import tech.intellispaces.reflections.framework.traverse.TraverseTypes;
@@ -54,7 +54,7 @@ import tech.intellispaces.jstatements.reference.TypeReference;
 import tech.intellispaces.jstatements.reference.Wildcards;
 
 public class DefaultGuideFormGenerator extends JaquariusArtifactGenerator {
-  private final ObjectReferenceForm targetForm;
+  private final ReflectionForm targetForm;
   private final TraverseType traverseType;
   private final MethodStatement channelMethod;
   private String guideClassSimpleName;
@@ -65,7 +65,7 @@ public class DefaultGuideFormGenerator extends JaquariusArtifactGenerator {
   private String traverseMethodPrimitiveFormDouble;
 
   public DefaultGuideFormGenerator(
-      ObjectReferenceForm targetForm,
+      ReflectionForm targetForm,
       TraverseType traverseType,
       CustomType channelType,
       MethodStatement channelMethod
@@ -100,8 +100,8 @@ public class DefaultGuideFormGenerator extends JaquariusArtifactGenerator {
         Guide.class,
         Objects.class,
         ChannelFunctions.class,
-        ObjectReferenceForm.class,
-        ObjectReferenceForms.class,
+        ReflectionForm.class,
+        ReflectionForms.class,
         PrimitiveFunctions.class,
         UnexpectedExceptions.class
     );
@@ -131,7 +131,7 @@ public class DefaultGuideFormGenerator extends JaquariusArtifactGenerator {
         if (!typeParam.extendedBounds().isEmpty()) {
           sb.append(" extends ");
           for (ReferenceBound bound : typeParam.extendedBounds()) {
-            sb.append(ObjectReferenceFunctions.getGeneralObjectHandleTypename(bound));
+            sb.append(ReflectionFunctions.getGeneralObjectHandleTypename(bound));
           }
         }
       }
@@ -148,7 +148,7 @@ public class DefaultGuideFormGenerator extends JaquariusArtifactGenerator {
       if (param.type().isPrimitiveReference()) {
         sb.append(param.type().asPrimitiveReferenceOrElseThrow().primitiveType().typename());
       } else {
-        sb.append(buildObjectHandleDeclaration(ObjectReferenceForms.Regular, param.type(), Function.identity()));
+        sb.append(buildObjectHandleDeclaration(ReflectionForms.Regular, param.type(), Function.identity()));
       }
       sb.append(" ");
       sb.append(param.name());
@@ -223,7 +223,7 @@ public class DefaultGuideFormGenerator extends JaquariusArtifactGenerator {
     }
     for (MethodParam param : getQualifierMethodParams()) {
       sb.append(", ");
-      sb.append(buildObjectHandleDeclaration(ObjectReferenceForms.Regular, param.type(), this::replaceNamedReference));
+      sb.append(buildObjectHandleDeclaration(ReflectionForms.Regular, param.type(), this::replaceNamedReference));
     }
     sb.append(">");
     return sb.toString();
@@ -253,7 +253,7 @@ public class DefaultGuideFormGenerator extends JaquariusArtifactGenerator {
     sb.append(" ").append("source");
     for (MethodParam param : getQualifierMethodParams()) {
       sb.append(", ");
-      sb.append(buildObjectHandleDeclaration(ObjectReferenceForms.Regular, param.type(), this::replaceNamedReference));
+      sb.append(buildObjectHandleDeclaration(ReflectionForms.Regular, param.type(), this::replaceNamedReference));
       sb.append(" ");
       sb.append(param.name());
     }
@@ -286,7 +286,7 @@ public class DefaultGuideFormGenerator extends JaquariusArtifactGenerator {
     sb.append(" ").append("source");
     for (MethodParam param : getQualifierMethodParams()) {
       sb.append(", ");
-      sb.append(buildObjectHandleDeclaration(ObjectReferenceForms.Regular, param.type(), this::replaceNamedReference));
+      sb.append(buildObjectHandleDeclaration(ReflectionForms.Regular, param.type(), this::replaceNamedReference));
       sb.append(" ");
       sb.append(param.name());
     }
@@ -303,7 +303,7 @@ public class DefaultGuideFormGenerator extends JaquariusArtifactGenerator {
     sb.append(" ").append("source");
     for (MethodParam param : getQualifierMethodParams()) {
       sb.append(", ");
-      sb.append(buildObjectHandleDeclaration(ObjectReferenceForms.Regular, param.type(), this::replaceNamedReference));
+      sb.append(buildObjectHandleDeclaration(ReflectionForms.Regular, param.type(), this::replaceNamedReference));
       sb.append(" ");
       sb.append(param.name());
     }
@@ -372,7 +372,7 @@ public class DefaultGuideFormGenerator extends JaquariusArtifactGenerator {
       Function<TypeReference, TypeReference> typeReplacer, boolean full
   ) {
     return buildObjectHandleDeclaration(
-        ObjectReferenceForms.Regular,
+        ReflectionForms.Regular,
         channelMethod.params().get(0).type().asCustomTypeReferenceOrElseThrow(),
         typeReplacer,
         full
@@ -383,13 +383,13 @@ public class DefaultGuideFormGenerator extends JaquariusArtifactGenerator {
       Function<TypeReference, TypeReference> typeReplacer, boolean full
   ) {
     TypeReference returnType = channelMethod.returnType().orElseThrow();
-    return buildObjectHandleDeclaration(ObjectReferenceForms.ObjectHandle, returnType, typeReplacer, full);
+    return buildObjectHandleDeclaration(ReflectionForms.Reflection, returnType, typeReplacer, full);
   }
 
   private String buildTargetObjectHandleFormDeclaration() {
-    if (ObjectReferenceForms.ObjectHandle.is(targetForm)) {
+    if (ReflectionForms.Reflection.is(targetForm)) {
       return buildTargetObjectHandleDeclaration(Function.identity(), false);
-    } else if (ObjectReferenceForms.Primitive.is(targetForm)) {
+    } else if (ReflectionForms.Primitive.is(targetForm)) {
       return ClassFunctions.primitiveTypenameOfWrapper(
           channelMethod.returnType().orElseThrow()
               .asCustomTypeReferenceOrElseThrow()
@@ -400,13 +400,13 @@ public class DefaultGuideFormGenerator extends JaquariusArtifactGenerator {
   }
 
   private String buildObjectHandleDeclaration(
-      ObjectReferenceForm form, TypeReference type, Function<TypeReference, TypeReference> typeReplacer
+          ReflectionForm form, TypeReference type, Function<TypeReference, TypeReference> typeReplacer
   ) {
     return buildObjectHandleDeclaration(form, type, typeReplacer, true);
   }
 
   private String buildObjectHandleDeclaration(
-      ObjectReferenceForm form, TypeReference type, Function<TypeReference, TypeReference> typeReplacer, boolean full
+          ReflectionForm form, TypeReference type, Function<TypeReference, TypeReference> typeReplacer, boolean full
   ) {
     type = typeReplacer.apply(type);
     if (type.isNamedReference()) {
@@ -426,7 +426,7 @@ public class DefaultGuideFormGenerator extends JaquariusArtifactGenerator {
     } else if (type.isPrimitiveReference()) {
       return ClassFunctions.wrapperClassOfPrimitive(type.asPrimitiveReferenceOrElseThrow().typename()).getSimpleName();
     } else {
-      String canonicalName = ObjectReferenceFunctions.getObjectFormTypename(form, type, typeReplacer);
+      String canonicalName = ReflectionFunctions.getObjectFormTypename(form, type, typeReplacer);
       String name = type.isCustomTypeReference() ? addImportAndGetSimpleName(canonicalName) : canonicalName;
       if (type.isCustomTypeReference() && !type.asCustomTypeReferenceOrElseThrow().typeArguments().isEmpty()) {
         var sb = new StringBuilder();

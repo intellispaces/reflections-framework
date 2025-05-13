@@ -4,7 +4,7 @@ import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.reflections.framework.exception.TraverseException;
 import tech.intellispaces.reflections.framework.exception.TraverseExceptions;
 import tech.intellispaces.reflections.framework.guide.GuideLogger;
-import tech.intellispaces.reflections.framework.object.reference.ObjectReferenceForm;
+import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 import tech.intellispaces.reflections.framework.system.UnitGuide;
 import tech.intellispaces.reflections.framework.system.UnitWrapper;
 import tech.intellispaces.jstatements.method.MethodStatement;
@@ -14,9 +14,9 @@ abstract class UnitGuide1<S, R, Q> implements Guide1<S, R, Q>, UnitGuide<S, R> {
   private final UnitWrapper unit;
   private final MethodStatement guideMethod;
   private final int guideOrdinal;
-  private final ObjectReferenceForm targetForm;
+  private final ReflectionForm targetForm;
 
-  UnitGuide1(String cid, UnitWrapper unit, MethodStatement guideMethod, int guideOrdinal, ObjectReferenceForm targetForm) {
+  UnitGuide1(String cid, UnitWrapper unit, MethodStatement guideMethod, int guideOrdinal, ReflectionForm targetForm) {
     if (guideMethod.params().size() != 2) {
       throw UnexpectedExceptions.withMessage("Guide method should have two parameters: source and qualifier");
     }
@@ -43,7 +43,7 @@ abstract class UnitGuide1<S, R, Q> implements Guide1<S, R, Q>, UnitGuide<S, R> {
   }
 
   @Override
-  public ObjectReferenceForm targetForm() {
+  public ReflectionForm targetForm() {
     return targetForm;
   }
 

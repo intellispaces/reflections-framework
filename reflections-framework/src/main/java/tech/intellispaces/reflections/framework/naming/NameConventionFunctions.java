@@ -10,13 +10,13 @@ import tech.intellispaces.reflections.framework.ArtifactType;
 import tech.intellispaces.reflections.framework.Jaquarius;
 import tech.intellispaces.reflections.framework.annotation.Channel;
 import tech.intellispaces.reflections.framework.annotation.Domain;
-import tech.intellispaces.reflections.framework.annotation.ObjectHandle;
+import tech.intellispaces.reflections.framework.annotation.Reflection;
 import tech.intellispaces.reflections.framework.annotation.Ontology;
 import tech.intellispaces.reflections.framework.artifact.ArtifactTypes;
-import tech.intellispaces.reflections.framework.object.reference.MovabilityType;
-import tech.intellispaces.reflections.framework.object.reference.MovabilityTypes;
-import tech.intellispaces.reflections.framework.object.reference.ObjectReferenceForm;
-import tech.intellispaces.reflections.framework.object.reference.ObjectReferenceForms;
+import tech.intellispaces.reflections.framework.reflection.MovabilityType;
+import tech.intellispaces.reflections.framework.reflection.MovabilityTypes;
+import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
+import tech.intellispaces.reflections.framework.reflection.ReflectionForms;
 import tech.intellispaces.reflections.framework.settings.DomainReference;
 import tech.intellispaces.reflections.framework.settings.DomainTypes;
 import tech.intellispaces.reflections.framework.space.channel.ChannelFunctions;
@@ -52,18 +52,18 @@ public interface NameConventionFunctions {
   }
 
   static String getObjectTypename(
-      String domainClassName, ObjectReferenceForm objectForm, MovabilityType movabilityType, boolean replaceDomainWithDelegate
+          String domainClassName, ReflectionForm objectForm, MovabilityType movabilityType, boolean replaceDomainWithDelegate
   ) {
-    return switch (ObjectReferenceForms.of(objectForm)) {
+    return switch (ReflectionForms.of(objectForm)) {
       case Regular -> switch (MovabilityTypes.of(movabilityType)) {
         case General -> getGeneralRegularObjectTypename(domainClassName, replaceDomainWithDelegate);
-        case Movable -> getMovableRegularObjectTypename(domainClassName, replaceDomainWithDelegate);
-        case Unmovable -> getUnmovableRegularObjectTypename(domainClassName, replaceDomainWithDelegate);
+        case Movable -> getMovableRegularFormTypeName(domainClassName, replaceDomainWithDelegate);
+        case Unmovable -> getUnmovableRegularFormTypeName(domainClassName, replaceDomainWithDelegate);
       };
-      case ObjectHandle -> switch (MovabilityTypes.of(movabilityType)) {
-        case General -> getGeneralObjectHandleTypename(domainClassName, replaceDomainWithDelegate);
-        case Movable -> getMovableObjectHandleTypename(domainClassName, replaceDomainWithDelegate);
-        case Unmovable -> getUnmovableObjectHandleTypename(domainClassName, replaceDomainWithDelegate);
+      case Reflection -> switch (MovabilityTypes.of(movabilityType)) {
+        case General -> getGeneralReflectionTypeName(domainClassName, replaceDomainWithDelegate);
+        case Movable -> getMovableReflectionTypeName(domainClassName, replaceDomainWithDelegate);
+        case Unmovable -> getUnmovableReflectionTypeName(domainClassName, replaceDomainWithDelegate);
       };
       case Primitive -> throw NotImplementedExceptions.withCode("LXc75Q");
       case PrimitiveWrapper -> throw NotImplementedExceptions.withCode("XGDuuQ");
@@ -86,7 +86,7 @@ public interface NameConventionFunctions {
     return StringFunctions.removeTailOrElseThrow(transformClassName(domainClassName), DOMAIN);
   }
 
-  static String getGeneralObjectHandleTypename(String domainClassName, boolean replaceDomainWithDelegate) {
+  static String getGeneralReflectionTypeName(String domainClassName, boolean replaceDomainWithDelegate) {
     if (replaceDomainWithDelegate) {
       String domainName = convertToDomainName(domainClassName);
       DomainReference domain = Jaquarius.ontologyReference().getDomainByName(domainName);
@@ -99,15 +99,15 @@ public interface NameConventionFunctions {
         return domain.domainName();
       }
     }
-    return StringFunctions.replaceTailOrElseThrow(transformClassName(domainClassName), DOMAIN, HANDLE);
+    return StringFunctions.replaceTailOrElseThrow(transformClassName(domainClassName), DOMAIN, REFLECTION);
   }
 
-  static String getUnmovableObjectHandleTypename(String domainClassName) {
+  static String getUnmovableReflectionTypeName(String domainClassName) {
     return ClassNameFunctions.addPrefixToSimpleName(UNMOVABLE,
-        StringFunctions.replaceTailOrElseThrow(transformClassName(domainClassName), DOMAIN, HANDLE));
+        StringFunctions.replaceTailOrElseThrow(transformClassName(domainClassName), DOMAIN, REFLECTION));
   }
 
-  static String getUnmovableRegularObjectTypename(String domainClassName, boolean replaceDomainWithDelegate) {
+  static String getUnmovableRegularFormTypeName(String domainClassName, boolean replaceDomainWithDelegate) {
     if (replaceDomainWithDelegate) {
       DomainReference domain = Jaquarius.ontologyReference().getDomainByName(convertToDomainName(domainClassName));
       if (domain != null && domain.delegateClassName() != null && (
@@ -124,7 +124,7 @@ public interface NameConventionFunctions {
         StringFunctions.removeTailOrElseThrow(transformClassName(domainClassName), DOMAIN));
   }
 
-  static String getMovableRegularObjectTypename(String domainClassName, boolean replaceDomainWithDelegate) {
+  static String getMovableRegularFormTypeName(String domainClassName, boolean replaceDomainWithDelegate) {
     if (replaceDomainWithDelegate) {
       DomainReference domain = Jaquarius.ontologyReference().getDomainByName(convertToDomainName(domainClassName));
       if (domain != null && domain.delegateClassName() != null && (
@@ -141,7 +141,7 @@ public interface NameConventionFunctions {
         StringFunctions.removeTailOrElseThrow(transformClassName(domainClassName), DOMAIN));
   }
 
-  static String getUnmovableObjectHandleTypename(String domainClassName, boolean replaceDomainWithDelegate) {
+  static String getUnmovableReflectionTypeName(String domainClassName, boolean replaceDomainWithDelegate) {
     if (replaceDomainWithDelegate) {
       DomainReference domain = Jaquarius.ontologyReference().getDomainByName(convertToDomainName(domainClassName));
       if (domain != null && domain.delegateClassName() != null && (
@@ -154,10 +154,10 @@ public interface NameConventionFunctions {
         return domain.delegateClassName();
       }
     }
-    return ClassNameFunctions.addPrefixToSimpleName(UNMOVABLE, getGeneralObjectHandleTypename(domainClassName, false));
+    return ClassNameFunctions.addPrefixToSimpleName(UNMOVABLE, getGeneralReflectionTypeName(domainClassName, false));
   }
 
-  static String getMovableObjectHandleTypename(String domainClassName, boolean replaceDomainWithDelegate) {
+  static String getMovableReflectionTypeName(String domainClassName, boolean replaceDomainWithDelegate) {
     if (replaceDomainWithDelegate) {
       DomainReference domain = Jaquarius.ontologyReference().getDomainByName(convertToDomainName(domainClassName));
       if (domain != null && domain.delegateClassName() != null && (
@@ -170,19 +170,19 @@ public interface NameConventionFunctions {
         return domain.delegateClassName();
       }
     }
-    return ClassNameFunctions.addPrefixToSimpleName(MOVABLE, getGeneralObjectHandleTypename(domainClassName, false));
+    return ClassNameFunctions.addPrefixToSimpleName(MOVABLE, getGeneralReflectionTypeName(domainClassName, false));
   }
 
-  static String getObjectHandleWrapperCanonicalName(CustomType objectHandleType) {
-    Optional<ObjectHandle> oha = objectHandleType.selectAnnotation(ObjectHandle.class);
+  static String getReflectionWrapperCanonicalName(CustomType objectHandleType) {
+    Optional<Reflection> oha = objectHandleType.selectAnnotation(Reflection.class);
     if (oha.isPresent() && StringFunctions.isNotBlank(oha.get().name())) {
       return ClassNameFunctions.replaceSimpleName(objectHandleType.canonicalName(), oha.get().name());
     }
     return objectHandleType.canonicalName() + WRAPPER;
   }
 
-  static String getObjectHandleWrapperCanonicalName(Class<?> objectHandleClass) {
-    ObjectHandle oha = objectHandleClass.getAnnotation(ObjectHandle.class);
+  static String getReflectionWrapperCanonicalName(Class<?> objectHandleClass) {
+    Reflection oha = objectHandleClass.getAnnotation(Reflection.class);
     if (oha != null && StringFunctions.isNotBlank(oha.name())) {
       return ClassNameFunctions.replaceSimpleName(objectHandleClass.getCanonicalName(), oha.name());
     }
@@ -365,12 +365,12 @@ public interface NameConventionFunctions {
   }
 
   static String getGuideClassCanonicalName(
-      ObjectReferenceForm targetForm, String spaceName, CustomType channelType, MethodStatement channelMethod
+          ReflectionForm targetForm, String spaceName, CustomType channelType, MethodStatement channelMethod
   ) {
     String name = StringFunctions.replaceTailIfPresent(channelType.canonicalName(), CHANNEL, GUIDE);
-    if (ObjectReferenceForms.Primitive.is(targetForm)) {
+    if (ReflectionForms.Primitive.is(targetForm)) {
       name = name + "AsPrimitive";
-    } else if (ObjectReferenceForms.PrimitiveWrapper.is(targetForm)) {
+    } else if (ReflectionForms.PrimitiveWrapper.is(targetForm)) {
       name = name + "AsObject";
     }
     return name;
@@ -414,9 +414,9 @@ public interface NameConventionFunctions {
         case RegularObject -> name + CUSTOMIZER;
         case MovableRegularObject -> ClassNameFunctions.addPrefixToSimpleName(MOVABLE, name) + CUSTOMIZER;
         case UnmovableRegularObject -> ClassNameFunctions.addPrefixToSimpleName(UNMOVABLE, name) + CUSTOMIZER;
-        case ObjectHandle -> name + HANDLE + CUSTOMIZER;
-        case MovableObjectHandle -> name + MOVABLE_HANDLE + CUSTOMIZER;
-        case UnmovableObjectHandle -> name + UNMOVABLE_HANDLE + CUSTOMIZER;
+        case Reflection -> name + REFLECTION + CUSTOMIZER;
+        case MovableReflection -> name + MOVABLE_HANDLE + CUSTOMIZER;
+        case UnmovableReflection -> name + UNMOVABLE_HANDLE + CUSTOMIZER;
         case ObjectAssistant -> name + ASSISTANT + CUSTOMIZER;
         default -> name;
       };
@@ -429,9 +429,9 @@ public interface NameConventionFunctions {
   String CHANNEL = "Channel";
   String UNMOVABLE = "Unmovable";
   String MOVABLE = "Movable";
-  String HANDLE = "Handle";
-  String MOVABLE_HANDLE = MOVABLE + HANDLE;
-  String UNMOVABLE_HANDLE = UNMOVABLE + HANDLE;
+  String REFLECTION = "Reflection";
+  String MOVABLE_HANDLE = MOVABLE + REFLECTION;
+  String UNMOVABLE_HANDLE = UNMOVABLE + REFLECTION;
   String WRAPPER = "Wrapper";
   String GUIDE = "Guide";
   String AUTO_GUIDE = "AutoGuide";

@@ -9,14 +9,14 @@ import java.util.WeakHashMap;
 import tech.intellispaces.reflections.framework.guide.Guide;
 import tech.intellispaces.reflections.framework.guide.GuideFunctions;
 import tech.intellispaces.reflections.framework.guide.GuideKind;
-import tech.intellispaces.reflections.framework.object.reference.ObjectReferenceFunctions;
+import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
 import tech.intellispaces.reflections.framework.space.channel.ChannelFunctions;
 
 class ObjectGuideRegistry {
   private final Map<Class<?>, HandleDescription> handleDescriptions = new WeakHashMap<>();
 
   public List<Guide<?, ?>> findGuides(GuideKind kind, Class<?> objectHandleClass, String channelId) {
-    if (!ObjectReferenceFunctions.isCustomObjectFormClass(objectHandleClass) || objectHandleClass.isInterface()) {
+    if (!ReflectionFunctions.isCustomObjectFormClass(objectHandleClass) || objectHandleClass.isInterface()) {
       return List.of();
     }
     HandleDescription description = handleDescriptions.computeIfAbsent(
@@ -26,7 +26,7 @@ class ObjectGuideRegistry {
 
   private HandleDescription createHandleDescription(Class<?> objectHandleClass) {
     HandleDescription handleDescription = new HandleDescription(objectHandleClass);
-    Class<?> actualObjectHandleClass = ObjectReferenceFunctions.getObjectHandleClass(objectHandleClass);
+    Class<?> actualObjectHandleClass = ReflectionFunctions.getObjectHandleClass(objectHandleClass);
     if (actualObjectHandleClass == null) {
       return handleDescription;
     }
@@ -62,7 +62,7 @@ class ObjectGuideRegistry {
         return guides;
       }
 
-      Class<?> domainClass = ObjectReferenceFunctions.getDomainClassOfObjectHandle(objectHandleClass);
+      Class<?> domainClass = ReflectionFunctions.getDomainClassOfObjectHandle(objectHandleClass);
       String originDomainChannelId = ChannelFunctions.getOriginDomainChannelId(domainClass, cid);
       if (originDomainChannelId == null) {
         return List.of();

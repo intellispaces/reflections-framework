@@ -72,13 +72,13 @@ public interface DomainProcessorFunctions {
       CustomType domainType, List<ArtifactGenerator> generators, RoundEnvironment roundEnv
   ) {
     if (AnnotationFunctions.isAutoGenerationEnabled(domainType, ArtifactTypes.RegularObject, roundEnv)) {
-      generators.add(new GeneralRegularObjectGenerator(domainType));
+      generators.add(new GeneralRegularFormGenerator(domainType));
     }
     if (AnnotationFunctions.isAutoGenerationEnabled(domainType, ArtifactTypes.MovableRegularObject, roundEnv)) {
-      generators.add(new MovableRegularObjectGenerator(domainType));
+      generators.add(new MovableRegularFormGenerator(domainType));
     }
     if (AnnotationFunctions.isAutoGenerationEnabled(domainType, ArtifactTypes.UnmovableRegularObject, roundEnv)) {
-      generators.add(new UnmovableRegularObjectGenerator(domainType));
+      generators.add(new UnmovableRegularFormGenerator(domainType));
     }
   }
 
@@ -86,19 +86,19 @@ public interface DomainProcessorFunctions {
       CustomType domainType, List<ArtifactGenerator> generators, RoundEnvironment roundEnv
   ) {
     if (
-        AnnotationFunctions.isAutoGenerationEnabled(domainType, ArtifactTypes.ObjectHandle, roundEnv)
+        AnnotationFunctions.isAutoGenerationEnabled(domainType, ArtifactTypes.Reflection, roundEnv)
     ) {
-      generators.add(new GeneralObjectHandleGenerator(domainType));
+      generators.add(new GeneralReflectionTypeGenerator(domainType));
     }
     if (
-        AnnotationFunctions.isAutoGenerationEnabled(domainType, ArtifactTypes.MovableObjectHandle, roundEnv)
+        AnnotationFunctions.isAutoGenerationEnabled(domainType, ArtifactTypes.MovableReflection, roundEnv)
     ) {
-      generators.add(new MovableObjectHandleGenerator(domainType));
+      generators.add(new MovableReflectionTypeGenerator(domainType));
     }
     if (
-        AnnotationFunctions.isAutoGenerationEnabled(domainType, ArtifactTypes.UnmovableObjectHandle, roundEnv)
+        AnnotationFunctions.isAutoGenerationEnabled(domainType, ArtifactTypes.UnmovableReflection, roundEnv)
     ) {
-      generators.add(new UnmovableObjectHandleGenerator(domainType));
+      generators.add(new UnmovableReflectionTypeGenerator(domainType));
     }
   }
 
@@ -119,7 +119,7 @@ public interface DomainProcessorFunctions {
   private static void addObjectAssistantGenerators(
       CustomType domainType, List<ArtifactGenerator> generators
   ) {
-    generators.add(new ObjectAssistantBrokerGenerator(domainType));
-    generators.add(new ObjectAssistantGenerator(domainType));
+    generators.add(new ReflectionAssistantBrokerGenerator(domainType));
+    generators.add(new ReflectionAssistantGenerator(domainType));
   }
 }

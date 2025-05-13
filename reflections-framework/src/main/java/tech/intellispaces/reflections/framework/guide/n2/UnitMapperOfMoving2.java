@@ -1,6 +1,6 @@
 package tech.intellispaces.reflections.framework.guide.n2;
 
-import tech.intellispaces.reflections.framework.object.reference.ObjectReferenceForm;
+import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 import tech.intellispaces.reflections.framework.system.UnitWrapper;
 import tech.intellispaces.jstatements.method.MethodStatement;
 
@@ -11,7 +11,7 @@ public class UnitMapperOfMoving2<S, T, Q1, Q2> extends UnitGuide2<S, T, Q1, Q2> 
       UnitWrapper unitInstance,
       MethodStatement guideMethod,
       int guideOrdinal,
-      ObjectReferenceForm targetForm
+      ReflectionForm targetForm
   ) {
     super(cid, unitInstance, guideMethod, guideOrdinal, targetForm);
   }

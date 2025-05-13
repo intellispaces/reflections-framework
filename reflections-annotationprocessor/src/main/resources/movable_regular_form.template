@@ -1,0 +1,25 @@
+package {{$generatedArtifactPackageName}};
+
+{{for importedClass : $importedClasses}}
+import {{$importedClass}};
+{{end}}
+
+/**
+ * Movable object of domain {@link {{$sourceArtifactSimpleName}}}.<p/>
+ * <p>
+ * This class was generated automatically. Don't try to change it.
+ */
+@Movable
+{{$generatedAnnotation}}
+{{when $isAlias}}
+public interface {{$generatedArtifactSimpleName}}{{$reflectionTypeParamsFull}} extends {{$generalPureObjectHandle}}{{$reflectionTypeParamsBrief}}, {{$primaryObject}}{{$underlyingTypes}} {
+{{else}}
+public interface {{$generatedArtifactSimpleName}}{{$reflectionTypeParamsFull}} extends {{$generalPureObjectHandle}}{{$reflectionTypeParamsBrief}}{{$underlyingTypes}} {
+{{end}}
+
+{{for method : $domainMethods}}
+  {{$method["javadoc"]}}
+  {{$method["declaration"]}};
+
+{{end}}
+}

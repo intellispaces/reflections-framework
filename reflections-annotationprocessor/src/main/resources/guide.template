@@ -20,8 +20,8 @@ public interface {{$generatedArtifactSimpleName}} extends {{$guideClassSimpleNam
   }
 
   @Override
-  default ObjectReferenceForm targetForm() {
-    return ObjectReferenceForms.{{$targetForm}};
+  default ReflectionForm targetForm() {
+    return ReflectionForms.{{$targetForm}};
   }
 
   @Override

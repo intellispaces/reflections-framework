@@ -9,7 +9,7 @@ import java.util.WeakHashMap;
 import tech.intellispaces.reflections.framework.exception.ConfigurationExceptions;
 import tech.intellispaces.reflections.framework.guide.Guide;
 import tech.intellispaces.reflections.framework.guide.GuideKind;
-import tech.intellispaces.reflections.framework.object.reference.ObjectReferenceForm;
+import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 
 /**
  * The guide register.
@@ -45,7 +45,7 @@ class GuideRegistry {
   }
 
   public List<Guide<?, ?>> findGuides(
-      GuideKind kind, Class<?> objectHandleClass, String cid, ObjectReferenceForm targetForm
+      GuideKind kind, Class<?> objectHandleClass, String cid, ReflectionForm targetForm
   ) {
     var guides = new ArrayList<Guide<?, ?>>();
 

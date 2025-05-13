@@ -1,7 +1,7 @@
 package tech.intellispaces.reflections.framework.guide.n3;
 
 import tech.intellispaces.reflections.framework.exception.TraverseException;
-import tech.intellispaces.reflections.framework.object.reference.ObjectReferenceForm;
+import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 import tech.intellispaces.reflections.framework.traverse.plan.TraverseExecutor;
 import tech.intellispaces.reflections.framework.traverse.plan.TraversePlan;
 
@@ -17,11 +17,11 @@ import tech.intellispaces.reflections.framework.traverse.plan.TraversePlan;
 public class AutoMover3<S, Q1, Q2, Q3> implements AbstractMover3<S, Q1, Q2, Q3> {
   private final String cid;
   private final TraversePlan traversePlan;
-  private final ObjectReferenceForm targetForm;
+  private final ReflectionForm targetForm;
   private final TraverseExecutor traverseExecutor;
 
   public AutoMover3(
-      String cid, TraversePlan traversePlan, ObjectReferenceForm targetForm, TraverseExecutor traverseExecutor
+          String cid, TraversePlan traversePlan, ReflectionForm targetForm, TraverseExecutor traverseExecutor
   ) {
     this.cid = cid;
     this.traversePlan = traversePlan;
@@ -35,7 +35,7 @@ public class AutoMover3<S, Q1, Q2, Q3> implements AbstractMover3<S, Q1, Q2, Q3> 
   }
 
   @Override
-  public ObjectReferenceForm targetForm() {
+  public ReflectionForm targetForm() {
     return targetForm;
   }
 

@@ -7,7 +7,7 @@ import tech.intellispaces.actions.functional.FunctionActions;
 import tech.intellispaces.commons.function.Function5;
 import tech.intellispaces.reflections.framework.traverse.TraverseType;
 
-public class ObjectHandleMethodBuilder5<H, P1, P2, P3, P4> {
+public class ObjectHandleMethodBuilder5<R, P1, P2, P3, P4> {
   private final String name;
   private final Class<P1> paramClass1;
   private final Class<P2> paramClass2;
@@ -26,7 +26,7 @@ public class ObjectHandleMethodBuilder5<H, P1, P2, P3, P4> {
   private Class<?> injectionType;
 
   public ObjectHandleMethodBuilder5(
-      Class<H> objectHandleClass,
+      Class<R> objectHandleClass,
       String name,
       Class<P1> paramClass1,
       Class<P2> paramClass2,
@@ -40,47 +40,47 @@ public class ObjectHandleMethodBuilder5<H, P1, P2, P3, P4> {
     this.paramClass4 = paramClass4;
   }
 
-  public ObjectHandleMethodBuilder5<H, P1, P2, P3, P4> purpose(ObjectHandleMethodPurpose purpose) {
+  public ObjectHandleMethodBuilder5<R, P1, P2, P3, P4> purpose(ObjectHandleMethodPurpose purpose) {
     this.purpose = purpose;
     return this;
   }
 
-  public <R> ObjectHandleMethodBuilder5<H, P1, P2, P3, P4> function(Function5<H, P1, P2, P3, P4, R> function) {
+  public <T> ObjectHandleMethodBuilder5<R, P1, P2, P3, P4> function(Function5<R, P1, P2, P3, P4, T> function) {
     this.action = FunctionActions.ofFunction5(function);
     return this;
   }
 
-  public ObjectHandleMethodBuilder5<H, P1, P2, P3, P4> traverseOrdinal(int ordinal) {
+  public ObjectHandleMethodBuilder5<R, P1, P2, P3, P4> traverseOrdinal(int ordinal) {
     this.traverseOrdinal = ordinal;
     return this;
   }
 
-  public ObjectHandleMethodBuilder5<H, P1, P2, P3, P4> channelClass(Class<?> channelClass) {
+  public ObjectHandleMethodBuilder5<R, P1, P2, P3, P4> channelClass(Class<?> channelClass) {
     this.channelClass = channelClass;
     return this;
   }
 
-  public ObjectHandleMethodBuilder5<H, P1, P2, P3, P4> traverseType(TraverseType traverseType) {
+  public ObjectHandleMethodBuilder5<R, P1, P2, P3, P4> traverseType(TraverseType traverseType) {
     this.traverseType = traverseType;
     return this;
   }
 
-  public ObjectHandleMethodBuilder5<H, P1, P2, P3, P4> injectionKind(String kind) {
+  public ObjectHandleMethodBuilder5<R, P1, P2, P3, P4> injectionKind(String kind) {
     this.injectionKind = kind;
     return this;
   }
 
-  public ObjectHandleMethodBuilder5<H, P1, P2, P3, P4> injectionOrdinal(int ordinal) {
+  public ObjectHandleMethodBuilder5<R, P1, P2, P3, P4> injectionOrdinal(int ordinal) {
     this.injectionOrdinal = ordinal;
     return this;
   }
 
-  public ObjectHandleMethodBuilder5<H, P1, P2, P3, P4> injectionName(String injectionName) {
+  public ObjectHandleMethodBuilder5<R, P1, P2, P3, P4> injectionName(String injectionName) {
     this.injectionName = injectionName;
     return this;
   }
 
-  public ObjectHandleMethodBuilder5<H, P1, P2, P3, P4> injectionType(Class<?> injectionType) {
+  public ObjectHandleMethodBuilder5<R, P1, P2, P3, P4> injectionType(Class<?> injectionType) {
     this.injectionType = injectionType;
     return this;
   }

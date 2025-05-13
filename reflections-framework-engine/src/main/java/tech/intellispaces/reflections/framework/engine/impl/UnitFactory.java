@@ -19,7 +19,7 @@ import tech.intellispaces.reflections.framework.guide.n2.UnitMapper2;
 import tech.intellispaces.reflections.framework.guide.n2.UnitMapperOfMoving2;
 import tech.intellispaces.reflections.framework.guide.n3.UnitMapper3;
 import tech.intellispaces.reflections.framework.guide.n3.UnitMapperOfMoving3;
-import tech.intellispaces.reflections.framework.object.reference.ObjectReferenceForm;
+import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 import tech.intellispaces.reflections.framework.system.Injection;
 import tech.intellispaces.reflections.framework.system.UnitGuide;
 import tech.intellispaces.reflections.framework.system.UnitProjectionDefinition;
@@ -234,7 +234,7 @@ class UnitFactory {
     String cid = methodDescriptor.guideChannelId();
     int guideOrdinal = methodDescriptor.guideOrdinal();
     int qualifiersCount = methodDescriptor.paramClasses().size();
-    ObjectReferenceForm targetForm = methodDescriptor.guideTargetForm();
+    ReflectionForm targetForm = methodDescriptor.guideTargetForm();
     MethodStatement guideMethod = getGuideMethod(unitClass, methodDescriptor);
     return switch (qualifiersCount) {
       case 1 -> new UnitMapper0<>(cid, unitWrapper, guideMethod, guideOrdinal, targetForm);
@@ -259,7 +259,7 @@ class UnitFactory {
     String cid = methodDescriptor.guideChannelId();
     int guideOrdinal = methodDescriptor.guideOrdinal();
     int qualifiersCount = methodDescriptor.paramClasses().size();
-    ObjectReferenceForm targetForm = methodDescriptor.guideTargetForm();
+    ReflectionForm targetForm = methodDescriptor.guideTargetForm();
     MethodStatement guideMethod = getGuideMethod(unitClass, methodDescriptor);
     return switch (qualifiersCount) {
       case 1 -> new UnitMapperOfMoving0<>(cid, unitWrapper, guideMethod, guideOrdinal, targetForm);

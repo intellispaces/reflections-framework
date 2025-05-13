@@ -41,9 +41,9 @@ import tech.intellispaces.reflections.framework.guide.n4.ObjectMapperOfMoving4;
 import tech.intellispaces.reflections.framework.guide.n5.Mapper5;
 import tech.intellispaces.reflections.framework.guide.n5.Mover5;
 import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
-import tech.intellispaces.reflections.framework.object.reference.ObjectReferenceForm;
-import tech.intellispaces.reflections.framework.object.reference.ObjectReferenceForms;
-import tech.intellispaces.reflections.framework.object.reference.ObjectReferenceFunctions;
+import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
+import tech.intellispaces.reflections.framework.reflection.ReflectionForms;
+import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
 import tech.intellispaces.reflections.framework.space.channel.ChannelFunctions;
 import tech.intellispaces.reflections.framework.system.UnitWrapper;
 import tech.intellispaces.reflections.framework.traverse.TraverseType;
@@ -212,7 +212,7 @@ public final class GuideFunctions {
 
   @SuppressWarnings("unchecked,rawtypes")
   private static void addConversionGuides(Class<?> objectHandleClass, List<Guide<?, ?>> guides) {
-    String implClassCanonicalName = NameConventionFunctions.getObjectHandleWrapperCanonicalName(
+    String implClassCanonicalName = NameConventionFunctions.getReflectionWrapperCanonicalName(
         objectHandleClass
     );
     Optional<Class<?>> objectHandleImplClass = ClassFunctions.getClass(implClassCanonicalName);
@@ -222,7 +222,7 @@ public final class GuideFunctions {
     }
     CustomType objectHandleWrapperType = Interfaces.of(objectHandleImplClass.get());
 
-    CustomType domainType = ObjectReferenceFunctions.getDomainOfObjectFormOrElseThrow(Classes.of(objectHandleClass));
+    CustomType domainType = ReflectionFunctions.getDomainOfObjectFormOrElseThrow(Classes.of(objectHandleClass));
 
     for (MethodStatement method : domainType.declaredMethods()) {
       if (NameConventionFunctions.isConversionMethod(method)) {
@@ -236,7 +236,7 @@ public final class GuideFunctions {
             (Class) objectHandleClass,
             method,
             channelOrdinal,
-            ObjectReferenceForms.ObjectHandle
+            ReflectionForms.Reflection
         );
         guides.add(guide);
       }
@@ -255,7 +255,7 @@ public final class GuideFunctions {
   private static <S, T> Guide<S, T> createObjectMapper(
       Class<S> objectHandleClass, String cid, MethodStatement guideMethod
   ) {
-    ObjectReferenceForm targetForm = getTargetForm(guideMethod);
+    ReflectionForm targetForm = getTargetForm(guideMethod);
     int channelOrdinal = getChannelOrdinal(objectHandleClass, guideMethod);
     int qualifiersCount = guideMethod.params().size();
     return switch (qualifiersCount) {
@@ -272,7 +272,7 @@ public final class GuideFunctions {
   private static <S, T> Guide<S, T> createObjectMover(
       Class<S> objectHandleClass, String cid, MethodStatement guideMethod
   ) {
-    ObjectReferenceForm targetForm = getTargetForm(guideMethod);
+    ReflectionForm targetForm = getTargetForm(guideMethod);
     int channelOrdinal = getChannelOrdinal(objectHandleClass, guideMethod);
     int qualifiersCount = guideMethod.params().size();
     return switch (qualifiersCount) {
@@ -289,7 +289,7 @@ public final class GuideFunctions {
   private static <S, T> Guide<S, T> createObjectMapperOfMoving(
       Class<S> objectHandleClass, String cid, MethodStatement guideMethod
   ) {
-    ObjectReferenceForm targetForm = getTargetForm(guideMethod);
+    ReflectionForm targetForm = getTargetForm(guideMethod);
     int channelOrdinal = getChannelOrdinal(objectHandleClass, guideMethod);
     int qualifiersCount = guideMethod.params().size();
     return switch (qualifiersCount) {
@@ -303,21 +303,21 @@ public final class GuideFunctions {
     };
   }
 
-  public static ObjectReferenceForm getTargetForm(MethodStatement guideMethod) {
+  public static ReflectionForm getTargetForm(MethodStatement guideMethod) {
     TypeReference returnType = guideMethod.returnType().orElseThrow();
     if (returnType.isCustomTypeReference()) {
       if (ClassFunctions.isPrimitiveWrapperClass(returnType.asCustomTypeReferenceOrElseThrow().targetType().canonicalName())) {
-        return ObjectReferenceForms.Primitive;
+        return ReflectionForms.Primitive;
       }
-      if (ObjectReferenceFunctions.isObjectHandleType(returnType)) {
-        return ObjectReferenceForms.ObjectHandle;
+      if (ReflectionFunctions.isObjectHandleType(returnType)) {
+        return ReflectionForms.Reflection;
       }
     }
-    return ObjectReferenceForms.ObjectHandle;
+    return ReflectionForms.Reflection;
   }
 
   public static int getChannelOrdinal(Class<?> objectHandleClass, MethodStatement guideMethod) {
-    String wrapperClassCanonicalName = NameConventionFunctions.getObjectHandleWrapperCanonicalName(
+    String wrapperClassCanonicalName = NameConventionFunctions.getReflectionWrapperCanonicalName(
         objectHandleClass
     );
     Optional<Class<?>> wrapperClass = ClassFunctions.getClass(wrapperClassCanonicalName);

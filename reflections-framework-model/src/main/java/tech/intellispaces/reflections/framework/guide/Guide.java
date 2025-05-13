@@ -1,7 +1,7 @@
 package tech.intellispaces.reflections.framework.guide;
 
 import tech.intellispaces.reflections.framework.exception.TraverseException;
-import tech.intellispaces.reflections.framework.object.reference.ObjectReferenceForm;
+import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 
 /**
  * The guide.<p/>
@@ -33,7 +33,7 @@ public interface Guide<S, R> {
   /**
    * Guide form.
    */
-  ObjectReferenceForm targetForm();
+  ReflectionForm targetForm();
 
   /**
    * Synchronous execution of the guide.

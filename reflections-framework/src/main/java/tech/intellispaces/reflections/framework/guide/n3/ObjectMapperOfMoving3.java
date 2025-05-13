@@ -1,6 +1,6 @@
 package tech.intellispaces.reflections.framework.guide.n3;
 
-import tech.intellispaces.reflections.framework.object.reference.ObjectReferenceForm;
+import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 import tech.intellispaces.reflections.framework.system.ObjectHandleWrapper;
 import tech.intellispaces.jstatements.method.MethodStatement;
 
@@ -24,7 +24,7 @@ public class ObjectMapperOfMoving3<S extends ObjectHandleWrapper, T, Q1, Q2, Q3>
       Class<S> objectHandleClass,
       MethodStatement guideMethod,
       int traverseOrdinal,
-      ObjectReferenceForm targetForm
+      ReflectionForm targetForm
   ) {
     super(cid, objectHandleClass, guideMethod, traverseOrdinal, targetForm);
   }

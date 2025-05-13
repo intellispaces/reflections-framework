@@ -5,12 +5,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 import tech.intellispaces.reflections.framework.annotation.Dataset;
-import tech.intellispaces.reflections.framework.object.reference.ObjectReferenceFunctions;
+import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
 
 public interface DatasetFunctions {
 
   static boolean isDatasetObjectHandle(Class<?> objectHandleClass) {
-    return isDatasetDomain(ObjectReferenceFunctions.getDomainClassOfObjectHandle(objectHandleClass));
+    return isDatasetDomain(ReflectionFunctions.getDomainClassOfObjectHandle(objectHandleClass));
   }
 
   static boolean isDatasetDomain(Class<?> domainClass) {

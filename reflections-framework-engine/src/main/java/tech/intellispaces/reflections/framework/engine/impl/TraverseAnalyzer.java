@@ -13,9 +13,9 @@ import tech.intellispaces.reflections.framework.guide.n1.Guide1;
 import tech.intellispaces.reflections.framework.guide.n2.Guide2;
 import tech.intellispaces.reflections.framework.guide.n3.Guide3;
 import tech.intellispaces.reflections.framework.guide.n4.Guide4;
-import tech.intellispaces.reflections.framework.object.reference.ObjectHandle;
-import tech.intellispaces.reflections.framework.object.reference.ObjectReferenceForm;
-import tech.intellispaces.reflections.framework.object.reference.ObjectReferenceFunctions;
+import tech.intellispaces.reflections.framework.reflection.Reflection;
+import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
+import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
 import tech.intellispaces.reflections.framework.space.channel.ChannelFunctions;
 import tech.intellispaces.reflections.framework.traverse.plan.AscendAndExecutePlan1Impl;
 import tech.intellispaces.reflections.framework.traverse.plan.CallGuide0PlanImpl;
@@ -63,7 +63,7 @@ class TraverseAnalyzer implements tech.intellispaces.reflections.framework.trave
 
   @Override
   public MapObjectHandleThruChannel0Plan buildMapObjectHandleThruChannel0Plan(
-    Class<?> sourceClass, String cid, ObjectReferenceForm targetForm
+    Class<?> sourceClass, String cid, ReflectionForm targetForm
   ) {
     MapObjectHandleThruChannel0Plan declarativePlan = new MapObjectHandleThruChannel0PlanImpl(sourceClass, cid);
     preliminaryExecutionPlan(declarativePlan, sourceClass, targetForm);
@@ -72,7 +72,7 @@ class TraverseAnalyzer implements tech.intellispaces.reflections.framework.trave
 
   @Override
   public MapObjectHandleThruChannel1Plan buildMapObjectHandleThruChannel1Plan(
-    Class<?> sourceClass, String cid, ObjectReferenceForm targetForm
+    Class<?> sourceClass, String cid, ReflectionForm targetForm
   ) {
     MapObjectHandleThruChannel1Plan declarativePlan = new MapObjectHandleThruChannel1PlanImpl(sourceClass, cid);
     preliminaryExecutionPlan(declarativePlan, sourceClass, targetForm);
@@ -81,7 +81,7 @@ class TraverseAnalyzer implements tech.intellispaces.reflections.framework.trave
 
   @Override
   public MapObjectHandleThruChannel2Plan buildMapObjectHandleThruChannel2Plan(
-    Class<?> sourceClass, String cid, ObjectReferenceForm targetForm
+    Class<?> sourceClass, String cid, ReflectionForm targetForm
   ) {
     MapObjectHandleThruChannel2Plan declarativePlan = new MapObjectHandleThruChannel2PlanImpl(sourceClass, cid);
     preliminaryExecutionPlan(declarativePlan, sourceClass, targetForm);
@@ -90,7 +90,7 @@ class TraverseAnalyzer implements tech.intellispaces.reflections.framework.trave
 
   @Override
   public MapObjectHandleThruChannel3Plan buildMapObjectHandleThruChannel3Plan(
-    Class<?> sourceClass, String cid, ObjectReferenceForm targetForm
+    Class<?> sourceClass, String cid, ReflectionForm targetForm
   ) {
     MapObjectHandleThruChannel3Plan declarativePlan = new MapObjectHandleThruChannel3PlanImpl(sourceClass, cid);
     preliminaryExecutionPlan(declarativePlan, sourceClass, targetForm);
@@ -99,7 +99,7 @@ class TraverseAnalyzer implements tech.intellispaces.reflections.framework.trave
 
   @Override
   public MoveObjectHandleThruChannel0Plan buildMoveObjectHandleThruChannel0Plan(
-    Class<?> sourceClass, String cid, ObjectReferenceForm targetForm
+    Class<?> sourceClass, String cid, ReflectionForm targetForm
   ) {
     MoveObjectHandleThruChannel0Plan declarativePlan = new MoveObjectHandleThruChannel0PlanImpl(sourceClass, cid);
     preliminaryExecutionPlan(declarativePlan, sourceClass, targetForm);
@@ -108,7 +108,7 @@ class TraverseAnalyzer implements tech.intellispaces.reflections.framework.trave
 
   @Override
   public MoveObjectHandleThruChannel1Plan buildMoveObjectHandleThruChannel1Plan(
-    Class<?> sourceClass, String cid, ObjectReferenceForm targetForm
+    Class<?> sourceClass, String cid, ReflectionForm targetForm
   ) {
     MoveObjectHandleThruChannel1Plan declarativePlan = new MoveObjectHandleThruChannel1PlanImpl(sourceClass, cid);
     preliminaryExecutionPlan(declarativePlan, sourceClass, targetForm);
@@ -117,7 +117,7 @@ class TraverseAnalyzer implements tech.intellispaces.reflections.framework.trave
 
   @Override
   public MoveObjectHandleThruChannel2Plan buildMoveObjectHandleThruChannel2Plan(
-    Class<?> sourceClass, String cid, ObjectReferenceForm targetForm
+    Class<?> sourceClass, String cid, ReflectionForm targetForm
   ) {
     MoveObjectHandleThruChannel2Plan declarativePlan = new MoveObjectHandleThruChannel2PlanImpl(sourceClass, cid);
     preliminaryExecutionPlan(declarativePlan, sourceClass, targetForm);
@@ -126,7 +126,7 @@ class TraverseAnalyzer implements tech.intellispaces.reflections.framework.trave
 
   @Override
   public MoveObjectHandleThruChannel3Plan buildMoveObjectHandleThruChannel3Plan(
-    Class<?> sourceClass, String cid, ObjectReferenceForm targetForm
+    Class<?> sourceClass, String cid, ReflectionForm targetForm
   ) {
     MoveObjectHandleThruChannel3Plan declarativePlan = new MoveObjectHandleThruChannel3PlanImpl(sourceClass, cid);
     preliminaryExecutionPlan(declarativePlan, sourceClass, targetForm);
@@ -135,7 +135,7 @@ class TraverseAnalyzer implements tech.intellispaces.reflections.framework.trave
 
   @Override
   public MapOfMovingObjectHandleThruChannel0Plan buildMapOfMovingObjectHandleThruChannel0Plan(
-      Class<?> sourceClass, String cid, ObjectReferenceForm targetForm
+      Class<?> sourceClass, String cid, ReflectionForm targetForm
   ) {
     MapOfMovingObjectHandleThruChannel0Plan declarativePlan = new MapOfMovingObjectHandleThruChannel0PlanImpl(sourceClass, cid);
     preliminaryExecutionPlan(declarativePlan, sourceClass, targetForm);
@@ -144,7 +144,7 @@ class TraverseAnalyzer implements tech.intellispaces.reflections.framework.trave
 
   @Override
   public MapOfMovingObjectHandleThruChannel1Plan buildMapOfMovingObjectHandleThruChannel1Plan(
-      Class<?> sourceClass, String cid, ObjectReferenceForm targetForm
+      Class<?> sourceClass, String cid, ReflectionForm targetForm
   ) {
     MapOfMovingObjectHandleThruChannel1Plan declarativePlan = new MapOfMovingObjectHandleThruChannel1PlanImpl(sourceClass, cid);
     preliminaryExecutionPlan(declarativePlan, sourceClass, targetForm);
@@ -153,7 +153,7 @@ class TraverseAnalyzer implements tech.intellispaces.reflections.framework.trave
 
   @Override
   public MapOfMovingObjectHandleThruChannel2Plan buildMapOfMovingObjectHandleThruChannel2Plan(
-      Class<?> sourceClass, String cid, ObjectReferenceForm targetForm
+      Class<?> sourceClass, String cid, ReflectionForm targetForm
   ) {
     MapOfMovingObjectHandleThruChannel2Plan declarativePlan = new MapOfMovingObjectHandleThruChannel2PlanImpl(sourceClass, cid);
     preliminaryExecutionPlan(declarativePlan, sourceClass, targetForm);
@@ -162,7 +162,7 @@ class TraverseAnalyzer implements tech.intellispaces.reflections.framework.trave
 
   @Override
   public MapOfMovingObjectHandleThruChannel3Plan buildMapOfMovingObjectHandleThruChannel3Plan(
-      Class<?> sourceClass, String cid, ObjectReferenceForm targetForm
+      Class<?> sourceClass, String cid, ReflectionForm targetForm
   ) {
     MapOfMovingObjectHandleThruChannel3Plan declarativePlan = new MapOfMovingObjectHandleThruChannel3PlanImpl(sourceClass, cid);
     preliminaryExecutionPlan(declarativePlan, sourceClass, targetForm);
@@ -171,7 +171,7 @@ class TraverseAnalyzer implements tech.intellispaces.reflections.framework.trave
 
   @Override
   public MapOfMovingObjectHandleThruChannel4Plan buildMapOfMovingObjectHandleThruChannel4Plan(
-      Class<?> sourceClass, String cid, ObjectReferenceForm targetForm
+      Class<?> sourceClass, String cid, ReflectionForm targetForm
   ) {
     MapOfMovingObjectHandleThruChannel4Plan declarativePlan = new MapOfMovingObjectHandleThruChannel4PlanImpl(sourceClass, cid);
     preliminaryExecutionPlan(declarativePlan, sourceClass, targetForm);
@@ -179,27 +179,27 @@ class TraverseAnalyzer implements tech.intellispaces.reflections.framework.trave
   }
 
   private void preliminaryExecutionPlan(
-      ObjectHandleTraversePlan plan, Class<?> sourceClass, ObjectReferenceForm targetForm
+      ObjectHandleTraversePlan plan, Class<?> sourceClass, ReflectionForm targetForm
   ) {
     getExecutionPlan(plan, sourceClass, targetForm);
   }
 
   @Override
   public ExecutionTraversePlan getExecutionPlan(
-      ObjectHandleTraversePlan plan, Class<?> sourceClass, ObjectReferenceForm targetForm
+      ObjectHandleTraversePlan plan, Class<?> sourceClass, ReflectionForm targetForm
   ) {
     return getExecutionPlan(plan, sourceClass, null, targetForm);
   }
 
   @Override
   public ExecutionTraversePlan getExecutionPlan(
-      ObjectHandleTraversePlan plan, Object source, ObjectReferenceForm targetForm
+      ObjectHandleTraversePlan plan, Object source, ReflectionForm targetForm
   ) {
     return getExecutionPlan(plan, source.getClass(), source, targetForm);
   }
 
   private ExecutionTraversePlan getExecutionPlan(
-      ObjectHandleTraversePlan plan, Class<?> sourceClass, Object source, ObjectReferenceForm targetForm
+      ObjectHandleTraversePlan plan, Class<?> sourceClass, Object source, ReflectionForm targetForm
   ) {
     ExecutionTraversePlan executionPlan = plan.cachedExecutionPlan(sourceClass);
     if (executionPlan != null) {
@@ -209,10 +209,10 @@ class TraverseAnalyzer implements tech.intellispaces.reflections.framework.trave
     TraversePlanType planType = plan.type();
     String cid = plan.channelId();
 
-    if (!ObjectReferenceFunctions.isObjectFormClass(sourceClass)) {
+    if (!ReflectionFunctions.isObjectFormClass(sourceClass)) {
       throw UnexpectedExceptions.withMessage("Traverse plan of type {0} expected any object form to input", planType);
     }
-    Class<?> objectHandleClass = ObjectReferenceFunctions.getObjectHandleClass(sourceClass);
+    Class<?> objectHandleClass = ReflectionFunctions.getObjectHandleClass(sourceClass);
     executionPlan = plan.cachedExecutionPlan(objectHandleClass);
     if (executionPlan != null) {
       return executionPlan;
@@ -241,7 +241,7 @@ class TraverseAnalyzer implements tech.intellispaces.reflections.framework.trave
     }
 
     if (source != null) {
-      var sourceHandle = (ObjectHandle<?>) source;
+      var sourceHandle = (Reflection<?>) source;
       while (sourceHandle.overlyingHandle() != null) {
         sourceHandle = sourceHandle.overlyingHandle();
         sourceClass = sourceHandle.getClass();
@@ -251,8 +251,8 @@ class TraverseAnalyzer implements tech.intellispaces.reflections.framework.trave
           return executionPlan;
         }
 
-        objectHandleClass = ObjectReferenceFunctions.getObjectHandleClass(sourceClass);
-        Class<?> domainClass = ObjectReferenceFunctions.getDomainClassOfObjectHandle(objectHandleClass);
+        objectHandleClass = ReflectionFunctions.getObjectHandleClass(sourceClass);
+        Class<?> domainClass = ReflectionFunctions.getDomainClassOfObjectHandle(objectHandleClass);
         String originCid = ChannelFunctions.getOriginDomainChannelId(domainClass, cid);
         if (originCid != null) {
           executionPlan = buildExecutionTraversePlan(planType, originCid, sourceClass, targetForm);
@@ -268,7 +268,7 @@ class TraverseAnalyzer implements tech.intellispaces.reflections.framework.trave
   }
 
   private ExecutionTraversePlan buildExecutionTraversePlan(
-      TraversePlanType planType, String cid, Class<?> objectHandleClass, ObjectReferenceForm targetForm
+      TraversePlanType planType, String cid, Class<?> objectHandleClass, ReflectionForm targetForm
   ) {
     GuideKinds guideKind = getGuideKind(planType);
     List<Guide<?, ?>> guides = findGuides(guideKind, objectHandleClass, cid, targetForm);
@@ -290,7 +290,7 @@ class TraverseAnalyzer implements tech.intellispaces.reflections.framework.trave
     };
   }
 
-  private List<Guide<?, ?>> findGuides(GuideKind kind, Class<?> objectHandleClass, String cid, ObjectReferenceForm form) {
+  private List<Guide<?, ?>> findGuides(GuideKind kind, Class<?> objectHandleClass, String cid, ReflectionForm form) {
     return guideRegistry.findGuides(kind, objectHandleClass, cid, form);
   }
 

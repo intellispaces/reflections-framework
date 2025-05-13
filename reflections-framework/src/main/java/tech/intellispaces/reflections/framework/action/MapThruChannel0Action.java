@@ -4,19 +4,19 @@ import tech.intellispaces.actions.AbstractAction1;
 import tech.intellispaces.commons.type.Type;
 import tech.intellispaces.reflections.framework.channel.Channel0;
 import tech.intellispaces.reflections.framework.guide.n0.Mapper0;
-import tech.intellispaces.reflections.framework.object.reference.ObjectReferenceForm;
+import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 import tech.intellispaces.reflections.framework.system.Modules;
 
 class MapThruChannel0Action<T, S> extends AbstractAction1<T, S> {
   private final Type<S> sourceType;
   private final Class<? extends Channel0> channelClass;
-  private final ObjectReferenceForm targetForm;
+  private final ReflectionForm targetForm;
   private final Mapper0<S, T> autoMapper;
 
   MapThruChannel0Action(
       Type<S> sourceType,
       Class<? extends Channel0> channelClass,
-      ObjectReferenceForm targetForm
+      ReflectionForm targetForm
   ) {
     this.sourceType = sourceType;
     this.channelClass = channelClass;

@@ -7,7 +7,7 @@ import tech.intellispaces.actions.Action;
 import tech.intellispaces.actions.functional.FunctionActions;
 import tech.intellispaces.reflections.framework.traverse.TraverseType;
 
-public class ObjectHandleMethodBuilder1<H> {
+public class ObjectHandleMethodBuilder1<R> {
   private final String name;
   private Action action;
   private ObjectHandleMethodPurpose purpose;
@@ -21,51 +21,51 @@ public class ObjectHandleMethodBuilder1<H> {
   private String injectionName;
   private Class<?> injectionType;
 
-  public ObjectHandleMethodBuilder1(Class<H> objectHandleClass, String name) {
+  public ObjectHandleMethodBuilder1(Class<R> objectHandleClass, String name) {
     this.name = name;
   }
 
-  public ObjectHandleMethodBuilder1<H> purpose(ObjectHandleMethodPurpose purpose) {
+  public ObjectHandleMethodBuilder1<R> purpose(ObjectHandleMethodPurpose purpose) {
     this.purpose = purpose;
     return this;
   }
 
-  public <R> ObjectHandleMethodBuilder1<H> function(Function<H, R> function) {
+  public <T> ObjectHandleMethodBuilder1<R> function(Function<R, T> function) {
     this.action = FunctionActions.ofFunction(function);
     return this;
   }
 
-  public ObjectHandleMethodBuilder1<H> traverseOrdinal(int ordinal) {
+  public ObjectHandleMethodBuilder1<R> traverseOrdinal(int ordinal) {
     this.traverseOrdinal = ordinal;
     return this;
   }
 
-  public ObjectHandleMethodBuilder1<H> channelClass(Class<?> channelClass) {
+  public ObjectHandleMethodBuilder1<R> channelClass(Class<?> channelClass) {
     this.channelClass = channelClass;
     return this;
   }
 
-  public ObjectHandleMethodBuilder1<H> traverseType(TraverseType traverseType) {
+  public ObjectHandleMethodBuilder1<R> traverseType(TraverseType traverseType) {
     this.traverseType = traverseType;
     return this;
   }
 
-  public ObjectHandleMethodBuilder1<H> injectionKind(String kind) {
+  public ObjectHandleMethodBuilder1<R> injectionKind(String kind) {
     this.injectionKind = kind;
     return this;
   }
 
-  public ObjectHandleMethodBuilder1<H> injectionOrdinal(int ordinal) {
+  public ObjectHandleMethodBuilder1<R> injectionOrdinal(int ordinal) {
     this.injectionOrdinal = ordinal;
     return this;
   }
 
-  public ObjectHandleMethodBuilder1<H> injectionName(String injectionName) {
+  public ObjectHandleMethodBuilder1<R> injectionName(String injectionName) {
     this.injectionName = injectionName;
     return this;
   }
 
-  public ObjectHandleMethodBuilder1<H> injectionType(Class<?> injectionType) {
+  public ObjectHandleMethodBuilder1<R> injectionType(Class<?> injectionType) {
     this.injectionType = injectionType;
     return this;
   }

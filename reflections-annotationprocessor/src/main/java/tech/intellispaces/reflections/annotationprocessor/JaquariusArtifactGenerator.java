@@ -5,9 +5,9 @@ import java.util.stream.Collectors;
 
 import tech.intellispaces.annotationprocessor.TemplatedJavaArtifactGenerator;
 import tech.intellispaces.commons.type.ClassFunctions;
-import tech.intellispaces.reflections.framework.object.reference.MovabilityType;
-import tech.intellispaces.reflections.framework.object.reference.ObjectReferenceForm;
-import tech.intellispaces.reflections.framework.object.reference.ObjectReferenceFunctions;
+import tech.intellispaces.reflections.framework.reflection.MovabilityType;
+import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
+import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
 import tech.intellispaces.jstatements.customtype.CustomType;
 import tech.intellispaces.jstatements.method.MethodParam;
 import tech.intellispaces.jstatements.method.MethodSignatureDeclarations;
@@ -51,9 +51,9 @@ public abstract class JaquariusArtifactGenerator extends TemplatedJavaArtifactGe
   }
 
   protected String buildObjectFormDeclaration(
-      TypeReference domainType, ObjectReferenceForm objectForm, MovabilityType movabilityType, boolean replaceDomainWithDelegate
+          TypeReference domainType, ReflectionForm objectForm, MovabilityType movabilityType, boolean replaceDomainWithDelegate
   ) {
-    return ObjectReferenceFunctions.getObjectFormDeclaration(
+    return ReflectionFunctions.getObjectFormDeclaration(
         domainType, objectForm, movabilityType, replaceDomainWithDelegate, this::addImportAndGetSimpleName
     );
   }

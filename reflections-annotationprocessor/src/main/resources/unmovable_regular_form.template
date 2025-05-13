@@ -1,0 +1,19 @@
+package {{$generatedArtifactPackageName}};
+
+{{for importedClass : $importedClasses}}
+import {{$importedClass}};
+{{end}}
+
+/**
+ * Unmovable object of domain {@link {{$sourceArtifactSimpleName}}}.
+ * <p>
+ * This class was generated automatically. Don't try to change it.
+ */
+@Unmovable
+{{$generatedAnnotation}}
+{{when $isAlias}}
+public interface {{$generatedArtifactSimpleName}}{{$reflectionTypeParamsFull}} extends {{$generalPureObjectHandle}}{{$reflectionTypeParamsBrief}}, {{$primaryObject}} {
+{{else}}
+public interface {{$generatedArtifactSimpleName}}{{$reflectionTypeParamsFull}} extends {{$generalPureObjectHandle}}{{$reflectionTypeParamsBrief}} {
+{{end}}
+}

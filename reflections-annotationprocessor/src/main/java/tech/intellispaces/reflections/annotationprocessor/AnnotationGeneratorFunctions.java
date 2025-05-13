@@ -19,7 +19,7 @@ import tech.intellispaces.reflections.framework.annotation.Projection;
 import tech.intellispaces.reflections.framework.annotation.Shutdown;
 import tech.intellispaces.reflections.framework.annotation.Startup;
 import tech.intellispaces.reflections.framework.guide.GuideFunctions;
-import tech.intellispaces.reflections.framework.object.reference.ObjectReferenceFunctions;
+import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
 import tech.intellispaces.jstatements.customtype.CustomType;
 import tech.intellispaces.jstatements.method.MethodParam;
 import tech.intellispaces.jstatements.method.MethodStatement;
@@ -176,7 +176,7 @@ public interface AnnotationGeneratorFunctions {
     String returnType = buildGuideTypeDeclaration(guideMethod.returnType().orElseThrow(), generator);
     sb.append(returnType);
     sb.append(" ");
-    sb.append(ObjectReferenceFunctions.buildObjectHandleGuideMethodName(guideMethod));
+    sb.append(ReflectionFunctions.buildObjectHandleGuideMethodName(guideMethod));
     sb.append("(");
     commaAppender = StringActions.skipFirstTimeCommaAppender(sb);
     for (MethodParam param : rearrangementParams(guideMethod.params())) {

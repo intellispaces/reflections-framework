@@ -24,8 +24,8 @@ import tech.intellispaces.reflections.framework.exception.ConfigurationException
 import tech.intellispaces.reflections.framework.guide.GuideFunctions;
 import tech.intellispaces.reflections.framework.guide.GuideKinds;
 import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
-import tech.intellispaces.reflections.framework.object.reference.ObjectReferenceForms;
-import tech.intellispaces.reflections.framework.object.reference.ObjectReferenceFunctions;
+import tech.intellispaces.reflections.framework.reflection.ReflectionForms;
+import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
 import tech.intellispaces.reflections.framework.space.channel.ChannelFunctions;
 import tech.intellispaces.reflections.framework.system.Modules;
 import tech.intellispaces.reflections.framework.system.ProjectionInjection;
@@ -87,7 +87,7 @@ public class UnitWrapperGenerator extends JaquariusArtifactGenerator {
         InjectionKinds.class,
         ProjectionReferences.class,
         GuideKinds.class,
-        ObjectReferenceForms.class
+        ReflectionForms.class
     );
 
     methods = sourceArtifact().actualMethods();
@@ -254,7 +254,7 @@ public class UnitWrapperGenerator extends JaquariusArtifactGenerator {
       MethodStatement method, int guideOrdinal
   ) {
     var map = new HashMap<String, Object>();
-    map.put("name", ObjectReferenceFunctions.buildObjectHandleGuideMethodName(method));
+    map.put("name", ReflectionFunctions.buildObjectHandleGuideMethodName(method));
 
     List<String> paramClasses = new ArrayList<>();
     for (MethodParam param : method.params()) {

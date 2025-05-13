@@ -6,7 +6,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import tech.intellispaces.reflections.framework.exception.ConfigurationExceptions;
-import tech.intellispaces.reflections.framework.object.reference.ObjectReferenceFunctions;
+import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
 import tech.intellispaces.reflections.framework.system.ProjectionInjection;
 import tech.intellispaces.reflections.framework.system.UnitProjectionDefinition;
 import tech.intellispaces.reflections.framework.system.injection.InjectionKinds;
@@ -75,7 +75,7 @@ class ModuleValidator {
         throw ConfigurationExceptions.withMessage("Projection injection by name '{0}' declared in unit {1} " +
                 "is not found", injection.name(), injection.unitClass().getCanonicalName());
       }
-      if (!ObjectReferenceFunctions.isCompatibleObjectType(injection.targetClass(), provider.type())) {
+      if (!ReflectionFunctions.isCompatibleObjectType(injection.targetClass(), provider.type())) {
         throw ConfigurationExceptions.withMessage("Projection injection '{0}' declared in unit {1} " +
                 "has an incompatible target type. Expected type {2}, actual type {3}",
             injection.name(), injection.unitClass().getCanonicalName(),

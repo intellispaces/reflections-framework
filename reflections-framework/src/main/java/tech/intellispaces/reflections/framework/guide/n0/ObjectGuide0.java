@@ -6,7 +6,7 @@ import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.reflections.framework.exception.TraverseException;
 import tech.intellispaces.reflections.framework.exception.TraverseExceptions;
 import tech.intellispaces.reflections.framework.guide.GuideLogger;
-import tech.intellispaces.reflections.framework.object.reference.ObjectReferenceForm;
+import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 import tech.intellispaces.reflections.framework.system.ObjectHandleWrapper;
 import tech.intellispaces.jstatements.method.MethodParam;
 import tech.intellispaces.jstatements.method.MethodStatement;
@@ -14,14 +14,14 @@ import tech.intellispaces.jstatements.method.MethodStatement;
 abstract class ObjectGuide0<S extends ObjectHandleWrapper, R> implements Guide0<S, R> {
   private final Class<S> objectHandleClass;
   private final String cid;
-  private final ObjectReferenceForm targetForm;
+  private final ReflectionForm targetForm;
   private final MethodStatement guideMethod;
   private final int traverseOrdinal;
 
   ObjectGuide0(
     String cid,
     Class<S> objectHandleClass,
-    ObjectReferenceForm targetForm,
+    ReflectionForm targetForm,
     MethodStatement guideMethod,
     int traverseOrdinal
   ) {
@@ -41,7 +41,7 @@ abstract class ObjectGuide0<S extends ObjectHandleWrapper, R> implements Guide0<
   }
 
   @Override
-  public ObjectReferenceForm targetForm() {
+  public ReflectionForm targetForm() {
     return targetForm;
   }
 

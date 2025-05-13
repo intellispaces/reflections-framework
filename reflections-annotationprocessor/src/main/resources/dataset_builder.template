@@ -22,7 +22,7 @@ public class {{$generatedArtifactSimpleName}} {
   }
 
 {{end}}
-  public {{$unmovableObjectHandleSimpleName}} getUnmovable() {
+  public {{$unmovableReflectionSimpleName}} getUnmovable() {
     return new {{$unmovableDatasetSimpleName}}(
 {{for projection : $projections}}
       this.{{$projection["name"]}}{{when $projection.isNotLast()}},{{end}}

@@ -4,7 +4,7 @@ import java.util.List;
 
 import tech.intellispaces.actions.Action;
 import tech.intellispaces.reflections.framework.guide.GuideKind;
-import tech.intellispaces.reflections.framework.object.reference.ObjectReferenceForm;
+import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 import tech.intellispaces.reflections.framework.system.InjectionKind;
 import tech.intellispaces.reflections.framework.system.ProjectionReference;
 
@@ -25,7 +25,7 @@ class BaseUnitMethodDescriptionBuilder<B extends BaseUnitMethodDescriptionBuilde
   private int guideOrdinal;
   private GuideKind guideKind;
   private String guideCid;
-  private ObjectReferenceForm guideTargetForm;
+  private ReflectionForm guideTargetForm;
 
   BaseUnitMethodDescriptionBuilder(String name, List<Class<?>> paramClasses) {
     this.name = name;
@@ -111,7 +111,7 @@ class BaseUnitMethodDescriptionBuilder<B extends BaseUnitMethodDescriptionBuilde
   }
 
   @SuppressWarnings("unchecked")
-  public B guideTargetForm(ObjectReferenceForm guideTargetForm) {
+  public B guideTargetForm(ReflectionForm guideTargetForm) {
     this.guideTargetForm = guideTargetForm;
     return (B) this;
   }

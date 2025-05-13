@@ -6,7 +6,7 @@ import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.reflections.framework.exception.TraverseException;
 import tech.intellispaces.reflections.framework.exception.TraverseExceptions;
 import tech.intellispaces.reflections.framework.guide.GuideLogger;
-import tech.intellispaces.reflections.framework.object.reference.ObjectReferenceForm;
+import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 import tech.intellispaces.reflections.framework.system.ObjectHandleWrapper;
 import tech.intellispaces.jstatements.method.MethodParam;
 import tech.intellispaces.jstatements.method.MethodStatement;
@@ -16,14 +16,14 @@ abstract class ObjectGuide1<S extends ObjectHandleWrapper, R, Q> implements Guid
   private final String cid;
   private final MethodStatement guideMethod;
   private final int traverseOrdinal;
-  private final ObjectReferenceForm targetForm;
+  private final ReflectionForm targetForm;
 
   ObjectGuide1(
       String cid,
       Class<S> objectHandleClass,
       MethodStatement guideMethod,
       int traverseOrdinal,
-      ObjectReferenceForm targetForm
+      ReflectionForm targetForm
   ) {
     if (guideMethod.params().size() != 1) {
       throw UnexpectedExceptions.withMessage("Guide should have one parameter");
@@ -41,7 +41,7 @@ abstract class ObjectGuide1<S extends ObjectHandleWrapper, R, Q> implements Guid
   }
 
   @Override
-  public ObjectReferenceForm targetForm() {
+  public ReflectionForm targetForm() {
     return targetForm;
   }
 

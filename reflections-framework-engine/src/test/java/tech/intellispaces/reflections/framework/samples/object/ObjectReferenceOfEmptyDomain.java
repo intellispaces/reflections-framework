@@ -1,9 +1,9 @@
 package tech.intellispaces.reflections.framework.samples.object;
 
-import tech.intellispaces.reflections.framework.annotation.ObjectHandle;
-import tech.intellispaces.reflections.framework.object.reference.ObjectReference;
+import tech.intellispaces.reflections.framework.annotation.Reflection;
+import tech.intellispaces.reflections.framework.reflection.AbstractReflection;
 import tech.intellispaces.reflections.framework.samples.domain.EmptyDomain;
 
-@ObjectHandle(EmptyDomain.class)
-public interface ObjectReferenceOfEmptyDomain extends ObjectReference<EmptyDomain> {
+@Reflection(EmptyDomain.class)
+public interface ObjectReferenceOfEmptyDomain extends AbstractReflection<EmptyDomain> {
 }

@@ -1,0 +1,20 @@
+package {{$generatedArtifactPackageName}};
+
+{{for importedClass : $importedClasses}}
+import {{$importedClass}};
+{{end}}
+
+/**
+ * General object of domain {@link {{$sourceArtifactSimpleName}}}.
+ * <p>
+ * This class was generated automatically. Don't try to change it.
+ */
+{{$generatedAnnotation}}
+public interface {{$generatedArtifactSimpleName}}{{$reflectionTypeParamsFull}}{{when $parents.isNotEmpty()}} extends {{for parent : $parents}}{{$parent}}{{when $parent.isNotLast()}}, {{end}}{{end}}{{end}} {
+
+{{for method : $domainMethods}}
+  {{$method["javadoc"]}}
+  {{$method["declaration"]}};
+
+{{end}}
+}

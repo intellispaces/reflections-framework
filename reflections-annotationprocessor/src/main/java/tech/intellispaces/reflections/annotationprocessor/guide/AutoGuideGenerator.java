@@ -17,8 +17,8 @@ import tech.intellispaces.reflections.framework.action.TraverseActions;
 import tech.intellispaces.reflections.annotationprocessor.JaquariusArtifactGenerator;
 import tech.intellispaces.reflections.framework.guide.GuideFunctions;
 import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
-import tech.intellispaces.reflections.framework.object.reference.ObjectReferenceForm;
-import tech.intellispaces.reflections.framework.object.reference.ObjectReferenceForms;
+import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
+import tech.intellispaces.reflections.framework.reflection.ReflectionForms;
 import tech.intellispaces.jstatements.customtype.CustomType;
 import tech.intellispaces.jstatements.method.MethodParam;
 import tech.intellispaces.jstatements.method.MethodStatement;
@@ -52,7 +52,7 @@ public class AutoGuideGenerator extends JaquariusArtifactGenerator {
   protected boolean analyzeSourceArtifact(ArtifactGeneratorContext context) {
     addImports(
         Action.class,
-        ObjectReferenceForms.class
+        ReflectionForms.class
     );
 
     analyzeTypeParams();
@@ -138,8 +138,8 @@ public class AutoGuideGenerator extends JaquariusArtifactGenerator {
     sb.append(".class),\n    ");
     sb.append(addImportAndGetSimpleName(GuideFunctions.getChannelType(method).canonicalName()));
     sb.append(".class,\n");
-    ObjectReferenceForm targetForm = GuideFunctions.getTargetForm(method);
-    sb.append("    ").append(addImportAndGetSimpleName(ObjectReferenceForms.class)).append(".");
+    ReflectionForm targetForm = GuideFunctions.getTargetForm(method);
+    sb.append("    ").append(addImportAndGetSimpleName(ReflectionForms.class)).append(".");
     sb.append(targetForm.name());
     sb.append("))");
     return sb.toString();

@@ -10,7 +10,7 @@ import tech.intellispaces.reflections.framework.engine.ObjectFactoryWrapper;
 import tech.intellispaces.reflections.framework.engine.description.ObjectFactoryMethodDescription;
 import tech.intellispaces.reflections.framework.engine.description.ObjectFactoryMethods;
 import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
-import tech.intellispaces.reflections.framework.object.reference.ObjectReferenceFunctions;
+import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
 import tech.intellispaces.jstatements.customtype.CustomType;
 import tech.intellispaces.jstatements.method.MethodParam;
 import tech.intellispaces.jstatements.method.MethodStatement;
@@ -80,7 +80,7 @@ public class ObjectFactoryWrapperGenerator extends JaquariusArtifactGenerator {
 
   private String getMethodReturnedDomainClass(MethodStatement method) {
     CustomType objectHandleType = method.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow().targetType();
-    CustomType domainType = ObjectReferenceFunctions.getDomainOfObjectForm(objectHandleType).orElseThrow();
+    CustomType domainType = ReflectionFunctions.getDomainOfObjectForm(objectHandleType).orElseThrow();
     return addImportAndGetSimpleName(domainType.canonicalName());
   }
 

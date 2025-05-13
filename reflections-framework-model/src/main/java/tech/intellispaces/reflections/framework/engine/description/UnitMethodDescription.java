@@ -4,7 +4,7 @@ import java.util.List;
 
 import tech.intellispaces.actions.Action;
 import tech.intellispaces.reflections.framework.guide.GuideKind;
-import tech.intellispaces.reflections.framework.object.reference.ObjectReferenceForm;
+import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 import tech.intellispaces.reflections.framework.system.InjectionKind;
 import tech.intellispaces.reflections.framework.system.ProjectionReference;
 
@@ -57,5 +57,5 @@ public interface UnitMethodDescription {
 
   String guideChannelId();
 
-  ObjectReferenceForm guideTargetForm();
+  ReflectionForm guideTargetForm();
 }

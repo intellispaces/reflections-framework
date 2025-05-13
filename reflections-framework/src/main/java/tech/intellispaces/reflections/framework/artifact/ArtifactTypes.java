@@ -24,19 +24,19 @@ public enum ArtifactTypes implements ArtifactType, Enumeration<ArtifactType> {
   RegularObject,
 
   /**
-   * The movable object handle interface.
+   * The movable reflection interface.
    */
-  MovableObjectHandle,
+  MovableReflection,
 
   /**
-   * The unmovable object handle interface.
+   * The unmovable reflection interface.
    */
-  UnmovableObjectHandle,
+  UnmovableReflection,
 
   /**
-   * The general object handle interface.
+   * The general reflection interface.
    */
-  ObjectHandle,
+  Reflection,
 
   /**
    * The channel interface.

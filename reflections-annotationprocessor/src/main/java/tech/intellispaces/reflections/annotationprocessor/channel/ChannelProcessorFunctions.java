@@ -6,8 +6,8 @@ import java.util.List;
 import tech.intellispaces.annotationprocessor.ArtifactGenerator;
 import tech.intellispaces.commons.type.ClassFunctions;
 import tech.intellispaces.reflections.framework.exception.ConfigurationExceptions;
-import tech.intellispaces.reflections.framework.object.reference.ObjectReferenceForm;
-import tech.intellispaces.reflections.framework.object.reference.ObjectReferenceForms;
+import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
+import tech.intellispaces.reflections.framework.reflection.ReflectionForms;
 import tech.intellispaces.reflections.framework.traverse.MappingOfMovingTraverse;
 import tech.intellispaces.reflections.framework.traverse.MappingTraverse;
 import tech.intellispaces.reflections.framework.traverse.MovingTraverse;
@@ -57,14 +57,14 @@ public interface ChannelProcessorFunctions {
       MethodStatement channelMethod
   ) {
     List<ArtifactGenerator> generators = new ArrayList<>();
-    generators.add(makeGuideArtifactGenerators(ObjectReferenceForms.ObjectHandle, traverseType, channelType, channelMethod));
+    generators.add(makeGuideArtifactGenerators(ReflectionForms.Reflection, traverseType, channelType, channelMethod));
     if (channelMethod.returnType().isPresent()) {
       TypeReference returnType = channelMethod.returnType().get();
       if (returnType.isCustomTypeReference()) {
         CustomTypeReference customTypeReference = returnType.asCustomTypeReferenceOrElseThrow();
         if (ClassFunctions.isPrimitiveWrapperClass(customTypeReference.targetType().canonicalName())) {
           generators.add(makeGuideArtifactGenerators(
-              ObjectReferenceForms.Primitive, traverseType, channelType, channelMethod
+              ReflectionForms.Primitive, traverseType, channelType, channelMethod
           ));
         }
       }
@@ -73,7 +73,7 @@ public interface ChannelProcessorFunctions {
   }
 
   static ArtifactGenerator makeGuideArtifactGenerators(
-      ObjectReferenceForm targetForm,
+      ReflectionForm targetForm,
       TraverseType traverseType,
       CustomType channelType,
       MethodStatement channelMethod

@@ -41,9 +41,9 @@ import tech.intellispaces.reflections.framework.guide.n3.MapperOfMoving3;
 import tech.intellispaces.reflections.framework.guide.n3.Mover3;
 import tech.intellispaces.reflections.framework.guide.n4.AutoMapperOfMoving4;
 import tech.intellispaces.reflections.framework.guide.n4.MapperOfMoving4;
-import tech.intellispaces.reflections.framework.object.reference.ObjectReferenceForm;
-import tech.intellispaces.reflections.framework.object.reference.ObjectReferenceForms;
-import tech.intellispaces.reflections.framework.object.reference.ObjectReferenceFunctions;
+import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
+import tech.intellispaces.reflections.framework.reflection.ReflectionForms;
+import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
 import tech.intellispaces.reflections.framework.space.channel.ChannelFunctions;
 import tech.intellispaces.reflections.framework.traverse.MappingOfMovingTraverse;
 import tech.intellispaces.reflections.framework.traverse.MappingTraverse;
@@ -128,7 +128,7 @@ class Module implements tech.intellispaces.reflections.framework.system.Module {
   @SuppressWarnings("unchecked")
   public <S, T> T mapThruChannel0(S source, String cid) {
     DeclarativeTraversePlan traversePlan = traverseAnalyzer.buildMapObjectHandleThruChannel0Plan(
-        ObjectReferenceFunctions.getObjectHandleClass(source.getClass()), cid, ObjectReferenceForms.ObjectHandle);
+        ReflectionFunctions.getObjectHandleClass(source.getClass()), cid, ReflectionForms.Reflection);
     return (T) traversePlan.execute(source, traverseExecutor);
   }
 
@@ -141,7 +141,7 @@ class Module implements tech.intellispaces.reflections.framework.system.Module {
   @SuppressWarnings("unchecked")
   public <S, T, Q> T mapThruChannel1(S source, String cid, Q qualifier) {
     DeclarativeTraversePlan traversePlan = traverseAnalyzer.buildMapObjectHandleThruChannel1Plan(
-        ObjectReferenceFunctions.getObjectHandleClass(source.getClass()), cid, ObjectReferenceForms.ObjectHandle);
+        ReflectionFunctions.getObjectHandleClass(source.getClass()), cid, ReflectionForms.Reflection);
     return (T) traversePlan.execute(source, qualifier, traverseExecutor);
   }
 
@@ -154,7 +154,7 @@ class Module implements tech.intellispaces.reflections.framework.system.Module {
   @SuppressWarnings("unchecked")
   public <S, R> R moveThruChannel0(S source, String cid) {
     TraversePlan traversePlan = traverseAnalyzer.buildMoveObjectHandleThruChannel0Plan(
-        ObjectReferenceFunctions.getObjectHandleClass(source.getClass()), cid, ObjectReferenceForms.ObjectHandle);
+        ReflectionFunctions.getObjectHandleClass(source.getClass()), cid, ReflectionForms.Reflection);
     return (R) traversePlan.execute(source, traverseExecutor);
   }
 
@@ -162,7 +162,7 @@ class Module implements tech.intellispaces.reflections.framework.system.Module {
   @SuppressWarnings("unchecked")
   public <S, R, Q> R moveThruChannel1(S source, String cid, Q qualifier) {
     TraversePlan traversePlan = traverseAnalyzer.buildMoveObjectHandleThruChannel1Plan(
-        ObjectReferenceFunctions.getObjectHandleClass(source.getClass()), cid, ObjectReferenceForms.ObjectHandle);
+        ReflectionFunctions.getObjectHandleClass(source.getClass()), cid, ReflectionForms.Reflection);
     return (R) traversePlan.execute(source, qualifier, traverseExecutor);
   }
 
@@ -177,12 +177,12 @@ class Module implements tech.intellispaces.reflections.framework.system.Module {
   @SuppressWarnings("unchecked")
   public <S, R, Q> R mapOfMovingThruChannel1(S source, String cid, Q qualifier) {
     TraversePlan traversePlan = traverseAnalyzer.buildMapOfMovingObjectHandleThruChannel1Plan(
-        ObjectReferenceFunctions.getObjectHandleClass(source.getClass()), cid, ObjectReferenceForms.ObjectHandle);
+        ReflectionFunctions.getObjectHandleClass(source.getClass()), cid, ReflectionForms.Reflection);
     return (R) traversePlan.execute(source, qualifier, traverseExecutor);
   }
 
   @Override
-  public <S, T> Mapper0<S, T> autoMapperThruChannel0(Type<S> sourceType, String cid, ObjectReferenceForm targetForm) {
+  public <S, T> Mapper0<S, T> autoMapperThruChannel0(Type<S> sourceType, String cid, ReflectionForm targetForm) {
     TraversePlan traversePlan = traverseAnalyzer.buildMapObjectHandleThruChannel0Plan(
         sourceType.asClassType().baseClass(), cid, targetForm
     );
@@ -190,7 +190,7 @@ class Module implements tech.intellispaces.reflections.framework.system.Module {
   }
 
   @Override
-  public <S, T, Q> Mapper1<S, T, Q> autoMapperThruChannel1(Type<S> sourceType, String cid, ObjectReferenceForm targetForm) {
+  public <S, T, Q> Mapper1<S, T, Q> autoMapperThruChannel1(Type<S> sourceType, String cid, ReflectionForm targetForm) {
     TraversePlan traversePlan = traverseAnalyzer.buildMapObjectHandleThruChannel1Plan(
         sourceType.asClassType().baseClass(), cid, targetForm
     );
@@ -198,7 +198,7 @@ class Module implements tech.intellispaces.reflections.framework.system.Module {
   }
 
   @Override
-  public <S, T, Q1, Q2> Mapper2<S, T, Q1, Q2> autoMapperThruChannel2(Type<S> sourceType, String cid, ObjectReferenceForm targetForm) {
+  public <S, T, Q1, Q2> Mapper2<S, T, Q1, Q2> autoMapperThruChannel2(Type<S> sourceType, String cid, ReflectionForm targetForm) {
     TraversePlan traversePlan = traverseAnalyzer.buildMapObjectHandleThruChannel2Plan(
         sourceType.asClassType().baseClass(), cid, targetForm
     );
@@ -206,7 +206,7 @@ class Module implements tech.intellispaces.reflections.framework.system.Module {
   }
 
   @Override
-  public <S, T, Q1, Q2, Q3> Mapper3<S, T, Q1, Q2, Q3> autoMapperThruChannel3(Type<S> sourceType, String cid, ObjectReferenceForm targetForm) {
+  public <S, T, Q1, Q2, Q3> Mapper3<S, T, Q1, Q2, Q3> autoMapperThruChannel3(Type<S> sourceType, String cid, ReflectionForm targetForm) {
     TraversePlan traversePlan = traverseAnalyzer.buildMapObjectHandleThruChannel3Plan(
         sourceType.asClassType().baseClass(), cid, targetForm
     );
@@ -214,7 +214,7 @@ class Module implements tech.intellispaces.reflections.framework.system.Module {
   }
 
   @Override
-  public <S> Mover0<S> autoMoverThruChannel0(Type<S> sourceType, String cid, ObjectReferenceForm targetForm) {
+  public <S> Mover0<S> autoMoverThruChannel0(Type<S> sourceType, String cid, ReflectionForm targetForm) {
     TraversePlan traversePlan = traverseAnalyzer.buildMoveObjectHandleThruChannel0Plan(
         sourceType.asClassType().baseClass(), cid, targetForm
     );
@@ -222,12 +222,12 @@ class Module implements tech.intellispaces.reflections.framework.system.Module {
   }
 
   @Override
-  public <S, Q> Mover1<S, Q> autoMoverThruChannel1(Class<S> sourceClass, String cid, ObjectReferenceForm targetForm) {
+  public <S, Q> Mover1<S, Q> autoMoverThruChannel1(Class<S> sourceClass, String cid, ReflectionForm targetForm) {
     return autoMoverThruChannel1(Types.get(sourceClass), cid, targetForm);
   }
 
   @Override
-  public <S, Q> Mover1<S, Q> autoMoverThruChannel1(Type<S> sourceType, String cid, ObjectReferenceForm targetForm) {
+  public <S, Q> Mover1<S, Q> autoMoverThruChannel1(Type<S> sourceType, String cid, ReflectionForm targetForm) {
     TraversePlan traversePlan = traverseAnalyzer.buildMoveObjectHandleThruChannel1Plan(
         sourceType.asClassType().baseClass(), cid, targetForm
     );
@@ -235,7 +235,7 @@ class Module implements tech.intellispaces.reflections.framework.system.Module {
   }
 
   @Override
-  public <S, Q1, Q2> Mover2<S, Q1, Q2> autoMoverThruChannel2(Type<S> sourceType, String cid, ObjectReferenceForm targetForm) {
+  public <S, Q1, Q2> Mover2<S, Q1, Q2> autoMoverThruChannel2(Type<S> sourceType, String cid, ReflectionForm targetForm) {
     TraversePlan traversePlan = traverseAnalyzer.buildMoveObjectHandleThruChannel2Plan(
         sourceType.asClassType().baseClass(), cid, targetForm
     );
@@ -243,7 +243,7 @@ class Module implements tech.intellispaces.reflections.framework.system.Module {
   }
 
   @Override
-  public <S, Q1, Q2, Q3> Mover3<S, Q1, Q2, Q3> autoMoverThruChannel3(Type<S> sourceType, String cid, ObjectReferenceForm targetForm) {
+  public <S, Q1, Q2, Q3> Mover3<S, Q1, Q2, Q3> autoMoverThruChannel3(Type<S> sourceType, String cid, ReflectionForm targetForm) {
     TraversePlan traversePlan = traverseAnalyzer.buildMoveObjectHandleThruChannel3Plan(
         sourceType.asClassType().baseClass(), cid, targetForm
     );
@@ -251,7 +251,7 @@ class Module implements tech.intellispaces.reflections.framework.system.Module {
   }
 
   @Override
-  public <S, T> MapperOfMoving0<S, T> autoMapperOfMovingThruChannel0(Type<S> sourceType, String cid, ObjectReferenceForm targetForm) {
+  public <S, T> MapperOfMoving0<S, T> autoMapperOfMovingThruChannel0(Type<S> sourceType, String cid, ReflectionForm targetForm) {
     TraversePlan traversePlan = traverseAnalyzer.buildMapOfMovingObjectHandleThruChannel0Plan(
         sourceType.asClassType().baseClass(), cid, targetForm
     );
@@ -259,7 +259,7 @@ class Module implements tech.intellispaces.reflections.framework.system.Module {
   }
 
   @Override
-  public <S, T, Q> MapperOfMoving1<S, T, Q> autoMapperOfMovingThruChannel1(Type<S> sourceType, String cid, ObjectReferenceForm targetForm) {
+  public <S, T, Q> MapperOfMoving1<S, T, Q> autoMapperOfMovingThruChannel1(Type<S> sourceType, String cid, ReflectionForm targetForm) {
     TraversePlan traversePlan = traverseAnalyzer.buildMapOfMovingObjectHandleThruChannel1Plan(
         sourceType.asClassType().baseClass(), cid, targetForm
     );
@@ -267,7 +267,7 @@ class Module implements tech.intellispaces.reflections.framework.system.Module {
   }
 
   @Override
-  public <S, T, Q1, Q2> MapperOfMoving2<S, T, Q1, Q2> autoMapperOfMovingThruChannel2(Type<S> sourceType, String cid, ObjectReferenceForm targetForm) {
+  public <S, T, Q1, Q2> MapperOfMoving2<S, T, Q1, Q2> autoMapperOfMovingThruChannel2(Type<S> sourceType, String cid, ReflectionForm targetForm) {
     TraversePlan traversePlan = traverseAnalyzer.buildMapOfMovingObjectHandleThruChannel2Plan(
         sourceType.asClassType().baseClass(), cid, targetForm
     );
@@ -276,7 +276,7 @@ class Module implements tech.intellispaces.reflections.framework.system.Module {
 
   @Override
   public <S, T, Q1, Q2, Q3> MapperOfMoving3<S, T, Q1, Q2, Q3> autoMapperOfMovingThruChannel3(
-      Type<S> sourceType, String cid, ObjectReferenceForm targetForm
+      Type<S> sourceType, String cid, ReflectionForm targetForm
   ) {
     TraversePlan traversePlan = traverseAnalyzer.buildMapOfMovingObjectHandleThruChannel3Plan(
         sourceType.asClassType().baseClass(), cid, targetForm
@@ -286,7 +286,7 @@ class Module implements tech.intellispaces.reflections.framework.system.Module {
 
   @Override
   public <S, T, Q1, Q2, Q3, Q4> MapperOfMoving4<S, T, Q1, Q2, Q3, Q4> autoMapperOfMovingThruChannel4(
-      Type<S> sourceType, String cid, ObjectReferenceForm targetForm
+      Type<S> sourceType, String cid, ReflectionForm targetForm
   ) {
     TraversePlan traversePlan = traverseAnalyzer.buildMapOfMovingObjectHandleThruChannel4Plan(
         sourceType.asClassType().baseClass(), cid, targetForm
@@ -296,91 +296,91 @@ class Module implements tech.intellispaces.reflections.framework.system.Module {
 
   @Override
   public <S, T> Mapper0<S, T> autoMapperThruChannel0(
-      Type<S> sourceType, Class<? extends Channel0> channelClass, ObjectReferenceForm targetForm
+      Type<S> sourceType, Class<? extends Channel0> channelClass, ReflectionForm targetForm
   ) {
     return autoMapperThruChannel0(sourceType, ChannelFunctions.getChannelId(channelClass), targetForm);
   }
 
   @Override
   public <S, T, Q> Mapper1<S, T, Q> autoMapperThruChannel1(
-      Type<S> sourceType, Class<? extends Channel1> channelClass, ObjectReferenceForm targetForm
+      Type<S> sourceType, Class<? extends Channel1> channelClass, ReflectionForm targetForm
   ) {
     return autoMapperThruChannel1(sourceType, ChannelFunctions.getChannelId(channelClass), targetForm);
   }
 
   @Override
   public <S, T, Q1, Q2> Mapper2<S, T, Q1, Q2> autoMapperThruChannel2(
-      Type<S> sourceType, Class<? extends Channel2> channelClass, ObjectReferenceForm targetForm
+      Type<S> sourceType, Class<? extends Channel2> channelClass, ReflectionForm targetForm
   ) {
     return autoMapperThruChannel2(sourceType, ChannelFunctions.getChannelId(channelClass), targetForm);
   }
 
   @Override
   public <S, T, Q1, Q2, Q3> Mapper3<S, T, Q1, Q2, Q3> autoMapperThruChannel3(
-      Type<S> sourceType, Class<? extends Channel3> channelClass, ObjectReferenceForm targetForm
+      Type<S> sourceType, Class<? extends Channel3> channelClass, ReflectionForm targetForm
   ) {
     return autoMapperThruChannel3(sourceType, ChannelFunctions.getChannelId(channelClass), targetForm);
   }
 
   @Override
   public <S> Mover0<S> autoMoverThruChannel0(
-      Type<S> sourceType, Class<? extends Channel0> channelClass, ObjectReferenceForm targetForm
+      Type<S> sourceType, Class<? extends Channel0> channelClass, ReflectionForm targetForm
   ) {
     return autoMoverThruChannel0(sourceType, ChannelFunctions.getChannelId(channelClass), targetForm);
   }
 
   @Override
   public <S, Q> Mover1<S, Q> autoMoverThruChannel1(
-      Type<S> sourceType, Class<? extends Channel1> channelClass, ObjectReferenceForm targetForm
+      Type<S> sourceType, Class<? extends Channel1> channelClass, ReflectionForm targetForm
   ) {
     return autoMoverThruChannel1(sourceType, ChannelFunctions.getChannelId(channelClass), targetForm);
   }
 
   @Override
   public <S, Q1, Q2> Mover2<S, Q1, Q2> autoMoverThruChannel2(
-      Type<S> sourceType, Class<? extends Channel2> channelClass, ObjectReferenceForm targetForm
+      Type<S> sourceType, Class<? extends Channel2> channelClass, ReflectionForm targetForm
   ) {
     return autoMoverThruChannel2(sourceType, ChannelFunctions.getChannelId(channelClass), targetForm);
   }
 
   @Override
   public <S, Q1, Q2, Q3> Mover3<S, Q1, Q2, Q3> autoMoverThruChannel3(
-      Type<S> sourceType, Class<? extends Channel3> channelClass, ObjectReferenceForm targetForm
+      Type<S> sourceType, Class<? extends Channel3> channelClass, ReflectionForm targetForm
   ) {
     return autoMoverThruChannel3(sourceType, ChannelFunctions.getChannelId(channelClass), targetForm);
   }
 
   @Override
   public <S, T> MapperOfMoving0<S, T> autoMapperOfMovingThruChannel0(
-      Type<S> sourceType, Class<? extends Channel0> channelClass, ObjectReferenceForm targetForm
+      Type<S> sourceType, Class<? extends Channel0> channelClass, ReflectionForm targetForm
   ) {
     return autoMapperOfMovingThruChannel0(sourceType, ChannelFunctions.getChannelId(channelClass), targetForm);
   }
 
   @Override
   public <S, T, Q> MapperOfMoving1<S, T, Q> autoMapperOfMovingThruChannel1(
-      Type<S> sourceType, Class<? extends Channel1> channelClass, ObjectReferenceForm targetForm
+      Type<S> sourceType, Class<? extends Channel1> channelClass, ReflectionForm targetForm
   ) {
     return autoMapperOfMovingThruChannel1(sourceType, ChannelFunctions.getChannelId(channelClass), targetForm);
   }
 
   @Override
   public <S, T, Q1, Q2> MapperOfMoving2<S, T, Q1, Q2> autoMapperOfMovingThruChannel2(
-      Type<S> sourceType, Class<? extends Channel2> channelClass, ObjectReferenceForm targetForm
+      Type<S> sourceType, Class<? extends Channel2> channelClass, ReflectionForm targetForm
   ) {
     return autoMapperOfMovingThruChannel2(sourceType, ChannelFunctions.getChannelId(channelClass), targetForm);
   }
 
   @Override
   public <S, T, Q1, Q2, Q3> MapperOfMoving3<S, T, Q1, Q2, Q3> autoMapperOfMovingThruChannel3(
-      Type<S> sourceType, Class<? extends Channel3> channelClass, ObjectReferenceForm targetForm
+      Type<S> sourceType, Class<? extends Channel3> channelClass, ReflectionForm targetForm
   ) {
     return autoMapperOfMovingThruChannel3(sourceType, ChannelFunctions.getChannelId(channelClass), targetForm);
   }
 
   @Override
   public <S, T, Q1, Q2, Q3, Q4> MapperOfMoving4<S, T, Q1, Q2, Q3, Q4> autoMapperOfMovingThruChannel4(
-      Type<S> sourceType, Class<? extends Channel4> channelClass, ObjectReferenceForm targetForm
+      Type<S> sourceType, Class<? extends Channel4> channelClass, ReflectionForm targetForm
   ) {
     return autoMapperOfMovingThruChannel4(sourceType, ChannelFunctions.getChannelId(channelClass), targetForm);
   }

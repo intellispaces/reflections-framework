@@ -9,7 +9,7 @@ import {{$importedClass}};
  * <p>
  * This class was generated automatically. Don't try to change it.
  */
-@ObjectHandle({{$domainClassSimpleName}}.class)
+@Reflection({{$domainClassSimpleName}}.class)
 {{$generatedAnnotation}}
 public class {{$generatedArtifactSimpleName}}{{$classTypeParams}} implements {{$objectHandleClassSimpleName}}{{$domainTypeArguments}} {
   private final {{$childObjectHandleType}}{{$classTypeParamsBrief}} {{$childField}};
@@ -20,28 +20,28 @@ public class {{$generatedArtifactSimpleName}}{{$classTypeParams}} implements {{$
 
 {{when $isAlias}}
   @Override
-  public Type<{{$primaryDomainSimpleName}}{{$domainTypeArguments}}> domain() {
+  public Type<{{$primaryDomainSimpleName}}{{$domainTypeArguments}}> domainType() {
     return {{$domainType}}
   }
 
   @Override
-  public Class<{{$domainClassSimpleName}}> domainAsClass() {
+  public Class<{{$domainClassSimpleName}}> domainClass() {
     return {{$domainClassSimpleName}}.class;
   }
 {{else}}
 {{when $domainTypeParamsBrief.isEmpty()}}
   @Override
-  public Type<{{$parentDomainClassSimpleName}}> domain() {
+  public Type<{{$parentDomainClassSimpleName}}> domainType() {
     return Types.get({{$parentDomainClassSimpleName}}.class);
   }
 {{else}}
   @Override
-  public Type<{{$parentDomainClassSimpleName}}{{$domainTypeParamsBrief}}> domain() {
+  public Type<{{$parentDomainClassSimpleName}}{{$domainTypeParamsBrief}}> domainType() {
     return {{$domainType}}
   }
 {{end}}
   @Override
-  public Class<{{$domainClassSimpleName}}> domainAsClass() {
+  public Class<{{$domainClassSimpleName}}> domainClass() {
     return {{$domainClassSimpleName}}.class;
   }
 {{end}}
@@ -77,31 +77,31 @@ public class {{$generatedArtifactSimpleName}}{{$classTypeParams}} implements {{$
 {{end}}
   @Override
   public void unbind() {
-    ObjectHandles.handleOf({{$childField}}, {{$sourceArtifactSimpleName}}.class).unbind();
+    Reflections.reflectionOf({{$childField}}, {{$sourceArtifactSimpleName}}.class).unbind();
   }
 
   @Override
   public <TD, TH> void addProjection(Class<TD> targetDomain, TH target) {
-    ObjectHandles.handleOf({{$childField}}, {{$sourceArtifactSimpleName}}.class).addProjection(targetDomain, target);
+    Reflections.reflectionOf({{$childField}}, {{$sourceArtifactSimpleName}}.class).addProjection(targetDomain, target);
   }
 
   @Override
-  public java.util.List<UnmovableObjectHandle<?>> underlyingHandles() {
+  public java.util.List<UnmovableReflection<?>> underlyingHandles() {
     throw NotImplementedExceptions.withCode("ZBPIpw");
   }
 
   @Override
-  public UnmovableObjectHandle<?> overlyingHandle() {
+  public UnmovableReflection<?> overlyingHandle() {
     throw NotImplementedExceptions.withCode("tNghxqGi");
   }
 
   @Override
   public <TD, TH> TH mapTo(Class<TD> targetDomain) {
-    return ObjectHandles.handleOf({{$childField}}, {{$sourceArtifactSimpleName}}.class).mapTo(targetDomain);
+    return Reflections.reflectionOf({{$childField}}, {{$sourceArtifactSimpleName}}.class).mapTo(targetDomain);
   }
 
   @Override
   public <T, Q, C extends Channel1 & MappingTraverse> T mapThru(Class<C> channelClass, Q qualifier) throws TraverseException {
-    return (T) ObjectHandles.handleOf({{$childField}}, {{$sourceArtifactSimpleName}}.class).mapThru(channelClass, qualifier);
+    return (T) Reflections.reflectionOf({{$childField}}, {{$sourceArtifactSimpleName}}.class).mapThru(channelClass, qualifier);
   }
 }

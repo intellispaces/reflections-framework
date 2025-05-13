@@ -30,7 +30,7 @@ import tech.intellispaces.reflections.framework.channel.ChannelFunction1;
 import tech.intellispaces.reflections.framework.exception.ConfigurationExceptions;
 import tech.intellispaces.reflections.framework.id.RepetableUuidIdentifierGenerator;
 import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
-import tech.intellispaces.reflections.framework.object.reference.ObjectReferenceFunctions;
+import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
 import tech.intellispaces.reflections.framework.space.domain.DomainFunctions;
 import tech.intellispaces.reflections.framework.traverse.TraverseType;
 import tech.intellispaces.jstatements.customtype.CustomType;
@@ -315,7 +315,7 @@ public interface ChannelFunctions {
 
   static Channel findObjectHandleMethodChannelAnnotation(MethodStatement objectHandleMethod) {
     CustomType objectHandleClass = objectHandleMethod.owner();
-    CustomType domainClass = ObjectReferenceFunctions.getDomainOfObjectFormOrElseThrow(objectHandleClass);
+    CustomType domainClass = ReflectionFunctions.getDomainOfObjectFormOrElseThrow(objectHandleClass);
     Channel channel = findObjectHandleMethodChannelAnnotation(objectHandleMethod, domainClass);
     if (channel == null) {
       throw UnexpectedExceptions.withMessage("Failed to find related channel annotation " +
@@ -353,7 +353,7 @@ public interface ChannelFunctions {
       for (int i = 0; i < domainMethod.params().size(); ++i) {
         TypeReference domainParamType1 = domainMethod.params().get(i).type();
         TypeReference objectHandleParamType = objectHandleMethod.params().get(i).type();
-        CustomType domainParamType2 = ObjectReferenceFunctions.getDomainOfObjectFormOrElseThrow(
+        CustomType domainParamType2 = ReflectionFunctions.getDomainOfObjectFormOrElseThrow(
             objectHandleParamType.asCustomTypeReferenceOrElseThrow().targetType()
         );
         if (!TypeReferenceFunctions.isEqualTypes(domainParamType1, CustomTypeReferences.get(domainParamType2))) {

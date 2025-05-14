@@ -14,9 +14,9 @@ import tech.intellispaces.jstatements.method.MethodSignatureDeclarations;
 import tech.intellispaces.jstatements.method.MethodStatement;
 import tech.intellispaces.jstatements.reference.TypeReference;
 
-public abstract class JaquariusArtifactGenerator extends TemplatedJavaArtifactGenerator {
+public abstract class ReflectionsArtifactGenerator extends TemplatedJavaArtifactGenerator {
 
-  public JaquariusArtifactGenerator(CustomType sourceArtifact) {
+  public ReflectionsArtifactGenerator(CustomType sourceArtifact) {
     super(sourceArtifact);
   }
 

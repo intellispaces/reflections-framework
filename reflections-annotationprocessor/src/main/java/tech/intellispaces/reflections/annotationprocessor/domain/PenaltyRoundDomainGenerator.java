@@ -5,10 +5,10 @@ import java.util.UUID;
 import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
 import tech.intellispaces.reflections.framework.annotation.Domain;
 import tech.intellispaces.reflections.framework.annotation.Ignore;
-import tech.intellispaces.reflections.annotationprocessor.JaquariusArtifactGenerator;
+import tech.intellispaces.reflections.annotationprocessor.ReflectionsArtifactGenerator;
 import tech.intellispaces.jstatements.customtype.CustomTypes;
 
-public class PenaltyRoundDomainGenerator extends JaquariusArtifactGenerator {
+public class PenaltyRoundDomainGenerator extends ReflectionsArtifactGenerator {
   private final int index;
 
   public PenaltyRoundDomainGenerator(int index) {

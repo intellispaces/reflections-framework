@@ -11,7 +11,7 @@ import tech.intellispaces.reflections.framework.annotation.Projection;
 import tech.intellispaces.reflections.framework.annotation.ProjectionSupplier;
 import tech.intellispaces.reflections.framework.annotation.Shutdown;
 import tech.intellispaces.reflections.framework.annotation.Startup;
-import tech.intellispaces.reflections.framework.exception.JaquariusExceptions;
+import tech.intellispaces.reflections.framework.exception.ReflectionsExceptions;
 import tech.intellispaces.reflections.framework.guide.GuideFunctions;
 import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
 import tech.intellispaces.reflections.framework.system.ModuleFunctions;
@@ -41,7 +41,7 @@ public class ModuleValidator implements ArtifactValidator {
   private void validateUnitTypeAnnotations(CustomType unitType, boolean mainUnit) {
     if (mainUnit) {
       if (!unitType.hasAnnotation(Module.class)) {
-        throw JaquariusExceptions.withMessage("Class {0} is not marked with annotation {1}",
+        throw ReflectionsExceptions.withMessage("Class {0} is not marked with annotation {1}",
             unitType.canonicalName(), Module.class.getSimpleName());
       }
     } else {
@@ -49,7 +49,7 @@ public class ModuleValidator implements ArtifactValidator {
           !unitType.hasAnnotation(Configuration.class) &&
               !unitType.hasAnnotation(Guide.class)
       ) {
-        throw JaquariusExceptions.withMessage("Class {0} is not marked with annotation {1} or {2}",
+        throw ReflectionsExceptions.withMessage("Class {0} is not marked with annotation {1} or {2}",
             unitType.canonicalName(), Configuration.class.getSimpleName(), Guide.class.getSimpleName());
       }
     }
@@ -90,7 +90,7 @@ public class ModuleValidator implements ArtifactValidator {
         .filter(m -> m.hasAnnotation(Startup.class))
         .toList();
     if (startupMethods.size() > 1) {
-      throw JaquariusExceptions.withMessage("Module unit {0} contains more that one startup methods",
+      throw ReflectionsExceptions.withMessage("Module unit {0} contains more that one startup methods",
           moduleType.canonicalName());
     }
     if (!startupMethods.isEmpty()) {
@@ -103,7 +103,7 @@ public class ModuleValidator implements ArtifactValidator {
         .filter(m -> m.hasAnnotation(Shutdown.class))
         .toList();
     if (shutdownMethods.size() > 1) {
-      throw JaquariusExceptions.withMessage("Module unit {0} contains more that one shutdown methods",
+      throw ReflectionsExceptions.withMessage("Module unit {0} contains more that one shutdown methods",
           moduleType.canonicalName());
     }
     if (!shutdownMethods.isEmpty()) {
@@ -118,11 +118,11 @@ public class ModuleValidator implements ArtifactValidator {
   private void checkProjectionMethod(MethodStatement method) {
     Optional<TypeReference> returnType = method.returnType();
     if (returnType.isEmpty()) {
-      throw JaquariusExceptions.withMessage("Method of the projection '{0}' in unit {1} should " +
+      throw ReflectionsExceptions.withMessage("Method of the projection '{0}' in unit {1} should " +
               "return value", method.name(), method.owner().canonicalName());
     }
     if (!ReflectionFunctions.isObjectFormType(returnType.get())) {
-      throw JaquariusExceptions.withMessage("Method of the projection '{0}' in unit {1} should " +
+      throw ReflectionsExceptions.withMessage("Method of the projection '{0}' in unit {1} should " +
               "return reflection", method.name(), method.owner().canonicalName());
     }
     if (method.isAbstract()) {
@@ -135,15 +135,15 @@ public class ModuleValidator implements ArtifactValidator {
   private void checkInjectedMethod(MethodStatement method) {
     Optional<TypeReference> returnType = method.returnType();
     if (returnType.isEmpty()) {
-      throw JaquariusExceptions.withMessage("Abstract method '{0}' in unit {1} should return value",
+      throw ReflectionsExceptions.withMessage("Abstract method '{0}' in unit {1} should return value",
           method.name(), method.owner().canonicalName());
     }
     if (!method.params().isEmpty()) {
-      throw JaquariusExceptions.withMessage("Abstract method '{0}' in unit {1} should have no parameters",
+      throw ReflectionsExceptions.withMessage("Abstract method '{0}' in unit {1} should have no parameters",
           method.name(), method.owner().canonicalName());
     }
     if (!ReflectionFunctions.isObjectFormType(returnType.get()) && !GuideFunctions.isGuideType(returnType.get())) {
-      throw JaquariusExceptions.withMessage("Injection '{0}' in unit {1} should return " +
+      throw ReflectionsExceptions.withMessage("Injection '{0}' in unit {1} should return " +
               "reflection or guide class", method.name(), method.owner().canonicalName());
     }
   }
@@ -153,11 +153,11 @@ public class ModuleValidator implements ArtifactValidator {
         .filter(a -> a.annotationStatement().hasAnnotation(ProjectionSupplier.class))
         .toList();
     if (projectionDefinitionAnnotations.isEmpty()) {
-      throw JaquariusExceptions.withMessage("Abstract projection method '{0}' in unit {1} should " +
+      throw ReflectionsExceptions.withMessage("Abstract projection method '{0}' in unit {1} should " +
           "have a Projection Definition annotation", method.name(), method.owner().canonicalName());
     }
     if (projectionDefinitionAnnotations.size() > 1) {
-      throw JaquariusExceptions.withMessage("Abstract projection method '{0}' in unit {1} should " +
+      throw ReflectionsExceptions.withMessage("Abstract projection method '{0}' in unit {1} should " +
           "have single Projection Definition annotation", method.name(), method.owner().canonicalName());
     }
   }
@@ -166,7 +166,7 @@ public class ModuleValidator implements ArtifactValidator {
     for (MethodParam param : method.params()) {
       TypeReference paramType = param.type();
       if (!ReflectionFunctions.isObjectFormType(paramType)) {
-        throw JaquariusExceptions.withMessage("Parameter '{0}' of method '{1}' in unit {2} should be " +
+        throw ReflectionsExceptions.withMessage("Parameter '{0}' of method '{1}' in unit {2} should be " +
             "reflection class", param.name(), method.name(), method.owner().canonicalName());
       }
     }
@@ -174,7 +174,7 @@ public class ModuleValidator implements ArtifactValidator {
 
   private void checkThatIsNotUnitStartupMethod(MethodStatement method, CustomType unitType) {
     if (method.hasAnnotation(Startup.class)) {
-      throw JaquariusExceptions.withMessage("Included unit should not have a starting method. " +
+      throw ReflectionsExceptions.withMessage("Included unit should not have a starting method. " +
           "But method '{0}' in unit {1} is marked with annotation @{2}", method.name(), unitType.canonicalName(),
           Startup.class.getSimpleName());
     }
@@ -182,7 +182,7 @@ public class ModuleValidator implements ArtifactValidator {
 
   private void checkThatIsNotUnitShutdownMethod(MethodStatement method, CustomType unitType) {
     if (method.hasAnnotation(Shutdown.class)) {
-      throw JaquariusExceptions.withMessage("Included unit should not have a shutdown method. " +
+      throw ReflectionsExceptions.withMessage("Included unit should not have a shutdown method. " +
               "But method '{0}' in unit {1} is marked with annotation @{2}", method.name(), unitType.canonicalName(),
           Shutdown.class.getSimpleName());
     }

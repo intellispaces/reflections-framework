@@ -15,12 +15,12 @@ import tech.intellispaces.commons.exception.NotImplementedExceptions;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.commons.type.ClassFunctions;
 import tech.intellispaces.reflections.framework.ArtifactType;
-import tech.intellispaces.reflections.framework.Jaquarius;
+import tech.intellispaces.reflections.framework.ReflectionsFramework;
 import tech.intellispaces.reflections.framework.annotation.Movable;
 import tech.intellispaces.reflections.framework.annotation.Unmovable;
 import tech.intellispaces.reflections.annotationprocessor.AnnotationFunctions;
 import tech.intellispaces.reflections.annotationprocessor.AnnotationGeneratorFunctions;
-import tech.intellispaces.reflections.annotationprocessor.JaquariusArtifactGenerator;
+import tech.intellispaces.reflections.annotationprocessor.ReflectionsArtifactGenerator;
 import tech.intellispaces.reflections.framework.exception.TraverseException;
 import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
 import tech.intellispaces.reflections.framework.reflection.MovabilityType;
@@ -45,7 +45,7 @@ import tech.intellispaces.jstatements.reference.ReferenceBound;
 import tech.intellispaces.jstatements.reference.TypeReference;
 import tech.intellispaces.jstatements.reference.TypeReferenceFunctions;
 
-public abstract class AbstractReflectionFormGenerator extends JaquariusArtifactGenerator {
+public abstract class AbstractReflectionFormGenerator extends ReflectionsArtifactGenerator {
   protected boolean isAlias;
   protected String domainType;
   protected String generalReflection;
@@ -127,7 +127,7 @@ public abstract class AbstractReflectionFormGenerator extends JaquariusArtifactG
     var sb = new StringBuilder();
     String targetType = buildObjectFormDeclaration(parent, getForm(), getMovabilityType(), true);
 
-    DomainReference domain = Jaquarius.ontologyReference().getDomainByType(DomainTypes.Number);
+    DomainReference domain = ReflectionsFramework.ontologyReference().getDomainByType(DomainTypes.Number);
     String domainClassName = NameConventionFunctions.convertToDomainClassName(domain.domainName());
     if (parent.targetType().canonicalName().equals(domainClassName)) {
       underlyingTypes.add(domain.domainName());
@@ -288,7 +288,7 @@ public abstract class AbstractReflectionFormGenerator extends JaquariusArtifactG
   }
 
   private String convertName(String name) {
-    DomainReference domainReference = Jaquarius.ontologyReference().getDomainByName(NameConventionFunctions.convertToDomainName(name));
+    DomainReference domainReference = ReflectionsFramework.ontologyReference().getDomainByName(NameConventionFunctions.convertToDomainName(name));
     if (domainReference != null && domainReference.delegateClassName() != null) {
       return addImportAndGetSimpleName(domainReference.delegateClassName());
     }

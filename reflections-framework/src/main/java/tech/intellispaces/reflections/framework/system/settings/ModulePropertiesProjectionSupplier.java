@@ -2,7 +2,7 @@ package tech.intellispaces.reflections.framework.system.settings;
 
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.commons.type.Types;
-import tech.intellispaces.reflections.framework.Jaquarius;
+import tech.intellispaces.reflections.framework.ReflectionsFramework;
 import tech.intellispaces.reflections.framework.annotation.Properties;
 import tech.intellispaces.reflections.framework.dataset.DatasetFunctions;
 import tech.intellispaces.reflections.framework.exception.ConfigurationExceptions;
@@ -52,19 +52,19 @@ public class ModulePropertiesProjectionSupplier extends InjectedMethodProjection
   private Object readPropertiesFile(String filename, Module module) {
     String settingsText = ModuleSettingsFunctions.getSettingsText(module, filename);
     if (filename.toLowerCase().endsWith(".yaml")) {
-      ChannelReference channelReference = Jaquarius.ontologyReference().getChannelByType(ChannelTypes.YamlStringToPropertiesSet);
+      ChannelReference channelReference = ReflectionsFramework.ontologyReference().getChannelByType(ChannelTypes.YamlStringToPropertiesSet);
       return module.mapThruChannel0(settingsText, channelReference.channelId());
     }
     throw ConfigurationExceptions.withMessage("Unsupported module settings file format. File {0}", filename);
   }
 
   private Object traverseToPropertyValue(Object props, String traversePath, Module module) {
-    ChannelReference channelReference = Jaquarius.ontologyReference().getChannelByType(ChannelTypes.PropertiesSetToValue);
+    ChannelReference channelReference = ReflectionsFramework.ontologyReference().getChannelByType(ChannelTypes.PropertiesSetToValue);
     return module.mapThruChannel1(props, channelReference.channelId(), traversePath);
   }
 
   private Object traverseToData(Object propsValue, Class<?> expectedReturnClass, Module module) {
-    ChannelReference channelReference = Jaquarius.ontologyReference().getChannelByType(ChannelTypes.PropertiesSetToData);
+    ChannelReference channelReference = ReflectionsFramework.ontologyReference().getChannelByType(ChannelTypes.PropertiesSetToData);
     return module.mapThruChannel1(propsValue, channelReference.channelId(), Types.get(expectedReturnClass));
   }
 }

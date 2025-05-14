@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
-import tech.intellispaces.reflections.framework.engine.JaquariusEngines;
+import tech.intellispaces.reflections.framework.engine.Engines;
 import tech.intellispaces.reflections.framework.exception.ConfigurationExceptions;
 
 /**
@@ -15,50 +15,50 @@ public class Modules {
   private final static AtomicReference<Module> MODULE = new AtomicReference<>();
 
   /**
-   * Creates new system module.
+   * Loads a new system module.
    *
    * @param moduleClass the module class.
    * @param args command line arguments.
    * @return the created module.
    */
-  public static Module create(Class<?> moduleClass, String[] args) {
-    return create(() -> JaquariusEngines.get().createModule(List.of(moduleClass), args));
+  public static Module load(Class<?> moduleClass, String[] args) {
+    return load(() -> Engines.get().createModule(List.of(moduleClass), args));
   }
 
   /**
-   * Creates new system module.
+   * Loads a new system module.
    *
    * @param unitClasses unit classes.
    * @return the created module.
    */
-  public static Module create(Class<?>... unitClasses) {
-    return create(() -> JaquariusEngines.get().createModule(Arrays.stream(unitClasses).toList(), new String[0]));
+  public static Module load(Class<?>... unitClasses) {
+    return load(() -> Engines.get().createModule(Arrays.stream(unitClasses).toList(), new String[0]));
   }
 
   /**
-   * Creates new system module.
+   * Loads a new system module.
    *
    * @param unitClasses unit classes.
    * @param args command line arguments.
    * @return the created module.
    */
-  public static Module create(List<Class<?>> unitClasses, String[] args) {
-    return create(() -> JaquariusEngines.get().createModule(unitClasses, new String[0]));
+  public static Module load(List<Class<?>> unitClasses, String[] args) {
+    return load(() -> Engines.get().createModule(unitClasses, new String[0]));
   }
 
-  private static Module create(Supplier<Module> moduleSupplier) {
+  private static Module load(Supplier<Module> moduleMaker) {
     if (MODULE.get() != null) {
-      throw ConfigurationExceptions.withMessage("The module has already been uploaded to the application");
+      throw ConfigurationExceptions.withMessage("The module has already been uploaded");
     }
-    Module module = moduleSupplier.get();
+    Module module = moduleMaker.get();
     if (!MODULE.compareAndSet(null, module)) {
-      throw ConfigurationExceptions.withMessage("The module has already been uploaded to the application");
+      throw ConfigurationExceptions.withMessage("The module has already been uploaded");
     };
     return module;
   }
 
   /**
-   * Unloads current module.
+   * Unloads the current module.
    */
   public static void unload() {
     unload(current());
@@ -73,22 +73,22 @@ public class Modules {
   }
 
   /**
-   * Returns the current module loaded into the application.<p/>
+   * Returns the current loaded module.<p/>
    *
-   * If module is not loaded to application, then exception can be thrown.
+   * If there is no loaded module, an exception will be thrown.
    */
   public static Module current() {
     Module module = currentSilently();
     if (module == null) {
-      throw ConfigurationExceptions.withMessage("There are no module loaded into the application");
+      throw ConfigurationExceptions.withMessage("There are no loaded module");
     }
     return module;
   }
 
   /**
-   * Returns the current module loaded into the application.
+   * Returns the current loaded module.
    *
-   * @return current module or <code>null</code> is module is not loaded into the application.
+   * @return current module or <code>null</code> if there are no loaded module.
    */
   public static Module currentSilently() {
     return MODULE.get();

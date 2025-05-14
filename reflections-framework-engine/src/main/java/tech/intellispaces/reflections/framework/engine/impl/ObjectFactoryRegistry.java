@@ -32,7 +32,7 @@ import tech.intellispaces.reflections.framework.engine.ObjectFactoryWrapper;
 import tech.intellispaces.reflections.framework.engine.description.ObjectFactoryMethodDescription;
 import tech.intellispaces.reflections.framework.exception.ConfigurationExceptions;
 import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
-import tech.intellispaces.reflections.framework.object.factory.ObjectFactoryFunctions;
+import tech.intellispaces.reflections.framework.factory.FactoryFunctions;
 
 class ObjectFactoryRegistry {
   private boolean isLoaded;
@@ -341,7 +341,7 @@ class ObjectFactoryRegistry {
     }
     for (ObjectFactoryMethodDescription description : descriptions) {
       if (
-          ObjectFactoryFunctions.getContractType(description.name()).equals(contractType) &&
+          FactoryFunctions.getContractType(description.name()).equals(contractType) &&
               isMatchContractQualifiers(description, contractQualifierTypes)
       ) {
         return makeAction(description);

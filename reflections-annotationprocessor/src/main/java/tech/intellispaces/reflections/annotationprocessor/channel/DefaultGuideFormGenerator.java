@@ -16,7 +16,7 @@ import tech.intellispaces.reflections.framework.annotation.Guide;
 import tech.intellispaces.reflections.framework.annotation.Mapper;
 import tech.intellispaces.reflections.framework.annotation.MapperOfMoving;
 import tech.intellispaces.reflections.framework.annotation.Mover;
-import tech.intellispaces.reflections.annotationprocessor.JaquariusArtifactGenerator;
+import tech.intellispaces.reflections.annotationprocessor.ReflectionsArtifactGenerator;
 import tech.intellispaces.reflections.framework.guide.n0.Mapper0;
 import tech.intellispaces.reflections.framework.guide.n0.MapperOfMoving0;
 import tech.intellispaces.reflections.framework.guide.n0.Mover0;
@@ -53,7 +53,7 @@ import tech.intellispaces.jstatements.reference.ReferenceBound;
 import tech.intellispaces.jstatements.reference.TypeReference;
 import tech.intellispaces.jstatements.reference.Wildcards;
 
-public class DefaultGuideFormGenerator extends JaquariusArtifactGenerator {
+public class DefaultGuideFormGenerator extends ReflectionsArtifactGenerator {
   private final ReflectionForm targetForm;
   private final TraverseType traverseType;
   private final MethodStatement channelMethod;

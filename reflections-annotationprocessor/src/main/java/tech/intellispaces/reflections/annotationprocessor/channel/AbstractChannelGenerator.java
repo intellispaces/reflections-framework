@@ -6,7 +6,7 @@ import tech.intellispaces.actions.runnable.RunnableAction;
 import tech.intellispaces.actions.text.StringActions;
 import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
 import tech.intellispaces.reflections.framework.annotation.Channel;
-import tech.intellispaces.reflections.annotationprocessor.JaquariusArtifactGenerator;
+import tech.intellispaces.reflections.annotationprocessor.ReflectionsArtifactGenerator;
 import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
 import tech.intellispaces.reflections.framework.space.channel.ChannelFunctions;
 import tech.intellispaces.reflections.framework.traverse.MappingOfMovingTraverse;
@@ -17,7 +17,7 @@ import tech.intellispaces.jstatements.customtype.CustomType;
 import tech.intellispaces.jstatements.method.MethodStatement;
 import tech.intellispaces.jstatements.reference.TypeReference;
 
-public abstract class AbstractChannelGenerator extends JaquariusArtifactGenerator {
+public abstract class AbstractChannelGenerator extends ReflectionsArtifactGenerator {
   protected final MethodStatement channelMethod;
 
   public AbstractChannelGenerator(CustomType annotatedType, MethodStatement channelMethod) {

@@ -12,11 +12,11 @@ import tech.intellispaces.commons.exception.NotImplementedExceptions;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.commons.text.StringFunctions;
 import tech.intellispaces.reflections.annotationprocessor.AnnotationFunctions;
-import tech.intellispaces.reflections.annotationprocessor.JaquariusArtifactGenerator;
+import tech.intellispaces.reflections.annotationprocessor.ReflectionsArtifactGenerator;
 import tech.intellispaces.reflections.framework.artifact.ArtifactTypes;
-import tech.intellispaces.reflections.framework.engine.JaquariusEngines;
+import tech.intellispaces.reflections.framework.engine.Engines;
 import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
-import tech.intellispaces.reflections.framework.object.factory.ObjectFactoryFunctions;
+import tech.intellispaces.reflections.framework.factory.FactoryFunctions;
 import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
 import tech.intellispaces.jstatements.customtype.CustomType;
 import tech.intellispaces.jstatements.method.MethodParam;
@@ -25,7 +25,7 @@ import tech.intellispaces.jstatements.method.MethodStatement;
 import tech.intellispaces.jstatements.reference.ArrayReference;
 import tech.intellispaces.jstatements.reference.TypeReference;
 
-public class ReflectionAssistantBrokerGenerator extends JaquariusArtifactGenerator {
+public class ReflectionAssistantBrokerGenerator extends ReflectionsArtifactGenerator {
 
   public ReflectionAssistantBrokerGenerator(CustomType domainType) {
     super(domainType);
@@ -54,7 +54,7 @@ public class ReflectionAssistantBrokerGenerator extends JaquariusArtifactGenerat
       return false;
     }
 
-    addImport(JaquariusEngines.class);
+    addImport(Engines.class);
     addImport(UnexpectedExceptions.class);
 
     addVariable("customizers", getCustomizers(customizers));
@@ -85,7 +85,7 @@ public class ReflectionAssistantBrokerGenerator extends JaquariusArtifactGenerat
             "actionType", makeActionType(method),
             "returnType", makeReturnType(method),
             "paramTypes", makeParamTypes(method),
-            "contractType", ObjectFactoryFunctions.getContractType(method)
+            "contractType", FactoryFunctions.getContractType(method)
         ));
       }
     }

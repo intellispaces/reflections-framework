@@ -2,13 +2,13 @@ package tech.intellispaces.reflections.framework.exception;
 
 import tech.intellispaces.commons.exception.UnexpectedException;
 
-public class JaquariusException extends UnexpectedException {
+public class ReflectionsException extends UnexpectedException {
 
-  public JaquariusException(String message) {
+  public ReflectionsException(String message) {
     super(message);
   }
 
-  public JaquariusException(String message, Throwable cause) {
+  public ReflectionsException(String message, Throwable cause) {
     super(message, cause);
   }
 }

@@ -7,7 +7,7 @@ import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.commons.text.StringFunctions;
 import tech.intellispaces.commons.type.ClassNameFunctions;
 import tech.intellispaces.reflections.framework.ArtifactType;
-import tech.intellispaces.reflections.framework.Jaquarius;
+import tech.intellispaces.reflections.framework.ReflectionsFramework;
 import tech.intellispaces.reflections.framework.annotation.Channel;
 import tech.intellispaces.reflections.framework.annotation.Domain;
 import tech.intellispaces.reflections.framework.annotation.Reflection;
@@ -73,12 +73,12 @@ public interface NameConventionFunctions {
   static String getGeneralRegularFormClassname(String domainClassName, boolean replaceDomainWithDelegate) {
     if (replaceDomainWithDelegate) {
       String domainName = convertToDomainName(domainClassName);
-      DomainReference domain = Jaquarius.ontologyReference().getDomainByName(domainName);
+      DomainReference domain = ReflectionsFramework.ontologyReference().getDomainByName(domainName);
       if (domain != null) {
         return domain.delegateClassName() != null ? domain.delegateClassName() : domainName;
       }
     } else {
-      DomainReference domain = Jaquarius.ontologyReference().getDomainByName(domainClassName);
+      DomainReference domain = ReflectionsFramework.ontologyReference().getDomainByName(domainClassName);
       if (domain != null) {
         return domain.domainName();
       }
@@ -89,12 +89,12 @@ public interface NameConventionFunctions {
   static String getGeneralReflectionTypeName(String domainClassName, boolean replaceDomainWithDelegate) {
     if (replaceDomainWithDelegate) {
       String domainName = convertToDomainName(domainClassName);
-      DomainReference domain = Jaquarius.ontologyReference().getDomainByName(domainName);
+      DomainReference domain = ReflectionsFramework.ontologyReference().getDomainByName(domainName);
       if (domain != null) {
         return domain.delegateClassName() != null ? domain.delegateClassName() : domainName;
       }
     } else {
-      DomainReference domain = Jaquarius.ontologyReference().getDomainByName(domainClassName);
+      DomainReference domain = ReflectionsFramework.ontologyReference().getDomainByName(domainClassName);
       if (domain != null) {
         return domain.domainName();
       }
@@ -109,7 +109,7 @@ public interface NameConventionFunctions {
 
   static String getUnmovableRegularFormTypeName(String domainClassName, boolean replaceDomainWithDelegate) {
     if (replaceDomainWithDelegate) {
-      DomainReference domain = Jaquarius.ontologyReference().getDomainByName(convertToDomainName(domainClassName));
+      DomainReference domain = ReflectionsFramework.ontologyReference().getDomainByName(convertToDomainName(domainClassName));
       if (domain != null && domain.delegateClassName() != null && (
           DomainTypes.Number.is(domain.type()) ||
               DomainTypes.Short.is(domain.type()) ||
@@ -126,7 +126,7 @@ public interface NameConventionFunctions {
 
   static String getMovableRegularFormTypeName(String domainClassName, boolean replaceDomainWithDelegate) {
     if (replaceDomainWithDelegate) {
-      DomainReference domain = Jaquarius.ontologyReference().getDomainByName(convertToDomainName(domainClassName));
+      DomainReference domain = ReflectionsFramework.ontologyReference().getDomainByName(convertToDomainName(domainClassName));
       if (domain != null && domain.delegateClassName() != null && (
           DomainTypes.Number.is(domain.type()) ||
               DomainTypes.Short.is(domain.type()) ||
@@ -143,7 +143,7 @@ public interface NameConventionFunctions {
 
   static String getUnmovableReflectionTypeName(String domainClassName, boolean replaceDomainWithDelegate) {
     if (replaceDomainWithDelegate) {
-      DomainReference domain = Jaquarius.ontologyReference().getDomainByName(convertToDomainName(domainClassName));
+      DomainReference domain = ReflectionsFramework.ontologyReference().getDomainByName(convertToDomainName(domainClassName));
       if (domain != null && domain.delegateClassName() != null && (
           DomainTypes.Number.is(domain.type()) ||
               DomainTypes.Short.is(domain.type()) ||
@@ -159,7 +159,7 @@ public interface NameConventionFunctions {
 
   static String getMovableReflectionTypeName(String domainClassName, boolean replaceDomainWithDelegate) {
     if (replaceDomainWithDelegate) {
-      DomainReference domain = Jaquarius.ontologyReference().getDomainByName(convertToDomainName(domainClassName));
+      DomainReference domain = ReflectionsFramework.ontologyReference().getDomainByName(convertToDomainName(domainClassName));
       if (domain != null && domain.delegateClassName() != null && (
           DomainTypes.Number.is(domain.type()) ||
               DomainTypes.Short.is(domain.type()) ||
@@ -290,7 +290,7 @@ public interface NameConventionFunctions {
   }
 
   static String getConversionMethodName(CustomType targetType) {
-    DomainReference domain = Jaquarius.ontologyReference().getDomainByDelegateClass(targetType.canonicalName());
+    DomainReference domain = ReflectionsFramework.ontologyReference().getDomainByDelegateClass(targetType.canonicalName());
     if (domain != null) {
       return "as" + StringFunctions.capitalizeFirstLetter(targetType.simpleName());
     }

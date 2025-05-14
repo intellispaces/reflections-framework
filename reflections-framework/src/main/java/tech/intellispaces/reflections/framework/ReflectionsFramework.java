@@ -9,54 +9,62 @@ import tech.intellispaces.reflections.framework.settings.SettingsFunctions;
 import tech.intellispaces.reflections.framework.system.Module;
 import tech.intellispaces.reflections.framework.system.Modules;
 
-public class Jaquarius {
+public class ReflectionsFramework {
 
-  public static void loadContext() {
-
+  /**
+   * Returns the current loaded system.
+   */
+  public static Object system() {
+    return null;
   }
 
   /**
-   * Creates new system module.
+   * Loads a new system module.
    *
    * @param moduleClass the module class.
    * @param args command line arguments.
-   * @return the created module.
+   * @return the loaded module.
    */
-  public static Module createModule(Class<?> moduleClass, String[] args) {
-    return Modules.create(moduleClass, args);
+  public static Module loadModule(Class<?> moduleClass, String[] args) {
+    return Modules.load(moduleClass, args);
   }
 
   /**
-   * Creates new system module.
+   * Loads a new system module.
    *
    * @param unitClasses unit classes.
-   * @return the created module.
+   * @return the loaded module.
    */
-  public static Module createModule(Class<?>... unitClasses) {
-    return Modules.create(unitClasses);
+  public static Module loadModule(Class<?>... unitClasses) {
+    return Modules.load(unitClasses);
   }
 
   /**
-   * Creates new system module.
+   * Loads a new system module.
    *
    * @param unitClasses unit classes.
    * @param args command line arguments.
-   * @return the created module.
+   * @return the loaded module.
    */
-  public static Module createModule(List<Class<?>> unitClasses, String[] args) {
-    return Modules.create(unitClasses, args);
+  public static Module loadModule(List<Class<?>> unitClasses, String[] args) {
+    return Modules.load(unitClasses, args);
   }
 
   /**
-   * Releases current module.
+   * Uploads current loaded module.
    */
-  public static void releaseModule() {
+  public static void uploadModule() {
     Modules.unload();
   }
 
-  public static void createStartAndStopModule(Class<?>... unitClasses) {
+  /**
+   * Creates, starts and then stops and uploads module.
+   *
+   * @param unitClasses module unit classes.
+   */
+  public static void flashModule(Class<?>... unitClasses) {
     try {
-      createModule(unitClasses).start();
+      loadModule(unitClasses).start();
     } finally {
       Modules.unload();
     }
@@ -69,7 +77,7 @@ public class Jaquarius {
     if (ONTOLOGY_REFERENCE == null) {
       try {
         List<OntologyReference> ontologyReferences = SettingsFunctions.loadOntologyReferences(
-            Jaquarius.class.getClassLoader());
+            ReflectionsFramework.class.getClassLoader());
         ONTOLOGY_REFERENCE = SettingsFunctions.mergeOntologyReferences(ontologyReferences);
       } catch (IOException e) {
         throw UnexpectedExceptions.withCauseAndMessage(e, "Unable to load ontology reference");

@@ -9,7 +9,7 @@ import java.util.Optional;
 import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
 import tech.intellispaces.commons.collection.ArraysFunctions;
 import tech.intellispaces.reflections.framework.annotation.Channel;
-import tech.intellispaces.reflections.annotationprocessor.JaquariusArtifactGenerator;
+import tech.intellispaces.reflections.annotationprocessor.ReflectionsArtifactGenerator;
 import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
 import tech.intellispaces.reflections.framework.reflection.MovabilityTypes;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForms;
@@ -19,7 +19,7 @@ import tech.intellispaces.jstatements.customtype.CustomType;
 import tech.intellispaces.jstatements.method.MethodStatement;
 import tech.intellispaces.jstatements.reference.TypeReference;
 
-public class DatasetBuilderGenerator extends JaquariusArtifactGenerator {
+public class DatasetBuilderGenerator extends ReflectionsArtifactGenerator {
   private final List<Map<String, String>> projectionProperties = new ArrayList<>();
 
   public DatasetBuilderGenerator(CustomType domainType) {

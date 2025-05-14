@@ -13,7 +13,7 @@ import tech.intellispaces.annotationprocessor.ArtifactProcessor;
 import tech.intellispaces.annotationprocessor.ArtifactValidator;
 import tech.intellispaces.reflections.framework.annotation.Domain;
 import tech.intellispaces.reflections.annotationprocessor.AnnotationFunctions;
-import tech.intellispaces.reflections.annotationprocessor.JaquariusArtifactProcessor;
+import tech.intellispaces.reflections.annotationprocessor.ReflectionsArtifactProcessor;
 import tech.intellispaces.jstatements.customtype.CustomType;
 
 @AutoService(Processor.class)
@@ -21,7 +21,7 @@ public class DomainProcessor extends ArtifactProcessor {
   private int index;
 
   public DomainProcessor() {
-    super(ElementKind.INTERFACE, Domain.class, JaquariusArtifactProcessor.SOURCE_VERSION);
+    super(ElementKind.INTERFACE, Domain.class, ReflectionsArtifactProcessor.SOURCE_VERSION);
   }
 
   @Override

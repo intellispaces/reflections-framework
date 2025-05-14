@@ -16,8 +16,8 @@ import tech.intellispaces.reflections.framework.annotation.Projection;
 import tech.intellispaces.reflections.framework.annotation.ProjectionSupplier;
 import tech.intellispaces.reflections.framework.annotation.Wrapper;
 import tech.intellispaces.reflections.annotationprocessor.AnnotationGeneratorFunctions;
-import tech.intellispaces.reflections.annotationprocessor.JaquariusArtifactGenerator;
-import tech.intellispaces.reflections.framework.engine.JaquariusEngines;
+import tech.intellispaces.reflections.annotationprocessor.ReflectionsArtifactGenerator;
+import tech.intellispaces.reflections.framework.engine.Engines;
 import tech.intellispaces.reflections.framework.engine.UnitBroker;
 import tech.intellispaces.reflections.framework.engine.description.UnitMethodPurposes;
 import tech.intellispaces.reflections.framework.exception.ConfigurationExceptions;
@@ -42,7 +42,7 @@ import tech.intellispaces.jstatements.method.Methods;
 import tech.intellispaces.jstatements.reference.NamedReference;
 import tech.intellispaces.jstatements.reference.TypeReference;
 
-public class UnitWrapperGenerator extends JaquariusArtifactGenerator {
+public class UnitWrapperGenerator extends ReflectionsArtifactGenerator {
   private String typeParamsFullDeclaration;
   private String typeParamsBriefDeclaration;
   private List<MethodStatement> methods;
@@ -82,7 +82,7 @@ public class UnitWrapperGenerator extends JaquariusArtifactGenerator {
         Ordinal.class,
         UnitWrapper.class,
         UnitBroker.class,
-        JaquariusEngines.class,
+        Engines.class,
         UnitMethodPurposes.class,
         InjectionKinds.class,
         ProjectionReferences.class,

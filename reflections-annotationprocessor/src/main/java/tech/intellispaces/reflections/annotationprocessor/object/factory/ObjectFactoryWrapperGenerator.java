@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
-import tech.intellispaces.reflections.annotationprocessor.JaquariusArtifactGenerator;
+import tech.intellispaces.reflections.annotationprocessor.ReflectionsArtifactGenerator;
 import tech.intellispaces.reflections.framework.engine.ObjectFactoryWrapper;
 import tech.intellispaces.reflections.framework.engine.description.ObjectFactoryMethodDescription;
 import tech.intellispaces.reflections.framework.engine.description.ObjectFactoryMethods;
@@ -15,7 +15,7 @@ import tech.intellispaces.jstatements.customtype.CustomType;
 import tech.intellispaces.jstatements.method.MethodParam;
 import tech.intellispaces.jstatements.method.MethodStatement;
 
-public class ObjectFactoryWrapperGenerator extends JaquariusArtifactGenerator {
+public class ObjectFactoryWrapperGenerator extends ReflectionsArtifactGenerator {
   private final ObjectFactoryMetaInfGenerator metaInfGenerator;
 
   public ObjectFactoryWrapperGenerator(

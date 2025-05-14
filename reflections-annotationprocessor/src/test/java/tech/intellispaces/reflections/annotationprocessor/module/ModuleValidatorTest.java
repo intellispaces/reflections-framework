@@ -10,7 +10,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import tech.intellispaces.reflections.annotationprocessor.SampleAnnotatedTypeProcessor;
-import tech.intellispaces.reflections.framework.exception.JaquariusException;
+import tech.intellispaces.reflections.framework.exception.ReflectionsException;
 import tech.intellispaces.jstatements.customtype.CustomType;
 
 /**
@@ -56,7 +56,7 @@ public class ModuleValidatorTest {
 
     // Then
     Assertions.assertThatThrownBy(() -> moduleValidator.validate(moduleType))
-        .isExactlyInstanceOf(JaquariusException.class)
+        .isExactlyInstanceOf(ReflectionsException.class)
         .hasMessage("Module unit samples.ModuleWithTwoStartupMethods contains more that one startup methods");
   }
 
@@ -67,7 +67,7 @@ public class ModuleValidatorTest {
 
     // Then
     Assertions.assertThatThrownBy(() -> moduleValidator.validate(moduleType))
-        .isExactlyInstanceOf(JaquariusException.class)
+        .isExactlyInstanceOf(ReflectionsException.class)
         .hasMessage("Module unit samples.ModuleWithTwoShutdownMethods contains more that one shutdown methods");
   }
 
@@ -98,7 +98,7 @@ public class ModuleValidatorTest {
 
     // Then
     Assertions.assertThatThrownBy(() -> moduleValidator.validate(moduleType))
-        .isExactlyInstanceOf(JaquariusException.class)
+        .isExactlyInstanceOf(ReflectionsException.class)
         .hasMessage("Parameter 'value' of method 'startup' in unit samples.ModuleWithStartupMethodAndFileParameter should be reflection class");
   }
 
@@ -129,7 +129,7 @@ public class ModuleValidatorTest {
 
     // Then
     Assertions.assertThatThrownBy(() -> moduleValidator.validate(moduleType))
-        .isExactlyInstanceOf(JaquariusException.class)
+        .isExactlyInstanceOf(ReflectionsException.class)
         .hasMessage("Parameter 'value' of method 'shutdown' in unit samples.ModuleWithShutdownMethodAndFileParameter should be reflection class");
   }
 
@@ -140,7 +140,7 @@ public class ModuleValidatorTest {
 
     // Then
     Assertions.assertThatThrownBy(() -> moduleValidator.validate(moduleType))
-        .isExactlyInstanceOf(JaquariusException.class)
+        .isExactlyInstanceOf(ReflectionsException.class)
         .hasMessage("Abstract method 'projection' in unit samples.ModuleWithAbstractMethodAndParameter should have no parameters");
   }
 
@@ -161,7 +161,7 @@ public class ModuleValidatorTest {
 
     // Then
     Assertions.assertThatThrownBy(() -> moduleValidator.validate(moduleType))
-        .isExactlyInstanceOf(JaquariusException.class)
+        .isExactlyInstanceOf(ReflectionsException.class)
         .hasMessage("Method of the projection 'projection' in unit samples.ModuleWithProjectionWithoutReturnedType should return value");
   }
 
@@ -182,7 +182,7 @@ public class ModuleValidatorTest {
 
     // Then
     Assertions.assertThatThrownBy(() -> moduleValidator.validate(moduleType))
-        .isExactlyInstanceOf(JaquariusException.class)
+        .isExactlyInstanceOf(ReflectionsException.class)
         .hasMessage("Parameter 'value' of method 'projection' in unit samples.ModuleWithProjectionAndFileParameter should be reflection class");
   }
 
@@ -193,7 +193,7 @@ public class ModuleValidatorTest {
 
     // Then
     Assertions.assertThatThrownBy(() -> moduleValidator.validate(moduleType))
-        .isExactlyInstanceOf(JaquariusException.class)
+        .isExactlyInstanceOf(ReflectionsException.class)
         .hasMessage("Abstract projection method 'projection' in unit samples.ModuleWithAbstractProjection should have a Projection Definition annotation");
   }
 
@@ -214,7 +214,7 @@ public class ModuleValidatorTest {
 
     // Then
     Assertions.assertThatThrownBy(() -> moduleValidator.validate(moduleType))
-        .isExactlyInstanceOf(JaquariusException.class)
+        .isExactlyInstanceOf(ReflectionsException.class)
         .hasMessage("Abstract method 'projection' in unit samples.ModuleWithAbstractProjectionAndSingleProjectionDefinitionAnnotationAndParameter should have no parameters");
   }
 
@@ -225,7 +225,7 @@ public class ModuleValidatorTest {
 
     // Then
     Assertions.assertThatThrownBy(() -> moduleValidator.validate(moduleType))
-        .isExactlyInstanceOf(JaquariusException.class)
+        .isExactlyInstanceOf(ReflectionsException.class)
         .hasMessage("Included unit should not have a starting method. But method 'startup' in unit samples.UnitWithOneStartupMethod.IncludedUnit is marked with annotation @Startup");
   }
 
@@ -236,7 +236,7 @@ public class ModuleValidatorTest {
 
     // Then
     Assertions.assertThatThrownBy(() -> moduleValidator.validate(moduleType))
-        .isExactlyInstanceOf(JaquariusException.class)
+        .isExactlyInstanceOf(ReflectionsException.class)
         .hasMessage("Included unit should not have a shutdown method. But method 'shutdown' in unit samples.UnitWithOneShutdownMethod.IncludedUnit is marked with annotation @Shutdown");
   }
 

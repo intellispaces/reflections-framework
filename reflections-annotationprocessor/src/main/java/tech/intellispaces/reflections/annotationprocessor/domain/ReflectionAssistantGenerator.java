@@ -12,7 +12,7 @@ import tech.intellispaces.commons.text.StringFunctions;
 import tech.intellispaces.commons.type.Type;
 import tech.intellispaces.reflections.framework.annotation.Dataset;
 import tech.intellispaces.reflections.annotationprocessor.AnnotationFunctions;
-import tech.intellispaces.reflections.annotationprocessor.JaquariusArtifactGenerator;
+import tech.intellispaces.reflections.annotationprocessor.ReflectionsArtifactGenerator;
 import tech.intellispaces.reflections.framework.artifact.ArtifactTypes;
 import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
 import tech.intellispaces.reflections.framework.reflection.MovabilityTypes;
@@ -28,7 +28,7 @@ import tech.intellispaces.jstatements.reference.NamedReference;
 import tech.intellispaces.jstatements.reference.NotPrimitiveReference;
 import tech.intellispaces.jstatements.reference.TypeReference;
 
-public class ReflectionAssistantGenerator extends JaquariusArtifactGenerator {
+public class ReflectionAssistantGenerator extends ReflectionsArtifactGenerator {
 
   public ReflectionAssistantGenerator(CustomType domainType) {
     super(domainType);

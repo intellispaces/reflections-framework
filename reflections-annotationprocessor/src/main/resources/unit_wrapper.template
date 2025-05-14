@@ -50,7 +50,7 @@ public class {{$generatedArtifactSimpleName}}{{$typeParamsFullDeclaration}} exte
 
 {{end}}
   private UnitBroker $registerUnit() {
-    return JaquariusEngines.get().registerUnit(
+    return Engines.get().registerUnit(
       this,
       {{$sourceArtifactSimpleName}}.class{{when $methodDescriptions.isNotEmpty()}},{{end}}
 {{for method : $methodDescriptions}}

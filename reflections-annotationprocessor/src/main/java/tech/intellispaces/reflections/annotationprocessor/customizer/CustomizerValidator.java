@@ -10,7 +10,7 @@ import tech.intellispaces.reflections.framework.annotation.AssistantCustomizer;
 import tech.intellispaces.reflections.framework.annotation.Customizer;
 import tech.intellispaces.reflections.annotationprocessor.AnnotationFunctions;
 import tech.intellispaces.reflections.framework.artifact.ArtifactTypes;
-import tech.intellispaces.reflections.framework.exception.JaquariusExceptions;
+import tech.intellispaces.reflections.framework.exception.ReflectionsExceptions;
 import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
 import tech.intellispaces.jstatements.customtype.CustomType;
 import tech.intellispaces.jstatements.instance.AnnotationInstance;
@@ -26,7 +26,7 @@ public class CustomizerValidator implements ArtifactValidator {
     ArtifactType targetArtifactType = getTargetArtifactType(customizerType);
     String expectedName = NameConventionFunctions.getCustomizerCanonicalName(originArtifact, targetArtifactType);
     if (!customizerType.canonicalName().equals(expectedName)) {
-      throw JaquariusExceptions.withMessage("Customizer class {0} has invalid name. For target artifact type {1} " +
+      throw ReflectionsExceptions.withMessage("Customizer class {0} has invalid name. For target artifact type {1} " +
               "the customizer should has name {2}",
           customizerType.canonicalName(),
           targetArtifactType.name(), ClassNameFunctions.getSimpleName(expectedName));

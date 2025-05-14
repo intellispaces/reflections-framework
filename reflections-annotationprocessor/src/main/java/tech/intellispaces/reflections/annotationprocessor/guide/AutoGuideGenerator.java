@@ -14,7 +14,7 @@ import tech.intellispaces.commons.exception.NotImplementedExceptions;
 import tech.intellispaces.commons.text.StringFunctions;
 import tech.intellispaces.commons.type.Types;
 import tech.intellispaces.reflections.framework.action.TraverseActions;
-import tech.intellispaces.reflections.annotationprocessor.JaquariusArtifactGenerator;
+import tech.intellispaces.reflections.annotationprocessor.ReflectionsArtifactGenerator;
 import tech.intellispaces.reflections.framework.guide.GuideFunctions;
 import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
@@ -24,7 +24,7 @@ import tech.intellispaces.jstatements.method.MethodParam;
 import tech.intellispaces.jstatements.method.MethodStatement;
 import tech.intellispaces.jstatements.reference.TypeReference;
 
-public class AutoGuideGenerator extends JaquariusArtifactGenerator {
+public class AutoGuideGenerator extends ReflectionsArtifactGenerator {
   private List<Map<String, Object>> guideMethods;
   private String typeParamsFullDeclaration;
   private String typeParamsBriefDeclaration;

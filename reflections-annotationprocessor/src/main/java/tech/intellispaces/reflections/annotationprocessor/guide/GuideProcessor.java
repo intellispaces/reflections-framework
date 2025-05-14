@@ -13,7 +13,7 @@ import tech.intellispaces.annotationprocessor.ArtifactProcessor;
 import tech.intellispaces.annotationprocessor.ArtifactValidator;
 import tech.intellispaces.reflections.framework.annotation.Guide;
 import tech.intellispaces.reflections.annotationprocessor.AnnotationFunctions;
-import tech.intellispaces.reflections.annotationprocessor.JaquariusArtifactProcessor;
+import tech.intellispaces.reflections.annotationprocessor.ReflectionsArtifactProcessor;
 import tech.intellispaces.reflections.annotationprocessor.module.UnitWrapperGenerator;
 import tech.intellispaces.jstatements.customtype.CustomType;
 
@@ -21,7 +21,7 @@ import tech.intellispaces.jstatements.customtype.CustomType;
 public class GuideProcessor extends ArtifactProcessor {
 
   public GuideProcessor() {
-    super(Set.of(ElementKind.INTERFACE, ElementKind.CLASS), Guide.class, JaquariusArtifactProcessor.SOURCE_VERSION);
+    super(Set.of(ElementKind.INTERFACE, ElementKind.CLASS), Guide.class, ReflectionsArtifactProcessor.SOURCE_VERSION);
   }
 
   @Override

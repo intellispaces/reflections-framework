@@ -42,8 +42,8 @@ import tech.intellispaces.reflections.framework.system.UnitWrapper;
 import tech.intellispaces.reflections.framework.system.injection.AutoGuideInjections;
 import tech.intellispaces.reflections.framework.system.injection.GuideInjections;
 
-@AutoService(tech.intellispaces.reflections.framework.engine.JaquariusEngine.class)
-public class JaquariusEngine implements tech.intellispaces.reflections.framework.engine.JaquariusEngine {
+@AutoService(tech.intellispaces.reflections.framework.engine.Engine.class)
+public class Engine implements tech.intellispaces.reflections.framework.engine.Engine {
   private final ObjectFactoryRegistry objectFactoryRegistry = new ObjectFactoryRegistry();
 
   @Override

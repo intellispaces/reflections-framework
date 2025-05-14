@@ -14,7 +14,7 @@ public class SampleAnnotatedTypeProcessor extends ArtifactProcessor {
   private CustomType annotatedType;
 
   public SampleAnnotatedTypeProcessor() {
-    super(Set.of(ElementKind.INTERFACE, ElementKind.CLASS), Sample.class, JaquariusArtifactProcessor.SOURCE_VERSION);
+    super(Set.of(ElementKind.INTERFACE, ElementKind.CLASS), Sample.class, ReflectionsArtifactProcessor.SOURCE_VERSION);
   }
 
   public CustomType getAnnotatedType() {

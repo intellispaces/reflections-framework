@@ -6,7 +6,7 @@ import tech.intellispaces.annotationprocessor.ArtifactValidator;
 import tech.intellispaces.reflections.framework.annotation.Dataset;
 import tech.intellispaces.reflections.framework.annotation.Domain;
 import tech.intellispaces.reflections.framework.annotation.Ontology;
-import tech.intellispaces.reflections.framework.exception.JaquariusExceptions;
+import tech.intellispaces.reflections.framework.exception.ReflectionsExceptions;
 import tech.intellispaces.jstatements.customtype.CustomType;
 
 /**
@@ -22,7 +22,7 @@ public class DatasetValidator implements ArtifactValidator {
 
   private static void validateDataAnnotation(CustomType dataType) {
     if (!dataType.hasAnnotation(Domain.class)) {
-      throw JaquariusExceptions.withMessage(
+      throw ReflectionsExceptions.withMessage(
           "Annotation {0} should only be applied to types with the annotation {1}",
           Dataset.class.getSimpleName(), Domain.class.getSimpleName());
     }
@@ -31,7 +31,7 @@ public class DatasetValidator implements ArtifactValidator {
   private void validateEnclosingType(CustomType dataType) {
     Optional<CustomType> enclosingType = dataType.enclosingType();
     if (enclosingType.isPresent() && !enclosingType.get().hasAnnotation(Ontology.class)) {
-      throw JaquariusExceptions.withMessage("Data domain interface can only be nested to ontology interface. " +
+      throw ReflectionsExceptions.withMessage("Data domain interface can only be nested to ontology interface. " +
           "Check class {0}", dataType.canonicalName());
     }
   }

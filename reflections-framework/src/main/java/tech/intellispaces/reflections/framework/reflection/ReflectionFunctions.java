@@ -19,7 +19,7 @@ import tech.intellispaces.commons.text.StringFunctions;
 import tech.intellispaces.commons.type.ClassFunctions;
 import tech.intellispaces.commons.type.Classes;
 import tech.intellispaces.commons.type.Type;
-import tech.intellispaces.reflections.framework.Jaquarius;
+import tech.intellispaces.reflections.framework.ReflectionsFramework;
 import tech.intellispaces.reflections.framework.annotation.Movable;
 import tech.intellispaces.reflections.framework.annotation.Reflection;
 import tech.intellispaces.reflections.framework.annotation.Unmovable;
@@ -539,7 +539,7 @@ public class ReflectionFunctions {
 
   public static Class<?> propertiesHandleClass() {
     if (propertiesHandleClass == null) {
-      DomainReference domainReference = Jaquarius.ontologyReference().getDomainByType(DomainTypes.PropertiesSet);
+      DomainReference domainReference = ReflectionsFramework.ontologyReference().getDomainByType(DomainTypes.PropertiesSet);
       String domainClassName = NameConventionFunctions.convertToDomainClassName(domainReference.domainName());
       String reflectionClassName = NameConventionFunctions.getGeneralRegularFormClassname(domainClassName, false);
       propertiesHandleClass = ClassFunctions.getClass(reflectionClassName).orElseThrow(() ->
@@ -550,7 +550,7 @@ public class ReflectionFunctions {
   }
 
   public static void unbindSilently(Object objectReference) {
-    unbindSilently(Reflections.reflection(objectReference));
+    unbindSilently(tech.intellispaces.reflections.framework.reflection.Reflections.reflection(objectReference));
   }
 
   public static void unbindSilently(AbstractReflection<?> reflection) {

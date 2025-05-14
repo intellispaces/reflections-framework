@@ -21,9 +21,9 @@ import tech.intellispaces.reflections.framework.system.Module;
 import tech.intellispaces.reflections.framework.system.UnitWrapper;
 
 /**
- * Jaquarius engine API.
+ * Reflections engine.
  */
-public interface JaquariusEngine {
+public interface Engine {
 
   /**
    * Creates system module and load into current application.<p/>

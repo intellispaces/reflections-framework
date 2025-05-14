@@ -12,14 +12,14 @@ import tech.intellispaces.annotationprocessor.ArtifactProcessor;
 import tech.intellispaces.annotationprocessor.ArtifactValidator;
 import tech.intellispaces.reflections.framework.annotation.Channel;
 import tech.intellispaces.reflections.annotationprocessor.AnnotationFunctions;
-import tech.intellispaces.reflections.annotationprocessor.JaquariusArtifactProcessor;
+import tech.intellispaces.reflections.annotationprocessor.ReflectionsArtifactProcessor;
 import tech.intellispaces.jstatements.customtype.CustomType;
 
 @AutoService(Processor.class)
 public class ChannelProcessor extends ArtifactProcessor {
 
   public ChannelProcessor() {
-    super(ElementKind.INTERFACE, Channel.class, JaquariusArtifactProcessor.SOURCE_VERSION);
+    super(ElementKind.INTERFACE, Channel.class, ReflectionsArtifactProcessor.SOURCE_VERSION);
   }
 
   @Override

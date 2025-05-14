@@ -12,14 +12,14 @@ import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
 import tech.intellispaces.annotationprocessor.ArtifactProcessor;
 import tech.intellispaces.annotationprocessor.ArtifactValidator;
 import tech.intellispaces.reflections.framework.annotation.Customizer;
-import tech.intellispaces.reflections.annotationprocessor.JaquariusArtifactProcessor;
+import tech.intellispaces.reflections.annotationprocessor.ReflectionsArtifactProcessor;
 import tech.intellispaces.jstatements.customtype.CustomType;
 
 @AutoService(Processor.class)
 public class CustomizerProcessor extends ArtifactProcessor {
 
   public CustomizerProcessor() {
-    super(Set.of(ElementKind.INTERFACE), Customizer.class, JaquariusArtifactProcessor.SOURCE_VERSION);
+    super(Set.of(ElementKind.INTERFACE), Customizer.class, ReflectionsArtifactProcessor.SOURCE_VERSION);
   }
 
   @Override

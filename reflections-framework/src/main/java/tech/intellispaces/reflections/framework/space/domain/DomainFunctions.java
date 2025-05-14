@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.commons.type.ClassFunctions;
-import tech.intellispaces.reflections.framework.Jaquarius;
+import tech.intellispaces.reflections.framework.ReflectionsFramework;
 import tech.intellispaces.reflections.framework.annotation.Domain;
 import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
 import tech.intellispaces.reflections.framework.settings.ChannelTypes;
@@ -184,7 +184,7 @@ public final class DomainFunctions {
 
   public static boolean isNotDomainClassGetter(MethodStatement method) {
     return !method.name().equals("domainClass") &&
-        !method.name().equals(Jaquarius.ontologyReference().getChannelByType(ChannelTypes.PointToDomain).alias());
+        !method.name().equals(ReflectionsFramework.ontologyReference().getChannelByType(ChannelTypes.PointToDomain).alias());
   }
 
   public static boolean isDefaultDomainType(CustomType type) {

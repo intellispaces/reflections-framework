@@ -16,7 +16,7 @@ import tech.intellispaces.reflections.framework.artifact.ArtifactTypes;
 import tech.intellispaces.reflections.framework.channel.Channel1;
 import tech.intellispaces.reflections.framework.channel.ChannelFunction0;
 import tech.intellispaces.reflections.framework.channel.ChannelFunction1;
-import tech.intellispaces.reflections.framework.engine.JaquariusEngines;
+import tech.intellispaces.reflections.framework.engine.Engines;
 import tech.intellispaces.reflections.framework.engine.ReflectionBroker;
 import tech.intellispaces.reflections.framework.engine.description.ReflectionImplementationMethodPurposes;
 import tech.intellispaces.reflections.framework.engine.description.ReflectionImplementationDescription;
@@ -93,7 +93,7 @@ public class UnmovableReflectionWrapperGenerator extends AbstractReflectionWrapp
         PrimitiveFunctions.class,
         ReflectionImplementationDescription.class,
         ReflectionBroker.class,
-        JaquariusEngines.class,
+        Engines.class,
         TraverseTypes.class,
         ReflectionImplementationMethodPurposes.class,
         TraverseException.class,

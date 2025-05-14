@@ -127,11 +127,11 @@ public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sour
     if ($TYPE == null) {
       $TYPE = $registerReflectionWrapperType();
     }
-    return JaquariusEngines.get().registerReflection(this, $TYPE);
+    return Engines.get().registerReflection(this, $TYPE);
   }
 
   private static ReflectionImplementationDescription $registerReflectionWrapperType() {
-    return JaquariusEngines.get().registerReflectionWrapperType(
+    return Engines.get().registerReflectionWrapperType(
         {{$generatedArtifactSimpleName}}.class,
         {{$sourceArtifactSimpleName}}.class{{when $methodDescriptions.isNotEmpty()}},{{end}}
 {{for method : $methodDescriptions}}

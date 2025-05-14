@@ -1,9 +1,9 @@
-package tech.intellispaces.reflections.framework.object.factory;
+package tech.intellispaces.reflections.framework.factory;
 
 import tech.intellispaces.commons.text.StringFunctions;
 import tech.intellispaces.jstatements.method.MethodStatement;
 
-public interface ObjectFactoryFunctions {
+public interface FactoryFunctions {
 
   static String getContractType(MethodStatement method) {
     return getContractType(method.name());

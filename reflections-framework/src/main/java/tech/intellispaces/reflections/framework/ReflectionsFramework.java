@@ -8,14 +8,18 @@ import tech.intellispaces.reflections.framework.settings.OntologyReference;
 import tech.intellispaces.reflections.framework.settings.SettingsFunctions;
 import tech.intellispaces.reflections.framework.system.Module;
 import tech.intellispaces.reflections.framework.system.Modules;
+import tech.intellispaces.reflections.framework.system.System;
+import tech.intellispaces.reflections.framework.system.Systems;
 
 public class ReflectionsFramework {
 
   /**
-   * Returns the current loaded system.
+   * Returns the current system.
+   * <p>
+   * If there is no current system, an exception will be thrown.
    */
-  public static Object system() {
-    return null;
+  public static System system() {
+    return Systems.current();
   }
 
   /**

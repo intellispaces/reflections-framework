@@ -9,9 +9,9 @@ public abstract class AbstractRegularFormGenerator extends AbstractReflectionFor
     super(domainType);
   }
 
-  protected String getGeneralOriginHandleClassName() {
+  protected String getGeneralRegularFormClassName() {
     return addImportAndGetSimpleName(
-        NameConventionFunctions.getGeneralRegularObjectTypename(sourceArtifact().className(), false)
+        NameConventionFunctions.getGeneralRegularFormClassname(sourceArtifact().className(), false)
     );
   }
 }

@@ -5,13 +5,13 @@ import {{$importedClass}};
 {{end}}
 
 /**
- * Unmovable downward object handle for objects of domain {@link {{$sourceArtifactSimpleName}}}.
+ * Unmovable downward reflection for objects of domain {@link {{$sourceArtifactSimpleName}}}.
  * <p>
  * This class was generated automatically. Don't try to change it.
  */
 @Reflection({{$domainClassSimpleName}}.class)
 {{$generatedAnnotation}}
-public class {{$generatedArtifactSimpleName}}{{$classTypeParams}} implements {{$objectHandleClassSimpleName}}{{$domainTypeArguments}} {
+public class {{$generatedArtifactSimpleName}}{{$classTypeParams}} implements {{$reflectionClassSimpleName}}{{$domainTypeArguments}} {
   private final {{$childObjectHandleType}}{{$classTypeParamsBrief}} {{$childField}};
 
   public {{$generatedArtifactSimpleName}}({{$childObjectHandleType}}{{$classTypeParamsBrief}} {{$childField}}) {
@@ -86,12 +86,12 @@ public class {{$generatedArtifactSimpleName}}{{$classTypeParams}} implements {{$
   }
 
   @Override
-  public java.util.List<UnmovableReflection<?>> underlyingHandles() {
+  public java.util.List<UnmovableReflection<?>> underlyingReflections() {
     throw NotImplementedExceptions.withCode("ZBPIpw");
   }
 
   @Override
-  public UnmovableReflection<?> overlyingHandle() {
+  public UnmovableReflection<?> overlyingReflection() {
     throw NotImplementedExceptions.withCode("tNghxqGi");
   }
 

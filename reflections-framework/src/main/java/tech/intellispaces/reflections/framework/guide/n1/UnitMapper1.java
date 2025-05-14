@@ -7,9 +7,9 @@ import tech.intellispaces.jstatements.method.MethodStatement;
 /**
  * Unit method mapper with one qualifier.
  *
- * @param <S> source object handle type.
- * @param <T> target object handle type.
- * @param <Q> qualifier object handle type.
+ * @param <S> the source reflection type.
+ * @param <T> the target reflection type.
+ * @param <Q> the qualifier reflection type.
  */
 public class UnitMapper1<S, T, Q>
     extends UnitGuide1<S, T, Q>

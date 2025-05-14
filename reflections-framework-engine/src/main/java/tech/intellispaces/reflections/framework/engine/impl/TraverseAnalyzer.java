@@ -219,7 +219,7 @@ class TraverseAnalyzer implements tech.intellispaces.reflections.framework.trave
     }
 
     if (sourceClass != plan.objectHandleClass() && !plan.objectHandleClass().isAssignableFrom(sourceClass)) {
-      throw UnexpectedExceptions.withMessage("Traverse plan of type {0} expected object handle of class {1} " +
+      throw UnexpectedExceptions.withMessage("Traverse plan of type {0} expected reflection of class {1} " +
           "or it subclass", planType, plan.objectHandleClass());
     }
     executionPlan = plan.cachedExecutionPlan(plan.objectHandleClass());
@@ -242,8 +242,8 @@ class TraverseAnalyzer implements tech.intellispaces.reflections.framework.trave
 
     if (source != null) {
       var sourceHandle = (Reflection<?>) source;
-      while (sourceHandle.overlyingHandle() != null) {
-        sourceHandle = sourceHandle.overlyingHandle();
+      while (sourceHandle.overlyingReflection() != null) {
+        sourceHandle = sourceHandle.overlyingReflection();
         sourceClass = sourceHandle.getClass();
 
         executionPlan = plan.cachedExecutionPlan(sourceClass);

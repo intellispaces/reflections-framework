@@ -99,7 +99,7 @@ public class ModuleValidatorTest {
     // Then
     Assertions.assertThatThrownBy(() -> moduleValidator.validate(moduleType))
         .isExactlyInstanceOf(JaquariusException.class)
-        .hasMessage("Parameter 'value' of method 'startup' in unit samples.ModuleWithStartupMethodAndFileParameter should be object handle class");
+        .hasMessage("Parameter 'value' of method 'startup' in unit samples.ModuleWithStartupMethodAndFileParameter should be reflection class");
   }
 
   @Test
@@ -130,7 +130,7 @@ public class ModuleValidatorTest {
     // Then
     Assertions.assertThatThrownBy(() -> moduleValidator.validate(moduleType))
         .isExactlyInstanceOf(JaquariusException.class)
-        .hasMessage("Parameter 'value' of method 'shutdown' in unit samples.ModuleWithShutdownMethodAndFileParameter should be object handle class");
+        .hasMessage("Parameter 'value' of method 'shutdown' in unit samples.ModuleWithShutdownMethodAndFileParameter should be reflection class");
   }
 
   @Test
@@ -183,7 +183,7 @@ public class ModuleValidatorTest {
     // Then
     Assertions.assertThatThrownBy(() -> moduleValidator.validate(moduleType))
         .isExactlyInstanceOf(JaquariusException.class)
-        .hasMessage("Parameter 'value' of method 'projection' in unit samples.ModuleWithProjectionAndFileParameter should be object handle class");
+        .hasMessage("Parameter 'value' of method 'projection' in unit samples.ModuleWithProjectionAndFileParameter should be reflection class");
   }
 
   @Test

@@ -25,7 +25,7 @@ public class {{$generatedArtifactSimpleName}} {
 
 {{end}}
   @SuppressWarnings("unchecked")
-  public static {{$typeParamsFull}} {{$generalReflectionSimpleName}}{{$typeParamsBrief}} {{$regularFirstLetterLowercaseSimpleName}}Handle(Object object{{for typeParam : $typeParams}}, Class<{{$typeParam["type"]}}> {{$typeParam["name"]}}{{end}}) {
+  public static {{$typeParamsFull}} {{$generalReflectionSimpleName}}{{$typeParamsBrief}} {{$regularFirstLetterLowercaseSimpleName}}Reflection(Object object{{for typeParam : $typeParams}}, Class<{{$typeParam["type"]}}> {{$typeParam["name"]}}{{end}}) {
     if (object == null) {
       return null;
     }

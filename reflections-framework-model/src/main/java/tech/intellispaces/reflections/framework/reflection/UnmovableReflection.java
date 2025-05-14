@@ -17,8 +17,8 @@ public interface UnmovableReflection<D> extends Reflection<D> {
   }
 
   @Override
-  List<UnmovableReflection<?>> underlyingHandles();
+  List<UnmovableReflection<?>> underlyingReflections();
 
   @Override
-  UnmovableReflection<?> overlyingHandle();
+  UnmovableReflection<?> overlyingReflection();
 }

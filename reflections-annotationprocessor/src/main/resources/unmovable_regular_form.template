@@ -12,8 +12,8 @@ import {{$importedClass}};
 @Unmovable
 {{$generatedAnnotation}}
 {{when $isAlias}}
-public interface {{$generatedArtifactSimpleName}}{{$reflectionTypeParamsFull}} extends {{$generalPureObjectHandle}}{{$reflectionTypeParamsBrief}}, {{$primaryObject}} {
+public interface {{$generatedArtifactSimpleName}}{{$reflectionTypeParamsFull}} extends {{$generalRegularForm}}{{$reflectionTypeParamsBrief}}, {{$primaryObject}} {
 {{else}}
-public interface {{$generatedArtifactSimpleName}}{{$reflectionTypeParamsFull}} extends {{$generalPureObjectHandle}}{{$reflectionTypeParamsBrief}} {
+public interface {{$generatedArtifactSimpleName}}{{$reflectionTypeParamsFull}} extends {{$generalRegularForm}}{{$reflectionTypeParamsBrief}} {
 {{end}}
 }

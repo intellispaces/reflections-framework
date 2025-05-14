@@ -4,16 +4,15 @@ import java.util.List;
 
 import tech.intellispaces.actions.Action;
 import tech.intellispaces.actions.functional.FunctionActions;
-import tech.intellispaces.commons.function.Function4;
+import tech.intellispaces.commons.function.Function3;
 import tech.intellispaces.reflections.framework.traverse.TraverseType;
 
-public class ObjectHandleMethodBuilder4<R, P1, P2, P3> {
+public class ReflectionImplementationMethodBuilder3<W, P1, P2> {
   private final String name;
   private final Class<P1> paramClass1;
   private final Class<P2> paramClass2;
-  private final Class<P3> paramClass3;
   private Action action;
-  private ObjectHandleMethodPurpose purpose;
+  private ReflectionImplementationMethodPurpose purpose;
 
   private int traverseOrdinal;
   private Class<?> channelClass;
@@ -24,68 +23,63 @@ public class ObjectHandleMethodBuilder4<R, P1, P2, P3> {
   private String injectionName;
   private Class<?> injectionType;
 
-  public ObjectHandleMethodBuilder4(
-      Class<R> objectHandleClass,
-      String name,
-      Class<P1> paramClass1,
-      Class<P2> paramClass2,
-      Class<P3> paramClass3
+  public ReflectionImplementationMethodBuilder3(
+      Class<W> reflectionWrapperClass, String name, Class<P1> paramClass1, Class<P2> paramClass2
   ) {
     this.name = name;
     this.paramClass1 = paramClass1;
     this.paramClass2 = paramClass2;
-    this.paramClass3 = paramClass3;
   }
 
-  public ObjectHandleMethodBuilder4<R, P1, P2, P3> purpose(ObjectHandleMethodPurpose purpose) {
+  public ReflectionImplementationMethodBuilder3<W, P1, P2> purpose(ReflectionImplementationMethodPurpose purpose) {
     this.purpose = purpose;
     return this;
   }
 
-  public <T> ObjectHandleMethodBuilder4<R, P1, P2, P3> function(Function4<R, P1, P2, P3, T> function) {
-    this.action = FunctionActions.ofFunction4(function);
+  public <T> ReflectionImplementationMethodBuilder3<W, P1, P2> function(Function3<W, P1, P2, T> function) {
+    this.action = FunctionActions.ofFunction3(function);
     return this;
   }
 
-  public ObjectHandleMethodBuilder4<R, P1, P2, P3> traverseOrdinal(int ordinal) {
+  public ReflectionImplementationMethodBuilder3<W, P1, P2> traverseOrdinal(int ordinal) {
     this.traverseOrdinal = ordinal;
     return this;
   }
 
-  public ObjectHandleMethodBuilder4<R, P1, P2, P3> channelClass(Class<?> channelClass) {
+  public ReflectionImplementationMethodBuilder3<W, P1, P2> channelClass(Class<?> channelClass) {
     this.channelClass = channelClass;
     return this;
   }
 
-  public ObjectHandleMethodBuilder4<R, P1, P2, P3> traverseType(TraverseType traverseType) {
+  public ReflectionImplementationMethodBuilder3<W, P1, P2> traverseType(TraverseType traverseType) {
     this.traverseType = traverseType;
     return this;
   }
 
-  public ObjectHandleMethodBuilder4<R, P1, P2, P3> injectionKind(String kind) {
+  public ReflectionImplementationMethodBuilder3<W, P1, P2> injectionKind(String kind) {
     this.injectionKind = kind;
     return this;
   }
 
-  public ObjectHandleMethodBuilder4<R, P1, P2, P3> injectionOrdinal(int ordinal) {
+  public ReflectionImplementationMethodBuilder3<W, P1, P2> injectionOrdinal(int ordinal) {
     this.injectionOrdinal = ordinal;
     return this;
   }
 
-  public ObjectHandleMethodBuilder4<R, P1, P2, P3> injectionName(String injectionName) {
+  public ReflectionImplementationMethodBuilder3<W, P1, P2> injectionName(String injectionName) {
     this.injectionName = injectionName;
     return this;
   }
 
-  public ObjectHandleMethodBuilder4<R, P1, P2, P3> injectionType(Class<?> injectionType) {
+  public ReflectionImplementationMethodBuilder3<W, P1, P2> injectionType(Class<?> injectionType) {
     this.injectionType = injectionType;
     return this;
   }
 
-  public ObjectHandleMethodDescription get() {
-    return new ObjectHandleMethodDescriptionImpl(
+  public ReflectionImplementationMethodDescription get() {
+    return new ReflectionImplementationMethodDescriptionImpl(
         name,
-        List.of(paramClass1, paramClass2, paramClass3),
+        List.of(paramClass1, paramClass2),
         purpose,
         traverseOrdinal,
         action,

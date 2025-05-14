@@ -14,9 +14,9 @@ import tech.intellispaces.reflections.framework.guide.n5.MapperOfMoving5;
 /**
  * Mapper related to moving guide with one qualifier.
  *
- * @param <S> source handle type.
- * @param <T> target handle type.
- * @param <Q> qualifier handle type.
+ * @param <S> the source reflection type.
+ * @param <T> the target reflection type.
+ * @param <Q> the qualifier reflection type.
  */
 public interface MapperOfMoving1<S, T, Q> extends
     Guide1<S, T, Q>,

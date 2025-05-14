@@ -12,8 +12,8 @@ public interface ObjectFactoryFunctions {
   static String getContractType(String methodName) {
     if (methodName.equals("create") || (methodName.startsWith("create") && StringFunctions.isUppercaseChar(methodName, 6))) {
       return "create";
-    } else if (methodName.equals("handleOf") || (methodName.startsWith("handleOf") && StringFunctions.isUppercaseChar(methodName, 8))) {
-      return "handle";
+    } else if (methodName.equals("reflectionOf") || (methodName.startsWith("reflectionOf") && StringFunctions.isUppercaseChar(methodName, 12))) {
+      return "reflection";
     }
     return methodName;
   }

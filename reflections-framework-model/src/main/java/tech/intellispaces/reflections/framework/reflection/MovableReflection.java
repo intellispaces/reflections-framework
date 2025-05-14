@@ -44,8 +44,8 @@ public interface MovableReflection<D> extends Reflection<D> {
   <R, Q, C extends Channel1 & MappingOfMovingTraverse> R mapOfMovingThru(Class<C> channelClass, Q qualifier) throws TraverseException;
 
   @Override
-  List<MovableReflection<?>> underlyingHandles();
+  List<MovableReflection<?>> underlyingReflections();
 
   @Override
-  MovableReflection<?> overlyingHandle();
+  MovableReflection<?> overlyingReflection();
 }

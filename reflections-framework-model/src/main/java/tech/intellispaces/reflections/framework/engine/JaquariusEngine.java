@@ -14,8 +14,8 @@ import tech.intellispaces.actions.Action7;
 import tech.intellispaces.actions.Action8;
 import tech.intellispaces.actions.Action9;
 import tech.intellispaces.commons.type.Type;
-import tech.intellispaces.reflections.framework.engine.description.ObjectHandleMethodDescription;
-import tech.intellispaces.reflections.framework.engine.description.ObjectHandleTypeDescription;
+import tech.intellispaces.reflections.framework.engine.description.ReflectionImplementationMethodDescription;
+import tech.intellispaces.reflections.framework.engine.description.ReflectionImplementationDescription;
 import tech.intellispaces.reflections.framework.engine.description.UnitMethodDescription;
 import tech.intellispaces.reflections.framework.system.Module;
 import tech.intellispaces.reflections.framework.system.UnitWrapper;
@@ -37,30 +37,30 @@ public interface JaquariusEngine {
   Module createModule(List<Class<?>> unitClasses, String[] args);
 
   /**
-   * Registers object handle type.
+   * Registers reflection wrapper type.
    *
-   * @param wrapperClass the object handle wrapper class.
-   * @param objectHandleClass the object handle class.
-   * @param methods object handle wrapper method descriptions.
-   * @return the registered object handle type.
+   * @param reflectionWrapperClass the reflection wrapper class.
+   * @param reflectionImplClass the reflection implementation class.
+   * @param methods reflection wrapper method descriptions.
+   * @return the registered reflection wrapper type.
    *
-   * @param <R> the object handle type.
-   * @param <W> the object handle wrapper type.
+   * @param <R> the reflection type.
+   * @param <W> the reflection wrapper type.
    */
-  <R, W extends R> ObjectHandleTypeDescription registerObjectHandleType(
-      Class<W> wrapperClass, Class<R> objectHandleClass, ObjectHandleMethodDescription... methods
+  <R, W extends R> ReflectionImplementationDescription registerReflectionWrapperType(
+      Class<W> reflectionWrapperClass, Class<R> reflectionImplClass, ReflectionImplementationMethodDescription... methods
   );
 
   /**
-   * Registers object handle.
+   * Registers reflection.
    *
-   * @param objectHandleWrapper the object handle wrapper.
-   * @param type the object handle type.
-   * @return the object handle broker.
+   * @param reflectionWrapper the reflection wrapper.
+   * @param type the reflection type.
+   * @return the reflection broker.
    *
-   * @param <W> the object handle wrapper type.
+   * @param <W> the reflection wrapper type.
    */
-  <W> ObjectHandleBroker registerObjectHandle(W objectHandleWrapper, ObjectHandleTypeDescription type);
+  <W> ReflectionBroker registerReflection(W reflectionWrapper, ReflectionImplementationDescription type);
 
   /**
    * Registers module unit.

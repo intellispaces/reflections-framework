@@ -7,7 +7,7 @@ import {{$importedClass}};
 {{end}}
 
 /**
- * Movable downward object handle for objects of domain {@link {{$sourceArtifactSimpleName}}}.
+ * Movable downward reflection for objects of domain {@link {{$sourceArtifactSimpleName}}}.
  * <p>
  * This class was generated automatically. Don't try to change it.
  */
@@ -166,12 +166,12 @@ public class {{$generatedArtifactSimpleName}}{{$classTypeParams}} implements {{$
   }
 
   @Override
-  public java.util.List<MovableReflection<?>> underlyingHandles() {
+  public java.util.List<MovableReflection<?>> underlyingReflections() {
     throw NotImplementedExceptions.withCode("1w7SnA");
   }
 
   @Override
-  public MovableReflection<?> overlyingHandle() {
+  public MovableReflection<?> overlyingReflection() {
     throw NotImplementedExceptions.withCode("jFU7h9oR");
   }
 

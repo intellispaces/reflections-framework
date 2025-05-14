@@ -56,7 +56,7 @@ public interface NameConventionFunctions {
   ) {
     return switch (ReflectionForms.of(objectForm)) {
       case Regular -> switch (MovabilityTypes.of(movabilityType)) {
-        case General -> getGeneralRegularObjectTypename(domainClassName, replaceDomainWithDelegate);
+        case General -> getGeneralRegularFormClassname(domainClassName, replaceDomainWithDelegate);
         case Movable -> getMovableRegularFormTypeName(domainClassName, replaceDomainWithDelegate);
         case Unmovable -> getUnmovableRegularFormTypeName(domainClassName, replaceDomainWithDelegate);
       };
@@ -70,7 +70,7 @@ public interface NameConventionFunctions {
     };
   }
 
-  static String getGeneralRegularObjectTypename(String domainClassName, boolean replaceDomainWithDelegate) {
+  static String getGeneralRegularFormClassname(String domainClassName, boolean replaceDomainWithDelegate) {
     if (replaceDomainWithDelegate) {
       String domainName = convertToDomainName(domainClassName);
       DomainReference domain = Jaquarius.ontologyReference().getDomainByName(domainName);

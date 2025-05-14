@@ -8,10 +8,10 @@ import tech.intellispaces.reflections.framework.guide.n5.Mover5;
 /**
  * Mover guide with three qualifiers.
  *
- * @param <S> source object handle type.
- * @param <Q1> first qualifier handle type.
- * @param <Q2> second qualifier handle type.
- * @param <Q3> third qualifier handle type.
+ * @param <S> the source reflection type.
+ * @param <Q1> the first qualifier reflection type.
+ * @param <Q2> the second qualifier reflection type.
+ * @param <Q3> the third qualifier reflection type.
  */
 public interface Mover3<S, Q1, Q2, Q3> extends
     Guide3<S, S, Q1, Q2, Q3>,

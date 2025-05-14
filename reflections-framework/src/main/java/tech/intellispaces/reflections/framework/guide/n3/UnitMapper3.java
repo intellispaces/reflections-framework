@@ -5,13 +5,13 @@ import tech.intellispaces.reflections.framework.system.UnitWrapper;
 import tech.intellispaces.jstatements.method.MethodStatement;
 
 /**
- * Unit method mapper with three qualifier.
+ * Unit method mapper with three qualifiers.
  *
- * @param <S> source object handle type.
- * @param <T> target object handle type.
- * @param <Q1> first qualifier object handle type.
- * @param <Q2> second qualifier object handle type.
- * @param <Q3> third  qualifier object handle type.
+ * @param <S> the source reflection type.
+ * @param <T> the target reflection type.
+ * @param <Q1> the first qualifier reflection type.
+ * @param <Q2> the second qualifier reflection type.
+ * @param <Q3> the third  qualifier reflection type.
  */
 public class UnitMapper3<S, T, Q1, Q2, Q3>
     extends UnitGuide3<S, T, Q1, Q2, Q3>

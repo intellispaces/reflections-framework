@@ -59,10 +59,10 @@ public class DatasetBuilderGenerator extends JaquariusArtifactGenerator {
         continue;
       }
       TypeReference type = method.returnType().orElseThrow();
-      String handleType = buildObjectFormDeclaration(type, ReflectionForms.Reflection, MovabilityTypes.Unmovable, true);
+      String reflectionType = buildObjectFormDeclaration(type, ReflectionForms.Reflection, MovabilityTypes.Unmovable, true);
 
       Map<String, String> properties = new HashMap<>();
-      properties.put("type", handleType);
+      properties.put("type", reflectionType);
       properties.put("name", method.name());
       projectionProperties.add(properties);
     }

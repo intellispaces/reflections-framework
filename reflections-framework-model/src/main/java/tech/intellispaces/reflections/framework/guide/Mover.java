@@ -7,7 +7,7 @@ package tech.intellispaces.reflections.framework.guide;
  *
  * <p>Mover guide changes the source object.
  *
- * @param <S> source handle type.
+ * @param <S> the source reflection type.
  */
 public interface Mover<S> extends Guide<S, S> {
 }

@@ -7,20 +7,20 @@ import java.util.Map;
 import tech.intellispaces.actions.Action;
 import tech.intellispaces.commons.exception.NotImplementedExceptions;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
-import tech.intellispaces.reflections.framework.engine.description.ObjectHandleTypeDescription;
+import tech.intellispaces.reflections.framework.engine.description.ReflectionImplementationDescription;
 import tech.intellispaces.reflections.framework.reflection.Reflection;
 import tech.intellispaces.reflections.framework.system.Injection;
 
-public class ObjectHandleBroker implements tech.intellispaces.reflections.framework.engine.ObjectHandleBroker {
-  private final ObjectHandleTypeDescription type;
+public class ReflectionBroker implements tech.intellispaces.reflections.framework.engine.ReflectionBroker {
+  private final ReflectionImplementationDescription type;
   private final Action[] methodActions;
   private final Action[] guideActions;
   private final Injection[] injections;
   private final Map<Class<?>, Object> projections = new HashMap<>();
-  private Reflection<?> overlyingHandle;
+  private Reflection<?> overlyingReflection;
 
-  public ObjectHandleBroker(
-      ObjectHandleTypeDescription type,
+  public ReflectionBroker(
+      ReflectionImplementationDescription type,
       Action[] methodActions,
       Action[] guideActions,
       Injection[] injections
@@ -32,7 +32,7 @@ public class ObjectHandleBroker implements tech.intellispaces.reflections.framew
   }
 
   @Override
-  public ObjectHandleTypeDescription type() {
+  public ReflectionImplementationDescription type() {
     return type;
   }
 
@@ -61,18 +61,18 @@ public class ObjectHandleBroker implements tech.intellispaces.reflections.framew
   }
 
   @Override
-  public List<? extends Reflection<?>> underlyingHandles() {
+  public List<? extends Reflection<?>> underlyingReflections() {
     throw NotImplementedExceptions.withCode("KDpzfXvh");
   }
 
   @Override
-  public Reflection<?> overlyingHandle() {
-    return overlyingHandle;
+  public Reflection<?> overlyingReflection() {
+    return overlyingReflection;
   }
 
   @Override
-  public void setOverlyingHandle(Reflection<?> overlyingHandle) {
-    this.overlyingHandle = overlyingHandle;
+  public void setOverlyingReflection(Reflection<?> overlyingReflection) {
+    this.overlyingReflection = overlyingReflection;
   }
 
   @Override

@@ -5,10 +5,10 @@ import java.util.function.Function;
 @FunctionalInterface
 public interface DownwardObjectFactory<O> extends Function<MovableReflection<?>, O> {
 
-  O create(MovableReflection<?> overlyingHandle);
+  O create(MovableReflection<?> overlyingReflection);
 
   @Override
-  default O apply(MovableReflection<?> overlyingHandle) {
-    return create(overlyingHandle);
+  default O apply(MovableReflection<?> overlyingReflection) {
+    return create(overlyingReflection);
   }
 }

@@ -312,7 +312,7 @@ abstract class ConversionObjectGenerator extends AbstractReflectionFormGenerator
     } else if (MovabilityTypes.Movable.is(getMovabilityType())) {
       canonicalName = NameConventionFunctions.getMovableReflectionTypeName(superDomainCanonicalName, false);
     } else {
-      throw UnexpectedExceptions.withMessage("Could not define movable type of the object handle {0}",
+      throw UnexpectedExceptions.withMessage("Could not define movable type of the reflection {0}",
           sourceArtifact().canonicalName());
     }
     return addImportAndGetSimpleName(canonicalName);

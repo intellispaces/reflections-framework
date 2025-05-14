@@ -6,9 +6,9 @@ import tech.intellispaces.actions.Action;
 import tech.intellispaces.reflections.framework.traverse.TraverseType;
 
 /**
- * The object handle wrapper method description.
+ * The reflection implementation method description.
  */
-public interface ObjectHandleMethodDescription {
+public interface ReflectionImplementationMethodDescription {
 
   /**
    * The method name.
@@ -23,7 +23,7 @@ public interface ObjectHandleMethodDescription {
   /**
    * The method purpose.
    */
-  ObjectHandleMethodPurpose purpose();
+  ReflectionImplementationMethodPurpose purpose();
 
   /**
    * The traverse method ordinal.

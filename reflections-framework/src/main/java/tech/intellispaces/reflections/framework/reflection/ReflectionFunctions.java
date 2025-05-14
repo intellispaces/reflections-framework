@@ -208,7 +208,7 @@ public class ReflectionFunctions {
     if (isDefaultObjectHandleType(domainType)) {
       return domainType.canonicalName();
     }
-    return NameConventionFunctions.getGeneralRegularObjectTypename(domainType.className(), false);
+    return NameConventionFunctions.getGeneralRegularFormClassname(domainType.className(), false);
   }
 
   public static String getGeneralObjectHandleTypename(CustomType domainType) {
@@ -320,7 +320,7 @@ public class ReflectionFunctions {
   public static CustomType getDomainOfObjectFormOrElseThrow(CustomType objectFormType) {
     Optional<CustomType> domainType = getDomainOfObjectForm(objectFormType);
     if (domainType.isEmpty()) {
-      throw UnexpectedExceptions.withMessage("Object handle class {0} must be annotated with annotation {1}",
+      throw UnexpectedExceptions.withMessage("Reflection class {0} must be annotated with annotation {1}",
           objectFormType.canonicalName(), Reflection.class.getSimpleName());
     }
     return domainType.get();
@@ -347,7 +347,7 @@ public class ReflectionFunctions {
       return domainClass.get();
     }
 
-    throw UnexpectedExceptions.withMessage("Object handle class {0} must be annotated with annotation {1}",
+    throw UnexpectedExceptions.withMessage("Reflection class {0} must be annotated with annotation {1}",
         objectHandleClass.getCanonicalName(), Reflection.class.getSimpleName());
   }
 
@@ -377,7 +377,7 @@ public class ReflectionFunctions {
         Constructor<?> constructor = downgradeObjectHandleClass.get().getConstructors()[0];
         return constructor.newInstance(sourceObjectHandle);
       } catch (Exception e) {
-        throw UnexpectedExceptions.withCauseAndMessage(e, "Could not create downgrade object handle");
+        throw UnexpectedExceptions.withCauseAndMessage(e, "Could not create downgrade reflection");
       }
     }
     return null;
@@ -541,9 +541,9 @@ public class ReflectionFunctions {
     if (propertiesHandleClass == null) {
       DomainReference domainReference = Jaquarius.ontologyReference().getDomainByType(DomainTypes.PropertiesSet);
       String domainClassName = NameConventionFunctions.convertToDomainClassName(domainReference.domainName());
-      String handleClassName = NameConventionFunctions.getGeneralRegularObjectTypename(domainClassName, false);
-      propertiesHandleClass = ClassFunctions.getClass(handleClassName).orElseThrow(() ->
-          UnexpectedExceptions.withMessage("Could not get class {0}", handleClassName)
+      String reflectionClassName = NameConventionFunctions.getGeneralRegularFormClassname(domainClassName, false);
+      propertiesHandleClass = ClassFunctions.getClass(reflectionClassName).orElseThrow(() ->
+          UnexpectedExceptions.withMessage("Could not get class {0}", reflectionClassName)
       );
     }
     return propertiesHandleClass;
@@ -577,7 +577,7 @@ public class ReflectionFunctions {
       }
     }
     if (exceptions != null) {
-      UnexpectedException ue = UnexpectedExceptions.withMessage("Could not unbind object handles");
+      UnexpectedException ue = UnexpectedExceptions.withMessage("Could not unbind reflection");
       exceptions.forEach(ue::addSuppressed);
       throw ue;
     }

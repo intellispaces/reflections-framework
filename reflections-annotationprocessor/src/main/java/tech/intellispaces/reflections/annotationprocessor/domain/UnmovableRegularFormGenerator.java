@@ -77,7 +77,7 @@ public class UnmovableRegularFormGenerator extends AbstractRegularFormGenerator 
 
     addVariable("reflectionTypeParamsBrief", typeParamsBrief);
     addVariable("reflectionTypeParamsFull", typeParamsFull);
-    addVariable("generalPureObjectHandle", getGeneralOriginHandleClassName());
+    addVariable("generalRegularForm", getGeneralRegularFormClassName());
     addVariable("isAlias", isAlias);
     addVariable("primaryObject", baseReflection);
     return true;

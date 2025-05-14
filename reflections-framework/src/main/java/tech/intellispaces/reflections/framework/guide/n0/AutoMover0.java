@@ -10,7 +10,7 @@ import tech.intellispaces.reflections.framework.traverse.plan.TraversePlan;
  *
  * <p>Automatic guide builds the traverse plan itself.
  *
- * @param <S> source object handle type.
+ * @param <S> the source reflection type.
  */
 public class AutoMover0<S> implements AbstractMover0<S> {
   private final String cid;

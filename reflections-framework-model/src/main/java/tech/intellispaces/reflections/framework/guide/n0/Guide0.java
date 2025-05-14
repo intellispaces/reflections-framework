@@ -6,8 +6,8 @@ import tech.intellispaces.reflections.framework.guide.Guide;
 /**
  * Non-parameterized guide.
  *
- * @param <S> source handle type.
- * @param <R> result handle type.
+ * @param <S> the source reflection type.
+ * @param <R> the result reflection type.
  */
 public interface Guide0<S, R> extends Guide<S, R> {
 

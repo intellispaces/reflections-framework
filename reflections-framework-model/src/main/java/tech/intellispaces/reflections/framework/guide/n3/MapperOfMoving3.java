@@ -9,11 +9,11 @@ import tech.intellispaces.reflections.framework.guide.n5.MapperOfMoving5;
 /**
  * Mapper related to moving guide with three qualifiers.
  *
- * @param <S> source handle type.
- * @param <T> target handle type.
- * @param <Q1> first qualifier handle type.
- * @param <Q2> second qualifier handle type.
- * @param <Q3> third qualifier handle type.
+ * @param <S> the source reflection type.
+ * @param <T> the target reflection type.
+ * @param <Q1> the first qualifier reflection type.
+ * @param <Q2> the second qualifier reflection type.
+ * @param <Q3> the third qualifier reflection type.
  */
 public interface MapperOfMoving3<S, T, Q1, Q2, Q3> extends
     Guide3<S, T, Q1, Q2, Q3>,

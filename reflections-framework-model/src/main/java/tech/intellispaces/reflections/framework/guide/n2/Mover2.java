@@ -9,9 +9,9 @@ import tech.intellispaces.reflections.framework.guide.n5.Mover5;
 /**
  * Mover guide with two qualifiers.
  *
- * @param <S> source handle type.
- * @param <Q1> first qualifier handle type.
- * @param <Q2> second qualifier handle type.
+ * @param <S> the source reflection type.
+ * @param <Q1> the first qualifier reflection type.
+ * @param <Q2> the second qualifier reflection type.
  */
 public interface Mover2<S, Q1, Q2> extends
     Guide2<S, S, Q1, Q2>,

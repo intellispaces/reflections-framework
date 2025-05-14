@@ -8,22 +8,22 @@ import tech.intellispaces.commons.abstraction.Enumeration;
 public enum ReflectionForms implements ReflectionForm, Enumeration<ReflectionForm> {
 
   /**
-   * The object reference represented as object handle or primitive type.
+   * The form represented as reflection or primitive type.
    */
   Reflection,
 
   /**
-   * The object reflection represented as primitive type.
+   * The form represented as primitive type.
    */
   Primitive,
 
   /**
-   * The object reflection represented as object wrapper of primitive type.
+   * The form represented as object wrapper of primitive type.
    */
   PrimitiveWrapper,
 
   /**
-   * The object reflection represented as regular object interface or primitive type.
+   * The form represented as regular object interface or primitive type.
    */
   Regular;
 

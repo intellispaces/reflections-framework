@@ -13,12 +13,12 @@ import java.lang.annotation.Target;
 public @interface Reflection {
 
   /**
-   * Object handle domain class.
+   * The reflection domain.
    */
   Class<?> value();
 
   /**
-   * Object handle class simple name.
+   * The reflection class simple name.
    */
   String name() default "";
 }

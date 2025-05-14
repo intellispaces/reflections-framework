@@ -13,40 +13,40 @@ import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
 import tech.intellispaces.reflections.framework.space.channel.ChannelFunctions;
 
 class ObjectGuideRegistry {
-  private final Map<Class<?>, HandleDescription> handleDescriptions = new WeakHashMap<>();
+  private final Map<Class<?>, ReflectionDescription> reflectionDescriptions = new WeakHashMap<>();
 
-  public List<Guide<?, ?>> findGuides(GuideKind kind, Class<?> objectHandleClass, String channelId) {
-    if (!ReflectionFunctions.isCustomObjectFormClass(objectHandleClass) || objectHandleClass.isInterface()) {
+  public List<Guide<?, ?>> findGuides(GuideKind kind, Class<?> reflectionClass, String channelId) {
+    if (!ReflectionFunctions.isCustomObjectFormClass(reflectionClass) || reflectionClass.isInterface()) {
       return List.of();
     }
-    HandleDescription description = handleDescriptions.computeIfAbsent(
-        objectHandleClass, this::createHandleDescription);
+    ReflectionDescription description = reflectionDescriptions.computeIfAbsent(
+            reflectionClass, this::createReflectionDescription);
     return description.findGuides(kind, channelId);
   }
 
-  private HandleDescription createHandleDescription(Class<?> objectHandleClass) {
-    HandleDescription handleDescription = new HandleDescription(objectHandleClass);
-    Class<?> actualObjectHandleClass = ReflectionFunctions.getObjectHandleClass(objectHandleClass);
-    if (actualObjectHandleClass == null) {
-      return handleDescription;
+  private ReflectionDescription createReflectionDescription(Class<?> reflectionClass) {
+    ReflectionDescription description = new ReflectionDescription(reflectionClass);
+    Class<?> actualReflectionClass = ReflectionFunctions.getObjectHandleClass(reflectionClass);
+    if (actualReflectionClass == null) {
+      return description;
     }
-    List<Guide<?, ?>> objectGuides = GuideFunctions.loadObjectGuides(actualObjectHandleClass);
-    objectGuides.forEach(handleDescription::addGuide);
-    return handleDescription;
+    List<Guide<?, ?>> objectGuides = GuideFunctions.loadObjectGuides(actualReflectionClass);
+    objectGuides.forEach(description::addGuide);
+    return description;
   }
 
-  private final class HandleDescription {
-    private final Class<?> objectHandleClass;
+  private static final class ReflectionDescription {
+    private final Class<?> reflectionClass;
     private final Map<String, List<Guide<?, ?>>> mapperGuides = new HashMap<>();
     private final Map<String, List<Guide<?, ?>>> moverGuides = new HashMap<>();
     private final Map<String, List<Guide<?, ?>>> mapperOfMovingGuides = new HashMap<>();
 
-    HandleDescription(Class<?> objectHandleClass) {
-      this.objectHandleClass = objectHandleClass;
+    ReflectionDescription(Class<?> reflectionClass) {
+      this.reflectionClass = reflectionClass;
     }
 
-    Class<?> getObjectHandleClass() {
-      return objectHandleClass;
+    Class<?> getReflectionClass() {
+      return reflectionClass;
     }
 
     List<Guide<?, ?>> findGuides(GuideKind kind, String cid) {
@@ -62,7 +62,7 @@ class ObjectGuideRegistry {
         return guides;
       }
 
-      Class<?> domainClass = ReflectionFunctions.getDomainClassOfObjectHandle(objectHandleClass);
+      Class<?> domainClass = ReflectionFunctions.getDomainClassOfObjectHandle(reflectionClass);
       String originDomainChannelId = ChannelFunctions.getOriginDomainChannelId(domainClass, cid);
       if (originDomainChannelId == null) {
         return List.of();

@@ -123,7 +123,7 @@ public class ModuleValidator implements ArtifactValidator {
     }
     if (!ReflectionFunctions.isObjectFormType(returnType.get())) {
       throw JaquariusExceptions.withMessage("Method of the projection '{0}' in unit {1} should " +
-              "return object handle class", method.name(), method.owner().canonicalName());
+              "return reflection", method.name(), method.owner().canonicalName());
     }
     if (method.isAbstract()) {
       checkAbstractProjectionProviderAnnotation(method);
@@ -144,7 +144,7 @@ public class ModuleValidator implements ArtifactValidator {
     }
     if (!ReflectionFunctions.isObjectFormType(returnType.get()) && !GuideFunctions.isGuideType(returnType.get())) {
       throw JaquariusExceptions.withMessage("Injection '{0}' in unit {1} should return " +
-              "object handle or guide class", method.name(), method.owner().canonicalName());
+              "reflection or guide class", method.name(), method.owner().canonicalName());
     }
   }
 
@@ -167,7 +167,7 @@ public class ModuleValidator implements ArtifactValidator {
       TypeReference paramType = param.type();
       if (!ReflectionFunctions.isObjectFormType(paramType)) {
         throw JaquariusExceptions.withMessage("Parameter '{0}' of method '{1}' in unit {2} should be " +
-            "object handle class", param.name(), method.name(), method.owner().canonicalName());
+            "reflection class", param.name(), method.name(), method.owner().canonicalName());
       }
     }
   }

@@ -7,12 +7,12 @@ import tech.intellispaces.reflections.framework.exception.TraverseException;
 import tech.intellispaces.reflections.framework.exception.TraverseExceptions;
 import tech.intellispaces.reflections.framework.guide.GuideLogger;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
-import tech.intellispaces.reflections.framework.system.ObjectHandleWrapper;
+import tech.intellispaces.reflections.framework.system.ReflectionWrapper;
 import tech.intellispaces.jstatements.method.MethodParam;
 import tech.intellispaces.jstatements.method.MethodStatement;
 
-abstract class ObjectGuide0<S extends ObjectHandleWrapper, R> implements Guide0<S, R> {
-  private final Class<S> objectHandleClass;
+abstract class ObjectGuide0<S extends ReflectionWrapper, R> implements Guide0<S, R> {
+  private final Class<S> reflectionClass;
   private final String cid;
   private final ReflectionForm targetForm;
   private final MethodStatement guideMethod;
@@ -20,7 +20,7 @@ abstract class ObjectGuide0<S extends ObjectHandleWrapper, R> implements Guide0<
 
   ObjectGuide0(
     String cid,
-    Class<S> objectHandleClass,
+    Class<S> reflectionClass,
     ReflectionForm targetForm,
     MethodStatement guideMethod,
     int traverseOrdinal
@@ -29,7 +29,7 @@ abstract class ObjectGuide0<S extends ObjectHandleWrapper, R> implements Guide0<
       throw UnexpectedExceptions.withMessage("Guide should not have parameters");
     }
     this.cid = cid;
-    this.objectHandleClass = objectHandleClass;
+    this.reflectionClass = reflectionClass;
     this.targetForm = targetForm;
     this.guideMethod = guideMethod;
     this.traverseOrdinal = traverseOrdinal;
@@ -54,8 +54,8 @@ abstract class ObjectGuide0<S extends ObjectHandleWrapper, R> implements Guide0<
     } catch (TraverseException e) {
       throw e;
     } catch (Exception e) {
-      throw TraverseExceptions.withCauseAndMessage(e, "Failed to invoke guide method '{0}' of object handle {1}",
-        guideMethod.name(), objectHandleClass.getCanonicalName());
+      throw TraverseExceptions.withCauseAndMessage(e, "Failed to invoke guide method '{0}' of reflection {1}",
+        guideMethod.name(), reflectionClass.getCanonicalName());
     }
   }
 
@@ -67,8 +67,8 @@ abstract class ObjectGuide0<S extends ObjectHandleWrapper, R> implements Guide0<
     } catch (TraverseException e) {
       throw e;
     } catch (Exception e) {
-      throw TraverseExceptions.withCauseAndMessage(e, "Failed to invoke guide method '{0}' of object handle {1}",
-          guideMethod.name(), objectHandleClass.getCanonicalName());
+      throw TraverseExceptions.withCauseAndMessage(e, "Failed to invoke guide method '{0}' of reflection {1}",
+          guideMethod.name(), reflectionClass.getCanonicalName());
     }
   }
 
@@ -80,15 +80,15 @@ abstract class ObjectGuide0<S extends ObjectHandleWrapper, R> implements Guide0<
     } catch (TraverseException e) {
       throw e;
     } catch (Exception e) {
-      throw TraverseExceptions.withCauseAndMessage(e, "Failed to invoke guide method '{0}' of object handle {1}",
-          guideMethod.name(), objectHandleClass.getCanonicalName());
+      throw TraverseExceptions.withCauseAndMessage(e, "Failed to invoke guide method '{0}' of reflection {1}",
+          guideMethod.name(), reflectionClass.getCanonicalName());
     }
   }
 
   @Override
   public String toString() {
     return "ObjectGuide0{" +
-        "objectHandleClass=" + objectHandleClass +
+        "objectHandleClass=" + reflectionClass +
         ", cid='" + cid + '\'' +
         ", guideMethod=" + guideMethod.name() + "(" + guideMethod.params().stream().map(MethodParam::name).collect(Collectors.joining(", ")) + ")" +
         ", targetForm=" + targetForm +

@@ -17,9 +17,9 @@ import tech.intellispaces.reflections.framework.channel.Channel1;
 import tech.intellispaces.reflections.framework.channel.ChannelFunction0;
 import tech.intellispaces.reflections.framework.channel.ChannelFunction1;
 import tech.intellispaces.reflections.framework.engine.JaquariusEngines;
-import tech.intellispaces.reflections.framework.engine.ObjectHandleBroker;
-import tech.intellispaces.reflections.framework.engine.description.ObjectHandleMethodPurposes;
-import tech.intellispaces.reflections.framework.engine.description.ObjectHandleTypeDescription;
+import tech.intellispaces.reflections.framework.engine.ReflectionBroker;
+import tech.intellispaces.reflections.framework.engine.description.ReflectionImplementationMethodPurposes;
+import tech.intellispaces.reflections.framework.engine.description.ReflectionImplementationDescription;
 import tech.intellispaces.reflections.framework.exception.TraverseException;
 import tech.intellispaces.reflections.framework.reflection.MovabilityType;
 import tech.intellispaces.reflections.framework.reflection.MovabilityTypes;
@@ -27,11 +27,11 @@ import tech.intellispaces.reflections.framework.reflection.MovableReflection;
 import tech.intellispaces.reflections.framework.reflection.Reflection;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForms;
-import tech.intellispaces.reflections.framework.reflection.OverlyingHandleController;
+import tech.intellispaces.reflections.framework.reflection.OverlyingReflectionController;
 import tech.intellispaces.reflections.framework.reflection.UnmovableReflection;
 import tech.intellispaces.reflections.framework.space.channel.ChannelFunctions;
 import tech.intellispaces.reflections.framework.system.Modules;
-import tech.intellispaces.reflections.framework.system.ObjectHandleWrapper;
+import tech.intellispaces.reflections.framework.system.ReflectionWrapper;
 import tech.intellispaces.reflections.framework.traverse.MappingTraverse;
 import tech.intellispaces.reflections.framework.traverse.TraverseTypes;
 import tech.intellispaces.jstatements.customtype.CustomType;
@@ -82,20 +82,20 @@ public class UnmovableReflectionWrapperGenerator extends AbstractReflectionWrapp
         Type.class,
         Types.class,
         Reflection.class,
-        ObjectHandleWrapper.class,
+        ReflectionWrapper.class,
         MovableReflection.class,
         UnmovableReflection.class,
-        OverlyingHandleController.class,
+        OverlyingReflectionController.class,
         Channel1.class,
         ChannelFunction0.class,
         ChannelFunction1.class,
         MappingTraverse.class,
         PrimitiveFunctions.class,
-        ObjectHandleTypeDescription.class,
-        ObjectHandleBroker.class,
+        ReflectionImplementationDescription.class,
+        ReflectionBroker.class,
         JaquariusEngines.class,
         TraverseTypes.class,
-        ObjectHandleMethodPurposes.class,
+        ReflectionImplementationMethodPurposes.class,
         TraverseException.class,
         UnexpectedExceptions.class,
         NotImplementedExceptions.class
@@ -122,13 +122,13 @@ public class UnmovableReflectionWrapperGenerator extends AbstractReflectionWrapp
     addVariable("constructors", constructors);
     addVariable("methodDescriptions", methodDescriptions);
     addVariable("guideActionMethods", guideMethods);
-    addVariable("handleMethods", traverseMethods);
+    addVariable("traverseMethods", traverseMethods);
     addVariable("domainMethods", rawDomainMethods);
     addVariable("injectionMethods", injectionMethods);
     addVariable("conversionMethods", conversionMethods);
     addVariable("notImplRelease", !implRelease);
-    addVariable("objectHandleClassSimpleName", getObjectHandleSimpleName());
-    addVariable("movableObjectHandleClassSimpleName", getMovableObjectHandleSimpleName());
+    addVariable("reflectionClassSimpleName", getObjectHandleSimpleName());
+    addVariable("movableReflectionClassSimpleName", getMovableObjectHandleSimpleName());
     return true;
   }
 

@@ -5,8 +5,8 @@ package tech.intellispaces.reflections.framework.guide;
  *
  * <p>This guide moves object from one semantic space point to another and then maps moving to related object.
  *
- * @param <S> source handle type.
- * @param <T> target handle type.
+ * @param <S> the source reflection type.
+ * @param <T> the target reflection type.
  */
 public interface MapperOfMoving<S, T> extends Guide<S, T> {
 }

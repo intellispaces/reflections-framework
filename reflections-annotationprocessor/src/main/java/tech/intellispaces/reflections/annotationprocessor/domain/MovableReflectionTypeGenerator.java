@@ -92,7 +92,7 @@ public class MovableReflectionTypeGenerator extends AbstractReflectionFormGenera
     addVariable("conversionMethods", conversionMethods);
     addVariable("domainMethods", methods);
     addVariable("isAlias", isAlias);
-    addVariable("baseObjectHandle", baseReflection);
+    addVariable("baseReflection", baseReflection);
     addVariable("primaryReflection", primaryReflection);
     addVariable("primaryDomainSimpleName", primaryDomainSimpleName);
     addVariable("primaryDomainTypeArguments", primaryDomainTypeArguments);

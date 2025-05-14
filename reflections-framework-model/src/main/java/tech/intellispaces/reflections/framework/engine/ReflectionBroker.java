@@ -3,16 +3,16 @@ package tech.intellispaces.reflections.framework.engine;
 import java.util.List;
 
 import tech.intellispaces.actions.Action;
-import tech.intellispaces.reflections.framework.engine.description.ObjectHandleTypeDescription;
+import tech.intellispaces.reflections.framework.engine.description.ReflectionImplementationDescription;
 import tech.intellispaces.reflections.framework.reflection.Reflection;
 import tech.intellispaces.reflections.framework.system.Injection;
 
 /**
- * The object handle broker.
+ * The reflection broker.
  */
-public interface ObjectHandleBroker {
+public interface ReflectionBroker {
 
-  ObjectHandleTypeDescription type();
+  ReflectionImplementationDescription type();
 
   Action methodAction(int ordinal);
 
@@ -22,11 +22,11 @@ public interface ObjectHandleBroker {
 
   <D, R> void addProjection(Class<D> targetDomain, R target);
 
-  List<? extends Reflection<?>> underlyingHandles();
+  List<? extends Reflection<?>> underlyingReflections();
 
-  Reflection<?> overlyingHandle();
+  Reflection<?> overlyingReflection();
 
-  void setOverlyingHandle(Reflection<?> overlyingHandle);
+  void setOverlyingReflection(Reflection<?> overlyingReflection);
 
   <D, R> R mapTo(Class<D> targetDomain);
 }

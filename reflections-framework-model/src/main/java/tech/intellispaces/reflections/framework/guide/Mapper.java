@@ -7,10 +7,10 @@ package tech.intellispaces.reflections.framework.guide;
  *
  * Mapper guides does not change the source object.<p/>
  *
- * Mapper guides always return a handle to an existing object. Mapper guides does not create new objects.<p/>
+ * Mapper guides always return a reflection to an existing object. Mapper guides does not create new objects.<p/>
  *
- * @param <S> source handle type.
- * @param <T> target handle type.
+ * @param <S> source reflection type.
+ * @param <T> target reflection type.
  */
 public interface Mapper<S, T> extends Guide<S, T> {
 }

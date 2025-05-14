@@ -10,9 +10,9 @@ import tech.intellispaces.reflections.framework.traverse.plan.TraversePlan;
  *
  * <p>Automatic guide builds the traverse plan itself.
  *
- * @param <S> source object handle type.
- * @param <Q1> first qualifier handle type.
- * @param <Q2> second qualifier handle type.
+ * @param <S> the source reflection type.
+ * @param <Q1> the first qualifier reflection type.
+ * @param <Q2> the second qualifier reflection type.
  */
 public class AutoMover3<S, Q1, Q2, Q3> implements AbstractMover3<S, Q1, Q2, Q3> {
   private final String cid;

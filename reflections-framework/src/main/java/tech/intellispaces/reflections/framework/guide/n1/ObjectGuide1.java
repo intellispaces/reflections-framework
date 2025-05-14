@@ -7,12 +7,12 @@ import tech.intellispaces.reflections.framework.exception.TraverseException;
 import tech.intellispaces.reflections.framework.exception.TraverseExceptions;
 import tech.intellispaces.reflections.framework.guide.GuideLogger;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
-import tech.intellispaces.reflections.framework.system.ObjectHandleWrapper;
+import tech.intellispaces.reflections.framework.system.ReflectionWrapper;
 import tech.intellispaces.jstatements.method.MethodParam;
 import tech.intellispaces.jstatements.method.MethodStatement;
 
-abstract class ObjectGuide1<S extends ObjectHandleWrapper, R, Q> implements Guide1<S, R, Q> {
-  private final Class<S> objectHandleClass;
+abstract class ObjectGuide1<S extends ReflectionWrapper, R, Q> implements Guide1<S, R, Q> {
+  private final Class<S> reflectionClass;
   private final String cid;
   private final MethodStatement guideMethod;
   private final int traverseOrdinal;
@@ -20,7 +20,7 @@ abstract class ObjectGuide1<S extends ObjectHandleWrapper, R, Q> implements Guid
 
   ObjectGuide1(
       String cid,
-      Class<S> objectHandleClass,
+      Class<S> reflectionClass,
       MethodStatement guideMethod,
       int traverseOrdinal,
       ReflectionForm targetForm
@@ -29,7 +29,7 @@ abstract class ObjectGuide1<S extends ObjectHandleWrapper, R, Q> implements Guid
       throw UnexpectedExceptions.withMessage("Guide should have one parameter");
     }
     this.cid = cid;
-    this.objectHandleClass = objectHandleClass;
+    this.reflectionClass = reflectionClass;
     this.guideMethod = guideMethod;
     this.traverseOrdinal = traverseOrdinal;
     this.targetForm = targetForm;
@@ -54,15 +54,15 @@ abstract class ObjectGuide1<S extends ObjectHandleWrapper, R, Q> implements Guid
     } catch (TraverseException e) {
       throw e;
     } catch (Exception e) {
-      throw TraverseExceptions.withCauseAndMessage(e, "Failed to invoke guide method '{0}' of object handle {1}",
-          guideMethod.name(), objectHandleClass.getCanonicalName());
+      throw TraverseExceptions.withCauseAndMessage(e, "Failed to invoke guide method '{0}' of reflection {1}",
+          guideMethod.name(), reflectionClass.getCanonicalName());
     }
   }
 
   @Override
   public String toString() {
     return "ObjectGuide1{" +
-        "objectHandleClass=" + objectHandleClass +
+        "objectHandleClass=" + reflectionClass +
         ", cid='" + cid + '\'' +
         ", guideMethod=" + guideMethod.name() + "(" + guideMethod.params().stream().map(MethodParam::name).collect(Collectors.joining(", ")) + ")" +
         ", targetForm=" + targetForm +

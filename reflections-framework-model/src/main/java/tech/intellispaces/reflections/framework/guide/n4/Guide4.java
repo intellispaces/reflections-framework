@@ -6,12 +6,12 @@ import tech.intellispaces.reflections.framework.guide.Guide;
 /**
  * Guide with four qualifiers.
  *
- * @param <S> source type.
- * @param <R> result handle type.
- * @param <Q1> first qualifier handle type.
- * @param <Q2> second qualifier handle type.
- * @param <Q3> third qualifier handle type.
- * @param <Q4> fourth qualifier handle type.
+ * @param <S> the source reflection type.
+ * @param <R> the result reflection type.
+ * @param <Q1> the first qualifier reflection type.
+ * @param <Q2> the second qualifier reflection type.
+ * @param <Q3> the third qualifier reflection type.
+ * @param <Q4> the fourth qualifier reflection type.
  */
 public interface Guide4<S, R, Q1, Q2, Q3, Q4> extends Guide<S, R> {
 

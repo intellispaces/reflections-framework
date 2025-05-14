@@ -13,7 +13,7 @@ import {{$importedClass}};
 @Movable
 {{$generatedAnnotation}}
 {{when $isAlias}}
-public interface {{$generatedArtifactSimpleName}}{{$reflectionTypeParamsFull}} extends {{$simpleObject}}{{$reflectionTypeParamsBrief}}, {{$generalReflection}}{{$reflectionTypeParamsBrief}}, {{$baseObjectHandle}} {
+public interface {{$generatedArtifactSimpleName}}{{$reflectionTypeParamsFull}} extends {{$simpleObject}}{{$reflectionTypeParamsBrief}}, {{$generalReflection}}{{$reflectionTypeParamsBrief}}, {{$baseReflection}} {
 {{else}}
 public interface {{$generatedArtifactSimpleName}}{{$reflectionTypeParamsFull}} extends {{$simpleObject}}{{$reflectionTypeParamsBrief}}, {{$generalReflection}}{{$reflectionTypeParamsBrief}}, MovableReflection<{{$sourceArtifactSimpleName}}{{$domainTypeParamsBrief}}> {
 {{end}}

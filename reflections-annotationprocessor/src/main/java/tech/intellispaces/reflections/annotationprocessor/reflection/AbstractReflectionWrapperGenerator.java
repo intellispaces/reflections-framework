@@ -18,7 +18,7 @@ import tech.intellispaces.commons.type.ClassNameFunctions;
 import tech.intellispaces.commons.type.PrimitiveTypes;
 import tech.intellispaces.reflections.annotationprocessor.AnnotationGeneratorFunctions;
 import tech.intellispaces.reflections.annotationprocessor.domain.AbstractReflectionFormGenerator;
-import tech.intellispaces.reflections.framework.engine.description.ObjectHandleMethodPurposes;
+import tech.intellispaces.reflections.framework.engine.description.ReflectionImplementationMethodPurposes;
 import tech.intellispaces.reflections.framework.exception.ConfigurationExceptions;
 import tech.intellispaces.reflections.framework.guide.GuideFunctions;
 import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
@@ -99,7 +99,7 @@ abstract class AbstractReflectionWrapperGenerator extends AbstractReflectionForm
     } else if (ReflectionFunctions.isMovableObjectHandle(sourceArtifact())) {
       canonicalName = NameConventionFunctions.getMovableReflectionTypeName(domainType.canonicalName(), true);
     } else {
-      throw UnexpectedExceptions.withMessage("Could not define movable type of the object handle {0}",
+      throw UnexpectedExceptions.withMessage("Could not define movable type of the reflection {0}",
           sourceArtifact().canonicalName());
     }
     return addImportAndGetSimpleName(canonicalName);
@@ -319,7 +319,7 @@ abstract class AbstractReflectionWrapperGenerator extends AbstractReflectionForm
       paramClasses.add(buildGuideParamClassName(param.type()));
     }
     map.put("params", paramClasses);
-    map.put("purpose", ObjectHandleMethodPurposes.TraverseMethod.name());
+    map.put("purpose", ReflectionImplementationMethodPurposes.TraverseMethod.name());
     map.put("traverseOrdinal", ordinal);
     map.put("channelClass", addImportAndGetSimpleName(NameConventionFunctions.getChannelClassCanonicalName(
         domainMethod)));
@@ -338,7 +338,7 @@ abstract class AbstractReflectionWrapperGenerator extends AbstractReflectionForm
       paramClasses.add(buildGuideParamClassName(param.type()));
     }
     map.put("params", paramClasses);
-    map.put("purpose", ObjectHandleMethodPurposes.GuideMethod.name());
+    map.put("purpose", ReflectionImplementationMethodPurposes.GuideMethod.name());
     map.put("traverseOrdinal", ordinal);
     return map;
   }
@@ -355,7 +355,7 @@ abstract class AbstractReflectionWrapperGenerator extends AbstractReflectionForm
     map.put("name", methodName);
 
     map.put("params", List.of());
-    map.put("purpose", ObjectHandleMethodPurposes.GuideMethod.name());
+    map.put("purpose", ReflectionImplementationMethodPurposes.GuideMethod.name());
     map.put("traverseOrdinal", ordinal);
     return map;
   }
@@ -366,7 +366,7 @@ abstract class AbstractReflectionWrapperGenerator extends AbstractReflectionForm
     var map = new HashMap<String, Object>();
     map.put("name", injectionMethod.name());
     map.put("params", List.of());
-    map.put("purpose", ObjectHandleMethodPurposes.InjectionMethod.name());
+    map.put("purpose", ReflectionImplementationMethodPurposes.InjectionMethod.name());
 
     map.put("injectionKind", "autoguide");
     map.put("injectionOrdinal", ordinal);
@@ -381,7 +381,7 @@ abstract class AbstractReflectionWrapperGenerator extends AbstractReflectionForm
     var map = new HashMap<String, Object>();
     map.put("name", injectionMethod.name());
     map.put("params", List.of());
-    map.put("purpose", ObjectHandleMethodPurposes.InjectionMethod.name());
+    map.put("purpose", ReflectionImplementationMethodPurposes.InjectionMethod.name());
 
     map.put("injectionKind", "specguide");
     map.put("injectionOrdinal", ordinal);

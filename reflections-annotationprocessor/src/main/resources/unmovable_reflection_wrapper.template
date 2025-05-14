@@ -4,27 +4,27 @@ package {{$generatedArtifactPackageName}};
 import {{$importedClass}};
 {{end}}
 
-import static tech.intellispaces.reflections.framework.engine.description.ObjectHandleMethods.objectHandleMethod;
+import static tech.intellispaces.reflections.framework.engine.description.ReflectionWrapperMethods.reflectionImplementationMethod;
 
 /**
  * This class was generated automatically. Don't try to change it.
  */
 @Wrapper({{$sourceArtifactSimpleName}}.class)
 {{$generatedAnnotation}}
-public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sourceArtifactSimpleName}}{{$typeParamsBrief}} implements {{$objectHandleClassSimpleName}}{{$typeParamsBrief}}, ObjectHandleWrapper, OverlyingHandleController {
-  private static ObjectHandleTypeDescription $TYPE;
-  private final ObjectHandleBroker $broker;
+public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sourceArtifactSimpleName}}{{$typeParamsBrief}} implements {{$reflectionClassSimpleName}}{{$typeParamsBrief}}, ReflectionWrapper, OverlyingReflectionController {
+  private static ReflectionImplementationDescription $TYPE;
+  private final ReflectionBroker $broker;
 
 {{for constructor : $constructors}}
   public {{$generatedArtifactSimpleName}}({{for param : $constructor["params"]}}{{$param["type"]}} {{$param["name"]}}{{when $param.isNotLast()}}, {{end}}{{end}}) {
     super({{for param : $constructor["params"]}}{{$param["name"]}}{{when $param.isNotLast()}}, {{end}}{{end}});
-    $broker = $registerObjectHandle();
+    $broker = $registerReflection();
   }
 
 {{end}}
 
   @Override
-  public ObjectHandleBroker $broker() {
+  public ReflectionBroker $broker() {
     return this.$broker;
   }
 
@@ -55,7 +55,7 @@ public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sour
   }
 
   @Override
-  public {{$movableObjectHandleClassSimpleName}}{{$typeParamsBrief}} asMovableOrElseThrow() {
+  public {{$movableReflectionClassSimpleName}}{{$typeParamsBrief}} asMovableOrElseThrow() {
     throw UnexpectedExceptions.withMessage("Unmovable object");
   }
 
@@ -63,7 +63,7 @@ public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sour
   {{$method["declaration"]}}
 
 {{end}}
-{{for method : $handleMethods}}
+{{for method : $traverseMethods}}
   @Override
   {{$method["declaration"]}}
 
@@ -99,17 +99,17 @@ public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sour
   }
 
   @Override
-  public java.util.List<UnmovableReflection<?>> underlyingHandles() {
-    return (java.util.List<UnmovableReflection<?>>) $broker.underlyingHandles();
+  public java.util.List<UnmovableReflection<?>> underlyingReflections() {
+    return (java.util.List<UnmovableReflection<?>>) $broker.underlyingReflections();
   }
 
   @Override
-  public UnmovableReflection<?> overlyingHandle() {
-    return (UnmovableReflection<?>) $broker.overlyingHandle();
+  public UnmovableReflection<?> overlyingReflection() {
+    return (UnmovableReflection<?>) $broker.overlyingReflection();
   }
 
   @Override
-  public void setOverlyingHandle(Reflection<?> overlyingHandle) {
+  public void setOverlyingReflection(Reflection<?> overlyingReflection) {
     throw NotImplementedExceptions.withCode("Gxgitg");
   }
 
@@ -123,20 +123,20 @@ public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sour
     return Modules.current().mapThruChannel1(this, channelClass, qualifier);
   }
 
-  private ObjectHandleBroker $registerObjectHandle() {
+  private ReflectionBroker $registerReflection() {
     if ($TYPE == null) {
-      $TYPE = $registerObjectHandleType();
+      $TYPE = $registerReflectionWrapperType();
     }
-    return JaquariusEngines.get().registerObjectHandle(this, $TYPE);
+    return JaquariusEngines.get().registerReflection(this, $TYPE);
   }
 
-  private static ObjectHandleTypeDescription $registerObjectHandleType() {
-    return JaquariusEngines.get().registerObjectHandleType(
+  private static ReflectionImplementationDescription $registerReflectionWrapperType() {
+    return JaquariusEngines.get().registerReflectionWrapperType(
         {{$generatedArtifactSimpleName}}.class,
         {{$sourceArtifactSimpleName}}.class{{when $methodDescriptions.isNotEmpty()}},{{end}}
 {{for method : $methodDescriptions}}
-        objectHandleMethod({{$generatedArtifactSimpleName}}.class, "{{$method["name"]}}"{{for param : $method["params"]}}, {{$param}}.class{{end}})
-            .purpose(ObjectHandleMethodPurposes.{{$method["purpose"]}})
+        reflectionImplementationMethod({{$generatedArtifactSimpleName}}.class, "{{$method["name"]}}"{{for param : $method["params"]}}, {{$param}}.class{{end}})
+            .purpose(ReflectionImplementationMethodPurposes.{{$method["purpose"]}})
             .function({{$generatedArtifactSimpleName}}::{{$method["name"]}})
 {{when $method["traverseOrdinal"].isNotVoid()}}
             .traverseOrdinal({{$method["traverseOrdinal"]}})

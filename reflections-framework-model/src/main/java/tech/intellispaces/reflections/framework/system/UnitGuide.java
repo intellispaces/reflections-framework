@@ -6,8 +6,8 @@ import tech.intellispaces.jstatements.method.MethodStatement;
 /**
  * The system unit guide.
  *
- * @param <S> the source handle type.
- * @param <R> the result handle type.
+ * @param <S> the source reflection type.
+ * @param <R> the result reflection type.
  */
 public interface UnitGuide<S, R> extends Guide<S, R> {
 

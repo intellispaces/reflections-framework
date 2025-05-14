@@ -1,6 +1,6 @@
 package tech.intellispaces.reflections.framework.reflection;
 
-public interface PostRegistrationHandleProcessor {
+public interface PostRegistrationReflectionHandler {
 
   default void postRegistration() {
   }

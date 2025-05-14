@@ -1,29 +1,29 @@
 package tech.intellispaces.reflections.framework.guide.n1;
 
 import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
-import tech.intellispaces.reflections.framework.system.ObjectHandleWrapper;
+import tech.intellispaces.reflections.framework.system.ReflectionWrapper;
 import tech.intellispaces.jstatements.method.MethodStatement;
 
 /**
- * Attached to object handle mapper related to moving.<p/>
+ * The reflection implementation mapper related to moving.<p/>
  *
- * Attached guide can be used exclusively with this object handle only.
+ * Attached guide can be used exclusively with this reflection implementation only.
  *
- * @param <S> source object type.
- * @param <T> target object type.
- * @param <Q> qualifier object type.
+ * @param <S> the source reflection type.
+ * @param <T> the target reflection type.
+ * @param <Q> the qualifier reflection type.
  */
-public class ObjectMapperOfMoving1<S extends ObjectHandleWrapper, T, Q>
+public class ObjectMapperOfMoving1<S extends ReflectionWrapper, T, Q>
     extends ObjectGuide1<S, T, Q>
     implements AbstractMapperOfMoving1<S, T, Q>
 {
   public ObjectMapperOfMoving1(
       String cid,
-      Class<S> objectHandleClass,
+      Class<S> reflectionClass,
       MethodStatement guideMethod,
       int traverseOrdinal,
       ReflectionForm targetForm
   ) {
-    super(cid, objectHandleClass, guideMethod, traverseOrdinal, targetForm);
+    super(cid, reflectionClass, guideMethod, traverseOrdinal, targetForm);
   }
 }

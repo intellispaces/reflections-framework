@@ -30,77 +30,77 @@ public enum TraversePlanTypes implements TraversePlanType, Enumeration<TraverseP
   CallGuide4,
 
   /**
-   * The declarative plan to map object handle through not-parametrized channel.
+   * The declarative plan to map reflection through not-parametrized channel.
    */
   MapObjectHandleThruChannel0,
 
   /**
-   * The declarative traverse plan to map object handle through one-parametrized channel.
+   * The declarative traverse plan to map reflection through one-parametrized channel.
    */
   MapObjectHandleThruChannel1,
 
   /**
-   * The declarative traverse plan to map object handle through two times parametrized channel.
+   * The declarative traverse plan to map reflection through two times parametrized channel.
    */
   MapObjectHandleThruChannel2,
 
   /**
-   * The declarative traverse plan to map object handle through three times parametrized channel.
+   * The declarative traverse plan to map reflection through three times parametrized channel.
    */
   MapObjectHandleThruChannel3,
 
   /**
-   * The declarative traverse plan to move object handle through not-parametrized channel.
+   * The declarative traverse plan to move reflection through not-parametrized channel.
    */
   MoveObjectHandleThruChannel0,
 
   /**
-   * The declarative traverse plan to move object handle through one-parametrized channel.
+   * The declarative traverse plan to move reflection through one-parametrized channel.
    */
   MoveObjectHandleThruChannel1,
 
   /**
-   * The declarative traverse plan to move object handle through two times parametrized channel.
+   * The declarative traverse plan to move reflection through two times parametrized channel.
    */
   MoveObjectHandleThruChannel2,
 
   /**
-   * The declarative traverse plan to move object handle through three times parametrized channel.
+   * The declarative traverse plan to move reflection through three times parametrized channel.
    */
   MoveObjectHandleThruChannel3,
 
   /**
-   * The declarative traverse plan to map of moving object handle through not-parametrized channel.
+   * The declarative traverse plan to map of moving reflection through not-parametrized channel.
    */
   MapOfMovingObjectHandleThruChannel0,
 
   /**
-   * The declarative traverse plan to map of moving object handle through one-parametrized channel.
+   * The declarative traverse plan to map of moving reflection through one-parametrized channel.
    */
   MapOfMovingObjectHandleThruChannel1,
 
   /**
-   * The declarative traverse plan to map of moving object handle through two times parametrized channel.
+   * The declarative traverse plan to map of moving reflection through two times parametrized channel.
    */
   MapOfMovingObjectHandleThruChannel2,
 
   /**
-   * The declarative traverse plan to map of moving object handle through three times parametrized channel.
+   * The declarative traverse plan to map of moving reflection through three times parametrized channel.
    */
   MapOfMovingObjectHandleThruChannel3,
 
   /**
-   * The declarative traverse plan to map of moving object handle through four times parametrized channel.
+   * The declarative traverse plan to map of moving reflection through four times parametrized channel.
    */
   MapOfMovingObjectHandleThruChannel4,
 
   /**
-   * The execution plan to ascend to overlying object handle and call guide.
+   * The execution plan to ascend to overlying reflection and call guide.
    */
   AscendAndExecute0,
 
   /**
-   * The execution plan to ascend to overlying object handle and call guide.
+   * The execution plan to ascend to overlying reflection and call guide.
    */
   AscendAndExecute1;
 

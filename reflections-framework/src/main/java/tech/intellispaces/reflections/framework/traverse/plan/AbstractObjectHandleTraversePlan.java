@@ -43,7 +43,7 @@ public abstract class AbstractObjectHandleTraversePlan implements ObjectHandleTr
   @Override
   public void cacheExecutionPlan(Class<?> sourceClass, ExecutionTraversePlan traversePlan) {
     if (!ReflectionFunctions.isObjectHandleClass(sourceClass)) {
-      throw UnexpectedExceptions.withMessage("Expected object handle class");
+      throw UnexpectedExceptions.withMessage("Expected reflection class");
     }
     if (this.objectHandleClass != sourceClass && !this.objectHandleClass.isAssignableFrom(sourceClass)) {
       throw UnexpectedExceptions.withMessage("Expected class {0} or its subclasses",

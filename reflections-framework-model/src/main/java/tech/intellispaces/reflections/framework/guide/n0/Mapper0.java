@@ -14,8 +14,8 @@ import tech.intellispaces.reflections.framework.guide.n5.Mapper5;
 /**
  * Mapper guide without qualifiers.
  *
- * @param <S> source handle type.
- * @param <T> target handle type.
+ * @param <S> the source reflection type.
+ * @param <T> the target reflection type.
  */
 public interface Mapper0<S, T> extends
     Guide0<S, T>,

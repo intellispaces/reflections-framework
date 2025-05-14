@@ -5,12 +5,12 @@ import tech.intellispaces.reflections.framework.system.UnitWrapper;
 import tech.intellispaces.jstatements.method.MethodStatement;
 
 /**
- * Unit method mapper with two qualifier.
+ * Unit method mapper with two qualifiers.
  *
- * @param <S> source object handle type.
- * @param <T> target object handle type.
- * @param <Q1> first qualifier object handle type.
- * @param <Q2> second qualifier object handle type.
+ * @param <S> the source reflection type.
+ * @param <T> the target reflection type.
+ * @param <Q1> the first qualifier reflection type.
+ * @param <Q2> the second qualifier reflection type.
  */
 public class UnitMapper2<S, T, Q1, Q2>
     extends UnitGuide2<S, T, Q1, Q2>

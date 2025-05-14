@@ -91,7 +91,7 @@ public class MovableRegularFormGenerator extends AbstractRegularFormGenerator {
     addVariable("reflectionTypeParamsFull", typeParamsFull);
     addVariable("reflectionTypeParamsBrief", typeParamsBrief);
     addVariable("domainMethods", methods);
-    addVariable("generalPureObjectHandle", getGeneralOriginHandleClassName());
+    addVariable("generalRegularForm", getGeneralRegularFormClassName());
     addVariable("underlyingTypes", underlyingTypes.isEmpty() ? "" : ", " + String.join(", ", underlyingTypes));
     return true;
   }

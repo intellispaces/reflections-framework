@@ -13,8 +13,8 @@ import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
  * The guide is object.<p/>
  * Guide can be constructed from other guides.<p/>
  *
- * @param <S> the source handle type. This type defines the guide applicability.
- * @param <R> the result handle type.
+ * @param <S> the source reflection type. This type defines the guide applicability.
+ * @param <R> the result reflection type.
  */
 public interface Guide<S, R> {
 

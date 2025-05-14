@@ -97,9 +97,9 @@ class TraverseExecutor implements tech.intellispaces.reflections.framework.trave
 
   @Override
   public Object execute(AscendAndExecutePlan1 plan, Object source, Object qualifier) throws TraverseException {
-    var sourceHandle = (Reflection<?>) source;
-    var overlyingHandle = sourceHandle.overlyingHandle();
-    return plan.executionPlan().execute(overlyingHandle, qualifier, this);
+    var sourceReflection = (Reflection<?>) source;
+    var overlyingReflection = sourceReflection.overlyingReflection();
+    return plan.executionPlan().execute(overlyingReflection, qualifier, this);
   }
 
   @Override

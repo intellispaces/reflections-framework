@@ -18,9 +18,9 @@ import tech.intellispaces.reflections.framework.channel.Channel1;
 import tech.intellispaces.reflections.framework.channel.ChannelFunction0;
 import tech.intellispaces.reflections.framework.channel.ChannelFunction1;
 import tech.intellispaces.reflections.framework.engine.JaquariusEngines;
-import tech.intellispaces.reflections.framework.engine.ObjectHandleBroker;
-import tech.intellispaces.reflections.framework.engine.description.ObjectHandleMethodPurposes;
-import tech.intellispaces.reflections.framework.engine.description.ObjectHandleTypeDescription;
+import tech.intellispaces.reflections.framework.engine.ReflectionBroker;
+import tech.intellispaces.reflections.framework.engine.description.ReflectionImplementationMethodPurposes;
+import tech.intellispaces.reflections.framework.engine.description.ReflectionImplementationDescription;
 import tech.intellispaces.reflections.framework.exception.TraverseException;
 import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
 import tech.intellispaces.reflections.framework.reflection.MovabilityType;
@@ -29,11 +29,11 @@ import tech.intellispaces.reflections.framework.reflection.MovableReflection;
 import tech.intellispaces.reflections.framework.reflection.Reflection;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForms;
-import tech.intellispaces.reflections.framework.reflection.OverlyingHandleController;
-import tech.intellispaces.reflections.framework.reflection.PostRegistrationHandleProcessor;
+import tech.intellispaces.reflections.framework.reflection.OverlyingReflectionController;
+import tech.intellispaces.reflections.framework.reflection.PostRegistrationReflectionHandler;
 import tech.intellispaces.reflections.framework.space.channel.ChannelFunctions;
 import tech.intellispaces.reflections.framework.system.Modules;
-import tech.intellispaces.reflections.framework.system.ObjectHandleWrapper;
+import tech.intellispaces.reflections.framework.system.ReflectionWrapper;
 import tech.intellispaces.reflections.framework.traverse.MappingOfMovingTraverse;
 import tech.intellispaces.reflections.framework.traverse.MappingTraverse;
 import tech.intellispaces.reflections.framework.traverse.TraverseType;
@@ -88,10 +88,10 @@ public class MovableReflectionWrapperGenerator extends AbstractReflectionWrapper
         Types.class,
         Modules.class,
         Reflection.class,
-        ObjectHandleWrapper.class,
+        ReflectionWrapper.class,
         MovableReflection.class,
-        OverlyingHandleController.class,
-        PostRegistrationHandleProcessor.class,
+        OverlyingReflectionController.class,
+        PostRegistrationReflectionHandler.class,
         Channel0.class,
         Channel1.class,
         ChannelFunction0.class,
@@ -100,11 +100,11 @@ public class MovableReflectionWrapperGenerator extends AbstractReflectionWrapper
         MappingTraverse.class,
         MappingOfMovingTraverse.class,
         PrimitiveFunctions.class,
-        ObjectHandleTypeDescription.class,
-        ObjectHandleBroker.class,
+        ReflectionImplementationDescription.class,
+        ReflectionBroker.class,
         JaquariusEngines.class,
         TraverseTypes.class,
-        ObjectHandleMethodPurposes.class,
+        ReflectionImplementationMethodPurposes.class,
         TraverseException.class,
         NotImplementedExceptions.class
     );
@@ -130,11 +130,11 @@ public class MovableReflectionWrapperGenerator extends AbstractReflectionWrapper
     addVariable("constructors", constructors);
     addVariable("methodDescriptions", methodDescriptions);
     addVariable("guideActionMethods", guideMethods);
-    addVariable("handleMethods", traverseMethods);
+    addVariable("traverseMethods", traverseMethods);
     addVariable("injectionMethods", injectionMethods);
     addVariable("conversionMethods", conversionMethods);
     addVariable("notImplRelease", !implRelease);
-    addVariable("objectHandleClassSimpleName", getObjectHandleSimpleName());
+    addVariable("reflectionClassSimpleName", getObjectHandleSimpleName());
     return true;
   }
 

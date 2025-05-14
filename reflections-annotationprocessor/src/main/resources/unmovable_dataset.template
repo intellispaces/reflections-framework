@@ -5,7 +5,7 @@ import {{$importedClass}};
 {{end}}
 
 /**
- * Unmovable object handle implementation for data object of domain {@link {{$sourceArtifactSimpleName}}}.
+ * Unmovable reflection implementation for data object of domain {@link {{$sourceArtifactSimpleName}}}.
  * <p>
  * Data objects are entirely in memory.
  * <p>
@@ -13,7 +13,7 @@ import {{$importedClass}};
  */
 @Reflection({{$sourceArtifactSimpleName}}.class)
 {{$generatedAnnotation}}
-public class {{$generatedArtifactSimpleName}} implements {{$objectHandleClassName}} {
+public class {{$generatedArtifactSimpleName}} implements {{$reflectionClassName}} {
 {{for projection : $projections}}
   private final {{$projection["type"]}} {{$projection["name"]}};
 {{end}}
@@ -55,7 +55,7 @@ public class {{$generatedArtifactSimpleName}} implements {{$objectHandleClassNam
   }
 
   @Override
-  public {{$movableObjectHandleClassName}} asMovableOrElseThrow() {
+  public {{$movableReflectionClassName}} asMovableOrElseThrow() {
     throw UnexpectedExceptions.withMessage("Unmovable object");
   }
 
@@ -80,12 +80,12 @@ public class {{$generatedArtifactSimpleName}} implements {{$objectHandleClassNam
   }
 
   @Override
-  public java.util.List<UnmovableReflection<?>> underlyingHandles() {
+  public java.util.List<UnmovableReflection<?>> underlyingReflections() {
     throw NotImplementedExceptions.withCode("VCEdng");
   }
 
   @Override
-  public UnmovableReflection<?> overlyingHandle() {
+  public UnmovableReflection<?> overlyingReflection() {
     throw NotImplementedExceptions.withCode("Gl2z4f8y");
   }
 

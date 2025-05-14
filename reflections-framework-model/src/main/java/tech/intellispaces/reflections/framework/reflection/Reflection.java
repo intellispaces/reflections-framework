@@ -12,34 +12,34 @@ public interface Reflection<D> extends AbstractReflection<D> {
 //  <R extends Reflection<D>> R as(Class<R> reflectionClass);
 
   /**
-   * Movable object handle can move an object in space.
+   * A flag indicating whether a reflection is movable or not.
    *
-   * @return <code>true</code> if this object handle can move object and <code>false</code> otherwise.
+   * @return <code>true</code> if this reflection is movable or <code>false</code> otherwise.
    */
   boolean isMovable();
 
   /**
-   * Returns movable representation of this object handle or throws exception.
+   * Returns movable representation of this reflection throws exception.
    */
   MovableReflection<D> asMovableOrElseThrow();
 
   /**
    * Sets projection.
    *
-   * @param targetDomain target domain class.
-   * @param target target object handle.
-   * @param <TD> target domain type.
-   * @param <T> target object reference type.
+   * @param targetDomain the target domain class.
+   * @param target the target reflection.
+   * @param <TD> the target domain type.
+   * @param <T> the target reflection type.
    */
   <TD, T> void addProjection(Class<TD> targetDomain, T target);
 
   /**
-   * Returns nearest known underlying object handles or <code>null</code> if its are unknown.
+   * Returns nearest known underlying reflection or <code>null</code> if its are unknown.
    */
-  List<? extends Reflection<?>> underlyingHandles();
+  List<? extends Reflection<?>> underlyingReflections();
 
   /**
-   * Returns nearest known overlying object handle or <code>null</code> if it is unknown.
+   * Returns nearest known overlying reflection or <code>null</code> if it is unknown.
    */
-  Reflection<?> overlyingHandle();
+  Reflection<?> overlyingReflection();
 }

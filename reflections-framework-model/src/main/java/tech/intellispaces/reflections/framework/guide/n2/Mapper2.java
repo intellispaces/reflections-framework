@@ -10,10 +10,10 @@ import tech.intellispaces.reflections.framework.guide.n5.Mapper5;
 /**
  * Mapper guide with two qualifiers.
  *
- * @param <S> source handle type.
- * @param <T> target handle type.
- * @param <Q1> first qualifier handle type.
- * @param <Q2> second qualifier handle type.
+ * @param <S> the source reflection type.
+ * @param <T> the target reflection type.
+ * @param <Q1> the first qualifier reflection type.
+ * @param <Q2> the second qualifier reflection type.
  */
 public interface Mapper2<S, T, Q1, Q2> extends
     Guide2<S, T, Q1, Q2>,

@@ -109,7 +109,7 @@ public class MovableDownwardObjectGenerator extends ConversionObjectGenerator {
     addVariable("isAlias", isAlias);
     addVariable("primaryDomainSimpleName", primaryDomainSimpleName);
     addVariable("domainType", domainType);
-    addVariable("objectHandleClassSimpleName", getObjectHandleSimpleName());
+    addVariable("reflectionClassSimpleName", getObjectHandleSimpleName());
     return true;
   }
 

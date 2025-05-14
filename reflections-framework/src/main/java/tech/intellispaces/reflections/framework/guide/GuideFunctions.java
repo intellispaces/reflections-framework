@@ -215,12 +215,12 @@ public final class GuideFunctions {
     String implClassCanonicalName = NameConventionFunctions.getReflectionWrapperCanonicalName(
         objectHandleClass
     );
-    Optional<Class<?>> objectHandleImplClass = ClassFunctions.getClass(implClassCanonicalName);
-    if (objectHandleImplClass.isEmpty()) {
-      throw UnexpectedExceptions.withMessage("Could not get object handle implementation class {0}",
+    Optional<Class<?>> reflectionImplClass = ClassFunctions.getClass(implClassCanonicalName);
+    if (reflectionImplClass.isEmpty()) {
+      throw UnexpectedExceptions.withMessage("Could not get reflection implementation class {0}",
           implClassCanonicalName);
     }
-    CustomType objectHandleWrapperType = Interfaces.of(objectHandleImplClass.get());
+    CustomType reflectionWrapperType = Interfaces.of(reflectionImplClass.get());
 
     CustomType domainType = ReflectionFunctions.getDomainOfObjectFormOrElseThrow(Classes.of(objectHandleClass));
 
@@ -228,7 +228,7 @@ public final class GuideFunctions {
       if (NameConventionFunctions.isConversionMethod(method)) {
         String cid = method.selectAnnotation(Channel.class).orElseThrow().value();
 
-        Optional<MethodStatement> wrapperMethod = objectHandleWrapperType.declaredMethod(method.name(), List.of());
+        Optional<MethodStatement> wrapperMethod = reflectionWrapperType.declaredMethod(method.name(), List.of());
         int channelOrdinal = wrapperMethod.orElseThrow().selectAnnotation(Ordinal.class).orElseThrow().value();
 
         Guide<?, ?> guide = new ObjectMapper0<>(

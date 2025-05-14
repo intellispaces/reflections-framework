@@ -6,13 +6,13 @@ import tech.intellispaces.reflections.framework.guide.Mapper;
 /**
  * Mapper guide with five qualifiers.
  *
- * @param <S> source handle type.
- * @param <T> target handle type.
- * @param <Q1> first qualifier handle type.
- * @param <Q2> second qualifier handle type.
- * @param <Q3> third qualifier handle type.
- * @param <Q4> fourth qualifier handle type.
- * @param <Q5> fifth qualifier handle type.
+ * @param <S> the source reflection type.
+ * @param <T> the target reflection type.
+ * @param <Q1> the first qualifier reflection type.
+ * @param <Q2> the second qualifier reflection type.
+ * @param <Q3> the third qualifier reflection type.
+ * @param <Q4> the fourth qualifier reflection type.
+ * @param <Q5> the fifth qualifier reflection type.
  */
 public interface Mapper5<S, T, Q1, Q2, Q3, Q4, Q5> extends
     Guide5<S, T, Q1, Q2, Q3, Q4, Q5>,

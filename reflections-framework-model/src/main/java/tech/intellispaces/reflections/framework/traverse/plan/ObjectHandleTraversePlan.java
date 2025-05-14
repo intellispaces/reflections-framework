@@ -1,12 +1,12 @@
 package tech.intellispaces.reflections.framework.traverse.plan;
 
 /**
- * The declarative plan to traverse object handle through channel.
+ * The declarative plan to traverse reflection through channel.
  */
 public interface ObjectHandleTraversePlan extends DeclarativeTraversePlan {
 
   /**
-   * Source object handle class.
+   * The source reflection class.
    */
   Class<?> objectHandleClass();
 

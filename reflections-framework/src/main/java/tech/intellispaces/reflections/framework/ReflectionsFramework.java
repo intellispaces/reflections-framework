@@ -11,6 +11,9 @@ import tech.intellispaces.reflections.framework.system.Modules;
 import tech.intellispaces.reflections.framework.system.System;
 import tech.intellispaces.reflections.framework.system.Systems;
 
+/**
+ * The reflections framework.
+ */
 public class ReflectionsFramework {
 
   /**

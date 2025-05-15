@@ -15,7 +15,7 @@ import tech.intellispaces.actions.Action8;
 import tech.intellispaces.actions.Action9;
 import tech.intellispaces.commons.type.Type;
 import tech.intellispaces.reflections.framework.engine.description.ReflectionImplementationMethodDescription;
-import tech.intellispaces.reflections.framework.engine.description.ReflectionImplementationDescription;
+import tech.intellispaces.reflections.framework.engine.description.ReflectionImplementationType;
 import tech.intellispaces.reflections.framework.engine.description.UnitMethodDescription;
 import tech.intellispaces.reflections.framework.system.Module;
 import tech.intellispaces.reflections.framework.system.UnitWrapper;
@@ -37,7 +37,7 @@ public interface Engine {
   Module createModule(List<Class<?>> unitClasses, String[] args);
 
   /**
-   * Registers reflection wrapper type.
+   * Registers reflection implementation type.
    *
    * @param reflectionWrapperClass the reflection wrapper class.
    * @param reflectionImplClass the reflection implementation class.
@@ -47,7 +47,7 @@ public interface Engine {
    * @param <R> the reflection type.
    * @param <W> the reflection wrapper type.
    */
-  <R, W extends R> ReflectionImplementationDescription registerReflectionWrapperType(
+  <R, W extends R> ReflectionImplementationType registerReflectionImplementationType(
       Class<W> reflectionWrapperClass, Class<R> reflectionImplClass, ReflectionImplementationMethodDescription... methods
   );
 
@@ -60,7 +60,7 @@ public interface Engine {
    *
    * @param <W> the reflection wrapper type.
    */
-  <W> ReflectionBroker registerReflection(W reflectionWrapper, ReflectionImplementationDescription type);
+  <W> ReflectionBroker registerReflection(W reflectionWrapper, ReflectionImplementationType type);
 
   /**
    * Registers module unit.

@@ -26,7 +26,7 @@ import tech.intellispaces.reflections.framework.traverse.MappingOfMovingTraverse
 import tech.intellispaces.reflections.framework.traverse.MappingTraverse;
 
 /**
- * The system module.
+ * The reflections system module.
  */
 public interface Module {
 

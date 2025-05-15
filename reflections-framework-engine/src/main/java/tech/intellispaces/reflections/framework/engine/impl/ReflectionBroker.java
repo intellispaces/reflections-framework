@@ -7,12 +7,12 @@ import java.util.Map;
 import tech.intellispaces.actions.Action;
 import tech.intellispaces.commons.exception.NotImplementedExceptions;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
-import tech.intellispaces.reflections.framework.engine.description.ReflectionImplementationDescription;
+import tech.intellispaces.reflections.framework.engine.description.ReflectionImplementationType;
 import tech.intellispaces.reflections.framework.reflection.Reflection;
 import tech.intellispaces.reflections.framework.system.Injection;
 
 public class ReflectionBroker implements tech.intellispaces.reflections.framework.engine.ReflectionBroker {
-  private final ReflectionImplementationDescription type;
+  private final ReflectionImplementationType type;
   private final Action[] methodActions;
   private final Action[] guideActions;
   private final Injection[] injections;
@@ -20,7 +20,7 @@ public class ReflectionBroker implements tech.intellispaces.reflections.framewor
   private Reflection<?> overlyingReflection;
 
   public ReflectionBroker(
-      ReflectionImplementationDescription type,
+      ReflectionImplementationType type,
       Action[] methodActions,
       Action[] guideActions,
       Injection[] injections
@@ -32,7 +32,7 @@ public class ReflectionBroker implements tech.intellispaces.reflections.framewor
   }
 
   @Override
-  public ReflectionImplementationDescription type() {
+  public ReflectionImplementationType type() {
     return type;
   }
 

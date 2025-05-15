@@ -1,0 +1,242 @@
+package {{$generatedArtifactPackageName}};
+
+{{for importedClass : $importedClasses}}
+import {{$importedClass}};
+{{end}}
+
+import static tech.intellispaces.reflections.framework.engine.description.ReflectionWrapperMethods.reflectionImplementationMethod;
+
+/**
+ * This class was generated automatically. Don't try to change it.
+ */
+@Wrapper({{$sourceArtifactSimpleName}}.class)
+{{$generatedAnnotation}}
+public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sourceArtifactSimpleName}}{{$typeParamsBrief}} implements {{$reflectionClassSimpleName}}{{$typeParamsBrief}}, ReflectionWrapper, OverlyingReflectionController, PostRegistrationReflectionHandler {
+  private static ReflectionImplementationType $TYPE;
+  private final ReflectionBroker $broker;
+
+{{for constructor : $constructors}}
+  public {{$generatedArtifactSimpleName}}({{for param : $constructor["params"]}}{{$param["type"]}} {{$param["name"]}}{{when $param.isNotLast()}}, {{end}}{{end}}) {
+    super({{for param : $constructor["params"]}}{{$param["name"]}}{{when $param.isNotLast()}}, {{end}}{{end}});
+    $broker = $registerReflection();
+    postRegistration();
+  }
+
+{{end}}
+
+  @Override
+  public ReflectionBroker $broker() {
+    return this.$broker;
+  }
+
+{{for method : $conversionMethods}}
+  {{$method["declaration"]}}
+
+{{end}}
+{{for method : $traverseMethods}}
+  @Override
+  {{$method["declaration"]}}
+
+{{end}}
+{{for method : $guideActionMethods}}
+  {{$method["declaration"]}}
+
+{{end}}
+{{when $notImplRelease}}
+  @Override
+  public void unbind() {
+    // do nothing
+  }
+{{end}}
+
+  @Override
+  public boolean isFocused() {
+    return true;
+  }
+
+{{when $isAlias}}
+  @Override
+  public Type<{{$primaryDomainSimpleName}}{{$primaryDomainTypeArguments}}> domainType() {
+    return {{$primaryDomainTypeDeclaration}}
+  }
+{{else}}
+  @Override
+  public Type<{{$domainClassSimpleName}}{{$typeParamsBrief}}> domainType() {
+    return {{$domainTypeDeclaration}}
+  }
+{{end}}
+
+  @Override
+  public Class<{{$domainClassSimpleName}}> domainClass() {
+    return {{$domainClassSimpleName}}.class;
+  }
+
+  public Type<{{$primaryDomainSimpleName}}{{$primaryDomainTypeArguments}}> primaryDomain() {
+    return {{$primaryDomainTypeDeclaration}}
+  }
+
+  @Override
+  public {{$reflectionClassSimpleName}}{{$typeParamsBrief}} asMovableOrElseThrow() {
+    return this;
+  }
+
+  @Override
+  public <TD, TH> void addProjection(Class<TD> targetDomain, TH target) {
+    $broker.addProjection(targetDomain, target);
+  }
+
+  @Override
+  public java.util.List<MovableReflection<?>> underlyingReflections() {
+    return (java.util.List<MovableReflection<?>>) $broker.underlyingReflections();
+  }
+
+  @Override
+  public MovableReflection<?> overlyingReflection() {
+    return (MovableReflection<?>) $broker.overlyingReflection();
+  }
+
+  @Override
+  public void setOverlyingReflection(Reflection<?> overlyingReflection) {
+    $broker.setOverlyingReflection(overlyingReflection);
+  }
+
+  @Override
+  public <TD, TH> TH mapTo(Class<TD> targetDomain) {
+    return $broker.mapTo(targetDomain);
+  }
+
+  @Override
+  public <T, Q, C extends Channel1 & MappingTraverse> T mapThru(Class<C> channelClass, Q qualifier) throws TraverseException {
+    return Modules.current().mapThruChannel1(this, channelClass, qualifier);
+  }
+
+  @Override
+  public <Q> {{$generatedArtifactSimpleName}}{{$typeParamsBrief}} moveThru(java.lang.String cid, Q qualifier) throws TraverseException {
+    return Modules.current().moveThruChannel1(this, cid, qualifier);
+  }
+
+{{when $isAlias}}
+  @Override
+  public {{$generatedArtifactSimpleName}}{{$typeParamsBrief}} moveThru(ChannelFunction0<{{$primaryDomainSimpleName}}{{$primaryDomainTypeArguments}}, {{$primaryDomainSimpleName}}{{$primaryDomainTypeArguments}}> channelMethod) throws TraverseException {
+    var cid = ChannelFunctions.getChannelId({{$domainClassSimpleName}}.class, channelMethod);
+    return Modules.current().moveThruChannel0(this, cid);
+  }
+
+  @Override
+  public <Q> {{$generatedArtifactSimpleName}}{{$typeParamsBrief}} moveThru(ChannelFunction1<{{$primaryDomainSimpleName}}{{$primaryDomainTypeArguments}}, {{$primaryDomainSimpleName}}{{$primaryDomainTypeArguments}}, Q> channelMethod, Q qualifier) throws TraverseException {
+    var cid = ChannelFunctions.getChannelId({{$domainClassSimpleName}}.class, channelMethod, null);
+    return Modules.current().moveThruChannel1(this, cid, qualifier);
+  }
+{{else}}
+  @Override
+  public {{$generatedArtifactSimpleName}}{{$typeParamsBrief}} moveThru(ChannelFunction0<{{$domainClassSimpleName}}{{$typeParamsBrief}}, {{$domainClassSimpleName}}{{$typeParamsBrief}}> channelMethod) throws TraverseException {
+    var cid = ChannelFunctions.getChannelId({{$domainClassSimpleName}}.class, channelMethod);
+    return Modules.current().moveThruChannel0(this, cid);
+  }
+
+  @Override
+  public <Q> {{$generatedArtifactSimpleName}}{{$typeParamsBrief}} moveThru(ChannelFunction1<{{$domainClassSimpleName}}{{$typeParamsBrief}}, {{$domainClassSimpleName}}{{$typeParamsBrief}}, Q> channelMethod, Q qualifier) throws TraverseException {
+    var cid = ChannelFunctions.getChannelId({{$domainClassSimpleName}}.class, channelMethod, null);
+    return Modules.current().moveThruChannel1(this, cid, qualifier);
+  }
+{{end}}
+
+  @Override
+  public {{$generatedArtifactSimpleName}}{{$typeParamsBrief}} moveThru(Class<? extends Channel0> channelClass) throws TraverseException {
+    var cid = ChannelFunctions.getChannelId(channelClass);
+    return Modules.current().moveThruChannel0(this, cid);
+  }
+
+  @Override
+  public <Q> {{$generatedArtifactSimpleName}}{{$typeParamsBrief}} moveThru(Class<? extends Channel1> channelClass, Q qualifier) throws TraverseException {
+    var cid = ChannelFunctions.getChannelId(channelClass);
+    return Modules.current().moveThruChannel1(this, cid, qualifier);
+  }
+
+  @Override
+  public <R, Q> R mapOfMovingThru(java.lang.String cid, Q qualifier) throws TraverseException {
+    return Modules.current().mapOfMovingThruChannel1(this, cid, qualifier);
+  }
+
+{{when $isAlias}}
+  @Override
+  public <R> R mapOfMovingThru(ChannelFunction0<{{$primaryDomainSimpleName}}{{$primaryDomainTypeArguments}}, R> channelMethod) throws TraverseException {
+    throw NotImplementedExceptions.withCode("cuDSAA");
+  }
+
+  @Override
+  public <R, Q> R mapOfMovingThru(ChannelFunction1<{{$primaryDomainSimpleName}}{{$primaryDomainTypeArguments}}, R, Q> channelMethod, Q qualifier) throws TraverseException {
+    throw NotImplementedExceptions.withCode("PZX5vA");
+  }
+{{else}}
+  @Override
+  public <R> R mapOfMovingThru(ChannelFunction0<{{$domainClassSimpleName}}{{$typeParamsBrief}}, R> channelMethod) throws TraverseException {
+    throw NotImplementedExceptions.withCode("cuDSAA");
+  }
+
+  @Override
+  public <R, Q> R mapOfMovingThru(ChannelFunction1<{{$domainClassSimpleName}}{{$typeParamsBrief}}, R, Q> channelMethod, Q qualifier) throws TraverseException {
+    throw NotImplementedExceptions.withCode("PZX5vA");
+  }
+{{end}}
+
+  @Override
+  public <R> R mapOfMovingThru(Class<? extends Channel0> channelClass) throws TraverseException {
+    throw NotImplementedExceptions.withCode("z0PzzQ");
+  }
+
+  @Override
+  public <R, Q, C extends Channel1 & MappingOfMovingTraverse> R mapOfMovingThru(Class<C> channelClass, Q qualifier) throws TraverseException {
+    return Modules.current().mapOfMovingThruChannel1(this, channelClass, qualifier);
+  }
+{{for method : $injectionMethods}}
+  {{$method["javadoc"]}}
+{{for annotation : $method["annotations"]}}
+  @{{$annotation}}
+{{end}}
+  public {{$method["signature"]}} {
+    {{$method["body"]}}
+  }
+{{end}}
+
+  private ReflectionBroker $registerReflection() {
+    if ($TYPE == null) {
+      $TYPE = $registerReflectionImplementationType();
+    }
+    return Engines.get().registerReflection(this, $TYPE);
+  }
+
+  private static ReflectionImplementationType $registerReflectionImplementationType() {
+    return Engines.get().registerReflectionImplementationType(
+        {{$generatedArtifactSimpleName}}.class,
+        {{$sourceArtifactSimpleName}}.class{{when $methodDescriptions.isNotEmpty()}},{{end}}
+{{for method : $methodDescriptions}}
+        reflectionImplementationMethod({{$generatedArtifactSimpleName}}.class, "{{$method["name"]}}"{{for param : $method["params"]}}, {{$param}}.class{{end}})
+            .purpose(ReflectionImplementationMethodPurposes.{{$method["purpose"]}})
+            .function({{$generatedArtifactSimpleName}}::{{$method["name"]}})
+{{when $method["traverseOrdinal"].isNotVoid()}}
+            .traverseOrdinal({{$method["traverseOrdinal"]}})
+{{end}}
+{{when $method["channelClass"].isNotVoid()}}
+            .channelClass({{$method["channelClass"]}}.class)
+{{end}}
+{{when $method["traverseType"].isNotVoid()}}
+            .traverseType(TraverseTypes.{{$method["traverseType"]}})
+{{end}}
+{{when $method["injectionKind"].isNotVoid()}}
+            .injectionKind("{{$method["injectionKind"]}}")
+{{end}}
+{{when $method["injectionOrdinal"].isNotVoid()}}
+            .injectionOrdinal({{$method["injectionOrdinal"]}})
+{{end}}
+{{when $method["injectionName"].isNotVoid()}}
+            .injectionName("{{$method["injectionName"]}}")
+{{end}}
+{{when $method["injectionType"].isNotVoid()}}
+            .injectionType({{$method["injectionType"]}}.class)
+{{end}}
+            .get(){{when $method.isNotLast()}},{{end}}
+{{end}}
+    );
+  }
+}

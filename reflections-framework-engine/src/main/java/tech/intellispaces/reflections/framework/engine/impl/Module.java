@@ -60,9 +60,7 @@ class Module implements tech.intellispaces.reflections.framework.system.Module {
   private final TraverseExecutor traverseExecutor;
 
   private final AtomicBoolean started = new AtomicBoolean(false);
-  private final SupplierAction<Unit> mainUnitGetter = CachedSupplierActions.get(
-      this::mainUnitSupplier
-  );
+  private final SupplierAction<Unit> mainUnitGetter = CachedSupplierActions.get(this::mainUnitSupplier);
 
   private static final Logger LOG = LoggerFactory.getLogger(Module.class);
 

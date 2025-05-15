@@ -33,7 +33,7 @@ import tech.intellispaces.reflections.framework.engine.ReflectionBroker;
 import tech.intellispaces.reflections.framework.engine.UnitBroker;
 import tech.intellispaces.reflections.framework.engine.description.ReflectionImplementationMethodDescription;
 import tech.intellispaces.reflections.framework.engine.description.ReflectionImplementationMethodPurposes;
-import tech.intellispaces.reflections.framework.engine.description.ReflectionImplementationDescription;
+import tech.intellispaces.reflections.framework.engine.description.ReflectionImplementationType;
 import tech.intellispaces.reflections.framework.engine.description.UnitMethodDescription;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForms;
 import tech.intellispaces.reflections.framework.system.Injection;
@@ -52,12 +52,12 @@ public class Engine implements tech.intellispaces.reflections.framework.engine.E
   }
 
   @Override
-  public <R, W extends R> ReflectionImplementationDescription registerReflectionWrapperType(
+  public <R, W extends R> ReflectionImplementationType registerReflectionImplementationType(
           Class<W> reflectionWrapperClass,
           Class<R> reflectionImplClass,
           ReflectionImplementationMethodDescription... methods
   ) {
-    return new tech.intellispaces.reflections.framework.engine.impl.ReflectionImplementationDescription(
+    return new tech.intellispaces.reflections.framework.engine.impl.ReflectionImplementationType(
             reflectionImplClass,
             reflectionWrapperClass,
         Arrays.asList(methods),
@@ -68,8 +68,8 @@ public class Engine implements tech.intellispaces.reflections.framework.engine.E
   }
 
   @Override
-  public <W> ReflectionBroker registerReflection(W reflectionWrapper, ReflectionImplementationDescription type) {
-    var typeImpl = (tech.intellispaces.reflections.framework.engine.impl.ReflectionImplementationDescription) type;
+  public <W> ReflectionBroker registerReflection(W reflectionWrapper, ReflectionImplementationType type) {
+    var typeImpl = (tech.intellispaces.reflections.framework.engine.impl.ReflectionImplementationType) type;
     return new tech.intellispaces.reflections.framework.engine.impl.ReflectionBroker(
         type,
         typeImpl.methodActions(),

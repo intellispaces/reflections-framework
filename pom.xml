@@ -14,7 +14,7 @@
     <modules>
         <module>reflections-framework-model</module>
         <module>reflections-framework</module>
-        <module>reflections-annotationprocessor</module>
+        <module>reflections-framework-annotationprocessor</module>
         <module>reflections-framework-engine</module>
     </modules>
 

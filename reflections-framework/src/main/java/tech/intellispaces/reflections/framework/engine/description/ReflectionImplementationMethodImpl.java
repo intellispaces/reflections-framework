@@ -5,7 +5,7 @@ import java.util.List;
 import tech.intellispaces.actions.Action;
 import tech.intellispaces.reflections.framework.traverse.TraverseType;
 
-class ReflectionImplementationMethodDescriptionImpl implements ReflectionImplementationMethodDescription {
+class ReflectionImplementationMethodImpl implements ReflectionImplementationMethod {
   private final String name;
   private final List<Class<?>> paramClasses;
   private final ReflectionImplementationMethodPurpose purpose;
@@ -20,7 +20,7 @@ class ReflectionImplementationMethodDescriptionImpl implements ReflectionImpleme
   private final String injectionName;
   private final Class<?> injectionType;
 
-  ReflectionImplementationMethodDescriptionImpl(
+  ReflectionImplementationMethodImpl(
       String name,
       List<Class<?>> paramClasses,
       ReflectionImplementationMethodPurpose purpose,

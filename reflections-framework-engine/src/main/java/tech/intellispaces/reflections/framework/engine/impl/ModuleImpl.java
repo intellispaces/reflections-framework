@@ -45,6 +45,7 @@ import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForms;
 import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
 import tech.intellispaces.reflections.framework.space.channel.ChannelFunctions;
+import tech.intellispaces.reflections.framework.system.Module;
 import tech.intellispaces.reflections.framework.traverse.MappingOfMovingTraverse;
 import tech.intellispaces.reflections.framework.traverse.MappingTraverse;
 import tech.intellispaces.reflections.framework.traverse.plan.DeclarativeTraversePlan;
@@ -52,7 +53,7 @@ import tech.intellispaces.reflections.framework.traverse.plan.TraverseAnalyzer;
 import tech.intellispaces.reflections.framework.traverse.plan.TraverseExecutor;
 import tech.intellispaces.reflections.framework.traverse.plan.TraversePlan;
 
-class Module implements tech.intellispaces.reflections.framework.system.Module {
+class ModuleImpl implements Module {
   private final List<Unit> units;
   private final ProjectionRegistry projectionRegistry;
   private final GuideRegistry guideRegistry;
@@ -62,9 +63,9 @@ class Module implements tech.intellispaces.reflections.framework.system.Module {
   private final AtomicBoolean started = new AtomicBoolean(false);
   private final SupplierAction<Unit> mainUnitGetter = CachedSupplierActions.get(this::mainUnitSupplier);
 
-  private static final Logger LOG = LoggerFactory.getLogger(Module.class);
+  private static final Logger LOG = LoggerFactory.getLogger(ModuleImpl.class);
 
-  Module(
+  ModuleImpl(
       List<Unit> units,
       ProjectionRegistry projectionRegistry,
       GuideRegistry guideRegistry,

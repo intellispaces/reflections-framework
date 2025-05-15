@@ -3,13 +3,13 @@ package tech.intellispaces.reflections.framework.engine.impl;
 import java.util.List;
 
 import tech.intellispaces.actions.Action;
-import tech.intellispaces.reflections.framework.engine.description.ReflectionImplementationMethodDescription;
+import tech.intellispaces.reflections.framework.engine.description.ReflectionImplementationMethod;
 import tech.intellispaces.reflections.framework.system.Injection;
 
 public class ReflectionImplementationType implements tech.intellispaces.reflections.framework.engine.description.ReflectionImplementationType {
   private final Class<?> reflectionImplementationClass;
   private final Class<?> reflectionWrapperClass;
-  private final List<ReflectionImplementationMethodDescription> methods;
+  private final List<ReflectionImplementationMethod> methods;
   private final Action[] methodActions;
   private final Action[] guideActions;
   private final Injection[] injections;
@@ -17,7 +17,7 @@ public class ReflectionImplementationType implements tech.intellispaces.reflecti
   public ReflectionImplementationType(
       Class<?> reflectionImplementationClass,
       Class<?> reflectionWrapperClass,
-      List<ReflectionImplementationMethodDescription> methods,
+      List<ReflectionImplementationMethod> methods,
       Action[] methodActions,
       Action[] guideActions,
       Injection[] injections
@@ -41,7 +41,7 @@ public class ReflectionImplementationType implements tech.intellispaces.reflecti
   }
 
   @Override
-  public List<ReflectionImplementationMethodDescription> methods() {
+  public List<ReflectionImplementationMethod> methods() {
     return methods;
   }
 

@@ -8,7 +8,7 @@ import tech.intellispaces.reflections.framework.traverse.TraverseType;
 /**
  * The reflection implementation method description.
  */
-public interface ReflectionImplementationMethodDescription {
+public interface ReflectionImplementationMethod {
 
   /**
    * The method name.

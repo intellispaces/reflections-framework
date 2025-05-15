@@ -5,23 +5,23 @@ import java.util.List;
 import tech.intellispaces.actions.Action;
 import tech.intellispaces.commons.type.Type;
 
-public class ObjectFactoryMethodDescriptionImpl implements ObjectFactoryMethodDescription {
-  private final Object objectFactory;
+public class FactoryMethodImpl implements FactoryMethod {
+  private final Object factoryInstance;
   private final String name;
   private final Type<?> returnedType;
   private final Class<?> returnedDomainClass;
   private final List<Type<?>> paramTypes;
   private final Action action;
 
-  public ObjectFactoryMethodDescriptionImpl(
-      Object objectFactory,
+  public FactoryMethodImpl(
+      Object factoryInstance,
       String name,
       Type<?> returnedType,
       Class<?> returnedDomainClass,
       List<Type<?>> paramTypes,
       Action action
   ) {
-    this.objectFactory = objectFactory;
+    this.factoryInstance = factoryInstance;
     this.name = name;
     this.returnedType = returnedType;
     this.returnedDomainClass = returnedDomainClass;
@@ -30,8 +30,8 @@ public class ObjectFactoryMethodDescriptionImpl implements ObjectFactoryMethodDe
   }
 
   @Override
-  public Object objectFactory() {
-    return objectFactory;
+  public Object factoryInstance() {
+    return factoryInstance;
   }
 
   @Override

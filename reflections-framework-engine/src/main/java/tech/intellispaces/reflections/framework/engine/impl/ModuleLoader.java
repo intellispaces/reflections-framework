@@ -8,7 +8,7 @@ import java.util.List;
 class ModuleLoader {
 
   static tech.intellispaces.reflections.framework.system.Module loadModule(List<Class<?>> unitClasses, String[] args) {
-    Module module = ModuleFactory.createModule(unitClasses);
+    ModuleImpl module = ModuleFactory.createModule(unitClasses);
     ModuleValidator.validate(module);
     return module;
   }

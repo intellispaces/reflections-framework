@@ -26,11 +26,11 @@ import tech.intellispaces.jstatements.method.MethodStatement;
  */
 class ModuleFactory {
 
-  static Module createModule(Class<?> unitClass) {
+  static ModuleImpl createModule(Class<?> unitClass) {
     return createModule(List.of(unitClass));
   }
 
-  static Module createModule(List<Class<?>> unitClasses) {
+  static ModuleImpl createModule(List<Class<?>> unitClasses) {
     List<Unit> units = createUnits(unitClasses);
     ProjectionRegistry projectionRegistry = createProjectionRegistry(units);
     applyAdvises(units, projectionRegistry);
@@ -38,7 +38,7 @@ class ModuleFactory {
     loadAttachedUnitGuides(guideRegistry, units);
     var traverseAnalyzer = new TraverseAnalyzer(guideRegistry);
     var traverseExecutor = new TraverseExecutor(traverseAnalyzer);
-    return new Module(
+    return new ModuleImpl(
         units,
         projectionRegistry,
         guideRegistry,

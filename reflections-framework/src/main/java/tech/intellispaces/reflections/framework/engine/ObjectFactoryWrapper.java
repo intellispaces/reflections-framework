@@ -2,9 +2,9 @@ package tech.intellispaces.reflections.framework.engine;
 
 import java.util.List;
 
-import tech.intellispaces.reflections.framework.engine.description.ObjectFactoryMethodDescription;
+import tech.intellispaces.reflections.framework.engine.description.FactoryMethod;
 
 public interface ObjectFactoryWrapper {
 
-  List<ObjectFactoryMethodDescription> methods();
+  List<FactoryMethod> methods();
 }

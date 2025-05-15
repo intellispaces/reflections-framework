@@ -70,8 +70,8 @@ public class ReflectionImplementationMethodBuilder1<W> {
     return this;
   }
 
-  public ReflectionImplementationMethodDescription get() {
-    return new ReflectionImplementationMethodDescriptionImpl(
+  public ReflectionImplementationMethod get() {
+    return new ReflectionImplementationMethodImpl(
         name,
         List.of(),
         purpose,

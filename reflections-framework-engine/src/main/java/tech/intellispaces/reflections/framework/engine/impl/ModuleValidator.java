@@ -16,13 +16,13 @@ import tech.intellispaces.reflections.framework.system.injection.InjectionKinds;
  */
 class ModuleValidator {
 
-  static void validate(Module module) {
+  static void validate(ModuleImpl module) {
     checkThatOneMainUnit(module);
     checkThatThereAreNoProjectionsWithSameName(module);
     checkInjections(module);
   }
 
-  static void checkThatOneMainUnit(Module module) {
+  static void checkThatOneMainUnit(ModuleImpl module) {
     List<Unit> mainUnits = module.units().stream()
         .filter(tech.intellispaces.reflections.framework.system.Unit::isMain)
         .toList();
@@ -37,7 +37,7 @@ class ModuleValidator {
     }
   }
 
-  static void checkThatThereAreNoProjectionsWithSameName(Module module) {
+  static void checkThatThereAreNoProjectionsWithSameName(ModuleImpl module) {
     String message = module.units().stream()
         .map(tech.intellispaces.reflections.framework.system.Unit::projectionDefinitions)
         .flatMap(List::stream)
@@ -51,7 +51,7 @@ class ModuleValidator {
     }
   }
 
-  static void checkInjections(Module module) {
+  static void checkInjections(ModuleImpl module) {
     Map<String, UnitProjectionDefinition> projectionProviders = module.units().stream()
         .map(tech.intellispaces.reflections.framework.system.Unit::projectionDefinitions)
         .flatMap(List::stream)
@@ -61,7 +61,7 @@ class ModuleValidator {
   }
 
   static void checkUnitInjections(
-      Module module, Map<String, UnitProjectionDefinition> projectionProviders
+      ModuleImpl module, Map<String, UnitProjectionDefinition> projectionProviders
   ) {
     List<ProjectionInjection> injections = module.units().stream()
         .map(Unit::injections)

@@ -20,5 +20,5 @@ public interface ReflectionImplementationType {
   /**
    * Reflection implementation methods.
    */
-  List<ReflectionImplementationMethodDescription> methods();
+  List<ReflectionImplementationMethod> methods();
 }

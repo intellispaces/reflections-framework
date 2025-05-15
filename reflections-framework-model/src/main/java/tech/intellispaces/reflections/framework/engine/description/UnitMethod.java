@@ -11,7 +11,7 @@ import tech.intellispaces.reflections.framework.system.ProjectionReference;
 /**
  * The unit wrapper method description.
  */
-public interface UnitMethodDescription {
+public interface UnitMethod {
 
   /**
    * The method name.

@@ -6,14 +6,14 @@ import tech.intellispaces.actions.Action;
 import tech.intellispaces.commons.type.Type;
 
 /**
- * The object factory method description.
+ * The reflection factory method description.
  */
-public interface ObjectFactoryMethodDescription {
+public interface FactoryMethod {
 
   /**
-   * The object factory instance.
+   * The factory instance.
    */
-  Object objectFactory();
+  Object factoryInstance();
 
   /**
    * The method name.
@@ -21,7 +21,7 @@ public interface ObjectFactoryMethodDescription {
   String name();
 
   /**
-   * The returned object type.
+   * The returned reflection type.
    */
   Type<?> returnedType();
 

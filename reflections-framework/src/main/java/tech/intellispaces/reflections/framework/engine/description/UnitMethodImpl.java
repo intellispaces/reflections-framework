@@ -8,7 +8,7 @@ import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 import tech.intellispaces.reflections.framework.system.InjectionKind;
 import tech.intellispaces.reflections.framework.system.ProjectionReference;
 
-class UnitMethodDescriptionImpl implements UnitMethodDescription {
+class UnitMethodImpl implements UnitMethod {
   private final String name;
   private final List<Class<?>> paramClasses;
   private final String prototypeMethodName;
@@ -27,7 +27,7 @@ class UnitMethodDescriptionImpl implements UnitMethodDescription {
   private final String guideCid;
   private final ReflectionForm guideTargetForm;
 
-  UnitMethodDescriptionImpl(
+  UnitMethodImpl(
       String name,
       List<Class<?>> paramClasses,
       String prototypeMethodName,

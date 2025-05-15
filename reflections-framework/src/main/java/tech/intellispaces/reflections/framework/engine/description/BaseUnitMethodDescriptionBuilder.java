@@ -116,8 +116,8 @@ class BaseUnitMethodDescriptionBuilder<B extends BaseUnitMethodDescriptionBuilde
     return (B) this;
   }
 
-  public UnitMethodDescription get() {
-    return new UnitMethodDescriptionImpl(
+  public UnitMethod get() {
+    return new UnitMethodImpl(
         name,
         paramClasses,
         prototypeMethodName,

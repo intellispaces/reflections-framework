@@ -30,7 +30,7 @@ public class ModuleValidatorTest {
     var unit2 = mock(Unit.class);
     when(unit2.isMain()).thenReturn(false);
 
-    var module = mock(Module.class);
+    var module = mock(ModuleImpl.class);
     when(module.units()).thenReturn(List.of(unit1, unit2));
 
     // Then
@@ -54,7 +54,7 @@ public class ModuleValidatorTest {
     when(unit2.unitClass()).thenReturn(unitClass2);
     when(unit2.isMain()).thenReturn(true);
 
-    var module = mock(Module.class);
+    var module = mock(ModuleImpl.class);
     when(module.units()).thenReturn(List.of(unit1, unit2));
 
     // Then
@@ -91,7 +91,7 @@ public class ModuleValidatorTest {
     when(projectionProvider2.name()).thenReturn(projectionName);
     when(unit2.projectionDefinitions()).thenReturn(List.of(projectionProvider2));
 
-    var module = mock(Module.class);
+    var module = mock(ModuleImpl.class);
     when(module.units()).thenReturn(List.of(unit1, unit2));
 
     // Then
@@ -121,7 +121,7 @@ public class ModuleValidatorTest {
     when(unit.injections()).thenReturn(List.of(injection));
     when(unit.projectionDefinitions()).thenReturn(List.of());
 
-    var module = mock(Module.class);
+    var module = mock(ModuleImpl.class);
     when(module.units()).thenReturn(List.of(unit));
 
     // Then
@@ -156,7 +156,7 @@ public class ModuleValidatorTest {
     when(unit.injections()).thenReturn(List.of(injection));
     when(unit.projectionDefinitions()).thenReturn(List.of(projectionProvider));
 
-    var module = mock(Module.class);
+    var module = mock(ModuleImpl.class);
     when(module.units()).thenReturn(List.of(unit));
 
     // Then
@@ -192,7 +192,7 @@ public class ModuleValidatorTest {
     when(projectionProvider2.name()).thenReturn("projection2");
     when(unit2.projectionDefinitions()).thenReturn(List.of(projectionProvider2));
 
-    var module = mock(Module.class);
+    var module = mock(ModuleImpl.class);
     when(module.units()).thenReturn(List.of(unit1, unit2));
 
     // Then

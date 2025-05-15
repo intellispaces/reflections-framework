@@ -19,7 +19,7 @@ public class {{$generatedArtifactSimpleName}} implements {{for customizer : $cus
 
 {{end}}
 {{for method : $customizerMethods}}
-  private final {{$method["actionType"]}} {{$method["actionName"]}} = Engines.get().objectAssistantAction(
+  private final {{$method["actionType"]}} {{$method["actionName"]}} = Engines.get().getFactoryAction(
     {{$method["returnDomainClass"]}}.class,
     "{{$method["contractType"]}}",
 {{for paramType : $method["paramTypes"]}}

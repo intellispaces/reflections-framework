@@ -3,7 +3,6 @@ package tech.intellispaces.reflections.framework.system;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Supplier;
 
 import tech.intellispaces.reflections.framework.engine.Engines;
 import tech.intellispaces.reflections.framework.exception.ConfigurationExceptions;
@@ -22,7 +21,7 @@ public class Modules {
    * @return the created module.
    */
   public static Module load(Class<?> moduleClass, String[] args) {
-    return load(() -> Engines.get().createModule(List.of(moduleClass), args));
+    return load(List.of(moduleClass), args);
   }
 
   /**
@@ -32,7 +31,7 @@ public class Modules {
    * @return the created module.
    */
   public static Module load(Class<?>... unitClasses) {
-    return load(() -> Engines.get().createModule(Arrays.stream(unitClasses).toList(), new String[0]));
+    return load(Arrays.stream(unitClasses).toList(), new String[0]);
   }
 
   /**
@@ -43,14 +42,11 @@ public class Modules {
    * @return the created module.
    */
   public static Module load(List<Class<?>> unitClasses, String[] args) {
-    return load(() -> Engines.get().createModule(unitClasses, new String[0]));
-  }
-
-  private static Module load(Supplier<Module> moduleMaker) {
     if (MODULE.get() != null) {
       throw ConfigurationExceptions.withMessage("The module has already been uploaded");
     }
-    Module module = moduleMaker.get();
+    Engines.get().load(unitClasses, args);
+    Module module = Engines.get().createModule(unitClasses, args);    // todo: remove
     if (!MODULE.compareAndSet(null, module)) {
       throw ConfigurationExceptions.withMessage("The module has already been uploaded");
     };

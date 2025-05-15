@@ -7,7 +7,7 @@ import java.util.Map;
 import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
 import tech.intellispaces.reflections.framework.annotationprocessor.ReflectionsArtifactGenerator;
 import tech.intellispaces.reflections.framework.engine.ObjectFactoryWrapper;
-import tech.intellispaces.reflections.framework.engine.description.ObjectFactoryMethodDescription;
+import tech.intellispaces.reflections.framework.engine.description.FactoryMethod;
 import tech.intellispaces.reflections.framework.engine.description.ObjectFactoryMethods;
 import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
 import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
@@ -50,7 +50,7 @@ public class ObjectFactoryWrapperGenerator extends ReflectionsArtifactGenerator 
     addImport(ArrayList.class);
     addImport(ObjectFactoryWrapper.class);
     addImport(ObjectFactoryMethods.class);
-    addImport(ObjectFactoryMethodDescription.class);
+    addImport(FactoryMethod.class);
 
     addVariable("factoryMethods", getFactoryMethods());
 

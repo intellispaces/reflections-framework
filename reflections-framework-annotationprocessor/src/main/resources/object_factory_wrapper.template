@@ -13,8 +13,8 @@ import {{$importedClass}};
 public class {{$generatedArtifactSimpleName}} extends {{$sourceArtifactSimpleName}} implements ObjectFactoryWrapper {
 
   @Override
-  public List<ObjectFactoryMethodDescription> methods() {
-    var methods = new ArrayList<ObjectFactoryMethodDescription>();
+  public List<FactoryMethod> methods() {
+    var methods = new ArrayList<FactoryMethod>();
 {{for method : $factoryMethods}}
     methods.add(
       ObjectFactoryMethods.objectFactoryMethod(

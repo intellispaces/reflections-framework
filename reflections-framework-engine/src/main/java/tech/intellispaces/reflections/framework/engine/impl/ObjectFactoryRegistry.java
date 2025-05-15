@@ -29,43 +29,43 @@ import tech.intellispaces.commons.resource.ResourceFunctions;
 import tech.intellispaces.commons.type.Classes;
 import tech.intellispaces.commons.type.Type;
 import tech.intellispaces.reflections.framework.engine.ObjectFactoryWrapper;
-import tech.intellispaces.reflections.framework.engine.description.ObjectFactoryMethodDescription;
+import tech.intellispaces.reflections.framework.engine.description.FactoryMethod;
 import tech.intellispaces.reflections.framework.exception.ConfigurationExceptions;
 import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
 import tech.intellispaces.reflections.framework.factory.FactoryFunctions;
 
 class ObjectFactoryRegistry {
   private boolean isLoaded;
-  private Map<Class<?>, List<ObjectFactoryMethodDescription>> domainToDescriptions = Map.of();
+  private Map<Class<?>, List<FactoryMethod>> domainToDescriptions = Map.of();
 
   @SuppressWarnings("unchecked")
-  public <R> Action0<R> objectAssistantAction(
+  public <R> Action0<R> getFactoryAction(
       Class<?> targetDomainClass,
       String contractType,
-      Type<R> targetObjectHandleType
+      Type<R> targetReflectionType
   ) {
     loadObjectFactories();
     return (Action0<R>) makeAction(targetDomainClass, contractType, List.of());
   }
 
   @SuppressWarnings("unchecked")
-  public <R, Q> Action1<R, Q> objectAssistantAction(
+  public <R, Q> Action1<R, Q> getFactoryAction(
       Class<?> targetDomainClass,
       String contractType,
       Type<Q> contractQualifierType,
-      Type<R> targetObjectHandleType
+      Type<R> targetReflectionType
   ) {
     loadObjectFactories();
     return (Action1<R, Q>) makeAction(targetDomainClass, contractType, List.of(contractQualifierType));
   }
 
   @SuppressWarnings("unchecked")
-  public <R, Q1, Q2> Action2<R, Q1, Q2> objectAssistantAction(
+  public <R, Q1, Q2> Action2<R, Q1, Q2> getFactoryAction(
       Class<?> targetDomainClass,
       String contractType,
       Type<Q1> contractQualifierType1,
       Type<Q2> contractQualifierType2,
-      Type<R> targetObjectHandleType
+      Type<R> targetReflectionType
   ) {
     loadObjectFactories();
     return (Action2<R, Q1, Q2>) makeAction(
@@ -74,13 +74,13 @@ class ObjectFactoryRegistry {
   }
 
   @SuppressWarnings("unchecked")
-  public <R, Q1, Q2, Q3> Action3<R, Q1, Q2, Q3> objectAssistantAction(
+  public <R, Q1, Q2, Q3> Action3<R, Q1, Q2, Q3> getFactoryAction(
       Class<?> targetDomainClass,
       String contractType,
       Type<Q1> contractQualifierType1,
       Type<Q2> contractQualifierType2,
       Type<Q3> contractQualifierType3,
-      Type<R> targetObjectHandleType
+      Type<R> targetReflectionType
   ) {
     loadObjectFactories();
     return (Action3<R, Q1, Q2, Q3>) makeAction(
@@ -89,14 +89,14 @@ class ObjectFactoryRegistry {
   }
 
   @SuppressWarnings("unchecked")
-  public <R, Q1, Q2, Q3, Q4> Action4<R, Q1, Q2, Q3, Q4> objectAssistantAction(
+  public <R, Q1, Q2, Q3, Q4> Action4<R, Q1, Q2, Q3, Q4> getFactoryAction(
       Class<?> targetDomainClass,
       String contractType,
       Type<Q1> contractQualifierType1,
       Type<Q2> contractQualifierType2,
       Type<Q3> contractQualifierType3,
       Type<Q4> contractQualifierType4,
-      Type<R> targetObjectHandleType
+      Type<R> targetReflectionType
   ) {
     loadObjectFactories();
     return (Action4<R, Q1, Q2, Q3, Q4>) makeAction(
@@ -110,7 +110,7 @@ class ObjectFactoryRegistry {
   }
 
   @SuppressWarnings("unchecked")
-  public <R, Q1, Q2, Q3, Q4, Q5> Action5<R, Q1, Q2, Q3, Q4, Q5> objectAssistantAction(
+  public <R, Q1, Q2, Q3, Q4, Q5> Action5<R, Q1, Q2, Q3, Q4, Q5> getFactoryAction(
       Class<?> targetDomainClass,
       String contractType,
       Type<Q1> contractQualifierType1,
@@ -118,7 +118,7 @@ class ObjectFactoryRegistry {
       Type<Q3> contractQualifierType3,
       Type<Q4> contractQualifierType4,
       Type<Q5> contractQualifierType5,
-      Type<R> targetObjectHandleType
+      Type<R> targetReflectionType
   ) {
     loadObjectFactories();
     return (Action5<R, Q1, Q2, Q3, Q4, Q5>) makeAction(
@@ -133,7 +133,7 @@ class ObjectFactoryRegistry {
   }
 
   @SuppressWarnings("unchecked")
-  public <R, Q1, Q2, Q3, Q4, Q5, Q6> Action6<R, Q1, Q2, Q3, Q4, Q5, Q6> objectAssistantAction(
+  public <R, Q1, Q2, Q3, Q4, Q5, Q6> Action6<R, Q1, Q2, Q3, Q4, Q5, Q6> getFactoryAction(
       Class<?> targetDomainClass,
       String contractType,
       Type<Q1> contractQualifierType1,
@@ -142,7 +142,7 @@ class ObjectFactoryRegistry {
       Type<Q4> contractQualifierType4,
       Type<Q5> contractQualifierType5,
       Type<Q6> contractQualifierType6,
-      Type<R> targetObjectHandleType
+      Type<R> targetReflectionType
   ) {
     loadObjectFactories();
     return (Action6<R, Q1, Q2, Q3, Q4, Q5, Q6>) makeAction(
@@ -158,7 +158,7 @@ class ObjectFactoryRegistry {
   }
 
   @SuppressWarnings("unchecked")
-  public <R, Q1, Q2, Q3, Q4, Q5, Q6, Q7> Action7<R, Q1, Q2, Q3, Q4, Q5, Q6, Q7> objectAssistantAction(
+  public <R, Q1, Q2, Q3, Q4, Q5, Q6, Q7> Action7<R, Q1, Q2, Q3, Q4, Q5, Q6, Q7> getFactoryAction(
       Class<?> targetDomainClass,
       String contractType,
       Type<Q1> contractQualifierType1,
@@ -168,7 +168,7 @@ class ObjectFactoryRegistry {
       Type<Q5> contractQualifierType5,
       Type<Q6> contractQualifierType6,
       Type<Q7> contractQualifierType7,
-      Type<R> targetObjectHandleType
+      Type<R> targetReflectionType
   ) {
     loadObjectFactories();
     return (Action7<R, Q1, Q2, Q3, Q4, Q5, Q6, Q7>) makeAction(
@@ -185,7 +185,7 @@ class ObjectFactoryRegistry {
   }
 
   @SuppressWarnings("unchecked")
-  public <R, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8> Action8<R, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8> objectAssistantAction(
+  public <R, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8> Action8<R, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8> getFactoryAction(
       Class<?> targetDomainClass,
       String contractType,
       Type<Q1> contractQualifierType1,
@@ -196,7 +196,7 @@ class ObjectFactoryRegistry {
       Type<Q6> contractQualifierType6,
       Type<Q7> contractQualifierType7,
       Type<Q8> contractQualifierType8,
-      Type<R> targetObjectHandleType
+      Type<R> targetReflectionType
   ) {
     loadObjectFactories();
     return (Action8<R, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8>) makeAction(
@@ -214,7 +214,7 @@ class ObjectFactoryRegistry {
   }
 
   @SuppressWarnings("unchecked")
-  public <R, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9> Action9<R, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9> objectAssistantAction(
+  public <R, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9> Action9<R, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9> getFactoryAction(
       Class<?> targetDomainClass,
       String contractType,
       Type<Q1> contractQualifierType1,
@@ -226,7 +226,7 @@ class ObjectFactoryRegistry {
       Type<Q7> contractQualifierType7,
       Type<Q8> contractQualifierType8,
       Type<Q9> contractQualifierType9,
-      Type<R> targetObjectHandleType
+      Type<R> targetReflectionType
   ) {
     loadObjectFactories();
     return (Action9<R, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9>) makeAction(
@@ -245,7 +245,7 @@ class ObjectFactoryRegistry {
   }
 
   @SuppressWarnings("unchecked")
-  public <R, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9, Q10> Action10<R, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9, Q10> objectAssistantAction(
+  public <R, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9, Q10> Action10<R, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9, Q10> getFactoryAction(
       Class<?> targetDomainClass,
       String contractType,
       Type<Q1> contractQualifierType1,
@@ -258,7 +258,7 @@ class ObjectFactoryRegistry {
       Type<Q8> contractQualifierType8,
       Type<Q9> contractQualifierType9,
       Type<Q10> contractQualifierType10,
-      Type<R> targetObjectHandleType
+      Type<R> targetReflectionType
   ) {
     loadObjectFactories();
     return (Action10<R, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9, Q10>) makeAction(
@@ -282,7 +282,7 @@ class ObjectFactoryRegistry {
       return;
     }
 
-    List<ObjectFactoryMethodDescription> descriptions = new ArrayList<>();
+    List<FactoryMethod> descriptions = new ArrayList<>();
     try {
       Enumeration<URL> enumeration = ObjectFactoryRegistry.class.getClassLoader().getResources(
           NameConventionFunctions.getObjectFactoriesResourceName()
@@ -308,12 +308,12 @@ class ObjectFactoryRegistry {
     }
 
     domainToDescriptions = descriptions.stream()
-        .collect(Collectors.groupingBy(ObjectFactoryMethodDescription::returnedDomainClass));
+        .collect(Collectors.groupingBy(FactoryMethod::returnedDomainClass));
     isLoaded = true;
   }
 
   boolean isMatchContractQualifiers(
-      ObjectFactoryMethodDescription description, List<Type<?>> requiredQualifierTypes
+      FactoryMethod description, List<Type<?>> requiredQualifierTypes
   ) {
     List<Type<?>> factoryQualifierTypes = description.paramTypes();
     if (factoryQualifierTypes.size() != requiredQualifierTypes.size()) {
@@ -334,12 +334,12 @@ class ObjectFactoryRegistry {
       String contractType,
       List<Type<?>> contractQualifierTypes
   ) {
-    List<ObjectFactoryMethodDescription> descriptions = domainToDescriptions.get(targetDomainClass);
+    List<FactoryMethod> descriptions = domainToDescriptions.get(targetDomainClass);
     if (descriptions == null) {
       throw ConfigurationExceptions.withMessage("No factory to domain {0} were found",
           targetDomainClass.getCanonicalName());
     }
-    for (ObjectFactoryMethodDescription description : descriptions) {
+    for (FactoryMethod description : descriptions) {
       if (
           FactoryFunctions.getContractType(description.name()).equals(contractType) &&
               isMatchContractQualifiers(description, contractQualifierTypes)
@@ -351,7 +351,7 @@ class ObjectFactoryRegistry {
         targetDomainClass.getCanonicalName(), contractType);
   }
 
-  Action makeAction(ObjectFactoryMethodDescription description) {
+  Action makeAction(FactoryMethod description) {
     return switch (description.paramTypes().size()) {
       case 0 -> makeAction0(description);
       case 1 -> makeAction1(description);
@@ -368,62 +368,62 @@ class ObjectFactoryRegistry {
   }
 
   @SuppressWarnings("unchecked")
-  private Action makeAction0(ObjectFactoryMethodDescription description) {
+  private Action makeAction0(FactoryMethod description) {
     var originAction = (Action1<Object, Object>) description.action();
-    return originAction.convertToAction0(description.objectFactory());
+    return originAction.convertToAction0(description.factoryInstance());
   }
 
   @SuppressWarnings("unchecked")
-  private Action makeAction1(ObjectFactoryMethodDescription description) {
+  private Action makeAction1(FactoryMethod description) {
     var originAction = (Action2<Object, Object, Object>) description.action();
-    return originAction.convertToAction1(description.objectFactory());
+    return originAction.convertToAction1(description.factoryInstance());
   }
 
   @SuppressWarnings("unchecked")
-  private Action makeAction2(ObjectFactoryMethodDescription description) {
+  private Action makeAction2(FactoryMethod description) {
     var originAction = (Action3<Object, Object, Object, Object>) description.action();
-    return originAction.convertToAction2(description.objectFactory());
+    return originAction.convertToAction2(description.factoryInstance());
   }
 
   @SuppressWarnings("unchecked")
-  private Action makeAction3(ObjectFactoryMethodDescription description) {
+  private Action makeAction3(FactoryMethod description) {
     var originAction = (Action4<Object, Object, Object, Object, Object>) description.action();
-    return originAction.convertToAction3(description.objectFactory());
+    return originAction.convertToAction3(description.factoryInstance());
   }
 
   @SuppressWarnings("unchecked")
-  private Action makeAction4(ObjectFactoryMethodDescription description) {
+  private Action makeAction4(FactoryMethod description) {
     var originAction = (Action5<Object, Object, Object, Object, Object, Object>) description.action();
-    return originAction.convertToAction4(description.objectFactory());
+    return originAction.convertToAction4(description.factoryInstance());
   }
 
   @SuppressWarnings("unchecked")
-  private Action makeAction5(ObjectFactoryMethodDescription description) {
+  private Action makeAction5(FactoryMethod description) {
     var originAction = (Action6<Object, Object, Object, Object, Object, Object, Object>) description.action();
-    return originAction.convertToAction5(description.objectFactory());
+    return originAction.convertToAction5(description.factoryInstance());
   }
 
   @SuppressWarnings("unchecked")
-  private Action makeAction6(ObjectFactoryMethodDescription description) {
+  private Action makeAction6(FactoryMethod description) {
     var originAction = (Action7<Object, Object, Object, Object, Object, Object, Object, Object>) description.action();
-    return originAction.convertToAction6(description.objectFactory());
+    return originAction.convertToAction6(description.factoryInstance());
   }
 
   @SuppressWarnings("unchecked")
-  private Action makeAction7(ObjectFactoryMethodDescription description) {
+  private Action makeAction7(FactoryMethod description) {
     var originAction = (Action8<Object, Object, Object, Object, Object, Object, Object, Object, Object>) description.action();
-    return originAction.convertToAction7(description.objectFactory());
+    return originAction.convertToAction7(description.factoryInstance());
   }
 
   @SuppressWarnings("unchecked")
-  private Action makeAction8(ObjectFactoryMethodDescription description) {
+  private Action makeAction8(FactoryMethod description) {
     var originAction = (Action9<Object, Object, Object, Object, Object, Object, Object, Object, Object, Object>) description.action();
-    return originAction.convertToAction8(description.objectFactory());
+    return originAction.convertToAction8(description.factoryInstance());
   }
 
   @SuppressWarnings("unchecked")
-  private Action makeAction9(ObjectFactoryMethodDescription description) {
+  private Action makeAction9(FactoryMethod description) {
     var originAction = (Action10<Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object>) description.action();
-    return originAction.convertToAction9(description.objectFactory());
+    return originAction.convertToAction9(description.factoryInstance());
   }
 }

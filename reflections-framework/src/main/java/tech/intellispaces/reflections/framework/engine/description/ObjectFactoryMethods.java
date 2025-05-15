@@ -17,15 +17,15 @@ import tech.intellispaces.commons.type.Type;
 
 public interface ObjectFactoryMethods {
 
-  static <P, R> ObjectFactoryMethodDescription objectFactoryMethod(
-      P objectFactory,
+  static <P, R> FactoryMethod objectFactoryMethod(
+      P factoryInstance,
       String methodName,
       Type<R> returnType,
       Class<?> returnedDomainClass,
       Function<P, R> function
   ) {
-    return new ObjectFactoryMethodDescriptionImpl(
-        objectFactory,
+    return new FactoryMethodImpl(
+        factoryInstance,
         methodName,
         returnType,
         returnedDomainClass,
@@ -34,16 +34,16 @@ public interface ObjectFactoryMethods {
     );
   }
 
-  static <P, R, Q> ObjectFactoryMethodDescription objectFactoryMethod(
-      P objectFactory,
+  static <P, R, Q> FactoryMethod objectFactoryMethod(
+      P factoryInstance,
       String methodName,
       Type<R> returnType,
       Class<?> returnedDomainClass,
       Type<Q> paramType,
       BiFunction<P, Q, R> function
   ) {
-    return new ObjectFactoryMethodDescriptionImpl(
-        objectFactory,
+    return new FactoryMethodImpl(
+        factoryInstance,
         methodName,
         returnType,
         returnedDomainClass,
@@ -52,8 +52,8 @@ public interface ObjectFactoryMethods {
     );
   }
 
-  static <P, R, Q1, Q2> ObjectFactoryMethodDescription objectFactoryMethod(
-      P objectFactory,
+  static <P, R, Q1, Q2> FactoryMethod objectFactoryMethod(
+      P factoryInstance,
       String methodName,
       Type<R> returnType,
       Class<?> returnedDomainClass,
@@ -61,8 +61,8 @@ public interface ObjectFactoryMethods {
       Type<Q2> paramType2,
       Function3<P, Q1, Q2, R> function
   ) {
-    return new ObjectFactoryMethodDescriptionImpl(
-        objectFactory,
+    return new FactoryMethodImpl(
+        factoryInstance,
         methodName,
         returnType,
         returnedDomainClass,
@@ -71,8 +71,8 @@ public interface ObjectFactoryMethods {
     );
   }
 
-  static <P, R, Q1, Q2, Q3> ObjectFactoryMethodDescription objectFactoryMethod(
-      P objectFactory,
+  static <P, R, Q1, Q2, Q3> FactoryMethod objectFactoryMethod(
+      P factoryInstance,
       String methodName,
       Type<R> returnType,
       Class<?> returnedDomainClass,
@@ -81,8 +81,8 @@ public interface ObjectFactoryMethods {
       Type<Q3> paramType3,
       Function4<P, Q1, Q2, Q3, R> function
   ) {
-    return new ObjectFactoryMethodDescriptionImpl(
-        objectFactory,
+    return new FactoryMethodImpl(
+        factoryInstance,
         methodName,
         returnType,
         returnedDomainClass,
@@ -91,8 +91,8 @@ public interface ObjectFactoryMethods {
     );
   }
 
-  static <P, R, Q1, Q2, Q3, Q4> ObjectFactoryMethodDescription objectFactoryMethod(
-      P objectFactory,
+  static <P, R, Q1, Q2, Q3, Q4> FactoryMethod objectFactoryMethod(
+      P factoryInstance,
       String methodName,
       Type<R> returnType,
       Class<?> returnedDomainClass,
@@ -102,8 +102,8 @@ public interface ObjectFactoryMethods {
       Type<Q4> paramType4,
       Function5<P, Q1, Q2, Q3, Q4, R> function
   ) {
-    return new ObjectFactoryMethodDescriptionImpl(
-        objectFactory,
+    return new FactoryMethodImpl(
+        factoryInstance,
         methodName,
         returnType,
         returnedDomainClass,
@@ -112,8 +112,8 @@ public interface ObjectFactoryMethods {
     );
   }
 
-  static <P, R, Q1, Q2, Q3, Q4, Q5> ObjectFactoryMethodDescription objectFactoryMethod(
-      P objectFactory,
+  static <P, R, Q1, Q2, Q3, Q4, Q5> FactoryMethod objectFactoryMethod(
+      P factoryInstance,
       String methodName,
       Type<R> returnType,
       Class<?> returnedDomainClass,
@@ -124,8 +124,8 @@ public interface ObjectFactoryMethods {
       Type<Q5> paramType5,
       Function6<P, Q1, Q2, Q3, Q4, Q5, R> function
   ) {
-    return new ObjectFactoryMethodDescriptionImpl(
-        objectFactory,
+    return new FactoryMethodImpl(
+        factoryInstance,
         methodName,
         returnType,
         returnedDomainClass,
@@ -134,8 +134,8 @@ public interface ObjectFactoryMethods {
     );
   }
 
-  static <P, R, Q1, Q2, Q3, Q4, Q5, Q6> ObjectFactoryMethodDescription objectFactoryMethod(
-      P objectFactory,
+  static <P, R, Q1, Q2, Q3, Q4, Q5, Q6> FactoryMethod objectFactoryMethod(
+      P factoryInstance,
       String methodName,
       Type<R> returnType,
       Class<?> returnedDomainClass,
@@ -147,8 +147,8 @@ public interface ObjectFactoryMethods {
       Type<Q6> paramType6,
       Function7<P, Q1, Q2, Q3, Q4, Q5, Q6, R> function
   ) {
-    return new ObjectFactoryMethodDescriptionImpl(
-        objectFactory,
+    return new FactoryMethodImpl(
+        factoryInstance,
         methodName,
         returnType,
         returnedDomainClass,
@@ -157,8 +157,8 @@ public interface ObjectFactoryMethods {
     );
   }
 
-  static <P, R, Q1, Q2, Q3, Q4, Q5, Q6, Q7> ObjectFactoryMethodDescription objectFactoryMethod(
-      P objectFactory,
+  static <P, R, Q1, Q2, Q3, Q4, Q5, Q6, Q7> FactoryMethod objectFactoryMethod(
+      P factoryInstance,
       String methodName,
       Type<R> returnType,
       Class<?> returnedDomainClass,
@@ -171,8 +171,8 @@ public interface ObjectFactoryMethods {
       Type<Q7> paramType7,
       Function8<P, Q1, Q2, Q3, Q4, Q5, Q6, Q7, R> function
   ) {
-    return new ObjectFactoryMethodDescriptionImpl(
-        objectFactory,
+    return new FactoryMethodImpl(
+        factoryInstance,
         methodName,
         returnType,
         returnedDomainClass,
@@ -181,8 +181,8 @@ public interface ObjectFactoryMethods {
     );
   }
 
-  static <P, R, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8> ObjectFactoryMethodDescription objectFactoryMethod(
-      P objectFactory,
+  static <P, R, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8> FactoryMethod objectFactoryMethod(
+      P factoryInstance,
       String methodName,
       Type<R> returnType,
       Class<?> returnedDomainClass,
@@ -196,8 +196,8 @@ public interface ObjectFactoryMethods {
       Type<Q8> paramType8,
       Function9<P, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, R> function
   ) {
-    return new ObjectFactoryMethodDescriptionImpl(
-        objectFactory,
+    return new FactoryMethodImpl(
+        factoryInstance,
         methodName,
         returnType,
         returnedDomainClass,
@@ -206,8 +206,8 @@ public interface ObjectFactoryMethods {
     );
   }
 
-  static <P, R, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9> ObjectFactoryMethodDescription objectFactoryMethod(
-      P objectFactory,
+  static <P, R, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9> FactoryMethod objectFactoryMethod(
+      P factoryInstance,
       String methodName,
       Type<R> returnType,
       Class<?> returnedDomainClass,
@@ -222,8 +222,8 @@ public interface ObjectFactoryMethods {
       Type<Q9> paramType9,
       Function10<P, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9, R> function
   ) {
-    return new ObjectFactoryMethodDescriptionImpl(
-        objectFactory,
+    return new FactoryMethodImpl(
+        factoryInstance,
         methodName,
         returnType,
         returnedDomainClass,

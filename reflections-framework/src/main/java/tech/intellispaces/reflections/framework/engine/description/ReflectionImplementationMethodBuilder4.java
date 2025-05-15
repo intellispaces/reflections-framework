@@ -82,8 +82,8 @@ public class ReflectionImplementationMethodBuilder4<W, P1, P2, P3> {
     return this;
   }
 
-  public ReflectionImplementationMethodDescription get() {
-    return new ReflectionImplementationMethodDescriptionImpl(
+  public ReflectionImplementationMethod get() {
+    return new ReflectionImplementationMethodImpl(
         name,
         List.of(paramClass1, paramClass2, paramClass3),
         purpose,

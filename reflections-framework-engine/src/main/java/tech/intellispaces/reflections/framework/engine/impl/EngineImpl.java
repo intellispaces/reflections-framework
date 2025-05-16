@@ -30,12 +30,13 @@ import tech.intellispaces.reflections.framework.channel.Channel2;
 import tech.intellispaces.reflections.framework.channel.Channel3;
 import tech.intellispaces.reflections.framework.channel.Channel4;
 import tech.intellispaces.reflections.framework.engine.Engine;
+import tech.intellispaces.reflections.framework.engine.FactoryRegistry;
 import tech.intellispaces.reflections.framework.engine.ReflectionBroker;
 import tech.intellispaces.reflections.framework.engine.UnitBroker;
-import tech.intellispaces.reflections.framework.engine.description.ReflectionImplementationMethod;
-import tech.intellispaces.reflections.framework.engine.description.ReflectionImplementationMethodPurposes;
-import tech.intellispaces.reflections.framework.engine.description.ReflectionImplementationType;
-import tech.intellispaces.reflections.framework.engine.description.UnitMethod;
+import tech.intellispaces.reflections.framework.reflection.ReflectionImplementationMethod;
+import tech.intellispaces.reflections.framework.reflection.ReflectionImplementationMethodPurposes;
+import tech.intellispaces.reflections.framework.reflection.ReflectionImplementationType;
+import tech.intellispaces.reflections.framework.system.UnitMethod;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForms;
 import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
 import tech.intellispaces.reflections.framework.space.channel.ChannelFunctions;
@@ -51,15 +52,24 @@ import tech.intellispaces.reflections.framework.traverse.plan.TraverseAnalyzer;
 import tech.intellispaces.reflections.framework.traverse.plan.TraverseExecutor;
 import tech.intellispaces.reflections.framework.traverse.plan.TraversePlan;
 
-@AutoService(tech.intellispaces.reflections.framework.engine.Engine.class)
+@AutoService(Engine.class)
 public class EngineImpl implements Engine {
   private TraverseAnalyzer traverseAnalyzer;
   private TraverseExecutor traverseExecutor;
-  private final ObjectFactoryRegistry objectFactoryRegistry = new ObjectFactoryRegistry();
+  private FactoryRegistry factoryRegistry;
 
-  @Override
-  public void load(List<Class<?>> unitClasses, String[] args) {
+  public EngineImpl() {
+    factoryRegistry = new LocalFactoryRegistry();
+  }
 
+  public EngineImpl(
+      TraverseAnalyzer traverseAnalyzer,
+      TraverseExecutor traverseExecutor,
+      FactoryRegistry factoryRegistry
+  ) {
+    this.traverseAnalyzer = traverseAnalyzer;
+    this.traverseExecutor = traverseExecutor;
+    this.factoryRegistry = factoryRegistry;
   }
 
   @Override
@@ -95,7 +105,7 @@ public class EngineImpl implements Engine {
   @Override
   @SuppressWarnings("unchecked")
   public <S, T> T mapThruChannel0(S source, String cid) {
-    DeclarativeTraversePlan traversePlan = traverseAnalyzer.buildMapObjectHandleThruChannel0Plan(
+    DeclarativeTraversePlan traversePlan = traverseAnalyzer.buildMapThruChannel0Plan(
         ReflectionFunctions.getObjectHandleClass(source.getClass()), cid, ReflectionForms.Reflection);
     return (T) traversePlan.execute(source, traverseExecutor);
   }
@@ -108,7 +118,7 @@ public class EngineImpl implements Engine {
   @Override
   @SuppressWarnings("unchecked")
   public <S, T, Q> T mapThruChannel1(S source, String cid, Q qualifier) {
-    DeclarativeTraversePlan traversePlan = traverseAnalyzer.buildMapObjectHandleThruChannel1Plan(
+    DeclarativeTraversePlan traversePlan = traverseAnalyzer.buildMapThruChannel1Plan(
         ReflectionFunctions.getObjectHandleClass(source.getClass()), cid, ReflectionForms.Reflection);
     return (T) traversePlan.execute(source, qualifier, traverseExecutor);
   }
@@ -121,7 +131,7 @@ public class EngineImpl implements Engine {
   @Override
   @SuppressWarnings("unchecked")
   public <S, R> R moveThruChannel0(S source, String cid) {
-    TraversePlan traversePlan = traverseAnalyzer.buildMoveObjectHandleThruChannel0Plan(
+    TraversePlan traversePlan = traverseAnalyzer.buildMoveThruChannel0Plan(
         ReflectionFunctions.getObjectHandleClass(source.getClass()), cid, ReflectionForms.Reflection);
     return (R) traversePlan.execute(source, traverseExecutor);
   }
@@ -129,7 +139,7 @@ public class EngineImpl implements Engine {
   @Override
   @SuppressWarnings("unchecked")
   public <S, R, Q> R moveThruChannel1(S source, String cid, Q qualifier) {
-    TraversePlan traversePlan = traverseAnalyzer.buildMoveObjectHandleThruChannel1Plan(
+    TraversePlan traversePlan = traverseAnalyzer.buildMoveThruChannel1Plan(
         ReflectionFunctions.getObjectHandleClass(source.getClass()), cid, ReflectionForms.Reflection);
     return (R) traversePlan.execute(source, qualifier, traverseExecutor);
   }
@@ -144,7 +154,7 @@ public class EngineImpl implements Engine {
   @Override
   @SuppressWarnings("unchecked")
   public <S, R, Q> R mapOfMovingThruChannel1(S source, String cid, Q qualifier) {
-    TraversePlan traversePlan = traverseAnalyzer.buildMapOfMovingObjectHandleThruChannel1Plan(
+    TraversePlan traversePlan = traverseAnalyzer.buildMapOfMovingThruChannel1Plan(
         ReflectionFunctions.getObjectHandleClass(source.getClass()), cid, ReflectionForms.Reflection);
     return (R) traversePlan.execute(source, qualifier, traverseExecutor);
   }
@@ -182,7 +192,7 @@ public class EngineImpl implements Engine {
       String contractType,
       Type<R> targetReflectionType
   ) {
-    return objectFactoryRegistry.getFactoryAction(targetDomainClass, contractType, targetReflectionType);
+    return factoryRegistry.getFactoryAction(targetDomainClass, contractType, targetReflectionType);
   }
 
   @Override
@@ -192,7 +202,7 @@ public class EngineImpl implements Engine {
       Type<Q> contractQualifierType,
       Type<R> targetObjectHandleType
   ) {
-    return objectFactoryRegistry.getFactoryAction(
+    return factoryRegistry.getFactoryAction(
         targetDomainClass, contractType, contractQualifierType, targetObjectHandleType
     );
   }
@@ -205,7 +215,7 @@ public class EngineImpl implements Engine {
       Type<Q2> contractQualifierType2,
       Type<R> targetReflectionType
   ) {
-    return objectFactoryRegistry.getFactoryAction(
+    return factoryRegistry.getFactoryAction(
         targetDomainClass,
         contractType,
         contractQualifierType1,
@@ -223,7 +233,7 @@ public class EngineImpl implements Engine {
       Type<Q3> contractQualifierType3,
       Type<R> targetReflectionType
   ) {
-    return objectFactoryRegistry.getFactoryAction(
+    return factoryRegistry.getFactoryAction(
         targetDomainClass,
         contractType,
         contractQualifierType1,
@@ -243,7 +253,7 @@ public class EngineImpl implements Engine {
       Type<Q4> contractQualifierType4,
       Type<R> targetReflectionType
   ) {
-    return objectFactoryRegistry.getFactoryAction(
+    return factoryRegistry.getFactoryAction(
         targetDomainClass,
         contractType,
         contractQualifierType1,
@@ -265,7 +275,7 @@ public class EngineImpl implements Engine {
       Type<Q5> contractQualifierType5,
       Type<R> targetReflectionType
   ) {
-    return objectFactoryRegistry.getFactoryAction(
+    return factoryRegistry.getFactoryAction(
         targetDomainClass,
         contractType,
         contractQualifierType1,
@@ -289,7 +299,7 @@ public class EngineImpl implements Engine {
       Type<Q6> contractQualifierType6,
       Type<R> targetReflectionType
   ) {
-    return objectFactoryRegistry.getFactoryAction(
+    return factoryRegistry.getFactoryAction(
         targetDomainClass,
         contractType,
         contractQualifierType1,
@@ -315,7 +325,7 @@ public class EngineImpl implements Engine {
       Type<Q7> contractQualifierType7,
       Type<R> targetReflectionType
   ) {
-    return objectFactoryRegistry.getFactoryAction(
+    return factoryRegistry.getFactoryAction(
         targetDomainClass,
         contractType,
         contractQualifierType1,
@@ -343,7 +353,7 @@ public class EngineImpl implements Engine {
       Type<Q8> contractQualifierType8,
       Type<R> targetReflectionType
   ) {
-    return objectFactoryRegistry.getFactoryAction(
+    return factoryRegistry.getFactoryAction(
         targetDomainClass,
         contractType,
         contractQualifierType1,
@@ -373,7 +383,7 @@ public class EngineImpl implements Engine {
       Type<Q9> contractQualifierType9,
       Type<R> targetReflectionType
   ) {
-    return objectFactoryRegistry.getFactoryAction(
+    return factoryRegistry.getFactoryAction(
         targetDomainClass,
         contractType,
         contractQualifierType1,
@@ -405,7 +415,7 @@ public class EngineImpl implements Engine {
       Type<Q10> contractQualifierType10,
       Type<R> targetReflectionType
   ) {
-    return objectFactoryRegistry.getFactoryAction(
+    return factoryRegistry.getFactoryAction(
         targetDomainClass,
         contractType,
         contractQualifierType1,
@@ -423,7 +433,7 @@ public class EngineImpl implements Engine {
 
   }
 
-  private Action[] buildMethodActions(Class<?> objectHandleClass, ReflectionImplementationMethod... methods) {
+  private Action[] buildMethodActions(Class<?> reflectionClass, ReflectionImplementationMethod... methods) {
     if (methods == null || methods.length == 0) {
       return new Action[0];
     }
@@ -432,11 +442,11 @@ public class EngineImpl implements Engine {
     for (ReflectionImplementationMethod method : methods) {
       if (ReflectionImplementationMethodPurposes.TraverseMethod.is(method.purpose())) {
         Action action = switch (method.paramClasses().size()) {
-          case 0 -> buildMethodAction0(objectHandleClass, method);
-          case 1 -> buildMethodAction1(objectHandleClass, method);
-          case 2 -> buildMethodAction2(objectHandleClass, method);
-          case 3 -> buildMethodAction3(objectHandleClass, method);
-          case 4 -> buildMethodAction4(objectHandleClass, method);
+          case 0 -> buildMethodAction0(reflectionClass, method);
+          case 1 -> buildMethodAction1(reflectionClass, method);
+          case 2 -> buildMethodAction2(reflectionClass, method);
+          case 3 -> buildMethodAction3(reflectionClass, method);
+          case 4 -> buildMethodAction4(reflectionClass, method);
           default -> throw NotImplementedExceptions.withCode("CoVntQ==");
         };
         actions.add(action);
@@ -446,22 +456,22 @@ public class EngineImpl implements Engine {
   }
 
   @SuppressWarnings("unchecked")
-  private Action buildMethodAction0(Class<?> objectHandleClass, ReflectionImplementationMethod method) {
+  private Action buildMethodAction0(Class<?> reflectionClass, ReflectionImplementationMethod method) {
     if (method.traverseType().isMapping()) {
       return DelegateActions.delegateAction1(CachedSupplierActions.get(TraverseActions::mapThruChannel0,
-          objectHandleClass,
+          reflectionClass,
           (Class<Channel0>) method.channelClass(),
           ReflectionForms.Reflection)
       );
     } else if (method.traverseType().isMoving()) {
       return DelegateActions.delegateAction1(CachedSupplierActions.get(TraverseActions::moveThruChannel0,
-          objectHandleClass,
+          reflectionClass,
           (Class<Channel0>) method.channelClass(),
           ReflectionForms.Reflection)
       );
     } else {
       return DelegateActions.delegateAction1(CachedSupplierActions.get(TraverseActions::mapOfMovingThruChannel0,
-          objectHandleClass,
+          reflectionClass,
           (Class<Channel0>) method.channelClass(),
           ReflectionForms.Reflection)
       );
@@ -469,22 +479,22 @@ public class EngineImpl implements Engine {
   }
 
   @SuppressWarnings("unchecked")
-  private Action buildMethodAction1(Class<?> objectHandleClass, ReflectionImplementationMethod method) {
+  private Action buildMethodAction1(Class<?> reflectionClass, ReflectionImplementationMethod method) {
     if (method.traverseType().isMapping()) {
       return DelegateActions.delegateAction2(CachedSupplierActions.get(TraverseActions::mapThruChannel1,
-          objectHandleClass,
+          reflectionClass,
           (Class<Channel1>) method.channelClass(),
           ReflectionForms.Reflection)
       );
     } else if (method.traverseType().isMoving()) {
       return DelegateActions.delegateAction2(CachedSupplierActions.get(TraverseActions::moveThruChannel1,
-          objectHandleClass,
+          reflectionClass,
           (Class<Channel1>) method.channelClass(),
           ReflectionForms.Reflection)
       );
     } else {
       return DelegateActions.delegateAction2(CachedSupplierActions.get(TraverseActions::mapOfMovingThruChannel1,
-          objectHandleClass,
+          reflectionClass,
           (Class<Channel1>) method.channelClass(),
           ReflectionForms.Reflection)
       );
@@ -492,22 +502,22 @@ public class EngineImpl implements Engine {
   }
 
   @SuppressWarnings("unchecked")
-  private Action buildMethodAction2(Class<?> objectHandleClass, ReflectionImplementationMethod method) {
+  private Action buildMethodAction2(Class<?> reflectionClass, ReflectionImplementationMethod method) {
     if (method.traverseType().isMapping()) {
       return DelegateActions.delegateAction3(CachedSupplierActions.get(TraverseActions::mapThruChannel2,
-          objectHandleClass,
+          reflectionClass,
           (Class<Channel2>) method.channelClass(),
           ReflectionForms.Reflection)
       );
     } else if (method.traverseType().isMoving()) {
       return DelegateActions.delegateAction3(CachedSupplierActions.get(TraverseActions::moveThruChannel2,
-          objectHandleClass,
+          reflectionClass,
           (Class<Channel2>) method.channelClass(),
           ReflectionForms.Reflection)
       );
     } else {
       return DelegateActions.delegateAction3(CachedSupplierActions.get(TraverseActions::mapOfMovingThruChannel2,
-          objectHandleClass,
+          reflectionClass,
           (Class<Channel2>) method.channelClass(),
           ReflectionForms.Reflection)
       );
@@ -515,22 +525,22 @@ public class EngineImpl implements Engine {
   }
 
   @SuppressWarnings("unchecked")
-  private Action buildMethodAction3(Class<?> objectHandleClass, ReflectionImplementationMethod method) {
+  private Action buildMethodAction3(Class<?> reflectionClass, ReflectionImplementationMethod method) {
     if (method.traverseType().isMapping()) {
       return DelegateActions.delegateAction4(CachedSupplierActions.get(TraverseActions::mapThruChannel3,
-          objectHandleClass,
+          reflectionClass,
           (Class<Channel3>) method.channelClass(),
           ReflectionForms.Reflection)
       );
     } else if (method.traverseType().isMoving()) {
       return DelegateActions.delegateAction4(CachedSupplierActions.get(TraverseActions::moveThruChannel3,
-          objectHandleClass,
+          reflectionClass,
           (Class<Channel3>) method.channelClass(),
           ReflectionForms.Reflection)
       );
     } else {
       return DelegateActions.delegateAction4(CachedSupplierActions.get(TraverseActions::mapOfMovingThruChannel3,
-          objectHandleClass,
+          reflectionClass,
           (Class<Channel3>) method.channelClass(),
           ReflectionForms.Reflection)
       );
@@ -538,14 +548,14 @@ public class EngineImpl implements Engine {
   }
 
   @SuppressWarnings("unchecked")
-  private Action buildMethodAction4(Class<?> objectHandleClass, ReflectionImplementationMethod method) {
+  private Action buildMethodAction4(Class<?> reflectionClass, ReflectionImplementationMethod method) {
     if (method.traverseType().isMapping()) {
       throw NotImplementedExceptions.withCode("GYhrXA==");
     } else if (method.traverseType().isMoving()) {
       throw NotImplementedExceptions.withCode("8xOuXA==");
     } else {
       return DelegateActions.delegateAction5(CachedSupplierActions.get(TraverseActions::mapOfMovingThruChannel4,
-          objectHandleClass,
+          reflectionClass,
           (Class<Channel4>) method.channelClass(),
           ReflectionForms.Reflection)
       );

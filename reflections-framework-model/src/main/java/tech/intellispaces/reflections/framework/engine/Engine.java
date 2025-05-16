@@ -16,9 +16,9 @@ import tech.intellispaces.actions.Action9;
 import tech.intellispaces.commons.type.Type;
 import tech.intellispaces.reflections.framework.channel.Channel0;
 import tech.intellispaces.reflections.framework.channel.Channel1;
-import tech.intellispaces.reflections.framework.engine.description.ReflectionImplementationMethod;
-import tech.intellispaces.reflections.framework.engine.description.ReflectionImplementationType;
-import tech.intellispaces.reflections.framework.engine.description.UnitMethod;
+import tech.intellispaces.reflections.framework.reflection.ReflectionImplementationMethod;
+import tech.intellispaces.reflections.framework.reflection.ReflectionImplementationType;
+import tech.intellispaces.reflections.framework.system.UnitMethod;
 import tech.intellispaces.reflections.framework.system.Module;
 import tech.intellispaces.reflections.framework.system.UnitWrapper;
 import tech.intellispaces.reflections.framework.traverse.MappingOfMovingTraverse;
@@ -44,14 +44,6 @@ public interface Engine {
    */
   <U, W extends UnitWrapper> UnitBroker registerUnit(W unitWrapper, Class<U> unitClass, UnitMethod... methods);
 
-
-  /**
-   * Loads engine.
-   *
-   * @param unitClasses module unit classes.
-   * @param args command line arguments.
-   */
-  void load(List<Class<?>> unitClasses, String[] args);
 
   void start();
 

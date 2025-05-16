@@ -30,6 +30,8 @@ import tech.intellispaces.reflections.framework.traverse.MappingTraverse;
  */
 public interface Module {
 
+//  List<Unit> units();
+
   void start();
 
   void start(String[] args);
@@ -110,19 +112,19 @@ public interface Module {
 
   <G> G getAutoGuide(Class<G> guideClass);
 
-  <T> T getProjection(String name, Class<T> targetObjectHandleClass);
+  <T> T getProjection(String name, Class<T> targetReflectionClass);
 
-  <T> List<T> getProjections(Class<T> targetObjectHandleClass);
+  <T> List<T> getProjections(Class<T> targetReflectionClass);
 
   /**
    * Adds context projection.
    *
    * @param name the projection name.
-   * @param targetObjectHandleClass the projection target class.
+   * @param targetReflectionClass the projection target class.
    * @param target the projection target.
    * @param <T> the projection target type.
    */
-  <T> void addContextProjection(String name, Class<T> targetObjectHandleClass, T target);
+  <T> void addContextProjection(String name, Class<T> targetReflectionClass, T target);
 
   /**
    * Removes context projection.

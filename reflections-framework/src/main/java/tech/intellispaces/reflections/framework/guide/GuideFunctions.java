@@ -182,38 +182,38 @@ public final class GuideFunctions {
     throw NotImplementedExceptions.withCode("ATFwew");
   }
 
-  public static Channel findObjectChannelAnnotation(MethodStatement objectHandleMethod) {
-    return ChannelFunctions.findObjectGuideChannelAnnotation(objectHandleMethod);
+  public static Channel findObjectChannelAnnotation(MethodStatement reflectionMethod) {
+    return ChannelFunctions.findObjectGuideChannelAnnotation(reflectionMethod);
   }
 
   public static String getUnitGuideCid(Object unit, MethodStatement guideMethod) {
     return ChannelFunctions.getUnitGuideChannelId(unit, guideMethod);
   }
 
-  public static List<Guide<?, ?>> loadObjectGuides(Class<?> objectHandleClass) {
+  public static List<Guide<?, ?>> loadObjectGuides(Class<?> reflectionClass) {
     List<Guide<?, ?>> guides = new ArrayList<>();
-    CustomType objectHandleType = Classes.of(objectHandleClass);
+    CustomType objectHandleType = Classes.of(reflectionClass);
     for (MethodStatement method : objectHandleType.actualMethods()) {
       if (isGuideMethod(method)) {
         Channel channel = findObjectChannelAnnotation(method);
         TraverseType traverseType = ChannelFunctions.getTraverseType(channel);
         if (TraverseTypes.Mapping.is(traverseType)) {
-          guides.add(createObjectMapper(objectHandleClass, channel.value(), method));
+          guides.add(createObjectMapper(reflectionClass, channel.value(), method));
         } else if (TraverseTypes.Moving.is(traverseType)) {
-          guides.add(createObjectMover(objectHandleClass, channel.value(), method));
+          guides.add(createObjectMover(reflectionClass, channel.value(), method));
         } else if (TraverseTypes.MappingOfMoving.is(traverseType)) {
-          guides.add(createObjectMapperOfMoving(objectHandleClass, channel.value(), method));
+          guides.add(createObjectMapperOfMoving(reflectionClass, channel.value(), method));
         }
       }
     }
-    addConversionGuides(objectHandleClass, guides);
+    addConversionGuides(reflectionClass, guides);
     return guides;
   }
 
   @SuppressWarnings("unchecked,rawtypes")
-  private static void addConversionGuides(Class<?> objectHandleClass, List<Guide<?, ?>> guides) {
+  private static void addConversionGuides(Class<?> reflectionClass, List<Guide<?, ?>> guides) {
     String implClassCanonicalName = NameConventionFunctions.getReflectionWrapperCanonicalName(
-        objectHandleClass
+        reflectionClass
     );
     Optional<Class<?>> reflectionImplClass = ClassFunctions.getClass(implClassCanonicalName);
     if (reflectionImplClass.isEmpty()) {
@@ -222,7 +222,7 @@ public final class GuideFunctions {
     }
     CustomType reflectionWrapperType = Interfaces.of(reflectionImplClass.get());
 
-    CustomType domainType = ReflectionFunctions.getDomainOfObjectFormOrElseThrow(Classes.of(objectHandleClass));
+    CustomType domainType = ReflectionFunctions.getDomainOfObjectFormOrElseThrow(Classes.of(reflectionClass));
 
     for (MethodStatement method : domainType.declaredMethods()) {
       if (NameConventionFunctions.isConversionMethod(method)) {
@@ -233,7 +233,7 @@ public final class GuideFunctions {
 
         Guide<?, ?> guide = new ObjectMapper0<>(
             cid,
-            (Class) objectHandleClass,
+            (Class) reflectionClass,
             method,
             channelOrdinal,
             ReflectionForms.Reflection
@@ -253,16 +253,16 @@ public final class GuideFunctions {
 
   @SuppressWarnings("unchecked, rawtypes")
   private static <S, T> Guide<S, T> createObjectMapper(
-      Class<S> objectHandleClass, String cid, MethodStatement guideMethod
+      Class<S> reflectionClass, String cid, MethodStatement guideMethod
   ) {
     ReflectionForm targetForm = getTargetForm(guideMethod);
-    int channelOrdinal = getChannelOrdinal(objectHandleClass, guideMethod);
+    int channelOrdinal = getChannelOrdinal(reflectionClass, guideMethod);
     int qualifiersCount = guideMethod.params().size();
     return switch (qualifiersCount) {
-      case 0 -> new ObjectMapper0<>(cid, (Class) objectHandleClass, guideMethod, channelOrdinal, targetForm);
-      case 1 -> new ObjectMapper1<>(cid, (Class) objectHandleClass, guideMethod, channelOrdinal, targetForm);
-      case 2 -> new ObjectMapper2<>(cid, (Class) objectHandleClass, guideMethod, channelOrdinal, targetForm);
-      case 3 -> new ObjectMapper3<>(cid, (Class) objectHandleClass, guideMethod, channelOrdinal, targetForm);
+      case 0 -> new ObjectMapper0<>(cid, (Class) reflectionClass, guideMethod, channelOrdinal, targetForm);
+      case 1 -> new ObjectMapper1<>(cid, (Class) reflectionClass, guideMethod, channelOrdinal, targetForm);
+      case 2 -> new ObjectMapper2<>(cid, (Class) reflectionClass, guideMethod, channelOrdinal, targetForm);
+      case 3 -> new ObjectMapper3<>(cid, (Class) reflectionClass, guideMethod, channelOrdinal, targetForm);
       default -> throw UnexpectedExceptions.withMessage("Unsupported number of guide qualifiers: {0}",
           qualifiersCount);
     };
@@ -270,16 +270,16 @@ public final class GuideFunctions {
 
   @SuppressWarnings("unchecked, rawtypes")
   private static <S, T> Guide<S, T> createObjectMover(
-      Class<S> objectHandleClass, String cid, MethodStatement guideMethod
+      Class<S> reflectionClass, String cid, MethodStatement guideMethod
   ) {
     ReflectionForm targetForm = getTargetForm(guideMethod);
-    int channelOrdinal = getChannelOrdinal(objectHandleClass, guideMethod);
+    int channelOrdinal = getChannelOrdinal(reflectionClass, guideMethod);
     int qualifiersCount = guideMethod.params().size();
     return switch (qualifiersCount) {
-      case 0 -> new ObjectMover0<>(cid, (Class) objectHandleClass, guideMethod, channelOrdinal, targetForm);
-      case 1 -> new ObjectMover1<>(cid, (Class) objectHandleClass, guideMethod, channelOrdinal, targetForm);
-      case 2 -> new ObjectMover2<>(cid, (Class) objectHandleClass, guideMethod, channelOrdinal, targetForm);
-      case 3 -> new ObjectMover3<>(cid, (Class) objectHandleClass, guideMethod, channelOrdinal, targetForm);
+      case 0 -> new ObjectMover0<>(cid, (Class) reflectionClass, guideMethod, channelOrdinal, targetForm);
+      case 1 -> new ObjectMover1<>(cid, (Class) reflectionClass, guideMethod, channelOrdinal, targetForm);
+      case 2 -> new ObjectMover2<>(cid, (Class) reflectionClass, guideMethod, channelOrdinal, targetForm);
+      case 3 -> new ObjectMover3<>(cid, (Class) reflectionClass, guideMethod, channelOrdinal, targetForm);
       default -> throw UnexpectedExceptions.withMessage("Unsupported number of guide qualifiers: {0}",
           qualifiersCount);
     };
@@ -287,17 +287,17 @@ public final class GuideFunctions {
 
   @SuppressWarnings("unchecked, rawtypes")
   private static <S, T> Guide<S, T> createObjectMapperOfMoving(
-      Class<S> objectHandleClass, String cid, MethodStatement guideMethod
+      Class<S> reflectionClass, String cid, MethodStatement guideMethod
   ) {
     ReflectionForm targetForm = getTargetForm(guideMethod);
-    int channelOrdinal = getChannelOrdinal(objectHandleClass, guideMethod);
+    int channelOrdinal = getChannelOrdinal(reflectionClass, guideMethod);
     int qualifiersCount = guideMethod.params().size();
     return switch (qualifiersCount) {
-      case 0 -> new ObjectMapperOfMoving0<>(cid, (Class) objectHandleClass, guideMethod, channelOrdinal, targetForm);
-      case 1 -> new ObjectMapperOfMoving1<>(cid, (Class) objectHandleClass, guideMethod, channelOrdinal, targetForm);
-      case 2 -> new ObjectMapperOfMoving2<>(cid, (Class) objectHandleClass, guideMethod, channelOrdinal, targetForm);
-      case 3 -> new ObjectMapperOfMoving3<>(cid, (Class) objectHandleClass, guideMethod, channelOrdinal, targetForm);
-      case 4 -> new ObjectMapperOfMoving4<>(cid, (Class) objectHandleClass, guideMethod, channelOrdinal, targetForm);
+      case 0 -> new ObjectMapperOfMoving0<>(cid, (Class) reflectionClass, guideMethod, channelOrdinal, targetForm);
+      case 1 -> new ObjectMapperOfMoving1<>(cid, (Class) reflectionClass, guideMethod, channelOrdinal, targetForm);
+      case 2 -> new ObjectMapperOfMoving2<>(cid, (Class) reflectionClass, guideMethod, channelOrdinal, targetForm);
+      case 3 -> new ObjectMapperOfMoving3<>(cid, (Class) reflectionClass, guideMethod, channelOrdinal, targetForm);
+      case 4 -> new ObjectMapperOfMoving4<>(cid, (Class) reflectionClass, guideMethod, channelOrdinal, targetForm);
       default -> throw UnexpectedExceptions.withMessage("Unsupported number of guide qualifiers: {0}",
           qualifiersCount);
     };
@@ -316,9 +316,9 @@ public final class GuideFunctions {
     return ReflectionForms.Reflection;
   }
 
-  public static int getChannelOrdinal(Class<?> objectHandleClass, MethodStatement guideMethod) {
+  public static int getChannelOrdinal(Class<?> reflectionClass, MethodStatement guideMethod) {
     String wrapperClassCanonicalName = NameConventionFunctions.getReflectionWrapperCanonicalName(
-        objectHandleClass
+        reflectionClass
     );
     Optional<Class<?>> wrapperClass = ClassFunctions.getClass(wrapperClassCanonicalName);
     if (wrapperClass.isEmpty()) {

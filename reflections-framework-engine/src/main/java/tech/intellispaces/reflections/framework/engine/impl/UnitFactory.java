@@ -9,8 +9,8 @@ import tech.intellispaces.actions.Action;
 import tech.intellispaces.commons.exception.NotImplementedExceptions;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.reflections.framework.action.InvokeUnitMethodAction;
-import tech.intellispaces.reflections.framework.engine.description.UnitMethod;
-import tech.intellispaces.reflections.framework.engine.description.UnitMethodPurposes;
+import tech.intellispaces.reflections.framework.system.UnitMethod;
+import tech.intellispaces.reflections.framework.system.UnitMethodPurposes;
 import tech.intellispaces.reflections.framework.guide.n0.UnitMapper0;
 import tech.intellispaces.reflections.framework.guide.n0.UnitMapperOfMoving0;
 import tech.intellispaces.reflections.framework.guide.n1.UnitMapper1;
@@ -37,10 +37,10 @@ import tech.intellispaces.jstatements.method.Methods;
  */
 class UnitFactory {
 
-  static <U,  W extends UnitWrapper> Unit createModule(
+  static <U,  W extends UnitWrapper> UnitImpl createModule(
       W wrapper, Class<U> unitClass, UnitMethod... methods
   ) {
-    var unit = new Unit(unitClass);
+    var unit = new UnitImpl(unitClass);
     unit.setWrapper(wrapper);
     unit.setStartupAction(buildStartupAction(wrapper, unitClass, methods));
     unit.setShutdownAction(buildShutdownAction(wrapper, unitClass, methods));

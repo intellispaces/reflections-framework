@@ -2,8 +2,8 @@ package tech.intellispaces.reflections.framework.system;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
+import tech.intellispaces.reflections.framework.engine.Engine;
 import tech.intellispaces.reflections.framework.engine.Engines;
 import tech.intellispaces.reflections.framework.exception.ConfigurationExceptions;
 
@@ -11,7 +11,8 @@ import tech.intellispaces.reflections.framework.exception.ConfigurationException
  * System modules provider.
  */
 public class Modules {
-  private final static AtomicReference<Module> MODULE = new AtomicReference<>();
+  private static System SYSTEM;
+  private static Module MODULE ;
 
   /**
    * Loads a new system module.
@@ -42,30 +43,42 @@ public class Modules {
    * @return the created module.
    */
   public static Module load(List<Class<?>> unitClasses, String[] args) {
-    if (MODULE.get() != null) {
-      throw ConfigurationExceptions.withMessage("The module has already been uploaded");
+    synchronized (Modules.class) {
+      if (MODULE != null) {
+        throw ConfigurationExceptions.withMessage("The module has already been uploaded");
+      }
+
+      Engine engine = Engines.create(args);
+      Module module = ModuleFactory.createModule(unitClasses, engine);
+      module = Engines.get().createModule(unitClasses, args);    // todo: remove
+
+      MODULE = module;
+      SYSTEM = new SystemImpl(module, Engines.get());
     }
-    Engines.get().load(unitClasses, args);
-    Module module = Engines.get().createModule(unitClasses, args);    // todo: remove
-    if (!MODULE.compareAndSet(null, module)) {
-      throw ConfigurationExceptions.withMessage("The module has already been uploaded");
-    };
-    return module;
+    return MODULE;
   }
 
   /**
    * Unloads the current module.
    */
   public static void unload() {
-    unload(current());
+    synchronized (Modules.class) {
+      current().stop();
+      MODULE = null;
+      SYSTEM = null;
+    }
   }
 
   /**
-   * Unloads given module.
+   * Returns the current loaded system.
+   * <p>
+   * If there is no current system, an exception will be thrown.
    */
-  public static void unload(Module module) {
-    module.stop();
-    MODULE.set(null);
+  public static System currentSystem() {
+    if (SYSTEM == null) {
+      throw ConfigurationExceptions.withMessage("There are no loaded system");
+    }
+    return SYSTEM;
   }
 
   /**
@@ -87,7 +100,7 @@ public class Modules {
    * @return current module or <code>null</code> if there are no loaded module.
    */
   public static Module currentSilently() {
-    return MODULE.get();
+    return MODULE;
   }
 
   private Modules() {}

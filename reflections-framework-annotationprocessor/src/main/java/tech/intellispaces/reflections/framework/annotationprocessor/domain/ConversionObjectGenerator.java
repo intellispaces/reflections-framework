@@ -35,7 +35,7 @@ abstract class ConversionObjectGenerator extends AbstractReflectionFormGenerator
   protected String domainClassSimpleName;
   protected String classTypeParams;
   protected String classTypeParamsBrief;
-  protected String childObjectHandleType;
+  protected String childReflectionType;
   protected String parentDomainClassSimpleName;
   protected String domainTypeParamsBrief;
   protected String domainTypeArguments;

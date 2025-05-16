@@ -118,11 +118,11 @@ public class UnmovableReflectionTypeGenerator extends AbstractReflectionFormGene
   }
 
   private Map<String, String> generateMethod(MethodStatement method) {
-    var returnTypeHandle = new StringBuilder();
-    appendObjectFormMethodReturnType(returnTypeHandle, method);
+    var returnType = new StringBuilder();
+    appendObjectFormMethodReturnType(returnType, method);
 
     String declaration = MethodSignatureDeclarations.build(method)
-        .returnType(returnTypeHandle.toString())
+        .returnType(returnType.toString())
         .includeMethodTypeParams(true)
         .includeOwnerTypeParams(false)
         .get(this::addImport, this::addImportAndGetSimpleName);

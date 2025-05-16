@@ -96,7 +96,7 @@ public class UnmovableDownwardObjectGenerator extends ConversionObjectGenerator 
         NameConventionFunctions.getUnmovableRegularFormTypeName(superDomainType.targetType().className(), false));
 
     analyzeDomain();
-    analyzeChildObjectHandleType();
+    analyzeChildReflectionType();
     analyzeObjectHandleMethods(context);
     analyzeAlias();
 
@@ -105,7 +105,7 @@ public class UnmovableDownwardObjectGenerator extends ConversionObjectGenerator 
     addVariable("domainTypeParamsBrief", domainTypeParamsBrief);
     addVariable("domainTypeArguments", domainTypeArguments);
     addVariable("parentDomainClassSimpleName", parentDomainClassSimpleName);
-    addVariable("childObjectHandleType", childObjectHandleType);
+    addVariable("childReflectionType", childReflectionType);
     addVariable("childField", childFieldName);
     addVariable("methods", methods);
     addVariable("domainMethods", rawDomainMethods);
@@ -119,8 +119,8 @@ public class UnmovableDownwardObjectGenerator extends ConversionObjectGenerator 
     return true;
   }
 
-  private void analyzeChildObjectHandleType() {
-    childObjectHandleType = addImportAndGetSimpleName(
+  private void analyzeChildReflectionType() {
+    childReflectionType = addImportAndGetSimpleName(
         NameConventionFunctions.getUnmovableReflectionTypeName(sourceArtifact().className(), true)
     );
   }

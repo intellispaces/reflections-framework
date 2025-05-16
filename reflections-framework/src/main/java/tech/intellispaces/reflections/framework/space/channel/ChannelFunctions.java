@@ -313,29 +313,29 @@ public interface ChannelFunctions {
     return channel.get();
   }
 
-  static Channel findObjectHandleMethodChannelAnnotation(MethodStatement objectHandleMethod) {
-    CustomType objectHandleClass = objectHandleMethod.owner();
-    CustomType domainClass = ReflectionFunctions.getDomainOfObjectFormOrElseThrow(objectHandleClass);
-    Channel channel = findObjectHandleMethodChannelAnnotation(objectHandleMethod, domainClass);
+  static Channel findObjectHandleMethodChannelAnnotation(MethodStatement reflectionMethod) {
+    CustomType reflectionHandleClass = reflectionMethod.owner();
+    CustomType domainClass = ReflectionFunctions.getDomainOfObjectFormOrElseThrow(reflectionHandleClass);
+    Channel channel = findObjectHandleMethodChannelAnnotation(reflectionMethod, domainClass);
     if (channel == null) {
       throw UnexpectedExceptions.withMessage("Failed to find related channel annotation " +
           "of method '{0}' in {1}. Domain class {2}",
-          objectHandleMethod.name(), objectHandleClass.canonicalName(), domainClass.canonicalName());
+          reflectionMethod.name(), reflectionHandleClass.canonicalName(), domainClass.canonicalName());
     }
     return channel;
   }
 
   private static Channel findObjectHandleMethodChannelAnnotation(
-      MethodStatement objectHandleMethod, CustomType domainClass
+      MethodStatement reflectionMethod, CustomType domainClass
   ) {
     for (MethodStatement domainMethod : domainClass.declaredMethods()) {
-      if (isEquivalentMethods(domainMethod, objectHandleMethod)) {
+      if (isEquivalentMethods(domainMethod, reflectionMethod)) {
         return domainMethod.selectAnnotation(Channel.class).orElseThrow();
       }
     }
     for (CustomTypeReference parent : domainClass.parentTypes()) {
       if (DomainFunctions.isDomainType(parent.targetType())) {
-        Channel channel = findObjectHandleMethodChannelAnnotation(objectHandleMethod, parent.targetType());
+        Channel channel = findObjectHandleMethodChannelAnnotation(reflectionMethod, parent.targetType());
         if (channel != null) {
           return channel;
         }
@@ -344,17 +344,17 @@ public interface ChannelFunctions {
     return null;
   }
 
-  private static boolean isEquivalentMethods(MethodStatement domainMethod, MethodStatement objectHandleMethod) {
-    if (!domainMethod.name().equals(getMethodMainFormName(objectHandleMethod))) {
+  private static boolean isEquivalentMethods(MethodStatement domainMethod, MethodStatement reflectionMethod) {
+    if (!domainMethod.name().equals(getMethodMainFormName(reflectionMethod))) {
       return false;
-    } else if (domainMethod.params().size() != objectHandleMethod.params().size()) {
+    } else if (domainMethod.params().size() != reflectionMethod.params().size()) {
       return false;
     } else {
       for (int i = 0; i < domainMethod.params().size(); ++i) {
         TypeReference domainParamType1 = domainMethod.params().get(i).type();
-        TypeReference objectHandleParamType = objectHandleMethod.params().get(i).type();
+        TypeReference reflectionParamType = reflectionMethod.params().get(i).type();
         CustomType domainParamType2 = ReflectionFunctions.getDomainOfObjectFormOrElseThrow(
-            objectHandleParamType.asCustomTypeReferenceOrElseThrow().targetType()
+            reflectionParamType.asCustomTypeReferenceOrElseThrow().targetType()
         );
         if (!TypeReferenceFunctions.isEqualTypes(domainParamType1, CustomTypeReferences.get(domainParamType2))) {
           return false;
@@ -364,15 +364,15 @@ public interface ChannelFunctions {
     }
   }
 
-  private static String getMethodMainFormName(MethodStatement objectHandleMethod) {
-    if (NameConventionFunctions.isPrimitiveTargetForm(objectHandleMethod)) {
-      return StringFunctions.removeTailOrElseThrow(objectHandleMethod.name(), "AsPrimitive");
+  private static String getMethodMainFormName(MethodStatement reflectionMethod) {
+    if (NameConventionFunctions.isPrimitiveTargetForm(reflectionMethod)) {
+      return StringFunctions.removeTailOrElseThrow(reflectionMethod.name(), "AsPrimitive");
     }
-    return objectHandleMethod.name();
+    return reflectionMethod.name();
   }
 
-  static Channel findObjectGuideChannelAnnotation(MethodStatement objectHandleMethod) {
-    return findObjectHandleMethodChannelAnnotation(objectHandleMethod);
+  static Channel findObjectGuideChannelAnnotation(MethodStatement reflectionMethod) {
+    return findObjectHandleMethodChannelAnnotation(reflectionMethod);
   }
 
   private static String extractChannelId(

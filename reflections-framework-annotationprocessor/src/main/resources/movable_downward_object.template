@@ -14,9 +14,9 @@ import {{$importedClass}};
 @Reflection({{$domainClassSimpleName}}.class)
 {{$generatedAnnotation}}
 public class {{$generatedArtifactSimpleName}}{{$classTypeParams}} implements {{$movableObjectHandleName}}{{$domainTypeArguments}} {
-  private final {{$childObjectHandleType}}{{$classTypeParamsBrief}} {{$childField}};
+  private final {{$childReflectionType}}{{$classTypeParamsBrief}} {{$childField}};
 
-  public {{$generatedArtifactSimpleName}}({{$childObjectHandleType}}{{$classTypeParamsBrief}} {{$childField}}) {
+  public {{$generatedArtifactSimpleName}}({{$childReflectionType}}{{$classTypeParamsBrief}} {{$childField}}) {
     this.{{$childField}} = {{$childField}};
   }
 

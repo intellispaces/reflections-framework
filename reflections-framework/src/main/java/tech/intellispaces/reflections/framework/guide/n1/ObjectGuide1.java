@@ -62,7 +62,7 @@ abstract class ObjectGuide1<S extends ReflectionWrapper, R, Q> implements Guide1
   @Override
   public String toString() {
     return "ObjectGuide1{" +
-        "objectHandleClass=" + reflectionClass +
+        "reflectionClass=" + reflectionClass +
         ", cid='" + cid + '\'' +
         ", guideMethod=" + guideMethod.name() + "(" + guideMethod.params().stream().map(MethodParam::name).collect(Collectors.joining(", ")) + ")" +
         ", targetForm=" + targetForm +

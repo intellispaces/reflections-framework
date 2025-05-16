@@ -4,7 +4,7 @@ package {{$generatedArtifactPackageName}};
 import {{$importedClass}};
 {{end}}
 
-import static tech.intellispaces.reflections.framework.engine.description.ReflectionWrapperMethods.reflectionImplementationMethod;
+import static tech.intellispaces.reflections.framework.reflection.ReflectionWrapperMethods.reflectionImplementationMethod;
 
 /**
  * This class was generated automatically. Don't try to change it.

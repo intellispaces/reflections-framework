@@ -6,9 +6,9 @@ import java.util.Map;
 
 import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
 import tech.intellispaces.reflections.framework.annotationprocessor.ReflectionsArtifactGenerator;
-import tech.intellispaces.reflections.framework.engine.ObjectFactoryWrapper;
-import tech.intellispaces.reflections.framework.engine.description.FactoryMethod;
-import tech.intellispaces.reflections.framework.engine.description.ObjectFactoryMethods;
+import tech.intellispaces.reflections.framework.factory.FactoryWrapper;
+import tech.intellispaces.reflections.framework.factory.FactoryMethod;
+import tech.intellispaces.reflections.framework.factory.FactoryMethods;
 import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
 import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
 import tech.intellispaces.jstatements.customtype.CustomType;
@@ -48,8 +48,8 @@ public class ObjectFactoryWrapperGenerator extends ReflectionsArtifactGenerator 
     }
     addImport(List.class);
     addImport(ArrayList.class);
-    addImport(ObjectFactoryWrapper.class);
-    addImport(ObjectFactoryMethods.class);
+    addImport(FactoryWrapper.class);
+    addImport(FactoryMethods.class);
     addImport(FactoryMethod.class);
 
     addVariable("factoryMethods", getFactoryMethods());
@@ -79,8 +79,8 @@ public class ObjectFactoryWrapperGenerator extends ReflectionsArtifactGenerator 
   }
 
   private String getMethodReturnedDomainClass(MethodStatement method) {
-    CustomType objectHandleType = method.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow().targetType();
-    CustomType domainType = ReflectionFunctions.getDomainOfObjectForm(objectHandleType).orElseThrow();
+    CustomType reflectionType = method.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow().targetType();
+    CustomType domainType = ReflectionFunctions.getDomainOfObjectForm(reflectionType).orElseThrow();
     return addImportAndGetSimpleName(domainType.canonicalName());
   }
 

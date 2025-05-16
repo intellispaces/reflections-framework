@@ -10,14 +10,14 @@ import {{$importedClass}};
  * This class was generated automatically. Don't try to change it.
  */
 {{$generatedAnnotation}}
-public class {{$generatedArtifactSimpleName}} extends {{$sourceArtifactSimpleName}} implements ObjectFactoryWrapper {
+public class {{$generatedArtifactSimpleName}} extends {{$sourceArtifactSimpleName}} implements FactoryWrapper {
 
   @Override
   public List<FactoryMethod> methods() {
     var methods = new ArrayList<FactoryMethod>();
 {{for method : $factoryMethods}}
     methods.add(
-      ObjectFactoryMethods.objectFactoryMethod(
+      FactoryMethods.factoryMethod(
         this,
         "{{$method["name"]}}",
         {{$method["returnedType"]}},

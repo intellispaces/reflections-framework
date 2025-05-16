@@ -78,7 +78,7 @@ public class GeneralReflectionTypeGenerator extends AbstractReflectionFormGenera
     analyzeAlias();
     analyzeObjectFormMethods(sourceArtifact(), context);
 
-    addVariable("simpleHandleName", getSimpleHandleName());
+    addVariable("simpleReflectionName", getSimpleReflectionName());
     addVariable("movableClassSimpleName", movableClassSimpleName());
     addVariable("reflectionTypeParamsFull", typeParamsFull);
     addVariable("reflectionTypeParamsBrief", typeParamsBrief);
@@ -98,7 +98,7 @@ public class GeneralReflectionTypeGenerator extends AbstractReflectionFormGenera
         NameConventionFunctions.getGeneralRegularFormClassname(sourceArtifact().className(), false));
   }
 
-  private String getSimpleHandleName() {
+  private String getSimpleReflectionName() {
     return StringFunctions.lowercaseFirstLetter(
         StringFunctions.removeTailOrElseThrow(sourceArtifactSimpleName(), "Domain"));
   }

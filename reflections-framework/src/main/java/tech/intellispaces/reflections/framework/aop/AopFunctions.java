@@ -9,13 +9,13 @@ import java.util.stream.Collectors;
 import tech.intellispaces.actions.Action;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.reflections.framework.annotation.ApplyAdvice;
-import tech.intellispaces.reflections.framework.system.ProjectionProvider;
 import tech.intellispaces.jstatements.method.MethodStatement;
+import tech.intellispaces.reflections.framework.engine.ProjectionRegistry;
 
 public interface AopFunctions {
 
   @SuppressWarnings("unchecked, rawtypes")
-  static Action buildChainAction(MethodStatement method, Action action, ProjectionProvider projectionProvider) {
+  static Action buildChainAction(MethodStatement method, Action action, ProjectionRegistry projectionRegistry) {
     List<ApplyAdvice> applyAdviceAnnotations = method.annotations().stream()
         .map(a -> a.annotationStatement().selectAnnotation(ApplyAdvice.class).orElse(null))
         .filter(Objects::nonNull)
@@ -29,12 +29,12 @@ public interface AopFunctions {
     for (Class<?> adviceClass : adviceClasses) {
       try {
         Constructor constructor = adviceClass.getConstructor(
-            MethodStatement.class, Action.class, ProjectionProvider.class
+            MethodStatement.class, Action.class, ProjectionRegistry.class
         );
         currentAction = (Action) constructor.newInstance(
             method,
             currentAction,
-            projectionProvider
+            projectionRegistry
         );
       } catch (Exception e) {
         throw UnexpectedExceptions.withCauseAndMessage(e, "Could not create AOP advice");

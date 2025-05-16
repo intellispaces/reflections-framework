@@ -34,7 +34,7 @@ public class ModuleFactoryTest {
     assertThat(module.units().get(0).unitClass()).isSameAs(EmptyTestModule.class);
     assertThat(module.units().get(0).startupAction()).isEmpty();
     assertThat(module.units().get(0).startupAction()).isEmpty();
-    assertThat(module.projectionRegistry().allProjections()).isEmpty();
+    assertThat(((LocalProjectionRegistry) module.projectionRegistry()).allProjections()).isEmpty();
   }
 
   @Test
@@ -49,7 +49,7 @@ public class ModuleFactoryTest {
     assertThat(((InvokeUnitMethodAction<?>) module.units().get(0).startupAction().orElseThrow()).method().name()).isEqualTo("startup");
     assertThat(module.units().get(0).shutdownAction()).isPresent();
     assertThat(((InvokeUnitMethodAction<?>) module.units().get(0).shutdownAction().orElseThrow()).method().name()).isEqualTo("shutdown");
-    assertThat(module.projectionRegistry().allProjections()).isEmpty();
+    assertThat(((LocalProjectionRegistry) module.projectionRegistry()).allProjections()).isEmpty();
   }
 
   @Test
@@ -62,7 +62,7 @@ public class ModuleFactoryTest {
     assertThat(module.units().get(0).unitClass()).isSameAs(ModuleWithSimpleProjections.class);
     assertThat(module.units().get(0).startupAction()).isEmpty();
     assertThat(module.units().get(0).shutdownAction()).isEmpty();
-    assertThat(module.projectionRegistry().allProjections()).hasSize(17);
+    assertThat(((LocalProjectionRegistry) module.projectionRegistry()).allProjections()).hasSize(17);
 
     assertThat(module.projectionRegistry().getProjection("booleanProjection1", boolean.class)).isEqualTo(true);
     assertThat(module.projectionRegistry().getProjection("booleanProjection1", Boolean.class)).isEqualTo(true);
@@ -113,7 +113,7 @@ public class ModuleFactoryTest {
 
     assertThat(module.projectionRegistry().getProjection("objectHandleProjection", ObjectReferenceOfEmptyDomain.class)).isNull();
 
-    assertThat(module.projectionRegistry().allProjections()).hasSize(17);
+    assertThat(((LocalProjectionRegistry) module.projectionRegistry()).allProjections()).hasSize(17);
   }
 
   @Test

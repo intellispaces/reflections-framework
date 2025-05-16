@@ -18,8 +18,8 @@ import tech.intellispaces.reflections.framework.channel.ChannelFunction0;
 import tech.intellispaces.reflections.framework.channel.ChannelFunction1;
 import tech.intellispaces.reflections.framework.engine.Engines;
 import tech.intellispaces.reflections.framework.engine.ReflectionBroker;
-import tech.intellispaces.reflections.framework.engine.description.ReflectionImplementationMethodPurposes;
-import tech.intellispaces.reflections.framework.engine.description.ReflectionImplementationType;
+import tech.intellispaces.reflections.framework.reflection.ReflectionImplementationMethodPurposes;
+import tech.intellispaces.reflections.framework.reflection.ReflectionImplementationType;
 import tech.intellispaces.reflections.framework.exception.TraverseException;
 import tech.intellispaces.reflections.framework.reflection.MovabilityType;
 import tech.intellispaces.reflections.framework.reflection.MovabilityTypes;
@@ -106,7 +106,7 @@ public class UnmovableReflectionWrapperGenerator extends AbstractReflectionWrapp
     analyzeTypeParams();
     analyzeConstructors();
     analyzeInjectedGuides();
-    analyzeObjectHandleMethods();
+    analyzeReflectionMethods();
     analyzeConversionMethods(domainType);
     analyzeUnbindMethod();
 
@@ -127,7 +127,7 @@ public class UnmovableReflectionWrapperGenerator extends AbstractReflectionWrapp
     addVariable("injectionMethods", injectionMethods);
     addVariable("conversionMethods", conversionMethods);
     addVariable("notImplRelease", !implRelease);
-    addVariable("reflectionClassSimpleName", getObjectHandleSimpleName());
+    addVariable("reflectionClassSimpleName", getReflectionSimpleName());
     addVariable("movableReflectionClassSimpleName", getMovableObjectHandleSimpleName());
     return true;
   }

@@ -156,8 +156,8 @@ public class ReflectionAssistantBrokerGenerator extends ReflectionsArtifactGener
   }
 
   String getReturnDomainClassCanonicalName(MethodStatement method) {
-    CustomType objectHandleType = method.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow().targetType();
-    CustomType domainType = ReflectionFunctions.getDomainOfObjectForm(objectHandleType).orElseThrow();
+    CustomType reflectionType = method.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow().targetType();
+    CustomType domainType = ReflectionFunctions.getDomainOfObjectForm(reflectionType).orElseThrow();
     return addImportAndGetSimpleName(domainType.canonicalName());
   }
 }

@@ -3,10 +3,10 @@ package tech.intellispaces.reflections.framework.engine.impl;
 import java.util.List;
 
 import tech.intellispaces.actions.Action;
-import tech.intellispaces.reflections.framework.engine.description.ReflectionImplementationMethod;
+import tech.intellispaces.reflections.framework.reflection.ReflectionImplementationMethod;
 import tech.intellispaces.reflections.framework.system.Injection;
 
-public class ReflectionImplementationType implements tech.intellispaces.reflections.framework.engine.description.ReflectionImplementationType {
+public class ReflectionImplementationType implements tech.intellispaces.reflections.framework.reflection.ReflectionImplementationType {
   private final Class<?> reflectionImplementationClass;
   private final Class<?> reflectionWrapperClass;
   private final List<ReflectionImplementationMethod> methods;

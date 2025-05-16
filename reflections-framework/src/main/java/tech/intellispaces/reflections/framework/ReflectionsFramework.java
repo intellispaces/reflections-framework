@@ -9,7 +9,6 @@ import tech.intellispaces.reflections.framework.settings.SettingsFunctions;
 import tech.intellispaces.reflections.framework.system.Module;
 import tech.intellispaces.reflections.framework.system.Modules;
 import tech.intellispaces.reflections.framework.system.System;
-import tech.intellispaces.reflections.framework.system.Systems;
 
 /**
  * The reflections framework.
@@ -22,7 +21,16 @@ public class ReflectionsFramework {
    * If there is no current system, an exception will be thrown.
    */
   public static System system() {
-    return Systems.current();
+    return Modules.currentSystem();
+  }
+
+  /**
+   * Returns the current module.
+   * <p>
+   * If there is no current module, an exception will be thrown.
+   */
+  public static Module module() {
+    return Modules.current();
   }
 
   /**

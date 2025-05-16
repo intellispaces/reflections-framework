@@ -7,7 +7,7 @@ import java.util.Map;
 import tech.intellispaces.actions.Action;
 import tech.intellispaces.commons.exception.NotImplementedExceptions;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
-import tech.intellispaces.reflections.framework.engine.description.ReflectionImplementationType;
+import tech.intellispaces.reflections.framework.reflection.ReflectionImplementationType;
 import tech.intellispaces.reflections.framework.reflection.Reflection;
 import tech.intellispaces.reflections.framework.system.Injection;
 

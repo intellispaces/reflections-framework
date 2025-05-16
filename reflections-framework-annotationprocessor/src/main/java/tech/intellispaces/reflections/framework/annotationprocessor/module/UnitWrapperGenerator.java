@@ -19,7 +19,9 @@ import tech.intellispaces.reflections.framework.annotationprocessor.AnnotationGe
 import tech.intellispaces.reflections.framework.annotationprocessor.ReflectionsArtifactGenerator;
 import tech.intellispaces.reflections.framework.engine.Engines;
 import tech.intellispaces.reflections.framework.engine.UnitBroker;
-import tech.intellispaces.reflections.framework.engine.description.UnitMethodPurposes;
+import tech.intellispaces.reflections.framework.system.UnitMethodPurposes;
+import tech.intellispaces.reflections.framework.system.UnitType;
+import tech.intellispaces.reflections.framework.system.UnitTypes;
 import tech.intellispaces.reflections.framework.exception.ConfigurationExceptions;
 import tech.intellispaces.reflections.framework.guide.GuideFunctions;
 import tech.intellispaces.reflections.framework.guide.GuideKinds;
@@ -87,7 +89,10 @@ public class UnitWrapperGenerator extends ReflectionsArtifactGenerator {
         InjectionKinds.class,
         ProjectionReferences.class,
         GuideKinds.class,
-        ReflectionForms.class
+        ReflectionForms.class,
+        UnitType.class,
+        UnitTypes.class,
+        List.class
     );
 
     methods = sourceArtifact().actualMethods();

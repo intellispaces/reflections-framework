@@ -18,7 +18,7 @@ import tech.intellispaces.commons.type.ClassNameFunctions;
 import tech.intellispaces.commons.type.PrimitiveTypes;
 import tech.intellispaces.reflections.framework.annotationprocessor.AnnotationGeneratorFunctions;
 import tech.intellispaces.reflections.framework.annotationprocessor.domain.AbstractReflectionFormGenerator;
-import tech.intellispaces.reflections.framework.engine.description.ReflectionImplementationMethodPurposes;
+import tech.intellispaces.reflections.framework.reflection.ReflectionImplementationMethodPurposes;
 import tech.intellispaces.reflections.framework.exception.ConfigurationExceptions;
 import tech.intellispaces.reflections.framework.guide.GuideFunctions;
 import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
@@ -55,8 +55,8 @@ abstract class AbstractReflectionWrapperGenerator extends AbstractReflectionForm
   protected final List<Map<String, String>> conversionMethods = new ArrayList<>();
   protected final List<Map<String, Object>> methodDescriptions = new ArrayList<>();
 
-  AbstractReflectionWrapperGenerator(CustomType objectHandleType) {
-    super(objectHandleType);
+  AbstractReflectionWrapperGenerator(CustomType reflectionType) {
+    super(reflectionType);
   }
 
   protected void analyzeDomain() {
@@ -92,7 +92,7 @@ abstract class AbstractReflectionWrapperGenerator extends AbstractReflectionForm
     }
   }
 
-  protected String getObjectHandleSimpleName() {
+  protected String getReflectionSimpleName() {
     final String canonicalName;
     if (ReflectionFunctions.isUnmovableObjectHandle(sourceArtifact())) {
       canonicalName = NameConventionFunctions.getUnmovableReflectionTypeName(domainType.canonicalName(), true);
@@ -160,7 +160,7 @@ abstract class AbstractReflectionWrapperGenerator extends AbstractReflectionForm
     return constructorDescriptor;
   }
 
-  protected void analyzeObjectHandleMethods() {
+  protected void analyzeReflectionMethods() {
     int methodOrdinal = 0;
     for (MethodStatement method : domainMethods) {
       analyzeRawDomainMethod(method);
@@ -189,7 +189,7 @@ abstract class AbstractReflectionWrapperGenerator extends AbstractReflectionForm
       return;
     }
 
-    List<MethodStatement> objectHandleMethods = sourceArtifact().actualMethods();
+    List<MethodStatement> reflectionMethods = sourceArtifact().actualMethods();
     if (NameConventionFunctions.isConversionMethod(domainMethod)) {
       this.methodDescriptions.add(buildTraverseMethodDescriptions(domainMethod, targetForm, methodOrdinal));
       this.methodDescriptions.add(buildConversionGuideMethodDescriptions(domainMethod, methodOrdinal));
@@ -197,7 +197,7 @@ abstract class AbstractReflectionWrapperGenerator extends AbstractReflectionForm
     }
 
     this.methodDescriptions.add(buildTraverseMethodDescriptions(domainMethod, targetForm, methodOrdinal));
-    MethodStatement guideMethod = findGuideMethod(domainMethod, objectHandleMethods, targetForm);
+    MethodStatement guideMethod = findGuideMethod(domainMethod, reflectionMethods, targetForm);
     if (guideMethod != null && !guideMethod.isAbstract()) {
       this.guideMethods.add(AnnotationGeneratorFunctions.buildGuideActionMethod(guideMethod, this));
       this.methodDescriptions.add(buildGuideMethodDescriptions(guideMethod, methodOrdinal));
@@ -264,17 +264,17 @@ abstract class AbstractReflectionWrapperGenerator extends AbstractReflectionForm
 
   private MethodStatement findGuideMethod(
       MethodStatement domainMethod,
-      List<MethodStatement> objectHandleMethods,
+      List<MethodStatement> reflectionMethods,
       ReflectionForm targetForm
   ) {
-    for (MethodStatement objectHandleMethod : objectHandleMethods) {
-      if (!GuideFunctions.isGuideMethod(objectHandleMethod)) {
+    for (MethodStatement method : reflectionMethods) {
+      if (!GuideFunctions.isGuideMethod(method)) {
         continue;
       }
-      if (getObjectFormMethodName(domainMethod, targetForm).equals(objectHandleMethod.name()) &&
-          equalParams(domainMethod.params(), objectHandleMethod.params())
+      if (getObjectFormMethodName(domainMethod, targetForm).equals(method.name()) &&
+          equalParams(domainMethod.params(), method.params())
       ) {
-        return objectHandleMethod;
+        return method;
       }
     }
     return null;

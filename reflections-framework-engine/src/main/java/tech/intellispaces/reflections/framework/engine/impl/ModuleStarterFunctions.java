@@ -11,11 +11,11 @@ public interface ModuleStarterFunctions {
   }
 
   private static void loadProjections(ModuleImpl module) {
-    module.projectionRegistry().load();
+    ((LocalProjectionRegistry) module.projectionRegistry()).load();
   }
 
   private static void invokeStartupAction(ModuleImpl module) {
-    Unit mainUnit = module.mainUnit();
+    UnitImpl mainUnit = module.mainUnit();
     if (mainUnit.startupAction().isPresent()) {
       mainUnit.startupAction().get().castToAction0().execute();
     }

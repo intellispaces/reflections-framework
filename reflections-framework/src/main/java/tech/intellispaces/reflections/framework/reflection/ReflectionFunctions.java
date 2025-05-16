@@ -112,11 +112,11 @@ public class ReflectionFunctions {
   }
 
   public static boolean isDefaultObjectHandleClass(Class<?> aClass) {
-    return DEFAULT_OBJECT_HANDLE_CLASSES.contains(aClass.getCanonicalName());
+    return DEFAULT_REFLECTION_CLASSES.contains(aClass.getCanonicalName());
   }
 
   public static boolean isDefaultObjectHandleClass(CustomType aClass) {
-    return DEFAULT_OBJECT_HANDLE_CLASSES.contains(aClass.canonicalName());
+    return DEFAULT_REFLECTION_CLASSES.contains(aClass.canonicalName());
   }
 
   public static boolean isDefaultObjectHandleType(TypeReference type) {
@@ -129,23 +129,23 @@ public class ReflectionFunctions {
   }
 
   public static boolean isDefaultObjectHandleType(String canonicalName) {
-    return DEFAULT_OBJECT_HANDLE_CLASSES.contains(canonicalName);
+    return DEFAULT_REFLECTION_CLASSES.contains(canonicalName);
   }
 
   public static boolean isMovableObjectHandle(Object reflection) {
     return isMovableObjectHandle(reflection.getClass());
   }
 
-  public static boolean isMovableObjectHandle(Class<?> objectHandleClass) {
-    return isMovableObjectHandle(CustomTypes.of(objectHandleClass));
+  public static boolean isMovableObjectHandle(Class<?> reflectionClass) {
+    return isMovableObjectHandle(CustomTypes.of(reflectionClass));
   }
 
-  public static boolean isMovableObjectHandle(CustomType objectHandleType) {
-    return AnnotationFunctions.isAssignableAnnotatedType(objectHandleType, Movable.class);
+  public static boolean isMovableObjectHandle(CustomType reflectionType) {
+    return AnnotationFunctions.isAssignableAnnotatedType(reflectionType, Movable.class);
   }
 
-  public static boolean isUnmovableObjectHandle(CustomType objectHandleType) {
-    return AnnotationFunctions.isAssignableAnnotatedType(objectHandleType, Unmovable.class);
+  public static boolean isUnmovableObjectHandle(CustomType reflectionType) {
+    return AnnotationFunctions.isAssignableAnnotatedType(reflectionType, Unmovable.class);
   }
 
   public static Class<?> getObjectHandleClass(MovabilityType movabilityType) {
@@ -326,40 +326,40 @@ public class ReflectionFunctions {
     return domainType.get();
   }
 
-  public static Class<?> getDomainClassOfObjectHandle(Class<?> objectHandleClass) {
-    if (isDefaultObjectHandleClass(objectHandleClass)) {
-      return objectHandleClass;
+  public static Class<?> getDomainClassOfObjectHandle(Class<?> reflectionClass) {
+    if (isDefaultObjectHandleClass(reflectionClass)) {
+      return reflectionClass;
     }
-    Wrapper wrapper = objectHandleClass.getAnnotation(Wrapper.class);
+    Wrapper wrapper = reflectionClass.getAnnotation(Wrapper.class);
     if (wrapper != null) {
-      objectHandleClass = wrapper.value();
+      reflectionClass = wrapper.value();
     }
 
-    Reflection reflection = objectHandleClass.getAnnotation(Reflection.class);
+    Reflection reflection = reflectionClass.getAnnotation(Reflection.class);
     if (reflection != null) {
       return reflection.value();
     }
 
     Optional<Class<?>> domainClass = Classes.get(
-        NameConventionFunctions.getDomainNameOfRegularObjectForm(objectHandleClass.getCanonicalName())
+        NameConventionFunctions.getDomainNameOfRegularObjectForm(reflectionClass.getCanonicalName())
     );
     if (domainClass.isPresent()) {
       return domainClass.get();
     }
 
     throw UnexpectedExceptions.withMessage("Reflection class {0} must be annotated with annotation {1}",
-        objectHandleClass.getCanonicalName(), Reflection.class.getSimpleName());
+        reflectionClass.getCanonicalName(), Reflection.class.getSimpleName());
   }
 
   @SuppressWarnings("unchecked")
-  public static <T> T tryDowngrade(Object sourceObjectHandle, Class<T> targetObjectHandleClass) {
-    Class<?> sourceObjectHandleClass = sourceObjectHandle.getClass();
-    if (isCustomObjectFormClass(sourceObjectHandleClass) && isCustomObjectFormClass(targetObjectHandleClass)) {
-      CustomType sourceObjectHandleDomain = getDomainOfObjectFormOrElseThrow(CustomTypes.of(sourceObjectHandleClass));
-      CustomType targetObjectHandleDomain = getDomainOfObjectFormOrElseThrow(CustomTypes.of(targetObjectHandleClass));
-      if (sourceObjectHandleDomain.hasParent(targetObjectHandleDomain)) {
-        if (isMovableObjectHandle(targetObjectHandleClass)) {
-          return (T) tryCreateDowngradeObjectHandle(sourceObjectHandle, sourceObjectHandleDomain, targetObjectHandleDomain);
+  public static <T> T tryDowngrade(Object sourceReflection, Class<T> targetReflectionClass) {
+    Class<?> sourceReflectionClass = sourceReflection.getClass();
+    if (isCustomObjectFormClass(sourceReflectionClass) && isCustomObjectFormClass(targetReflectionClass)) {
+      CustomType sourceReflectionDomain = getDomainOfObjectFormOrElseThrow(CustomTypes.of(sourceReflectionClass));
+      CustomType targetReflectionDomain = getDomainOfObjectFormOrElseThrow(CustomTypes.of(targetReflectionClass));
+      if (sourceReflectionDomain.hasParent(targetReflectionDomain)) {
+        if (isMovableObjectHandle(targetReflectionClass)) {
+          return (T) tryCreateDowngradeObjectHandle(sourceReflection, sourceReflectionDomain, targetReflectionDomain);
         }
       }
     }
@@ -367,15 +367,15 @@ public class ReflectionFunctions {
   }
 
   private static Object tryCreateDowngradeObjectHandle(
-      Object sourceObjectHandle, CustomType sourceObjectHandleDomain, CustomType targetObjectHandleDomain
+      Object sourceReflection, CustomType sourceReflectionDomain, CustomType targetReflectionDomain
   ) {
-    String downgradeObjectHandleCanonicalName = NameConventionFunctions.getMovableDownwardObjectTypename(
-        sourceObjectHandleDomain, targetObjectHandleDomain);
-    Optional<Class<?>> downgradeObjectHandleClass = ClassFunctions.getClass(downgradeObjectHandleCanonicalName);
-    if (downgradeObjectHandleClass.isPresent()) {
+    String downgradeReflectionCanonicalName = NameConventionFunctions.getMovableDownwardObjectTypename(
+        sourceReflectionDomain, targetReflectionDomain);
+    Optional<Class<?>> downgradeReflectionClass = ClassFunctions.getClass(downgradeReflectionCanonicalName);
+    if (downgradeReflectionClass.isPresent()) {
       try {
-        Constructor<?> constructor = downgradeObjectHandleClass.get().getConstructors()[0];
-        return constructor.newInstance(sourceObjectHandle);
+        Constructor<?> constructor = downgradeReflectionClass.get().getConstructors()[0];
+        return constructor.newInstance(sourceReflection);
       } catch (Exception e) {
         throw UnexpectedExceptions.withCauseAndMessage(e, "Could not create downgrade reflection");
       }
@@ -538,15 +538,15 @@ public class ReflectionFunctions {
   }
 
   public static Class<?> propertiesHandleClass() {
-    if (propertiesHandleClass == null) {
+    if (propertiesReflectionClass == null) {
       DomainReference domainReference = ReflectionsFramework.ontologyReference().getDomainByType(DomainTypes.PropertiesSet);
       String domainClassName = NameConventionFunctions.convertToDomainClassName(domainReference.domainName());
       String reflectionClassName = NameConventionFunctions.getGeneralRegularFormClassname(domainClassName, false);
-      propertiesHandleClass = ClassFunctions.getClass(reflectionClassName).orElseThrow(() ->
+      propertiesReflectionClass = ClassFunctions.getClass(reflectionClassName).orElseThrow(() ->
           UnexpectedExceptions.withMessage("Could not get class {0}", reflectionClassName)
       );
     }
-    return propertiesHandleClass;
+    return propertiesReflectionClass;
   }
 
   public static void unbindSilently(Object objectReference) {
@@ -585,7 +585,7 @@ public class ReflectionFunctions {
 
   private ReflectionFunctions() {}
 
-  private final static Set<String> DEFAULT_OBJECT_HANDLE_CLASSES = Set.of(
+  private final static Set<String> DEFAULT_REFLECTION_CLASSES = Set.of(
       boolean.class.getCanonicalName(),
       byte.class.getCanonicalName(),
       short.class.getCanonicalName(),
@@ -610,5 +610,5 @@ public class ReflectionFunctions {
       Void.class.getCanonicalName()
   );
 
-  private static Class<?> propertiesHandleClass;
+  private static Class<?> propertiesReflectionClass;
 }

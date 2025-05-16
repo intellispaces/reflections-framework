@@ -88,11 +88,11 @@ public class MovableDownwardObjectGenerator extends ConversionObjectGenerator {
         TraverseException.class
     );
 
-    String movableObjectHandleName = addImportAndGetSimpleName(
+    String movableReflectionName = addImportAndGetSimpleName(
         NameConventionFunctions.getMovableReflectionTypeName(superDomainType.targetType().className(), false));
 
     analyzeDomain();
-    analyzeChildObjectHandleType();
+    analyzeChildReflectionType();
     analyzeObjectHandleMethods(context);
     analyzeAlias();
 
@@ -101,10 +101,10 @@ public class MovableDownwardObjectGenerator extends ConversionObjectGenerator {
     addVariable("domainTypeParamsBrief", domainTypeParamsBrief);
     addVariable("domainTypeArguments", domainTypeArguments);
     addVariable("parentDomainClassSimpleName", parentDomainClassSimpleName);
-    addVariable("childObjectHandleType", childObjectHandleType);
+    addVariable("childReflectionType", childReflectionType);
     addVariable("childField", childFieldName);
     addVariable("methods", methods);
-    addVariable("movableObjectHandleName", movableObjectHandleName);
+    addVariable("movableObjectHandleName", movableReflectionName);
     addVariable("domainClassSimpleName", domainClassSimpleName);
     addVariable("isAlias", isAlias);
     addVariable("primaryDomainSimpleName", primaryDomainSimpleName);
@@ -113,8 +113,8 @@ public class MovableDownwardObjectGenerator extends ConversionObjectGenerator {
     return true;
   }
 
-  private void analyzeChildObjectHandleType() {
-    childObjectHandleType = addImportAndGetSimpleName(
+  private void analyzeChildReflectionType() {
+    childReflectionType = addImportAndGetSimpleName(
         NameConventionFunctions.getMovableReflectionTypeName(sourceArtifact().className(), true)
     );
   }

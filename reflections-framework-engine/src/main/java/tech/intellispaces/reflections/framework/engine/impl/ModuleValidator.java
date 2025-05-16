@@ -23,7 +23,7 @@ class ModuleValidator {
   }
 
   static void checkThatOneMainUnit(ModuleImpl module) {
-    List<Unit> mainUnits = module.units().stream()
+    List<UnitImpl> mainUnits = module.units().stream()
         .filter(tech.intellispaces.reflections.framework.system.Unit::isMain)
         .toList();
     if (mainUnits.isEmpty()) {
@@ -64,7 +64,7 @@ class ModuleValidator {
       ModuleImpl module, Map<String, UnitProjectionDefinition> projectionProviders
   ) {
     List<ProjectionInjection> injections = module.units().stream()
-        .map(Unit::injections)
+        .map(UnitImpl::injections)
         .flatMap(List::stream)
         .filter(injection -> InjectionKinds.Projection.is(injection.kind()))
         .map(injection -> (ProjectionInjection) injection)

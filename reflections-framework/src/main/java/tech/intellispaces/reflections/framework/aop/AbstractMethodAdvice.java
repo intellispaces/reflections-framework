@@ -2,23 +2,23 @@ package tech.intellispaces.reflections.framework.aop;
 
 import tech.intellispaces.actions.AbstractAction;
 import tech.intellispaces.actions.Action;
-import tech.intellispaces.reflections.framework.system.ProjectionProvider;
 import tech.intellispaces.jstatements.method.MethodStatement;
+import tech.intellispaces.reflections.framework.engine.ProjectionRegistry;
 
 public abstract class AbstractMethodAdvice extends AbstractAction implements MethodAdvice {
   private final Action joinAction;
   protected final MethodStatement joinMethod;
-  protected final ProjectionProvider projectionProvider;
+  protected final ProjectionRegistry projectionRegistry;
 
   /**
    * The constructor.<p/>
    *
    * Join method and join action represents advice join point.
    */
-  public AbstractMethodAdvice(MethodStatement joinMethod, Action joinAction, ProjectionProvider projectionProvider) {
+  public AbstractMethodAdvice(MethodStatement joinMethod, Action joinAction, ProjectionRegistry projectionRegistry) {
     this.joinAction = joinAction;
     this.joinMethod = joinMethod;
-    this.projectionProvider = projectionProvider;
+    this.projectionRegistry = projectionRegistry;
   }
 
   @Override

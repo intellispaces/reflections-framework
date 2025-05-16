@@ -173,20 +173,20 @@ public interface NameConventionFunctions {
     return ClassNameFunctions.addPrefixToSimpleName(MOVABLE, getGeneralReflectionTypeName(domainClassName, false));
   }
 
-  static String getReflectionWrapperCanonicalName(CustomType objectHandleType) {
-    Optional<Reflection> oha = objectHandleType.selectAnnotation(Reflection.class);
+  static String getReflectionWrapperCanonicalName(CustomType reflectionType) {
+    Optional<Reflection> oha = reflectionType.selectAnnotation(Reflection.class);
     if (oha.isPresent() && StringFunctions.isNotBlank(oha.get().name())) {
-      return ClassNameFunctions.replaceSimpleName(objectHandleType.canonicalName(), oha.get().name());
+      return ClassNameFunctions.replaceSimpleName(reflectionType.canonicalName(), oha.get().name());
     }
-    return objectHandleType.canonicalName() + WRAPPER;
+    return reflectionType.canonicalName() + WRAPPER;
   }
 
-  static String getReflectionWrapperCanonicalName(Class<?> objectHandleClass) {
-    Reflection oha = objectHandleClass.getAnnotation(Reflection.class);
+  static String getReflectionWrapperCanonicalName(Class<?> reflectionClass) {
+    Reflection oha = reflectionClass.getAnnotation(Reflection.class);
     if (oha != null && StringFunctions.isNotBlank(oha.name())) {
-      return ClassNameFunctions.replaceSimpleName(objectHandleClass.getCanonicalName(), oha.name());
+      return ClassNameFunctions.replaceSimpleName(reflectionClass.getCanonicalName(), oha.name());
     }
-    return objectHandleClass.getCanonicalName() + WRAPPER;
+    return reflectionClass.getCanonicalName() + WRAPPER;
   }
 
   static String getUnitWrapperCanonicalName(String unitClassName) {
@@ -415,8 +415,8 @@ public interface NameConventionFunctions {
         case MovableRegularObject -> ClassNameFunctions.addPrefixToSimpleName(MOVABLE, name) + CUSTOMIZER;
         case UnmovableRegularObject -> ClassNameFunctions.addPrefixToSimpleName(UNMOVABLE, name) + CUSTOMIZER;
         case Reflection -> name + REFLECTION + CUSTOMIZER;
-        case MovableReflection -> name + MOVABLE_HANDLE + CUSTOMIZER;
-        case UnmovableReflection -> name + UNMOVABLE_HANDLE + CUSTOMIZER;
+        case MovableReflection -> name + MOVABLE_REFLECTION + CUSTOMIZER;
+        case UnmovableReflection -> name + UNMOVABLE_REFLECTION + CUSTOMIZER;
         case ObjectAssistant -> name + ASSISTANT + CUSTOMIZER;
         default -> name;
       };
@@ -430,8 +430,8 @@ public interface NameConventionFunctions {
   String UNMOVABLE = "Unmovable";
   String MOVABLE = "Movable";
   String REFLECTION = "Reflection";
-  String MOVABLE_HANDLE = MOVABLE + REFLECTION;
-  String UNMOVABLE_HANDLE = UNMOVABLE + REFLECTION;
+  String MOVABLE_REFLECTION = MOVABLE + REFLECTION;
+  String UNMOVABLE_REFLECTION = UNMOVABLE + REFLECTION;
   String WRAPPER = "Wrapper";
   String GUIDE = "Guide";
   String AUTO_GUIDE = "AutoGuide";

@@ -15,6 +15,7 @@ import tech.intellispaces.reflections.framework.channel.Channel1;
 import tech.intellispaces.reflections.framework.channel.Channel2;
 import tech.intellispaces.reflections.framework.channel.Channel3;
 import tech.intellispaces.reflections.framework.channel.Channel4;
+import tech.intellispaces.reflections.framework.engine.ProjectionRegistry;
 import tech.intellispaces.reflections.framework.guide.n0.AutoMapper0;
 import tech.intellispaces.reflections.framework.guide.n0.AutoMapperOfMoving0;
 import tech.intellispaces.reflections.framework.guide.n0.AutoMover0;
@@ -54,21 +55,21 @@ import tech.intellispaces.reflections.framework.traverse.plan.TraverseExecutor;
 import tech.intellispaces.reflections.framework.traverse.plan.TraversePlan;
 
 class ModuleImpl implements Module {
-  private final List<Unit> units;
+  private final List<UnitImpl> units;
   private final ProjectionRegistry projectionRegistry;
-  private final GuideRegistry guideRegistry;
+  private final LocalGuideRegistry guideRegistry;
   private final TraverseAnalyzer traverseAnalyzer;
   private final TraverseExecutor traverseExecutor;
 
   private final AtomicBoolean started = new AtomicBoolean(false);
-  private final SupplierAction<Unit> mainUnitGetter = CachedSupplierActions.get(this::mainUnitSupplier);
+  private final SupplierAction<UnitImpl> mainUnitGetter = CachedSupplierActions.get(this::mainUnitSupplier);
 
   private static final Logger LOG = LoggerFactory.getLogger(ModuleImpl.class);
 
   ModuleImpl(
-      List<Unit> units,
+      List<UnitImpl> units,
       ProjectionRegistry projectionRegistry,
-      GuideRegistry guideRegistry,
+      LocalGuideRegistry guideRegistry,
       TraverseAnalyzer traverseAnalyzer,
       TraverseExecutor traverseExecutor
   ) {
@@ -103,7 +104,7 @@ class ModuleImpl implements Module {
     return projectionRegistry;
   }
 
-  public GuideRegistry guideRegistry() {
+  public LocalGuideRegistry guideRegistry() {
     return guideRegistry;
   }
 
@@ -115,18 +116,18 @@ class ModuleImpl implements Module {
     return traverseExecutor;
   }
 
-  public Unit mainUnit() {
+  public UnitImpl mainUnit() {
     return mainUnitGetter.get();
   }
 
-  public List<Unit> units() {
+  public List<UnitImpl> units() {
     return units;
   }
 
   @Override
   @SuppressWarnings("unchecked")
   public <S, T> T mapThruChannel0(S source, String cid) {
-    DeclarativeTraversePlan traversePlan = traverseAnalyzer.buildMapObjectHandleThruChannel0Plan(
+    DeclarativeTraversePlan traversePlan = traverseAnalyzer.buildMapThruChannel0Plan(
         ReflectionFunctions.getObjectHandleClass(source.getClass()), cid, ReflectionForms.Reflection);
     return (T) traversePlan.execute(source, traverseExecutor);
   }
@@ -139,7 +140,7 @@ class ModuleImpl implements Module {
   @Override
   @SuppressWarnings("unchecked")
   public <S, T, Q> T mapThruChannel1(S source, String cid, Q qualifier) {
-    DeclarativeTraversePlan traversePlan = traverseAnalyzer.buildMapObjectHandleThruChannel1Plan(
+    DeclarativeTraversePlan traversePlan = traverseAnalyzer.buildMapThruChannel1Plan(
         ReflectionFunctions.getObjectHandleClass(source.getClass()), cid, ReflectionForms.Reflection);
     return (T) traversePlan.execute(source, qualifier, traverseExecutor);
   }
@@ -152,7 +153,7 @@ class ModuleImpl implements Module {
   @Override
   @SuppressWarnings("unchecked")
   public <S, R> R moveThruChannel0(S source, String cid) {
-    TraversePlan traversePlan = traverseAnalyzer.buildMoveObjectHandleThruChannel0Plan(
+    TraversePlan traversePlan = traverseAnalyzer.buildMoveThruChannel0Plan(
         ReflectionFunctions.getObjectHandleClass(source.getClass()), cid, ReflectionForms.Reflection);
     return (R) traversePlan.execute(source, traverseExecutor);
   }
@@ -160,7 +161,7 @@ class ModuleImpl implements Module {
   @Override
   @SuppressWarnings("unchecked")
   public <S, R, Q> R moveThruChannel1(S source, String cid, Q qualifier) {
-    TraversePlan traversePlan = traverseAnalyzer.buildMoveObjectHandleThruChannel1Plan(
+    TraversePlan traversePlan = traverseAnalyzer.buildMoveThruChannel1Plan(
         ReflectionFunctions.getObjectHandleClass(source.getClass()), cid, ReflectionForms.Reflection);
     return (R) traversePlan.execute(source, qualifier, traverseExecutor);
   }
@@ -175,14 +176,14 @@ class ModuleImpl implements Module {
   @Override
   @SuppressWarnings("unchecked")
   public <S, R, Q> R mapOfMovingThruChannel1(S source, String cid, Q qualifier) {
-    TraversePlan traversePlan = traverseAnalyzer.buildMapOfMovingObjectHandleThruChannel1Plan(
+    TraversePlan traversePlan = traverseAnalyzer.buildMapOfMovingThruChannel1Plan(
         ReflectionFunctions.getObjectHandleClass(source.getClass()), cid, ReflectionForms.Reflection);
     return (R) traversePlan.execute(source, qualifier, traverseExecutor);
   }
 
   @Override
   public <S, T> Mapper0<S, T> autoMapperThruChannel0(Type<S> sourceType, String cid, ReflectionForm targetForm) {
-    TraversePlan traversePlan = traverseAnalyzer.buildMapObjectHandleThruChannel0Plan(
+    TraversePlan traversePlan = traverseAnalyzer.buildMapThruChannel0Plan(
         sourceType.asClassType().baseClass(), cid, targetForm
     );
     return new AutoMapper0<>(cid, traversePlan, targetForm, traverseExecutor);
@@ -190,7 +191,7 @@ class ModuleImpl implements Module {
 
   @Override
   public <S, T, Q> Mapper1<S, T, Q> autoMapperThruChannel1(Type<S> sourceType, String cid, ReflectionForm targetForm) {
-    TraversePlan traversePlan = traverseAnalyzer.buildMapObjectHandleThruChannel1Plan(
+    TraversePlan traversePlan = traverseAnalyzer.buildMapThruChannel1Plan(
         sourceType.asClassType().baseClass(), cid, targetForm
     );
     return new AutoMapper1<>(cid, traversePlan, targetForm, traverseExecutor);
@@ -198,7 +199,7 @@ class ModuleImpl implements Module {
 
   @Override
   public <S, T, Q1, Q2> Mapper2<S, T, Q1, Q2> autoMapperThruChannel2(Type<S> sourceType, String cid, ReflectionForm targetForm) {
-    TraversePlan traversePlan = traverseAnalyzer.buildMapObjectHandleThruChannel2Plan(
+    TraversePlan traversePlan = traverseAnalyzer.buildMapThruChannel2Plan(
         sourceType.asClassType().baseClass(), cid, targetForm
     );
     return new AutoMapper2<>(cid, traversePlan, targetForm, traverseExecutor);
@@ -206,7 +207,7 @@ class ModuleImpl implements Module {
 
   @Override
   public <S, T, Q1, Q2, Q3> Mapper3<S, T, Q1, Q2, Q3> autoMapperThruChannel3(Type<S> sourceType, String cid, ReflectionForm targetForm) {
-    TraversePlan traversePlan = traverseAnalyzer.buildMapObjectHandleThruChannel3Plan(
+    TraversePlan traversePlan = traverseAnalyzer.buildMapThruChannel3Plan(
         sourceType.asClassType().baseClass(), cid, targetForm
     );
     return new AutoMapper3<>(cid, traversePlan, targetForm, traverseExecutor);
@@ -214,7 +215,7 @@ class ModuleImpl implements Module {
 
   @Override
   public <S> Mover0<S> autoMoverThruChannel0(Type<S> sourceType, String cid, ReflectionForm targetForm) {
-    TraversePlan traversePlan = traverseAnalyzer.buildMoveObjectHandleThruChannel0Plan(
+    TraversePlan traversePlan = traverseAnalyzer.buildMoveThruChannel0Plan(
         sourceType.asClassType().baseClass(), cid, targetForm
     );
     return new AutoMover0<>(cid, traversePlan, targetForm, traverseExecutor);
@@ -227,7 +228,7 @@ class ModuleImpl implements Module {
 
   @Override
   public <S, Q> Mover1<S, Q> autoMoverThruChannel1(Type<S> sourceType, String cid, ReflectionForm targetForm) {
-    TraversePlan traversePlan = traverseAnalyzer.buildMoveObjectHandleThruChannel1Plan(
+    TraversePlan traversePlan = traverseAnalyzer.buildMoveThruChannel1Plan(
         sourceType.asClassType().baseClass(), cid, targetForm
     );
     return new AutoMover1<>(cid, traversePlan, targetForm, traverseExecutor);
@@ -235,7 +236,7 @@ class ModuleImpl implements Module {
 
   @Override
   public <S, Q1, Q2> Mover2<S, Q1, Q2> autoMoverThruChannel2(Type<S> sourceType, String cid, ReflectionForm targetForm) {
-    TraversePlan traversePlan = traverseAnalyzer.buildMoveObjectHandleThruChannel2Plan(
+    TraversePlan traversePlan = traverseAnalyzer.buildMoveThruChannel2Plan(
         sourceType.asClassType().baseClass(), cid, targetForm
     );
     return new AutoMover2<>(cid, traversePlan, targetForm, traverseExecutor);
@@ -243,7 +244,7 @@ class ModuleImpl implements Module {
 
   @Override
   public <S, Q1, Q2, Q3> Mover3<S, Q1, Q2, Q3> autoMoverThruChannel3(Type<S> sourceType, String cid, ReflectionForm targetForm) {
-    TraversePlan traversePlan = traverseAnalyzer.buildMoveObjectHandleThruChannel3Plan(
+    TraversePlan traversePlan = traverseAnalyzer.buildMoveThruChannel3Plan(
         sourceType.asClassType().baseClass(), cid, targetForm
     );
     return new AutoMover3<>(cid, traversePlan, targetForm, traverseExecutor);
@@ -251,7 +252,7 @@ class ModuleImpl implements Module {
 
   @Override
   public <S, T> MapperOfMoving0<S, T> autoMapperOfMovingThruChannel0(Type<S> sourceType, String cid, ReflectionForm targetForm) {
-    TraversePlan traversePlan = traverseAnalyzer.buildMapOfMovingObjectHandleThruChannel0Plan(
+    TraversePlan traversePlan = traverseAnalyzer.buildMapOfMovingThruChannel0Plan(
         sourceType.asClassType().baseClass(), cid, targetForm
     );
     return new AutoMapperOfMoving0<>(cid, traversePlan, targetForm, traverseExecutor);
@@ -259,7 +260,7 @@ class ModuleImpl implements Module {
 
   @Override
   public <S, T, Q> MapperOfMoving1<S, T, Q> autoMapperOfMovingThruChannel1(Type<S> sourceType, String cid, ReflectionForm targetForm) {
-    TraversePlan traversePlan = traverseAnalyzer.buildMapOfMovingObjectHandleThruChannel1Plan(
+    TraversePlan traversePlan = traverseAnalyzer.buildMapOfMovingThruChannel1Plan(
         sourceType.asClassType().baseClass(), cid, targetForm
     );
     return new AutoMapperOfMoving1<>(cid, traversePlan, targetForm, traverseExecutor);
@@ -267,7 +268,7 @@ class ModuleImpl implements Module {
 
   @Override
   public <S, T, Q1, Q2> MapperOfMoving2<S, T, Q1, Q2> autoMapperOfMovingThruChannel2(Type<S> sourceType, String cid, ReflectionForm targetForm) {
-    TraversePlan traversePlan = traverseAnalyzer.buildMapOfMovingObjectHandleThruChannel2Plan(
+    TraversePlan traversePlan = traverseAnalyzer.buildMapOfMovingThruChannel2Plan(
         sourceType.asClassType().baseClass(), cid, targetForm
     );
     return new AutoMapperOfMoving2<>(cid, traversePlan, targetForm, traverseExecutor);
@@ -277,7 +278,7 @@ class ModuleImpl implements Module {
   public <S, T, Q1, Q2, Q3> MapperOfMoving3<S, T, Q1, Q2, Q3> autoMapperOfMovingThruChannel3(
       Type<S> sourceType, String cid, ReflectionForm targetForm
   ) {
-    TraversePlan traversePlan = traverseAnalyzer.buildMapOfMovingObjectHandleThruChannel3Plan(
+    TraversePlan traversePlan = traverseAnalyzer.buildMapOfMovingThruChannel3Plan(
         sourceType.asClassType().baseClass(), cid, targetForm
     );
     return new AutoMapperOfMoving3<>(cid, traversePlan, targetForm, traverseExecutor);
@@ -287,7 +288,7 @@ class ModuleImpl implements Module {
   public <S, T, Q1, Q2, Q3, Q4> MapperOfMoving4<S, T, Q1, Q2, Q3, Q4> autoMapperOfMovingThruChannel4(
       Type<S> sourceType, String cid, ReflectionForm targetForm
   ) {
-    TraversePlan traversePlan = traverseAnalyzer.buildMapOfMovingObjectHandleThruChannel4Plan(
+    TraversePlan traversePlan = traverseAnalyzer.buildMapOfMovingThruChannel4Plan(
         sourceType.asClassType().baseClass(), cid, targetForm
     );
     return new AutoMapperOfMoving4<>(cid, traversePlan, targetForm, traverseExecutor);
@@ -395,18 +396,18 @@ class ModuleImpl implements Module {
   }
 
   @Override
-  public <T> T getProjection(String name, Class<T> targetObjectHandleClass) {
-    return projectionRegistry.getProjection(name, targetObjectHandleClass);
+  public <T> T getProjection(String name, Class<T> targetReflectionClass) {
+    return projectionRegistry.getProjection(name, targetReflectionClass);
   }
 
   @Override
-  public <T> List<T> getProjections(Class<T> targetObjectHandleClass) {
-    return projectionRegistry.getProjections(targetObjectHandleClass);
+  public <T> List<T> getProjections(Class<T> targetReflectionClass) {
+    return projectionRegistry.findProjections(targetReflectionClass);
   }
 
   @Override
-  public <T> void addContextProjection(String name, Class<T> targetObjectHandleClass, T target) {
-    projectionRegistry.addContextProjection(name, targetObjectHandleClass, target);
+  public <T> void addContextProjection(String name, Class<T> targetReflectionClass, T target) {
+    projectionRegistry.addContextProjection(name, targetReflectionClass, target);
   }
 
   @Override
@@ -414,7 +415,7 @@ class ModuleImpl implements Module {
     projectionRegistry.removeContextProjection(name);
   }
 
-  private Unit mainUnitSupplier() {
+  private UnitImpl mainUnitSupplier() {
     return units.stream()
         .filter(tech.intellispaces.reflections.framework.system.Unit::isMain)
         .findFirst()

@@ -32,67 +32,67 @@ public enum TraversePlanTypes implements TraversePlanType, Enumeration<TraverseP
   /**
    * The declarative plan to map reflection through not-parametrized channel.
    */
-  MapObjectHandleThruChannel0,
+  MapThruChannel0,
 
   /**
    * The declarative traverse plan to map reflection through one-parametrized channel.
    */
-  MapObjectHandleThruChannel1,
+  MapThruChannel1,
 
   /**
    * The declarative traverse plan to map reflection through two times parametrized channel.
    */
-  MapObjectHandleThruChannel2,
+  MapThruChannel2,
 
   /**
    * The declarative traverse plan to map reflection through three times parametrized channel.
    */
-  MapObjectHandleThruChannel3,
+  MapThruChannel3,
 
   /**
    * The declarative traverse plan to move reflection through not-parametrized channel.
    */
-  MoveObjectHandleThruChannel0,
+  MoveThruChannel0,
 
   /**
    * The declarative traverse plan to move reflection through one-parametrized channel.
    */
-  MoveObjectHandleThruChannel1,
+  MoveThruChannel1,
 
   /**
    * The declarative traverse plan to move reflection through two times parametrized channel.
    */
-  MoveObjectHandleThruChannel2,
+  MoveThruChannel2,
 
   /**
    * The declarative traverse plan to move reflection through three times parametrized channel.
    */
-  MoveObjectHandleThruChannel3,
+  MoveThruChannel3,
 
   /**
    * The declarative traverse plan to map of moving reflection through not-parametrized channel.
    */
-  MapOfMovingObjectHandleThruChannel0,
+  MapOfMovingThruChannel0,
 
   /**
    * The declarative traverse plan to map of moving reflection through one-parametrized channel.
    */
-  MapOfMovingObjectHandleThruChannel1,
+  MapOfMovingThruChannel1,
 
   /**
    * The declarative traverse plan to map of moving reflection through two times parametrized channel.
    */
-  MapOfMovingObjectHandleThruChannel2,
+  MapOfMovingChannel2,
 
   /**
    * The declarative traverse plan to map of moving reflection through three times parametrized channel.
    */
-  MapOfMovingObjectHandleThruChannel3,
+  MapOfMovingThruChannel3,
 
   /**
    * The declarative traverse plan to map of moving reflection through four times parametrized channel.
    */
-  MapOfMovingObjectHandleThruChannel4,
+  MapOfMovingThruChannel4,
 
   /**
    * The execution plan to ascend to overlying reflection and call guide.

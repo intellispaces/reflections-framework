@@ -137,18 +137,18 @@ public class DefaultGuideFormGenerator extends ReflectionsArtifactGenerator {
       }
       sb.append("> ");
     }
-    sb.append(buildTargetObjectHandleFormDeclaration());
+    sb.append(buildTargetReflectionFormDeclaration());
     sb.append(" ");
     sb.append(channelMethod.name());
     sb.append("(");
-    sb.append(buildSourceObjectHandleDeclaration(false));
+    sb.append(buildSourceReflectionDeclaration(false));
     sb.append(" source");
     for (MethodParam param : getQualifierMethodParams()) {
       sb.append(", ");
       if (param.type().isPrimitiveReference()) {
         sb.append(param.type().asPrimitiveReferenceOrElseThrow().primitiveType().typename());
       } else {
-        sb.append(buildObjectHandleDeclaration(ReflectionForms.Regular, param.type(), Function.identity()));
+        sb.append(buildReflectionDeclaration(ReflectionForms.Regular, param.type(), Function.identity()));
       }
       sb.append(" ");
       sb.append(param.name());
@@ -216,14 +216,14 @@ public class DefaultGuideFormGenerator extends ReflectionsArtifactGenerator {
   protected String buildGuideTypeParams() {
     var sb = new StringBuilder();
     sb.append("<");
-    sb.append(buildSourceObjectHandleDeclaration(this::replaceNamedReference, true));
+    sb.append(buildSourceReflectionDeclaration(this::replaceNamedReference, true));
     if (TraverseTypes.Mapping.is(traverseType) || TraverseTypes.MappingOfMoving.is(traverseType)) {
       sb.append(", ");
-      sb.append(buildTargetObjectHandleDeclaration(this::replaceNamedReference, true));
+      sb.append(buildTargetReflectionDeclaration(this::replaceNamedReference, true));
     }
     for (MethodParam param : getQualifierMethodParams()) {
       sb.append(", ");
-      sb.append(buildObjectHandleDeclaration(ReflectionForms.Regular, param.type(), this::replaceNamedReference));
+      sb.append(buildReflectionDeclaration(ReflectionForms.Regular, param.type(), this::replaceNamedReference));
     }
     sb.append(">");
     return sb.toString();
@@ -247,13 +247,13 @@ public class DefaultGuideFormGenerator extends ReflectionsArtifactGenerator {
   private String buildTraverseMethodMainForm() {
     var sb = new StringBuilder();
     sb.append("default ");
-    sb.append(buildTargetObjectHandleDeclaration(this::replaceNamedReference, true));
+    sb.append(buildTargetReflectionDeclaration(this::replaceNamedReference, true));
     sb.append(" traverse(");
-    sb.append(buildSourceObjectHandleDeclaration(this::replaceNamedReference, true));
+    sb.append(buildSourceReflectionDeclaration(this::replaceNamedReference, true));
     sb.append(" ").append("source");
     for (MethodParam param : getQualifierMethodParams()) {
       sb.append(", ");
-      sb.append(buildObjectHandleDeclaration(ReflectionForms.Regular, param.type(), this::replaceNamedReference));
+      sb.append(buildReflectionDeclaration(ReflectionForms.Regular, param.type(), this::replaceNamedReference));
       sb.append(" ");
       sb.append(param.name());
     }
@@ -282,11 +282,11 @@ public class DefaultGuideFormGenerator extends ReflectionsArtifactGenerator {
   private String buildTraverseMethodPrimitiveFormLong() {
     var sb = new StringBuilder();
     sb.append("default int traverseToInt(");
-    sb.append(buildSourceObjectHandleDeclaration(this::replaceNamedReference, true));
+    sb.append(buildSourceReflectionDeclaration(this::replaceNamedReference, true));
     sb.append(" ").append("source");
     for (MethodParam param : getQualifierMethodParams()) {
       sb.append(", ");
-      sb.append(buildObjectHandleDeclaration(ReflectionForms.Regular, param.type(), this::replaceNamedReference));
+      sb.append(buildReflectionDeclaration(ReflectionForms.Regular, param.type(), this::replaceNamedReference));
       sb.append(" ");
       sb.append(param.name());
     }
@@ -299,11 +299,11 @@ public class DefaultGuideFormGenerator extends ReflectionsArtifactGenerator {
   private String buildTraverseMethodPrimitiveFormDouble() {
     var sb = new StringBuilder();
     sb.append("default double traverseToDouble(");
-    sb.append(buildSourceObjectHandleDeclaration(this::replaceNamedReference, true));
+    sb.append(buildSourceReflectionDeclaration(this::replaceNamedReference, true));
     sb.append(" ").append("source");
     for (MethodParam param : getQualifierMethodParams()) {
       sb.append(", ");
-      sb.append(buildObjectHandleDeclaration(ReflectionForms.Regular, param.type(), this::replaceNamedReference));
+      sb.append(buildReflectionDeclaration(ReflectionForms.Regular, param.type(), this::replaceNamedReference));
       sb.append(" ");
       sb.append(param.name());
     }
@@ -364,14 +364,14 @@ public class DefaultGuideFormGenerator extends ReflectionsArtifactGenerator {
     }
   }
 
-  private String buildSourceObjectHandleDeclaration(boolean full) {
-    return buildSourceObjectHandleDeclaration(Function.identity(), full);
+  private String buildSourceReflectionDeclaration(boolean full) {
+    return buildSourceReflectionDeclaration(Function.identity(), full);
   }
 
-  private String buildSourceObjectHandleDeclaration(
+  private String buildSourceReflectionDeclaration(
       Function<TypeReference, TypeReference> typeReplacer, boolean full
   ) {
-    return buildObjectHandleDeclaration(
+    return buildReflectionDeclaration(
         ReflectionForms.Regular,
         channelMethod.params().get(0).type().asCustomTypeReferenceOrElseThrow(),
         typeReplacer,
@@ -379,16 +379,16 @@ public class DefaultGuideFormGenerator extends ReflectionsArtifactGenerator {
     );
   }
 
-  protected String buildTargetObjectHandleDeclaration(
+  protected String buildTargetReflectionDeclaration(
       Function<TypeReference, TypeReference> typeReplacer, boolean full
   ) {
     TypeReference returnType = channelMethod.returnType().orElseThrow();
-    return buildObjectHandleDeclaration(ReflectionForms.Reflection, returnType, typeReplacer, full);
+    return buildReflectionDeclaration(ReflectionForms.Reflection, returnType, typeReplacer, full);
   }
 
-  private String buildTargetObjectHandleFormDeclaration() {
+  private String buildTargetReflectionFormDeclaration() {
     if (ReflectionForms.Reflection.is(targetForm)) {
-      return buildTargetObjectHandleDeclaration(Function.identity(), false);
+      return buildTargetReflectionDeclaration(Function.identity(), false);
     } else if (ReflectionForms.Primitive.is(targetForm)) {
       return ClassFunctions.primitiveTypenameOfWrapper(
           channelMethod.returnType().orElseThrow()
@@ -399,13 +399,13 @@ public class DefaultGuideFormGenerator extends ReflectionsArtifactGenerator {
     throw UnexpectedExceptions.withMessage("Not supported guide form - {0}", targetForm.name());
   }
 
-  private String buildObjectHandleDeclaration(
+  private String buildReflectionDeclaration(
           ReflectionForm form, TypeReference type, Function<TypeReference, TypeReference> typeReplacer
   ) {
-    return buildObjectHandleDeclaration(form, type, typeReplacer, true);
+    return buildReflectionDeclaration(form, type, typeReplacer, true);
   }
 
-  private String buildObjectHandleDeclaration(
+  private String buildReflectionDeclaration(
           ReflectionForm form, TypeReference type, Function<TypeReference, TypeReference> typeReplacer, boolean full
   ) {
     type = typeReplacer.apply(type);
@@ -420,7 +420,7 @@ public class DefaultGuideFormGenerator extends ReflectionsArtifactGenerator {
       RunnableAction commaAppender = StringActions.skipFirstTimeCommaAppender(sb);
       for (ReferenceBound bound : namedReference.extendedBounds()) {
         commaAppender.run();
-        sb.append(buildObjectHandleDeclaration(form, bound, typeReplacer, true));
+        sb.append(buildReflectionDeclaration(form, bound, typeReplacer, true));
       }
       return sb.toString();
     } else if (type.isPrimitiveReference()) {
@@ -435,7 +435,7 @@ public class DefaultGuideFormGenerator extends ReflectionsArtifactGenerator {
         RunnableAction commaAppender = StringActions.skipFirstTimeCommaAppender(sb);
         for (NotPrimitiveReference typeArg : type.asCustomTypeReferenceOrElseThrow().typeArguments()) {
           commaAppender.run();
-          sb.append(buildObjectHandleDeclaration(form, typeArg, typeReplacer, full));
+          sb.append(buildReflectionDeclaration(form, typeArg, typeReplacer, full));
         }
         sb.append(">");
         return sb.toString();

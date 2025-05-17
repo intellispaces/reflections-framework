@@ -5,6 +5,10 @@ import java.util.List;
 
 import tech.intellispaces.annotationprocessor.ArtifactGenerator;
 import tech.intellispaces.commons.type.ClassFunctions;
+import tech.intellispaces.jstatements.customtype.CustomType;
+import tech.intellispaces.jstatements.method.MethodStatement;
+import tech.intellispaces.jstatements.reference.CustomTypeReference;
+import tech.intellispaces.jstatements.reference.TypeReference;
 import tech.intellispaces.reflections.framework.exception.ConfigurationExceptions;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForms;
@@ -13,10 +17,6 @@ import tech.intellispaces.reflections.framework.traverse.MappingTraverse;
 import tech.intellispaces.reflections.framework.traverse.MovingTraverse;
 import tech.intellispaces.reflections.framework.traverse.TraverseType;
 import tech.intellispaces.reflections.framework.traverse.TraverseTypes;
-import tech.intellispaces.jstatements.customtype.CustomType;
-import tech.intellispaces.jstatements.method.MethodStatement;
-import tech.intellispaces.jstatements.reference.CustomTypeReference;
-import tech.intellispaces.jstatements.reference.TypeReference;
 
 public interface ChannelProcessorFunctions {
 

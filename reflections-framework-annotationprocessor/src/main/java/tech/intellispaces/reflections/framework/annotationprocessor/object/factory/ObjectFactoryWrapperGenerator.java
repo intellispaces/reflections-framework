@@ -5,15 +5,15 @@ import java.util.List;
 import java.util.Map;
 
 import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
-import tech.intellispaces.reflections.framework.annotationprocessor.ReflectionsArtifactGenerator;
-import tech.intellispaces.reflections.framework.factory.FactoryWrapper;
-import tech.intellispaces.reflections.framework.factory.FactoryMethod;
-import tech.intellispaces.reflections.framework.factory.FactoryMethods;
-import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
-import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
 import tech.intellispaces.jstatements.customtype.CustomType;
 import tech.intellispaces.jstatements.method.MethodParam;
 import tech.intellispaces.jstatements.method.MethodStatement;
+import tech.intellispaces.reflections.framework.annotationprocessor.ReflectionsArtifactGenerator;
+import tech.intellispaces.reflections.framework.factory.FactoryMethod;
+import tech.intellispaces.reflections.framework.factory.FactoryMethods;
+import tech.intellispaces.reflections.framework.factory.FactoryWrapper;
+import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
+import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
 
 public class ObjectFactoryWrapperGenerator extends ReflectionsArtifactGenerator {
   private final ObjectFactoryMetaInfGenerator metaInfGenerator;

@@ -6,6 +6,10 @@ import java.util.stream.Stream;
 import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
 import tech.intellispaces.commons.type.Type;
 import tech.intellispaces.commons.type.Types;
+import tech.intellispaces.jstatements.customtype.CustomType;
+import tech.intellispaces.jstatements.method.MethodStatement;
+import tech.intellispaces.jstatements.reference.CustomTypeReference;
+import tech.intellispaces.jstatements.type.TypeOf;
 import tech.intellispaces.reflections.framework.ArtifactType;
 import tech.intellispaces.reflections.framework.annotation.Reflection;
 import tech.intellispaces.reflections.framework.artifact.ArtifactTypes;
@@ -18,17 +22,13 @@ import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
 import tech.intellispaces.reflections.framework.reflection.MovabilityType;
 import tech.intellispaces.reflections.framework.reflection.MovabilityTypes;
 import tech.intellispaces.reflections.framework.reflection.MovableReflection;
-import tech.intellispaces.reflections.framework.reflection.Reflections;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForms;
+import tech.intellispaces.reflections.framework.reflection.Reflections;
 import tech.intellispaces.reflections.framework.space.channel.ChannelFunctions;
 import tech.intellispaces.reflections.framework.space.domain.DomainFunctions;
 import tech.intellispaces.reflections.framework.traverse.MappingOfMovingTraverse;
 import tech.intellispaces.reflections.framework.traverse.MappingTraverse;
-import tech.intellispaces.jstatements.customtype.CustomType;
-import tech.intellispaces.jstatements.method.MethodStatement;
-import tech.intellispaces.jstatements.reference.CustomTypeReference;
-import tech.intellispaces.jstatements.type.TypeOf;
 
 public class MovableDownwardObjectGenerator extends ConversionObjectGenerator {
 
@@ -93,7 +93,7 @@ public class MovableDownwardObjectGenerator extends ConversionObjectGenerator {
 
     analyzeDomain();
     analyzeChildReflectionType();
-    analyzeObjectHandleMethods(context);
+    analyzeReflectionMethods(context);
     analyzeAlias();
 
     addVariable("classTypeParams", classTypeParams);
@@ -104,12 +104,12 @@ public class MovableDownwardObjectGenerator extends ConversionObjectGenerator {
     addVariable("childReflectionType", childReflectionType);
     addVariable("childField", childFieldName);
     addVariable("methods", methods);
-    addVariable("movableObjectHandleName", movableReflectionName);
+    addVariable("movableReflectionName", movableReflectionName);
     addVariable("domainClassSimpleName", domainClassSimpleName);
     addVariable("isAlias", isAlias);
     addVariable("primaryDomainSimpleName", primaryDomainSimpleName);
     addVariable("domainType", domainType);
-    addVariable("reflectionClassSimpleName", getObjectHandleSimpleName());
+    addVariable("reflectionClassSimpleName", getReflectionSimpleName());
     return true;
   }
 

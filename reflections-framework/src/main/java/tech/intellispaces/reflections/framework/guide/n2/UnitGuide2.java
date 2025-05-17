@@ -1,13 +1,13 @@
 package tech.intellispaces.reflections.framework.guide.n2;
 
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
+import tech.intellispaces.jstatements.method.MethodStatement;
 import tech.intellispaces.reflections.framework.exception.TraverseException;
 import tech.intellispaces.reflections.framework.exception.TraverseExceptions;
 import tech.intellispaces.reflections.framework.guide.GuideLogger;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 import tech.intellispaces.reflections.framework.system.UnitGuide;
 import tech.intellispaces.reflections.framework.system.UnitWrapper;
-import tech.intellispaces.jstatements.method.MethodStatement;
 
 abstract class UnitGuide2<S, R, Q1, Q2> implements Guide2<S, R, Q1, Q2>, UnitGuide<S, R> {
   private final String cid;
@@ -52,7 +52,7 @@ abstract class UnitGuide2<S, R, Q1, Q2> implements Guide2<S, R, Q1, Q2>, UnitGui
   public R traverse(S source, Q1 qualifier1, Q2 qualifier2) throws TraverseException {
     try {
       GuideLogger.logCallGuide(guideMethod);
-      return (R) unit.$broker().guideAction(guideOrdinal).castToAction3().execute(
+      return (R) unit.$handle().guideAction(guideOrdinal).castToAction3().execute(
           source, qualifier1, qualifier2
       );
     } catch (TraverseException e) {

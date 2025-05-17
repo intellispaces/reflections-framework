@@ -3,10 +3,10 @@ package tech.intellispaces.reflections.framework.annotationprocessor.domain;
 import java.util.UUID;
 
 import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
+import tech.intellispaces.jstatements.customtype.CustomTypes;
 import tech.intellispaces.reflections.framework.annotation.Domain;
 import tech.intellispaces.reflections.framework.annotation.Ignore;
 import tech.intellispaces.reflections.framework.annotationprocessor.ReflectionsArtifactGenerator;
-import tech.intellispaces.jstatements.customtype.CustomTypes;
 
 public class PenaltyRoundDomainGenerator extends ReflectionsArtifactGenerator {
   private final int index;

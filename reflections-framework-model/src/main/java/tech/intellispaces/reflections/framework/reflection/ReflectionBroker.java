@@ -1,10 +1,8 @@
-package tech.intellispaces.reflections.framework.engine;
+package tech.intellispaces.reflections.framework.reflection;
 
 import java.util.List;
 
 import tech.intellispaces.actions.Action;
-import tech.intellispaces.reflections.framework.reflection.ReflectionImplementationType;
-import tech.intellispaces.reflections.framework.reflection.Reflection;
 import tech.intellispaces.reflections.framework.system.Injection;
 
 /**

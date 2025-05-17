@@ -9,8 +9,8 @@ import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
 
 public interface DatasetFunctions {
 
-  static boolean isDatasetObjectHandle(Class<?> reflectionClass) {
-    return isDatasetDomain(ReflectionFunctions.getDomainClassOfObjectHandle(reflectionClass));
+  static boolean isDatasetReflection(Class<?> reflectionClass) {
+    return isDatasetDomain(ReflectionFunctions.getReflectionDomainClass(reflectionClass));
   }
 
   static boolean isDatasetDomain(Class<?> domainClass) {

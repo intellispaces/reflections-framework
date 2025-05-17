@@ -1,5 +1,8 @@
 package tech.intellispaces.reflections.framework.engine.impl;
 
+import tech.intellispaces.reflections.framework.system.LocalProjectionRegistry;
+import tech.intellispaces.reflections.framework.system.UnitHandle;
+
 /**
  * Default system module starter.
  */
@@ -15,7 +18,7 @@ public interface ModuleStarterFunctions {
   }
 
   private static void invokeStartupAction(ModuleImpl module) {
-    UnitImpl mainUnit = module.mainUnit();
+    UnitHandle mainUnit = module.mainUnit();
     if (mainUnit.startupAction().isPresent()) {
       mainUnit.startupAction().get().castToAction0().execute();
     }

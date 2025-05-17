@@ -8,6 +8,10 @@ import java.util.stream.Stream;
 
 import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
+import tech.intellispaces.jstatements.customtype.CustomType;
+import tech.intellispaces.jstatements.method.MethodSignatureDeclarations;
+import tech.intellispaces.jstatements.method.MethodStatement;
+import tech.intellispaces.jstatements.reference.CustomTypeReference;
 import tech.intellispaces.reflections.framework.ArtifactType;
 import tech.intellispaces.reflections.framework.annotation.Reflection;
 import tech.intellispaces.reflections.framework.annotation.Unmovable;
@@ -21,10 +25,6 @@ import tech.intellispaces.reflections.framework.reflection.UnmovableReflection;
 import tech.intellispaces.reflections.framework.space.channel.ChannelFunctions;
 import tech.intellispaces.reflections.framework.space.domain.DomainFunctions;
 import tech.intellispaces.reflections.framework.traverse.TraverseType;
-import tech.intellispaces.jstatements.customtype.CustomType;
-import tech.intellispaces.jstatements.method.MethodSignatureDeclarations;
-import tech.intellispaces.jstatements.method.MethodStatement;
-import tech.intellispaces.jstatements.reference.CustomTypeReference;
 
 public class UnmovableReflectionTypeGenerator extends AbstractReflectionFormGenerator {
 

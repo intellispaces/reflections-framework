@@ -10,6 +10,14 @@ import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.commons.text.StringFunctions;
 import tech.intellispaces.commons.type.Type;
+import tech.intellispaces.jstatements.customtype.CustomType;
+import tech.intellispaces.jstatements.method.MethodParam;
+import tech.intellispaces.jstatements.method.MethodSignatureDeclarations;
+import tech.intellispaces.jstatements.method.MethodStatement;
+import tech.intellispaces.jstatements.reference.CustomTypeReference;
+import tech.intellispaces.jstatements.reference.NamedReference;
+import tech.intellispaces.jstatements.reference.NotPrimitiveReference;
+import tech.intellispaces.jstatements.reference.TypeReference;
 import tech.intellispaces.reflections.framework.annotation.Dataset;
 import tech.intellispaces.reflections.framework.annotationprocessor.AnnotationFunctions;
 import tech.intellispaces.reflections.framework.annotationprocessor.ReflectionsArtifactGenerator;
@@ -19,14 +27,6 @@ import tech.intellispaces.reflections.framework.reflection.MovabilityTypes;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForms;
 import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
 import tech.intellispaces.reflections.framework.system.Modules;
-import tech.intellispaces.jstatements.customtype.CustomType;
-import tech.intellispaces.jstatements.method.MethodParam;
-import tech.intellispaces.jstatements.method.MethodSignatureDeclarations;
-import tech.intellispaces.jstatements.method.MethodStatement;
-import tech.intellispaces.jstatements.reference.CustomTypeReference;
-import tech.intellispaces.jstatements.reference.NamedReference;
-import tech.intellispaces.jstatements.reference.NotPrimitiveReference;
-import tech.intellispaces.jstatements.reference.TypeReference;
 
 public class ReflectionAssistantGenerator extends ReflectionsArtifactGenerator {
 
@@ -62,7 +62,7 @@ public class ReflectionAssistantGenerator extends ReflectionsArtifactGenerator {
     addVariable("datasetBuilderSimpleName",
         addImportAndGetSimpleName(NameConventionFunctions.getDatasetBuilderCanonicalName(sourceArtifact().className())));
     addVariable("generalReflectionSimpleName",
-        addImportAndGetSimpleName(ReflectionFunctions.getGeneralObjectHandleTypename(sourceArtifact())));
+        addImportAndGetSimpleName(ReflectionFunctions.getGeneralReflectionTypename(sourceArtifact())));
     addTypeParamVariables();
     addVariable("customizerMethods", getCustomizerMethods(context));
     return true;

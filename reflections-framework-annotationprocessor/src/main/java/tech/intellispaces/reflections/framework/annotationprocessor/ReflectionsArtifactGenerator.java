@@ -5,14 +5,14 @@ import java.util.stream.Collectors;
 
 import tech.intellispaces.annotationprocessor.TemplatedJavaArtifactGenerator;
 import tech.intellispaces.commons.type.ClassFunctions;
-import tech.intellispaces.reflections.framework.reflection.MovabilityType;
-import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
-import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
 import tech.intellispaces.jstatements.customtype.CustomType;
 import tech.intellispaces.jstatements.method.MethodParam;
 import tech.intellispaces.jstatements.method.MethodSignatureDeclarations;
 import tech.intellispaces.jstatements.method.MethodStatement;
 import tech.intellispaces.jstatements.reference.TypeReference;
+import tech.intellispaces.reflections.framework.reflection.MovabilityType;
+import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
+import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
 
 public abstract class ReflectionsArtifactGenerator extends TemplatedJavaArtifactGenerator {
 

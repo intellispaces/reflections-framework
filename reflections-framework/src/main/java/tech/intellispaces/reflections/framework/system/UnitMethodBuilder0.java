@@ -15,14 +15,12 @@ public class UnitMethodBuilder0<U> extends BaseUnitMethodBuilder<UnitMethodBuild
   }
 
   public <R> UnitMethodBuilder0<U> function(Function<U, R> function) {
-    this.action = FunctionActions.ofFunction(function)
-        .convertToAction0(unit);
+    this.action = FunctionActions.ofFunction(function);
     return this;
   }
 
   public <R> UnitMethodBuilder0<U> consumer(Consumer<U> consumer) {
-    this.action = FunctionActions.ofConsumer(consumer)
-        .convertToAction0(unit);
+    this.action = FunctionActions.ofConsumer(consumer);
     return this;
   }
 }

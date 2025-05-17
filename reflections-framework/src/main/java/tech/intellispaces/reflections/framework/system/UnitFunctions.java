@@ -1,8 +1,8 @@
 package tech.intellispaces.reflections.framework.system;
 
+import tech.intellispaces.jstatements.customtype.CustomType;
 import tech.intellispaces.reflections.framework.annotation.Configuration;
 import tech.intellispaces.reflections.framework.annotation.Guide;
-import tech.intellispaces.jstatements.customtype.CustomType;
 
 public interface UnitFunctions {
 

@@ -15,14 +15,14 @@ import static tech.intellispaces.reflections.framework.system.UnitMethods.unitMe
 {{$generatedAnnotation}}
 public class {{$generatedArtifactSimpleName}}{{$typeParamsFullDeclaration}} extends {{$sourceArtifactSimpleName}}{{$typeParamsBriefDeclaration}} implements UnitWrapper {
   private static UnitType $unitType;
-  private final UnitBroker $broker;
+  private final UnitHandle $handle;
 
-  public {{$generatedArtifactSimpleName}}() {
-    $broker = $registerUnit();
+  public {{$generatedArtifactSimpleName}}(UnitHandle handle) {
+    $handle = handle;
   }
 
   @Override
-  public UnitType unitType() {
+  public UnitType $unitType() {
     if ($unitType == null) {
       $unitType = $buildUnitType();
     }
@@ -30,8 +30,8 @@ public class {{$generatedArtifactSimpleName}}{{$typeParamsFullDeclaration}} exte
   }
 
   @Override
-  public UnitBroker $broker() {
-    return this.$broker;
+  public UnitHandle $handle() {
+    return this.$handle;
   }
 
 {{for method : $injectionMethods}}
@@ -117,67 +117,6 @@ public class {{$generatedArtifactSimpleName}}{{$typeParamsFullDeclaration}} exte
             .get(){{when $method.isNotLast()}},{{end}}
 {{end}}
         )
-    );
-  }
-
-  private UnitBroker $registerUnit() {
-    return Engines.get().registerUnit(
-      this,
-      {{$sourceArtifactSimpleName}}.class{{when $methodDescriptions.isNotEmpty()}},{{end}}
-{{for method : $methodDescriptions}}
-      unitMethod({{$generatedArtifactSimpleName}}.class, this, "{{$method["name"]}}"{{for param : $method["params"]}}, {{$param}}.class{{end}})
-        .purpose(UnitMethodPurposes.{{$method["purpose"]}})
-{{when $method["type"].eq("function")}}
-        .function({{$generatedArtifactSimpleName}}::{{$method["name"]}})
-{{end}}
-{{when $method["type"].eq("consumer")}}
-        .consumer({{$generatedArtifactSimpleName}}::{{$method["name"]}})
-{{end}}
-{{when $method["prototypeMethodName"].isNotVoid()}}
-        .prototypeMethodName("{{$method["prototypeMethodName"]}}")
-{{end}}
-{{when $method["injectionName"].isNotVoid()}}
-        .injectionName("{{$method["injectionName"]}}")
-{{end}}
-{{when $method["injectionClass"].isNotVoid()}}
-        .injectionClass({{$method["injectionClass"]}}.class)
-{{end}}
-{{when $method["injectionKind"].isNotVoid()}}
-        .injectionKind({{$method["injectionKind"]}})
-{{end}}
-{{when $method["injectionOrdinal"].isNotVoid()}}
-        .injectionOrdinal({{$method["injectionOrdinal"]}})
-{{end}}
-{{when $method["projectionName"].isNotVoid()}}
-        .projectionName("{{$method["projectionName"]}}")
-{{end}}
-{{when $method["targetClass"].isNotVoid()}}
-        .targetClass({{$method["targetClass"]}}.class)
-{{end}}
-{{when $method["requiredProjections"].isNotVoid()}}
-        .requiredProjections(ProjectionReferences.list(
-{{for projection : $method["requiredProjections"]}}
-          "{{$projection["name"]}}", {{$projection["class"]}}.class{{when $projection.isNotLast()}},{{end}}
-{{end}}
-        ))
-{{end}}
-{{when $method["lazyLoading"].isNotVoid()}}
-        .lazyLoading({{$method["lazyLoading"]}})
-{{end}}
-{{when $method["guideOrdinal"].isNotVoid()}}
-        .guideOrdinal({{$method["guideOrdinal"]}})
-{{end}}
-{{when $method["guideKind"].isNotVoid()}}
-        .guideKind(GuideKinds.{{$method["guideKind"]}})
-{{end}}
-{{when $method["guideCid"].isNotVoid()}}
-        .guideCid("{{$method["guideCid"]}}")
-{{end}}
-{{when $method["guideTargetForm"].isNotVoid()}}
-        .guideTargetForm(ReflectionForms.{{$method["guideTargetForm"]}})
-{{end}}
-        .get(){{when $method.isNotLast()}},{{end}}
-{{end}}
     );
   }
 }

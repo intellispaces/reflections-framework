@@ -15,7 +15,6 @@ import tech.intellispaces.reflections.framework.channel.Channel1;
 import tech.intellispaces.reflections.framework.channel.Channel2;
 import tech.intellispaces.reflections.framework.channel.Channel3;
 import tech.intellispaces.reflections.framework.channel.Channel4;
-import tech.intellispaces.reflections.framework.engine.ProjectionRegistry;
 import tech.intellispaces.reflections.framework.guide.n0.AutoMapper0;
 import tech.intellispaces.reflections.framework.guide.n0.AutoMapperOfMoving0;
 import tech.intellispaces.reflections.framework.guide.n0.AutoMover0;
@@ -46,7 +45,10 @@ import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForms;
 import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
 import tech.intellispaces.reflections.framework.space.channel.ChannelFunctions;
+import tech.intellispaces.reflections.framework.system.LocalGuideRegistry;
 import tech.intellispaces.reflections.framework.system.Module;
+import tech.intellispaces.reflections.framework.system.ProjectionRegistry;
+import tech.intellispaces.reflections.framework.system.UnitHandle;
 import tech.intellispaces.reflections.framework.traverse.MappingOfMovingTraverse;
 import tech.intellispaces.reflections.framework.traverse.MappingTraverse;
 import tech.intellispaces.reflections.framework.traverse.plan.DeclarativeTraversePlan;
@@ -55,19 +57,19 @@ import tech.intellispaces.reflections.framework.traverse.plan.TraverseExecutor;
 import tech.intellispaces.reflections.framework.traverse.plan.TraversePlan;
 
 class ModuleImpl implements Module {
-  private final List<UnitImpl> units;
+  private final List<UnitHandle> units;
   private final ProjectionRegistry projectionRegistry;
   private final LocalGuideRegistry guideRegistry;
   private final TraverseAnalyzer traverseAnalyzer;
   private final TraverseExecutor traverseExecutor;
 
   private final AtomicBoolean started = new AtomicBoolean(false);
-  private final SupplierAction<UnitImpl> mainUnitGetter = CachedSupplierActions.get(this::mainUnitSupplier);
+  private final SupplierAction<UnitHandle> mainUnitGetter = CachedSupplierActions.get(this::mainUnitSupplier);
 
   private static final Logger LOG = LoggerFactory.getLogger(ModuleImpl.class);
 
   ModuleImpl(
-      List<UnitImpl> units,
+      List<UnitHandle> units,
       ProjectionRegistry projectionRegistry,
       LocalGuideRegistry guideRegistry,
       TraverseAnalyzer traverseAnalyzer,
@@ -116,11 +118,11 @@ class ModuleImpl implements Module {
     return traverseExecutor;
   }
 
-  public UnitImpl mainUnit() {
+  public UnitHandle mainUnit() {
     return mainUnitGetter.get();
   }
 
-  public List<UnitImpl> units() {
+  public List<UnitHandle> units() {
     return units;
   }
 
@@ -128,7 +130,7 @@ class ModuleImpl implements Module {
   @SuppressWarnings("unchecked")
   public <S, T> T mapThruChannel0(S source, String cid) {
     DeclarativeTraversePlan traversePlan = traverseAnalyzer.buildMapThruChannel0Plan(
-        ReflectionFunctions.getObjectHandleClass(source.getClass()), cid, ReflectionForms.Reflection);
+        ReflectionFunctions.getReflectionClass(source.getClass()), cid, ReflectionForms.Reflection);
     return (T) traversePlan.execute(source, traverseExecutor);
   }
 
@@ -141,7 +143,7 @@ class ModuleImpl implements Module {
   @SuppressWarnings("unchecked")
   public <S, T, Q> T mapThruChannel1(S source, String cid, Q qualifier) {
     DeclarativeTraversePlan traversePlan = traverseAnalyzer.buildMapThruChannel1Plan(
-        ReflectionFunctions.getObjectHandleClass(source.getClass()), cid, ReflectionForms.Reflection);
+        ReflectionFunctions.getReflectionClass(source.getClass()), cid, ReflectionForms.Reflection);
     return (T) traversePlan.execute(source, qualifier, traverseExecutor);
   }
 
@@ -154,7 +156,7 @@ class ModuleImpl implements Module {
   @SuppressWarnings("unchecked")
   public <S, R> R moveThruChannel0(S source, String cid) {
     TraversePlan traversePlan = traverseAnalyzer.buildMoveThruChannel0Plan(
-        ReflectionFunctions.getObjectHandleClass(source.getClass()), cid, ReflectionForms.Reflection);
+        ReflectionFunctions.getReflectionClass(source.getClass()), cid, ReflectionForms.Reflection);
     return (R) traversePlan.execute(source, traverseExecutor);
   }
 
@@ -162,7 +164,7 @@ class ModuleImpl implements Module {
   @SuppressWarnings("unchecked")
   public <S, R, Q> R moveThruChannel1(S source, String cid, Q qualifier) {
     TraversePlan traversePlan = traverseAnalyzer.buildMoveThruChannel1Plan(
-        ReflectionFunctions.getObjectHandleClass(source.getClass()), cid, ReflectionForms.Reflection);
+        ReflectionFunctions.getReflectionClass(source.getClass()), cid, ReflectionForms.Reflection);
     return (R) traversePlan.execute(source, qualifier, traverseExecutor);
   }
 
@@ -177,7 +179,7 @@ class ModuleImpl implements Module {
   @SuppressWarnings("unchecked")
   public <S, R, Q> R mapOfMovingThruChannel1(S source, String cid, Q qualifier) {
     TraversePlan traversePlan = traverseAnalyzer.buildMapOfMovingThruChannel1Plan(
-        ReflectionFunctions.getObjectHandleClass(source.getClass()), cid, ReflectionForms.Reflection);
+        ReflectionFunctions.getReflectionClass(source.getClass()), cid, ReflectionForms.Reflection);
     return (R) traversePlan.execute(source, qualifier, traverseExecutor);
   }
 
@@ -415,7 +417,7 @@ class ModuleImpl implements Module {
     projectionRegistry.removeContextProjection(name);
   }
 
-  private UnitImpl mainUnitSupplier() {
+  private UnitHandle mainUnitSupplier() {
     return units.stream()
         .filter(tech.intellispaces.reflections.framework.system.Unit::isMain)
         .findFirst()

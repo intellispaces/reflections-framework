@@ -5,6 +5,8 @@ import java.util.Optional;
 import tech.intellispaces.annotationprocessor.ArtifactValidator;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.commons.type.ClassNameFunctions;
+import tech.intellispaces.jstatements.customtype.CustomType;
+import tech.intellispaces.jstatements.instance.AnnotationInstance;
 import tech.intellispaces.reflections.framework.ArtifactType;
 import tech.intellispaces.reflections.framework.annotation.AssistantCustomizer;
 import tech.intellispaces.reflections.framework.annotation.Customizer;
@@ -12,8 +14,6 @@ import tech.intellispaces.reflections.framework.annotationprocessor.AnnotationFu
 import tech.intellispaces.reflections.framework.artifact.ArtifactTypes;
 import tech.intellispaces.reflections.framework.exception.ReflectionsExceptions;
 import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
-import tech.intellispaces.jstatements.customtype.CustomType;
-import tech.intellispaces.jstatements.instance.AnnotationInstance;
 
 /**
  * The channel type validator.

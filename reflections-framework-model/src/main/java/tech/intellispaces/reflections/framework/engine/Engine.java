@@ -16,11 +16,10 @@ import tech.intellispaces.actions.Action9;
 import tech.intellispaces.commons.type.Type;
 import tech.intellispaces.reflections.framework.channel.Channel0;
 import tech.intellispaces.reflections.framework.channel.Channel1;
+import tech.intellispaces.reflections.framework.reflection.ReflectionBroker;
 import tech.intellispaces.reflections.framework.reflection.ReflectionImplementationMethod;
 import tech.intellispaces.reflections.framework.reflection.ReflectionImplementationType;
-import tech.intellispaces.reflections.framework.system.UnitMethod;
 import tech.intellispaces.reflections.framework.system.Module;
-import tech.intellispaces.reflections.framework.system.UnitWrapper;
 import tech.intellispaces.reflections.framework.traverse.MappingOfMovingTraverse;
 import tech.intellispaces.reflections.framework.traverse.MappingTraverse;
 
@@ -31,18 +30,6 @@ public interface Engine {
 
   Module createModule(List<Class<?>> unitClasses, String[] args);
 
-  /**
-   * Registers module unit.
-   *
-   * @param unitWrapper the unit wrapper instance.
-   * @param unitClass the unit class.
-   * @param methods unit wrapper method descriptions.
-   * @return the unit broker.
-   *
-   * @param <U> the unit type.
-   * @param <W> the unit wrapper type.
-   */
-  <U, W extends UnitWrapper> UnitBroker registerUnit(W unitWrapper, Class<U> unitClass, UnitMethod... methods);
 
 
   void start();

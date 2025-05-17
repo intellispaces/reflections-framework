@@ -15,6 +15,11 @@ import tech.intellispaces.commons.exception.NotImplementedExceptions;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.commons.type.Type;
 import tech.intellispaces.commons.type.Types;
+import tech.intellispaces.jstatements.customtype.CustomType;
+import tech.intellispaces.jstatements.method.MethodStatement;
+import tech.intellispaces.jstatements.reference.CustomTypeReference;
+import tech.intellispaces.jstatements.reference.NamedReference;
+import tech.intellispaces.jstatements.reference.TypeReference;
 import tech.intellispaces.reflections.framework.ArtifactType;
 import tech.intellispaces.reflections.framework.annotation.Channel;
 import tech.intellispaces.reflections.framework.annotation.Name;
@@ -34,11 +39,6 @@ import tech.intellispaces.reflections.framework.space.domain.DomainFunctions;
 import tech.intellispaces.reflections.framework.system.Modules;
 import tech.intellispaces.reflections.framework.traverse.MappingTraverse;
 import tech.intellispaces.reflections.framework.traverse.TraverseTypes;
-import tech.intellispaces.jstatements.customtype.CustomType;
-import tech.intellispaces.jstatements.method.MethodStatement;
-import tech.intellispaces.jstatements.reference.CustomTypeReference;
-import tech.intellispaces.jstatements.reference.NamedReference;
-import tech.intellispaces.jstatements.reference.TypeReference;
 
 public class UnmovableDatasetGenerator extends AbstractReflectionFormGenerator {
   private String typeParamsBrief;

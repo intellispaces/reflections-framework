@@ -1,4 +1,4 @@
-package tech.intellispaces.reflections.framework.engine.impl;
+package tech.intellispaces.reflections.framework.system;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,7 +16,7 @@ class ObjectGuideRegistry {
   private final Map<Class<?>, ReflectionDescription> reflectionDescriptions = new WeakHashMap<>();
 
   public List<Guide<?, ?>> findGuides(GuideKind kind, Class<?> reflectionClass, String channelId) {
-    if (!ReflectionFunctions.isCustomObjectFormClass(reflectionClass) || reflectionClass.isInterface()) {
+    if (!ReflectionFunctions.isCustomReflectionClass(reflectionClass) || reflectionClass.isInterface()) {
       return List.of();
     }
     ReflectionDescription description = reflectionDescriptions.computeIfAbsent(
@@ -26,7 +26,7 @@ class ObjectGuideRegistry {
 
   private ReflectionDescription createReflectionDescription(Class<?> reflectionClass) {
     ReflectionDescription description = new ReflectionDescription(reflectionClass);
-    Class<?> actualReflectionClass = ReflectionFunctions.getObjectHandleClass(reflectionClass);
+    Class<?> actualReflectionClass = ReflectionFunctions.getReflectionClass(reflectionClass);
     if (actualReflectionClass == null) {
       return description;
     }
@@ -62,7 +62,7 @@ class ObjectGuideRegistry {
         return guides;
       }
 
-      Class<?> domainClass = ReflectionFunctions.getDomainClassOfObjectHandle(reflectionClass);
+      Class<?> domainClass = ReflectionFunctions.getReflectionDomainClass(reflectionClass);
       String originDomainChannelId = ChannelFunctions.getOriginDomainChannelId(domainClass, cid);
       if (originDomainChannelId == null) {
         return List.of();

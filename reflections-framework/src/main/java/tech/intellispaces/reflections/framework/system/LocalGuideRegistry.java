@@ -1,4 +1,4 @@
-package tech.intellispaces.reflections.framework.engine.impl;
+package tech.intellispaces.reflections.framework.system;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
 
-import tech.intellispaces.reflections.framework.engine.GuideRegistry;
 import tech.intellispaces.reflections.framework.exception.ConfigurationExceptions;
 import tech.intellispaces.reflections.framework.guide.Guide;
 import tech.intellispaces.reflections.framework.guide.GuideKind;
@@ -15,7 +14,7 @@ import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 /**
  * The local guide register implementation.
  */
-class LocalGuideRegistry implements GuideRegistry {
+public class LocalGuideRegistry implements GuideRegistry {
   private final ObjectGuideRegistry objectGuideRegistry = new ObjectGuideRegistry();
   private final UnitGuideRegistry unitGuideRegistry = new UnitGuideRegistry();
   private final AutoGuideRegistry autoGuideRegistry = new AutoGuideRegistry();
@@ -68,8 +67,8 @@ class LocalGuideRegistry implements GuideRegistry {
     return guides;
   }
 
-  public void addGuideUnit(UnitImpl guideUnit) {
-    guideUnits.put(guideUnit.unitClass(), guideUnit.wrapper());
-    guideUnit.guides().forEach(unitGuideRegistry::addGuide);
+  public void addGuideUnit(Class<?> unitClass, Object unitWrapper, List<UnitGuide<?, ?>> guides) {
+    guideUnits.put(unitClass, unitWrapper);
+    guides.forEach(unitGuideRegistry::addGuide);
   }
 }

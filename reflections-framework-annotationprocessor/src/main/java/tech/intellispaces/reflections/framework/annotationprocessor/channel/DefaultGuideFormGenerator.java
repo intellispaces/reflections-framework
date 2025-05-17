@@ -12,6 +12,16 @@ import tech.intellispaces.commons.type.ClassFunctions;
 import tech.intellispaces.commons.type.ClassNameFunctions;
 import tech.intellispaces.commons.type.PrimitiveFunctions;
 import tech.intellispaces.commons.type.PrimitiveTypes;
+import tech.intellispaces.jstatements.customtype.CustomType;
+import tech.intellispaces.jstatements.method.MethodParam;
+import tech.intellispaces.jstatements.method.MethodStatement;
+import tech.intellispaces.jstatements.reference.CustomTypeReferences;
+import tech.intellispaces.jstatements.reference.NamedReference;
+import tech.intellispaces.jstatements.reference.NotPrimitiveReference;
+import tech.intellispaces.jstatements.reference.PrimitiveReference;
+import tech.intellispaces.jstatements.reference.ReferenceBound;
+import tech.intellispaces.jstatements.reference.TypeReference;
+import tech.intellispaces.jstatements.reference.Wildcards;
 import tech.intellispaces.reflections.framework.annotation.Guide;
 import tech.intellispaces.reflections.framework.annotation.Mapper;
 import tech.intellispaces.reflections.framework.annotation.MapperOfMoving;
@@ -42,16 +52,6 @@ import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
 import tech.intellispaces.reflections.framework.space.channel.ChannelFunctions;
 import tech.intellispaces.reflections.framework.traverse.TraverseType;
 import tech.intellispaces.reflections.framework.traverse.TraverseTypes;
-import tech.intellispaces.jstatements.customtype.CustomType;
-import tech.intellispaces.jstatements.method.MethodParam;
-import tech.intellispaces.jstatements.method.MethodStatement;
-import tech.intellispaces.jstatements.reference.CustomTypeReferences;
-import tech.intellispaces.jstatements.reference.NamedReference;
-import tech.intellispaces.jstatements.reference.NotPrimitiveReference;
-import tech.intellispaces.jstatements.reference.PrimitiveReference;
-import tech.intellispaces.jstatements.reference.ReferenceBound;
-import tech.intellispaces.jstatements.reference.TypeReference;
-import tech.intellispaces.jstatements.reference.Wildcards;
 
 public class DefaultGuideFormGenerator extends ReflectionsArtifactGenerator {
   private final ReflectionForm targetForm;
@@ -131,7 +131,7 @@ public class DefaultGuideFormGenerator extends ReflectionsArtifactGenerator {
         if (!typeParam.extendedBounds().isEmpty()) {
           sb.append(" extends ");
           for (ReferenceBound bound : typeParam.extendedBounds()) {
-            sb.append(ReflectionFunctions.getGeneralObjectHandleTypename(bound));
+            sb.append(ReflectionFunctions.getGeneralReflectionTypename(bound));
           }
         }
       }

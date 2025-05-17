@@ -10,6 +10,15 @@ import tech.intellispaces.actions.text.StringActions;
 import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.commons.text.StringFunctions;
+import tech.intellispaces.jstatements.common.LanguageFunctions;
+import tech.intellispaces.jstatements.customtype.CustomType;
+import tech.intellispaces.jstatements.method.MethodParam;
+import tech.intellispaces.jstatements.method.MethodStatement;
+import tech.intellispaces.jstatements.reference.CustomTypeReference;
+import tech.intellispaces.jstatements.reference.CustomTypeReferences;
+import tech.intellispaces.jstatements.reference.NotPrimitiveReference;
+import tech.intellispaces.jstatements.reference.TypeReference;
+import tech.intellispaces.jstatements.reference.TypeReferenceFunctions;
 import tech.intellispaces.reflections.framework.annotation.Channel;
 import tech.intellispaces.reflections.framework.annotation.Movable;
 import tech.intellispaces.reflections.framework.annotation.Unmovable;
@@ -21,15 +30,6 @@ import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
 import tech.intellispaces.reflections.framework.space.channel.ChannelFunctions;
 import tech.intellispaces.reflections.framework.space.domain.DomainFunctions;
 import tech.intellispaces.reflections.framework.traverse.TraverseType;
-import tech.intellispaces.jstatements.common.LanguageFunctions;
-import tech.intellispaces.jstatements.customtype.CustomType;
-import tech.intellispaces.jstatements.method.MethodParam;
-import tech.intellispaces.jstatements.method.MethodStatement;
-import tech.intellispaces.jstatements.reference.CustomTypeReference;
-import tech.intellispaces.jstatements.reference.CustomTypeReferences;
-import tech.intellispaces.jstatements.reference.NotPrimitiveReference;
-import tech.intellispaces.jstatements.reference.TypeReference;
-import tech.intellispaces.jstatements.reference.TypeReferenceFunctions;
 
 abstract class ConversionObjectGenerator extends AbstractReflectionFormGenerator {
   protected String domainClassSimpleName;
@@ -66,7 +66,7 @@ abstract class ConversionObjectGenerator extends AbstractReflectionFormGenerator
     parentDomainClassSimpleName = addImportAndGetSimpleName(superDomainType.targetType().canonicalName());
   }
 
-  protected void analyzeObjectHandleMethods(ArtifactGeneratorContext context) {
+  protected void analyzeReflectionMethods(ArtifactGeneratorContext context) {
     CustomType actualSuperDomainType = buildActualType(superDomainType.targetType(), context);
     CustomTypeReference actualSuperDomainTypeReference = CustomTypeReferences.get(
         actualSuperDomainType, superDomainType.typeArguments()
@@ -201,8 +201,8 @@ abstract class ConversionObjectGenerator extends AbstractReflectionFormGenerator
         CustomType expectedReturnType = parentReturnTypeRef.asCustomTypeReferenceOrElseThrow().targetType();
         CustomType actualReturnType = childReturnTypeRef.asCustomTypeReferenceOrElseThrow().targetType();
         if (
-            !ReflectionFunctions.isDefaultObjectHandleType(actualReturnType)
-                && !ReflectionFunctions.isDefaultObjectHandleType(expectedReturnType)
+            !ReflectionFunctions.isDefaultReflectionType(actualReturnType)
+                && !ReflectionFunctions.isDefaultReflectionType(expectedReturnType)
                 && actualReturnType.hasParent(expectedReturnType)
         ) {
           buildDownwardReturnStatement(sb, method, actualReturnType, expectedReturnType);
@@ -304,7 +304,7 @@ abstract class ConversionObjectGenerator extends AbstractReflectionFormGenerator
     }
   }
 
-  protected String getObjectHandleSimpleName() {
+  protected String getReflectionSimpleName() {
     final String canonicalName;
     String superDomainCanonicalName = superDomainType.targetType().canonicalName();
     if (MovabilityTypes.Unmovable.is(getMovabilityType())) {
@@ -318,7 +318,7 @@ abstract class ConversionObjectGenerator extends AbstractReflectionFormGenerator
     return addImportAndGetSimpleName(canonicalName);
   }
 
-  protected String getMovableObjectHandleSimpleName() {
+  protected String getMovableReflectionSimpleName() {
     String superDomainCanonicalName = superDomainType.targetType().canonicalName();
     return addImportAndGetSimpleName(NameConventionFunctions.getMovableReflectionTypeName(superDomainCanonicalName, false));
   }

@@ -6,12 +6,16 @@ import tech.intellispaces.commons.exception.NotImplementedExceptions;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.commons.text.StringFunctions;
 import tech.intellispaces.commons.type.ClassNameFunctions;
+import tech.intellispaces.jstatements.customtype.CustomType;
+import tech.intellispaces.jstatements.method.MethodParam;
+import tech.intellispaces.jstatements.method.MethodStatement;
+import tech.intellispaces.jstatements.reference.CustomTypeReference;
 import tech.intellispaces.reflections.framework.ArtifactType;
 import tech.intellispaces.reflections.framework.ReflectionsFramework;
 import tech.intellispaces.reflections.framework.annotation.Channel;
 import tech.intellispaces.reflections.framework.annotation.Domain;
-import tech.intellispaces.reflections.framework.annotation.Reflection;
 import tech.intellispaces.reflections.framework.annotation.Ontology;
+import tech.intellispaces.reflections.framework.annotation.Reflection;
 import tech.intellispaces.reflections.framework.artifact.ArtifactTypes;
 import tech.intellispaces.reflections.framework.reflection.MovabilityType;
 import tech.intellispaces.reflections.framework.reflection.MovabilityTypes;
@@ -20,10 +24,6 @@ import tech.intellispaces.reflections.framework.reflection.ReflectionForms;
 import tech.intellispaces.reflections.framework.settings.DomainReference;
 import tech.intellispaces.reflections.framework.settings.DomainTypes;
 import tech.intellispaces.reflections.framework.space.channel.ChannelFunctions;
-import tech.intellispaces.jstatements.customtype.CustomType;
-import tech.intellispaces.jstatements.method.MethodParam;
-import tech.intellispaces.jstatements.method.MethodStatement;
-import tech.intellispaces.jstatements.reference.CustomTypeReference;
 
 public interface NameConventionFunctions {
 
@@ -244,7 +244,7 @@ public interface NameConventionFunctions {
     return ClassNameFunctions.joinPackageAndSimpleName(packageName, simpleName);
   }
 
-  static String getDownwardObjectHandleTypename(
+  static String getDownwardReflectionTypename(
       CustomType domainType, CustomType baseDomainType, MovabilityType movabilityType
   ) {
     return switch (MovabilityTypes.of(movabilityType)) {

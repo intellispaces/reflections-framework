@@ -10,6 +10,7 @@ import tech.intellispaces.reflections.framework.exception.ConfigurationException
 import tech.intellispaces.reflections.framework.samples.system.EmptyTestModule;
 import tech.intellispaces.reflections.framework.samples.system.EmptyTestUnit;
 import tech.intellispaces.reflections.framework.system.ProjectionInjection;
+import tech.intellispaces.reflections.framework.system.UnitHandle;
 import tech.intellispaces.reflections.framework.system.UnitProjectionDefinition;
 import tech.intellispaces.reflections.framework.system.injection.InjectionKinds;
 
@@ -24,10 +25,10 @@ public class ModuleValidatorTest {
   @Test
   public void testValidate_whenNoMainUnit() {
     // Given
-    var unit1 = mock(UnitImpl.class);
+    var unit1 = mock(UnitHandle.class);
     when(unit1.isMain()).thenReturn(false);
 
-    var unit2 = mock(UnitImpl.class);
+    var unit2 = mock(UnitHandle.class);
     when(unit2.isMain()).thenReturn(false);
 
     var module = mock(ModuleImpl.class);
@@ -46,11 +47,11 @@ public class ModuleValidatorTest {
     Class unitClass1 = EmptyTestModule.class;
     Class unitClass2 = EmptyTestUnit.class;
 
-    var unit1 = mock(UnitImpl.class);
+    var unit1 = mock(UnitHandle.class);
     when(unit1.unitClass()).thenReturn(unitClass1);
     when(unit1.isMain()).thenReturn(true);
 
-    var unit2 = mock(UnitImpl.class);
+    var unit2 = mock(UnitHandle.class);
     when(unit2.unitClass()).thenReturn(unitClass2);
     when(unit2.isMain()).thenReturn(true);
 
@@ -71,7 +72,7 @@ public class ModuleValidatorTest {
     Class unitClass2 = EmptyTestUnit.class;
     String projectionName = "projection";
 
-    var unit1 = mock(UnitImpl.class);
+    var unit1 = mock(UnitHandle.class);
     when(unit1.isMain()).thenReturn(true);
     when(unit1.unitClass()).thenReturn(unitClass1);
     when(unit1.shutdownAction()).thenReturn(Optional.empty());
@@ -81,7 +82,7 @@ public class ModuleValidatorTest {
     when(projectionProvider1.projectionMethod()).thenReturn(String.class.getDeclaredMethod("trim"));
     when(unit1.projectionDefinitions()).thenReturn(List.of(projectionProvider1));
 
-    var unit2 = mock(UnitImpl.class);
+    var unit2 = mock(UnitHandle.class);
     when(unit2.isMain()).thenReturn(false);
     when(unit2.unitClass()).thenReturn(unitClass2);
     when(unit2.shutdownAction()).thenReturn(Optional.empty());
@@ -115,7 +116,7 @@ public class ModuleValidatorTest {
     when(injection.targetClass()).thenReturn((Class) String.class);
     when(injection.unitClass()).thenReturn(unitClass);
 
-    var unit = mock(UnitImpl.class);
+    var unit = mock(UnitHandle.class);
     when(unit.isMain()).thenReturn(true);
     when(unit.unitClass()).thenReturn(unitClass);
     when(unit.injections()).thenReturn(List.of(injection));
@@ -150,7 +151,7 @@ public class ModuleValidatorTest {
     when(projectionProvider.name()).thenReturn(projectionName);
     when(projectionProvider.type()).thenReturn(projectionType);
 
-    var unit = mock(UnitImpl.class);
+    var unit = mock(UnitHandle.class);
     when(unit.isMain()).thenReturn(true);
     when(unit.unitClass()).thenReturn(unitClass);
     when(unit.injections()).thenReturn(List.of(injection));
@@ -170,7 +171,7 @@ public class ModuleValidatorTest {
   @SuppressWarnings("unchecked,rawtypes")
   public void testValidate_whenValid() throws Exception {
     // Given
-    var unit1 = mock(UnitImpl.class);
+    var unit1 = mock(UnitHandle.class);
     Class unitClass1 = String.class;
     when(unit1.isMain()).thenReturn(true);
     when(unit1.unitClass()).thenReturn(unitClass1);
@@ -181,7 +182,7 @@ public class ModuleValidatorTest {
     when(projectionProvider1.projectionMethod()).thenReturn(String.class.getDeclaredMethod("trim"));
     when(unit1.projectionDefinitions()).thenReturn(List.of(projectionProvider1));
 
-    var unit2 = mock(UnitImpl.class);
+    var unit2 = mock(UnitHandle.class);
     Class unitClass2 = Integer.class;
     when(unit2.isMain()).thenReturn(false);
     when(unit2.unitClass()).thenReturn(unitClass2);

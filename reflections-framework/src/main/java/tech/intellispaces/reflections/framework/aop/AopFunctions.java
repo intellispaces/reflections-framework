@@ -8,9 +8,9 @@ import java.util.stream.Collectors;
 
 import tech.intellispaces.actions.Action;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
-import tech.intellispaces.reflections.framework.annotation.ApplyAdvice;
 import tech.intellispaces.jstatements.method.MethodStatement;
-import tech.intellispaces.reflections.framework.engine.ProjectionRegistry;
+import tech.intellispaces.reflections.framework.annotation.ApplyAdvice;
+import tech.intellispaces.reflections.framework.system.ProjectionRegistry;
 
 public interface AopFunctions {
 

@@ -16,9 +16,14 @@ import tech.intellispaces.commons.text.StringFunctions;
 import tech.intellispaces.commons.type.ClassFunctions;
 import tech.intellispaces.commons.type.ClassNameFunctions;
 import tech.intellispaces.commons.type.PrimitiveTypes;
+import tech.intellispaces.jstatements.customtype.CustomType;
+import tech.intellispaces.jstatements.method.MethodParam;
+import tech.intellispaces.jstatements.method.MethodStatement;
+import tech.intellispaces.jstatements.reference.CustomTypeReference;
+import tech.intellispaces.jstatements.reference.NamedReference;
+import tech.intellispaces.jstatements.reference.TypeReference;
 import tech.intellispaces.reflections.framework.annotationprocessor.AnnotationGeneratorFunctions;
 import tech.intellispaces.reflections.framework.annotationprocessor.domain.AbstractReflectionFormGenerator;
-import tech.intellispaces.reflections.framework.reflection.ReflectionImplementationMethodPurposes;
 import tech.intellispaces.reflections.framework.exception.ConfigurationExceptions;
 import tech.intellispaces.reflections.framework.guide.GuideFunctions;
 import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
@@ -26,14 +31,9 @@ import tech.intellispaces.reflections.framework.reflection.MovabilityTypes;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForms;
 import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
+import tech.intellispaces.reflections.framework.reflection.ReflectionImplementationMethodPurposes;
 import tech.intellispaces.reflections.framework.space.channel.ChannelFunctions;
 import tech.intellispaces.reflections.framework.space.domain.DomainFunctions;
-import tech.intellispaces.jstatements.customtype.CustomType;
-import tech.intellispaces.jstatements.method.MethodParam;
-import tech.intellispaces.jstatements.method.MethodStatement;
-import tech.intellispaces.jstatements.reference.CustomTypeReference;
-import tech.intellispaces.jstatements.reference.NamedReference;
-import tech.intellispaces.jstatements.reference.TypeReference;
 
 abstract class AbstractReflectionWrapperGenerator extends AbstractReflectionFormGenerator {
   protected String domainSimpleClassName;
@@ -94,9 +94,9 @@ abstract class AbstractReflectionWrapperGenerator extends AbstractReflectionForm
 
   protected String getReflectionSimpleName() {
     final String canonicalName;
-    if (ReflectionFunctions.isUnmovableObjectHandle(sourceArtifact())) {
+    if (ReflectionFunctions.isUnmovableReflection(sourceArtifact())) {
       canonicalName = NameConventionFunctions.getUnmovableReflectionTypeName(domainType.canonicalName(), true);
-    } else if (ReflectionFunctions.isMovableObjectHandle(sourceArtifact())) {
+    } else if (ReflectionFunctions.isMovableReflection(sourceArtifact())) {
       canonicalName = NameConventionFunctions.getMovableReflectionTypeName(domainType.canonicalName(), true);
     } else {
       throw UnexpectedExceptions.withMessage("Could not define movable type of the reflection {0}",
@@ -105,7 +105,7 @@ abstract class AbstractReflectionWrapperGenerator extends AbstractReflectionForm
     return addImportAndGetSimpleName(canonicalName);
   }
 
-  protected String getMovableObjectHandleSimpleName() {
+  protected String getMovableReflectionSimpleName() {
     return addImportAndGetSimpleName(
         NameConventionFunctions.getMovableReflectionTypeName(domainType.canonicalName(), true)
     );
@@ -331,7 +331,7 @@ abstract class AbstractReflectionWrapperGenerator extends AbstractReflectionForm
       MethodStatement guidMethod, int ordinal
   ) {
     var map = new HashMap<String, Object>();
-    map.put("name", ReflectionFunctions.buildObjectHandleGuideMethodName(guidMethod));
+    map.put("name", ReflectionFunctions.buildReflectionGuideMethodName(guidMethod));
 
     List<String> paramClasses = new ArrayList<>();
     for (MethodParam param : guidMethod.params()) {
@@ -437,7 +437,7 @@ abstract class AbstractReflectionWrapperGenerator extends AbstractReflectionForm
       }
     } else {
       sb.append("(");
-      appendMethodCastHandleType(sb, domainMethod, targetForm);
+      appendMethodCastReflectionType(sb, domainMethod, targetForm);
       sb.append(") ");
       appendInvokeMethodAction(sb, domainMethod, targetForm, methodOrdinal);
     }
@@ -445,7 +445,7 @@ abstract class AbstractReflectionWrapperGenerator extends AbstractReflectionForm
     return Map.of("declaration", sb.toString());
   }
 
-  private void appendMethodCastHandleType(
+  private void appendMethodCastReflectionType(
       StringBuilder sb, MethodStatement method, ReflectionForm targetForm
   ) {
     if (ReflectionForms.Reflection.is(targetForm)) {
@@ -559,7 +559,7 @@ abstract class AbstractReflectionWrapperGenerator extends AbstractReflectionForm
       Optional<CustomTypeReference> aliasBaseDomain = DomainFunctions.getAliasBaseDomain(domainType);
       CustomType actualDomain = aliasBaseDomain.isPresent() ? aliasBaseDomain.get().targetType() : domainType;
       sb.append(addImportAndGetSimpleName(
-          NameConventionFunctions.getDownwardObjectHandleTypename(actualDomain, superDomain.targetType(), getMovabilityType())
+          NameConventionFunctions.getDownwardReflectionTypename(actualDomain, superDomain.targetType(), getMovabilityType())
       ));
       sb.append("(this);");
     } else {

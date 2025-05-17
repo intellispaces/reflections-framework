@@ -2,8 +2,8 @@ package samples;
 
 import tech.intellispaces.reflections.framework.annotation.Module;
 import tech.intellispaces.reflections.framework.annotation.Projection;
+import tech.intellispaces.reflections.framework.samples.object.ReflectionOfEmptyDomain;
 import tech.intellispaces.reflectionsframework.annotation.validator.Sample;
-import tech.intellispaces.reflections.framework.samples.object.ObjectReferenceOfEmptyDomain;
 
 @Sample
 @Module
@@ -90,7 +90,7 @@ public class ModuleWithSimpleProjections {
   }
 
   @Projection
-  public ObjectReferenceOfEmptyDomain objectHandleProjection() {
+  public ReflectionOfEmptyDomain reflectionProjection() {
     return null;
   }
 }

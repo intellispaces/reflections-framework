@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import tech.intellispaces.reflections.framework.action.InvokeUnitMethodAction;
 import tech.intellispaces.reflections.framework.exception.ConfigurationException;
 import tech.intellispaces.reflections.framework.exception.CyclicDependencyException;
-import tech.intellispaces.reflections.framework.samples.object.ObjectReferenceOfEmptyDomain;
+import tech.intellispaces.reflections.framework.samples.object.ReflectionOfEmptyDomain;
 import tech.intellispaces.reflections.framework.samples.system.EmptyTestModule;
 import tech.intellispaces.reflections.framework.samples.system.ModuleWithProjectionProvidersWithSelfCyclicDependency;
 import tech.intellispaces.reflections.framework.samples.system.ModuleWithSimpleProjections;
@@ -15,6 +15,7 @@ import tech.intellispaces.reflections.framework.samples.system.ModuleWithTwoProj
 import tech.intellispaces.reflections.framework.samples.system.ModuleWithTwoProjectionProvidersInDifferentUnitsWithCyclicDependency2;
 import tech.intellispaces.reflections.framework.samples.system.ModuleWithTwoProjectionProvidersInDifferentUnitsWithCyclicDependency3;
 import tech.intellispaces.reflections.framework.samples.system.ModuleWithTwoProjectionProvidersWithCyclicDependency;
+import tech.intellispaces.reflections.framework.system.LocalProjectionRegistry;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -111,7 +112,7 @@ public class ModuleFactoryTest {
 
     assertThat(module.projectionRegistry().getProjection("stringProjection", String.class)).isEqualTo("string");
 
-    assertThat(module.projectionRegistry().getProjection("objectHandleProjection", ObjectReferenceOfEmptyDomain.class)).isNull();
+    assertThat(module.projectionRegistry().getProjection("reflectionrojection", ReflectionOfEmptyDomain.class)).isNull();
 
     assertThat(((LocalProjectionRegistry) module.projectionRegistry()).allProjections()).hasSize(17);
   }

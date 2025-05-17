@@ -5,5 +5,5 @@ import tech.intellispaces.reflections.framework.reflection.AbstractReflection;
 import tech.intellispaces.reflections.framework.samples.domain.EmptyDomain;
 
 @Reflection(EmptyDomain.class)
-public interface ObjectReferenceOfEmptyDomain extends AbstractReflection<EmptyDomain> {
+public interface ReflectionOfEmptyDomain extends AbstractReflection<EmptyDomain> {
 }

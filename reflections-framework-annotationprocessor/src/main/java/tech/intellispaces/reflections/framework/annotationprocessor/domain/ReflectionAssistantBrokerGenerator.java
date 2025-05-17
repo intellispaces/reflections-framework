@@ -11,19 +11,19 @@ import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
 import tech.intellispaces.commons.exception.NotImplementedExceptions;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.commons.text.StringFunctions;
-import tech.intellispaces.reflections.framework.annotationprocessor.AnnotationFunctions;
-import tech.intellispaces.reflections.framework.annotationprocessor.ReflectionsArtifactGenerator;
-import tech.intellispaces.reflections.framework.artifact.ArtifactTypes;
-import tech.intellispaces.reflections.framework.engine.Engines;
-import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
-import tech.intellispaces.reflections.framework.factory.FactoryFunctions;
-import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
 import tech.intellispaces.jstatements.customtype.CustomType;
 import tech.intellispaces.jstatements.method.MethodParam;
 import tech.intellispaces.jstatements.method.MethodSignatureDeclarations;
 import tech.intellispaces.jstatements.method.MethodStatement;
 import tech.intellispaces.jstatements.reference.ArrayReference;
 import tech.intellispaces.jstatements.reference.TypeReference;
+import tech.intellispaces.reflections.framework.annotationprocessor.AnnotationFunctions;
+import tech.intellispaces.reflections.framework.annotationprocessor.ReflectionsArtifactGenerator;
+import tech.intellispaces.reflections.framework.artifact.ArtifactTypes;
+import tech.intellispaces.reflections.framework.engine.Engines;
+import tech.intellispaces.reflections.framework.factory.FactoryFunctions;
+import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
+import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
 
 public class ReflectionAssistantBrokerGenerator extends ReflectionsArtifactGenerator {
 

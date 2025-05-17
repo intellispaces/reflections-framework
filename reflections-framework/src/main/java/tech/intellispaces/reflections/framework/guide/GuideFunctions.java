@@ -10,6 +10,17 @@ import java.util.Optional;
 import tech.intellispaces.commons.exception.NotImplementedExceptions;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.commons.type.ClassFunctions;
+import tech.intellispaces.jstatements.customtype.Classes;
+import tech.intellispaces.jstatements.customtype.CustomType;
+import tech.intellispaces.jstatements.customtype.CustomTypes;
+import tech.intellispaces.jstatements.customtype.Interfaces;
+import tech.intellispaces.jstatements.instance.AnnotationInstance;
+import tech.intellispaces.jstatements.instance.ClassInstance;
+import tech.intellispaces.jstatements.instance.Instance;
+import tech.intellispaces.jstatements.method.MethodFunctions;
+import tech.intellispaces.jstatements.method.MethodStatement;
+import tech.intellispaces.jstatements.method.Methods;
+import tech.intellispaces.jstatements.reference.TypeReference;
 import tech.intellispaces.reflections.framework.annotation.Channel;
 import tech.intellispaces.reflections.framework.annotation.Mapper;
 import tech.intellispaces.reflections.framework.annotation.MapperOfMoving;
@@ -48,17 +59,6 @@ import tech.intellispaces.reflections.framework.space.channel.ChannelFunctions;
 import tech.intellispaces.reflections.framework.system.UnitWrapper;
 import tech.intellispaces.reflections.framework.traverse.TraverseType;
 import tech.intellispaces.reflections.framework.traverse.TraverseTypes;
-import tech.intellispaces.jstatements.customtype.Classes;
-import tech.intellispaces.jstatements.customtype.CustomType;
-import tech.intellispaces.jstatements.customtype.CustomTypes;
-import tech.intellispaces.jstatements.customtype.Interfaces;
-import tech.intellispaces.jstatements.instance.AnnotationInstance;
-import tech.intellispaces.jstatements.instance.ClassInstance;
-import tech.intellispaces.jstatements.instance.Instance;
-import tech.intellispaces.jstatements.method.MethodFunctions;
-import tech.intellispaces.jstatements.method.MethodStatement;
-import tech.intellispaces.jstatements.method.Methods;
-import tech.intellispaces.jstatements.reference.TypeReference;
 
 public final class GuideFunctions {
 
@@ -192,8 +192,8 @@ public final class GuideFunctions {
 
   public static List<Guide<?, ?>> loadObjectGuides(Class<?> reflectionClass) {
     List<Guide<?, ?>> guides = new ArrayList<>();
-    CustomType objectHandleType = Classes.of(reflectionClass);
-    for (MethodStatement method : objectHandleType.actualMethods()) {
+    CustomType reflectionType = Classes.of(reflectionClass);
+    for (MethodStatement method : reflectionType.actualMethods()) {
       if (isGuideMethod(method)) {
         Channel channel = findObjectChannelAnnotation(method);
         TraverseType traverseType = ChannelFunctions.getTraverseType(channel);
@@ -309,7 +309,7 @@ public final class GuideFunctions {
       if (ClassFunctions.isPrimitiveWrapperClass(returnType.asCustomTypeReferenceOrElseThrow().targetType().canonicalName())) {
         return ReflectionForms.Primitive;
       }
-      if (ReflectionFunctions.isObjectHandleType(returnType)) {
+      if (ReflectionFunctions.isReflectionType(returnType)) {
         return ReflectionForms.Reflection;
       }
     }

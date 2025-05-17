@@ -1,6 +1,6 @@
 package tech.intellispaces.reflections.framework.system;
 
-import tech.intellispaces.reflections.framework.engine.ReflectionBroker;
+import tech.intellispaces.reflections.framework.reflection.ReflectionBroker;
 
 public interface ReflectionWrapper {
 

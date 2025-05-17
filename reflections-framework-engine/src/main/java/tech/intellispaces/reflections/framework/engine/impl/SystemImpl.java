@@ -2,9 +2,9 @@ package tech.intellispaces.reflections.framework.engine.impl;
 
 import tech.intellispaces.reflections.framework.channel.Channel0;
 import tech.intellispaces.reflections.framework.channel.Channel1;
+import tech.intellispaces.reflections.framework.system.System;
 import tech.intellispaces.reflections.framework.traverse.MappingOfMovingTraverse;
 import tech.intellispaces.reflections.framework.traverse.MappingTraverse;
-import tech.intellispaces.reflections.framework.system.System;
 
 class SystemImpl implements System {
   private final EngineImpl engine;

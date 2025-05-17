@@ -3,13 +3,13 @@ package tech.intellispaces.reflections.framework.guide.n0;
 import java.util.stream.Collectors;
 
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
+import tech.intellispaces.jstatements.method.MethodParam;
+import tech.intellispaces.jstatements.method.MethodStatement;
 import tech.intellispaces.reflections.framework.exception.TraverseException;
 import tech.intellispaces.reflections.framework.exception.TraverseExceptions;
 import tech.intellispaces.reflections.framework.guide.GuideLogger;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 import tech.intellispaces.reflections.framework.system.ReflectionWrapper;
-import tech.intellispaces.jstatements.method.MethodParam;
-import tech.intellispaces.jstatements.method.MethodStatement;
 
 abstract class ObjectGuide0<S extends ReflectionWrapper, R> implements Guide0<S, R> {
   private final Class<S> reflectionClass;

@@ -7,6 +7,12 @@ import java.util.stream.Stream;
 
 import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
+import tech.intellispaces.jstatements.customtype.CustomType;
+import tech.intellispaces.jstatements.instance.AnnotationInstance;
+import tech.intellispaces.jstatements.method.MethodStatement;
+import tech.intellispaces.jstatements.reference.CustomTypeReference;
+import tech.intellispaces.jstatements.reference.NotPrimitiveReference;
+import tech.intellispaces.jstatements.reference.TypeReferenceFunctions;
 import tech.intellispaces.reflections.framework.ArtifactType;
 import tech.intellispaces.reflections.framework.annotation.Channel;
 import tech.intellispaces.reflections.framework.annotation.Customizer;
@@ -23,12 +29,6 @@ import tech.intellispaces.reflections.framework.reflection.UnmovableReflection;
 import tech.intellispaces.reflections.framework.space.channel.ChannelFunctions;
 import tech.intellispaces.reflections.framework.space.domain.DomainFunctions;
 import tech.intellispaces.reflections.framework.traverse.TraverseType;
-import tech.intellispaces.jstatements.customtype.CustomType;
-import tech.intellispaces.jstatements.instance.AnnotationInstance;
-import tech.intellispaces.jstatements.method.MethodStatement;
-import tech.intellispaces.jstatements.reference.CustomTypeReference;
-import tech.intellispaces.jstatements.reference.NotPrimitiveReference;
-import tech.intellispaces.jstatements.reference.TypeReferenceFunctions;
 
 public class GeneralRegularFormGenerator extends AbstractRegularFormGenerator {
 

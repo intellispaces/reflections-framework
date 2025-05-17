@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import tech.intellispaces.reflections.framework.exception.ConfigurationExceptions;
 import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
 import tech.intellispaces.reflections.framework.system.ProjectionInjection;
+import tech.intellispaces.reflections.framework.system.UnitHandle;
 import tech.intellispaces.reflections.framework.system.UnitProjectionDefinition;
 import tech.intellispaces.reflections.framework.system.injection.InjectionKinds;
 
@@ -23,7 +24,7 @@ class ModuleValidator {
   }
 
   static void checkThatOneMainUnit(ModuleImpl module) {
-    List<UnitImpl> mainUnits = module.units().stream()
+    List<UnitHandle> mainUnits = module.units().stream()
         .filter(tech.intellispaces.reflections.framework.system.Unit::isMain)
         .toList();
     if (mainUnits.isEmpty()) {
@@ -64,7 +65,7 @@ class ModuleValidator {
       ModuleImpl module, Map<String, UnitProjectionDefinition> projectionProviders
   ) {
     List<ProjectionInjection> injections = module.units().stream()
-        .map(UnitImpl::injections)
+        .map(UnitHandle::injections)
         .flatMap(List::stream)
         .filter(injection -> InjectionKinds.Projection.is(injection.kind()))
         .map(injection -> (ProjectionInjection) injection)

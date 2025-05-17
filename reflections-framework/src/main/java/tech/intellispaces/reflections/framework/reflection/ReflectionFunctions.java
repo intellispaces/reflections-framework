@@ -19,15 +19,6 @@ import tech.intellispaces.commons.text.StringFunctions;
 import tech.intellispaces.commons.type.ClassFunctions;
 import tech.intellispaces.commons.type.Classes;
 import tech.intellispaces.commons.type.Type;
-import tech.intellispaces.reflections.framework.ReflectionsFramework;
-import tech.intellispaces.reflections.framework.annotation.Movable;
-import tech.intellispaces.reflections.framework.annotation.Reflection;
-import tech.intellispaces.reflections.framework.annotation.Unmovable;
-import tech.intellispaces.reflections.framework.annotation.Wrapper;
-import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
-import tech.intellispaces.reflections.framework.settings.DomainReference;
-import tech.intellispaces.reflections.framework.settings.DomainTypes;
-import tech.intellispaces.reflections.framework.space.domain.DomainFunctions;
 import tech.intellispaces.jstatements.JavaStatements;
 import tech.intellispaces.jstatements.customtype.AnnotationFunctions;
 import tech.intellispaces.jstatements.customtype.CustomType;
@@ -41,6 +32,15 @@ import tech.intellispaces.jstatements.reference.NotPrimitiveReference;
 import tech.intellispaces.jstatements.reference.ReferenceBound;
 import tech.intellispaces.jstatements.reference.TypeReference;
 import tech.intellispaces.jstatements.reference.WildcardReference;
+import tech.intellispaces.reflections.framework.ReflectionsFramework;
+import tech.intellispaces.reflections.framework.annotation.Movable;
+import tech.intellispaces.reflections.framework.annotation.Reflection;
+import tech.intellispaces.reflections.framework.annotation.Unmovable;
+import tech.intellispaces.reflections.framework.annotation.Wrapper;
+import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
+import tech.intellispaces.reflections.framework.settings.DomainReference;
+import tech.intellispaces.reflections.framework.settings.DomainTypes;
+import tech.intellispaces.reflections.framework.space.domain.DomainFunctions;
 
 public class ReflectionFunctions {
   private static final Logger LOG = LoggerFactory.getLogger(ReflectionFunctions.class);
@@ -63,7 +63,7 @@ public class ReflectionFunctions {
     if (wrapper != null) {
       aClass = wrapper.value();
     }
-    if (isDefaultObjectHandleType(aClass.getCanonicalName())) {
+    if (isDefaultReflectionType(aClass.getCanonicalName())) {
       return true;
     }
     if (aClass.isAnnotationPresent(Reflection.class)) {
@@ -78,15 +78,15 @@ public class ReflectionFunctions {
     return domainClass.isPresent();
   }
 
-  public static boolean isObjectHandleType(TypeReference type) {
-    return isDefaultObjectHandleType(type) || isCustomObjectHandleType(type);
+  public static boolean isReflectionType(TypeReference type) {
+    return isDefaultReflectionType(type) || isCustomReflectionType(type);
   }
 
-  public static boolean isObjectHandleClass(Class<?> aClass) {
-    return isDefaultObjectHandleClass(aClass) || isCustomObjectFormClass(aClass);
+  public static boolean isReflectionClass(Class<?> aClass) {
+    return isDefaultReflectionClass(aClass) || isCustomReflectionClass(aClass);
   }
 
-  public static boolean isCustomObjectHandleType(TypeReference type) {
+  public static boolean isCustomReflectionType(TypeReference type) {
     if (!type.isCustomTypeReference()) {
       return false;
     }
@@ -94,7 +94,7 @@ public class ReflectionFunctions {
     return customType.hasParent(tech.intellispaces.reflections.framework.reflection.Reflection.class);
   }
 
-  public static boolean isCustomObjectFormClass(Class<?> aClass) {
+  public static boolean isCustomReflectionClass(Class<?> aClass) {
     Wrapper wrapper = aClass.getAnnotation(Wrapper.class);
     if (wrapper != null) {
       aClass = wrapper.value();
@@ -111,44 +111,44 @@ public class ReflectionFunctions {
     return domainClass.isPresent();
   }
 
-  public static boolean isDefaultObjectHandleClass(Class<?> aClass) {
+  public static boolean isDefaultReflectionClass(Class<?> aClass) {
     return DEFAULT_REFLECTION_CLASSES.contains(aClass.getCanonicalName());
   }
 
-  public static boolean isDefaultObjectHandleClass(CustomType aClass) {
+  public static boolean isDefaultReflectionClass(CustomType aClass) {
     return DEFAULT_REFLECTION_CLASSES.contains(aClass.canonicalName());
   }
 
-  public static boolean isDefaultObjectHandleType(TypeReference type) {
+  public static boolean isDefaultReflectionType(TypeReference type) {
     return type.isPrimitiveReference() ||
-        (type.isCustomTypeReference() && isDefaultObjectHandleType(type.asCustomTypeReferenceOrElseThrow().targetType()));
+        (type.isCustomTypeReference() && isDefaultReflectionType(type.asCustomTypeReferenceOrElseThrow().targetType()));
   }
 
-  public static boolean isDefaultObjectHandleType(CustomType type) {
-    return isDefaultObjectHandleType(type.canonicalName());
+  public static boolean isDefaultReflectionType(CustomType type) {
+    return isDefaultReflectionType(type.canonicalName());
   }
 
-  public static boolean isDefaultObjectHandleType(String canonicalName) {
+  public static boolean isDefaultReflectionType(String canonicalName) {
     return DEFAULT_REFLECTION_CLASSES.contains(canonicalName);
   }
 
-  public static boolean isMovableObjectHandle(Object reflection) {
-    return isMovableObjectHandle(reflection.getClass());
+  public static boolean isMovableReflection(Object reflection) {
+    return isMovableReflection(reflection.getClass());
   }
 
-  public static boolean isMovableObjectHandle(Class<?> reflectionClass) {
-    return isMovableObjectHandle(CustomTypes.of(reflectionClass));
+  public static boolean isMovableReflection(Class<?> reflectionClass) {
+    return isMovableReflection(CustomTypes.of(reflectionClass));
   }
 
-  public static boolean isMovableObjectHandle(CustomType reflectionType) {
+  public static boolean isMovableReflection(CustomType reflectionType) {
     return AnnotationFunctions.isAssignableAnnotatedType(reflectionType, Movable.class);
   }
 
-  public static boolean isUnmovableObjectHandle(CustomType reflectionType) {
+  public static boolean isUnmovableReflection(CustomType reflectionType) {
     return AnnotationFunctions.isAssignableAnnotatedType(reflectionType, Unmovable.class);
   }
 
-  public static Class<?> getObjectHandleClass(MovabilityType movabilityType) {
+  public static Class<?> getReflectionClass(MovabilityType movabilityType) {
     return switch (MovabilityTypes.of(movabilityType)) {
       case General -> tech.intellispaces.reflections.framework.reflection.Reflection.class;
       case Unmovable -> UnmovableReflection.class;
@@ -161,16 +161,16 @@ public class ReflectionFunctions {
   ) {
     return switch (ReflectionForms.of(form)) {
       case Regular -> getGeneralRegularObjectTypename(type, typeReplacer);
-      case Reflection -> getGeneralObjectHandleTypename(type, typeReplacer);
+      case Reflection -> getGeneralReflectionTypename(type, typeReplacer);
       default -> throw NotImplementedExceptions.withCode("UoXguA");
     };
   }
 
-  public static String getGeneralObjectHandleTypename(TypeReference domainType) {
-    return getGeneralObjectHandleTypename(domainType, Function.identity());
+  public static String getGeneralReflectionTypename(TypeReference domainType) {
+    return getGeneralReflectionTypename(domainType, Function.identity());
   }
 
-  public static String getGeneralObjectHandleTypename(
+  public static String getGeneralReflectionTypename(
       TypeReference type, Function<TypeReference, TypeReference> typeReplacer
   ) {
     type = typeReplacer.apply(type);
@@ -182,9 +182,9 @@ public class ReflectionFunctions {
       if (type.asWildcardOrElseThrow().extendedBound().isEmpty()) {
         return "?";
       }
-      return "? extends " + getGeneralObjectHandleTypename(type.asWildcardOrElseThrow().extendedBound().get(), typeReplacer);
+      return "? extends " + getGeneralReflectionTypename(type.asWildcardOrElseThrow().extendedBound().get(), typeReplacer);
     }
-    return getGeneralObjectHandleTypename(type.asCustomTypeReferenceOrElseThrow().targetType());
+    return getGeneralReflectionTypename(type.asCustomTypeReferenceOrElseThrow().targetType());
   }
 
   public static String getGeneralRegularObjectTypename(
@@ -205,21 +205,21 @@ public class ReflectionFunctions {
   }
 
   public static String getGeneralRegularObjectTypename(CustomType domainType) {
-    if (isDefaultObjectHandleType(domainType)) {
+    if (isDefaultReflectionType(domainType)) {
       return domainType.canonicalName();
     }
     return NameConventionFunctions.getGeneralRegularFormClassname(domainType.className(), false);
   }
 
-  public static String getGeneralObjectHandleTypename(CustomType domainType) {
-    if (isDefaultObjectHandleType(domainType)) {
+  public static String getGeneralReflectionTypename(CustomType domainType) {
+    if (isDefaultReflectionType(domainType)) {
       return domainType.canonicalName();
     }
     return NameConventionFunctions.getGeneralReflectionTypeName(domainType.className(), false);
   }
 
-  public static String getUnmovableObjectHandleTypename(CustomType domainType) {
-    if (isDefaultObjectHandleType(domainType)) {
+  public static String getUnmovableReflectionTypename(CustomType domainType) {
+    if (isDefaultReflectionType(domainType)) {
       return domainType.canonicalName();
     }
     return NameConventionFunctions.getUnmovableReflectionTypeName(domainType.className());
@@ -228,7 +228,7 @@ public class ReflectionFunctions {
   public static String getObjectTypename(
           CustomType customType, ReflectionForm objectForm, MovabilityType movabilityType, boolean replaceDomainWithDelegate
   ) {
-    if (isDefaultObjectHandleType(customType)) {
+    if (isDefaultReflectionType(customType)) {
       return customType.canonicalName();
     }
     if (!DomainFunctions.isDomainType(customType)) {
@@ -238,30 +238,30 @@ public class ReflectionFunctions {
   }
 
   public static String getObjectTypename(String canonicalName, ReflectionForm objectForm, MovabilityType movabilityType) {
-    if (isDefaultObjectHandleType(canonicalName)) {
+    if (isDefaultReflectionType(canonicalName)) {
       return canonicalName;
     }
     return NameConventionFunctions.getObjectTypename(canonicalName, objectForm, movabilityType, true);
   }
 
-  public static Class<?> getObjectHandleClass(Class<?> aClass) {
-    return defineObjectHandleClassInternal(aClass);
+  public static Class<?> getReflectionClass(Class<?> aClass) {
+    return defineReflectionClassInternal(aClass);
   }
 
-  private static Class<?> defineObjectHandleClassInternal(Class<?> aClass) {
+  private static Class<?> defineReflectionClassInternal(Class<?> aClass) {
     if (aClass.isAnnotationPresent(Reflection.class) ||
-        isDefaultObjectHandleClass(aClass)
+        isDefaultReflectionClass(aClass)
     ) {
       return aClass;
     }
     if (aClass.getSuperclass() != null) {
-      Class<?> result = defineObjectHandleClassInternal(aClass.getSuperclass());
+      Class<?> result = defineReflectionClassInternal(aClass.getSuperclass());
       if (result != null) {
         return result;
       }
     }
     for (Class<?> anInterface : aClass.getInterfaces()) {
-      Class<?> result = defineObjectHandleClassInternal(anInterface);
+      Class<?> result = defineReflectionClassInternal(anInterface);
       if (result != null) {
         return result;
       }
@@ -289,7 +289,7 @@ public class ReflectionFunctions {
   }
 
   public static Optional<CustomType> getDomainOfObjectForm(CustomType objectFormType) {
-    if (isDefaultObjectHandleType(objectFormType)) {
+    if (isDefaultReflectionType(objectFormType)) {
       return Optional.of(objectFormType);
     }
 
@@ -326,8 +326,8 @@ public class ReflectionFunctions {
     return domainType.get();
   }
 
-  public static Class<?> getDomainClassOfObjectHandle(Class<?> reflectionClass) {
-    if (isDefaultObjectHandleClass(reflectionClass)) {
+  public static Class<?> getReflectionDomainClass(Class<?> reflectionClass) {
+    if (isDefaultReflectionClass(reflectionClass)) {
       return reflectionClass;
     }
     Wrapper wrapper = reflectionClass.getAnnotation(Wrapper.class);
@@ -354,19 +354,19 @@ public class ReflectionFunctions {
   @SuppressWarnings("unchecked")
   public static <T> T tryDowngrade(Object sourceReflection, Class<T> targetReflectionClass) {
     Class<?> sourceReflectionClass = sourceReflection.getClass();
-    if (isCustomObjectFormClass(sourceReflectionClass) && isCustomObjectFormClass(targetReflectionClass)) {
+    if (isCustomReflectionClass(sourceReflectionClass) && isCustomReflectionClass(targetReflectionClass)) {
       CustomType sourceReflectionDomain = getDomainOfObjectFormOrElseThrow(CustomTypes.of(sourceReflectionClass));
       CustomType targetReflectionDomain = getDomainOfObjectFormOrElseThrow(CustomTypes.of(targetReflectionClass));
       if (sourceReflectionDomain.hasParent(targetReflectionDomain)) {
-        if (isMovableObjectHandle(targetReflectionClass)) {
-          return (T) tryCreateDowngradeObjectHandle(sourceReflection, sourceReflectionDomain, targetReflectionDomain);
+        if (isMovableReflection(targetReflectionClass)) {
+          return (T) tryCreateDowngradeReflection(sourceReflection, sourceReflectionDomain, targetReflectionDomain);
         }
       }
     }
     return null;
   }
 
-  private static Object tryCreateDowngradeObjectHandle(
+  private static Object tryCreateDowngradeReflection(
       Object sourceReflection, CustomType sourceReflectionDomain, CustomType targetReflectionDomain
   ) {
     String downgradeReflectionCanonicalName = NameConventionFunctions.getMovableDownwardObjectTypename(
@@ -519,7 +519,7 @@ public class ReflectionFunctions {
     return sb.toString();
   }
 
-  public static String buildObjectHandleGuideMethodName(MethodStatement method) {
+  public static String buildReflectionGuideMethodName(MethodStatement method) {
     var sb = new StringBuilder();
     sb.append("$");
     sb.append(method.name());
@@ -537,7 +537,7 @@ public class ReflectionFunctions {
     return sb.toString();
   }
 
-  public static Class<?> propertiesHandleClass() {
+  public static Class<?> propertiesReflectionClass() {
     if (propertiesReflectionClass == null) {
       DomainReference domainReference = ReflectionsFramework.ontologyReference().getDomainByType(DomainTypes.PropertiesSet);
       String domainClassName = NameConventionFunctions.convertToDomainClassName(domainReference.domainName());

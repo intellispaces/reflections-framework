@@ -11,10 +11,10 @@ import tech.intellispaces.annotationprocessor.ArtifactGenerator;
 import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
 import tech.intellispaces.annotationprocessor.ArtifactProcessor;
 import tech.intellispaces.annotationprocessor.ArtifactValidator;
+import tech.intellispaces.jstatements.customtype.CustomType;
 import tech.intellispaces.reflections.framework.annotation.Domain;
 import tech.intellispaces.reflections.framework.annotationprocessor.AnnotationFunctions;
 import tech.intellispaces.reflections.framework.annotationprocessor.ReflectionsArtifactProcessor;
-import tech.intellispaces.jstatements.customtype.CustomType;
 
 @AutoService(Processor.class)
 public class DomainProcessor extends ArtifactProcessor {

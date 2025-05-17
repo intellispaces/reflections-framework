@@ -3,11 +3,11 @@ package tech.intellispaces.reflections.framework.annotationprocessor.dataset;
 import java.util.Optional;
 
 import tech.intellispaces.annotationprocessor.ArtifactValidator;
+import tech.intellispaces.jstatements.customtype.CustomType;
 import tech.intellispaces.reflections.framework.annotation.Dataset;
 import tech.intellispaces.reflections.framework.annotation.Domain;
 import tech.intellispaces.reflections.framework.annotation.Ontology;
 import tech.intellispaces.reflections.framework.exception.ReflectionsExceptions;
-import tech.intellispaces.jstatements.customtype.CustomType;
 
 /**
  * The dataset type validator.

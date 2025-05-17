@@ -3,8 +3,8 @@ package tech.intellispaces.reflections.framework.system.projection;
 import java.lang.reflect.Method;
 
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
-import tech.intellispaces.reflections.framework.annotation.Projection;
 import tech.intellispaces.jstatements.method.MethodStatement;
+import tech.intellispaces.reflections.framework.annotation.Projection;
 
 public interface ProjectionFunctions {
 

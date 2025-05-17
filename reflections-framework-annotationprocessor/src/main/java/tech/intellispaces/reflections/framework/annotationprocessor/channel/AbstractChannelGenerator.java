@@ -5,6 +5,9 @@ import java.util.List;
 import tech.intellispaces.actions.runnable.RunnableAction;
 import tech.intellispaces.actions.text.StringActions;
 import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
+import tech.intellispaces.jstatements.customtype.CustomType;
+import tech.intellispaces.jstatements.method.MethodStatement;
+import tech.intellispaces.jstatements.reference.TypeReference;
 import tech.intellispaces.reflections.framework.annotation.Channel;
 import tech.intellispaces.reflections.framework.annotationprocessor.ReflectionsArtifactGenerator;
 import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
@@ -13,9 +16,6 @@ import tech.intellispaces.reflections.framework.traverse.MappingOfMovingTraverse
 import tech.intellispaces.reflections.framework.traverse.MappingTraverse;
 import tech.intellispaces.reflections.framework.traverse.MovingTraverse;
 import tech.intellispaces.reflections.framework.traverse.TraverseType;
-import tech.intellispaces.jstatements.customtype.CustomType;
-import tech.intellispaces.jstatements.method.MethodStatement;
-import tech.intellispaces.jstatements.reference.TypeReference;
 
 public abstract class AbstractChannelGenerator extends ReflectionsArtifactGenerator {
   protected final MethodStatement channelMethod;

@@ -10,10 +10,10 @@ import tech.intellispaces.annotationprocessor.ArtifactGenerator;
 import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
 import tech.intellispaces.annotationprocessor.ArtifactProcessor;
 import tech.intellispaces.annotationprocessor.ArtifactValidator;
+import tech.intellispaces.jstatements.customtype.CustomType;
 import tech.intellispaces.reflections.framework.annotation.Reflection;
 import tech.intellispaces.reflections.framework.annotationprocessor.AnnotationFunctions;
 import tech.intellispaces.reflections.framework.annotationprocessor.ReflectionsArtifactProcessor;
-import tech.intellispaces.jstatements.customtype.CustomType;
 
 @AutoService(Processor.class)
 public class ReflectionProcessor extends ArtifactProcessor {
@@ -23,8 +23,8 @@ public class ReflectionProcessor extends ArtifactProcessor {
   }
 
   @Override
-  public boolean isApplicable(CustomType objectHandleType) {
-    return objectHandleType.isAbstract() && AnnotationFunctions.isAutoGenerationEnabled(objectHandleType);
+  public boolean isApplicable(CustomType reflectionType) {
+    return reflectionType.isAbstract() && AnnotationFunctions.isAutoGenerationEnabled(reflectionType);
   }
 
   @Override
@@ -33,7 +33,7 @@ public class ReflectionProcessor extends ArtifactProcessor {
   }
 
   @Override
-  public List<ArtifactGenerator> makeGenerators(CustomType objectHandleType, ArtifactGeneratorContext context) {
-    return ReflectionProcessorFunctions.makeReflectionArtifactGenerators(objectHandleType);
+  public List<ArtifactGenerator> makeGenerators(CustomType reflectionType, ArtifactGeneratorContext context) {
+    return ReflectionProcessorFunctions.makeReflectionArtifactGenerators(reflectionType);
   }
 }

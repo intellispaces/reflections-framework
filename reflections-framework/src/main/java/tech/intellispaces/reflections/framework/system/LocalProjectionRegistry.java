@@ -1,4 +1,4 @@
-package tech.intellispaces.reflections.framework.engine.impl;
+package tech.intellispaces.reflections.framework.system;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
@@ -20,16 +20,10 @@ import tech.intellispaces.commons.exception.ExceptionFunctions;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.commons.type.ClassFunctions;
 import tech.intellispaces.reflections.framework.annotation.Projection;
-import tech.intellispaces.reflections.framework.engine.ProjectionRegistry;
 import tech.intellispaces.reflections.framework.exception.ConfigurationException;
 import tech.intellispaces.reflections.framework.exception.ConfigurationExceptions;
 import tech.intellispaces.reflections.framework.exception.CyclicDependencyExceptions;
 import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
-import tech.intellispaces.reflections.framework.system.ModuleProjection;
-import tech.intellispaces.reflections.framework.system.ProjectionDefinition;
-import tech.intellispaces.reflections.framework.system.ProjectionReference;
-import tech.intellispaces.reflections.framework.system.ProjectionSupplier;
-import tech.intellispaces.reflections.framework.system.UnitProjectionDefinition;
 import tech.intellispaces.reflections.framework.system.projection.ModuleProjectionImpl;
 import tech.intellispaces.reflections.framework.system.projection.ProjectionDefinitionBasedOnMethodAction;
 import tech.intellispaces.reflections.framework.system.projection.ProjectionDefinitionBasedOnProviderClass;
@@ -39,7 +33,7 @@ import tech.intellispaces.reflections.framework.system.projection.ProjectionFunc
 /**
  * The local projection register implementation.
  */
-class LocalProjectionRegistry implements ProjectionRegistry {
+public class LocalProjectionRegistry implements ProjectionRegistry {
   private final Map<String, ProjectionDefinition> projectionDefinitions;
   private final Map<String, ModuleProjection> projectionsByName = new HashMap<>();
 
@@ -50,7 +44,7 @@ class LocalProjectionRegistry implements ProjectionRegistry {
     projectionDefinitions = null;
   }
 
-  LocalProjectionRegistry(List<ProjectionDefinition> projectionDefinitions) {
+  public LocalProjectionRegistry(List<ProjectionDefinition> projectionDefinitions) {
     this.projectionDefinitions = projectionDefinitions.stream().collect(
         Collectors.toMap(ProjectionDefinition::name, Function.identity()));
   }

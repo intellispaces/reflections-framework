@@ -5,25 +5,25 @@ import java.util.ArrayList;
 import tech.intellispaces.actions.AbstractAction0;
 import tech.intellispaces.actions.Action;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
+import tech.intellispaces.jstatements.method.MethodParam;
+import tech.intellispaces.jstatements.method.MethodStatement;
 import tech.intellispaces.reflections.framework.exception.ConfigurationExceptions;
 import tech.intellispaces.reflections.framework.system.Modules;
 import tech.intellispaces.reflections.framework.system.UnitWrapper;
-import tech.intellispaces.jstatements.method.MethodParam;
-import tech.intellispaces.jstatements.method.MethodStatement;
 
 public class InvokeUnitMethodAction<R> extends AbstractAction0<R> {
-  private final UnitWrapper unit;
+  private final UnitWrapper unitInstance;
   private final MethodStatement method;
   private final Action methodAction;
 
-  public InvokeUnitMethodAction(UnitWrapper unit, MethodStatement method, Action methodAction) {
-    this.unit = unit;
+  public InvokeUnitMethodAction(UnitWrapper unitInstance, MethodStatement method, Action methodAction) {
+    this.unitInstance = unitInstance;
     this.method = method;
     this.methodAction = methodAction;
   }
 
   public UnitWrapper unit() {
-    return unit;
+    return unitInstance;
   }
 
   public MethodStatement method() {
@@ -44,7 +44,7 @@ public class InvokeUnitMethodAction<R> extends AbstractAction0<R> {
 
   private Object[] makeActionParams() {
     var params = new ArrayList<>();
-
+    params.add(unitInstance);
     for (MethodParam param : method.params()) {
       String projectionName = param.name();
       Class<?> projectionTargerClass = param.type().asCustomTypeReferenceOrElseThrow().targetClass();

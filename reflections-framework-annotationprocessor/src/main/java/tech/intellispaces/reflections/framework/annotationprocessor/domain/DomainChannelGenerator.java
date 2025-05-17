@@ -5,13 +5,13 @@ import java.util.List;
 import tech.intellispaces.actions.runnable.RunnableAction;
 import tech.intellispaces.actions.text.StringActions;
 import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
-import tech.intellispaces.reflections.framework.annotationprocessor.channel.AbstractChannelGenerator;
-import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
 import tech.intellispaces.jstatements.customtype.CustomType;
 import tech.intellispaces.jstatements.method.MethodParam;
 import tech.intellispaces.jstatements.method.MethodStatement;
 import tech.intellispaces.jstatements.reference.NamedReference;
 import tech.intellispaces.jstatements.reference.TypeReference;
+import tech.intellispaces.reflections.framework.annotationprocessor.channel.AbstractChannelGenerator;
+import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
 
 public class DomainChannelGenerator extends AbstractChannelGenerator {
 

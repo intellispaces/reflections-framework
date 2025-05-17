@@ -1,4 +1,4 @@
-package tech.intellispaces.reflections.framework.engine.impl;
+package tech.intellispaces.reflections.framework.reflection;
 
 import java.util.HashMap;
 import java.util.List;
@@ -7,11 +7,9 @@ import java.util.Map;
 import tech.intellispaces.actions.Action;
 import tech.intellispaces.commons.exception.NotImplementedExceptions;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
-import tech.intellispaces.reflections.framework.reflection.ReflectionImplementationType;
-import tech.intellispaces.reflections.framework.reflection.Reflection;
 import tech.intellispaces.reflections.framework.system.Injection;
 
-public class ReflectionBroker implements tech.intellispaces.reflections.framework.engine.ReflectionBroker {
+public class ReflectionBrokerImpl implements ReflectionBroker {
   private final ReflectionImplementationType type;
   private final Action[] methodActions;
   private final Action[] guideActions;
@@ -19,7 +17,7 @@ public class ReflectionBroker implements tech.intellispaces.reflections.framewor
   private final Map<Class<?>, Object> projections = new HashMap<>();
   private Reflection<?> overlyingReflection;
 
-  public ReflectionBroker(
+  public ReflectionBrokerImpl(
       ReflectionImplementationType type,
       Action[] methodActions,
       Action[] guideActions,

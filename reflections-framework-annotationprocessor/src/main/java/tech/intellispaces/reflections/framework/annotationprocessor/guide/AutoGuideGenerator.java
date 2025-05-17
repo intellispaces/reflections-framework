@@ -13,16 +13,16 @@ import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
 import tech.intellispaces.commons.exception.NotImplementedExceptions;
 import tech.intellispaces.commons.text.StringFunctions;
 import tech.intellispaces.commons.type.Types;
+import tech.intellispaces.jstatements.customtype.CustomType;
+import tech.intellispaces.jstatements.method.MethodParam;
+import tech.intellispaces.jstatements.method.MethodStatement;
+import tech.intellispaces.jstatements.reference.TypeReference;
 import tech.intellispaces.reflections.framework.action.TraverseActions;
 import tech.intellispaces.reflections.framework.annotationprocessor.ReflectionsArtifactGenerator;
 import tech.intellispaces.reflections.framework.guide.GuideFunctions;
 import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForms;
-import tech.intellispaces.jstatements.customtype.CustomType;
-import tech.intellispaces.jstatements.method.MethodParam;
-import tech.intellispaces.jstatements.method.MethodStatement;
-import tech.intellispaces.jstatements.reference.TypeReference;
 
 public class AutoGuideGenerator extends ReflectionsArtifactGenerator {
   private List<Map<String, Object>> guideMethods;

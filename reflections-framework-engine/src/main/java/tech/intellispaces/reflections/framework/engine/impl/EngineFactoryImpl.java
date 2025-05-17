@@ -4,9 +4,12 @@ import com.google.auto.service.AutoService;
 
 import tech.intellispaces.reflections.framework.engine.Engine;
 import tech.intellispaces.reflections.framework.engine.EngineFactory;
-import tech.intellispaces.reflections.framework.engine.FactoryRegistry;
-import tech.intellispaces.reflections.framework.engine.GuideRegistry;
-import tech.intellispaces.reflections.framework.engine.ProjectionRegistry;
+import tech.intellispaces.reflections.framework.system.FactoryRegistry;
+import tech.intellispaces.reflections.framework.system.GuideRegistry;
+import tech.intellispaces.reflections.framework.system.LocalGuideRegistry;
+import tech.intellispaces.reflections.framework.system.LocalProjectionRegistry;
+import tech.intellispaces.reflections.framework.system.LocalTraverseExecutor;
+import tech.intellispaces.reflections.framework.system.ProjectionRegistry;
 import tech.intellispaces.reflections.framework.traverse.plan.TraverseAnalyzer;
 import tech.intellispaces.reflections.framework.traverse.plan.TraverseExecutor;
 

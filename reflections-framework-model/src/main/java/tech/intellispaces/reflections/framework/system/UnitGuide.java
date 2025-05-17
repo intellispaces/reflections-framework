@@ -1,7 +1,7 @@
 package tech.intellispaces.reflections.framework.system;
 
-import tech.intellispaces.reflections.framework.guide.Guide;
 import tech.intellispaces.jstatements.method.MethodStatement;
+import tech.intellispaces.reflections.framework.guide.Guide;
 
 /**
  * The system unit guide.

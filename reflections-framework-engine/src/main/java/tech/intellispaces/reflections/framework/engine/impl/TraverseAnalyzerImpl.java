@@ -5,7 +5,6 @@ import java.util.stream.Collectors;
 
 import tech.intellispaces.commons.exception.NotImplementedExceptions;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
-import tech.intellispaces.reflections.framework.engine.GuideRegistry;
 import tech.intellispaces.reflections.framework.guide.Guide;
 import tech.intellispaces.reflections.framework.guide.GuideKind;
 import tech.intellispaces.reflections.framework.guide.GuideKinds;
@@ -18,6 +17,7 @@ import tech.intellispaces.reflections.framework.reflection.Reflection;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
 import tech.intellispaces.reflections.framework.space.channel.ChannelFunctions;
+import tech.intellispaces.reflections.framework.system.GuideRegistry;
 import tech.intellispaces.reflections.framework.traverse.plan.AscendAndExecutePlan1Impl;
 import tech.intellispaces.reflections.framework.traverse.plan.CallGuide0PlanImpl;
 import tech.intellispaces.reflections.framework.traverse.plan.CallGuide1PlanImpl;
@@ -25,14 +25,6 @@ import tech.intellispaces.reflections.framework.traverse.plan.CallGuide2PlanImpl
 import tech.intellispaces.reflections.framework.traverse.plan.CallGuide3PlanImpl;
 import tech.intellispaces.reflections.framework.traverse.plan.CallGuide4PlanImpl;
 import tech.intellispaces.reflections.framework.traverse.plan.ExecutionTraversePlan;
-import tech.intellispaces.reflections.framework.traverse.plan.MapThruChannel0TraversePlan;
-import tech.intellispaces.reflections.framework.traverse.plan.MapThruChannel0TraversePlanImpl;
-import tech.intellispaces.reflections.framework.traverse.plan.MapThruChannel1TraversePlan;
-import tech.intellispaces.reflections.framework.traverse.plan.MapThruChannel1TraversePlanImpl;
-import tech.intellispaces.reflections.framework.traverse.plan.MapThruChannel2TraversePlan;
-import tech.intellispaces.reflections.framework.traverse.plan.MapThruChannel2TraversePlanImpl;
-import tech.intellispaces.reflections.framework.traverse.plan.MapThruChannel3TraversePlan;
-import tech.intellispaces.reflections.framework.traverse.plan.MapThruChannel3TraversePlanImpl;
 import tech.intellispaces.reflections.framework.traverse.plan.MapOfMovingThruChannel0Plan;
 import tech.intellispaces.reflections.framework.traverse.plan.MapOfMovingThruChannel0PlanImpl;
 import tech.intellispaces.reflections.framework.traverse.plan.MapOfMovingThruChannel1TraversePlan;
@@ -43,6 +35,14 @@ import tech.intellispaces.reflections.framework.traverse.plan.MapOfMovingThruCha
 import tech.intellispaces.reflections.framework.traverse.plan.MapOfMovingThruChannel3TraversePlanImpl;
 import tech.intellispaces.reflections.framework.traverse.plan.MapOfMovingThruChannel4TraversePlan;
 import tech.intellispaces.reflections.framework.traverse.plan.MapOfMovingThruChannel4TraversePlanImpl;
+import tech.intellispaces.reflections.framework.traverse.plan.MapThruChannel0TraversePlan;
+import tech.intellispaces.reflections.framework.traverse.plan.MapThruChannel0TraversePlanImpl;
+import tech.intellispaces.reflections.framework.traverse.plan.MapThruChannel1TraversePlan;
+import tech.intellispaces.reflections.framework.traverse.plan.MapThruChannel1TraversePlanImpl;
+import tech.intellispaces.reflections.framework.traverse.plan.MapThruChannel2TraversePlan;
+import tech.intellispaces.reflections.framework.traverse.plan.MapThruChannel2TraversePlanImpl;
+import tech.intellispaces.reflections.framework.traverse.plan.MapThruChannel3TraversePlan;
+import tech.intellispaces.reflections.framework.traverse.plan.MapThruChannel3TraversePlanImpl;
 import tech.intellispaces.reflections.framework.traverse.plan.MoveThruChannel0TraversePlan;
 import tech.intellispaces.reflections.framework.traverse.plan.MoveThruChannel0TraversePlanImpl;
 import tech.intellispaces.reflections.framework.traverse.plan.MoveThruChannel1TraversePlan;
@@ -51,10 +51,10 @@ import tech.intellispaces.reflections.framework.traverse.plan.MoveThruChannel2Tr
 import tech.intellispaces.reflections.framework.traverse.plan.MoveThruChannel2TraversePlanImpl;
 import tech.intellispaces.reflections.framework.traverse.plan.MoveThruChannel3TraversePlan;
 import tech.intellispaces.reflections.framework.traverse.plan.MoveThruChannel3TraversePlanImpl;
-import tech.intellispaces.reflections.framework.traverse.plan.TraverseThruChannelPlan;
 import tech.intellispaces.reflections.framework.traverse.plan.TraverseAnalyzer;
 import tech.intellispaces.reflections.framework.traverse.plan.TraversePlanType;
 import tech.intellispaces.reflections.framework.traverse.plan.TraversePlanTypes;
+import tech.intellispaces.reflections.framework.traverse.plan.TraverseThruChannelPlan;
 
 class TraverseAnalyzerImpl implements TraverseAnalyzer {
   private final GuideRegistry guideRegistry;
@@ -214,7 +214,7 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
     if (!ReflectionFunctions.isObjectFormClass(sourceClass)) {
       throw UnexpectedExceptions.withMessage("Traverse plan of type {0} expected any object form to input", planType);
     }
-    Class<?> reflectionClass = ReflectionFunctions.getObjectHandleClass(sourceClass);
+    Class<?> reflectionClass = ReflectionFunctions.getReflectionClass(sourceClass);
     executionPlan = plan.cachedExecutionPlan(reflectionClass);
     if (executionPlan != null) {
       return executionPlan;
@@ -253,8 +253,8 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
           return executionPlan;
         }
 
-        reflectionClass = ReflectionFunctions.getObjectHandleClass(sourceClass);
-        Class<?> domainClass = ReflectionFunctions.getDomainClassOfObjectHandle(reflectionClass);
+        reflectionClass = ReflectionFunctions.getReflectionClass(sourceClass);
+        Class<?> domainClass = ReflectionFunctions.getReflectionDomainClass(reflectionClass);
         String originCid = ChannelFunctions.getOriginDomainChannelId(domainClass, cid);
         if (originCid != null) {
           executionPlan = buildExecutionTraversePlan(planType, originCid, sourceClass, targetForm);

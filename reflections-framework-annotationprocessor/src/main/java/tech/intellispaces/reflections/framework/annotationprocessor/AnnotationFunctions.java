@@ -16,13 +16,6 @@ import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.commons.text.StringFunctions;
 import tech.intellispaces.commons.type.ClassFunctions;
 import tech.intellispaces.commons.type.Classes;
-import tech.intellispaces.reflections.framework.ArtifactType;
-import tech.intellispaces.reflections.framework.annotation.AnnotationProcessor;
-import tech.intellispaces.reflections.framework.annotation.ArtifactGeneration;
-import tech.intellispaces.reflections.framework.annotation.AssistantCustomizer;
-import tech.intellispaces.reflections.framework.annotation.Customizer;
-import tech.intellispaces.reflections.framework.artifact.ArtifactTypes;
-import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
 import tech.intellispaces.jstatements.AnnotatedStatement;
 import tech.intellispaces.jstatements.JavaStatements;
 import tech.intellispaces.jstatements.customtype.CustomType;
@@ -30,6 +23,13 @@ import tech.intellispaces.jstatements.customtype.CustomTypes;
 import tech.intellispaces.jstatements.instance.AnnotationInstance;
 import tech.intellispaces.jstatements.instance.ClassInstance;
 import tech.intellispaces.jstatements.instance.Instance;
+import tech.intellispaces.reflections.framework.ArtifactType;
+import tech.intellispaces.reflections.framework.annotation.AnnotationProcessor;
+import tech.intellispaces.reflections.framework.annotation.ArtifactGeneration;
+import tech.intellispaces.reflections.framework.annotation.AssistantCustomizer;
+import tech.intellispaces.reflections.framework.annotation.Customizer;
+import tech.intellispaces.reflections.framework.artifact.ArtifactTypes;
+import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
 
 /**
  * Functions related to artifact generation annotations.

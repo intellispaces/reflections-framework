@@ -4,6 +4,11 @@ import java.util.List;
 import java.util.Optional;
 
 import tech.intellispaces.annotationprocessor.ArtifactValidator;
+import tech.intellispaces.jstatements.customtype.CustomType;
+import tech.intellispaces.jstatements.instance.AnnotationInstance;
+import tech.intellispaces.jstatements.method.MethodParam;
+import tech.intellispaces.jstatements.method.MethodStatement;
+import tech.intellispaces.jstatements.reference.TypeReference;
 import tech.intellispaces.reflections.framework.annotation.Configuration;
 import tech.intellispaces.reflections.framework.annotation.Guide;
 import tech.intellispaces.reflections.framework.annotation.Module;
@@ -15,11 +20,6 @@ import tech.intellispaces.reflections.framework.exception.ReflectionsExceptions;
 import tech.intellispaces.reflections.framework.guide.GuideFunctions;
 import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
 import tech.intellispaces.reflections.framework.system.ModuleFunctions;
-import tech.intellispaces.jstatements.customtype.CustomType;
-import tech.intellispaces.jstatements.instance.AnnotationInstance;
-import tech.intellispaces.jstatements.method.MethodParam;
-import tech.intellispaces.jstatements.method.MethodStatement;
-import tech.intellispaces.jstatements.reference.TypeReference;
 
 /**
  * Module type validator.

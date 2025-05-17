@@ -2,7 +2,7 @@ package tech.intellispaces.reflections.framework.aop;
 
 import tech.intellispaces.actions.Action;
 import tech.intellispaces.jstatements.method.MethodStatement;
-import tech.intellispaces.reflections.framework.engine.ProjectionRegistry;
+import tech.intellispaces.reflections.framework.system.ProjectionRegistry;
 
 public abstract class Interceptor extends AbstractMethodAdvice {
 

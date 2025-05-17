@@ -7,12 +7,6 @@ import java.util.concurrent.Future;
 import tech.intellispaces.annotationprocessor.ArtifactValidator;
 import tech.intellispaces.commons.text.StringFunctions;
 import tech.intellispaces.commons.type.ClassFunctions;
-import tech.intellispaces.reflections.framework.annotation.Channel;
-import tech.intellispaces.reflections.framework.annotation.Domain;
-import tech.intellispaces.reflections.framework.annotation.Ontology;
-import tech.intellispaces.reflections.framework.exception.ReflectionsExceptions;
-import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
-import tech.intellispaces.reflections.framework.space.domain.DomainFunctions;
 import tech.intellispaces.jstatements.customtype.CustomType;
 import tech.intellispaces.jstatements.method.MethodFunctions;
 import tech.intellispaces.jstatements.method.MethodParam;
@@ -21,6 +15,12 @@ import tech.intellispaces.jstatements.reference.CustomTypeReference;
 import tech.intellispaces.jstatements.reference.NotPrimitiveReference;
 import tech.intellispaces.jstatements.reference.ReferenceBound;
 import tech.intellispaces.jstatements.reference.TypeReference;
+import tech.intellispaces.reflections.framework.annotation.Channel;
+import tech.intellispaces.reflections.framework.annotation.Domain;
+import tech.intellispaces.reflections.framework.annotation.Ontology;
+import tech.intellispaces.reflections.framework.exception.ReflectionsExceptions;
+import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
+import tech.intellispaces.reflections.framework.space.domain.DomainFunctions;
 
 /**
  * The domain type validator.

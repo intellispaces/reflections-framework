@@ -2,6 +2,7 @@ package tech.intellispaces.reflections.framework.system.settings;
 
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.commons.type.Types;
+import tech.intellispaces.jstatements.method.MethodStatement;
 import tech.intellispaces.reflections.framework.ReflectionsFramework;
 import tech.intellispaces.reflections.framework.annotation.Properties;
 import tech.intellispaces.reflections.framework.dataset.DatasetFunctions;
@@ -12,7 +13,6 @@ import tech.intellispaces.reflections.framework.settings.ChannelTypes;
 import tech.intellispaces.reflections.framework.system.Module;
 import tech.intellispaces.reflections.framework.system.Modules;
 import tech.intellispaces.reflections.framework.system.projection.InjectedMethodProjectionSupplier;
-import tech.intellispaces.jstatements.method.MethodStatement;
 
 public class ModulePropertiesProjectionSupplier extends InjectedMethodProjectionSupplier {
 
@@ -33,15 +33,15 @@ public class ModulePropertiesProjectionSupplier extends InjectedMethodProjection
     if (propertyValue.getClass() == expectedReturnClass) {
       return propertyValue;
     }
-    if (ReflectionFunctions.propertiesHandleClass().getCanonicalName().equals(expectedReturnClass.getCanonicalName())) {
-      if (!ReflectionFunctions.propertiesHandleClass().isAssignableFrom(propertyValue.getClass())) {
+    if (ReflectionFunctions.propertiesReflectionClass().getCanonicalName().equals(expectedReturnClass.getCanonicalName())) {
+      if (!ReflectionFunctions.propertiesReflectionClass().isAssignableFrom(propertyValue.getClass())) {
         throw UnexpectedExceptions.withMessage("Invalid return type of method '{0}' in class {1}",
             injectedMethod.name(), injectedMethod.owner().canonicalName());
       }
       return propertyValue;
     }
     if (ReflectionFunctions.isObjectFormClass(expectedReturnClass)) {
-      if (DatasetFunctions.isDatasetObjectHandle(expectedReturnClass)) {
+      if (DatasetFunctions.isDatasetReflection(expectedReturnClass)) {
         return traverseToData(propertyValue, expectedReturnClass, module);
       }
     }

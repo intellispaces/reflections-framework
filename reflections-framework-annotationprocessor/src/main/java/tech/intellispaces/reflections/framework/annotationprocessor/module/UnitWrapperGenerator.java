@@ -11,29 +11,6 @@ import tech.intellispaces.actions.runnable.RunnableAction;
 import tech.intellispaces.actions.text.StringActions;
 import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
-import tech.intellispaces.reflections.framework.annotation.Ordinal;
-import tech.intellispaces.reflections.framework.annotation.Projection;
-import tech.intellispaces.reflections.framework.annotation.ProjectionSupplier;
-import tech.intellispaces.reflections.framework.annotation.Wrapper;
-import tech.intellispaces.reflections.framework.annotationprocessor.AnnotationGeneratorFunctions;
-import tech.intellispaces.reflections.framework.annotationprocessor.ReflectionsArtifactGenerator;
-import tech.intellispaces.reflections.framework.engine.Engines;
-import tech.intellispaces.reflections.framework.engine.UnitBroker;
-import tech.intellispaces.reflections.framework.system.UnitMethodPurposes;
-import tech.intellispaces.reflections.framework.system.UnitType;
-import tech.intellispaces.reflections.framework.system.UnitTypes;
-import tech.intellispaces.reflections.framework.exception.ConfigurationExceptions;
-import tech.intellispaces.reflections.framework.guide.GuideFunctions;
-import tech.intellispaces.reflections.framework.guide.GuideKinds;
-import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
-import tech.intellispaces.reflections.framework.reflection.ReflectionForms;
-import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
-import tech.intellispaces.reflections.framework.space.channel.ChannelFunctions;
-import tech.intellispaces.reflections.framework.system.Modules;
-import tech.intellispaces.reflections.framework.system.ProjectionInjection;
-import tech.intellispaces.reflections.framework.system.UnitWrapper;
-import tech.intellispaces.reflections.framework.system.injection.InjectionKinds;
-import tech.intellispaces.reflections.framework.system.projection.ProjectionReferences;
 import tech.intellispaces.jstatements.customtype.CustomType;
 import tech.intellispaces.jstatements.instance.AnnotationInstance;
 import tech.intellispaces.jstatements.instance.ClassInstance;
@@ -43,6 +20,29 @@ import tech.intellispaces.jstatements.method.MethodStatement;
 import tech.intellispaces.jstatements.method.Methods;
 import tech.intellispaces.jstatements.reference.NamedReference;
 import tech.intellispaces.jstatements.reference.TypeReference;
+import tech.intellispaces.reflections.framework.annotation.Ordinal;
+import tech.intellispaces.reflections.framework.annotation.Projection;
+import tech.intellispaces.reflections.framework.annotation.ProjectionSupplier;
+import tech.intellispaces.reflections.framework.annotation.Wrapper;
+import tech.intellispaces.reflections.framework.annotationprocessor.AnnotationGeneratorFunctions;
+import tech.intellispaces.reflections.framework.annotationprocessor.ReflectionsArtifactGenerator;
+import tech.intellispaces.reflections.framework.engine.Engines;
+import tech.intellispaces.reflections.framework.exception.ConfigurationExceptions;
+import tech.intellispaces.reflections.framework.guide.GuideFunctions;
+import tech.intellispaces.reflections.framework.guide.GuideKinds;
+import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
+import tech.intellispaces.reflections.framework.reflection.ReflectionForms;
+import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
+import tech.intellispaces.reflections.framework.space.channel.ChannelFunctions;
+import tech.intellispaces.reflections.framework.system.Modules;
+import tech.intellispaces.reflections.framework.system.ProjectionInjection;
+import tech.intellispaces.reflections.framework.system.UnitHandle;
+import tech.intellispaces.reflections.framework.system.UnitMethodPurposes;
+import tech.intellispaces.reflections.framework.system.UnitType;
+import tech.intellispaces.reflections.framework.system.UnitTypes;
+import tech.intellispaces.reflections.framework.system.UnitWrapper;
+import tech.intellispaces.reflections.framework.system.injection.InjectionKinds;
+import tech.intellispaces.reflections.framework.system.projection.ProjectionReferences;
 
 public class UnitWrapperGenerator extends ReflectionsArtifactGenerator {
   private String typeParamsFullDeclaration;
@@ -83,7 +83,7 @@ public class UnitWrapperGenerator extends ReflectionsArtifactGenerator {
         Wrapper.class,
         Ordinal.class,
         UnitWrapper.class,
-        UnitBroker.class,
+        UnitHandle.class,
         Engines.class,
         UnitMethodPurposes.class,
         InjectionKinds.class,
@@ -259,7 +259,7 @@ public class UnitWrapperGenerator extends ReflectionsArtifactGenerator {
       MethodStatement method, int guideOrdinal
   ) {
     var map = new HashMap<String, Object>();
-    map.put("name", ReflectionFunctions.buildObjectHandleGuideMethodName(method));
+    map.put("name", ReflectionFunctions.buildReflectionGuideMethodName(method));
 
     List<String> paramClasses = new ArrayList<>();
     for (MethodParam param : method.params()) {
@@ -485,6 +485,6 @@ public class UnitWrapperGenerator extends ReflectionsArtifactGenerator {
   }
 
   private String buildInjectionMethodBody(String injectionType, int injectionIndex) {
-    return "return (" + injectionType + ") this.$broker.injection(" + injectionIndex + ").value();";
+    return "return (" + injectionType + ") this.$handle().injection(" + injectionIndex + ").value();";
   }
 }

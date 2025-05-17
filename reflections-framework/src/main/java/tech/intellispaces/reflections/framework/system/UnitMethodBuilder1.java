@@ -15,14 +15,12 @@ public class UnitMethodBuilder1<U, P> extends BaseUnitMethodBuilder<UnitMethodBu
   }
 
   public <R> UnitMethodBuilder1<U, P> function(BiFunction<U, P, R> function) {
-    this.action = FunctionActions.ofBiFunction(function)
-        .convertToAction1(unit);
+    this.action = FunctionActions.ofBiFunction(function);
     return this;
   }
 
   public <R> UnitMethodBuilder1<U, P> consumer(BiConsumer<U, P> consumer) {
-    this.action = FunctionActions.ofBiConsumer(consumer)
-        .convertToAction1(unit);
+    this.action = FunctionActions.ofBiConsumer(consumer);
     return this;
   }
 }

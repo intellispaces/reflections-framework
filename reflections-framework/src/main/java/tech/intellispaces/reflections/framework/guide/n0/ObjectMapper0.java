@@ -1,8 +1,8 @@
 package tech.intellispaces.reflections.framework.guide.n0;
 
+import tech.intellispaces.jstatements.method.MethodStatement;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 import tech.intellispaces.reflections.framework.system.ReflectionWrapper;
-import tech.intellispaces.jstatements.method.MethodStatement;
 
 /**
  * The reflection implementation mapper guide.<p/>

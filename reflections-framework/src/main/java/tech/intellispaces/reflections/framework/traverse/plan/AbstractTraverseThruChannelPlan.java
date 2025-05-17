@@ -42,7 +42,7 @@ public abstract class AbstractTraverseThruChannelPlan implements TraverseThruCha
 
   @Override
   public void cacheExecutionPlan(Class<?> sourceClass, ExecutionTraversePlan traversePlan) {
-    if (!ReflectionFunctions.isObjectHandleClass(sourceClass)) {
+    if (!ReflectionFunctions.isReflectionClass(sourceClass)) {
       throw UnexpectedExceptions.withMessage("Expected reflection class");
     }
     if (this.reflectionClass != sourceClass && !this.reflectionClass.isAssignableFrom(sourceClass)) {

@@ -28,12 +28,12 @@ import tech.intellispaces.commons.object.Objects;
 import tech.intellispaces.commons.resource.ResourceFunctions;
 import tech.intellispaces.commons.type.Classes;
 import tech.intellispaces.commons.type.Type;
-import tech.intellispaces.reflections.framework.engine.FactoryRegistry;
-import tech.intellispaces.reflections.framework.factory.FactoryWrapper;
-import tech.intellispaces.reflections.framework.factory.FactoryMethod;
 import tech.intellispaces.reflections.framework.exception.ConfigurationExceptions;
-import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
 import tech.intellispaces.reflections.framework.factory.FactoryFunctions;
+import tech.intellispaces.reflections.framework.factory.FactoryMethod;
+import tech.intellispaces.reflections.framework.factory.FactoryWrapper;
+import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
+import tech.intellispaces.reflections.framework.system.FactoryRegistry;
 
 class LocalFactoryRegistry implements FactoryRegistry {
   private boolean isLoaded;

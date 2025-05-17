@@ -12,6 +12,19 @@ import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.commons.text.StringFunctions;
 import tech.intellispaces.commons.type.Type;
 import tech.intellispaces.core.id.IdentifierFunctions;
+import tech.intellispaces.jstatements.customtype.CustomType;
+import tech.intellispaces.jstatements.customtype.CustomTypes;
+import tech.intellispaces.jstatements.instance.AnnotationInstance;
+import tech.intellispaces.jstatements.instance.ClassInstance;
+import tech.intellispaces.jstatements.instance.Instance;
+import tech.intellispaces.jstatements.method.MethodParam;
+import tech.intellispaces.jstatements.method.MethodSignature;
+import tech.intellispaces.jstatements.method.MethodSignatures;
+import tech.intellispaces.jstatements.method.MethodStatement;
+import tech.intellispaces.jstatements.reference.CustomTypeReference;
+import tech.intellispaces.jstatements.reference.CustomTypeReferences;
+import tech.intellispaces.jstatements.reference.TypeReference;
+import tech.intellispaces.jstatements.reference.TypeReferenceFunctions;
 import tech.intellispaces.proxies.tracker.Tracker;
 import tech.intellispaces.proxies.tracker.TrackerFunctions;
 import tech.intellispaces.proxies.tracker.Trackers;
@@ -33,19 +46,6 @@ import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
 import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
 import tech.intellispaces.reflections.framework.space.domain.DomainFunctions;
 import tech.intellispaces.reflections.framework.traverse.TraverseType;
-import tech.intellispaces.jstatements.customtype.CustomType;
-import tech.intellispaces.jstatements.customtype.CustomTypes;
-import tech.intellispaces.jstatements.instance.AnnotationInstance;
-import tech.intellispaces.jstatements.instance.ClassInstance;
-import tech.intellispaces.jstatements.instance.Instance;
-import tech.intellispaces.jstatements.method.MethodParam;
-import tech.intellispaces.jstatements.method.MethodSignature;
-import tech.intellispaces.jstatements.method.MethodSignatures;
-import tech.intellispaces.jstatements.method.MethodStatement;
-import tech.intellispaces.jstatements.reference.CustomTypeReference;
-import tech.intellispaces.jstatements.reference.CustomTypeReferences;
-import tech.intellispaces.jstatements.reference.TypeReference;
-import tech.intellispaces.jstatements.reference.TypeReferenceFunctions;
 
 /**
  * Channel related functions.
@@ -313,19 +313,19 @@ public interface ChannelFunctions {
     return channel.get();
   }
 
-  static Channel findObjectHandleMethodChannelAnnotation(MethodStatement reflectionMethod) {
-    CustomType reflectionHandleClass = reflectionMethod.owner();
-    CustomType domainClass = ReflectionFunctions.getDomainOfObjectFormOrElseThrow(reflectionHandleClass);
-    Channel channel = findObjectHandleMethodChannelAnnotation(reflectionMethod, domainClass);
+  static Channel findReflectionMethodChannelAnnotation(MethodStatement reflectionMethod) {
+    CustomType reflectionClass = reflectionMethod.owner();
+    CustomType domainClass = ReflectionFunctions.getDomainOfObjectFormOrElseThrow(reflectionClass);
+    Channel channel = findReflectionMethodChannelAnnotation(reflectionMethod, domainClass);
     if (channel == null) {
       throw UnexpectedExceptions.withMessage("Failed to find related channel annotation " +
           "of method '{0}' in {1}. Domain class {2}",
-          reflectionMethod.name(), reflectionHandleClass.canonicalName(), domainClass.canonicalName());
+          reflectionMethod.name(), reflectionClass.canonicalName(), domainClass.canonicalName());
     }
     return channel;
   }
 
-  private static Channel findObjectHandleMethodChannelAnnotation(
+  private static Channel findReflectionMethodChannelAnnotation(
       MethodStatement reflectionMethod, CustomType domainClass
   ) {
     for (MethodStatement domainMethod : domainClass.declaredMethods()) {
@@ -335,7 +335,7 @@ public interface ChannelFunctions {
     }
     for (CustomTypeReference parent : domainClass.parentTypes()) {
       if (DomainFunctions.isDomainType(parent.targetType())) {
-        Channel channel = findObjectHandleMethodChannelAnnotation(reflectionMethod, parent.targetType());
+        Channel channel = findReflectionMethodChannelAnnotation(reflectionMethod, parent.targetType());
         if (channel != null) {
           return channel;
         }
@@ -372,7 +372,7 @@ public interface ChannelFunctions {
   }
 
   static Channel findObjectGuideChannelAnnotation(MethodStatement reflectionMethod) {
-    return findObjectHandleMethodChannelAnnotation(reflectionMethod);
+    return findReflectionMethodChannelAnnotation(reflectionMethod);
   }
 
   private static String extractChannelId(

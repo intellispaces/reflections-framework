@@ -13,13 +13,6 @@ import tech.intellispaces.commons.object.ObjectFunctions;
 import tech.intellispaces.commons.type.ClassFunctions;
 import tech.intellispaces.commons.type.PrimitiveType;
 import tech.intellispaces.commons.type.PrimitiveTypes;
-import tech.intellispaces.reflections.framework.annotation.AutoGuide;
-import tech.intellispaces.reflections.framework.annotation.Inject;
-import tech.intellispaces.reflections.framework.annotation.Projection;
-import tech.intellispaces.reflections.framework.annotation.Shutdown;
-import tech.intellispaces.reflections.framework.annotation.Startup;
-import tech.intellispaces.reflections.framework.guide.GuideFunctions;
-import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
 import tech.intellispaces.jstatements.customtype.CustomType;
 import tech.intellispaces.jstatements.method.MethodParam;
 import tech.intellispaces.jstatements.method.MethodStatement;
@@ -27,6 +20,13 @@ import tech.intellispaces.jstatements.reference.NamedReference;
 import tech.intellispaces.jstatements.reference.PrimitiveReference;
 import tech.intellispaces.jstatements.reference.PrimitiveReferences;
 import tech.intellispaces.jstatements.reference.TypeReference;
+import tech.intellispaces.reflections.framework.annotation.AutoGuide;
+import tech.intellispaces.reflections.framework.annotation.Inject;
+import tech.intellispaces.reflections.framework.annotation.Projection;
+import tech.intellispaces.reflections.framework.annotation.Shutdown;
+import tech.intellispaces.reflections.framework.annotation.Startup;
+import tech.intellispaces.reflections.framework.guide.GuideFunctions;
+import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
 
 /**
  * Common annotation generator functions.
@@ -176,7 +176,7 @@ public interface AnnotationGeneratorFunctions {
     String returnType = buildGuideTypeDeclaration(guideMethod.returnType().orElseThrow(), generator);
     sb.append(returnType);
     sb.append(" ");
-    sb.append(ReflectionFunctions.buildObjectHandleGuideMethodName(guideMethod));
+    sb.append(ReflectionFunctions.buildReflectionGuideMethodName(guideMethod));
     sb.append("(");
     commaAppender = StringActions.skipFirstTimeCommaAppender(sb);
     for (MethodParam param : rearrangementParams(guideMethod.params())) {
@@ -205,14 +205,14 @@ public interface AnnotationGeneratorFunctions {
   }
 
   static void buildInvokeSuperMethod(
-      MethodStatement objectHandleMethod, StringBuilder sb, TemplatedJavaArtifactGenerator generator
+      MethodStatement reflectionMethod, StringBuilder sb, TemplatedJavaArtifactGenerator generator
   ) {
     RunnableAction commaAppender;
     sb.append("super.");
-    sb.append(objectHandleMethod.name());
+    sb.append(reflectionMethod.name());
     sb.append("(");
     commaAppender = StringActions.skipFirstTimeCommaAppender(sb);
-    for (MethodParam param : rearrangementParams(objectHandleMethod.params())) {
+    for (MethodParam param : rearrangementParams(reflectionMethod.params())) {
       commaAppender.run();
       String actualType = param.type().actualDeclaration(generator::addImportAndGetSimpleName);
       if (!buildGuideTypeDeclaration(param.type(), generator).equals(actualType)) {

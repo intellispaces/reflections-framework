@@ -9,9 +9,9 @@ import com.google.testing.compile.JavaFileObjects;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import tech.intellispaces.jstatements.customtype.CustomType;
 import tech.intellispaces.reflections.framework.annotationprocessor.SampleAnnotatedTypeProcessor;
 import tech.intellispaces.reflections.framework.exception.ReflectionsException;
-import tech.intellispaces.jstatements.customtype.CustomType;
 
 /**
  * Tests for {@link ModuleValidator} class.

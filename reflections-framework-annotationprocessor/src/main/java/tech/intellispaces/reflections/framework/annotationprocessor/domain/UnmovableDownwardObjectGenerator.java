@@ -10,6 +10,9 @@ import tech.intellispaces.commons.exception.NotImplementedExceptions;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.commons.type.Type;
 import tech.intellispaces.commons.type.Types;
+import tech.intellispaces.jstatements.customtype.CustomType;
+import tech.intellispaces.jstatements.method.MethodStatement;
+import tech.intellispaces.jstatements.reference.CustomTypeReference;
 import tech.intellispaces.reflections.framework.ArtifactType;
 import tech.intellispaces.reflections.framework.annotation.Channel;
 import tech.intellispaces.reflections.framework.annotation.Reflection;
@@ -23,16 +26,13 @@ import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
 import tech.intellispaces.reflections.framework.reflection.MovabilityType;
 import tech.intellispaces.reflections.framework.reflection.MovabilityTypes;
 import tech.intellispaces.reflections.framework.reflection.MovableReflection;
-import tech.intellispaces.reflections.framework.reflection.Reflections;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForms;
+import tech.intellispaces.reflections.framework.reflection.Reflections;
 import tech.intellispaces.reflections.framework.reflection.UnmovableReflection;
 import tech.intellispaces.reflections.framework.space.domain.DomainFunctions;
 import tech.intellispaces.reflections.framework.traverse.MappingTraverse;
 import tech.intellispaces.reflections.framework.traverse.TraverseTypes;
-import tech.intellispaces.jstatements.customtype.CustomType;
-import tech.intellispaces.jstatements.method.MethodStatement;
-import tech.intellispaces.jstatements.reference.CustomTypeReference;
 
 public class UnmovableDownwardObjectGenerator extends ConversionObjectGenerator {
 
@@ -92,12 +92,12 @@ public class UnmovableDownwardObjectGenerator extends ConversionObjectGenerator 
         NotImplementedExceptions.class
     );
 
-    String unmovableObjectHandleName = addImportAndGetSimpleName(
+    String unmovableReflectionName = addImportAndGetSimpleName(
         NameConventionFunctions.getUnmovableRegularFormTypeName(superDomainType.targetType().className(), false));
 
     analyzeDomain();
     analyzeChildReflectionType();
-    analyzeObjectHandleMethods(context);
+    analyzeReflectionMethods(context);
     analyzeAlias();
 
     addVariable("classTypeParams", classTypeParams);
@@ -109,13 +109,13 @@ public class UnmovableDownwardObjectGenerator extends ConversionObjectGenerator 
     addVariable("childField", childFieldName);
     addVariable("methods", methods);
     addVariable("domainMethods", rawDomainMethods);
-    addVariable("unmovableObjectHandleName", unmovableObjectHandleName);
+    addVariable("unmovableReflectionName", unmovableReflectionName);
     addVariable("domainClassSimpleName", domainClassSimpleName);
     addVariable("isAlias", isAlias);
     addVariable("primaryDomainSimpleName", primaryDomainSimpleName);
     addVariable("domainType", domainType);
-    addVariable("reflectionClassSimpleName", getObjectHandleSimpleName());
-    addVariable("movableObjectHandleName", getMovableObjectHandleSimpleName());
+    addVariable("reflectionClassSimpleName", getReflectionSimpleName());
+    addVariable("movableReflectionName", getMovableReflectionSimpleName());
     return true;
   }
 

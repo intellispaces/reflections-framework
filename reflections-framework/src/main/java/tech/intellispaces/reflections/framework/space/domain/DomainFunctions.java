@@ -13,10 +13,6 @@ import java.util.stream.Collectors;
 
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.commons.type.ClassFunctions;
-import tech.intellispaces.reflections.framework.ReflectionsFramework;
-import tech.intellispaces.reflections.framework.annotation.Domain;
-import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
-import tech.intellispaces.reflections.framework.settings.ChannelTypes;
 import tech.intellispaces.jstatements.JavaStatements;
 import tech.intellispaces.jstatements.customtype.CustomType;
 import tech.intellispaces.jstatements.method.MethodStatement;
@@ -26,6 +22,10 @@ import tech.intellispaces.jstatements.reference.NamedReference;
 import tech.intellispaces.jstatements.reference.NotPrimitiveReference;
 import tech.intellispaces.jstatements.reference.TypeReference;
 import tech.intellispaces.jstatements.reference.TypeReferenceFunctions;
+import tech.intellispaces.reflections.framework.ReflectionsFramework;
+import tech.intellispaces.reflections.framework.annotation.Domain;
+import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
+import tech.intellispaces.reflections.framework.settings.ChannelTypes;
 
 /**
  * Domain functions.

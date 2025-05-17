@@ -5,7 +5,6 @@ import java.util.ServiceLoader;
 import java.util.stream.Collectors;
 
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
-import tech.intellispaces.reflections.framework.system.Module;
 
 public class Engines {
   private static Engine ENGINE = null;

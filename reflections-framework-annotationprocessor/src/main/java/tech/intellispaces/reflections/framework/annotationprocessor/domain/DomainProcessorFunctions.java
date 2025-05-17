@@ -9,6 +9,9 @@ import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
 import tech.intellispaces.annotationprocessor.ArtifactProcessor;
 import tech.intellispaces.annotationprocessor.ArtifactValidator;
 import tech.intellispaces.commons.object.Objects;
+import tech.intellispaces.jstatements.customtype.CustomType;
+import tech.intellispaces.jstatements.method.MethodStatement;
+import tech.intellispaces.jstatements.reference.CustomTypeReference;
 import tech.intellispaces.reflections.framework.ReflectionsFramework;
 import tech.intellispaces.reflections.framework.annotation.AnnotationProcessor;
 import tech.intellispaces.reflections.framework.annotation.Channel;
@@ -16,9 +19,6 @@ import tech.intellispaces.reflections.framework.annotation.Ignore;
 import tech.intellispaces.reflections.framework.annotationprocessor.AnnotationFunctions;
 import tech.intellispaces.reflections.framework.artifact.ArtifactTypes;
 import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
-import tech.intellispaces.jstatements.customtype.CustomType;
-import tech.intellispaces.jstatements.method.MethodStatement;
-import tech.intellispaces.jstatements.reference.CustomTypeReference;
 
 import static tech.intellispaces.jstatements.customtype.AnnotationFunctions.allAnnotationsOf;
 
@@ -42,8 +42,8 @@ public interface DomainProcessorFunctions {
       }
     }
     addSimpleObjectGenerators(domainType, generators, context.initialRoundEnvironment());
-    addObjectHandleGenerators(domainType, generators, context.initialRoundEnvironment());
-    addDownwardObjectHandleGenerators(domainType, generators);
+    addReflectionGenerators(domainType, generators, context.initialRoundEnvironment());
+    addDownwardReflectionGenerators(domainType, generators);
     addAttachedAnnotationGenerators(domainType, generators, context);
     addObjectAssistantGenerators(domainType, generators);
     return generators;
@@ -82,7 +82,7 @@ public interface DomainProcessorFunctions {
     }
   }
 
-  private static void addObjectHandleGenerators(
+  private static void addReflectionGenerators(
       CustomType domainType, List<ArtifactGenerator> generators, RoundEnvironment roundEnv
   ) {
     if (
@@ -102,7 +102,7 @@ public interface DomainProcessorFunctions {
     }
   }
 
-  private static void addDownwardObjectHandleGenerators(
+  private static void addDownwardReflectionGenerators(
       CustomType domainType, List<ArtifactGenerator> generators
   ) {
     if (ReflectionsFramework.ontologyReference().getDomainByName(NameConventionFunctions.convertToDomainName(domainType.canonicalName())) != null) {

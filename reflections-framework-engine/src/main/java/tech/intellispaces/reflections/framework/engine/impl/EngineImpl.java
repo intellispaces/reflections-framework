@@ -30,19 +30,17 @@ import tech.intellispaces.reflections.framework.channel.Channel2;
 import tech.intellispaces.reflections.framework.channel.Channel3;
 import tech.intellispaces.reflections.framework.channel.Channel4;
 import tech.intellispaces.reflections.framework.engine.Engine;
-import tech.intellispaces.reflections.framework.engine.FactoryRegistry;
-import tech.intellispaces.reflections.framework.engine.ReflectionBroker;
-import tech.intellispaces.reflections.framework.engine.UnitBroker;
+import tech.intellispaces.reflections.framework.reflection.ReflectionBroker;
+import tech.intellispaces.reflections.framework.reflection.ReflectionBrokerImpl;
+import tech.intellispaces.reflections.framework.reflection.ReflectionForms;
+import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
 import tech.intellispaces.reflections.framework.reflection.ReflectionImplementationMethod;
 import tech.intellispaces.reflections.framework.reflection.ReflectionImplementationMethodPurposes;
 import tech.intellispaces.reflections.framework.reflection.ReflectionImplementationType;
-import tech.intellispaces.reflections.framework.system.UnitMethod;
-import tech.intellispaces.reflections.framework.reflection.ReflectionForms;
-import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
 import tech.intellispaces.reflections.framework.space.channel.ChannelFunctions;
+import tech.intellispaces.reflections.framework.system.FactoryRegistry;
 import tech.intellispaces.reflections.framework.system.Injection;
 import tech.intellispaces.reflections.framework.system.Module;
-import tech.intellispaces.reflections.framework.system.UnitWrapper;
 import tech.intellispaces.reflections.framework.system.injection.AutoGuideInjections;
 import tech.intellispaces.reflections.framework.system.injection.GuideInjections;
 import tech.intellispaces.reflections.framework.traverse.MappingOfMovingTraverse;
@@ -92,12 +90,6 @@ public class EngineImpl implements Engine {
     return ModuleLoader.loadModule(unitClasses, args);
   }
 
-  @Override
-  public <U, W extends UnitWrapper> UnitBroker registerUnit(
-      W unitWrapper, Class<U> unitClass, UnitMethod... methods
-  ) {
-    return UnitFactory.createModule(unitWrapper, unitClass, methods);
-  }
 
 
 
@@ -106,7 +98,7 @@ public class EngineImpl implements Engine {
   @SuppressWarnings("unchecked")
   public <S, T> T mapThruChannel0(S source, String cid) {
     DeclarativeTraversePlan traversePlan = traverseAnalyzer.buildMapThruChannel0Plan(
-        ReflectionFunctions.getObjectHandleClass(source.getClass()), cid, ReflectionForms.Reflection);
+        ReflectionFunctions.getReflectionClass(source.getClass()), cid, ReflectionForms.Reflection);
     return (T) traversePlan.execute(source, traverseExecutor);
   }
 
@@ -119,7 +111,7 @@ public class EngineImpl implements Engine {
   @SuppressWarnings("unchecked")
   public <S, T, Q> T mapThruChannel1(S source, String cid, Q qualifier) {
     DeclarativeTraversePlan traversePlan = traverseAnalyzer.buildMapThruChannel1Plan(
-        ReflectionFunctions.getObjectHandleClass(source.getClass()), cid, ReflectionForms.Reflection);
+        ReflectionFunctions.getReflectionClass(source.getClass()), cid, ReflectionForms.Reflection);
     return (T) traversePlan.execute(source, qualifier, traverseExecutor);
   }
 
@@ -132,7 +124,7 @@ public class EngineImpl implements Engine {
   @SuppressWarnings("unchecked")
   public <S, R> R moveThruChannel0(S source, String cid) {
     TraversePlan traversePlan = traverseAnalyzer.buildMoveThruChannel0Plan(
-        ReflectionFunctions.getObjectHandleClass(source.getClass()), cid, ReflectionForms.Reflection);
+        ReflectionFunctions.getReflectionClass(source.getClass()), cid, ReflectionForms.Reflection);
     return (R) traversePlan.execute(source, traverseExecutor);
   }
 
@@ -140,7 +132,7 @@ public class EngineImpl implements Engine {
   @SuppressWarnings("unchecked")
   public <S, R, Q> R moveThruChannel1(S source, String cid, Q qualifier) {
     TraversePlan traversePlan = traverseAnalyzer.buildMoveThruChannel1Plan(
-        ReflectionFunctions.getObjectHandleClass(source.getClass()), cid, ReflectionForms.Reflection);
+        ReflectionFunctions.getReflectionClass(source.getClass()), cid, ReflectionForms.Reflection);
     return (R) traversePlan.execute(source, qualifier, traverseExecutor);
   }
 
@@ -155,7 +147,7 @@ public class EngineImpl implements Engine {
   @SuppressWarnings("unchecked")
   public <S, R, Q> R mapOfMovingThruChannel1(S source, String cid, Q qualifier) {
     TraversePlan traversePlan = traverseAnalyzer.buildMapOfMovingThruChannel1Plan(
-        ReflectionFunctions.getObjectHandleClass(source.getClass()), cid, ReflectionForms.Reflection);
+        ReflectionFunctions.getReflectionClass(source.getClass()), cid, ReflectionForms.Reflection);
     return (R) traversePlan.execute(source, qualifier, traverseExecutor);
   }
 
@@ -178,7 +170,7 @@ public class EngineImpl implements Engine {
   @Override
   public <W> ReflectionBroker registerReflection(W reflectionWrapper, ReflectionImplementationType type) {
     var typeImpl = (tech.intellispaces.reflections.framework.engine.impl.ReflectionImplementationType) type;
-    return new tech.intellispaces.reflections.framework.engine.impl.ReflectionBroker(
+    return new ReflectionBrokerImpl(
         type,
         typeImpl.methodActions(),
         typeImpl.guideActions(),
@@ -200,10 +192,10 @@ public class EngineImpl implements Engine {
       Class<?> targetDomainClass,
       String contractType,
       Type<Q> contractQualifierType,
-      Type<R> targetObjectHandleType
+      Type<R> targetReflectionType
   ) {
     return factoryRegistry.getFactoryAction(
-        targetDomainClass, contractType, contractQualifierType, targetObjectHandleType
+        targetDomainClass, contractType, contractQualifierType, targetReflectionType
     );
   }
 

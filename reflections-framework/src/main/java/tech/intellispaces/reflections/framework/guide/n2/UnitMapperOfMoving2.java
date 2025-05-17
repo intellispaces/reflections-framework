@@ -1,8 +1,8 @@
 package tech.intellispaces.reflections.framework.guide.n2;
 
+import tech.intellispaces.jstatements.method.MethodStatement;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 import tech.intellispaces.reflections.framework.system.UnitWrapper;
-import tech.intellispaces.jstatements.method.MethodStatement;
 
 public class UnitMapperOfMoving2<S, T, Q1, Q2> extends UnitGuide2<S, T, Q1, Q2> implements AbstractMapperOfMoving2<S, T, Q1, Q2> {
 

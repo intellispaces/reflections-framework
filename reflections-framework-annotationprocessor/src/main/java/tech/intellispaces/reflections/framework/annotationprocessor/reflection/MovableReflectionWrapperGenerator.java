@@ -7,6 +7,10 @@ import tech.intellispaces.commons.exception.NotImplementedExceptions;
 import tech.intellispaces.commons.type.PrimitiveFunctions;
 import tech.intellispaces.commons.type.Type;
 import tech.intellispaces.commons.type.Types;
+import tech.intellispaces.jstatements.customtype.CustomType;
+import tech.intellispaces.jstatements.method.MethodStatement;
+import tech.intellispaces.jstatements.reference.CustomTypeReferences;
+import tech.intellispaces.jstatements.reference.TypeReference;
 import tech.intellispaces.reflections.framework.ArtifactType;
 import tech.intellispaces.reflections.framework.annotation.Movable;
 import tech.intellispaces.reflections.framework.annotation.Ordinal;
@@ -18,19 +22,19 @@ import tech.intellispaces.reflections.framework.channel.Channel1;
 import tech.intellispaces.reflections.framework.channel.ChannelFunction0;
 import tech.intellispaces.reflections.framework.channel.ChannelFunction1;
 import tech.intellispaces.reflections.framework.engine.Engines;
-import tech.intellispaces.reflections.framework.engine.ReflectionBroker;
-import tech.intellispaces.reflections.framework.reflection.ReflectionImplementationMethodPurposes;
-import tech.intellispaces.reflections.framework.reflection.ReflectionImplementationType;
 import tech.intellispaces.reflections.framework.exception.TraverseException;
 import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
 import tech.intellispaces.reflections.framework.reflection.MovabilityType;
 import tech.intellispaces.reflections.framework.reflection.MovabilityTypes;
 import tech.intellispaces.reflections.framework.reflection.MovableReflection;
-import tech.intellispaces.reflections.framework.reflection.Reflection;
-import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
-import tech.intellispaces.reflections.framework.reflection.ReflectionForms;
 import tech.intellispaces.reflections.framework.reflection.OverlyingReflectionController;
 import tech.intellispaces.reflections.framework.reflection.PostRegistrationReflectionHandler;
+import tech.intellispaces.reflections.framework.reflection.Reflection;
+import tech.intellispaces.reflections.framework.reflection.ReflectionBroker;
+import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
+import tech.intellispaces.reflections.framework.reflection.ReflectionForms;
+import tech.intellispaces.reflections.framework.reflection.ReflectionImplementationMethodPurposes;
+import tech.intellispaces.reflections.framework.reflection.ReflectionImplementationType;
 import tech.intellispaces.reflections.framework.space.channel.ChannelFunctions;
 import tech.intellispaces.reflections.framework.system.Modules;
 import tech.intellispaces.reflections.framework.system.ReflectionWrapper;
@@ -38,15 +42,11 @@ import tech.intellispaces.reflections.framework.traverse.MappingOfMovingTraverse
 import tech.intellispaces.reflections.framework.traverse.MappingTraverse;
 import tech.intellispaces.reflections.framework.traverse.TraverseType;
 import tech.intellispaces.reflections.framework.traverse.TraverseTypes;
-import tech.intellispaces.jstatements.customtype.CustomType;
-import tech.intellispaces.jstatements.method.MethodStatement;
-import tech.intellispaces.jstatements.reference.CustomTypeReferences;
-import tech.intellispaces.jstatements.reference.TypeReference;
 
 public class MovableReflectionWrapperGenerator extends AbstractReflectionWrapperGenerator {
 
-  public MovableReflectionWrapperGenerator(CustomType objectHandleType) {
-    super(objectHandleType);
+  public MovableReflectionWrapperGenerator(CustomType reflectionType) {
+    super(reflectionType);
   }
 
   @Override

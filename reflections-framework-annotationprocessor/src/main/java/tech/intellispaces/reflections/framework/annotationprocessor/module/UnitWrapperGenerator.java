@@ -20,6 +20,7 @@ import tech.intellispaces.jstatements.method.MethodStatement;
 import tech.intellispaces.jstatements.method.Methods;
 import tech.intellispaces.jstatements.reference.NamedReference;
 import tech.intellispaces.jstatements.reference.TypeReference;
+import tech.intellispaces.reflections.framework.annotation.Inject;
 import tech.intellispaces.reflections.framework.annotation.Ordinal;
 import tech.intellispaces.reflections.framework.annotation.Projection;
 import tech.intellispaces.reflections.framework.annotation.ProjectionSupplier;
@@ -411,9 +412,12 @@ public class UnitWrapperGenerator extends ReflectionsArtifactGenerator {
     map.put("type", "function");
 
     map.put("purpose", UnitMethodPurposes.InjectionMethod.name());
+
+    var injectAnnotation = method.selectAnnotation(Inject.class).orElseThrow();
+
     map.put("injectionKind", InjectionKinds.class.getSimpleName() + "." + InjectionKinds.SpecificGuide.name());
     map.put("injectionOrdinal", ordinal);
-    map.put("injectionName", method.name());
+    map.put("injectionName", injectAnnotation.byName() ? method.name() : null);
     map.put("injectionClass", method.returnType().orElseThrow().actualDeclaration(this::addImportAndGetSimpleName));
     return map;
   }

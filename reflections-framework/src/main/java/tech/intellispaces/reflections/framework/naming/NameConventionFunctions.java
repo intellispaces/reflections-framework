@@ -193,7 +193,7 @@ public interface NameConventionFunctions {
     return transformClassName(unitClassName) + WRAPPER;
   }
 
-  static String getAutoGuiderCanonicalName(String guideClassName) {
+  static String getAutoGuideCanonicalName(String guideClassName) {
     return StringFunctions.replaceSingleOrElseThrow(transformClassName(guideClassName), GUIDE, AUTO_GUIDE);
   }
 

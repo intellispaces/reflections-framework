@@ -12,8 +12,9 @@ import tech.intellispaces.reflections.framework.action.InvokeUnitMethodAction;
 import tech.intellispaces.reflections.framework.annotation.Configuration;
 import tech.intellispaces.reflections.framework.annotation.Guide;
 import tech.intellispaces.reflections.framework.aop.AopFunctions;
+import tech.intellispaces.reflections.framework.engine.Engine;
 import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
-import tech.intellispaces.reflections.framework.system.LocalGuideRegistry;
+import tech.intellispaces.reflections.framework.system.GuideManager;
 import tech.intellispaces.reflections.framework.system.LocalProjectionRegistry;
 import tech.intellispaces.reflections.framework.system.LocalTraverseExecutor;
 import tech.intellispaces.reflections.framework.system.ModuleFunctions;
@@ -41,14 +42,14 @@ class ModuleFactory {
     List<UnitHandle> units = createUnits(unitClasses);
     ProjectionRegistry projectionRegistry = createProjectionRegistry(units);
     applyAdvises(units, projectionRegistry);
-    var guideRegistry = new LocalGuideRegistry();
-    loadAttachedUnitGuides(guideRegistry, units);
-    var traverseAnalyzer = new TraverseAnalyzerImpl(guideRegistry);
+    var guideManager = new GuideManager();
+    loadUnitGuides(guideManager, units);
+    var traverseAnalyzer = new TraverseAnalyzerImpl(guideManager);
     var traverseExecutor = new LocalTraverseExecutor(traverseAnalyzer);
     return new ModuleImpl(
         units,
         projectionRegistry,
-        guideRegistry,
+        guideManager,
         traverseAnalyzer,
         traverseExecutor
     );
@@ -141,16 +142,19 @@ class ModuleFactory {
   static ProjectionRegistry createProjectionRegistry(List<UnitHandle> units) {
     List<ProjectionDefinition> projectionDefinitions = new ArrayList<>();
     units.stream()
-        .map(tech.intellispaces.reflections.framework.system.Unit::projectionDefinitions)
+        .map(UnitHandle::projectionDefinitions)
         .flatMap(List::stream)
         .forEach(projectionDefinitions::add);
     return new LocalProjectionRegistry(projectionDefinitions);
   }
 
-  static void loadAttachedUnitGuides(LocalGuideRegistry guideRegistry, List<UnitHandle> unitHandles) {
+  static void loadUnitGuides(GuideManager guideManager, List<UnitHandle> unitHandles) {
     unitHandles.stream()
         .filter(u -> UnitFunctions.isGuideUnit(u.unitClass()))
-        .forEach(u -> guideRegistry.addGuideUnit(u.unitClass(), u.unitInstance(), u.guides()));
+        .forEach(u -> {
+          guideManager.addGuide(u.unitClass(), u.unitInstance());
+          u.guides().forEach(guideManager::addGuide);
+        });
   }
 
   static void applyAdvises(List<UnitHandle> unitHandles, ProjectionRegistry projectionRegistry) {
@@ -169,7 +173,8 @@ class ModuleFactory {
     }
     var startupAction = (InvokeUnitMethodAction<Void>) unitHandle.startupAction().get();
     MethodStatement startupMethod = startupAction.method();
-    Action chainAction = AopFunctions.buildChainAction(startupMethod, startupAction, projectionRegistry);
+    Engine engine = new EngineImpl(projectionRegistry, null, null, null, null);
+    Action chainAction = AopFunctions.buildChainAction(startupMethod, startupAction, engine);
     if (chainAction != startupAction) {
       unitHandle.setStartupAction(chainAction);
     }
@@ -180,7 +185,8 @@ class ModuleFactory {
     for (UnitGuide<?, ?> guide : guides) {
       MethodStatement method = guide.guideMethod();
       Action originalAction = unitHandle.guideAction(guide.guideOrdinal());
-      Action chainAction = AopFunctions.buildChainAction(method, originalAction, projectionRegistry);
+      Engine engine = new EngineImpl(projectionRegistry, null, null, null, null);
+      Action chainAction = AopFunctions.buildChainAction(method, originalAction, engine);
       if (chainAction != originalAction) {
         unitHandle.setGuideAction(guide.guideOrdinal(), chainAction);
       }

@@ -12,18 +12,18 @@ class AutoGuideRegistry {
   private final Map<Class<?>, Object> autoGuide = new WeakHashMap<>();
 
   @SuppressWarnings("unchecked")
-  public <G> G getAutoGuide(Class<G> guideClass) {
-    Object guide = autoGuide.get(guideClass);
-    if (guide == null) {
-      guide = createAutoGuide(guideClass);
-      autoGuide.put(guideClass, guide);
+  public <G> G getAutoGuide(Class<G> guideType) {
+    Object guideInstance = autoGuide.get(guideType);
+    if (guideInstance == null) {
+      guideInstance = createAutoGuide(guideType);
+      autoGuide.put(guideType, guideInstance);
     }
-    return (G) guide;
+    return (G) guideInstance;
   }
 
   @SuppressWarnings("unchecked")
-  private <G> G createAutoGuide(Class<G> guideClass) {
-    String autoGuideCanonicalName = NameConventionFunctions.getAutoGuiderCanonicalName(guideClass.getName());
+  private <G> G createAutoGuide(Class<G> guideType) {
+    String autoGuideCanonicalName = NameConventionFunctions.getAutoGuideCanonicalName(guideType.getName());
     Class<G> autoGuideClass = (Class<G>) ClassFunctions.getClass(autoGuideCanonicalName)
         .orElseThrow(() -> UnexpectedExceptions.withMessage("Could not load auto guide class by name {0}",
             autoGuideCanonicalName)

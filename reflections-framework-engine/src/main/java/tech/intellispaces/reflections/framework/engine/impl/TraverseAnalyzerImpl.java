@@ -273,7 +273,7 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
       TraversePlanType planType, String cid, Class<?> reflectionClass, ReflectionForm targetForm
   ) {
     GuideKinds guideKind = getGuideKind(planType);
-    List<Guide<?, ?>> guides = findGuides(guideKind, reflectionClass, cid, targetForm);
+    List<Guide<?, ?>> guides = findGuides(cid, guideKind, reflectionClass, targetForm);
     if (guides.isEmpty()) {
       return null;
     }
@@ -292,8 +292,8 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
     };
   }
 
-  private List<Guide<?, ?>> findGuides(GuideKind kind, Class<?> reflectionClass, String cid, ReflectionForm form) {
-    return guideRegistry.findGuides(kind, reflectionClass, cid, form);
+  private List<Guide<?, ?>> findGuides(String cid, GuideKind kind, Class<?> reflectionClass, ReflectionForm form) {
+    return guideRegistry.findGuides(cid, kind, reflectionClass, form);
   }
 
   private GuideKinds getGuideKind(TraversePlanType planType) {

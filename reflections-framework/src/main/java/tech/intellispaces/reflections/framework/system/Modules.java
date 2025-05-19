@@ -7,6 +7,9 @@ import tech.intellispaces.reflections.framework.engine.Engine;
 import tech.intellispaces.reflections.framework.engine.Engines;
 import tech.intellispaces.reflections.framework.exception.ConfigurationExceptions;
 
+import static tech.intellispaces.reflections.framework.engine.EngineLoader.loadEngine;
+import static tech.intellispaces.reflections.framework.system.ModuleFactory.createModule;
+
 /**
  * System modules provider.
  */
@@ -49,11 +52,13 @@ public class Modules {
       }
 
       Engine engine = Engines.create(args);
-      Module module = ModuleFactory.createModule(unitClasses, engine);
-      module = Engines.get().createModule(unitClasses, args);    // todo: remove
+      ModuleImpl module = createModule(unitClasses, engine);
+      loadEngine(engine, module);
 
-      MODULE = module;
-      SYSTEM = new SystemImpl(module, Engines.get());
+      var module2 = Engines.get().createModule(unitClasses, args);    // todo: remove
+
+      MODULE = module2;
+      SYSTEM = new SystemImpl(module2, Engines.get());
     }
     return MODULE;
   }

@@ -45,7 +45,7 @@ import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForms;
 import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
 import tech.intellispaces.reflections.framework.space.channel.ChannelFunctions;
-import tech.intellispaces.reflections.framework.system.LocalGuideRegistry;
+import tech.intellispaces.reflections.framework.system.GuideManager;
 import tech.intellispaces.reflections.framework.system.Module;
 import tech.intellispaces.reflections.framework.system.ProjectionRegistry;
 import tech.intellispaces.reflections.framework.system.UnitHandle;
@@ -59,7 +59,7 @@ import tech.intellispaces.reflections.framework.traverse.plan.TraversePlan;
 class ModuleImpl implements Module {
   private final List<UnitHandle> units;
   private final ProjectionRegistry projectionRegistry;
-  private final LocalGuideRegistry guideRegistry;
+  private final GuideManager guideRegistry;
   private final TraverseAnalyzer traverseAnalyzer;
   private final TraverseExecutor traverseExecutor;
 
@@ -71,7 +71,7 @@ class ModuleImpl implements Module {
   ModuleImpl(
       List<UnitHandle> units,
       ProjectionRegistry projectionRegistry,
-      LocalGuideRegistry guideRegistry,
+      GuideManager guideRegistry,
       TraverseAnalyzer traverseAnalyzer,
       TraverseExecutor traverseExecutor
   ) {
@@ -106,7 +106,7 @@ class ModuleImpl implements Module {
     return projectionRegistry;
   }
 
-  public LocalGuideRegistry guideRegistry() {
+  public GuideManager guideRegistry() {
     return guideRegistry;
   }
 
@@ -122,6 +122,7 @@ class ModuleImpl implements Module {
     return mainUnitGetter.get();
   }
 
+  @Override
   public List<UnitHandle> units() {
     return units;
   }

@@ -25,14 +25,14 @@ class ModuleValidator {
 
   static void checkThatOneMainUnit(ModuleImpl module) {
     List<UnitHandle> mainUnits = module.units().stream()
-        .filter(tech.intellispaces.reflections.framework.system.Unit::isMain)
+        .filter(UnitHandle::isMain)
         .toList();
     if (mainUnits.isEmpty()) {
       throw ConfigurationExceptions.withMessage("Main unit is not found");
     }
     if (mainUnits.size() > 1) {
       throw ConfigurationExceptions.withMessage("Multiple main units found: {0}",
-          mainUnits.stream().map(tech.intellispaces.reflections.framework.system.Unit::unitClass)
+          mainUnits.stream().map(UnitHandle::unitClass)
               .map(Class::getSimpleName)
               .collect(Collectors.joining(", ")));
     }
@@ -40,7 +40,7 @@ class ModuleValidator {
 
   static void checkThatThereAreNoProjectionsWithSameName(ModuleImpl module) {
     String message = module.units().stream()
-        .map(tech.intellispaces.reflections.framework.system.Unit::projectionDefinitions)
+        .map(UnitHandle::projectionDefinitions)
         .flatMap(List::stream)
         .collect(Collectors.groupingBy(UnitProjectionDefinition::name))
         .entrySet().stream()
@@ -54,7 +54,7 @@ class ModuleValidator {
 
   static void checkInjections(ModuleImpl module) {
     Map<String, UnitProjectionDefinition> projectionProviders = module.units().stream()
-        .map(tech.intellispaces.reflections.framework.system.Unit::projectionDefinitions)
+        .map(UnitHandle::projectionDefinitions)
         .flatMap(List::stream)
         .collect(Collectors.toMap(UnitProjectionDefinition::name, Function.identity()));
 

@@ -30,7 +30,7 @@ import tech.intellispaces.reflections.framework.traverse.MappingTraverse;
  */
 public interface Module {
 
-//  List<Unit> units();
+  List<UnitHandle> units();
 
   void start();
 

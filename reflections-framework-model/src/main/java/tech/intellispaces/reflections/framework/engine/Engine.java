@@ -16,10 +16,13 @@ import tech.intellispaces.actions.Action9;
 import tech.intellispaces.commons.type.Type;
 import tech.intellispaces.reflections.framework.channel.Channel0;
 import tech.intellispaces.reflections.framework.channel.Channel1;
+import tech.intellispaces.reflections.framework.guide.Guide;
 import tech.intellispaces.reflections.framework.reflection.ReflectionBroker;
 import tech.intellispaces.reflections.framework.reflection.ReflectionImplementationMethod;
 import tech.intellispaces.reflections.framework.reflection.ReflectionImplementationType;
 import tech.intellispaces.reflections.framework.system.Module;
+import tech.intellispaces.reflections.framework.system.ProjectionDefinition;
+import tech.intellispaces.reflections.framework.system.UnitHandle;
 import tech.intellispaces.reflections.framework.traverse.MappingOfMovingTraverse;
 import tech.intellispaces.reflections.framework.traverse.MappingTraverse;
 
@@ -55,6 +58,24 @@ public interface Engine {
   <S, R, Q> R mapOfMovingThruChannel1(S source, String cid, Q qualifier);
 
   /**
+   * Adds module projection.
+   *
+   * @param projectionDefinition the projection definition.
+   */
+  void addProjection(ProjectionDefinition projectionDefinition);
+
+  <T> List<T> findProjections(Class<T> targetReflectionClass);
+
+  void addGuide(Class<?> guideClass, Object guideInstance);
+
+  /**
+   * Adds guide.
+   *
+   * @param guide the guide.
+   */
+  void addGuide(Guide<?, ?> guide);
+
+  /**
    * Registers reflection implementation type.
    *
    * @param reflectionWrapperClass the reflection wrapper class.
@@ -72,13 +93,13 @@ public interface Engine {
   /**
    * Registers reflection.
    *
-   * @param reflectionWrapper the reflection wrapper.
+   * @param reflection the reflection.
    * @param type the reflection implementation type.
    * @return the reflection broker.
    *
-   * @param <W> the reflection wrapper type.
+   * @param <R> the reflection wrapper type.
    */
-  <W> ReflectionBroker registerReflection(W reflectionWrapper, ReflectionImplementationType type);
+  <R> ReflectionBroker registerReflection(R reflection, ReflectionImplementationType type);
 
   /**
    * Returns the factory action for creating a reflection according to a contract type.

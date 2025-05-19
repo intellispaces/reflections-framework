@@ -9,9 +9,5 @@ public interface Unit {
 
   boolean isMain();
 
-  Class<?> unitClass();
-
-  List<UnitProjectionDefinition> projectionDefinitions();
-
   List<UnitGuide<?, ?>> guides();
 }

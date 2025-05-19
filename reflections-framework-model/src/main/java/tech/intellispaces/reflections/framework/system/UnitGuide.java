@@ -4,7 +4,7 @@ import tech.intellispaces.jstatements.method.MethodStatement;
 import tech.intellispaces.reflections.framework.guide.Guide;
 
 /**
- * The system unit guide.
+ * The unit guide.
  *
  * @param <S> the source reflection type.
  * @param <R> the result reflection type.

@@ -40,7 +40,7 @@ public class AutoGuideGenerator extends ReflectionsArtifactGenerator {
 
   @Override
   public String generatedArtifactName() {
-    return NameConventionFunctions.getAutoGuiderCanonicalName(sourceArtifact().className());
+    return NameConventionFunctions.getAutoGuideCanonicalName(sourceArtifact().className());
   }
 
   @Override

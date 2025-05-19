@@ -21,4 +21,8 @@ public @interface Inject {
    * Injection name.
    */
   String value() default "";
+
+  boolean byName() default true;
+
+  boolean byType() default true;
 }

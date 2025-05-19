@@ -41,7 +41,7 @@ public class LocalProjectionRegistry implements ProjectionRegistry {
   private final ThreadLocal<Map<String, ModuleProjection>> contextProjectionsByName = new ThreadLocal<>();
 
   public LocalProjectionRegistry() {
-    projectionDefinitions = null;
+    projectionDefinitions = new HashMap<>();
   }
 
   public LocalProjectionRegistry(List<ProjectionDefinition> projectionDefinitions) {
@@ -49,10 +49,21 @@ public class LocalProjectionRegistry implements ProjectionRegistry {
         Collectors.toMap(ProjectionDefinition::name, Function.identity()));
   }
 
-  public void load() {
+  @Override
+  public void onStartup() {
     projectionDefinitions.values().stream()
         .filter(definition -> !definition.isLazy())
         .forEach(definition -> createProjection(definition, new LinkedHashSet<>()));
+  }
+
+  @Override
+  public void onShutdown() {
+    // do nothing
+  }
+
+  @Override
+  public void addProjection(ProjectionDefinition projectionDefinition) {
+    projectionDefinitions.put(projectionDefinition.name(), projectionDefinition);
   }
 
   @Override

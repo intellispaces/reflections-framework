@@ -30,6 +30,7 @@ import tech.intellispaces.reflections.framework.channel.Channel2;
 import tech.intellispaces.reflections.framework.channel.Channel3;
 import tech.intellispaces.reflections.framework.channel.Channel4;
 import tech.intellispaces.reflections.framework.engine.Engine;
+import tech.intellispaces.reflections.framework.guide.Guide;
 import tech.intellispaces.reflections.framework.reflection.ReflectionBroker;
 import tech.intellispaces.reflections.framework.reflection.ReflectionBrokerImpl;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForms;
@@ -39,8 +40,11 @@ import tech.intellispaces.reflections.framework.reflection.ReflectionImplementat
 import tech.intellispaces.reflections.framework.reflection.ReflectionImplementationType;
 import tech.intellispaces.reflections.framework.space.channel.ChannelFunctions;
 import tech.intellispaces.reflections.framework.system.FactoryRegistry;
+import tech.intellispaces.reflections.framework.system.GuideManager;
 import tech.intellispaces.reflections.framework.system.Injection;
 import tech.intellispaces.reflections.framework.system.Module;
+import tech.intellispaces.reflections.framework.system.ProjectionDefinition;
+import tech.intellispaces.reflections.framework.system.ProjectionRegistry;
 import tech.intellispaces.reflections.framework.system.injection.AutoGuideInjections;
 import tech.intellispaces.reflections.framework.system.injection.GuideInjections;
 import tech.intellispaces.reflections.framework.traverse.MappingOfMovingTraverse;
@@ -52,19 +56,29 @@ import tech.intellispaces.reflections.framework.traverse.plan.TraversePlan;
 
 @AutoService(Engine.class)
 public class EngineImpl implements Engine {
-  private TraverseAnalyzer traverseAnalyzer;
-  private TraverseExecutor traverseExecutor;
-  private FactoryRegistry factoryRegistry;
+  private final ProjectionRegistry projectionRegistry;
+  private final GuideManager guideManager;
+  private final TraverseAnalyzer traverseAnalyzer;
+  private final TraverseExecutor traverseExecutor;
+  private final FactoryRegistry factoryRegistry;
 
   public EngineImpl() {
-    factoryRegistry = new LocalFactoryRegistry();
+    this.projectionRegistry = null;
+    this.traverseAnalyzer = null;
+    this.traverseExecutor = null;
+    this.guideManager = new GuideManager();
+    this.factoryRegistry = new LocalFactoryRegistry();
   }
 
   public EngineImpl(
+      ProjectionRegistry projectionRegistry,
+      GuideManager guideManage,
       TraverseAnalyzer traverseAnalyzer,
       TraverseExecutor traverseExecutor,
       FactoryRegistry factoryRegistry
   ) {
+    this.projectionRegistry = projectionRegistry;
+    this.guideManager = guideManage;
     this.traverseAnalyzer = traverseAnalyzer;
     this.traverseExecutor = traverseExecutor;
     this.factoryRegistry = factoryRegistry;
@@ -152,6 +166,26 @@ public class EngineImpl implements Engine {
   }
 
   @Override
+  public void addProjection(ProjectionDefinition projectionDefinition) {
+    projectionRegistry.addProjection(projectionDefinition);
+  }
+
+  @Override
+  public <T> List<T> findProjections(Class<T> targetReflectionClass) {
+    return projectionRegistry.findProjections(targetReflectionClass);
+  }
+
+  @Override
+  public void addGuide(Class<?> guideClass, Object guideInstance) {
+    guideManager.addGuide(guideClass, guideInstance);
+  }
+
+  @Override
+  public void addGuide(Guide<?, ?> guide) {
+    guideManager.addGuide(guide);
+  }
+
+  @Override
   public <R, W extends R> ReflectionImplementationType registerReflectionImplementationType(
           Class<W> reflectionWrapperClass,
           Class<R> reflectionImplClass,
@@ -168,7 +202,7 @@ public class EngineImpl implements Engine {
   }
 
   @Override
-  public <W> ReflectionBroker registerReflection(W reflectionWrapper, ReflectionImplementationType type) {
+  public <W> ReflectionBroker registerReflection(W reflection, ReflectionImplementationType type) {
     var typeImpl = (tech.intellispaces.reflections.framework.engine.impl.ReflectionImplementationType) type;
     return new ReflectionBrokerImpl(
         type,

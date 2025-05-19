@@ -14,7 +14,7 @@ public interface ModuleStarterFunctions {
   }
 
   private static void loadProjections(ModuleImpl module) {
-    ((LocalProjectionRegistry) module.projectionRegistry()).load();
+    ((LocalProjectionRegistry) module.projectionRegistry()).onStartup();
   }
 
   private static void invokeStartupAction(ModuleImpl module) {

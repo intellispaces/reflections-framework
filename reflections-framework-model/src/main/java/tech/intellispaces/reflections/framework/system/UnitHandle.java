@@ -10,7 +10,11 @@ import tech.intellispaces.actions.Action;
  */
 public interface UnitHandle extends Unit {
 
+  Class<?> unitClass();
+
   UnitWrapper unitInstance();
+
+  List<UnitProjectionDefinition> projectionDefinitions();
 
   Optional<Action> startupAction();
 

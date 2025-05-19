@@ -12,15 +12,15 @@ import tech.intellispaces.reflections.framework.guide.GuideKind;
 import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
 import tech.intellispaces.reflections.framework.space.channel.ChannelFunctions;
 
-class ObjectGuideRegistry {
+public class LocalReflectionGuideRegistry {
   private final Map<Class<?>, ReflectionDescription> reflectionDescriptions = new WeakHashMap<>();
 
-  public List<Guide<?, ?>> findGuides(GuideKind kind, Class<?> reflectionClass, String channelId) {
-    if (!ReflectionFunctions.isCustomReflectionClass(reflectionClass) || reflectionClass.isInterface()) {
+  public List<Guide<?, ?>> findGuides(GuideKind kind, Class<?> reflectionType, String channelId) {
+    if (!ReflectionFunctions.isCustomReflectionClass(reflectionType) || reflectionType.isInterface()) {
       return List.of();
     }
     ReflectionDescription description = reflectionDescriptions.computeIfAbsent(
-            reflectionClass, this::createReflectionDescription);
+            reflectionType, this::createReflectionDescription);
     return description.findGuides(kind, channelId);
   }
 

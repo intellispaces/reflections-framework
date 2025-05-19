@@ -11,7 +11,11 @@ import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
  */
 public interface GuideRegistry {
 
-  <G> G getGuide(String name, Class<G> guideClass);
+  void addGuide(Guide<?, ?> guide);
 
-  List<Guide<?, ?>> findGuides(GuideKind kind, Class<?> sourceReflectionClass, String cid, ReflectionForm targetForm);
+  List<Guide<?, ?>> findGuides(String cid, GuideKind kind);
+
+  List<Guide<?, ?>> findGuides(
+      String cid, GuideKind kind, Class<?> sourceReflectionClass, ReflectionForm targetReflectionForm
+  );
 }

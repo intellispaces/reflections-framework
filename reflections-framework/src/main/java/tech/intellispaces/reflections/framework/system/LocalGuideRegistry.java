@@ -1,74 +1,52 @@
 package tech.intellispaces.reflections.framework.system;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.WeakHashMap;
 
-import tech.intellispaces.reflections.framework.exception.ConfigurationExceptions;
+import tech.intellispaces.commons.exception.NotImplementedExceptions;
 import tech.intellispaces.reflections.framework.guide.Guide;
 import tech.intellispaces.reflections.framework.guide.GuideKind;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 
-/**
- * The local guide register implementation.
- */
 public class LocalGuideRegistry implements GuideRegistry {
-  private final ObjectGuideRegistry objectGuideRegistry = new ObjectGuideRegistry();
-  private final UnitGuideRegistry unitGuideRegistry = new UnitGuideRegistry();
-  private final AutoGuideRegistry autoGuideRegistry = new AutoGuideRegistry();
-  private final Map<Class<?>, Object> guideUnits = new WeakHashMap<>();
-  private final Map<String, Object> name2guideMap = new HashMap<>();
+  private final Map<String, List<Guide<?, ?>>> mapperGuides = new HashMap<>();
+  private final Map<String, List<Guide<?, ?>>> moverGuides = new HashMap<>();
+  private final Map<String, List<Guide<?, ?>>> mapperOfMovingGuides = new HashMap<>();
 
-  public <G> G getAutoGuide(Class<G> guideClass) {
-    return autoGuideRegistry.getAutoGuide(guideClass);
+  @Override
+  public void addGuide(Guide<?, ?> guide) {
+    if (guide.kind().isMapper()) {
+      mapperGuides.computeIfAbsent(guide.channelId(), k -> new ArrayList<>()).add(guide);
+    } else if (guide.kind().isMover()) {
+      moverGuides.computeIfAbsent(guide.channelId(), k -> new ArrayList<>()).add(guide);
+    } else if (guide.kind().isMapperOfMoving()) {
+      mapperOfMovingGuides.computeIfAbsent(guide.channelId(), k -> new ArrayList<>()).add(guide);
+    }
   }
 
   @Override
-  @SuppressWarnings("unchecked")
-  public <G> G getGuide(String name, Class<G> guideClass) {
-    G guide = (G) name2guideMap.get(name);
-    if (guide != null) {
-      if (guideClass != guide.getClass() && !guideClass.isAssignableFrom(guide.getClass())) {
-        throw ConfigurationExceptions.withMessage("Guide with name '{0}' but another class " +
-            "already registered in module");
-      }
-      return guide;
+  public List<Guide<?, ?>> findGuides(String cid, GuideKind kind) {
+    List<Guide<?, ?>> guides = null;
+    if (kind.isMapper()) {
+      guides = mapperGuides.get(cid);
+    } else if (kind.isMover()) {
+      guides = moverGuides.get(cid);
+    } else if (kind.isMapperOfMoving()) {
+      guides = mapperOfMovingGuides.get(cid);
     }
-
-    guide = (G) guideUnits.get(guideClass);
-    if (guide != null) {
-      name2guideMap.put(name, guide);
-      return guide;
+    if (guides == null) {
+      return List.of();
     }
-    return null;
+    return Collections.unmodifiableList(guides);
   }
 
   @Override
   public List<Guide<?, ?>> findGuides(
-      GuideKind kind, Class<?> sourceReflectionClass, String cid, ReflectionForm targetForm
+      String cid, GuideKind kind, Class<?> sourceReflectionClass, ReflectionForm targetReflectionForm
   ) {
-    var guides = new ArrayList<Guide<?, ?>>();
-
-    List<Guide<?, ?>> objectGuides = objectGuideRegistry.findGuides(kind, sourceReflectionClass, cid);
-    for (Guide<?, ?> guide : objectGuides) {
-      if (guide.targetForm() == targetForm) {
-        guides.add(guide);
-      }
-    }
-
-    List<Guide<?, ?>> unitGuides = unitGuideRegistry.findGuides(kind, cid);
-    for (Guide<?, ?> guide : unitGuides) {
-      if (guide.targetForm() == targetForm) {
-        guides.add(guide);
-      }
-    }
-    return guides;
-  }
-
-  public void addGuideUnit(Class<?> unitClass, Object unitWrapper, List<UnitGuide<?, ?>> guides) {
-    guideUnits.put(unitClass, unitWrapper);
-    guides.forEach(unitGuideRegistry::addGuide);
+    throw NotImplementedExceptions.withCode("zTEnrg");
   }
 }

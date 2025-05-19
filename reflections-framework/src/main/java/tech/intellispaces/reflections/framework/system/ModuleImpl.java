@@ -8,6 +8,7 @@ import tech.intellispaces.reflections.framework.channel.Channel1;
 import tech.intellispaces.reflections.framework.channel.Channel2;
 import tech.intellispaces.reflections.framework.channel.Channel3;
 import tech.intellispaces.reflections.framework.channel.Channel4;
+import tech.intellispaces.reflections.framework.engine.Engine;
 import tech.intellispaces.reflections.framework.guide.n0.Mapper0;
 import tech.intellispaces.reflections.framework.guide.n0.MapperOfMoving0;
 import tech.intellispaces.reflections.framework.guide.n0.Mover0;
@@ -26,20 +27,32 @@ import tech.intellispaces.reflections.framework.traverse.MappingOfMovingTraverse
 import tech.intellispaces.reflections.framework.traverse.MappingTraverse;
 
 public class ModuleImpl implements Module {
+    private final Engine engine;
+    private final List<UnitHandle> units;
+
+    public ModuleImpl(Engine engine, List<UnitHandle> units) {
+        this.engine = engine;
+        this.units = units;
+    }
+
+    @Override
+    public List<UnitHandle> units() {
+        return units;
+    }
 
     @Override
     public void start() {
-
+        engine.start();
     }
 
     @Override
     public void start(String[] args) {
-
+        engine.start(args);
     }
 
     @Override
     public void stop() {
-
+        engine.stop();
     }
 
     @Override

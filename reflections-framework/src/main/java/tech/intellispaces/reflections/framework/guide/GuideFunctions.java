@@ -190,7 +190,7 @@ public final class GuideFunctions {
     return ChannelFunctions.getUnitGuideChannelId(unit, guideMethod);
   }
 
-  public static List<Guide<?, ?>> loadObjectGuides(Class<?> reflectionClass) {
+  public static List<Guide<?, ?>> loadReflectionsGuides(Class<?> reflectionClass) {
     List<Guide<?, ?>> guides = new ArrayList<>();
     CustomType reflectionType = Classes.of(reflectionClass);
     for (MethodStatement method : reflectionType.actualMethods()) {

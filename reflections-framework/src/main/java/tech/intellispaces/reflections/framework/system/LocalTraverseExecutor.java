@@ -29,8 +29,6 @@ import tech.intellispaces.reflections.framework.traverse.plan.MoveThruChannel0Tr
 import tech.intellispaces.reflections.framework.traverse.plan.MoveThruChannel1TraversePlan;
 import tech.intellispaces.reflections.framework.traverse.plan.MoveThruChannel2TraversePlan;
 import tech.intellispaces.reflections.framework.traverse.plan.MoveThruChannel3TraversePlan;
-import tech.intellispaces.reflections.framework.traverse.plan.TraverseAnalyzer;
-import tech.intellispaces.reflections.framework.traverse.plan.TraverseExecutor;
 
 public class LocalTraverseExecutor implements TraverseExecutor {
   private final TraverseAnalyzer traverseAnalyzer;
@@ -173,7 +171,7 @@ public class LocalTraverseExecutor implements TraverseExecutor {
   public Object execute(MoveThruChannel0TraversePlan plan, Object source) throws TraverseException {
     ExecutionTraversePlan executionPlan = traverseAnalyzer.getExecutionPlan(plan, source, ReflectionForms.Reflection);
     if (executionPlan == null) {
-      throw TraverseExceptions.withMessage("Cannot to build traverse plan to move object of class {0} through " +
+      throw TraverseExceptions.withMessage("Cannot to build traverse plan to move reflection of class {0} through " +
           "channel {1}. Suitable guide has not been found", source.getClass().getCanonicalName(), plan.channelId());
     }
     return executionPlan.execute(source, this);
@@ -185,7 +183,7 @@ public class LocalTraverseExecutor implements TraverseExecutor {
   ) throws TraverseException {
     ExecutionTraversePlan executionPlan = traverseAnalyzer.getExecutionPlan(plan, source, ReflectionForms.Reflection);
     if (executionPlan == null) {
-      throw TraverseExceptions.withMessage("Cannot to build traverse plan to move object of class {0} through " +
+      throw TraverseExceptions.withMessage("Cannot to build traverse plan to move reflection of class {0} through " +
           "channel {1}. Suitable guide has not been found", source.getClass().getCanonicalName(), plan.channelId());
     }
     return executionPlan.execute(source, qualifier, this);
@@ -197,7 +195,7 @@ public class LocalTraverseExecutor implements TraverseExecutor {
   ) throws TraverseException {
     ExecutionTraversePlan executionPlan = traverseAnalyzer.getExecutionPlan(plan, source, ReflectionForms.Reflection);
     if (executionPlan == null) {
-      throw TraverseExceptions.withMessage("Cannot to build traverse plan to move object of class {0} through " +
+      throw TraverseExceptions.withMessage("Cannot to build traverse plan to move reflection of class {0} through " +
           "channel {1}. Suitable guide has not been found", source.getClass().getCanonicalName(), plan.channelId());
     }
     return executionPlan.execute(source, qualifier1, qualifier2, this);
@@ -209,7 +207,7 @@ public class LocalTraverseExecutor implements TraverseExecutor {
   ) throws TraverseException {
     ExecutionTraversePlan executionPlan = traverseAnalyzer.getExecutionPlan(plan, source, ReflectionForms.Reflection);
     if (executionPlan == null) {
-      throw TraverseExceptions.withMessage("Cannot to build traverse plan to move object of class {0} through " +
+      throw TraverseExceptions.withMessage("Cannot to build traverse plan to move reflection of class {0} through " +
               "channel {1}. Suitable guide has not been found", source.getClass().getCanonicalName(), plan.channelId());
     }
     return executionPlan.execute(source, qualifier1, qualifier2, qualifier3, this);

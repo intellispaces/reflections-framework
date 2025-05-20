@@ -2,6 +2,7 @@ package tech.intellispaces.reflections.framework.traverse.plan;
 
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.reflections.framework.exception.TraverseException;
+import tech.intellispaces.reflections.framework.system.TraverseExecutor;
 
 public class AscendAndExecutePlan1Impl implements AscendAndExecutePlan1 {
   private final ExecutionTraversePlan executionPlan;

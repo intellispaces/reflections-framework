@@ -1,6 +1,7 @@
 package tech.intellispaces.reflections.framework.traverse.plan;
 
 import tech.intellispaces.reflections.framework.exception.TraverseException;
+import tech.intellispaces.reflections.framework.system.TraverseExecutor;
 
 /**
  * The plan to traverse source object in semantic space.

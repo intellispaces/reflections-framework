@@ -3,6 +3,7 @@ package tech.intellispaces.reflections.framework.traverse.plan;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.reflections.framework.exception.TraverseException;
 import tech.intellispaces.reflections.framework.guide.n2.Guide2;
+import tech.intellispaces.reflections.framework.system.TraverseExecutor;
 
 public class CallGuide2PlanImpl implements CallGuide2Plan {
   private final Guide2<Object, Object, Object, Object> guide;

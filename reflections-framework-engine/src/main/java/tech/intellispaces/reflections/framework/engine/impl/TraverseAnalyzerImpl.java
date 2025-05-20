@@ -17,7 +17,8 @@ import tech.intellispaces.reflections.framework.reflection.Reflection;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
 import tech.intellispaces.reflections.framework.space.channel.ChannelFunctions;
-import tech.intellispaces.reflections.framework.system.GuideRegistry;
+import tech.intellispaces.reflections.framework.system.GuideProvider;
+import tech.intellispaces.reflections.framework.system.TraverseAnalyzer;
 import tech.intellispaces.reflections.framework.traverse.plan.AscendAndExecutePlan1Impl;
 import tech.intellispaces.reflections.framework.traverse.plan.CallGuide0PlanImpl;
 import tech.intellispaces.reflections.framework.traverse.plan.CallGuide1PlanImpl;
@@ -51,16 +52,15 @@ import tech.intellispaces.reflections.framework.traverse.plan.MoveThruChannel2Tr
 import tech.intellispaces.reflections.framework.traverse.plan.MoveThruChannel2TraversePlanImpl;
 import tech.intellispaces.reflections.framework.traverse.plan.MoveThruChannel3TraversePlan;
 import tech.intellispaces.reflections.framework.traverse.plan.MoveThruChannel3TraversePlanImpl;
-import tech.intellispaces.reflections.framework.traverse.plan.TraverseAnalyzer;
 import tech.intellispaces.reflections.framework.traverse.plan.TraversePlanType;
 import tech.intellispaces.reflections.framework.traverse.plan.TraversePlanTypes;
 import tech.intellispaces.reflections.framework.traverse.plan.TraverseThruChannelPlan;
 
 class TraverseAnalyzerImpl implements TraverseAnalyzer {
-  private final GuideRegistry guideRegistry;
+  private final GuideProvider guideProvider;
 
-  public TraverseAnalyzerImpl(GuideRegistry guideRegistry) {
-    this.guideRegistry = guideRegistry;
+  public TraverseAnalyzerImpl(GuideProvider guideProvider) {
+    this.guideProvider = guideProvider;
   }
 
   @Override
@@ -293,7 +293,15 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
   }
 
   private List<Guide<?, ?>> findGuides(String cid, GuideKind kind, Class<?> reflectionClass, ReflectionForm form) {
-    return guideRegistry.findGuides(cid, kind, reflectionClass, form);
+    List<Guide<?, ?>> guides = guideProvider.findGuides(cid, kind, reflectionClass, form);
+    if (guides.isEmpty()) {
+      Class<?> domainClass = ReflectionFunctions.getReflectionDomainClass(reflectionClass);
+      String originDomainChannelId = ChannelFunctions.getOriginDomainChannelId(domainClass, cid);
+      if (originDomainChannelId != null) {
+        guides = guideProvider.findGuides(originDomainChannelId, kind, reflectionClass, form);
+      }
+    }
+    return guides;
   }
 
   private GuideKinds getGuideKind(TraversePlanType planType) {

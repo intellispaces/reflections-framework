@@ -7,9 +7,9 @@ import tech.intellispaces.reflections.framework.traverse.MappingOfMovingTraverse
 import tech.intellispaces.reflections.framework.traverse.MappingTraverse;
 
 class SystemImpl implements System {
-  private final EngineImpl engine;
+  private final DefaultEngine engine;
 
-  SystemImpl(EngineImpl engine) {
+  SystemImpl(DefaultEngine engine) {
     this.engine = engine;
   }
 

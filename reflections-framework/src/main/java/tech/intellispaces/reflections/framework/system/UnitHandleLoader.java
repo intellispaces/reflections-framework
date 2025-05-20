@@ -23,7 +23,7 @@ import tech.intellispaces.reflections.framework.system.injection.AutoGuideInject
 import tech.intellispaces.reflections.framework.system.injection.GuideInjections;
 import tech.intellispaces.reflections.framework.system.injection.InjectionKinds;
 import tech.intellispaces.reflections.framework.system.injection.ProjectionInjections;
-import tech.intellispaces.reflections.framework.system.projection.ProjectionDefinitionBasedOnMethodActions;
+import tech.intellispaces.reflections.framework.system.projection.UnitMethodProjectionDefinitions;
 
 /**
  * The unit handle loader.
@@ -131,13 +131,13 @@ public class UnitHandleLoader {
   ) {
     int numRequiredProjections = method.requiredProjections() != null ? method.requiredProjections().size() : 0;
     return switch (numRequiredProjections) {
-      case 0 -> ProjectionDefinitionBasedOnMethodActions.get(
+      case 0 -> UnitMethodProjectionDefinitions.get(
           unitClass,
           method.projectionName(),
           method.targetClass(),
           method.lazyLoading(),
           downgradeAction(method.action(), unitInstance));
-      case 1 -> ProjectionDefinitionBasedOnMethodActions.get(
+      case 1 -> UnitMethodProjectionDefinitions.get(
           unitClass,
           method.projectionName(),
           method.targetClass(),
@@ -145,7 +145,7 @@ public class UnitHandleLoader {
           downgradeAction(method.action(), unitInstance),
           method.requiredProjections().get(0).name(),
           method.requiredProjections().get(0).targetClass());
-      case 2 -> ProjectionDefinitionBasedOnMethodActions.get(
+      case 2 -> UnitMethodProjectionDefinitions.get(
           unitClass,
           method.projectionName(),
           method.targetClass(),
@@ -155,7 +155,7 @@ public class UnitHandleLoader {
           method.requiredProjections().get(0).targetClass(),
           method.requiredProjections().get(1).name(),
           method.requiredProjections().get(1).targetClass());
-      case 3 -> ProjectionDefinitionBasedOnMethodActions.get(
+      case 3 -> UnitMethodProjectionDefinitions.get(
           unitClass,
           method.projectionName(),
           method.targetClass(),
@@ -167,7 +167,7 @@ public class UnitHandleLoader {
           method.requiredProjections().get(1).targetClass(),
           method.requiredProjections().get(2).name(),
           method.requiredProjections().get(2).targetClass());
-      case 4 -> ProjectionDefinitionBasedOnMethodActions.get(
+      case 4 -> UnitMethodProjectionDefinitions.get(
           unitClass,
           method.projectionName(),
           method.targetClass(),
@@ -181,7 +181,7 @@ public class UnitHandleLoader {
           method.requiredProjections().get(2).targetClass(),
           method.requiredProjections().get(3).name(),
           method.requiredProjections().get(3).targetClass());
-      case 5 -> ProjectionDefinitionBasedOnMethodActions.get(
+      case 5 -> UnitMethodProjectionDefinitions.get(
           unitClass,
           method.projectionName(),
           method.targetClass(),

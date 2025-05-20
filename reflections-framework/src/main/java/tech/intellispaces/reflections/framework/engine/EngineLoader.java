@@ -1,32 +1,43 @@
 package tech.intellispaces.reflections.framework.engine;
 
-import tech.intellispaces.reflections.framework.system.Module;
+import java.util.List;
+
+import tech.intellispaces.reflections.framework.system.ModuleHandle;
 import tech.intellispaces.reflections.framework.system.UnitFunctions;
 import tech.intellispaces.reflections.framework.system.UnitHandle;
-
-import java.util.List;
+import tech.intellispaces.reflections.framework.system.projection.DirectProjectionDefinition;
+import tech.intellispaces.reflections.framework.system.projection.DirectProjectionDefinitions;
 
 public class EngineLoader {
 
-  public static void loadEngine(Engine engine, Module module) {
+  public static void loadEngine(Engine engine, ModuleHandle module) {
     loadProjectionDefinitions(engine, module);
     loadLocalGuides(engine, module);
   }
 
-  private static void loadProjectionDefinitions(Engine engine, Module module) {
-    module.units().stream()
+  private static void loadProjectionDefinitions(Engine engine, ModuleHandle module) {
+    module.unitHandles().stream()
         .map(UnitHandle::projectionDefinitions)
         .flatMap(List::stream)
         .forEach(engine::addProjection);
+    module.unitHandles().stream()
+        .filter(u -> UnitFunctions.isGuideUnit(u.unitClass()))
+        .map(EngineLoader::buildGuideProjectionDefinition)
+        .forEach(engine::addProjection);
   }
 
-  static void loadLocalGuides(Engine engine, Module module) {
-    module.units().stream()
+  private static DirectProjectionDefinition buildGuideProjectionDefinition(UnitHandle unit) {
+    return DirectProjectionDefinitions.get(
+        unit.unitClass().getCanonicalName(),
+        unit.unitClass(),
+        unit.unitInstance()
+    );
+  }
+
+  static void loadLocalGuides(Engine engine, ModuleHandle module) {
+    module.unitHandles().stream()
         .filter(u -> UnitFunctions.isGuideUnit(u.unitClass()))
-        .forEach(u -> {
-          engine.addGuide(u.unitClass(), u.unitInstance());
-          u.guides().forEach(engine::addGuide);
-        });
+        .forEach(u -> u.guides().forEach(engine::addGuide));
   }
 
   private EngineLoader() {}

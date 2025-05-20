@@ -8,11 +8,11 @@ import tech.intellispaces.commons.object.Objects;
 import tech.intellispaces.commons.type.ClassFunctions;
 import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
 
-class AutoGuideRegistry {
+public class AutoGuideRegistry {
   private final Map<Class<?>, Object> autoGuide = new WeakHashMap<>();
 
   @SuppressWarnings("unchecked")
-  public <G> G getAutoGuide(Class<G> guideType) {
+  public <G> G getGuide(Class<G> guideType) {
     Object guideInstance = autoGuide.get(guideType);
     if (guideInstance == null) {
       guideInstance = createAutoGuide(guideType);

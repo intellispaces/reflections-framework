@@ -40,9 +40,9 @@ class GuideInjectionImpl implements GuideInjection {
   @Override
   public Object value() {
     if (guide == null) {
-      guide = Modules.current().getGuide(name, guideClass);
+      guide = Modules.current().getProjection(name, guideClass);
       if (guide == null) {
-        throw UnexpectedExceptions.withMessage("Value of guide injection '{0}' in unit {1} is not defined",
+        throw UnexpectedExceptions.withMessage("Target of the guide injection '{0}' in unit {1} is not defined",
             name(), unitClass.getCanonicalName());
       }
     }

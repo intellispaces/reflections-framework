@@ -7,10 +7,10 @@ import tech.intellispaces.reflections.framework.traverse.MappingOfMovingTraverse
 import tech.intellispaces.reflections.framework.traverse.MappingTraverse;
 
 public class SystemImpl implements System {
-    private final Module currentModule;
+    private final ModuleHandle currentModule;
     private final Engine engine;
 
-    public SystemImpl(Module currentModule, Engine engine) {
+    public SystemImpl(ModuleHandle currentModule, Engine engine) {
         this.currentModule = currentModule;
         this.engine = engine;
     }

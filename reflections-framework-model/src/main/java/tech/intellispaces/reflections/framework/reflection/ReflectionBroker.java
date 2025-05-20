@@ -6,7 +6,7 @@ import tech.intellispaces.actions.Action;
 import tech.intellispaces.reflections.framework.system.Injection;
 
 /**
- * The reflection broker.
+ * The reflection handle.
  */
 public interface ReflectionBroker {
 

@@ -21,9 +21,11 @@ import tech.intellispaces.reflections.framework.channel.Channel0;
 import tech.intellispaces.reflections.framework.channel.Channel1;
 import tech.intellispaces.reflections.framework.channel.ChannelFunction0;
 import tech.intellispaces.reflections.framework.channel.ChannelFunction1;
+import tech.intellispaces.reflections.framework.engine.EngineRegistrar;
 import tech.intellispaces.reflections.framework.engine.Engines;
 import tech.intellispaces.reflections.framework.exception.TraverseException;
 import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
+import tech.intellispaces.reflections.framework.node.NodeFunctions;
 import tech.intellispaces.reflections.framework.reflection.MovabilityType;
 import tech.intellispaces.reflections.framework.reflection.MovabilityTypes;
 import tech.intellispaces.reflections.framework.reflection.MovableReflection;
@@ -35,6 +37,7 @@ import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForms;
 import tech.intellispaces.reflections.framework.reflection.ReflectionImplementationMethodPurposes;
 import tech.intellispaces.reflections.framework.reflection.ReflectionImplementationType;
+import tech.intellispaces.reflections.framework.reflection.ReflectionImplementationTypes;
 import tech.intellispaces.reflections.framework.space.channel.ChannelFunctions;
 import tech.intellispaces.reflections.framework.system.Modules;
 import tech.intellispaces.reflections.framework.system.ReflectionWrapper;
@@ -106,7 +109,10 @@ public class MovableReflectionWrapperGenerator extends AbstractReflectionWrapper
         TraverseTypes.class,
         ReflectionImplementationMethodPurposes.class,
         TraverseException.class,
-        NotImplementedExceptions.class
+        NotImplementedExceptions.class,
+        ReflectionImplementationTypes.class,
+        EngineRegistrar.class,
+        NodeFunctions.class
     );
 
     analyzeDomain();

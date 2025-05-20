@@ -13,6 +13,7 @@ import static tech.intellispaces.reflections.framework.reflection.ReflectionWrap
 {{$generatedAnnotation}}
 public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sourceArtifactSimpleName}}{{$typeParamsBrief}} implements {{$reflectionClassSimpleName}}{{$typeParamsBrief}}, ReflectionWrapper, OverlyingReflectionController {
   private static ReflectionImplementationType $TYPE;
+  private static final EngineRegistrar $engineRegistrar = NodeFunctions.createEngineRegistrar();
   private final ReflectionBroker $broker;
 
 {{for constructor : $constructors}}
@@ -124,14 +125,18 @@ public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sour
   }
 
   private ReflectionBroker $registerReflection() {
+    var engine = Engines.get();
     if ($TYPE == null) {
-      $TYPE = $registerReflectionImplementationType();
+      $TYPE = $buildReflectionImplementationType();
     }
-    return Engines.get().registerReflection(this, $TYPE);
+    if ($engineRegistrar.register(engine)) {
+      engine.registerReflectionImplementationType($TYPE);
+    }
+    return engine.registerReflection(this, $TYPE);
   }
 
-  private static ReflectionImplementationType $registerReflectionImplementationType() {
-    return Engines.get().registerReflectionImplementationType(
+  private static ReflectionImplementationType $buildReflectionImplementationType() {
+    return ReflectionImplementationTypes.create(
         {{$generatedArtifactSimpleName}}.class,
         {{$sourceArtifactSimpleName}}.class{{when $methodDescriptions.isNotEmpty()}},{{end}}
 {{for method : $methodDescriptions}}

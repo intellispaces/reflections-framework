@@ -249,9 +249,7 @@ public class ReflectionFunctions {
   }
 
   private static Class<?> defineReflectionClassInternal(Class<?> aClass) {
-    if (aClass.isAnnotationPresent(Reflection.class) ||
-        isDefaultReflectionClass(aClass)
-    ) {
+    if (aClass.isAnnotationPresent(Reflection.class) || isDefaultReflectionClass(aClass)) {
       return aClass;
     }
     if (aClass.getSuperclass() != null) {
@@ -267,12 +265,6 @@ public class ReflectionFunctions {
       }
     }
     return null;
-  }
-
-  public static boolean isCompatibleObjectType(Class<?> type1, Class<?> type2) {
-    Class<?> actualType1 = ClassFunctions.getObjectClass(type1);
-    Class<?> actualType2 = ClassFunctions.getObjectClass(type2);
-    return actualType2 == actualType1 || actualType1.isAssignableFrom(actualType2);
   }
 
   public static Optional<CustomType> getDomainOfObjectForm(TypeReference objectFormType) {

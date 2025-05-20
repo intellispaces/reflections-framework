@@ -1,5 +1,8 @@
 package tech.intellispaces.reflections.framework.system;
 
+/**
+ * The module projection definition.
+ */
 public interface ProjectionDefinition {
 
   /**

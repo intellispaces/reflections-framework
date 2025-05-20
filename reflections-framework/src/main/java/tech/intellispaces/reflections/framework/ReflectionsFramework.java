@@ -6,7 +6,7 @@ import java.util.List;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.reflections.framework.settings.OntologyReference;
 import tech.intellispaces.reflections.framework.settings.SettingsFunctions;
-import tech.intellispaces.reflections.framework.system.Module;
+import tech.intellispaces.reflections.framework.system.ModuleHandle;
 import tech.intellispaces.reflections.framework.system.Modules;
 import tech.intellispaces.reflections.framework.system.System;
 
@@ -29,7 +29,7 @@ public class ReflectionsFramework {
    * <p>
    * If there is no current module, an exception will be thrown.
    */
-  public static Module module() {
+  public static ModuleHandle module() {
     return Modules.current();
   }
 
@@ -40,7 +40,7 @@ public class ReflectionsFramework {
    * @param args command line arguments.
    * @return the loaded module.
    */
-  public static Module loadModule(Class<?> moduleClass, String[] args) {
+  public static ModuleHandle loadModule(Class<?> moduleClass, String[] args) {
     return Modules.load(moduleClass, args);
   }
 
@@ -50,7 +50,7 @@ public class ReflectionsFramework {
    * @param unitClasses unit classes.
    * @return the loaded module.
    */
-  public static Module loadModule(Class<?>... unitClasses) {
+  public static ModuleHandle loadModule(Class<?>... unitClasses) {
     return Modules.load(unitClasses);
   }
 
@@ -61,7 +61,7 @@ public class ReflectionsFramework {
    * @param args command line arguments.
    * @return the loaded module.
    */
-  public static Module loadModule(List<Class<?>> unitClasses, String[] args) {
+  public static ModuleHandle loadModule(List<Class<?>> unitClasses, String[] args) {
     return Modules.load(unitClasses, args);
   }
 

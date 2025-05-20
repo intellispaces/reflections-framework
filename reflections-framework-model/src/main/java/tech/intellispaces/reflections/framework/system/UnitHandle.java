@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import tech.intellispaces.actions.Action;
+import tech.intellispaces.core.Unit;
 
 /**
  * The unit handle.
@@ -33,4 +34,6 @@ public interface UnitHandle extends Unit {
   List<Injection> injections();
 
   Injection injection(int ordinal);
+
+  List<UnitGuide<?, ?>> guides();
 }

@@ -5,7 +5,9 @@ import tech.intellispaces.reflections.framework.system.ProjectionDefinitionKind;
 
 public enum ProjectionDefinitionKinds implements ProjectionDefinitionKind, Enumeration<ProjectionDefinitionKind> {
 
-  ProjectionDefinitionBasedOnUnitMethod,
+  UnitMethodProjectionDefinition,
 
-  ProjectionDefinitionBasedOnProviderClass
+  ProviderClassProjectionDefinition,
+
+  DirectProjectionDefinition
 }

@@ -18,42 +18,49 @@ import java.util.stream.Collectors;
 import tech.intellispaces.actions.Action;
 import tech.intellispaces.commons.exception.ExceptionFunctions;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
+import tech.intellispaces.commons.text.StringFunctions;
 import tech.intellispaces.commons.type.ClassFunctions;
 import tech.intellispaces.reflections.framework.annotation.Projection;
 import tech.intellispaces.reflections.framework.exception.ConfigurationException;
 import tech.intellispaces.reflections.framework.exception.ConfigurationExceptions;
 import tech.intellispaces.reflections.framework.exception.CyclicDependencyExceptions;
 import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
+import tech.intellispaces.reflections.framework.system.projection.DirectProjectionDefinition;
 import tech.intellispaces.reflections.framework.system.projection.ModuleProjectionImpl;
-import tech.intellispaces.reflections.framework.system.projection.ProjectionDefinitionBasedOnMethodAction;
-import tech.intellispaces.reflections.framework.system.projection.ProjectionDefinitionBasedOnProviderClass;
 import tech.intellispaces.reflections.framework.system.projection.ProjectionDefinitionKinds;
 import tech.intellispaces.reflections.framework.system.projection.ProjectionFunctions;
+import tech.intellispaces.reflections.framework.system.projection.ProviderClassProjectionDefinition;
+import tech.intellispaces.reflections.framework.system.projection.UnitMethodProjectionDefinition;
 
 /**
  * The local projection register implementation.
  */
 public class LocalProjectionRegistry implements ProjectionRegistry {
-  private final Map<String, ProjectionDefinition> projectionDefinitions;
-  private final Map<String, ModuleProjection> projectionsByName = new HashMap<>();
+  private final Map<String, ProjectionDefinition> projectionDefinitionIndexByName = new HashMap<>();
+  private final Map<Class<?>, ProjectionDefinition> projectionDefinitionIndexByType = new HashMap<>();
+  private final Map<String, ModuleProjection> projectionIndexByName = new HashMap<>();
+  private final Map<Class<?>, ModuleProjection> projectionIndexByType = new HashMap<>();
 
   private final ThreadLocal<Map<ModuleProjection, Object>> contextProjections = new ThreadLocal<>();
   private final ThreadLocal<Map<String, ModuleProjection>> contextProjectionsByName = new ThreadLocal<>();
 
   public LocalProjectionRegistry() {
-    projectionDefinitions = new HashMap<>();
   }
 
   public LocalProjectionRegistry(List<ProjectionDefinition> projectionDefinitions) {
-    this.projectionDefinitions = projectionDefinitions.stream().collect(
-        Collectors.toMap(ProjectionDefinition::name, Function.identity()));
+    projectionDefinitionIndexByName.putAll(
+        projectionDefinitions.stream().collect(Collectors.toMap(ProjectionDefinition::name, Function.identity()))
+    );
+    projectionDefinitionIndexByType.putAll(
+        projectionDefinitions.stream().collect(Collectors.toMap(ProjectionDefinition::type, Function.identity()))
+    );
   }
 
   @Override
   public void onStartup() {
-    projectionDefinitions.values().stream()
+    projectionDefinitionIndexByName.values().stream()
         .filter(definition -> !definition.isLazy())
-        .forEach(definition -> createProjection(definition, new LinkedHashSet<>()));
+        .forEach(definition -> defineProjection(definition, new LinkedHashSet<>()));
   }
 
   @Override
@@ -63,20 +70,16 @@ public class LocalProjectionRegistry implements ProjectionRegistry {
 
   @Override
   public void addProjection(ProjectionDefinition projectionDefinition) {
-    projectionDefinitions.put(projectionDefinition.name(), projectionDefinition);
-  }
-
-  @Override
-  public <T> T getProjection(String name, Class<T> targetReflectionClass) {
-    return getProjection(name, targetReflectionClass, new LinkedHashSet<>());
+    projectionDefinitionIndexByName.put(projectionDefinition.name(), projectionDefinition);
+    projectionDefinitionIndexByType.put(projectionDefinition.type(), projectionDefinition);
   }
 
   @Override
   @SuppressWarnings("unchecked")
-  public <T> List<T> findProjections(Class<T> targetReflectionClass) {
+  public <T> List<T> findProjections(Class<T> targetClass) {
     List<T> projections = new ArrayList<>();
-    for (ProjectionDefinition projectionDefinition : projectionDefinitions.values()) {
-      if (projectionDefinition.type() == targetReflectionClass || targetReflectionClass.isAssignableFrom(projectionDefinition.type())) {
+    for (ProjectionDefinition projectionDefinition : projectionDefinitionIndexByName.values()) {
+      if (projectionDefinition.type() == targetClass || targetClass.isAssignableFrom(projectionDefinition.type())) {
         T projection = (T) getProjection(projectionDefinition.name(), projectionDefinition.type());
         projections.add(projection);
       }
@@ -85,7 +88,7 @@ public class LocalProjectionRegistry implements ProjectionRegistry {
     Map<ModuleProjection, Object> contextProjections = this.contextProjections.get();
     if (contextProjections != null) {
       for (ModuleProjection projection : contextProjections.keySet()) {
-        if (projection.type() == targetReflectionClass || targetReflectionClass.isAssignableFrom(projection.type())) {
+        if (projection.type() == targetClass || targetClass.isAssignableFrom(projection.type())) {
           projections.add((T) projection.target());
         }
       }
@@ -93,11 +96,12 @@ public class LocalProjectionRegistry implements ProjectionRegistry {
     return projections;
   }
 
-  public Collection<ModuleProjection> allProjections() {
+  @Override
+  public Collection<ModuleProjection> moduleProjections() {
     List<ModuleProjection> projections = new ArrayList<>();
     Set<String> dependencyPath = new HashSet<>();
-    for (ProjectionDefinition projectionDefinition : projectionDefinitions.values()) {
-      ModuleProjection projection = getProjection(projectionDefinition.name(), dependencyPath);
+    for (ProjectionDefinition pd : projectionDefinitionIndexByName.values()) {
+      ModuleProjection projection = findProjection(pd.name(), pd.type(), dependencyPath);
       projections.add(projection);
     }
 
@@ -109,8 +113,8 @@ public class LocalProjectionRegistry implements ProjectionRegistry {
   }
 
   @Override
-  public <T> void addContextProjection(String name, Class<T> targetReflectionClass, T target) {
-    ModuleProjection projection = new ModuleProjectionImpl(name, targetReflectionClass, null, target);
+  public <T> void addContextProjection(String name, Class<T> targetClass, T target) {
+    ModuleProjection projection = new ModuleProjectionImpl(name, targetClass, null, target);
 
     Map<String, ModuleProjection> mapByName = contextProjectionsByName.get();
     if (mapByName == null) {
@@ -141,17 +145,22 @@ public class LocalProjectionRegistry implements ProjectionRegistry {
     }
   }
 
+  @Override
+  public <T> T getProjection(String name, Class<T> type) {
+    return getProjection(name, type, new LinkedHashSet<>());
+  }
+
   @SuppressWarnings("unchecked")
-  private <T> T getProjection(String name, Class<T> targetReflectionClass, Set<String> dependencyPath) {
-    ModuleProjection projection = getProjection(name, dependencyPath);
+  private <T> T getProjection(String name, Class<T> type, Set<String> dependencyPath) {
+    ModuleProjection projection = findProjection(name, type, dependencyPath);
     if (projection == null) {
       return null;
     }
-    if (projection.target() != null && ReflectionFunctions.isCompatibleObjectType(targetReflectionClass, projection.target().getClass())) {
+    if (projection.target() != null && ClassFunctions.isCompatibleClasses(type, projection.target().getClass())) {
       return (T) projection.target();
     }
-    if (!ReflectionFunctions.isCompatibleObjectType(targetReflectionClass, projection.type())) {
-      T downgradedProjection = ReflectionFunctions.tryDowngrade(projection.target(), targetReflectionClass);
+    if (!ClassFunctions.isCompatibleClasses(type, projection.type())) {
+      T downgradedProjection = ReflectionFunctions.tryDowngrade(projection.target(), type);
       if (downgradedProjection != null) {
         return downgradedProjection;
       }
@@ -160,17 +169,25 @@ public class LocalProjectionRegistry implements ProjectionRegistry {
     return (T) projection.target();
   }
 
-  private <T> ModuleProjection getProjection(String name, Set<String> dependencyPath) {
-    ModuleProjection projection = projectionsByName.get(name);
-    if (projection == null) {
-      projection = getContextProjection(name);
+  private ModuleProjection findProjection(String name, Class<?> type, Set<String> dependencyPath) {
+    if (StringFunctions.isNotBlank(name)) {
+      ModuleProjection projection = projectionIndexByName.get(name);
+      if (projection == null) {
+        projection = getContextProjection(name);
+        if (projection != null) {
+          return projection;
+        }
+      }
+    } else if (type != null) {
+      ModuleProjection projection = projectionIndexByType.get(type);
+      if (projection != null) {
+        return projection;
+      }
     }
-    if (projection == null) {
-      projection = defineProjection(name, dependencyPath);
-    }
-    if (projection == null) {
-      return null;
-    }
+
+    ModuleProjection projection = defineProjection(name, type, dependencyPath);
+    projectionIndexByName.put(name, projection);
+    projectionIndexByType.put(type, projection);
     return projection;
   }
 
@@ -182,27 +199,39 @@ public class LocalProjectionRegistry implements ProjectionRegistry {
     return contextProjections.get(name);
   }
 
-  private ModuleProjection defineProjection(String name, Set<String> dependencyPath) {
-    ProjectionDefinition definition = projectionDefinitions.get(name);
+  private ModuleProjection defineProjection(String name, Class<?> type, Set<String> dependencyPath) {
+    ProjectionDefinition definition = findProjectionDefinition(name, type);
     if (definition == null) {
       return null;
     }
-    return createProjection(definition, dependencyPath);
+    return defineProjection(definition, dependencyPath);
   }
 
-  private ModuleProjection createProjection(ProjectionDefinition definition, Set<String> dependencyPath) {
+  private ProjectionDefinition findProjectionDefinition(String name, Class<?> type) {
+    if (StringFunctions.isNotBlank(name)) {
+      return projectionDefinitionIndexByName.get(name);
+    }
+    if (type != null) {
+      return projectionDefinitionIndexByType.get(type);
+    }
+    return null;
+  }
+
+  private ModuleProjection defineProjection(ProjectionDefinition definition, Set<String> dependencyPath) {
     dependencyPath.add(definition.name());
-    if (ProjectionDefinitionKinds.ProjectionDefinitionBasedOnUnitMethod.is(definition.kind())) {
-      return createProjection((ProjectionDefinitionBasedOnMethodAction) definition, dependencyPath);
-    } else if (ProjectionDefinitionKinds.ProjectionDefinitionBasedOnProviderClass.is(definition.kind())) {
-      return createProjection((ProjectionDefinitionBasedOnProviderClass) definition, dependencyPath);
+    if (ProjectionDefinitionKinds.UnitMethodProjectionDefinition.is(definition.kind())) {
+      return defineProjection((UnitMethodProjectionDefinition) definition, dependencyPath);
+    } else if (ProjectionDefinitionKinds.ProviderClassProjectionDefinition.is(definition.kind())) {
+      return defineProjection((ProviderClassProjectionDefinition) definition, dependencyPath);
+    } else if (ProjectionDefinitionKinds.DirectProjectionDefinition.is(definition.kind())) {
+      return defineProjection((DirectProjectionDefinition) definition, dependencyPath);
     } else {
       throw new UnsupportedOperationException("Unsupported projection definition type: " + definition.type());
     }
   }
 
-  private ModuleProjection createProjection(
-      ProjectionDefinitionBasedOnMethodAction projectionDefinition, Set<String> dependencyPath
+  private ModuleProjection defineProjection(
+      UnitMethodProjectionDefinition projectionDefinition, Set<String> dependencyPath
   ) {
     final Object target;
     try {
@@ -215,12 +244,12 @@ public class LocalProjectionRegistry implements ProjectionRegistry {
     ModuleProjection projection = new ModuleProjectionImpl(
         projectionDefinition.name(), projectionDefinition.type(), projectionDefinition, target
     );
-    projectionsByName.put(projection.name(), projection);
+    projectionIndexByName.put(projection.name(), projection);
     return projection;
   }
 
-  private ModuleProjection createProjection(
-      ProjectionDefinitionBasedOnProviderClass projectionDefinition, Set<String> dependencyPath
+  private ModuleProjection defineProjection(
+      ProviderClassProjectionDefinition projectionDefinition, Set<String> dependencyPath
   ) {
     Class<?> providerClass = ClassFunctions.getClass(projectionDefinition.providerClassCanonicalName())
         .orElseThrow(() -> UnexpectedExceptions.withMessage(
@@ -254,12 +283,25 @@ public class LocalProjectionRegistry implements ProjectionRegistry {
     ModuleProjection projection = new ModuleProjectionImpl(
         projectionDefinition.name(), projectionDefinition.type(), projectionDefinition, target
     );
-    projectionsByName.put(projection.name(), projection);
+    projectionIndexByName.put(projection.name(), projection);
+    return projection;
+  }
+
+  private ModuleProjection defineProjection(
+      DirectProjectionDefinition projectionDefinition, Set<String> dependencyPath
+  ) {
+    ModuleProjection projection = new ModuleProjectionImpl(
+        projectionDefinition.name(),
+        projectionDefinition.type(),
+        projectionDefinition,
+        projectionDefinition.target()
+    );
+    projectionIndexByName.put(projection.name(), projection);
     return projection;
   }
 
   private Object[] getProjectionArguments(
-      ProjectionDefinitionBasedOnMethodAction definition, Set<String> dependencyPath
+      UnitMethodProjectionDefinition definition, Set<String> dependencyPath
   ) {
     List<ProjectionReference> requiredProjections = definition.requiredProjections();
     Object[] arguments = new Object[requiredProjections.size()];
@@ -289,12 +331,12 @@ public class LocalProjectionRegistry implements ProjectionRegistry {
     }
     cycleEndIndex--;
 
-    ProjectionDefinition cycleFirstDefinition = projectionDefinitions.get(projections.get(cycleBeginIndex));
-    ProjectionDefinition cycleLastDefinition = projectionDefinitions.get(projections.get(cycleEndIndex));
-    if (ProjectionDefinitionKinds.ProjectionDefinitionBasedOnUnitMethod.isNot(cycleFirstDefinition.kind())) {
+    ProjectionDefinition cycleFirstDefinition = projectionDefinitionIndexByName.get(projections.get(cycleBeginIndex));
+    ProjectionDefinition cycleLastDefinition = projectionDefinitionIndexByName.get(projections.get(cycleEndIndex));
+    if (ProjectionDefinitionKinds.UnitMethodProjectionDefinition.isNot(cycleFirstDefinition.kind())) {
       throw new UnsupportedOperationException("Unsupported projection definition type: " + cycleFirstDefinition.kind());
     }
-    if (ProjectionDefinitionKinds.ProjectionDefinitionBasedOnUnitMethod.isNot(cycleLastDefinition.kind())) {
+    if (ProjectionDefinitionKinds.UnitMethodProjectionDefinition.isNot(cycleLastDefinition.kind())) {
       throw new UnsupportedOperationException("Unsupported projection definition type: " + cycleLastDefinition.kind());
     }
     UnitProjectionDefinition cycleFirstUnitDefinition = (UnitProjectionDefinition) cycleFirstDefinition;

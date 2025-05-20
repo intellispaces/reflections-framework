@@ -10,7 +10,7 @@ import tech.intellispaces.reflections.framework.exception.ConfigurationException
 import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
 import tech.intellispaces.reflections.framework.settings.ChannelReference;
 import tech.intellispaces.reflections.framework.settings.ChannelTypes;
-import tech.intellispaces.reflections.framework.system.Module;
+import tech.intellispaces.reflections.framework.system.ModuleHandle;
 import tech.intellispaces.reflections.framework.system.Modules;
 import tech.intellispaces.reflections.framework.system.projection.InjectedMethodProjectionSupplier;
 
@@ -22,7 +22,7 @@ public class ModulePropertiesProjectionSupplier extends InjectedMethodProjection
 
   @Override
   public Object get() {
-    Module module = Modules.current();
+    ModuleHandle module = Modules.current();
     Properties annotation = injectedMethod.selectAnnotation(Properties.class).orElseThrow();
     Object props = readPropertiesFile(annotation.path(), module);
     Object propertyValue = traverseToPropertyValue(props, annotation.value(), module);
@@ -49,7 +49,7 @@ public class ModulePropertiesProjectionSupplier extends InjectedMethodProjection
         injectedMethod.name(), injectedMethod.owner().canonicalName());
   }
 
-  private Object readPropertiesFile(String filename, Module module) {
+  private Object readPropertiesFile(String filename, ModuleHandle module) {
     String settingsText = ModuleSettingsFunctions.getSettingsText(module, filename);
     if (filename.toLowerCase().endsWith(".yaml")) {
       ChannelReference channelReference = ReflectionsFramework.ontologyReference().getChannelByType(ChannelTypes.YamlStringToPropertiesSet);
@@ -58,12 +58,12 @@ public class ModulePropertiesProjectionSupplier extends InjectedMethodProjection
     throw ConfigurationExceptions.withMessage("Unsupported module settings file format. File {0}", filename);
   }
 
-  private Object traverseToPropertyValue(Object props, String traversePath, Module module) {
+  private Object traverseToPropertyValue(Object props, String traversePath, ModuleHandle module) {
     ChannelReference channelReference = ReflectionsFramework.ontologyReference().getChannelByType(ChannelTypes.PropertiesSetToValue);
     return module.mapThruChannel1(props, channelReference.channelId(), traversePath);
   }
 
-  private Object traverseToData(Object propsValue, Class<?> expectedReturnClass, Module module) {
+  private Object traverseToData(Object propsValue, Class<?> expectedReturnClass, ModuleHandle module) {
     ChannelReference channelReference = ReflectionsFramework.ontologyReference().getChannelByType(ChannelTypes.PropertiesSetToData);
     return module.mapThruChannel1(propsValue, channelReference.channelId(), Types.get(expectedReturnClass));
   }

@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import tech.intellispaces.commons.exception.NotImplementedExceptions;
 import tech.intellispaces.reflections.framework.guide.Guide;
 import tech.intellispaces.reflections.framework.guide.GuideKind;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
@@ -28,7 +27,20 @@ public class LocalGuideRegistry implements GuideRegistry {
   }
 
   @Override
-  public List<Guide<?, ?>> findGuides(String cid, GuideKind kind) {
+  public List<Guide<?, ?>> findGuides(
+      String cid, GuideKind kind, Class<?> sourceReflectionClass, ReflectionForm targetForm
+  ) {
+    List<Guide<?, ?>> resultGuides = new ArrayList<>();
+    List<Guide<?, ?>> guides = findGuides(cid, kind);
+    for (Guide<?, ?> guide : guides) {
+      if (guide.targetForm() == targetForm) {
+        resultGuides.add(guide);
+      }
+    }
+    return Collections.unmodifiableList(resultGuides);
+  }
+
+  private List<Guide<?, ?>> findGuides(String cid, GuideKind kind) {
     List<Guide<?, ?>> guides = null;
     if (kind.isMapper()) {
       guides = mapperGuides.get(cid);
@@ -40,13 +52,6 @@ public class LocalGuideRegistry implements GuideRegistry {
     if (guides == null) {
       return List.of();
     }
-    return Collections.unmodifiableList(guides);
-  }
-
-  @Override
-  public List<Guide<?, ?>> findGuides(
-      String cid, GuideKind kind, Class<?> sourceReflectionClass, ReflectionForm targetReflectionForm
-  ) {
-    throw NotImplementedExceptions.withCode("zTEnrg");
+    return guides;
   }
 }

@@ -7,11 +7,11 @@ import java.util.WeakHashMap;
 
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.commons.resource.ResourceFunctions;
-import tech.intellispaces.reflections.framework.system.Module;
+import tech.intellispaces.reflections.framework.system.ModuleHandle;
 
 public class ModuleSettingsFunctions {
 
-  public static String getSettingsText(Module module, String filename) {
+  public static String getSettingsText(ModuleHandle module, String filename) {
     FileContents fileContents = CACHE.computeIfAbsent(module, k -> new FileContents());
     String fileContent = fileContents.getContent(filename);
     if (fileContent == null) {
@@ -21,11 +21,11 @@ public class ModuleSettingsFunctions {
     return fileContent;
   }
 
-  private static String readSettings(Module module, String filename) {
+  private static String readSettings(ModuleHandle module, String filename) {
     return readSettingsAsResource(module, filename);
   }
 
-  private static String readSettingsAsResource(Module module, String resourceName) {
+  private static String readSettingsAsResource(ModuleHandle module, String resourceName) {
     final Optional<String> content;
     try {
       content = ResourceFunctions.readResourceAsString(module.getClass(), resourceName);
@@ -38,7 +38,7 @@ public class ModuleSettingsFunctions {
     return content.get();
   }
 
-  private static final Map<Module, FileContents> CACHE = new WeakHashMap<>();
+  private static final Map<ModuleHandle, FileContents> CACHE = new WeakHashMap<>();
 
   private static final class FileContents {
     private final Map<String, String> files = new HashMap<>();

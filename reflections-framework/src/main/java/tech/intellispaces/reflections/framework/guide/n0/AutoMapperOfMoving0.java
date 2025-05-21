@@ -16,14 +16,20 @@ import tech.intellispaces.reflections.framework.traverse.plan.TraversePlan;
 public class AutoMapperOfMoving0<S, T> implements AbstractMapperOfMoving0<S, T> {
   private final String cid;
   private final TraversePlan traversePlan;
+  private final Class<S> sourceClass;
   private final ReflectionForm targetForm;
   private final TraverseExecutor traverseExecutor;
 
   public AutoMapperOfMoving0(
-          String cid, TraversePlan traversePlan, ReflectionForm targetForm, TraverseExecutor traverseExecutor
+      String cid,
+      TraversePlan traversePlan,
+      Class<S> sourceClass,
+      ReflectionForm targetForm,
+      TraverseExecutor traverseExecutor
   ) {
     this.cid = cid;
     this.traversePlan = traversePlan;
+    this.sourceClass = sourceClass;
     this.targetForm = targetForm;
     this.traverseExecutor = traverseExecutor;
   }
@@ -31,6 +37,11 @@ public class AutoMapperOfMoving0<S, T> implements AbstractMapperOfMoving0<S, T> 
   @Override
   public String channelId() {
     return cid;
+  }
+
+  @Override
+  public Class<S> sourceClass() {
+    return sourceClass;
   }
 
   @Override

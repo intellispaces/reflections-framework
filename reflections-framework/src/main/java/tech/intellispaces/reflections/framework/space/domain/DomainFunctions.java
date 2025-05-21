@@ -22,9 +22,9 @@ import tech.intellispaces.jstatements.reference.NamedReference;
 import tech.intellispaces.jstatements.reference.NotPrimitiveReference;
 import tech.intellispaces.jstatements.reference.TypeReference;
 import tech.intellispaces.jstatements.reference.TypeReferenceFunctions;
-import tech.intellispaces.reflections.framework.ReflectionsFramework;
 import tech.intellispaces.reflections.framework.annotation.Domain;
 import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
+import tech.intellispaces.reflections.framework.node.ReflectionsNodeFunctions;
 import tech.intellispaces.reflections.framework.settings.ChannelTypes;
 
 /**
@@ -184,7 +184,7 @@ public final class DomainFunctions {
 
   public static boolean isNotDomainClassGetter(MethodStatement method) {
     return !method.name().equals("domainClass") &&
-        !method.name().equals(ReflectionsFramework.ontologyReference().getChannelByType(ChannelTypes.PointToDomain).alias());
+        !method.name().equals(ReflectionsNodeFunctions.ontologyReference().getChannelByType(ChannelTypes.PointToDomain).alias());
   }
 
   public static boolean isDefaultDomainType(CustomType type) {

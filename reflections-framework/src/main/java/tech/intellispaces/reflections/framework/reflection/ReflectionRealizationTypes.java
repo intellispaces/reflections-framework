@@ -19,14 +19,14 @@ import tech.intellispaces.reflections.framework.system.Injection;
 import tech.intellispaces.reflections.framework.system.injection.AutoGuideInjections;
 import tech.intellispaces.reflections.framework.system.injection.GuideInjections;
 
-public interface ReflectionImplementationTypes {
+public interface ReflectionRealizationTypes {
 
-  static <R, W extends R> ReflectionImplementationType create(
+  static <R, W extends R> ReflectionRealizationType create(
       Class<W> reflectionWrapperClass,
       Class<R> reflectionImplClass,
-      ReflectionImplementationMethod... methods
+      ReflectionRealizationMethod... methods
   ) {
-    return new ReflectionImplementationTypeImpl(
+    return new ReflectionRealizationTypeImpl(
         reflectionImplClass,
         reflectionWrapperClass,
         Arrays.asList(methods),
@@ -36,14 +36,14 @@ public interface ReflectionImplementationTypes {
     );
   }
 
-  private static Action[] buildMethodActions(Class<?> reflectionClass, ReflectionImplementationMethod... methods) {
+  private static Action[] buildMethodActions(Class<?> reflectionClass, ReflectionRealizationMethod... methods) {
     if (methods == null || methods.length == 0) {
       return new Action[0];
     }
 
     List<Action> actions = new ArrayList<>(methods.length);
-    for (ReflectionImplementationMethod method : methods) {
-      if (ReflectionImplementationMethodPurposes.TraverseMethod.is(method.purpose())) {
+    for (ReflectionRealizationMethod method : methods) {
+      if (ReflectionRealizationMethodPurposes.TraverseMethod.is(method.purpose())) {
         Action action = switch (method.paramClasses().size()) {
           case 0 -> buildMethodAction0(reflectionClass, method);
           case 1 -> buildMethodAction1(reflectionClass, method);
@@ -59,7 +59,7 @@ public interface ReflectionImplementationTypes {
   }
 
   @SuppressWarnings("unchecked")
-  private static Action buildMethodAction0(Class<?> reflectionClass, ReflectionImplementationMethod method) {
+  private static Action buildMethodAction0(Class<?> reflectionClass, ReflectionRealizationMethod method) {
     if (method.traverseType().isMapping()) {
       return DelegateActions.delegateAction1(CachedSupplierActions.get(TraverseActions::mapThruChannel0,
           reflectionClass,
@@ -82,7 +82,7 @@ public interface ReflectionImplementationTypes {
   }
 
   @SuppressWarnings("unchecked")
-  private static Action buildMethodAction1(Class<?> reflectionClass, ReflectionImplementationMethod method) {
+  private static Action buildMethodAction1(Class<?> reflectionClass, ReflectionRealizationMethod method) {
     if (method.traverseType().isMapping()) {
       return DelegateActions.delegateAction2(CachedSupplierActions.get(TraverseActions::mapThruChannel1,
           reflectionClass,
@@ -105,7 +105,7 @@ public interface ReflectionImplementationTypes {
   }
 
   @SuppressWarnings("unchecked")
-  private static Action buildMethodAction2(Class<?> reflectionClass, ReflectionImplementationMethod method) {
+  private static Action buildMethodAction2(Class<?> reflectionClass, ReflectionRealizationMethod method) {
     if (method.traverseType().isMapping()) {
       return DelegateActions.delegateAction3(CachedSupplierActions.get(TraverseActions::mapThruChannel2,
           reflectionClass,
@@ -128,7 +128,7 @@ public interface ReflectionImplementationTypes {
   }
 
   @SuppressWarnings("unchecked")
-  private static Action buildMethodAction3(Class<?> reflectionClass, ReflectionImplementationMethod method) {
+  private static Action buildMethodAction3(Class<?> reflectionClass, ReflectionRealizationMethod method) {
     if (method.traverseType().isMapping()) {
       return DelegateActions.delegateAction4(CachedSupplierActions.get(TraverseActions::mapThruChannel3,
           reflectionClass,
@@ -151,7 +151,7 @@ public interface ReflectionImplementationTypes {
   }
 
   @SuppressWarnings("unchecked")
-  private static Action buildMethodAction4(Class<?> reflectionClass, ReflectionImplementationMethod method) {
+  private static Action buildMethodAction4(Class<?> reflectionClass, ReflectionRealizationMethod method) {
     if (method.traverseType().isMapping()) {
       throw NotImplementedExceptions.withCode("GYhrXA==");
     } else if (method.traverseType().isMoving()) {
@@ -165,45 +165,45 @@ public interface ReflectionImplementationTypes {
     }
   }
 
-  private static Action[] buildGuideActions(ReflectionImplementationMethod... methods) {
+  private static Action[] buildGuideActions(ReflectionRealizationMethod... methods) {
     if (methods == null || methods.length == 0) {
       return new Action[0];
     }
 
     int maxOrdinal = Arrays.stream(methods)
-        .filter(m -> ReflectionImplementationMethodPurposes.TraverseMethod.is(m.purpose()))
-        .map(ReflectionImplementationMethod::traverseOrdinal)
+        .filter(m -> ReflectionRealizationMethodPurposes.TraverseMethod.is(m.purpose()))
+        .map(ReflectionRealizationMethod::traverseOrdinal)
         .max(Comparator.naturalOrder())
         .orElse(0);
     Action[] actions = new Action[maxOrdinal + 1];
-    for (ReflectionImplementationMethod method : methods) {
-      if (ReflectionImplementationMethodPurposes.GuideMethod.is(method.purpose())) {
+    for (ReflectionRealizationMethod method : methods) {
+      if (ReflectionRealizationMethodPurposes.GuideMethod.is(method.purpose())) {
         actions[method.traverseOrdinal()] = method.action();
       }
     }
     return actions;
   }
 
-  private static Injection[] buildInjections(ReflectionImplementationMethod... methods) {
+  private static Injection[] buildInjections(ReflectionRealizationMethod... methods) {
     if (methods == null || methods.length == 0) {
       return new Injection[0];
     }
 
     int maxOrdinal = Arrays.stream(methods)
-        .filter(m -> ReflectionImplementationMethodPurposes.InjectionMethod.is(m.purpose()))
-        .map(ReflectionImplementationMethod::injectionOrdinal)
+        .filter(m -> ReflectionRealizationMethodPurposes.InjectionMethod.is(m.purpose()))
+        .map(ReflectionRealizationMethod::injectionOrdinal)
         .max(Comparator.naturalOrder())
         .orElse(0);
     Injection[] injections = new Injection[maxOrdinal + 1];
-    for (ReflectionImplementationMethod method : methods) {
-      if (ReflectionImplementationMethodPurposes.InjectionMethod.is(method.purpose())) {
+    for (ReflectionRealizationMethod method : methods) {
+      if (ReflectionRealizationMethodPurposes.InjectionMethod.is(method.purpose())) {
         injections[method.injectionOrdinal()] = buildInjection(method);
       }
     }
     return injections;
   }
 
-  private static Injection buildInjection(ReflectionImplementationMethod method) {
+  private static Injection buildInjection(ReflectionRealizationMethod method) {
     if ("autoguide".equals(method.injectionKind())) {
       return AutoGuideInjections.get(null, method.injectionName(), method.injectionType());
     } else if ("specguide".equals(method.injectionKind())) {

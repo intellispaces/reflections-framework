@@ -31,7 +31,7 @@ import tech.intellispaces.reflections.framework.reflection.MovabilityTypes;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForms;
 import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
-import tech.intellispaces.reflections.framework.reflection.ReflectionImplementationMethodPurposes;
+import tech.intellispaces.reflections.framework.reflection.ReflectionRealizationMethodPurposes;
 import tech.intellispaces.reflections.framework.space.channel.ChannelFunctions;
 import tech.intellispaces.reflections.framework.space.domain.DomainFunctions;
 
@@ -259,7 +259,7 @@ abstract class AbstractReflectionWrapperGenerator extends AbstractReflectionForm
   }
 
   private String buildInjectionMethodBody(String injectionType, int injectionIndex) {
-    return "return (" + injectionType + ") this.$broker.injection(" + injectionIndex + ").value();";
+    return "return (" + injectionType + ") this.$handle.injection(" + injectionIndex + ").value();";
   }
 
   private MethodStatement findGuideMethod(
@@ -319,7 +319,7 @@ abstract class AbstractReflectionWrapperGenerator extends AbstractReflectionForm
       paramClasses.add(buildGuideParamClassName(param.type()));
     }
     map.put("params", paramClasses);
-    map.put("purpose", ReflectionImplementationMethodPurposes.TraverseMethod.name());
+    map.put("purpose", ReflectionRealizationMethodPurposes.TraverseMethod.name());
     map.put("traverseOrdinal", ordinal);
     map.put("channelClass", addImportAndGetSimpleName(NameConventionFunctions.getChannelClassCanonicalName(
         domainMethod)));
@@ -338,7 +338,7 @@ abstract class AbstractReflectionWrapperGenerator extends AbstractReflectionForm
       paramClasses.add(buildGuideParamClassName(param.type()));
     }
     map.put("params", paramClasses);
-    map.put("purpose", ReflectionImplementationMethodPurposes.GuideMethod.name());
+    map.put("purpose", ReflectionRealizationMethodPurposes.GuideMethod.name());
     map.put("traverseOrdinal", ordinal);
     return map;
   }
@@ -355,7 +355,7 @@ abstract class AbstractReflectionWrapperGenerator extends AbstractReflectionForm
     map.put("name", methodName);
 
     map.put("params", List.of());
-    map.put("purpose", ReflectionImplementationMethodPurposes.GuideMethod.name());
+    map.put("purpose", ReflectionRealizationMethodPurposes.GuideMethod.name());
     map.put("traverseOrdinal", ordinal);
     return map;
   }
@@ -366,7 +366,7 @@ abstract class AbstractReflectionWrapperGenerator extends AbstractReflectionForm
     var map = new HashMap<String, Object>();
     map.put("name", injectionMethod.name());
     map.put("params", List.of());
-    map.put("purpose", ReflectionImplementationMethodPurposes.InjectionMethod.name());
+    map.put("purpose", ReflectionRealizationMethodPurposes.InjectionMethod.name());
 
     map.put("injectionKind", "autoguide");
     map.put("injectionOrdinal", ordinal);
@@ -381,7 +381,7 @@ abstract class AbstractReflectionWrapperGenerator extends AbstractReflectionForm
     var map = new HashMap<String, Object>();
     map.put("name", injectionMethod.name());
     map.put("params", List.of());
-    map.put("purpose", ReflectionImplementationMethodPurposes.InjectionMethod.name());
+    map.put("purpose", ReflectionRealizationMethodPurposes.InjectionMethod.name());
 
     map.put("injectionKind", "specguide");
     map.put("injectionOrdinal", ordinal);
@@ -473,7 +473,7 @@ abstract class AbstractReflectionWrapperGenerator extends AbstractReflectionForm
         additionalCloseBracket = true;
       }
     }
-    sb.append("$broker.methodAction(");
+    sb.append("$handle.methodAction(");
     sb.append(methodOrdinal);
     sb.append(").castToAction");
     sb.append(domainMethod.params().size() + 1);

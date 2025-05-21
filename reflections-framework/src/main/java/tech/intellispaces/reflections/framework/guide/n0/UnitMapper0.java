@@ -16,8 +16,9 @@ public class UnitMapper0<S, T> extends UnitGuide0<S, T> implements AbstractMappe
       UnitWrapper unitInstance,
       MethodStatement guideMethod,
       int guideOrdinal,
+      Class<S> sourceClass,
       ReflectionForm targetForm
   ) {
-    super(cid, unitInstance, guideMethod, guideOrdinal, targetForm);
+    super(cid, unitInstance, guideMethod, guideOrdinal, sourceClass, targetForm);
   }
 }

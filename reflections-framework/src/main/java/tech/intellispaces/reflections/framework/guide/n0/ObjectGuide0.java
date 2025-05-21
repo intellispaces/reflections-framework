@@ -41,6 +41,11 @@ abstract class ObjectGuide0<S extends ReflectionWrapper, R> implements Guide0<S,
   }
 
   @Override
+  public Class<S> sourceClass() {
+    return reflectionClass;
+  }
+
+  @Override
   public ReflectionForm targetForm() {
     return targetForm;
   }
@@ -50,7 +55,7 @@ abstract class ObjectGuide0<S extends ReflectionWrapper, R> implements Guide0<S,
   public R traverse(S source) throws TraverseException {
     try {
       GuideLogger.logCallGuide(guideMethod);
-      return (R) source.$broker().guideAction(traverseOrdinal).castToAction1().execute(source);
+      return (R) source.$handle().guideAction(traverseOrdinal).castToAction1().execute(source);
     } catch (TraverseException e) {
       throw e;
     } catch (Exception e) {
@@ -63,7 +68,7 @@ abstract class ObjectGuide0<S extends ReflectionWrapper, R> implements Guide0<S,
   public int traverseToInt(S source) throws TraverseException {
     try {
       GuideLogger.logCallGuide(guideMethod);
-      return source.$broker().guideAction(traverseOrdinal).castToAction1().executeReturnInt(source);
+      return source.$handle().guideAction(traverseOrdinal).castToAction1().executeReturnInt(source);
     } catch (TraverseException e) {
       throw e;
     } catch (Exception e) {
@@ -76,7 +81,7 @@ abstract class ObjectGuide0<S extends ReflectionWrapper, R> implements Guide0<S,
   public double traverseToDouble(S source) throws TraverseException {
     try {
       GuideLogger.logCallGuide(guideMethod);
-      return source.$broker().guideAction(traverseOrdinal).castToAction1().executeReturnDouble(source);
+      return source.$handle().guideAction(traverseOrdinal).castToAction1().executeReturnDouble(source);
     } catch (TraverseException e) {
       throw e;
     } catch (Exception e) {

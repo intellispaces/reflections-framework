@@ -11,12 +11,12 @@ import tech.intellispaces.jstatements.method.MethodParam;
 import tech.intellispaces.jstatements.method.MethodStatement;
 import tech.intellispaces.jstatements.reference.CustomTypeReference;
 import tech.intellispaces.reflections.framework.ArtifactType;
-import tech.intellispaces.reflections.framework.ReflectionsFramework;
 import tech.intellispaces.reflections.framework.annotation.Channel;
 import tech.intellispaces.reflections.framework.annotation.Domain;
 import tech.intellispaces.reflections.framework.annotation.Ontology;
 import tech.intellispaces.reflections.framework.annotation.Reflection;
 import tech.intellispaces.reflections.framework.artifact.ArtifactTypes;
+import tech.intellispaces.reflections.framework.node.ReflectionsNodeFunctions;
 import tech.intellispaces.reflections.framework.reflection.MovabilityType;
 import tech.intellispaces.reflections.framework.reflection.MovabilityTypes;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
@@ -73,12 +73,12 @@ public interface NameConventionFunctions {
   static String getGeneralRegularFormClassname(String domainClassName, boolean replaceDomainWithDelegate) {
     if (replaceDomainWithDelegate) {
       String domainName = convertToDomainName(domainClassName);
-      DomainReference domain = ReflectionsFramework.ontologyReference().getDomainByName(domainName);
+      DomainReference domain = ReflectionsNodeFunctions.ontologyReference().getDomainByName(domainName);
       if (domain != null) {
         return domain.delegateClassName() != null ? domain.delegateClassName() : domainName;
       }
     } else {
-      DomainReference domain = ReflectionsFramework.ontologyReference().getDomainByName(domainClassName);
+      DomainReference domain = ReflectionsNodeFunctions.ontologyReference().getDomainByName(domainClassName);
       if (domain != null) {
         return domain.domainName();
       }
@@ -89,12 +89,12 @@ public interface NameConventionFunctions {
   static String getGeneralReflectionTypeName(String domainClassName, boolean replaceDomainWithDelegate) {
     if (replaceDomainWithDelegate) {
       String domainName = convertToDomainName(domainClassName);
-      DomainReference domain = ReflectionsFramework.ontologyReference().getDomainByName(domainName);
+      DomainReference domain = ReflectionsNodeFunctions.ontologyReference().getDomainByName(domainName);
       if (domain != null) {
         return domain.delegateClassName() != null ? domain.delegateClassName() : domainName;
       }
     } else {
-      DomainReference domain = ReflectionsFramework.ontologyReference().getDomainByName(domainClassName);
+      DomainReference domain = ReflectionsNodeFunctions.ontologyReference().getDomainByName(domainClassName);
       if (domain != null) {
         return domain.domainName();
       }
@@ -109,7 +109,7 @@ public interface NameConventionFunctions {
 
   static String getUnmovableRegularFormTypeName(String domainClassName, boolean replaceDomainWithDelegate) {
     if (replaceDomainWithDelegate) {
-      DomainReference domain = ReflectionsFramework.ontologyReference().getDomainByName(convertToDomainName(domainClassName));
+      DomainReference domain = ReflectionsNodeFunctions.ontologyReference().getDomainByName(convertToDomainName(domainClassName));
       if (domain != null && domain.delegateClassName() != null && (
           DomainTypes.Number.is(domain.type()) ||
               DomainTypes.Short.is(domain.type()) ||
@@ -126,7 +126,7 @@ public interface NameConventionFunctions {
 
   static String getMovableRegularFormTypeName(String domainClassName, boolean replaceDomainWithDelegate) {
     if (replaceDomainWithDelegate) {
-      DomainReference domain = ReflectionsFramework.ontologyReference().getDomainByName(convertToDomainName(domainClassName));
+      DomainReference domain = ReflectionsNodeFunctions.ontologyReference().getDomainByName(convertToDomainName(domainClassName));
       if (domain != null && domain.delegateClassName() != null && (
           DomainTypes.Number.is(domain.type()) ||
               DomainTypes.Short.is(domain.type()) ||
@@ -143,7 +143,7 @@ public interface NameConventionFunctions {
 
   static String getUnmovableReflectionTypeName(String domainClassName, boolean replaceDomainWithDelegate) {
     if (replaceDomainWithDelegate) {
-      DomainReference domain = ReflectionsFramework.ontologyReference().getDomainByName(convertToDomainName(domainClassName));
+      DomainReference domain = ReflectionsNodeFunctions.ontologyReference().getDomainByName(convertToDomainName(domainClassName));
       if (domain != null && domain.delegateClassName() != null && (
           DomainTypes.Number.is(domain.type()) ||
               DomainTypes.Short.is(domain.type()) ||
@@ -159,7 +159,7 @@ public interface NameConventionFunctions {
 
   static String getMovableReflectionTypeName(String domainClassName, boolean replaceDomainWithDelegate) {
     if (replaceDomainWithDelegate) {
-      DomainReference domain = ReflectionsFramework.ontologyReference().getDomainByName(convertToDomainName(domainClassName));
+      DomainReference domain = ReflectionsNodeFunctions.ontologyReference().getDomainByName(convertToDomainName(domainClassName));
       if (domain != null && domain.delegateClassName() != null && (
           DomainTypes.Number.is(domain.type()) ||
               DomainTypes.Short.is(domain.type()) ||
@@ -290,7 +290,7 @@ public interface NameConventionFunctions {
   }
 
   static String getConversionMethodName(CustomType targetType) {
-    DomainReference domain = ReflectionsFramework.ontologyReference().getDomainByDelegateClass(targetType.canonicalName());
+    DomainReference domain = ReflectionsNodeFunctions.ontologyReference().getDomainByDelegateClass(targetType.canonicalName());
     if (domain != null) {
       return "as" + StringFunctions.capitalizeFirstLetter(targetType.simpleName());
     }
@@ -390,9 +390,9 @@ public interface NameConventionFunctions {
     return name + "s";
   }
 
-  static String getObjectAssistantBrokerCanonicalName(CustomType domainType) {
+  static String getObjectAssistantHandleCanonicalName(CustomType domainType) {
     String name = StringFunctions.removeTailOrElseThrow(domainType.canonicalName(), DOMAIN);
-    return name + "sBroker";
+    return name + "sHandle";
   }
 
   static boolean isPrimitiveTargetForm(MethodStatement method) {

@@ -55,7 +55,7 @@ public class ReflectionAssistantGenerator extends ReflectionsArtifactGenerator {
     addImport(Modules.class);
     addImport(UnexpectedExceptions.class);
 
-    addVariable("brokerSimpleName", addImportAndGetSimpleName(NameConventionFunctions.getObjectAssistantBrokerCanonicalName(sourceArtifact())));
+    addVariable("handleSimpleName", addImportAndGetSimpleName(NameConventionFunctions.getObjectAssistantHandleCanonicalName(sourceArtifact())));
     addVariable("isDataset", AnnotationFunctions.isAssignableAnnotation(sourceArtifact(), Dataset.class));
     addVariable("regularFirstLetterLowercaseSimpleName",
         StringFunctions.lowercaseFirstLetter(StringFunctions.removeTailOrElseThrow(sourceArtifactSimpleName(), "Domain")));

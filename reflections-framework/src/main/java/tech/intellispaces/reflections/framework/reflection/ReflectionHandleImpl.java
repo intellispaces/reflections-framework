@@ -9,16 +9,16 @@ import tech.intellispaces.commons.exception.NotImplementedExceptions;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.reflections.framework.system.Injection;
 
-public class ReflectionBrokerImpl implements ReflectionBroker {
-  private final ReflectionImplementationType type;
+public class ReflectionHandleImpl implements ReflectionHandle {
+  private final ReflectionRealizationType type;
   private final Action[] methodActions;
   private final Action[] guideActions;
   private final Injection[] injections;
   private final Map<Class<?>, Object> projections = new HashMap<>();
   private Reflection<?> overlyingReflection;
 
-  public ReflectionBrokerImpl(
-      ReflectionImplementationType type,
+  public ReflectionHandleImpl(
+      ReflectionRealizationType type,
       Action[] methodActions,
       Action[] guideActions,
       Injection[] injections
@@ -30,7 +30,7 @@ public class ReflectionBrokerImpl implements ReflectionBroker {
   }
 
   @Override
-  public ReflectionImplementationType type() {
+  public ReflectionRealizationType type() {
     return type;
   }
 

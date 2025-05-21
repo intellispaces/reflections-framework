@@ -20,25 +20,25 @@ import tech.intellispaces.jstatements.reference.TypeReference;
 import tech.intellispaces.reflections.framework.annotationprocessor.AnnotationFunctions;
 import tech.intellispaces.reflections.framework.annotationprocessor.ReflectionsArtifactGenerator;
 import tech.intellispaces.reflections.framework.artifact.ArtifactTypes;
-import tech.intellispaces.reflections.framework.engine.Engines;
 import tech.intellispaces.reflections.framework.factory.FactoryFunctions;
 import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
 import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
+import tech.intellispaces.reflections.framework.system.Modules;
 
-public class ReflectionAssistantBrokerGenerator extends ReflectionsArtifactGenerator {
+public class ReflectionAssistantHandleGenerator extends ReflectionsArtifactGenerator {
 
-  public ReflectionAssistantBrokerGenerator(CustomType domainType) {
+  public ReflectionAssistantHandleGenerator(CustomType domainType) {
     super(domainType);
   }
 
   @Override
   protected String templateName() {
-    return "/reflection_assistant_broker.template";
+    return "/reflection_assistant_handle.template";
   }
 
   @Override
   public String generatedArtifactName() {
-    return NameConventionFunctions.getObjectAssistantBrokerCanonicalName(sourceArtifact());
+    return NameConventionFunctions.getObjectAssistantHandleCanonicalName(sourceArtifact());
   }
 
   @Override
@@ -54,7 +54,7 @@ public class ReflectionAssistantBrokerGenerator extends ReflectionsArtifactGener
       return false;
     }
 
-    addImport(Engines.class);
+    addImport(Modules.class);
     addImport(UnexpectedExceptions.class);
 
     addVariable("customizers", getCustomizers(customizers));

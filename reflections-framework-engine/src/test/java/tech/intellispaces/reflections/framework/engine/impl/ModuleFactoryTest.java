@@ -1,16 +1,16 @@
 package tech.intellispaces.reflections.framework.engine.impl;
 
-import java.util.List;
 
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
+import tech.intellispaces.reflections.framework.ReflectionsFramework;
 import tech.intellispaces.reflections.framework.action.InvokeUnitMethodAction;
-import tech.intellispaces.reflections.framework.engine.Engine;
 import tech.intellispaces.reflections.framework.exception.ConfigurationException;
 import tech.intellispaces.reflections.framework.exception.CyclicDependencyException;
 import tech.intellispaces.reflections.framework.system.ModuleFactory;
-import tech.intellispaces.reflections.framework.system.ModuleHandleImpl;
+import tech.intellispaces.reflections.framework.system.ModuleHandle;
 import tech.intellispaces.reflections.framework.testsamples.reflection.ReflectionOfEmptyDomain;
 import tech.intellispaces.reflections.framework.testsamples.system.EmptyTestModule;
 import tech.intellispaces.reflections.framework.testsamples.system.ModuleWithProjectionProvidersWithSelfCyclicDependency;
@@ -24,19 +24,22 @@ import tech.intellispaces.reflections.framework.testsamples.system.ModuleWithTwo
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static tech.intellispaces.reflections.framework.engine.EngineLoader.loadEngine;
 
 /**
  * Integration tests for {@link ModuleFactory}, {@link DefaultEngine} classes.
  */
 public class ModuleFactoryTest {
+  private ModuleHandle module;
+
+  @AfterEach
+  public void shutdown() {
+    module.upload();
+  }
 
   @Test
   public void testCreateModule_whenOneEmptyUnit() {
     // When
-    Engine engine = new DefaultEngineFactory().create(null);
-    ModuleHandleImpl module = ModuleFactory.createModule(List.of(EmptyTestModule.class), engine);
-    loadEngine(engine, module);
+    module = loadModule(EmptyTestModule.class);
 
     // Then
     assertThat(module.unitHandles()).hasSize(1);
@@ -49,9 +52,7 @@ public class ModuleFactoryTest {
   @Test
   public void testCreateModule_whenOneUnit_andStartup_andShutdownMethods() {
     // When
-    Engine engine = new DefaultEngineFactory().create(null);
-    ModuleHandleImpl module = ModuleFactory.createModule(List.of(ModuleWithStartupAndShutdownMethods.class), engine);
-    loadEngine(engine, module);
+    module = loadModule(ModuleWithStartupAndShutdownMethods.class);
 
     // Then
     assertThat(module.unitHandles()).hasSize(1);
@@ -66,9 +67,7 @@ public class ModuleFactoryTest {
   @Test
   public void testCreateModule_whenOneUnit_andSimpleProjections() {
     // When
-    Engine engine = new DefaultEngineFactory().create(null);
-    ModuleHandleImpl module = ModuleFactory.createModule(List.of(ModuleWithSimpleProjections.class), engine);
-    loadEngine(engine, module);
+    module = loadModule(ModuleWithSimpleProjections.class);
 
     // Then
     assertThat(module.unitHandles()).hasSize(1);
@@ -131,9 +130,7 @@ public class ModuleFactoryTest {
 
   @Test
   public void testCreateModule_whenOneUnit_andProjectionProvidersWithSelfCyclicDependency() {
-    Engine engine = new DefaultEngineFactory().create(null);
-    ModuleHandleImpl module = ModuleFactory.createModule(List.of(ModuleWithProjectionProvidersWithSelfCyclicDependency.class), engine);
-    loadEngine(engine, module);
+    module = loadModule(ModuleWithProjectionProvidersWithSelfCyclicDependency.class);
 
     assertThatThrownBy(module::start)
         .isExactlyInstanceOf(CyclicDependencyException.class)
@@ -144,9 +141,7 @@ public class ModuleFactoryTest {
 
   @Test
   public void testCreateModule_whenOneUnit_andTwoProjectionProvidersWithCyclicDependency() {
-    Engine engine = new DefaultEngineFactory().create(null);
-    ModuleHandleImpl module = ModuleFactory.createModule(List.of(ModuleWithTwoProjectionProvidersWithCyclicDependency.class), engine);
-    loadEngine(engine, module);
+    module = loadModule(ModuleWithTwoProjectionProvidersWithCyclicDependency.class);
 
     assertThatThrownBy(module::start)
         .isExactlyInstanceOf(CyclicDependencyException.class)
@@ -157,9 +152,7 @@ public class ModuleFactoryTest {
 
   @Test
   public void testCreateModule_whenOneUnit_andThreeProjectionProvidersWithCyclicDependency() {
-    Engine engine = new DefaultEngineFactory().create(null);
-    ModuleHandleImpl module = ModuleFactory.createModule(List.of(ModuleWithThreeProjectionProvidersWithCyclicDependency.class), engine);
-    loadEngine(engine, module);
+    module = loadModule(ModuleWithThreeProjectionProvidersWithCyclicDependency.class);
 
     assertThatThrownBy(module::start)
         .isExactlyInstanceOf(CyclicDependencyException.class)
@@ -170,9 +163,7 @@ public class ModuleFactoryTest {
 
   @Test
   public void testCreateModule_whenTwoUnit_andTwoProjectionProvidersInDifferentUnitsWithCyclicDependency1() {
-    Engine engine = new DefaultEngineFactory().create(null);
-    ModuleHandleImpl module = ModuleFactory.createModule(List.of(ModuleWithTwoProjectionProvidersInDifferentUnitsWithCyclicDependency1.ModuleSample.class), engine);
-    loadEngine(engine, module);
+    module = loadModule(ModuleWithTwoProjectionProvidersInDifferentUnitsWithCyclicDependency1.ModuleSample.class);
 
     assertThatThrownBy(module::start)
         .isExactlyInstanceOf(CyclicDependencyException.class)
@@ -185,9 +176,7 @@ public class ModuleFactoryTest {
 
   @Test
   public void testCreateModule_whenTwoUnit_andTwoProjectionProvidersInDifferentUnitsWithCyclicDependency2() {
-    Engine engine = new DefaultEngineFactory().create(null);
-    ModuleHandleImpl module = ModuleFactory.createModule(List.of(ModuleWithTwoProjectionProvidersInDifferentUnitsWithCyclicDependency2.ModuleSample.class), engine);
-    loadEngine(engine, module);
+    module = loadModule(ModuleWithTwoProjectionProvidersInDifferentUnitsWithCyclicDependency2.ModuleSample.class);
 
     assertThatThrownBy(module::start)
         .isExactlyInstanceOf(CyclicDependencyException.class)
@@ -198,13 +187,15 @@ public class ModuleFactoryTest {
 
   @Test
   public void testCreateModule_whenTwoUnit_andTwoProjectionProvidersInDifferentUnitsWithCyclicDependency3() {
-    Engine engine = new DefaultEngineFactory().create(null);
-    ModuleHandleImpl module = ModuleFactory.createModule(List.of(ModuleWithTwoProjectionProvidersInDifferentUnitsWithCyclicDependency3.ModuleSample.class), engine);
-    loadEngine(engine, module);
+    module = loadModule(ModuleWithTwoProjectionProvidersInDifferentUnitsWithCyclicDependency3.ModuleSample.class);
 
     assertThatThrownBy(module::start)
         .isExactlyInstanceOf(ConfigurationException.class)
         .hasMessage("Cannot to resolve required projection 'projection3' in projection definition 'projection2' of unit " +
             ModuleWithTwoProjectionProvidersInDifferentUnitsWithCyclicDependency3.UnitSample.class.getCanonicalName());
+  }
+
+  private ModuleHandle loadModule(Class<?> moduleClass) {
+    return (ModuleHandle) ReflectionsFramework.loadModule(moduleClass);
   }
 }

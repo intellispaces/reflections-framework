@@ -50,13 +50,13 @@ import tech.intellispaces.reflections.framework.guide.n3.MapperOfMoving3;
 import tech.intellispaces.reflections.framework.guide.n3.Mover3;
 import tech.intellispaces.reflections.framework.guide.n4.AutoMapperOfMoving4;
 import tech.intellispaces.reflections.framework.guide.n4.MapperOfMoving4;
-import tech.intellispaces.reflections.framework.reflection.ReflectionBroker;
-import tech.intellispaces.reflections.framework.reflection.ReflectionBrokerImpl;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForms;
 import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
-import tech.intellispaces.reflections.framework.reflection.ReflectionImplementationType;
-import tech.intellispaces.reflections.framework.reflection.ReflectionImplementationTypeImpl;
+import tech.intellispaces.reflections.framework.reflection.ReflectionHandle;
+import tech.intellispaces.reflections.framework.reflection.ReflectionHandleImpl;
+import tech.intellispaces.reflections.framework.reflection.ReflectionRealizationType;
+import tech.intellispaces.reflections.framework.reflection.ReflectionRealizationTypeImpl;
 import tech.intellispaces.reflections.framework.space.channel.ChannelFunctions;
 import tech.intellispaces.reflections.framework.system.AutoGuideRegistry;
 import tech.intellispaces.reflections.framework.system.FactoryRegistry;
@@ -187,116 +187,229 @@ public class DefaultEngine implements Engine {
   }
 
   @Override
-  public <S, T> Mapper0<S, T> autoMapperThruChannel0(Type<S> sourceType, String cid, ReflectionForm targetForm) {
+  @SuppressWarnings("unchecked")
+  public <S, T> Mapper0<S, T> autoMapperThruChannel0(
+      Type<S> sourceType, String cid, ReflectionForm targetForm
+  ) {
     TraversePlan traversePlan = traverseAnalyzer.buildMapThruChannel0Plan(
         sourceType.asClassType().baseClass(), cid, targetForm
     );
-    return new AutoMapper0<>(cid, traversePlan, targetForm, traverseExecutor);
+    return new AutoMapper0<>(
+        cid,
+        traversePlan,
+        (Class<S>) sourceType.asClassType().baseClass(),
+        targetForm,
+        traverseExecutor
+    );
   }
 
   @Override
-  public <S, T, Q> Mapper1<S, T, Q> autoMapperThruChannel1(Type<S> sourceType, String cid, ReflectionForm targetForm) {
+  @SuppressWarnings("unchecked")
+  public <S, T, Q> Mapper1<S, T, Q> autoMapperThruChannel1(
+      Type<S> sourceType, String cid, ReflectionForm targetForm
+  ) {
     TraversePlan traversePlan = traverseAnalyzer.buildMapThruChannel1Plan(
         sourceType.asClassType().baseClass(), cid, targetForm
     );
-    return new AutoMapper1<>(cid, traversePlan, targetForm, traverseExecutor);
+    return new AutoMapper1<>(
+        cid,
+        traversePlan,
+        (Class<S>) sourceType.asClassType().baseClass(),
+        targetForm,
+        traverseExecutor
+    );
   }
 
   @Override
-  public <S, T, Q1, Q2> Mapper2<S, T, Q1, Q2> autoMapperThruChannel2(Type<S> sourceType, String cid, ReflectionForm targetForm) {
+  @SuppressWarnings("unchecked")
+  public <S, T, Q1, Q2> Mapper2<S, T, Q1, Q2> autoMapperThruChannel2(
+      Type<S> sourceType, String cid, ReflectionForm targetForm
+  ) {
     TraversePlan traversePlan = traverseAnalyzer.buildMapThruChannel2Plan(
         sourceType.asClassType().baseClass(), cid, targetForm
     );
-    return new AutoMapper2<>(cid, traversePlan, targetForm, traverseExecutor);
+    return new AutoMapper2<>(
+        cid,
+        traversePlan,
+        (Class<S>) sourceType.asClassType().baseClass(),
+        targetForm,
+        traverseExecutor
+    );
   }
 
   @Override
-  public <S, T, Q1, Q2, Q3> Mapper3<S, T, Q1, Q2, Q3> autoMapperThruChannel3(Type<S> sourceType, String cid, ReflectionForm targetForm) {
+  @SuppressWarnings("unchecked")
+  public <S, T, Q1, Q2, Q3> Mapper3<S, T, Q1, Q2, Q3> autoMapperThruChannel3(
+      Type<S> sourceType, String cid, ReflectionForm targetForm
+  ) {
     TraversePlan traversePlan = traverseAnalyzer.buildMapThruChannel3Plan(
         sourceType.asClassType().baseClass(), cid, targetForm
     );
-    return new AutoMapper3<>(cid, traversePlan, targetForm, traverseExecutor);
+    return new AutoMapper3<>(
+        cid,
+        traversePlan,
+        (Class<S>) sourceType.asClassType().baseClass(),
+        targetForm,
+        traverseExecutor
+    );
   }
 
   @Override
+  @SuppressWarnings("unchecked")
   public <S> Mover0<S> autoMoverThruChannel0(Type<S> sourceType, String cid, ReflectionForm targetForm) {
     TraversePlan traversePlan = traverseAnalyzer.buildMoveThruChannel0Plan(
         sourceType.asClassType().baseClass(), cid, targetForm
     );
-    return new AutoMover0<>(cid, traversePlan, targetForm, traverseExecutor);
+    return new AutoMover0<>(
+        cid,
+        traversePlan,
+        (Class<S>) sourceType.asClassType().baseClass(),
+        targetForm,
+        traverseExecutor
+    );
   }
 
   @Override
-  public <S, Q> Mover1<S, Q> autoMoverThruChannel1(Class<S> sourceClass, String cid, ReflectionForm targetForm) {
+  public <S, Q> Mover1<S, Q> autoMoverThruChannel1(
+      Class<S> sourceClass, String cid, ReflectionForm targetForm
+  ) {
     return autoMoverThruChannel1(Types.get(sourceClass), cid, targetForm);
   }
 
   @Override
-  public <S, Q> Mover1<S, Q> autoMoverThruChannel1(Type<S> sourceType, String cid, ReflectionForm targetForm) {
+  @SuppressWarnings("unchecked")
+  public <S, Q> Mover1<S, Q> autoMoverThruChannel1(
+      Type<S> sourceType, String cid, ReflectionForm targetForm
+  ) {
     TraversePlan traversePlan = traverseAnalyzer.buildMoveThruChannel1Plan(
         sourceType.asClassType().baseClass(), cid, targetForm
     );
-    return new AutoMover1<>(cid, traversePlan, targetForm, traverseExecutor);
+    return new AutoMover1<>(
+        cid,
+        traversePlan,
+        (Class<S>) sourceType.asClassType().baseClass(),
+        targetForm,
+        traverseExecutor
+    );
   }
 
   @Override
-  public <S, Q1, Q2> Mover2<S, Q1, Q2> autoMoverThruChannel2(Type<S> sourceType, String cid, ReflectionForm targetForm) {
+  @SuppressWarnings("unchecked")
+  public <S, Q1, Q2> Mover2<S, Q1, Q2> autoMoverThruChannel2(
+      Type<S> sourceType, String cid, ReflectionForm targetForm
+  ) {
     TraversePlan traversePlan = traverseAnalyzer.buildMoveThruChannel2Plan(
         sourceType.asClassType().baseClass(), cid, targetForm
     );
-    return new AutoMover2<>(cid, traversePlan, targetForm, traverseExecutor);
+    return new AutoMover2<>(
+        cid,
+        traversePlan,
+        (Class<S>) sourceType.asClassType().baseClass(),
+        targetForm,
+        traverseExecutor
+    );
   }
 
   @Override
-  public <S, Q1, Q2, Q3> Mover3<S, Q1, Q2, Q3> autoMoverThruChannel3(Type<S> sourceType, String cid, ReflectionForm targetForm) {
+  @SuppressWarnings("unchecked")
+  public <S, Q1, Q2, Q3> Mover3<S, Q1, Q2, Q3> autoMoverThruChannel3(
+      Type<S> sourceType, String cid, ReflectionForm targetForm
+  ) {
     TraversePlan traversePlan = traverseAnalyzer.buildMoveThruChannel3Plan(
         sourceType.asClassType().baseClass(), cid, targetForm
     );
-    return new AutoMover3<>(cid, traversePlan, targetForm, traverseExecutor);
+    return new AutoMover3<>(
+        cid,
+        traversePlan,
+        (Class<S>) sourceType.asClassType().baseClass(),
+        targetForm,
+        traverseExecutor
+    );
   }
 
   @Override
-  public <S, T> MapperOfMoving0<S, T> autoMapperOfMovingThruChannel0(Type<S> sourceType, String cid, ReflectionForm targetForm) {
+  @SuppressWarnings("unchecked")
+  public <S, T> MapperOfMoving0<S, T> autoMapperOfMovingThruChannel0(
+      Type<S> sourceType, String cid, ReflectionForm targetForm
+  ) {
     TraversePlan traversePlan = traverseAnalyzer.buildMapOfMovingThruChannel0Plan(
         sourceType.asClassType().baseClass(), cid, targetForm
     );
-    return new AutoMapperOfMoving0<>(cid, traversePlan, targetForm, traverseExecutor);
+    return new AutoMapperOfMoving0<>(
+        cid,
+        traversePlan,
+        (Class<S>) sourceType.asClassType().baseClass(),
+        targetForm,
+        traverseExecutor
+    );
   }
 
   @Override
-  public <S, T, Q> MapperOfMoving1<S, T, Q> autoMapperOfMovingThruChannel1(Type<S> sourceType, String cid, ReflectionForm targetForm) {
+  @SuppressWarnings("unchecked")
+  public <S, T, Q> MapperOfMoving1<S, T, Q> autoMapperOfMovingThruChannel1(
+      Type<S> sourceType, String cid, ReflectionForm targetForm
+  ) {
     TraversePlan traversePlan = traverseAnalyzer.buildMapOfMovingThruChannel1Plan(
         sourceType.asClassType().baseClass(), cid, targetForm
     );
-    return new AutoMapperOfMoving1<>(cid, traversePlan, targetForm, traverseExecutor);
+    return new AutoMapperOfMoving1<>(
+        cid,
+        traversePlan,
+        (Class<S>) sourceType.asClassType().baseClass(),
+        targetForm,
+        traverseExecutor
+    );
   }
 
   @Override
-  public <S, T, Q1, Q2> MapperOfMoving2<S, T, Q1, Q2> autoMapperOfMovingThruChannel2(Type<S> sourceType, String cid, ReflectionForm targetForm) {
+  @SuppressWarnings("unchecked")
+  public <S, T, Q1, Q2> MapperOfMoving2<S, T, Q1, Q2> autoMapperOfMovingThruChannel2(
+      Type<S> sourceType, String cid, ReflectionForm targetForm
+  ) {
     TraversePlan traversePlan = traverseAnalyzer.buildMapOfMovingThruChannel2Plan(
         sourceType.asClassType().baseClass(), cid, targetForm
     );
-    return new AutoMapperOfMoving2<>(cid, traversePlan, targetForm, traverseExecutor);
+    return new AutoMapperOfMoving2<>(
+        cid,
+        traversePlan,
+        (Class<S>) sourceType.asClassType().baseClass(),
+        targetForm,
+        traverseExecutor
+    );
   }
 
   @Override
+  @SuppressWarnings("unchecked")
   public <S, T, Q1, Q2, Q3> MapperOfMoving3<S, T, Q1, Q2, Q3> autoMapperOfMovingThruChannel3(
       Type<S> sourceType, String cid, ReflectionForm targetForm
   ) {
     TraversePlan traversePlan = traverseAnalyzer.buildMapOfMovingThruChannel3Plan(
         sourceType.asClassType().baseClass(), cid, targetForm
     );
-    return new AutoMapperOfMoving3<>(cid, traversePlan, targetForm, traverseExecutor);
+    return new AutoMapperOfMoving3<>(
+        cid,
+        traversePlan,
+        (Class<S>) sourceType.asClassType().baseClass(),
+        targetForm,
+        traverseExecutor
+    );
   }
 
   @Override
+  @SuppressWarnings("unchecked")
   public <S, T, Q1, Q2, Q3, Q4> MapperOfMoving4<S, T, Q1, Q2, Q3, Q4> autoMapperOfMovingThruChannel4(
       Type<S> sourceType, String cid, ReflectionForm targetForm
   ) {
     TraversePlan traversePlan = traverseAnalyzer.buildMapOfMovingThruChannel4Plan(
         sourceType.asClassType().baseClass(), cid, targetForm
     );
-    return new AutoMapperOfMoving4<>(cid, traversePlan, targetForm, traverseExecutor);
+    return new AutoMapperOfMoving4<>(
+        cid,
+        traversePlan,
+        (Class<S>) sourceType.asClassType().baseClass(),
+        targetForm,
+        traverseExecutor
+    );
   }
 
   @Override
@@ -421,8 +534,8 @@ public class DefaultEngine implements Engine {
   }
 
   @Override
-  public void registerReflectionImplementationType(ReflectionImplementationType type) {
-    loadReflectionGuides(type.reflectionImplementationClass());
+  public void registerReflectionRealizationType(ReflectionRealizationType type) {
+    loadReflectionGuides(type.realizationClass());
   }
 
   private void loadReflectionGuides(Class<?> reflectionClass) {
@@ -434,9 +547,9 @@ public class DefaultEngine implements Engine {
   }
 
   @Override
-  public <W> ReflectionBroker registerReflection(W reflection, ReflectionImplementationType type) {
-    var typeImpl = (ReflectionImplementationTypeImpl) type;
-    return new ReflectionBrokerImpl(
+  public <W> ReflectionHandle registerReflection(W reflection, ReflectionRealizationType type) {
+    var typeImpl = (ReflectionRealizationTypeImpl) type;
+    return new ReflectionHandleImpl(
         type,
         typeImpl.methodActions(),
         typeImpl.guideActions(),

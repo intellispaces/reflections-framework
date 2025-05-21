@@ -19,19 +19,20 @@ import tech.intellispaces.reflections.framework.system.empty.EmptyModuleWrapper;
 public class ModuleFactory {
 
     /**
-     * Loads module.
+     * Creates module.
      *
      * @param unitClasses module unit classes.
      * @param engine the engine.
      * @return created module.
      */
-    public static ModuleHandleImpl createModule(List<Class<?>> unitClasses, Engine engine) {
+    public static ModuleHandle createModule(List<Class<?>> unitClasses, Engine engine) {
         List<UnitHandle> units = createUnits(unitClasses);
         applyAdvises(units, engine);
 
-
-
-        return new ModuleHandleImpl(engine, units);
+        var system = new SystemHandleImpl(engine);
+        ModuleHandle module = new ModuleHandleImpl(system, units);
+        system.setCurrentModule(module);
+        return module;
     }
 
     static List<UnitHandle> createUnits(List<Class<?>> unitClasses) {

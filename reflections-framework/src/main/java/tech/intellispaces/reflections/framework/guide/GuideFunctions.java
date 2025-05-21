@@ -217,7 +217,7 @@ public final class GuideFunctions {
     );
     Optional<Class<?>> reflectionImplClass = ClassFunctions.getClass(implClassCanonicalName);
     if (reflectionImplClass.isEmpty()) {
-      throw UnexpectedExceptions.withMessage("Could not get reflection implementation class {0}",
+      throw UnexpectedExceptions.withMessage("Could not get reflection realization class {0}",
           implClassCanonicalName);
     }
     CustomType reflectionWrapperType = Interfaces.of(reflectionImplClass.get());

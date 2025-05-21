@@ -11,8 +11,9 @@ public class UnitMapperOfMoving1<S, T, Q> extends UnitGuide1<S, T, Q> implements
       UnitWrapper unitInstance,
       MethodStatement guideMethod,
       int guideOrdinal,
+      Class<S> sourceClass,
       ReflectionForm targetForm
   ) {
-    super(cid, unitInstance, guideMethod, guideOrdinal, targetForm);
+    super(cid, unitInstance, guideMethod, guideOrdinal, sourceClass, targetForm);
   }
 }

@@ -3,12 +3,13 @@ package tech.intellispaces.reflections.framework.system;
 import java.util.Arrays;
 import java.util.List;
 
+import tech.intellispaces.core.Module;
 import tech.intellispaces.reflections.framework.engine.Engine;
 import tech.intellispaces.reflections.framework.engine.Engines;
 import tech.intellispaces.reflections.framework.exception.ConfigurationExceptions;
-import tech.intellispaces.reflections.framework.node.NodeFunctions;
 
 import static tech.intellispaces.reflections.framework.engine.EngineLoader.loadEngine;
+import static tech.intellispaces.reflections.framework.node.ReflectionsNodeFunctions.moduleHolder;
 import static tech.intellispaces.reflections.framework.system.ModuleFactory.createModule;
 import static tech.intellispaces.reflections.framework.system.ModuleValidator.validateModule;
 
@@ -16,8 +17,6 @@ import static tech.intellispaces.reflections.framework.system.ModuleValidator.va
  * System modules provider.
  */
 public class Modules {
-  private static System SYSTEM;
-  private static ModuleHandle MODULE;
 
   /**
    * Loads a new system module.
@@ -49,44 +48,25 @@ public class Modules {
    */
   public static ModuleHandle load(List<Class<?>> unitClasses, String[] args) {
     synchronized (Modules.class) {
-      if (MODULE != null) {
-        throw ConfigurationExceptions.withMessage("The module has already been uploaded");
-      }
-
       Engine engine = Engines.create(args);
-      NodeFunctions.engineHolder().set(engine);
-      ModuleHandleImpl module = createModule(unitClasses, engine);
+      ModuleHandle module = createModule(unitClasses, engine);
       validateModule(module);
+      moduleHolder().set(module);
       loadEngine(engine, module);
-
-      MODULE = module;
-      SYSTEM = new SystemImpl(module, engine);
+      return module;
     }
-    return MODULE;
   }
 
   /**
-   * Unloads the current module.
+   * Unloads the module.
+   *
+   * @param module the module.
    */
-  public static void unload() {
+  public static void unload(Module module) {
     synchronized (Modules.class) {
-      current().stop();
-      NodeFunctions.engineHolder().set(null);
-      MODULE = null;
-      SYSTEM = null;
+      module.stop();
+      moduleHolder().set(null);
     }
-  }
-
-  /**
-   * Returns the current loaded system.
-   * <p>
-   * If there is no current system, an exception will be thrown.
-   */
-  public static System currentSystem() {
-    if (SYSTEM == null) {
-      throw ConfigurationExceptions.withMessage("There are no loaded system");
-    }
-    return SYSTEM;
   }
 
   /**
@@ -108,7 +88,7 @@ public class Modules {
    * @return current module or <code>null</code> if there are no loaded module.
    */
   public static ModuleHandle currentSilently() {
-    return MODULE;
+    return moduleHolder().get();
   }
 
   private Modules() {}

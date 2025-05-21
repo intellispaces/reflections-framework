@@ -41,6 +41,11 @@ abstract class ObjectGuide4<S extends ReflectionWrapper, R, Q1, Q2, Q3, Q4> impl
   }
 
   @Override
+  public Class<S> sourceClass() {
+    return reflectionClass;
+  }
+
+  @Override
   public ReflectionForm targetForm() {
     return targetForm;
   }
@@ -50,7 +55,7 @@ abstract class ObjectGuide4<S extends ReflectionWrapper, R, Q1, Q2, Q3, Q4> impl
   public R traverse(S source, Q1 qualifier1, Q2 qualifier2, Q3 qualifier3, Q4 qualifier4) throws TraverseException {
     try {
       GuideLogger.logCallGuide(guideMethod);
-      return (R) source.$broker().guideAction(traverseOrdinal).castToAction5().execute(
+      return (R) source.$handle().guideAction(traverseOrdinal).castToAction5().execute(
           source, qualifier1, qualifier2, qualifier3, qualifier4
       );
     } catch (TraverseException e) {

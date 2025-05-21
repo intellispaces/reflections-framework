@@ -20,6 +20,12 @@ public interface {{$generatedArtifactSimpleName}} extends {{$guideClassSimpleNam
   }
 
   @Override
+  @SuppressWarnings("unchecked")
+  default Class<{{$sourceType}}> sourceClass() {
+    return (Class) {{$sourceClass}}.class;
+  }
+
+  @Override
   default ReflectionForm targetForm() {
     return ReflectionForms.{{$targetForm}};
   }

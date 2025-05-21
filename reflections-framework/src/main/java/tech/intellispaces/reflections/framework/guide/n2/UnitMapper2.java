@@ -21,8 +21,9 @@ public class UnitMapper2<S, T, Q1, Q2>
       UnitWrapper unitInstance,
       MethodStatement guideMethod,
       int guideOrdinal,
+      Class<S> sourceClass,
       ReflectionForm targetForm
   ) {
-    super(cid, unitInstance, guideMethod, guideOrdinal, targetForm);
+    super(cid, unitInstance, guideMethod, guideOrdinal, sourceClass, targetForm);
   }
 }

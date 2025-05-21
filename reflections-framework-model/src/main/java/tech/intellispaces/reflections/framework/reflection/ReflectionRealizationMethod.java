@@ -6,9 +6,9 @@ import tech.intellispaces.actions.Action;
 import tech.intellispaces.reflections.framework.traverse.TraverseType;
 
 /**
- * The reflection implementation method description.
+ * The reflection realization method description.
  */
-public interface ReflectionImplementationMethod {
+public interface ReflectionRealizationMethod {
 
   /**
    * The method name.
@@ -23,7 +23,7 @@ public interface ReflectionImplementationMethod {
   /**
    * The method purpose.
    */
-  ReflectionImplementationMethodPurpose purpose();
+  ReflectionRealizationMethodPurpose purpose();
 
   /**
    * The traverse method ordinal.

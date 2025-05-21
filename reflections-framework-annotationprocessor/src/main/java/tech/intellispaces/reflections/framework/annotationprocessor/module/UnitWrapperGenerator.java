@@ -181,9 +181,9 @@ public class UnitWrapperGenerator extends ReflectionsArtifactGenerator {
                   method.name(), sourceArtifact().className()
               );
             }
-            addAutoGuideInjectionAndImplementationMethod(method);
+            addAutoGuideInjectionAndRealizationMethod(method);
           } else if (AnnotationGeneratorFunctions.returnTypeIsGuide(method)) {
-            addGuideInjectionAndImplementationMethod(method);
+            addGuideInjectionAndRealizationMethod(method);
           } else {
             addProjectionInjection(method);
           }
@@ -422,7 +422,7 @@ public class UnitWrapperGenerator extends ReflectionsArtifactGenerator {
     return map;
   }
 
-  private void addAutoGuideInjectionAndImplementationMethod(MethodStatement method) {
+  private void addAutoGuideInjectionAndRealizationMethod(MethodStatement method) {
     addImport(Modules.class);
     addImport(ProjectionInjection.class);
 
@@ -439,7 +439,7 @@ public class UnitWrapperGenerator extends ReflectionsArtifactGenerator {
     injectionMethodCounter++;
   }
 
-  private void addGuideInjectionAndImplementationMethod(MethodStatement method) {
+  private void addGuideInjectionAndRealizationMethod(MethodStatement method) {
     addImport(Modules.class);
     addImport(ProjectionInjection.class);
 

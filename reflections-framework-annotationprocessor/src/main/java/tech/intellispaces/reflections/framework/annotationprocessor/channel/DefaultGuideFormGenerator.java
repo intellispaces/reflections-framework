@@ -110,6 +110,8 @@ public class DefaultGuideFormGenerator extends ReflectionsArtifactGenerator {
 
     addVariable("channelClassSimpleName", channelClassSimpleName());
     addVariable("guideClassSimpleName", guideClassSimpleName);
+    addVariable("sourceType", buildSourceReflectionDeclaration(this::replaceNamedReference, true));
+    addVariable("sourceClass", getSourceTypename());
     addVariable("guideTypeParams", buildGuideTypeParams());
     addVariable("guideAnnotation", guideAnnotation);
     addVariable("guideMethod", guideMethod);
@@ -118,6 +120,16 @@ public class DefaultGuideFormGenerator extends ReflectionsArtifactGenerator {
     addVariable("traverseMethodPrimitiveFormLong", traverseMethodPrimitiveFormLong);
     addVariable("traverseMethodPrimitiveFormDouble", traverseMethodPrimitiveFormDouble);
     return true;
+  }
+
+  private String getSourceTypename() {
+    TypeReference sourceType = channelMethod.params().get(0).type();
+    String sourceTypename = ReflectionFunctions.getObjectFormTypename(
+        ReflectionForms.Regular,
+        sourceType,
+        this::replaceNamedReference
+    );
+    return sourceType.isCustomTypeReference() ? addImportAndGetSimpleName(sourceTypename) : sourceTypename;
   }
 
   protected String buildGuideMethod() {

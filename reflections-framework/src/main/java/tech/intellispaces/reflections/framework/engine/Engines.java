@@ -5,16 +5,8 @@ import java.util.ServiceLoader;
 import java.util.stream.Collectors;
 
 import tech.intellispaces.reflections.framework.exception.ConfigurationExceptions;
-import tech.intellispaces.reflections.framework.node.NodeFunctions;
 
 public class Engines {
-
-  /**
-   * Returns current active engine.
-   */
-  public static Engine get() {
-    return NodeFunctions.engineHolder().get();
-  }
 
   /**
    * Creates new engine.
@@ -26,7 +18,7 @@ public class Engines {
     return findFactory().create(args);
   }
 
-  private static EngineFactory findFactory() {
+  static EngineFactory findFactory() {
     ServiceLoader<EngineFactory> serviceLoader = ServiceLoader.load(EngineFactory.class);
     List<ServiceLoader.Provider<EngineFactory>> providers = serviceLoader.stream().toList();
     if (providers.isEmpty()) {

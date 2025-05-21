@@ -6,13 +6,26 @@ import tech.intellispaces.reflections.framework.engine.Engine;
 import tech.intellispaces.reflections.framework.traverse.MappingOfMovingTraverse;
 import tech.intellispaces.reflections.framework.traverse.MappingTraverse;
 
-public class SystemImpl implements System {
-    private final ModuleHandle currentModule;
+public class SystemHandleImpl implements SystemHandle {
     private final Engine engine;
+    private ModuleHandle currentModule;
 
-    public SystemImpl(ModuleHandle currentModule, Engine engine) {
-        this.currentModule = currentModule;
+    public SystemHandleImpl(Engine engine) {
         this.engine = engine;
+    }
+
+    void setCurrentModule(ModuleHandle currentModule) {
+        this.currentModule = currentModule;
+    }
+
+    @Override
+    public ModuleHandle currentModule() {
+        return currentModule;
+    }
+
+    @Override
+    public Engine engine() {
+        return engine;
     }
 
     @Override

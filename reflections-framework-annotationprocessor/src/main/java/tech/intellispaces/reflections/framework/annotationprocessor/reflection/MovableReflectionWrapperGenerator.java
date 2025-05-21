@@ -25,19 +25,19 @@ import tech.intellispaces.reflections.framework.engine.EngineRegistrar;
 import tech.intellispaces.reflections.framework.engine.Engines;
 import tech.intellispaces.reflections.framework.exception.TraverseException;
 import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
-import tech.intellispaces.reflections.framework.node.NodeFunctions;
+import tech.intellispaces.reflections.framework.node.ReflectionsNodeFunctions;
 import tech.intellispaces.reflections.framework.reflection.MovabilityType;
 import tech.intellispaces.reflections.framework.reflection.MovabilityTypes;
 import tech.intellispaces.reflections.framework.reflection.MovableReflection;
 import tech.intellispaces.reflections.framework.reflection.OverlyingReflectionController;
 import tech.intellispaces.reflections.framework.reflection.PostRegistrationReflectionHandler;
 import tech.intellispaces.reflections.framework.reflection.Reflection;
-import tech.intellispaces.reflections.framework.reflection.ReflectionBroker;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForms;
-import tech.intellispaces.reflections.framework.reflection.ReflectionImplementationMethodPurposes;
-import tech.intellispaces.reflections.framework.reflection.ReflectionImplementationType;
-import tech.intellispaces.reflections.framework.reflection.ReflectionImplementationTypes;
+import tech.intellispaces.reflections.framework.reflection.ReflectionHandle;
+import tech.intellispaces.reflections.framework.reflection.ReflectionRealizationMethodPurposes;
+import tech.intellispaces.reflections.framework.reflection.ReflectionRealizationType;
+import tech.intellispaces.reflections.framework.reflection.ReflectionRealizationTypes;
 import tech.intellispaces.reflections.framework.space.channel.ChannelFunctions;
 import tech.intellispaces.reflections.framework.system.Modules;
 import tech.intellispaces.reflections.framework.system.ReflectionWrapper;
@@ -103,16 +103,16 @@ public class MovableReflectionWrapperGenerator extends AbstractReflectionWrapper
         MappingTraverse.class,
         MappingOfMovingTraverse.class,
         PrimitiveFunctions.class,
-        ReflectionImplementationType.class,
-        ReflectionBroker.class,
+        ReflectionRealizationType.class,
+        ReflectionHandle.class,
         Engines.class,
         TraverseTypes.class,
-        ReflectionImplementationMethodPurposes.class,
+        ReflectionRealizationMethodPurposes.class,
         TraverseException.class,
         NotImplementedExceptions.class,
-        ReflectionImplementationTypes.class,
+        ReflectionRealizationTypes.class,
         EngineRegistrar.class,
-        NodeFunctions.class
+        ReflectionsNodeFunctions.class
     );
 
     analyzeDomain();

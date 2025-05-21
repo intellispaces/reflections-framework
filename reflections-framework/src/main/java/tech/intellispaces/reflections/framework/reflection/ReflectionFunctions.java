@@ -32,12 +32,12 @@ import tech.intellispaces.jstatements.reference.NotPrimitiveReference;
 import tech.intellispaces.jstatements.reference.ReferenceBound;
 import tech.intellispaces.jstatements.reference.TypeReference;
 import tech.intellispaces.jstatements.reference.WildcardReference;
-import tech.intellispaces.reflections.framework.ReflectionsFramework;
 import tech.intellispaces.reflections.framework.annotation.Movable;
 import tech.intellispaces.reflections.framework.annotation.Reflection;
 import tech.intellispaces.reflections.framework.annotation.Unmovable;
 import tech.intellispaces.reflections.framework.annotation.Wrapper;
 import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
+import tech.intellispaces.reflections.framework.node.ReflectionsNodeFunctions;
 import tech.intellispaces.reflections.framework.settings.DomainReference;
 import tech.intellispaces.reflections.framework.settings.DomainTypes;
 import tech.intellispaces.reflections.framework.space.domain.DomainFunctions;
@@ -531,7 +531,7 @@ public class ReflectionFunctions {
 
   public static Class<?> propertiesReflectionClass() {
     if (propertiesReflectionClass == null) {
-      DomainReference domainReference = ReflectionsFramework.ontologyReference().getDomainByType(DomainTypes.PropertiesSet);
+      DomainReference domainReference = ReflectionsNodeFunctions.ontologyReference().getDomainByType(DomainTypes.PropertiesSet);
       String domainClassName = NameConventionFunctions.convertToDomainClassName(domainReference.domainName());
       String reflectionClassName = NameConventionFunctions.getGeneralRegularFormClassname(domainClassName, false);
       propertiesReflectionClass = ClassFunctions.getClass(reflectionClassName).orElseThrow(() ->

@@ -5,10 +5,10 @@ import java.util.List;
 import tech.intellispaces.actions.Action;
 import tech.intellispaces.reflections.framework.traverse.TraverseType;
 
-class ReflectionImplementationMethodImpl implements ReflectionImplementationMethod {
+class ReflectionRealizationMethodImpl implements ReflectionRealizationMethod {
   private final String name;
   private final List<Class<?>> paramClasses;
-  private final ReflectionImplementationMethodPurpose purpose;
+  private final ReflectionRealizationMethodPurpose purpose;
 
   private final int traverseOrdinal;
   private final Action action;
@@ -20,10 +20,10 @@ class ReflectionImplementationMethodImpl implements ReflectionImplementationMeth
   private final String injectionName;
   private final Class<?> injectionType;
 
-  ReflectionImplementationMethodImpl(
+  ReflectionRealizationMethodImpl(
       String name,
       List<Class<?>> paramClasses,
-      ReflectionImplementationMethodPurpose purpose,
+      ReflectionRealizationMethodPurpose purpose,
       int traverseOrdinal,
       Action action,
       Class<?> channelClass,
@@ -57,7 +57,7 @@ class ReflectionImplementationMethodImpl implements ReflectionImplementationMeth
   }
 
   @Override
-  public ReflectionImplementationMethodPurpose purpose() {
+  public ReflectionRealizationMethodPurpose purpose() {
     return purpose;
   }
 

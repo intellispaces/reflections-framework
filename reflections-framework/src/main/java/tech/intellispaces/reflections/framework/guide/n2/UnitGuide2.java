@@ -11,19 +11,28 @@ import tech.intellispaces.reflections.framework.system.UnitWrapper;
 
 abstract class UnitGuide2<S, R, Q1, Q2> implements Guide2<S, R, Q1, Q2>, UnitGuide<S, R> {
   private final String cid;
-  private final UnitWrapper unit;
+  private final UnitWrapper unitInstance;
   private final MethodStatement guideMethod;
   private final int guideOrdinal;
+  private final Class<S> sourceClass;
   private final ReflectionForm targetForm;
 
-  UnitGuide2(String cid, UnitWrapper unit, MethodStatement guideMethod, int guideOrdinal, ReflectionForm targetForm) {
+  UnitGuide2(
+      String cid,
+      UnitWrapper unitInstance,
+      MethodStatement guideMethod,
+      int guideOrdinal,
+      Class<S> sourceClass,
+      ReflectionForm targetForm
+  ) {
     if (guideMethod.params().size() != 3) {
       throw UnexpectedExceptions.withMessage("Guide method should have three parameters: source and two qualifiers");
     }
     this.cid = cid;
-    this.unit = unit;
+    this.unitInstance = unitInstance;
     this.guideMethod = guideMethod;
     this.guideOrdinal = guideOrdinal;
+    this.sourceClass = sourceClass;
     this.targetForm = targetForm;
   }
 
@@ -43,6 +52,11 @@ abstract class UnitGuide2<S, R, Q1, Q2> implements Guide2<S, R, Q1, Q2>, UnitGui
   }
 
   @Override
+  public Class<S> sourceClass() {
+    return sourceClass;
+  }
+
+  @Override
   public ReflectionForm targetForm() {
     return targetForm;
   }
@@ -52,7 +66,7 @@ abstract class UnitGuide2<S, R, Q1, Q2> implements Guide2<S, R, Q1, Q2>, UnitGui
   public R traverse(S source, Q1 qualifier1, Q2 qualifier2) throws TraverseException {
     try {
       GuideLogger.logCallGuide(guideMethod);
-      return (R) unit.$handle().guideAction(guideOrdinal).castToAction3().execute(
+      return (R) unitInstance.$handle().guideAction(guideOrdinal).castToAction3().execute(
           source, qualifier1, qualifier2
       );
     } catch (TraverseException e) {

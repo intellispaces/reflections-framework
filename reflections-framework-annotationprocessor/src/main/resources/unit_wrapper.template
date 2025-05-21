@@ -72,7 +72,7 @@ public class {{$generatedArtifactSimpleName}}{{$typeParamsFullDeclaration}} exte
             .consumer({{$generatedArtifactSimpleName}}::{{$method["name"]}})
 {{end}}
 {{when $method["prototypeMethodName"].isNotVoid()}}
-           .prototypeMethodName("{{$method["prototypeMethodName"]}}")
+            .prototypeMethodName("{{$method["prototypeMethodName"]}}")
 {{end}}
 {{when $method["injectionName"].isNotVoid()}}
             .injectionName("{{$method["injectionName"]}}")

@@ -10,6 +10,7 @@ import tech.intellispaces.reflections.framework.channel.Channel1;
 import tech.intellispaces.reflections.framework.channel.Channel2;
 import tech.intellispaces.reflections.framework.channel.Channel3;
 import tech.intellispaces.reflections.framework.channel.Channel4;
+import tech.intellispaces.reflections.framework.engine.Engine;
 import tech.intellispaces.reflections.framework.guide.n0.Mapper0;
 import tech.intellispaces.reflections.framework.guide.n0.MapperOfMoving0;
 import tech.intellispaces.reflections.framework.guide.n0.Mover0;
@@ -32,15 +33,14 @@ import tech.intellispaces.reflections.framework.traverse.MappingTraverse;
  */
 public interface ModuleHandle extends Module {
 
+  /**
+   * Returns the module engine.
+   */
+  Engine engine();
+
   UnitHandle mainUnit();
 
   List<UnitHandle> unitHandles();
-
-  void start();
-
-  void start(String[] args);
-
-  void stop();
 
   <S, T> T mapThruChannel0(S source, String cid);
 

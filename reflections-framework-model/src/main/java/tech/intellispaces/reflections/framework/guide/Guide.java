@@ -8,7 +8,7 @@ import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
  *
  * The guide is a microsystem designed for one specific processing of objects of the same type.
  *
- * Guides splits system into lightweight subsystems.<p/>
+ * Guides splits system into lightweight parts.<p/>
  *
  * The guide is object.<p/>
  * Guide can be constructed from other guides.<p/>
@@ -29,6 +29,8 @@ public interface Guide<S, R> {
    * Related channel defined guide capability.
    */
   String channelId();
+
+  Class<S> sourceClass();
 
   /**
    * Guide form.

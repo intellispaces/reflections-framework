@@ -15,13 +15,13 @@ import tech.intellispaces.reflections.framework.system.injection.InjectionKinds;
  */
 public class ModuleValidator {
 
-  public static void validateModule(ModuleHandleImpl module) {
+  public static void validateModule(ModuleHandle module) {
     checkThatOneMainUnit(module);
     checkThatThereAreNoProjectionsWithSameName(module);
     checkInjections(module);
   }
 
-  static void checkThatOneMainUnit(ModuleHandleImpl module) {
+  static void checkThatOneMainUnit(ModuleHandle module) {
     List<UnitHandle> mainUnits = module.unitHandles().stream()
         .filter(Unit::isMain)
         .toList();
@@ -36,7 +36,7 @@ public class ModuleValidator {
     }
   }
 
-  static void checkThatThereAreNoProjectionsWithSameName(ModuleHandleImpl module) {
+  static void checkThatThereAreNoProjectionsWithSameName(ModuleHandle module) {
     String message = module.unitHandles().stream()
         .map(UnitHandle::projectionDefinitions)
         .flatMap(List::stream)
@@ -50,7 +50,7 @@ public class ModuleValidator {
     }
   }
 
-  static void checkInjections(ModuleHandleImpl module) {
+  static void checkInjections(ModuleHandle module) {
     Map<String, UnitProjectionDefinition> projectionDefinitions = module.unitHandles().stream()
         .map(UnitHandle::projectionDefinitions)
         .flatMap(List::stream)
@@ -60,7 +60,7 @@ public class ModuleValidator {
   }
 
   static void checkUnitInjections(
-      ModuleHandleImpl module, Map<String, UnitProjectionDefinition> projectionDefinitions
+      ModuleHandle module, Map<String, UnitProjectionDefinition> projectionDefinitions
   ) {
     List<ProjectionInjection> injections = module.unitHandles().stream()
         .map(UnitHandle::injections)

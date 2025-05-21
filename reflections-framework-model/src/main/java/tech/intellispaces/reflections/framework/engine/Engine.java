@@ -34,9 +34,9 @@ import tech.intellispaces.reflections.framework.guide.n3.Mapper3;
 import tech.intellispaces.reflections.framework.guide.n3.MapperOfMoving3;
 import tech.intellispaces.reflections.framework.guide.n3.Mover3;
 import tech.intellispaces.reflections.framework.guide.n4.MapperOfMoving4;
-import tech.intellispaces.reflections.framework.reflection.ReflectionBroker;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
-import tech.intellispaces.reflections.framework.reflection.ReflectionImplementationType;
+import tech.intellispaces.reflections.framework.reflection.ReflectionHandle;
+import tech.intellispaces.reflections.framework.reflection.ReflectionRealizationType;
 import tech.intellispaces.reflections.framework.system.ModuleProjection;
 import tech.intellispaces.reflections.framework.system.ProjectionDefinition;
 import tech.intellispaces.reflections.framework.traverse.MappingOfMovingTraverse;
@@ -165,22 +165,22 @@ public interface Engine {
   void removeContextProjection(String name);
 
   /**
-   * Registers reflection implementation type.
+   * Registers reflection realization type.
    *
-   * @param type the reflection implementation type.
+   * @param type the reflection realization type.
    */
-  void registerReflectionImplementationType(ReflectionImplementationType type);
+  void registerReflectionRealizationType(ReflectionRealizationType type);
 
   /**
    * Registers reflection.
    *
    * @param reflection the reflection.
-   * @param type the reflection implementation type.
-   * @return the reflection broker.
+   * @param type the reflection realization type.
+   * @return the reflection handle.
    *
    * @param <R> the reflection wrapper type.
    */
-  <R> ReflectionBroker registerReflection(R reflection, ReflectionImplementationType type);
+  <R> ReflectionHandle registerReflection(R reflection, ReflectionRealizationType type);
 
   /**
    * Returns the factory action for creating a reflection according to a contract type.

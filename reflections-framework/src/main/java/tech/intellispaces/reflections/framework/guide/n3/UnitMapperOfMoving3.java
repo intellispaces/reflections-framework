@@ -11,8 +11,9 @@ public class UnitMapperOfMoving3<S, T, Q1, Q2, Q3> extends UnitGuide3<S, T, Q1, 
       UnitWrapper unitInstance,
       MethodStatement guideMethod,
       int guideOrdinal,
+      Class<S> sourceClass,
       ReflectionForm targetForm
   ) {
-    super(cid, unitInstance, guideMethod, guideOrdinal, targetForm);
+    super(cid, unitInstance, guideMethod, guideOrdinal, sourceClass, targetForm);
   }
 }

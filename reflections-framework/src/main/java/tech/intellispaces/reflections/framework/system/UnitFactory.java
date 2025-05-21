@@ -252,14 +252,15 @@ class UnitFactory {
   ) {
     String cid = unitMethod.guideChannelId();
     int guideOrdinal = unitMethod.guideOrdinal();
-    int qualifiersCount = unitMethod.paramClasses().size();
+    Class<?> sourceClass = unitMethod.paramClasses().get(0);
+    int qualifiersCount = unitMethod.paramClasses().size() - 1;
     ReflectionForm targetForm = unitMethod.guideTargetForm();
     MethodStatement guideMethod = getGuideMethod(unitClass, unitMethod);
     return switch (qualifiersCount) {
-      case 1 -> new UnitMapper0<>(cid, unitInstance, guideMethod, guideOrdinal, targetForm);
-      case 2 -> new UnitMapper1<>(cid, unitInstance, guideMethod, guideOrdinal, targetForm);
-      case 3 -> new UnitMapper2<>(cid, unitInstance, guideMethod, guideOrdinal, targetForm);
-      case 4 -> new UnitMapper3<>(cid, unitInstance, guideMethod, guideOrdinal, targetForm);
+      case 0 -> new UnitMapper0<>(cid, unitInstance, guideMethod, guideOrdinal, sourceClass, targetForm);
+      case 1 -> new UnitMapper1<>(cid, unitInstance, guideMethod, guideOrdinal, sourceClass, targetForm);
+      case 2 -> new UnitMapper2<>(cid, unitInstance, guideMethod, guideOrdinal, sourceClass, targetForm);
+      case 3 -> new UnitMapper3<>(cid, unitInstance, guideMethod, guideOrdinal, sourceClass, targetForm);
       default -> throw UnexpectedExceptions.withMessage("Unsupported number of guide qualifiers: {0}",
           qualifiersCount);
     };
@@ -277,14 +278,15 @@ class UnitFactory {
   ) {
     String cid = unitMethod.guideChannelId();
     int guideOrdinal = unitMethod.guideOrdinal();
-    int qualifiersCount = unitMethod.paramClasses().size();
+    Class<?> sourceClass = unitMethod.paramClasses().get(0);
+    int qualifiersCount = unitMethod.paramClasses().size() - 1;
     ReflectionForm targetForm = unitMethod.guideTargetForm();
     MethodStatement guideMethod = getGuideMethod(unitClass, unitMethod);
     return switch (qualifiersCount) {
-      case 1 -> new UnitMapperOfMoving0<>(cid, unitInstance, guideMethod, guideOrdinal, targetForm);
-      case 2 -> new UnitMapperOfMoving1<>(cid, unitInstance, guideMethod, guideOrdinal, targetForm);
-      case 3 -> new UnitMapperOfMoving2<>(cid, unitInstance, guideMethod, guideOrdinal, targetForm);
-      case 4 -> new UnitMapperOfMoving3<>(cid, unitInstance, guideMethod, guideOrdinal, targetForm);
+      case 0 -> new UnitMapperOfMoving0<>(cid, unitInstance, guideMethod, guideOrdinal, sourceClass, targetForm);
+      case 1 -> new UnitMapperOfMoving1<>(cid, unitInstance, guideMethod, guideOrdinal, sourceClass, targetForm);
+      case 2 -> new UnitMapperOfMoving2<>(cid, unitInstance, guideMethod, guideOrdinal, sourceClass, targetForm);
+      case 3 -> new UnitMapperOfMoving3<>(cid, unitInstance, guideMethod, guideOrdinal, sourceClass, targetForm);
       default -> throw UnexpectedExceptions.withMessage("Unsupported number of guide qualifiers: {0}",
           qualifiersCount);
     };

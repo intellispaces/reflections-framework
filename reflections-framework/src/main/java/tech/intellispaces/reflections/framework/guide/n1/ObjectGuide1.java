@@ -41,6 +41,11 @@ abstract class ObjectGuide1<S extends ReflectionWrapper, R, Q> implements Guide1
   }
 
   @Override
+  public Class<S> sourceClass() {
+    return reflectionClass;
+  }
+
+  @Override
   public ReflectionForm targetForm() {
     return targetForm;
   }
@@ -50,7 +55,7 @@ abstract class ObjectGuide1<S extends ReflectionWrapper, R, Q> implements Guide1
   public R traverse(S source, Q qualifier) throws TraverseException {
     try {
       GuideLogger.logCallGuide(guideMethod);
-      return (R) source.$broker().guideAction(traverseOrdinal).castToAction2().execute(source, qualifier);
+      return (R) source.$handle().guideAction(traverseOrdinal).castToAction2().execute(source, qualifier);
     } catch (TraverseException e) {
       throw e;
     } catch (Exception e) {

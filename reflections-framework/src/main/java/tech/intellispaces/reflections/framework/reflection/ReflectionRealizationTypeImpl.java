@@ -5,24 +5,24 @@ import java.util.List;
 import tech.intellispaces.actions.Action;
 import tech.intellispaces.reflections.framework.system.Injection;
 
-public class ReflectionImplementationTypeImpl implements ReflectionImplementationType {
-  private final Class<?> reflectionImplementationClass;
-  private final Class<?> reflectionWrapperClass;
-  private final List<ReflectionImplementationMethod> methods;
+public class ReflectionRealizationTypeImpl implements ReflectionRealizationType {
+  private final Class<?> realizationClass;
+  private final Class<?> wrapperClass;
+  private final List<ReflectionRealizationMethod> methods;
   private final Action[] methodActions;
   private final Action[] guideActions;
   private final Injection[] injections;
 
-  ReflectionImplementationTypeImpl(
-      Class<?> reflectionImplementationClass,
-      Class<?> reflectionWrapperClass,
-      List<ReflectionImplementationMethod> methods,
+  ReflectionRealizationTypeImpl(
+      Class<?> realizationClass,
+      Class<?> wrapperClass,
+      List<ReflectionRealizationMethod> methods,
       Action[] methodActions,
       Action[] guideActions,
       Injection[] injections
   ) {
-    this.reflectionImplementationClass = reflectionImplementationClass;
-    this.reflectionWrapperClass = reflectionWrapperClass;
+    this.realizationClass = realizationClass;
+    this.wrapperClass = wrapperClass;
     this.methods = methods;
     this.methodActions = methodActions;
     this.guideActions = guideActions;
@@ -30,17 +30,17 @@ public class ReflectionImplementationTypeImpl implements ReflectionImplementatio
   }
 
   @Override
-  public Class<?> reflectionImplementationClass() {
-    return reflectionImplementationClass;
+  public Class<?> realizationClass() {
+    return realizationClass;
   }
 
   @Override
-  public Class<?> reflectionWrapperClass() {
-    return reflectionWrapperClass;
+  public Class<?> wrapperClass() {
+    return wrapperClass;
   }
 
   @Override
-  public List<ReflectionImplementationMethod> methods() {
+  public List<ReflectionRealizationMethod> methods() {
     return methods;
   }
 

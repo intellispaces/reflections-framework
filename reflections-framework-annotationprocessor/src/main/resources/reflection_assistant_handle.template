@@ -5,7 +5,7 @@ import {{$importedClass}};
 {{end}}
 
 /**
- * The object assistant broker. Domain  {@link {{$sourceArtifactSimpleName}}}.
+ * The object assistant handle. Domain  {@link {{$sourceArtifactSimpleName}}}.
  * <p>
  * This class was generated automatically. Don't try to change it.
  */
@@ -19,7 +19,7 @@ public class {{$generatedArtifactSimpleName}} implements {{for customizer : $cus
 
 {{end}}
 {{for method : $customizerMethods}}
-  private final {{$method["actionType"]}} {{$method["actionName"]}} = Engines.get().getFactoryAction(
+  private final {{$method["actionType"]}} {{$method["actionName"]}} = Modules.current().engine().getFactoryAction(
     {{$method["returnDomainClass"]}}.class,
     "{{$method["contractType"]}}",
 {{for paramType : $method["paramTypes"]}}

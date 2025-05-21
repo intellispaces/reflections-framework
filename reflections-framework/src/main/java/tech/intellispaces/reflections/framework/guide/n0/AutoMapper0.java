@@ -16,21 +16,32 @@ import tech.intellispaces.reflections.framework.traverse.plan.TraversePlan;
 public class AutoMapper0<S, T> implements AbstractMapper0<S, T> {
   private final String cid;
   private final TraversePlan traversePlan;
+  private final Class<S> sourceClass;
   private final ReflectionForm targetForm;
   private final TraverseExecutor traverseExecutor;
 
   public AutoMapper0(
-          String cid, TraversePlan traversePlan, ReflectionForm targetForm, TraverseExecutor traverseExecutor
+      String cid,
+      TraversePlan traversePlan,
+      Class<S> sourceClass,
+      ReflectionForm targetForm,
+      TraverseExecutor traverseExecutor
   ) {
     this.cid = cid;
     this.traversePlan = traversePlan;
     this.targetForm = targetForm;
+    this.sourceClass = sourceClass;
     this.traverseExecutor = traverseExecutor;
   }
 
   @Override
   public String channelId() {
     return cid;
+  }
+
+  @Override
+  public Class<S> sourceClass() {
+    return sourceClass;
   }
 
   @Override

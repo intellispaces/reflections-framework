@@ -33,17 +33,24 @@ import tech.intellispaces.reflections.framework.traverse.MappingTraverse;
 
 public class ModuleHandleImpl implements ModuleHandle {
     private final Engine engine;
+    private final SystemHandle system;
     private final List<UnitHandle> units;
     private final SupplierAction<UnitHandle> mainUnitGetter = CachedSupplierActions.get(this::mainUnitSupplier);
 
-    public ModuleHandleImpl(Engine engine, List<UnitHandle> units) {
-        this.engine = engine;
+    public ModuleHandleImpl(SystemHandle system, List<UnitHandle> units) {
+        this.system = system;
         this.units = units;
+        this.engine = system.engine();
     }
 
     @Override
     public System system() {
-        return null;
+        return system;
+    }
+
+    @Override
+    public Engine engine() {
+        return engine;
     }
 
     @Override
@@ -63,21 +70,28 @@ public class ModuleHandleImpl implements ModuleHandle {
     }
 
     @Override
-    public void start() {
+    public ModuleHandle start() {
         engine.start();
         mainUnit().startupAction().ifPresent(a -> a.castToAction0().execute());
+        return this;
     }
 
     @Override
-    public void start(String[] args) {
+    public ModuleHandle start(String[] args) {
         engine.start(args);
         mainUnit().startupAction().ifPresent(a -> a.castToAction0().execute());
+        return this;
     }
 
     @Override
     public void stop() {
         mainUnit().shutdownAction().ifPresent(a -> a.castToAction0().execute());
         engine.stop();
+    }
+
+    @Override
+    public void upload() {
+        Modules.unload(this);
     }
 
     @Override

@@ -8,9 +8,9 @@ import tech.intellispaces.reflections.framework.system.Injection;
 /**
  * The reflection handle.
  */
-public interface ReflectionBroker {
+public interface ReflectionHandle {
 
-  ReflectionImplementationType type();
+  ReflectionRealizationType type();
 
   Action methodAction(int ordinal);
 

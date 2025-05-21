@@ -4,7 +4,7 @@ package {{$generatedArtifactPackageName}};
 import {{$importedClass}};
 {{end}}
 
-import static tech.intellispaces.reflections.framework.reflection.ReflectionWrapperMethods.reflectionImplementationMethod;
+import static tech.intellispaces.reflections.framework.reflection.ReflectionWrapperMethods.reflectionRealizationMethod;
 
 /**
  * This class was generated automatically. Don't try to change it.
@@ -12,21 +12,21 @@ import static tech.intellispaces.reflections.framework.reflection.ReflectionWrap
 @Wrapper({{$sourceArtifactSimpleName}}.class)
 {{$generatedAnnotation}}
 public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sourceArtifactSimpleName}}{{$typeParamsBrief}} implements {{$reflectionClassSimpleName}}{{$typeParamsBrief}}, ReflectionWrapper, OverlyingReflectionController {
-  private static ReflectionImplementationType $TYPE;
-  private static final EngineRegistrar $engineRegistrar = NodeFunctions.createEngineRegistrar();
-  private final ReflectionBroker $broker;
+  private static ReflectionRealizationType $TYPE;
+  private static final EngineRegistrar $engineRegistrar = ReflectionsNodeFunctions.createEngineRegistrar();
+  private final ReflectionHandle $handle;
 
 {{for constructor : $constructors}}
   public {{$generatedArtifactSimpleName}}({{for param : $constructor["params"]}}{{$param["type"]}} {{$param["name"]}}{{when $param.isNotLast()}}, {{end}}{{end}}) {
     super({{for param : $constructor["params"]}}{{$param["name"]}}{{when $param.isNotLast()}}, {{end}}{{end}});
-    $broker = $registerReflection();
+    $handle = $registerReflection();
   }
 
 {{end}}
 
   @Override
-  public ReflectionBroker $broker() {
-    return this.$broker;
+  public ReflectionHandle $handle() {
+    return this.$handle;
   }
 
   @Override
@@ -96,17 +96,17 @@ public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sour
 
   @Override
   public <TD, TH> void addProjection(Class<TD> targetDomain, TH target) {
-    $broker.addProjection(targetDomain, target);
+    $handle.addProjection(targetDomain, target);
   }
 
   @Override
   public java.util.List<UnmovableReflection<?>> underlyingReflections() {
-    return (java.util.List<UnmovableReflection<?>>) $broker.underlyingReflections();
+    return (java.util.List<UnmovableReflection<?>>) $handle.underlyingReflections();
   }
 
   @Override
   public UnmovableReflection<?> overlyingReflection() {
-    return (UnmovableReflection<?>) $broker.overlyingReflection();
+    return (UnmovableReflection<?>) $handle.overlyingReflection();
   }
 
   @Override
@@ -116,7 +116,7 @@ public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sour
 
   @Override
   public <TD, TH> TH mapTo(Class<TD> targetDomain) {
-    return $broker.mapTo(targetDomain);
+    return $handle.mapTo(targetDomain);
   }
 
   @Override
@@ -124,24 +124,24 @@ public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sour
     return Modules.current().mapThruChannel1(this, channelClass, qualifier);
   }
 
-  private ReflectionBroker $registerReflection() {
-    var engine = Engines.get();
+  private ReflectionHandle $registerReflection() {
+    var engine = Modules.current().engine();
     if ($TYPE == null) {
-      $TYPE = $buildReflectionImplementationType();
+      $TYPE = $buildReflectionRealizationType();
     }
     if ($engineRegistrar.register(engine)) {
-      engine.registerReflectionImplementationType($TYPE);
+      engine.registerReflectionRealizationType($TYPE);
     }
     return engine.registerReflection(this, $TYPE);
   }
 
-  private static ReflectionImplementationType $buildReflectionImplementationType() {
-    return ReflectionImplementationTypes.create(
+  private static ReflectionRealizationType $buildReflectionRealizationType() {
+    return ReflectionRealizationTypes.create(
         {{$generatedArtifactSimpleName}}.class,
         {{$sourceArtifactSimpleName}}.class{{when $methodDescriptions.isNotEmpty()}},{{end}}
 {{for method : $methodDescriptions}}
-        reflectionImplementationMethod({{$generatedArtifactSimpleName}}.class, "{{$method["name"]}}"{{for param : $method["params"]}}, {{$param}}.class{{end}})
-            .purpose(ReflectionImplementationMethodPurposes.{{$method["purpose"]}})
+        reflectionRealizationMethod({{$generatedArtifactSimpleName}}.class, "{{$method["name"]}}"{{for param : $method["params"]}}, {{$param}}.class{{end}})
+            .purpose(ReflectionRealizationMethodPurposes.{{$method["purpose"]}})
             .function({{$generatedArtifactSimpleName}}::{{$method["name"]}})
 {{when $method["traverseOrdinal"].isNotVoid()}}
             .traverseOrdinal({{$method["traverseOrdinal"]}})

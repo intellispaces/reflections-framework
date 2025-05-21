@@ -1,14 +1,23 @@
 package tech.intellispaces.reflections.framework.system;
 
+import tech.intellispaces.core.System;
 import tech.intellispaces.reflections.framework.channel.Channel0;
 import tech.intellispaces.reflections.framework.channel.Channel1;
+import tech.intellispaces.reflections.framework.engine.Engine;
 import tech.intellispaces.reflections.framework.traverse.MappingOfMovingTraverse;
 import tech.intellispaces.reflections.framework.traverse.MappingTraverse;
 
 /**
- * The reflections system.
+ * The reflections system handle.
  */
-public interface System {
+public interface SystemHandle extends System {
+
+  ModuleHandle currentModule();
+
+  /**
+   * Returns the engine.
+   */
+  Engine engine();
 
   <S, T> T mapThruChannel0(S source, String cid);
 

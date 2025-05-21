@@ -89,9 +89,9 @@ public enum ArtifactTypes implements ArtifactType, Enumeration<ArtifactType> {
   ObjectAssistant,
 
   /**
-   * The object assistant broker.
+   * The object assistant handle.
    */
-  ObjectAssistantBroker,
+  ObjectAssistantHandle,
 
   /**
    * The dataset builder.

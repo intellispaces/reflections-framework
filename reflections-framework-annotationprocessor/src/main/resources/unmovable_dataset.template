@@ -5,7 +5,7 @@ import {{$importedClass}};
 {{end}}
 
 /**
- * Unmovable reflection implementation for data object of domain {@link {{$sourceArtifactSimpleName}}}.
+ * Unmovable reflection realization for data object of domain {@link {{$sourceArtifactSimpleName}}}.
  * <p>
  * Data objects are entirely in memory.
  * <p>

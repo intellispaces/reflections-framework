@@ -12,13 +12,13 @@ import tech.intellispaces.commons.object.Objects;
 import tech.intellispaces.jstatements.customtype.CustomType;
 import tech.intellispaces.jstatements.method.MethodStatement;
 import tech.intellispaces.jstatements.reference.CustomTypeReference;
-import tech.intellispaces.reflections.framework.ReflectionsFramework;
 import tech.intellispaces.reflections.framework.annotation.AnnotationProcessor;
 import tech.intellispaces.reflections.framework.annotation.Channel;
 import tech.intellispaces.reflections.framework.annotation.Ignore;
 import tech.intellispaces.reflections.framework.annotationprocessor.AnnotationFunctions;
 import tech.intellispaces.reflections.framework.artifact.ArtifactTypes;
 import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
+import tech.intellispaces.reflections.framework.node.ReflectionsNodeFunctions;
 
 import static tech.intellispaces.jstatements.customtype.AnnotationFunctions.allAnnotationsOf;
 
@@ -105,7 +105,7 @@ public interface DomainProcessorFunctions {
   private static void addDownwardReflectionGenerators(
       CustomType domainType, List<ArtifactGenerator> generators
   ) {
-    if (ReflectionsFramework.ontologyReference().getDomainByName(NameConventionFunctions.convertToDomainName(domainType.canonicalName())) != null) {
+    if (ReflectionsNodeFunctions.ontologyReference().getDomainByName(NameConventionFunctions.convertToDomainName(domainType.canonicalName())) != null) {
       return;
     }
 
@@ -119,7 +119,7 @@ public interface DomainProcessorFunctions {
   private static void addObjectAssistantGenerators(
       CustomType domainType, List<ArtifactGenerator> generators
   ) {
-    generators.add(new ReflectionAssistantBrokerGenerator(domainType));
+    generators.add(new ReflectionAssistantHandleGenerator(domainType));
     generators.add(new ReflectionAssistantGenerator(domainType));
   }
 }

@@ -27,7 +27,6 @@ import tech.intellispaces.jstatements.reference.ReferenceBound;
 import tech.intellispaces.jstatements.reference.TypeReference;
 import tech.intellispaces.jstatements.reference.TypeReferenceFunctions;
 import tech.intellispaces.reflections.framework.ArtifactType;
-import tech.intellispaces.reflections.framework.ReflectionsFramework;
 import tech.intellispaces.reflections.framework.annotation.Movable;
 import tech.intellispaces.reflections.framework.annotation.Unmovable;
 import tech.intellispaces.reflections.framework.annotationprocessor.AnnotationFunctions;
@@ -35,6 +34,7 @@ import tech.intellispaces.reflections.framework.annotationprocessor.AnnotationGe
 import tech.intellispaces.reflections.framework.annotationprocessor.ReflectionsArtifactGenerator;
 import tech.intellispaces.reflections.framework.exception.TraverseException;
 import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
+import tech.intellispaces.reflections.framework.node.ReflectionsNodeFunctions;
 import tech.intellispaces.reflections.framework.reflection.MovabilityType;
 import tech.intellispaces.reflections.framework.reflection.MovabilityTypes;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
@@ -127,7 +127,7 @@ public abstract class AbstractReflectionFormGenerator extends ReflectionsArtifac
     var sb = new StringBuilder();
     String targetType = buildObjectFormDeclaration(parent, getForm(), getMovabilityType(), true);
 
-    DomainReference domain = ReflectionsFramework.ontologyReference().getDomainByType(DomainTypes.Number);
+    DomainReference domain = ReflectionsNodeFunctions.ontologyReference().getDomainByType(DomainTypes.Number);
     String domainClassName = NameConventionFunctions.convertToDomainClassName(domain.domainName());
     if (parent.targetType().canonicalName().equals(domainClassName)) {
       underlyingTypes.add(domain.domainName());
@@ -288,7 +288,7 @@ public abstract class AbstractReflectionFormGenerator extends ReflectionsArtifac
   }
 
   private String convertName(String name) {
-    DomainReference domainReference = ReflectionsFramework.ontologyReference().getDomainByName(NameConventionFunctions.convertToDomainName(name));
+    DomainReference domainReference = ReflectionsNodeFunctions.ontologyReference().getDomainByName(NameConventionFunctions.convertToDomainName(name));
     if (domainReference != null && domainReference.delegateClassName() != null) {
       return addImportAndGetSimpleName(domainReference.delegateClassName());
     }

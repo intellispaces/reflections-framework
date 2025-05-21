@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import tech.intellispaces.commons.type.ClassFunctions;
 import tech.intellispaces.reflections.framework.guide.Guide;
 import tech.intellispaces.reflections.framework.guide.GuideKind;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
@@ -33,11 +34,18 @@ public class LocalGuideRegistry implements GuideRegistry {
     List<Guide<?, ?>> resultGuides = new ArrayList<>();
     List<Guide<?, ?>> guides = findGuides(cid, kind);
     for (Guide<?, ?> guide : guides) {
-      if (guide.targetForm() == targetForm) {
+      if (isSuitableGuide(guide,sourceReflectionClass, targetForm)) {
         resultGuides.add(guide);
       }
     }
     return Collections.unmodifiableList(resultGuides);
+  }
+
+  boolean isSuitableGuide(
+      Guide<?, ?> guide,Class<?> sourceReflectionClass, ReflectionForm targetForm
+  ) {
+    return ClassFunctions.isCompatibleClasses(guide.sourceClass(), sourceReflectionClass)
+        && (guide.targetForm() == targetForm);
   }
 
   private List<Guide<?, ?>> findGuides(String cid, GuideKind kind) {

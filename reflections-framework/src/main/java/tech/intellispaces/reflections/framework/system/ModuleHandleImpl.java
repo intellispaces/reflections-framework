@@ -84,14 +84,16 @@ public class ModuleHandleImpl implements ModuleHandle {
     }
 
     @Override
-    public void stop() {
+    public ModuleHandle stop() {
         mainUnit().shutdownAction().ifPresent(a -> a.castToAction0().execute());
         engine.stop();
+        return this;
     }
 
     @Override
-    public void upload() {
+    public ModuleHandle upload() {
         Modules.unload(this);
+        return this;
     }
 
     @Override

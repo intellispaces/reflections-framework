@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.Map;
 
 import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
-import tech.intellispaces.jstatements.customtype.CustomType;
-import tech.intellispaces.jstatements.method.MethodParam;
-import tech.intellispaces.jstatements.method.MethodStatement;
+import tech.intellispaces.javareflection.customtype.CustomType;
+import tech.intellispaces.javareflection.method.MethodParam;
+import tech.intellispaces.javareflection.method.MethodStatement;
 import tech.intellispaces.reflections.framework.annotationprocessor.ReflectionsArtifactGenerator;
 import tech.intellispaces.reflections.framework.factory.FactoryMethod;
 import tech.intellispaces.reflections.framework.factory.FactoryMethods;

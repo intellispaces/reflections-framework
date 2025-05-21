@@ -1,7 +1,7 @@
 package tech.intellispaces.reflections.framework.factory;
 
 import tech.intellispaces.commons.text.StringFunctions;
-import tech.intellispaces.jstatements.method.MethodStatement;
+import tech.intellispaces.javareflection.method.MethodStatement;
 
 public interface FactoryFunctions {
 

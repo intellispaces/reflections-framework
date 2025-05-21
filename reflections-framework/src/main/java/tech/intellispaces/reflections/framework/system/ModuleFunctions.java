@@ -8,9 +8,9 @@ import java.util.Optional;
 import java.util.Set;
 
 import tech.intellispaces.commons.collection.ArraysFunctions;
-import tech.intellispaces.jstatements.customtype.CustomType;
-import tech.intellispaces.jstatements.instance.AnnotationInstance;
-import tech.intellispaces.jstatements.instance.Instance;
+import tech.intellispaces.javareflection.customtype.CustomType;
+import tech.intellispaces.javareflection.instance.AnnotationInstance;
+import tech.intellispaces.javareflection.instance.Instance;
 import tech.intellispaces.reflections.framework.annotation.Configuration;
 import tech.intellispaces.reflections.framework.annotation.Module;
 

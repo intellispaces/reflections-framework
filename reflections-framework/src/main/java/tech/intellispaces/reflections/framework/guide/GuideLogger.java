@@ -5,7 +5,7 @@ import java.lang.reflect.Method;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import tech.intellispaces.jstatements.method.MethodStatement;
+import tech.intellispaces.javareflection.method.MethodStatement;
 
 public final class GuideLogger {
   private static final Logger LOG = LoggerFactory.getLogger(GuideLogger.class);

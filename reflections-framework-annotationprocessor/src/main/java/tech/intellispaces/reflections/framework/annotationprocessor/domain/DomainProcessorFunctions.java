@@ -9,9 +9,9 @@ import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
 import tech.intellispaces.annotationprocessor.ArtifactProcessor;
 import tech.intellispaces.annotationprocessor.ArtifactValidator;
 import tech.intellispaces.commons.object.Objects;
-import tech.intellispaces.jstatements.customtype.CustomType;
-import tech.intellispaces.jstatements.method.MethodStatement;
-import tech.intellispaces.jstatements.reference.CustomTypeReference;
+import tech.intellispaces.javareflection.customtype.CustomType;
+import tech.intellispaces.javareflection.method.MethodStatement;
+import tech.intellispaces.javareflection.reference.CustomTypeReference;
 import tech.intellispaces.reflections.framework.annotation.AnnotationProcessor;
 import tech.intellispaces.reflections.framework.annotation.Channel;
 import tech.intellispaces.reflections.framework.annotation.Ignore;
@@ -20,7 +20,7 @@ import tech.intellispaces.reflections.framework.artifact.ArtifactTypes;
 import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
 import tech.intellispaces.reflections.framework.node.ReflectionsNodeFunctions;
 
-import static tech.intellispaces.jstatements.customtype.AnnotationFunctions.allAnnotationsOf;
+import static tech.intellispaces.javareflection.customtype.AnnotationFunctions.allAnnotationsOf;
 
 public interface DomainProcessorFunctions {
 

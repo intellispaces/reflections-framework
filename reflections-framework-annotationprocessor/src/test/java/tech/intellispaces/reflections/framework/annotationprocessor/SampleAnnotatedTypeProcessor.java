@@ -8,7 +8,7 @@ import tech.intellispaces.annotationprocessor.ArtifactGenerator;
 import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
 import tech.intellispaces.annotationprocessor.ArtifactProcessor;
 import tech.intellispaces.annotationprocessor.ArtifactValidator;
-import tech.intellispaces.jstatements.customtype.CustomType;
+import tech.intellispaces.javareflection.customtype.CustomType;
 
 public class SampleAnnotatedTypeProcessor extends ArtifactProcessor {
   private CustomType annotatedType;

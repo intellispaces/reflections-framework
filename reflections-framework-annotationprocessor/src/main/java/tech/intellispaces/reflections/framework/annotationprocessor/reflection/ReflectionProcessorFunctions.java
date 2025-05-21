@@ -4,7 +4,7 @@ import java.util.List;
 
 import tech.intellispaces.annotationprocessor.ArtifactGenerator;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
-import tech.intellispaces.jstatements.customtype.CustomType;
+import tech.intellispaces.javareflection.customtype.CustomType;
 import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
 
 public interface ReflectionProcessorFunctions {

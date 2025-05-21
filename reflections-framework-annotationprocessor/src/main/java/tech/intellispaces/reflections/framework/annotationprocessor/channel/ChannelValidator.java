@@ -3,7 +3,7 @@ package tech.intellispaces.reflections.framework.annotationprocessor.channel;
 import java.util.Optional;
 
 import tech.intellispaces.annotationprocessor.ArtifactValidator;
-import tech.intellispaces.jstatements.customtype.CustomType;
+import tech.intellispaces.javareflection.customtype.CustomType;
 import tech.intellispaces.reflections.framework.annotation.Ontology;
 import tech.intellispaces.reflections.framework.exception.ReflectionsExceptions;
 

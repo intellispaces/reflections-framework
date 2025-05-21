@@ -2,7 +2,7 @@ package tech.intellispaces.reflections.framework.aop;
 
 import tech.intellispaces.actions.AbstractAction;
 import tech.intellispaces.actions.Action;
-import tech.intellispaces.jstatements.method.MethodStatement;
+import tech.intellispaces.javareflection.method.MethodStatement;
 import tech.intellispaces.reflections.framework.engine.Engine;
 
 public abstract class AbstractMethodAdvice extends AbstractAction implements MethodAdvice {

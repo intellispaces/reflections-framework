@@ -1,6 +1,6 @@
 package tech.intellispaces.reflections.framework.system;
 
-import tech.intellispaces.jstatements.method.MethodStatement;
+import tech.intellispaces.javareflection.method.MethodStatement;
 import tech.intellispaces.reflections.framework.guide.Guide;
 
 /**

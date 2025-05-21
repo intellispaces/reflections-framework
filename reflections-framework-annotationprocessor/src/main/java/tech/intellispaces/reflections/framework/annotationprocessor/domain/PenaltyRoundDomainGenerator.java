@@ -3,7 +3,7 @@ package tech.intellispaces.reflections.framework.annotationprocessor.domain;
 import java.util.UUID;
 
 import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
-import tech.intellispaces.jstatements.customtype.CustomTypes;
+import tech.intellispaces.javareflection.customtype.CustomTypes;
 import tech.intellispaces.reflections.framework.annotation.Domain;
 import tech.intellispaces.reflections.framework.annotation.Ignore;
 import tech.intellispaces.reflections.framework.annotationprocessor.ReflectionsArtifactGenerator;

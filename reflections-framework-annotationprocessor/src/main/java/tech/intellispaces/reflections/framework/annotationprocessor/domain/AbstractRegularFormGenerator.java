@@ -1,6 +1,6 @@
 package tech.intellispaces.reflections.framework.annotationprocessor.domain;
 
-import tech.intellispaces.jstatements.customtype.CustomType;
+import tech.intellispaces.javareflection.customtype.CustomType;
 import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
 
 public abstract class AbstractRegularFormGenerator extends AbstractReflectionFormGenerator {

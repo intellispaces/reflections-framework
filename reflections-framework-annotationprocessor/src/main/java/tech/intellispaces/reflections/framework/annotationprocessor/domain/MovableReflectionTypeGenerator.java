@@ -4,11 +4,11 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
-import tech.intellispaces.jstatements.customtype.CustomType;
-import tech.intellispaces.jstatements.method.MethodStatement;
-import tech.intellispaces.jstatements.reference.CustomTypeReference;
-import tech.intellispaces.jstatements.reference.CustomTypeReferences;
-import tech.intellispaces.jstatements.reference.TypeReference;
+import tech.intellispaces.javareflection.customtype.CustomType;
+import tech.intellispaces.javareflection.method.MethodStatement;
+import tech.intellispaces.javareflection.reference.CustomTypeReference;
+import tech.intellispaces.javareflection.reference.CustomTypeReferences;
+import tech.intellispaces.javareflection.reference.TypeReference;
 import tech.intellispaces.reflections.framework.ArtifactType;
 import tech.intellispaces.reflections.framework.annotation.Movable;
 import tech.intellispaces.reflections.framework.annotation.Reflection;

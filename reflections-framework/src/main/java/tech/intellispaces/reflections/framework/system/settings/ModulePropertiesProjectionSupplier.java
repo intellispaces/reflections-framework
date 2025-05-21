@@ -2,7 +2,7 @@ package tech.intellispaces.reflections.framework.system.settings;
 
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.commons.type.Types;
-import tech.intellispaces.jstatements.method.MethodStatement;
+import tech.intellispaces.javareflection.method.MethodStatement;
 import tech.intellispaces.reflections.framework.annotation.Properties;
 import tech.intellispaces.reflections.framework.dataset.DatasetFunctions;
 import tech.intellispaces.reflections.framework.exception.ConfigurationExceptions;

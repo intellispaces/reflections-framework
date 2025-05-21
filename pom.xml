@@ -53,12 +53,12 @@
             </dependency>
             <dependency>
                 <groupId>tech.intellispaces.commons</groupId>
-                <artifactId>intellispaces-jstatements-model</artifactId>
+                <artifactId>intellispaces-javareflection-model</artifactId>
                 <version>0.0.1-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>tech.intellispaces.commons</groupId>
-                <artifactId>intellispaces-jstatements</artifactId>
+                <artifactId>intellispaces-javareflection</artifactId>
                 <version>0.0.1-SNAPSHOT</version>
             </dependency>
             <dependency>

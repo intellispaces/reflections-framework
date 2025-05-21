@@ -1,6 +1,6 @@
 package tech.intellispaces.reflections.framework.aop;
 
-import tech.intellispaces.jstatements.method.MethodStatement;
+import tech.intellispaces.javareflection.method.MethodStatement;
 
 public interface MethodAdvice extends Advice {
 

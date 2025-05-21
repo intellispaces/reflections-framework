@@ -10,7 +10,7 @@ import tech.intellispaces.annotationprocessor.ArtifactGenerator;
 import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
 import tech.intellispaces.annotationprocessor.ArtifactProcessor;
 import tech.intellispaces.annotationprocessor.ArtifactValidator;
-import tech.intellispaces.jstatements.customtype.CustomType;
+import tech.intellispaces.javareflection.customtype.CustomType;
 import tech.intellispaces.reflections.framework.annotation.Configuration;
 import tech.intellispaces.reflections.framework.annotationprocessor.AnnotationFunctions;
 import tech.intellispaces.reflections.framework.annotationprocessor.ReflectionsArtifactProcessor;

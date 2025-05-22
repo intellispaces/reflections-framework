@@ -1,5 +1,7 @@
 package tech.intellispaces.reflections.framework.system;
 
+import tech.intellispaces.core.Reflection;
+import tech.intellispaces.core.ReflectionContract;
 import tech.intellispaces.reflections.framework.channel.Channel0;
 import tech.intellispaces.reflections.framework.channel.Channel1;
 import tech.intellispaces.reflections.framework.engine.Engine;
@@ -26,6 +28,11 @@ public class SystemHandleImpl implements SystemHandle {
     @Override
     public Engine engine() {
         return engine;
+    }
+
+    @Override
+    public Reflection create(ReflectionContract contract) {
+        return null;
     }
 
     @Override

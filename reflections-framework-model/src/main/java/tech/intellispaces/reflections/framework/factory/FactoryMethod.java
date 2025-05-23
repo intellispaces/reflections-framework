@@ -16,9 +16,9 @@ public interface FactoryMethod {
   Object factoryInstance();
 
   /**
-   * The method name.
+   * The contract type.
    */
-  String name();
+  String contractType();
 
   /**
    * The returned reflection type.
@@ -31,9 +31,14 @@ public interface FactoryMethod {
   Class<?> returnedDomainClass();
 
   /**
-   * Method parameter types.
+   * Contract qualifier names.
    */
-  List<Type<?>> paramTypes();
+  List<String> contractQualifierNames();
+
+  /**
+   * Contract qualifier types.
+   */
+  List<Type<?>> contractQualifierTypes();
 
   /**
    * Related action.

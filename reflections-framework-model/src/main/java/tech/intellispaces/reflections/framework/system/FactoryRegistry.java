@@ -11,9 +11,27 @@ import tech.intellispaces.actions.Action6;
 import tech.intellispaces.actions.Action7;
 import tech.intellispaces.actions.Action8;
 import tech.intellispaces.actions.Action9;
+import tech.intellispaces.commons.properties.PropertiesSet;
 import tech.intellispaces.commons.type.Type;
+import tech.intellispaces.core.Reflection;
+import tech.intellispaces.core.ReflectionContract;
 
 public interface FactoryRegistry {
+
+  /**
+   * Returns the factory action.
+   * <p>
+   * If several factories are found, any one of them is returned.
+   *
+   * @param targetDomainClass the required target domain class.
+   * @param contractType the required contract type.
+   * @return the factory action.
+   * @param <R> the required reflection type.
+   */
+  <R extends Reflection> Action1<R, PropertiesSet> factoryAction(
+      Class<?> targetDomainClass,
+      String contractType
+  );
 
   <R> Action0<R> getFactoryAction(
       Class<?> targetDomainClass,

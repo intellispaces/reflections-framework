@@ -1,4 +1,4 @@
-package tech.intellispaces.reflections.framework.annotationprocessor.object.factory;
+package tech.intellispaces.reflections.framework.annotationprocessor.factory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,10 +11,10 @@ import tech.intellispaces.annotationprocessor.ArtifactImpl;
 import tech.intellispaces.annotationprocessor.ArtifactKinds;
 import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
 
-public class ObjectFactoryMetaInfGenerator implements ArtifactGenerator {
-  private final List<String> objectFactories = new ArrayList<>();
+public class FactoryMetaInfGenerator implements ArtifactGenerator {
+  private final List<String> factories = new ArrayList<>();
 
-  public ObjectFactoryMetaInfGenerator() {
+  public FactoryMetaInfGenerator() {
   }
 
   @Override
@@ -24,22 +24,22 @@ public class ObjectFactoryMetaInfGenerator implements ArtifactGenerator {
 
   @Override
   public String generatedArtifactName() {
-    return NameConventionFunctions.getObjectFactoriesResourceName();
+    return NameConventionFunctions.getFactoriesResourceName();
   }
 
   public void addObjectFactory(String objectFactory) {
-    objectFactories.add(objectFactory);
+    factories.add(objectFactory);
   }
 
   @Override
   public Optional<Artifact> generate(ArtifactGeneratorContext context) {
-    if (objectFactories.isEmpty()) {
+    if (factories.isEmpty()) {
       return Optional.empty();
     }
     return Optional.of(new ArtifactImpl(
         ArtifactKinds.ResourceFile,
         generatedArtifactName(),
-        String.join("\n", objectFactories).toCharArray()
+        String.join("\n", factories).toCharArray()
     ));
   }
 }

@@ -22,12 +22,13 @@ import tech.intellispaces.actions.Action7;
 import tech.intellispaces.actions.Action8;
 import tech.intellispaces.actions.Action9;
 import tech.intellispaces.commons.collection.CollectionFunctions;
-import tech.intellispaces.commons.exception.NotImplementedExceptions;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.commons.object.Objects;
+import tech.intellispaces.commons.properties.PropertiesSet;
 import tech.intellispaces.commons.resource.ResourceFunctions;
 import tech.intellispaces.commons.type.Classes;
 import tech.intellispaces.commons.type.Type;
+import tech.intellispaces.core.Reflection;
 import tech.intellispaces.reflections.framework.exception.ConfigurationExceptions;
 import tech.intellispaces.reflections.framework.factory.FactoryFunctions;
 import tech.intellispaces.reflections.framework.factory.FactoryMethod;
@@ -40,13 +41,30 @@ class LocalFactoryRegistry implements FactoryRegistry {
   private Map<Class<?>, List<FactoryMethod>> domainToDescriptions = Map.of();
 
   @Override
+  public <R extends Reflection> Action1<R, PropertiesSet> factoryAction(
+      Class<?> targetDomainClass, String contractType
+  ) {
+    List<FactoryMethod> descriptions = domainToDescriptions.get(targetDomainClass);
+    if (descriptions == null) {
+      throw ConfigurationExceptions.withMessage("No factory for domain {0} were found",
+          targetDomainClass.getCanonicalName());
+    }
+    for (FactoryMethod description : descriptions) {
+      if (description.contractType().equals(contractType)) {
+        return FactoryFunctions.createFactoryAction(description);
+      }
+    }
+    throw ConfigurationExceptions.withMessage("No factory for contract type {0} were found", contractType);
+  }
+
+  @Override
   @SuppressWarnings("unchecked")
   public <R> Action0<R> getFactoryAction(
       Class<?> targetDomainClass,
       String contractType,
       Type<R> targetReflectionType
   ) {
-    loadObjectFactories();
+    loadFactories();
     return (Action0<R>) makeAction(targetDomainClass, contractType, List.of());
   }
 
@@ -58,7 +76,7 @@ class LocalFactoryRegistry implements FactoryRegistry {
       Type<Q> contractQualifierType,
       Type<R> targetReflectionType
   ) {
-    loadObjectFactories();
+    loadFactories();
     return (Action1<R, Q>) makeAction(targetDomainClass, contractType, List.of(contractQualifierType));
   }
 
@@ -71,7 +89,7 @@ class LocalFactoryRegistry implements FactoryRegistry {
       Type<Q2> contractQualifierType2,
       Type<R> targetReflectionType
   ) {
-    loadObjectFactories();
+    loadFactories();
     return (Action2<R, Q1, Q2>) makeAction(
         targetDomainClass, contractType, List.of(contractQualifierType1, contractQualifierType2
     ));
@@ -87,7 +105,7 @@ class LocalFactoryRegistry implements FactoryRegistry {
       Type<Q3> contractQualifierType3,
       Type<R> targetReflectionType
   ) {
-    loadObjectFactories();
+    loadFactories();
     return (Action3<R, Q1, Q2, Q3>) makeAction(
         targetDomainClass, contractType, List.of(contractQualifierType1, contractQualifierType2, contractQualifierType3
     ));
@@ -104,7 +122,7 @@ class LocalFactoryRegistry implements FactoryRegistry {
       Type<Q4> contractQualifierType4,
       Type<R> targetReflectionType
   ) {
-    loadObjectFactories();
+    loadFactories();
     return (Action4<R, Q1, Q2, Q3, Q4>) makeAction(
         targetDomainClass,
         contractType, List.of(
@@ -127,7 +145,7 @@ class LocalFactoryRegistry implements FactoryRegistry {
       Type<Q5> contractQualifierType5,
       Type<R> targetReflectionType
   ) {
-    loadObjectFactories();
+    loadFactories();
     return (Action5<R, Q1, Q2, Q3, Q4, Q5>) makeAction(
         targetDomainClass,
         contractType, List.of(
@@ -152,7 +170,7 @@ class LocalFactoryRegistry implements FactoryRegistry {
       Type<Q6> contractQualifierType6,
       Type<R> targetReflectionType
   ) {
-    loadObjectFactories();
+    loadFactories();
     return (Action6<R, Q1, Q2, Q3, Q4, Q5, Q6>) makeAction(
         targetDomainClass,
         contractType, List.of(
@@ -179,7 +197,7 @@ class LocalFactoryRegistry implements FactoryRegistry {
       Type<Q7> contractQualifierType7,
       Type<R> targetReflectionType
   ) {
-    loadObjectFactories();
+    loadFactories();
     return (Action7<R, Q1, Q2, Q3, Q4, Q5, Q6, Q7>) makeAction(
         targetDomainClass,
         contractType, List.of(
@@ -208,7 +226,7 @@ class LocalFactoryRegistry implements FactoryRegistry {
       Type<Q8> contractQualifierType8,
       Type<R> targetReflectionType
   ) {
-    loadObjectFactories();
+    loadFactories();
     return (Action8<R, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8>) makeAction(
         targetDomainClass,
         contractType, List.of(
@@ -239,7 +257,7 @@ class LocalFactoryRegistry implements FactoryRegistry {
       Type<Q9> contractQualifierType9,
       Type<R> targetReflectionType
   ) {
-    loadObjectFactories();
+    loadFactories();
     return (Action9<R, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9>) makeAction(
         targetDomainClass,
         contractType, List.of(
@@ -272,7 +290,7 @@ class LocalFactoryRegistry implements FactoryRegistry {
       Type<Q10> contractQualifierType10,
       Type<R> targetReflectionType
   ) {
-    loadObjectFactories();
+    loadFactories();
     return (Action10<R, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9, Q10>) makeAction(
         targetDomainClass,
         contractType, List.of(
@@ -289,7 +307,7 @@ class LocalFactoryRegistry implements FactoryRegistry {
     ));
   }
 
-  void loadObjectFactories() {
+  void loadFactories() {
     if (isLoaded) {
       return;
     }
@@ -297,7 +315,7 @@ class LocalFactoryRegistry implements FactoryRegistry {
     List<FactoryMethod> descriptions = new ArrayList<>();
     try {
       Enumeration<URL> enumeration = LocalFactoryRegistry.class.getClassLoader().getResources(
-          NameConventionFunctions.getObjectFactoriesResourceName()
+          NameConventionFunctions.getFactoriesResourceName()
       );
       List<URL> urls = CollectionFunctions.toList(enumeration);
       for (URL url : urls) {
@@ -309,14 +327,14 @@ class LocalFactoryRegistry implements FactoryRegistry {
           }
           Optional<Class<?>> factoryClass = Classes.get(factoryClassName);
           if (factoryClass.isEmpty()) {
-            throw UnexpectedExceptions.withMessage("Unable to load object factory class {0}", factoryClassName);
+            throw UnexpectedExceptions.withMessage("Unable to load factory class {0}", factoryClassName);
           }
           var wrapper = (FactoryWrapper) Objects.get(factoryClass.get());
           descriptions.addAll(wrapper.methods());
         }
       }
     } catch (IOException e) {
-      throw UnexpectedExceptions.withCauseAndMessage(e, "Unable to load object factories");
+      throw UnexpectedExceptions.withCauseAndMessage(e, "Unable to load factories");
     }
 
     domainToDescriptions = descriptions.stream()
@@ -327,7 +345,7 @@ class LocalFactoryRegistry implements FactoryRegistry {
   boolean isMatchContractQualifiers(
       FactoryMethod description, List<Type<?>> requiredQualifierTypes
   ) {
-    List<Type<?>> factoryQualifierTypes = description.paramTypes();
+    List<Type<?>> factoryQualifierTypes = description.contractQualifierTypes();
     if (factoryQualifierTypes.size() != requiredQualifierTypes.size()) {
       return false;
     }
@@ -348,94 +366,18 @@ class LocalFactoryRegistry implements FactoryRegistry {
   ) {
     List<FactoryMethod> descriptions = domainToDescriptions.get(targetDomainClass);
     if (descriptions == null) {
-      throw ConfigurationExceptions.withMessage("No factory to domain {0} were found",
+      throw ConfigurationExceptions.withMessage("No factory for domain {0} were found",
           targetDomainClass.getCanonicalName());
     }
     for (FactoryMethod description : descriptions) {
       if (
-          FactoryFunctions.getContractType(description.name()).equals(contractType) &&
+          description.contractType().equals(contractType) &&
               isMatchContractQualifiers(description, contractQualifierTypes)
       ) {
-        return makeAction(description);
+        return FactoryFunctions.makeAction(description);
       }
     }
-    throw ConfigurationExceptions.withMessage("No factory to domain {0} and contract type {1} were found",
+    throw ConfigurationExceptions.withMessage("No factory for domain {0} and contract type {1} were found",
         targetDomainClass.getCanonicalName(), contractType);
-  }
-
-  Action makeAction(FactoryMethod description) {
-    return switch (description.paramTypes().size()) {
-      case 0 -> makeAction0(description);
-      case 1 -> makeAction1(description);
-      case 2 -> makeAction2(description);
-      case 3 -> makeAction3(description);
-      case 4 -> makeAction4(description);
-      case 5 -> makeAction5(description);
-      case 6 -> makeAction6(description);
-      case 7 -> makeAction7(description);
-      case 8 -> makeAction8(description);
-      case 9 -> makeAction9(description);
-      default -> throw NotImplementedExceptions.withCode("h3he6A");
-    };
-  }
-
-  @SuppressWarnings("unchecked")
-  private Action makeAction0(FactoryMethod description) {
-    var originAction = (Action1<Object, Object>) description.action();
-    return originAction.convertToAction0(description.factoryInstance());
-  }
-
-  @SuppressWarnings("unchecked")
-  private Action makeAction1(FactoryMethod description) {
-    var originAction = (Action2<Object, Object, Object>) description.action();
-    return originAction.convertToAction1(description.factoryInstance());
-  }
-
-  @SuppressWarnings("unchecked")
-  private Action makeAction2(FactoryMethod description) {
-    var originAction = (Action3<Object, Object, Object, Object>) description.action();
-    return originAction.convertToAction2(description.factoryInstance());
-  }
-
-  @SuppressWarnings("unchecked")
-  private Action makeAction3(FactoryMethod description) {
-    var originAction = (Action4<Object, Object, Object, Object, Object>) description.action();
-    return originAction.convertToAction3(description.factoryInstance());
-  }
-
-  @SuppressWarnings("unchecked")
-  private Action makeAction4(FactoryMethod description) {
-    var originAction = (Action5<Object, Object, Object, Object, Object, Object>) description.action();
-    return originAction.convertToAction4(description.factoryInstance());
-  }
-
-  @SuppressWarnings("unchecked")
-  private Action makeAction5(FactoryMethod description) {
-    var originAction = (Action6<Object, Object, Object, Object, Object, Object, Object>) description.action();
-    return originAction.convertToAction5(description.factoryInstance());
-  }
-
-  @SuppressWarnings("unchecked")
-  private Action makeAction6(FactoryMethod description) {
-    var originAction = (Action7<Object, Object, Object, Object, Object, Object, Object, Object>) description.action();
-    return originAction.convertToAction6(description.factoryInstance());
-  }
-
-  @SuppressWarnings("unchecked")
-  private Action makeAction7(FactoryMethod description) {
-    var originAction = (Action8<Object, Object, Object, Object, Object, Object, Object, Object, Object>) description.action();
-    return originAction.convertToAction7(description.factoryInstance());
-  }
-
-  @SuppressWarnings("unchecked")
-  private Action makeAction8(FactoryMethod description) {
-    var originAction = (Action9<Object, Object, Object, Object, Object, Object, Object, Object, Object, Object>) description.action();
-    return originAction.convertToAction8(description.factoryInstance());
-  }
-
-  @SuppressWarnings("unchecked")
-  private Action makeAction9(FactoryMethod description) {
-    var originAction = (Action10<Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object>) description.action();
-    return originAction.convertToAction9(description.factoryInstance());
   }
 }

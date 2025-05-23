@@ -15,6 +15,8 @@ import tech.intellispaces.actions.Action7;
 import tech.intellispaces.actions.Action8;
 import tech.intellispaces.actions.Action9;
 import tech.intellispaces.commons.type.Type;
+import tech.intellispaces.core.Reflection;
+import tech.intellispaces.core.ReflectionContract;
 import tech.intellispaces.reflections.framework.channel.Channel0;
 import tech.intellispaces.reflections.framework.channel.Channel1;
 import tech.intellispaces.reflections.framework.channel.Channel2;
@@ -84,6 +86,14 @@ public interface Engine {
    * @param guide the guide.
    */
   void addGuide(Guide<?, ?> guide);
+
+  /**
+   * Creates new reflection.
+   *
+   * @param contract the reflection contract.
+   * @return created reflection.
+   */
+  Reflection createReflection(ReflectionContract contract);
 
   <S, T> Mapper0<S, T> autoMapperThruChannel0(Type<S> sourceType, String cid, ReflectionForm targetForm);
 

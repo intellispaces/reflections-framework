@@ -19,11 +19,12 @@ public class {{$generatedArtifactSimpleName}} extends {{$sourceArtifactSimpleNam
     methods.add(
       FactoryMethods.factoryMethod(
         this,
-        "{{$method["name"]}}",
+        "{{$method["contractType"]}}",
         {{$method["returnedType"]}},
         {{$method["returnedDomainClass"]}}.class,
-{{for paramType : $method["paramParamTypes"]}}
-        {{$paramType}},
+{{for qualifier : $method["qualifiers"]}}
+        "{{$qualifier["name"]}}",
+        {{$qualifier["type"]}},
 {{end}}
         {{$generatedArtifactSimpleName}}::{{$method["name"]}}
       )

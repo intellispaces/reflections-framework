@@ -1,4 +1,4 @@
-package tech.intellispaces.reflections.framework.annotationprocessor.object.factory;
+package tech.intellispaces.reflections.framework.annotationprocessor.factory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,20 +9,21 @@ import tech.intellispaces.javareflection.customtype.CustomType;
 import tech.intellispaces.javareflection.method.MethodParam;
 import tech.intellispaces.javareflection.method.MethodStatement;
 import tech.intellispaces.reflections.framework.annotationprocessor.ReflectionsArtifactGenerator;
+import tech.intellispaces.reflections.framework.factory.FactoryFunctions;
 import tech.intellispaces.reflections.framework.factory.FactoryMethod;
 import tech.intellispaces.reflections.framework.factory.FactoryMethods;
 import tech.intellispaces.reflections.framework.factory.FactoryWrapper;
 import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
 import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
 
-public class ObjectFactoryWrapperGenerator extends ReflectionsArtifactGenerator {
-  private final ObjectFactoryMetaInfGenerator metaInfGenerator;
+public class FactoryWrapperGenerator extends ReflectionsArtifactGenerator {
+  private final FactoryMetaInfGenerator metaInfGenerator;
 
-  public ObjectFactoryWrapperGenerator(
-      CustomType objectFactoryType,
-      ObjectFactoryMetaInfGenerator metaInfGenerator
+  public FactoryWrapperGenerator(
+      CustomType factoryType,
+      FactoryMetaInfGenerator metaInfGenerator
   ) {
-    super(objectFactoryType);
+    super(factoryType);
     this.metaInfGenerator = metaInfGenerator;
   }
 
@@ -38,7 +39,7 @@ public class ObjectFactoryWrapperGenerator extends ReflectionsArtifactGenerator 
 
   @Override
   protected String templateName() {
-    return "/object_factory_wrapper.template";
+    return "/factory_wrapper.template";
   }
 
   @Override
@@ -66,9 +67,10 @@ public class ObjectFactoryWrapperGenerator extends ReflectionsArtifactGenerator 
         }
         methods.add(Map.of(
             "name", method.name(),
+            "contractType", FactoryFunctions.getContractType(method),
             "returnedType", getMethodReturnedType(method),
             "returnedDomainClass", getMethodReturnedDomainClass(method),
-            "paramParamTypes", getMethodParamTypes(method)
+            "qualifiers", getContractQualifiers(method)
         ));
       }
     return methods;
@@ -84,10 +86,14 @@ public class ObjectFactoryWrapperGenerator extends ReflectionsArtifactGenerator 
     return addImportAndGetSimpleName(domainType.canonicalName());
   }
 
-  private List<String> getMethodParamTypes(MethodStatement method) {
-    return method.params().stream()
-        .map(MethodParam::type)
-        .map(t -> t.typeExpression(this::addImportAndGetSimpleName))
-        .toList();
+  private List<Map<String, Object>> getContractQualifiers(MethodStatement method) {
+    List<Map<String, Object>> qualifiers = new ArrayList<>(method.params().size());
+    for (MethodParam param : method.params()) {
+      qualifiers.add(Map.of(
+          "name", param.name(),
+          "type", param.type().typeExpression(this::addImportAndGetSimpleName)
+      ));
+    }
+    return qualifiers;
   }
 }

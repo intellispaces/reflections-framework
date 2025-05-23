@@ -32,7 +32,7 @@ public class SystemHandleImpl implements SystemHandle {
 
     @Override
     public Reflection create(ReflectionContract contract) {
-        return null;
+        return engine.createReflection(contract);
     }
 
     @Override

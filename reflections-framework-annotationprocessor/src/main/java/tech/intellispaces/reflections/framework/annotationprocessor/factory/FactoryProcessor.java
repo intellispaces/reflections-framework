@@ -1,4 +1,4 @@
-package tech.intellispaces.reflections.framework.annotationprocessor.object.factory;
+package tech.intellispaces.reflections.framework.annotationprocessor.factory;
 
 import java.util.List;
 import javax.annotation.processing.Processor;
@@ -16,10 +16,10 @@ import tech.intellispaces.reflections.framework.annotationprocessor.AnnotationFu
 import tech.intellispaces.reflections.framework.annotationprocessor.ReflectionsArtifactProcessor;
 
 @AutoService(Processor.class)
-public class ObjectFactoryProcessor extends ArtifactProcessor {
-  private final ObjectFactoryMetaInfGenerator metaInfGenerator = new ObjectFactoryMetaInfGenerator();
+public class FactoryProcessor extends ArtifactProcessor {
+  private final FactoryMetaInfGenerator metaInfGenerator = new FactoryMetaInfGenerator();
 
-  public ObjectFactoryProcessor() {
+  public FactoryProcessor() {
     super(ElementKind.CLASS, Factory.class, ReflectionsArtifactProcessor.SOURCE_VERSION);
   }
 
@@ -37,7 +37,7 @@ public class ObjectFactoryProcessor extends ArtifactProcessor {
   public List<ArtifactGenerator> makeGenerators(CustomType objectFactoryType, ArtifactGeneratorContext context) {
     return List.of(
         metaInfGenerator,
-        new ObjectFactoryWrapperGenerator(objectFactoryType, metaInfGenerator)
+        new FactoryWrapperGenerator(objectFactoryType, metaInfGenerator)
     );
   }
 }

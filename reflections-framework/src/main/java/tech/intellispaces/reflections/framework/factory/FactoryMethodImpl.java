@@ -7,25 +7,28 @@ import tech.intellispaces.commons.type.Type;
 
 public class FactoryMethodImpl implements FactoryMethod {
   private final Object factoryInstance;
-  private final String name;
+  private final String contractType;
   private final Type<?> returnedType;
   private final Class<?> returnedDomainClass;
-  private final List<Type<?>> paramTypes;
+  private final List<String> contractQualifierNames;
+  private final List<Type<?>> contractQualifierTypes;
   private final Action action;
 
   public FactoryMethodImpl(
       Object factoryInstance,
-      String name,
+      String contractType,
       Type<?> returnedType,
       Class<?> returnedDomainClass,
-      List<Type<?>> paramTypes,
+      List<String> contractQualifierNames,
+      List<Type<?>> contractQualifierTypes,
       Action action
   ) {
     this.factoryInstance = factoryInstance;
-    this.name = name;
+    this.contractType = contractType;
     this.returnedType = returnedType;
     this.returnedDomainClass = returnedDomainClass;
-    this.paramTypes = paramTypes;
+    this.contractQualifierNames = contractQualifierNames;
+    this.contractQualifierTypes = contractQualifierTypes;
     this.action = action;
   }
 
@@ -35,8 +38,8 @@ public class FactoryMethodImpl implements FactoryMethod {
   }
 
   @Override
-  public String name() {
-    return name;
+  public String contractType() {
+    return contractType;
   }
 
   @Override
@@ -50,8 +53,13 @@ public class FactoryMethodImpl implements FactoryMethod {
   }
 
   @Override
-  public List<Type<?>> paramTypes() {
-    return paramTypes;
+  public List<String> contractQualifierNames() {
+    return contractQualifierNames;
+  }
+
+  @Override
+  public List<Type<?>> contractQualifierTypes() {
+    return contractQualifierTypes;
   }
 
   @Override

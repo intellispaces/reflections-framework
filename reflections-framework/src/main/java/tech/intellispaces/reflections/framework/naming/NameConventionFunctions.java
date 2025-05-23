@@ -232,8 +232,8 @@ public interface NameConventionFunctions {
     return transformClassName(objectFactoryClassName) + WRAPPER;
   }
 
-  static String getObjectFactoriesResourceName() {
-    return "META-INF/reflections/object_factories";
+  static String getFactoriesResourceName() {
+    return "META-INF/reflections/factories";
   }
 
   static String getUnmovableUpwardObjectTypename(CustomType domainType, CustomType baseDomainType) {

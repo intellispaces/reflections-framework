@@ -16,6 +16,8 @@ import tech.intellispaces.actions.Action8;
 import tech.intellispaces.actions.Action9;
 import tech.intellispaces.commons.type.Type;
 import tech.intellispaces.commons.type.Types;
+import tech.intellispaces.core.Reflection;
+import tech.intellispaces.core.ReflectionContract;
 import tech.intellispaces.reflections.framework.channel.Channel0;
 import tech.intellispaces.reflections.framework.channel.Channel1;
 import tech.intellispaces.reflections.framework.channel.Channel2;
@@ -184,6 +186,14 @@ public class DefaultEngine implements Engine {
   @Override
   public void addGuide(Guide<?, ?> guide) {
     guideRegistry.addGuide(guide);
+  }
+
+  @Override
+  public Reflection createReflection(ReflectionContract contract) {
+    return factoryRegistry.factoryAction(
+        contract.domain().domainClass(),
+        contract.type()
+    ).execute(contract.properties());
   }
 
   @Override

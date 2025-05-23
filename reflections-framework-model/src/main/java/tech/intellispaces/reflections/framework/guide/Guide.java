@@ -16,7 +16,7 @@ import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
  * @param <S> the source reflection type. This type defines the guide applicability.
  * @param <R> the result reflection type.
  */
-public interface Guide<S, R> {
+public interface Guide<S, R> extends tech.intellispaces.core.Guide {
 
   /**
    * Guide kind.

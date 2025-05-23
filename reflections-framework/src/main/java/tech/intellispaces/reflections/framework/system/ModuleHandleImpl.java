@@ -6,6 +6,7 @@ import java.util.List;
 import tech.intellispaces.actions.cache.CachedSupplierActions;
 import tech.intellispaces.actions.supplier.SupplierAction;
 import tech.intellispaces.commons.type.Type;
+import tech.intellispaces.core.Guide;
 import tech.intellispaces.core.System;
 import tech.intellispaces.core.Unit;
 import tech.intellispaces.reflections.framework.channel.Channel0;
@@ -94,6 +95,16 @@ public class ModuleHandleImpl implements ModuleHandle {
     public ModuleHandle upload() {
         Modules.unload(this);
         return this;
+    }
+
+    @Override
+    public List<Guide> guides() {
+        return engine.guides();
+    }
+
+    @Override
+    public <G> List<G> guides(Class<G> guideClass) {
+        return engine.guides(guideClass);
     }
 
     @Override

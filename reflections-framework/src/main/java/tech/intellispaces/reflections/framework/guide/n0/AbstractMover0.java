@@ -3,7 +3,9 @@ package tech.intellispaces.reflections.framework.guide.n0;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
+import tech.intellispaces.commons.exception.NotImplementedExceptions;
 import tech.intellispaces.commons.exception.WrappedExceptions;
+import tech.intellispaces.core.Channel;
 import tech.intellispaces.reflections.framework.exception.TraverseException;
 import tech.intellispaces.reflections.framework.exception.TraverseExceptions;
 import tech.intellispaces.reflections.framework.guide.GuideKind;
@@ -40,5 +42,10 @@ public interface AbstractMover0<S> extends Mover0<S> {
   @Override
   default double traverseToDouble(S source) throws TraverseException {
     throw TraverseExceptions.withMessage("Invalid operation");
+  }
+
+  @Override
+  default Channel channel() {
+    throw NotImplementedExceptions.withCode("f5zaYQ");
   }
 }

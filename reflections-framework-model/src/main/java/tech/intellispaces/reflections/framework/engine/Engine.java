@@ -139,6 +139,10 @@ public interface Engine {
 
   <S, T, Q1, Q2, Q3, Q4> MapperOfMoving4<S, T, Q1, Q2, Q3, Q4> autoMapperOfMovingThruChannel4(Type<S> sourceType, Class<? extends Channel4> channelClass, ReflectionForm targetForm);
 
+  List<tech.intellispaces.core.Guide> guides();
+
+  <G> List<G> guides(Class<G> guideClass);
+
   <G> G getAutoGuide(Class<G> guideClass);
 
   <T> T getProjection(String name, Class<T> targetReflectionClass);

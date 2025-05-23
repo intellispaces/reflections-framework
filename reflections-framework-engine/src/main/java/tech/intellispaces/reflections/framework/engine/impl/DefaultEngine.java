@@ -504,6 +504,16 @@ public class DefaultEngine implements Engine {
   }
 
   @Override
+  public List<tech.intellispaces.core.Guide> guides() {
+    return projectionRegistry.findProjections(tech.intellispaces.core.Guide.class);
+  }
+
+  @Override
+  public <G> List<G> guides(Class<G> guideClass) {
+    return projectionRegistry.findProjections(guideClass);
+  }
+
+  @Override
   public <G> G getAutoGuide(Class<G> guideClass) {
     return autoGuideRegistry.getGuide(guideClass);
   }

@@ -62,7 +62,7 @@ public class FactoryWrapperGenerator extends ReflectionsArtifactGenerator {
   List<Map<String, Object>> getFactoryMethods() {
     var methods = new ArrayList<Map<String, Object>>();
       for (MethodStatement method : sourceArtifact().declaredMethods()) {
-        if (method.isStatic()) {
+        if (method.isStatic() || !method.isPublic()) {
           continue;
         }
         methods.add(Map.of(

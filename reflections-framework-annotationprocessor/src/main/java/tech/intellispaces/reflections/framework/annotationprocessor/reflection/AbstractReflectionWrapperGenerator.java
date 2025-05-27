@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -16,6 +17,7 @@ import tech.intellispaces.commons.text.StringFunctions;
 import tech.intellispaces.commons.type.ClassFunctions;
 import tech.intellispaces.commons.type.ClassNameFunctions;
 import tech.intellispaces.commons.type.PrimitiveTypes;
+import tech.intellispaces.core.Rids;
 import tech.intellispaces.javareflection.customtype.CustomType;
 import tech.intellispaces.javareflection.method.MethodParam;
 import tech.intellispaces.javareflection.method.MethodStatement;
@@ -44,7 +46,6 @@ abstract class AbstractReflectionWrapperGenerator extends AbstractReflectionForm
   protected String primaryDomainSimpleName;
   protected String primaryDomainTypeArguments;
   protected boolean implRelease;
-  protected CustomType domainType;
   protected String domainTypeDeclaration;
   protected String primaryDomainTypeDeclaration;
   private List<MethodStatement> domainMethods;
@@ -60,6 +61,8 @@ abstract class AbstractReflectionWrapperGenerator extends AbstractReflectionForm
   }
 
   protected void analyzeDomain() {
+    domainType = ReflectionFunctions.getDomainOfObjectFormOrElseThrow(sourceArtifact());
+    domainRid = Rids.of(UUID.fromString(DomainFunctions.getDomainId(domainType)));
     domainType = ReflectionFunctions.getDomainOfObjectFormOrElseThrow(sourceArtifact());
     addImport(domainType.canonicalName());
     domainSimpleClassName = simpleNameOf(domainType.canonicalName());

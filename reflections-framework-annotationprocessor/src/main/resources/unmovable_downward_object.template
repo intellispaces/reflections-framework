@@ -18,34 +18,15 @@ public class {{$generatedArtifactSimpleName}}{{$classTypeParams}} implements {{$
     this.{{$childField}} = {{$childField}};
   }
 
-{{when $isAlias}}
   @Override
-  public Type<{{$primaryDomainSimpleName}}{{$domainTypeArguments}}> domainType() {
-    return {{$domainType}}
+  public Rid rid() {
+    return Rids.undefined();
   }
 
   @Override
-  public Class<{{$domainClassSimpleName}}> domainClass() {
-    return {{$domainClassSimpleName}}.class;
+  public Domain domain() {
+    return null;
   }
-{{else}}
-{{when $domainTypeParamsBrief.isEmpty()}}
-  @Override
-  public Type<{{$parentDomainClassSimpleName}}> domainType() {
-    return Types.get({{$parentDomainClassSimpleName}}.class);
-  }
-{{else}}
-  @Override
-  public Type<{{$parentDomainClassSimpleName}}{{$domainTypeParamsBrief}}> domainType() {
-    return {{$domainType}}
-  }
-{{end}}
-  @Override
-  public Class<{{$domainClassSimpleName}}> domainClass() {
-    return {{$domainClassSimpleName}}.class;
-  }
-{{end}}
-{{end}}
 
   @Override
   public boolean isMovable() {

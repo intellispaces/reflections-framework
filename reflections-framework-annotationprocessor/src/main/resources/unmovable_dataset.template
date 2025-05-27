@@ -28,6 +28,16 @@ public class {{$generatedArtifactSimpleName}} implements {{$reflectionClassName}
 {{end}}
   }
 
+  @Override
+  public Rid rid() {
+    return Rids.undefined();
+  }
+
+  @Override
+  public Domain domain() {
+    return Domains.create(Rids.of(Base64.getDecoder().decode("{{$didBase64}}"), "{{$didOrigin}}"), "{{$domainName}}", {{$sourceArtifactSimpleName}}.class, Types.get({{$sourceArtifactSimpleName}}.class));
+  }
+
 {{for projection : $projections}}
   @Override
   public {{$projection["type"]}} {{$projection["name"]}}() {
@@ -57,16 +67,6 @@ public class {{$generatedArtifactSimpleName}} implements {{$reflectionClassName}
   @Override
   public {{$movableReflectionClassName}} asMovableOrElseThrow() {
     throw UnexpectedExceptions.withMessage("Unmovable object");
-  }
-
-  @Override
-  public Type<{{$sourceArtifactSimpleName}}{{$typeParamsBrief}}> domainType() {
-    return {{$domainType}}
-  }
-
-  @Override
-  public Class<{{$sourceArtifactSimpleName}}> domainClass() {
-    return {{$sourceArtifactSimpleName}}.class;
   }
 
   @Override

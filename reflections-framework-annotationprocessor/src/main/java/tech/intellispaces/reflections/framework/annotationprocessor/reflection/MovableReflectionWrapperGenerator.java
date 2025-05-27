@@ -1,5 +1,6 @@
 package tech.intellispaces.reflections.framework.annotationprocessor.reflection;
 
+import java.util.Base64;
 import java.util.List;
 
 import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
@@ -7,6 +8,10 @@ import tech.intellispaces.commons.exception.NotImplementedExceptions;
 import tech.intellispaces.commons.type.PrimitiveFunctions;
 import tech.intellispaces.commons.type.Type;
 import tech.intellispaces.commons.type.Types;
+import tech.intellispaces.core.Domain;
+import tech.intellispaces.core.Domains;
+import tech.intellispaces.core.Rid;
+import tech.intellispaces.core.Rids;
 import tech.intellispaces.javareflection.customtype.CustomType;
 import tech.intellispaces.javareflection.method.MethodStatement;
 import tech.intellispaces.javareflection.reference.CustomTypeReferences;
@@ -112,7 +117,12 @@ public class MovableReflectionWrapperGenerator extends AbstractReflectionWrapper
         NotImplementedExceptions.class,
         ReflectionRealizationTypes.class,
         EngineRegistrar.class,
-        ReflectionsNodeFunctions.class
+        ReflectionsNodeFunctions.class,
+        Rid.class,
+        Domain.class,
+        Rids.class,
+        Domains.class,
+        Base64.class
     );
 
     analyzeDomain();
@@ -124,6 +134,9 @@ public class MovableReflectionWrapperGenerator extends AbstractReflectionWrapper
     analyzeConversionMethods(domainType);
     analyzeUnbindMethod();
 
+    addVariable("didBase64", new String(Base64.getEncoder().encode(domainRid.raw())));
+    addVariable("didOrigin", domainRid.toString());
+    addVariable("domainName", domainType.canonicalName());
     addVariable("typeParamsFull", typeParamsFull);
     addVariable("typeParamsBrief", typeParamsBrief);
     addVariable("domainClassSimpleName", domainSimpleClassName);

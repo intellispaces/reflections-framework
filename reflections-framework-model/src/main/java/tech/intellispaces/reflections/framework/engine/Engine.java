@@ -88,10 +88,10 @@ public interface Engine {
   void addGuide(Guide<?, ?> guide);
 
   /**
-   * Creates new reflection.
+   * Creates and registers new reflection.
    *
    * @param contract the reflection contract.
-   * @return created reflection.
+   * @return the created reflection.
    */
   Reflection createReflection(ReflectionContract contract);
 

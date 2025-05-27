@@ -6,6 +6,10 @@ import java.util.stream.Stream;
 import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
 import tech.intellispaces.commons.type.Type;
 import tech.intellispaces.commons.type.Types;
+import tech.intellispaces.core.Domain;
+import tech.intellispaces.core.Domains;
+import tech.intellispaces.core.Rid;
+import tech.intellispaces.core.Rids;
 import tech.intellispaces.javareflection.customtype.CustomType;
 import tech.intellispaces.javareflection.method.MethodStatement;
 import tech.intellispaces.javareflection.reference.CustomTypeReference;
@@ -85,7 +89,11 @@ public class MovableDownwardObjectGenerator extends ConversionObjectGenerator {
         MappingTraverse.class,
         MappingOfMovingTraverse.class,
         ChannelFunctions.class,
-        TraverseException.class
+        TraverseException.class,
+        Rid.class,
+        Domain.class,
+        Rids.class,
+        Domains.class
     );
 
     String movableReflectionName = addImportAndGetSimpleName(

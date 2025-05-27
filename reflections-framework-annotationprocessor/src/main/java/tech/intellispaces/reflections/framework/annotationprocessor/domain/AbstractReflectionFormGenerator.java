@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.annotation.processing.RoundEnvironment;
@@ -14,6 +15,8 @@ import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
 import tech.intellispaces.commons.exception.NotImplementedExceptions;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.commons.type.ClassFunctions;
+import tech.intellispaces.core.Rid;
+import tech.intellispaces.core.Rids;
 import tech.intellispaces.javareflection.customtype.CustomType;
 import tech.intellispaces.javareflection.customtype.Interfaces;
 import tech.intellispaces.javareflection.method.MethodParam;
@@ -47,7 +50,9 @@ import tech.intellispaces.reflections.framework.space.domain.DomainFunctions;
 
 public abstract class AbstractReflectionFormGenerator extends ReflectionsArtifactGenerator {
   protected boolean isAlias;
-  protected String domainType;
+  protected Rid domainRid;
+  protected CustomType domainType;
+  protected String domainTypename;
   protected String generalReflection;
   protected String baseReflection;
   protected String primaryReflection;
@@ -62,8 +67,8 @@ public abstract class AbstractReflectionFormGenerator extends ReflectionsArtifac
   protected final List<Map<String, String>> rawDomainMethods = new ArrayList<>();
   protected final List<String> underlyingTypes = new ArrayList<>();
 
-  public AbstractReflectionFormGenerator(CustomType domainType) {
-    super(domainType);
+  public AbstractReflectionFormGenerator(CustomType domainTypename) {
+    super(domainTypename);
   }
 
   abstract protected ReflectionForm getForm();
@@ -386,7 +391,7 @@ public abstract class AbstractReflectionFormGenerator extends ReflectionsArtifac
       sb.append(", ");
       analyzeDomainType(typeQualifier, sb);
     }
-    sb.append(");");
+    sb.append(")");
     return sb.toString();
   }
 

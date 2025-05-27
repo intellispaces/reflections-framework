@@ -18,6 +18,7 @@ import tech.intellispaces.commons.type.Type;
 import tech.intellispaces.commons.type.Types;
 import tech.intellispaces.core.Reflection;
 import tech.intellispaces.core.ReflectionContract;
+import tech.intellispaces.core.Rid;
 import tech.intellispaces.reflections.framework.channel.Channel0;
 import tech.intellispaces.reflections.framework.channel.Channel1;
 import tech.intellispaces.reflections.framework.channel.Channel2;
@@ -66,6 +67,7 @@ import tech.intellispaces.reflections.framework.system.GuideRegistry;
 import tech.intellispaces.reflections.framework.system.ModuleProjection;
 import tech.intellispaces.reflections.framework.system.ProjectionDefinition;
 import tech.intellispaces.reflections.framework.system.ProjectionRegistry;
+import tech.intellispaces.reflections.framework.system.ReflectionRegistry;
 import tech.intellispaces.reflections.framework.system.TraverseAnalyzer;
 import tech.intellispaces.reflections.framework.system.TraverseExecutor;
 import tech.intellispaces.reflections.framework.traverse.MappingOfMovingTraverse;
@@ -80,6 +82,7 @@ public class DefaultEngine implements Engine {
   private final TraverseAnalyzer traverseAnalyzer;
   private final TraverseExecutor traverseExecutor;
   private final FactoryRegistry factoryRegistry;
+  private final ReflectionRegistry reflectionRegistry;
 
   public DefaultEngine(
       ProjectionRegistry projectionRegistry,
@@ -87,7 +90,8 @@ public class DefaultEngine implements Engine {
       AutoGuideRegistry autoGuideRegistry,
       TraverseAnalyzer traverseAnalyzer,
       TraverseExecutor traverseExecutor,
-      FactoryRegistry factoryRegistry
+      FactoryRegistry factoryRegistry,
+      ReflectionRegistry reflectionRegistry
   ) {
     this.projectionRegistry = projectionRegistry;
     this.guideRegistry = guideRegistry;
@@ -95,6 +99,7 @@ public class DefaultEngine implements Engine {
     this.traverseAnalyzer = traverseAnalyzer;
     this.traverseExecutor = traverseExecutor;
     this.factoryRegistry = factoryRegistry;
+    this.reflectionRegistry = reflectionRegistry;
   }
 
   @Override
@@ -190,10 +195,11 @@ public class DefaultEngine implements Engine {
 
   @Override
   public Reflection createReflection(ReflectionContract contract) {
-    return factoryRegistry.factoryAction(
+    Reflection reflection = factoryRegistry.factoryAction(
         contract.domain().domainClass(),
         contract.type()
     ).execute(contract.properties());
+    return reflectionRegistry.register(reflection);
   }
 
   @Override

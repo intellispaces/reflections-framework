@@ -1,11 +1,13 @@
 package tech.intellispaces.reflections.framework.annotationprocessor.dataset;
 
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 
 import tech.intellispaces.actions.runnable.RunnableAction;
 import tech.intellispaces.actions.text.StringActions;
@@ -15,6 +17,10 @@ import tech.intellispaces.commons.exception.NotImplementedExceptions;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.commons.type.Type;
 import tech.intellispaces.commons.type.Types;
+import tech.intellispaces.core.Domain;
+import tech.intellispaces.core.Domains;
+import tech.intellispaces.core.Rid;
+import tech.intellispaces.core.Rids;
 import tech.intellispaces.javareflection.customtype.CustomType;
 import tech.intellispaces.javareflection.method.MethodStatement;
 import tech.intellispaces.javareflection.reference.CustomTypeReference;
@@ -34,6 +40,7 @@ import tech.intellispaces.reflections.framework.reflection.MovabilityTypes;
 import tech.intellispaces.reflections.framework.reflection.MovableReflection;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForms;
+import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
 import tech.intellispaces.reflections.framework.reflection.UnmovableReflection;
 import tech.intellispaces.reflections.framework.space.domain.DomainFunctions;
 import tech.intellispaces.reflections.framework.system.Modules;
@@ -43,7 +50,7 @@ import tech.intellispaces.reflections.framework.traverse.TraverseTypes;
 public class UnmovableDatasetGenerator extends AbstractReflectionFormGenerator {
   private String typeParamsBrief;
   private boolean isAlias;
-  private String domainType;
+  private String domainTypename;
   private final List<Map<String, String>> projectionProperties = new ArrayList<>();
 
   public UnmovableDatasetGenerator(CustomType dataType) {
@@ -98,19 +105,27 @@ public class UnmovableDatasetGenerator extends AbstractReflectionFormGenerator {
         UnmovableReflection.class,
         MovableReflection.class,
         NotImplementedExceptions.class,
-        UnexpectedExceptions.class
+        UnexpectedExceptions.class,
+        Rid.class,
+        Domain.class,
+        Rids.class,
+        Domains.class,
+        Base64.class
     );
 
     analyzeAlias();
+    analyzeDomain();
     analyzeTypeParams();
     analyzeProjections();
 
+    addVariable("didBase64", new String(Base64.getEncoder().encode(domainRid.raw())));
+    addVariable("didOrigin", domainRid.toString());
+    addVariable("domainName", domainType.canonicalName());
     addVariable("reflectionClassName", NameConventionFunctions.getUnmovableReflectionTypeName(sourceArtifact().className(), true));
     addVariable("movableReflectionClassName", NameConventionFunctions.getMovableReflectionTypeName(sourceArtifact().className(), true));
     addVariable("typeParamsBrief", typeParamsBrief);
     addVariable("projections", projectionProperties);
-    addVariable("domainType", domainType);
-
+    addVariable("domainType", domainTypename);
     return true;
   }
 
@@ -119,10 +134,16 @@ public class UnmovableDatasetGenerator extends AbstractReflectionFormGenerator {
     Optional<CustomTypeReference> mainEquivalentDomain = DomainFunctions.getAliasBaseDomain(sourceArtifact());
     isAlias = mainEquivalentDomain.isPresent();
     if (isAlias) {
-      domainType = buildDomainType(mainEquivalentDomain.get().targetType(), mainEquivalentDomain.get().typeArguments());
+      domainTypename = buildDomainType(mainEquivalentDomain.get().targetType(), mainEquivalentDomain.get().typeArguments());
     } else {
-      domainType = buildDomainType(sourceArtifact(), (List) sourceArtifact().typeParameters());
+      domainTypename = buildDomainType(sourceArtifact(), (List) sourceArtifact().typeParameters());
     }
+  }
+
+  @Override
+  protected void analyzeDomain() {
+    domainType = sourceArtifact();
+    domainRid = Rids.of(UUID.fromString(DomainFunctions.getDomainId(domainType)));
   }
 
   private void analyzeProjections() {

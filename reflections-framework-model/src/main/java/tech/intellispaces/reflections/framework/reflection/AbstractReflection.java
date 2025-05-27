@@ -1,6 +1,5 @@
 package tech.intellispaces.reflections.framework.reflection;
 
-import tech.intellispaces.commons.type.Type;
 import tech.intellispaces.reflections.framework.channel.Channel1;
 import tech.intellispaces.reflections.framework.exception.TraverseException;
 import tech.intellispaces.reflections.framework.traverse.MappingTraverse;
@@ -13,17 +12,7 @@ import tech.intellispaces.reflections.framework.traverse.MappingTraverse;
  *
  * @param <D> the domain type.
  */
-public interface AbstractReflection<D> {
-
-  /**
-   * The domain type related to this reflection.
-   */
-  Type<D> domainType();
-
-  /**
-   * The domain class related to this reflection.
-   */
-  Class<?> domainClass();
+public interface AbstractReflection<D> extends tech.intellispaces.core.Reflection {
 
   /**
    * Returns <code>true</code> if this reflection is focused.

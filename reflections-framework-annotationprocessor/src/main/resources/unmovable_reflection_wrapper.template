@@ -34,25 +34,18 @@ public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sour
     return true;
   }
 
-{{when $isAlias}}
   @Override
-  public Type<{{$primaryDomainSimpleName}}{{$primaryDomainTypeArguments}}> domainType() {
-    return {{$primaryDomainTypeDeclaration}}
+  public Rid rid() {
+    return Rids.undefined();
   }
-{{else}}
-  @Override
-  public Type<{{$domainClassSimpleName}}{{$typeParamsBrief}}> domainType() {
-    return {{$domainTypeDeclaration}}
-  }
-{{end}}
 
   @Override
-  public Class<{{$domainClassSimpleName}}> domainClass() {
-    return {{$domainClassSimpleName}}.class;
+  public Domain domain() {
+    return Domains.create(Rids.of(Base64.getDecoder().decode("{{$didBase64}}"), "{{$didOrigin}}"), "{{$domainName}}", {{$domainClassSimpleName}}.class, {{when $isAlias}}{{$primaryDomainTypeDeclaration}}{{else}}{{$domainTypeDeclaration}}{{end}});
   }
 
   public Type<{{$primaryDomainSimpleName}}{{$primaryDomainTypeArguments}}> primaryDomain() {
-    return {{$primaryDomainTypeDeclaration}}
+    return {{$primaryDomainTypeDeclaration}};
   }
 
   @Override

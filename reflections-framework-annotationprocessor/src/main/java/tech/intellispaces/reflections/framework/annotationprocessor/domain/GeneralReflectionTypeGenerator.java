@@ -83,7 +83,7 @@ public class GeneralReflectionTypeGenerator extends AbstractReflectionFormGenera
     addVariable("reflectionTypeParamsFull", typeParamsFull);
     addVariable("reflectionTypeParamsBrief", typeParamsBrief);
     addVariable("domainTypeParamsBrief", domainTypeParamsBrief);
-    addVariable("domainType", domainType);
+    addVariable("domainType", domainTypename);
     addVariable("domainMethods", methods);
     addVariable("isAlias", isAlias);
     addVariable("primaryReflection", baseReflection);
@@ -114,9 +114,9 @@ public class GeneralReflectionTypeGenerator extends AbstractReflectionFormGenera
       baseReflection = buildObjectFormDeclaration(nearEquivalentDomain, ReflectionForms.Reflection, MovabilityTypes.General, true);
       primaryDomainTypeArguments = getDomainTypeParamsBrief(nearEquivalentDomain);
       primaryDomainSimpleName = addImportAndGetSimpleName(mainEquivalentDomain.targetType().canonicalName());
-      domainType = buildDomainType(mainEquivalentDomain.targetType(), mainEquivalentDomain.typeArguments());
+      domainTypename = buildDomainType(mainEquivalentDomain.targetType(), mainEquivalentDomain.typeArguments());
     } else {
-      domainType = buildDomainType(sourceArtifact(), (List) sourceArtifact().typeParameters());
+      domainTypename = buildDomainType(sourceArtifact(), (List) sourceArtifact().typeParameters());
     }
   }
 

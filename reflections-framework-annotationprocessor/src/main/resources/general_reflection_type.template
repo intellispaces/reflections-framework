@@ -13,20 +13,8 @@ import {{$importedClass}};
 {{$generatedAnnotation}}
 {{when $isAlias}}
 public interface {{$generatedArtifactSimpleName}}{{$reflectionTypeParamsFull}} extends {{$simpleObject}}{{$reflectionTypeParamsBrief}}, {{$primaryReflection}} {
-
-  default Type<{{$primaryDomainSimpleName}}{{$primaryDomainTypeArguments}}> domainType() {
-    return {{$domainType}}
-  }
 {{else}}
 public interface {{$generatedArtifactSimpleName}}{{$reflectionTypeParamsFull}} extends {{$simpleObject}}{{$reflectionTypeParamsBrief}}, tech.intellispaces.reflections.framework.reflection.Reflection<{{$sourceArtifactSimpleName}}{{$domainTypeParamsBrief}}> {
-
-  default Type<{{$sourceArtifactSimpleName}}{{$domainTypeParamsBrief}}> domainType() {
-    return {{$domainType}}
-  }
-
-  default Class<?> domainClass() {
-    return {{$sourceArtifactSimpleName}}.class;
-  }
 {{end}}
 
   @Override

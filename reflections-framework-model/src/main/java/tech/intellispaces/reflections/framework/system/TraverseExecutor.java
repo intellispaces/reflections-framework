@@ -12,6 +12,7 @@ import tech.intellispaces.reflections.framework.traverse.plan.MapOfMovingThruCha
 import tech.intellispaces.reflections.framework.traverse.plan.MapOfMovingThruChannel2TraversePlan;
 import tech.intellispaces.reflections.framework.traverse.plan.MapOfMovingThruChannel3TraversePlan;
 import tech.intellispaces.reflections.framework.traverse.plan.MapOfMovingThruChannel4TraversePlan;
+import tech.intellispaces.reflections.framework.traverse.plan.MapSpecificReflectionToSpecificDomainAndClassTraversePlan;
 import tech.intellispaces.reflections.framework.traverse.plan.MapThruChannel0TraversePlan;
 import tech.intellispaces.reflections.framework.traverse.plan.MapThruChannel1TraversePlan;
 import tech.intellispaces.reflections.framework.traverse.plan.MapThruChannel2TraversePlan;
@@ -75,4 +76,10 @@ public interface TraverseExecutor {
   Object execute(MapOfMovingThruChannel3TraversePlan plan, Object source, Object qualifier1, Object qualifier2, Object qualifier3) throws TraverseException;
 
   Object execute(MapOfMovingThruChannel4TraversePlan plan, Object source, Object qualifier1, Object qualifier2, Object qualifier3, Object qualifier4) throws TraverseException;
+
+  Object execute(MapSpecificReflectionToSpecificDomainAndClassTraversePlan plan) throws TraverseException;
+
+  int executeReturnInt(MapSpecificReflectionToSpecificDomainAndClassTraversePlan plan) throws TraverseException;
+
+  double executeReturnDouble(MapSpecificReflectionToSpecificDomainAndClassTraversePlan plan) throws TraverseException;
 }

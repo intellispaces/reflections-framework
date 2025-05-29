@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import tech.intellispaces.commons.exception.NotImplementedExceptions;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
+import tech.intellispaces.core.Domain;
 import tech.intellispaces.reflections.framework.guide.Guide;
 import tech.intellispaces.reflections.framework.guide.GuideKind;
 import tech.intellispaces.reflections.framework.guide.GuideKinds;
@@ -36,6 +37,8 @@ import tech.intellispaces.reflections.framework.traverse.plan.MapOfMovingThruCha
 import tech.intellispaces.reflections.framework.traverse.plan.MapOfMovingThruChannel3TraversePlanImpl;
 import tech.intellispaces.reflections.framework.traverse.plan.MapOfMovingThruChannel4TraversePlan;
 import tech.intellispaces.reflections.framework.traverse.plan.MapOfMovingThruChannel4TraversePlanImpl;
+import tech.intellispaces.reflections.framework.traverse.plan.MapSpecificReflectionToSpecificDomainAndClassTraversePlan;
+import tech.intellispaces.reflections.framework.traverse.plan.MapSpecificReflectionToSpecificDomainAndClassTraversePlanImpl;
 import tech.intellispaces.reflections.framework.traverse.plan.MapThruChannel0TraversePlan;
 import tech.intellispaces.reflections.framework.traverse.plan.MapThruChannel0TraversePlanImpl;
 import tech.intellispaces.reflections.framework.traverse.plan.MapThruChannel1TraversePlan;
@@ -64,11 +67,24 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
   }
 
   @Override
+  public MapSpecificReflectionToSpecificDomainAndClassTraversePlan buildMapT0Plan(
+      tech.intellispaces.core.Reflection source,
+      Domain targetDomain,
+      Class<?> targetClass
+  ) {
+    var declarativePlan = new MapSpecificReflectionToSpecificDomainAndClassTraversePlanImpl(
+        source, targetDomain, targetClass
+    );
+    buildPreliminaryExecutionPlan(declarativePlan);
+    return declarativePlan;
+  }
+
+  @Override
   public MapThruChannel0TraversePlan buildMapThruChannel0Plan(
     Class<?> sourceClass, String cid, ReflectionForm targetForm
   ) {
     MapThruChannel0TraversePlan declarativePlan = new MapThruChannel0TraversePlanImpl(sourceClass, cid);
-    preliminaryExecutionPlan(declarativePlan, sourceClass, targetForm);
+    buildPreliminaryExecutionPlan(declarativePlan, sourceClass, targetForm);
     return declarativePlan;
   }
 
@@ -77,7 +93,7 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
     Class<?> sourceClass, String cid, ReflectionForm targetForm
   ) {
     MapThruChannel1TraversePlan declarativePlan = new MapThruChannel1TraversePlanImpl(sourceClass, cid);
-    preliminaryExecutionPlan(declarativePlan, sourceClass, targetForm);
+    buildPreliminaryExecutionPlan(declarativePlan, sourceClass, targetForm);
     return declarativePlan;
   }
 
@@ -86,7 +102,7 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
     Class<?> sourceClass, String cid, ReflectionForm targetForm
   ) {
     MapThruChannel2TraversePlan declarativePlan = new MapThruChannel2TraversePlanImpl(sourceClass, cid);
-    preliminaryExecutionPlan(declarativePlan, sourceClass, targetForm);
+    buildPreliminaryExecutionPlan(declarativePlan, sourceClass, targetForm);
     return declarativePlan;
   }
 
@@ -95,7 +111,7 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
     Class<?> sourceClass, String cid, ReflectionForm targetForm
   ) {
     MapThruChannel3TraversePlan declarativePlan = new MapThruChannel3TraversePlanImpl(sourceClass, cid);
-    preliminaryExecutionPlan(declarativePlan, sourceClass, targetForm);
+    buildPreliminaryExecutionPlan(declarativePlan, sourceClass, targetForm);
     return declarativePlan;
   }
 
@@ -104,7 +120,7 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
     Class<?> sourceClass, String cid, ReflectionForm targetForm
   ) {
     MoveThruChannel0TraversePlan declarativePlan = new MoveThruChannel0TraversePlanImpl(sourceClass, cid);
-    preliminaryExecutionPlan(declarativePlan, sourceClass, targetForm);
+    buildPreliminaryExecutionPlan(declarativePlan, sourceClass, targetForm);
     return declarativePlan;
   }
 
@@ -113,7 +129,7 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
     Class<?> sourceClass, String cid, ReflectionForm targetForm
   ) {
     MoveThruChannel1TraversePlan declarativePlan = new MoveThruChannel1TraversePlanImpl(sourceClass, cid);
-    preliminaryExecutionPlan(declarativePlan, sourceClass, targetForm);
+    buildPreliminaryExecutionPlan(declarativePlan, sourceClass, targetForm);
     return declarativePlan;
   }
 
@@ -122,7 +138,7 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
     Class<?> sourceClass, String cid, ReflectionForm targetForm
   ) {
     MoveThruChannel2TraversePlan declarativePlan = new MoveThruChannel2TraversePlanImpl(sourceClass, cid);
-    preliminaryExecutionPlan(declarativePlan, sourceClass, targetForm);
+    buildPreliminaryExecutionPlan(declarativePlan, sourceClass, targetForm);
     return declarativePlan;
   }
 
@@ -131,7 +147,7 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
     Class<?> sourceClass, String cid, ReflectionForm targetForm
   ) {
     MoveThruChannel3TraversePlan declarativePlan = new MoveThruChannel3TraversePlanImpl(sourceClass, cid);
-    preliminaryExecutionPlan(declarativePlan, sourceClass, targetForm);
+    buildPreliminaryExecutionPlan(declarativePlan, sourceClass, targetForm);
     return declarativePlan;
   }
 
@@ -140,7 +156,7 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
       Class<?> sourceClass, String cid, ReflectionForm targetForm
   ) {
     MapOfMovingThruChannel0Plan declarativePlan = new MapOfMovingThruChannel0PlanImpl(sourceClass, cid);
-    preliminaryExecutionPlan(declarativePlan, sourceClass, targetForm);
+    buildPreliminaryExecutionPlan(declarativePlan, sourceClass, targetForm);
     return declarativePlan;
   }
 
@@ -149,7 +165,7 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
       Class<?> sourceClass, String cid, ReflectionForm targetForm
   ) {
     MapOfMovingThruChannel1TraversePlan declarativePlan = new MapOfMovingThruChannel1TraversePlanImpl(sourceClass, cid);
-    preliminaryExecutionPlan(declarativePlan, sourceClass, targetForm);
+    buildPreliminaryExecutionPlan(declarativePlan, sourceClass, targetForm);
     return declarativePlan;
   }
 
@@ -158,7 +174,7 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
       Class<?> sourceClass, String cid, ReflectionForm targetForm
   ) {
     MapOfMovingThruChannel2TraversePlan declarativePlan = new MapOfMovingThruChannel2TraversePlanImpl(sourceClass, cid);
-    preliminaryExecutionPlan(declarativePlan, sourceClass, targetForm);
+    buildPreliminaryExecutionPlan(declarativePlan, sourceClass, targetForm);
     return declarativePlan;
   }
 
@@ -167,7 +183,7 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
       Class<?> sourceClass, String cid, ReflectionForm targetForm
   ) {
     MapOfMovingThruChannel3TraversePlan declarativePlan = new MapOfMovingThruChannel3TraversePlanImpl(sourceClass, cid);
-    preliminaryExecutionPlan(declarativePlan, sourceClass, targetForm);
+    buildPreliminaryExecutionPlan(declarativePlan, sourceClass, targetForm);
     return declarativePlan;
   }
 
@@ -176,11 +192,17 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
       Class<?> sourceClass, String cid, ReflectionForm targetForm
   ) {
     MapOfMovingThruChannel4TraversePlan declarativePlan = new MapOfMovingThruChannel4TraversePlanImpl(sourceClass, cid);
-    preliminaryExecutionPlan(declarativePlan, sourceClass, targetForm);
+    buildPreliminaryExecutionPlan(declarativePlan, sourceClass, targetForm);
     return declarativePlan;
   }
 
-  private void preliminaryExecutionPlan(
+  private void buildPreliminaryExecutionPlan(
+      MapSpecificReflectionToSpecificDomainAndClassTraversePlan plan
+  ) {
+    getExecutionPlan(plan);
+  }
+
+  private void buildPreliminaryExecutionPlan(
       TraverseThruChannelPlan plan, Class<?> sourceClass, ReflectionForm targetForm
   ) {
     getExecutionPlan(plan, sourceClass, targetForm);
@@ -265,8 +287,14 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
         }
       }
     }
-
     return executionPlan;
+  }
+
+  private ExecutionTraversePlan getExecutionPlan(MapSpecificReflectionToSpecificDomainAndClassTraversePlan plan) {
+
+
+
+    return null;
   }
 
   private ExecutionTraversePlan buildExecutionTraversePlan(

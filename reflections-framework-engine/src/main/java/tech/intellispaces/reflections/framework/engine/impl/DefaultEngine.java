@@ -14,8 +14,10 @@ import tech.intellispaces.actions.Action6;
 import tech.intellispaces.actions.Action7;
 import tech.intellispaces.actions.Action8;
 import tech.intellispaces.actions.Action9;
+import tech.intellispaces.commons.exception.NotImplementedExceptions;
 import tech.intellispaces.commons.type.Type;
 import tech.intellispaces.commons.type.Types;
+import tech.intellispaces.core.Domain;
 import tech.intellispaces.core.Reflection;
 import tech.intellispaces.core.ReflectionContract;
 import tech.intellispaces.core.Rid;
@@ -119,6 +121,23 @@ public class DefaultEngine implements Engine {
   @Override
   public void stop() {
 
+  }
+
+  @Override
+  public <S, T> T mapSourceTo(S source, Domain domain) {
+    throw NotImplementedExceptions.withCode("ZIKQyQ");
+  }
+
+  @Override
+  public Reflection mapSourceTo(Reflection source, Domain domain) {
+    throw NotImplementedExceptions.withCode("Vfn2cg");
+  }
+
+  @Override
+  @SuppressWarnings("unchecked")
+  public <R extends Reflection> R mapSourceTo(Reflection source, Domain targetDomain, Class<R> targetClass) {
+    DeclarativeTraversePlan traversePlan = traverseAnalyzer.buildMapT0Plan(source, targetDomain, targetClass);
+    return (R) traversePlan.execute(source, traverseExecutor);
   }
 
   @Override

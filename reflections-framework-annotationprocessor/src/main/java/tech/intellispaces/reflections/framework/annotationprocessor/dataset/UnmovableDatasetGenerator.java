@@ -1,7 +1,6 @@
 package tech.intellispaces.reflections.framework.annotationprocessor.dataset;
 
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +12,7 @@ import tech.intellispaces.actions.runnable.RunnableAction;
 import tech.intellispaces.actions.text.StringActions;
 import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
 import tech.intellispaces.commons.collection.ArraysFunctions;
+import tech.intellispaces.commons.data.Base64Functions;
 import tech.intellispaces.commons.exception.NotImplementedExceptions;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.commons.type.Type;
@@ -40,7 +40,6 @@ import tech.intellispaces.reflections.framework.reflection.MovabilityTypes;
 import tech.intellispaces.reflections.framework.reflection.MovableReflection;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForms;
-import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
 import tech.intellispaces.reflections.framework.reflection.UnmovableReflection;
 import tech.intellispaces.reflections.framework.space.domain.DomainFunctions;
 import tech.intellispaces.reflections.framework.system.Modules;
@@ -110,7 +109,7 @@ public class UnmovableDatasetGenerator extends AbstractReflectionFormGenerator {
         Domain.class,
         Rids.class,
         Domains.class,
-        Base64.class
+        Base64Functions.class
     );
 
     analyzeAlias();
@@ -118,7 +117,7 @@ public class UnmovableDatasetGenerator extends AbstractReflectionFormGenerator {
     analyzeTypeParams();
     analyzeProjections();
 
-    addVariable("didBase64", new String(Base64.getEncoder().encode(domainRid.raw())));
+    addVariable("didBase64", Base64Functions.createUrlNoPadding(domainRid.raw()));
     addVariable("didOrigin", domainRid.toString());
     addVariable("domainName", domainType.canonicalName());
     addVariable("reflectionClassName", NameConventionFunctions.getUnmovableReflectionTypeName(sourceArtifact().className(), true));
@@ -143,7 +142,7 @@ public class UnmovableDatasetGenerator extends AbstractReflectionFormGenerator {
   @Override
   protected void analyzeDomain() {
     domainType = sourceArtifact();
-    domainRid = Rids.of(UUID.fromString(DomainFunctions.getDomainId(domainType)));
+    domainRid = Rids.create(UUID.fromString(DomainFunctions.getDomainId(domainType)));
   }
 
   private void analyzeProjections() {

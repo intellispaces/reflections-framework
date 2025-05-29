@@ -14,8 +14,8 @@ public class HashMapReflectionRegistry implements ReflectionRegistry {
 
   @Override
   public Reflection register(Reflection reflection) {
-    Rid rid = Rids.of(UUID.randomUUID());
-    Reflection registredReflection = Reflections.registered(reflection, rid);
+    Rid rid = Rids.create(UUID.randomUUID());
+    Reflection registredReflection = Reflections.create(reflection, rid);
     map.put(rid, registredReflection);
     return registredReflection;
   }

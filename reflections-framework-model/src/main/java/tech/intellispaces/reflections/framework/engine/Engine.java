@@ -15,6 +15,7 @@ import tech.intellispaces.actions.Action7;
 import tech.intellispaces.actions.Action8;
 import tech.intellispaces.actions.Action9;
 import tech.intellispaces.commons.type.Type;
+import tech.intellispaces.core.Domain;
 import tech.intellispaces.core.Reflection;
 import tech.intellispaces.core.ReflectionContract;
 import tech.intellispaces.reflections.framework.channel.Channel0;
@@ -54,6 +55,12 @@ public interface Engine {
   void start(String[] args);
 
   void stop();
+
+  <S, T> T mapSourceTo(S source, Domain domain);
+
+  Reflection mapSourceTo(Reflection source, Domain domain);
+
+  <R extends Reflection> R mapSourceTo(Reflection source, Domain targetDomain, Class<R> targetClass);
 
   <S, T> T mapThruChannel0(S source, String cid);
 

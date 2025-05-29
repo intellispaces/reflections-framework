@@ -62,7 +62,7 @@ abstract class AbstractReflectionWrapperGenerator extends AbstractReflectionForm
 
   protected void analyzeDomain() {
     domainType = ReflectionFunctions.getDomainOfObjectFormOrElseThrow(sourceArtifact());
-    domainRid = Rids.of(UUID.fromString(DomainFunctions.getDomainId(domainType)));
+    domainRid = Rids.create(UUID.fromString(DomainFunctions.getDomainId(domainType)));
     domainType = ReflectionFunctions.getDomainOfObjectFormOrElseThrow(sourceArtifact());
     addImport(domainType.canonicalName());
     domainSimpleClassName = simpleNameOf(domainType.canonicalName());

@@ -82,7 +82,7 @@ public final class GuideFunctions {
         case 3 -> GuideKinds.Mapper3;
         case 4 -> GuideKinds.Mapper4;
         case 5 -> GuideKinds.Mapper5;
-        default -> throw NotImplementedExceptions.withCode("qRSnYQ==");
+        default -> throw NotImplementedExceptions.withCode("qRSnYQ");
       };
     } else if (isMoverMethod(method)) {
       return switch (method.params().size()) {
@@ -92,7 +92,7 @@ public final class GuideFunctions {
         case 3 -> GuideKinds.Mover3;
         case 4 -> GuideKinds.Mover4;
         case 5 -> GuideKinds.Mover5;
-        default -> throw NotImplementedExceptions.withCode("xXtaYA==");
+        default -> throw NotImplementedExceptions.withCode("xXtaYA");
       };
     } else if (isMapperOfMovingMethod(method)) {
       return switch (method.params().size()) {
@@ -102,7 +102,7 @@ public final class GuideFunctions {
         case 3 -> GuideKinds.MapperOfMoving3;
         case 4 -> GuideKinds.MapperOfMoving4;
         case 5 -> GuideKinds.MapperOfMoving5;
-        default -> throw NotImplementedExceptions.withCode("hxDz2w==");
+        default -> throw NotImplementedExceptions.withCode("hxDz2w");
       };
     } else {
       throw UnexpectedExceptions.withMessage("Could not define guide kind of the guide method {0} in {1}",

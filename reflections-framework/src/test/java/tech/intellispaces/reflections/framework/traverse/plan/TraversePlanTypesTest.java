@@ -31,5 +31,6 @@ public class TraversePlanTypesTest {
     assertThat(TraversePlanTypes.MapOfMovingThruChannel4.ordinal()).isEqualTo(17);
     assertThat(TraversePlanTypes.AscendAndExecute0.ordinal()).isEqualTo(18);
     assertThat(TraversePlanTypes.AscendAndExecute1.ordinal()).isEqualTo(19);
+    assertThat(TraversePlanTypes.MapSpecificSourceToSpecificDomainAndSpecificTargetClass.ordinal()).isEqualTo(20);
   }
 }

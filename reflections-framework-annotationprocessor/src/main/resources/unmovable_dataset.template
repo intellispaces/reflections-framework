@@ -35,7 +35,7 @@ public class {{$generatedArtifactSimpleName}} implements {{$reflectionClassName}
 
   @Override
   public Domain domain() {
-    return Domains.create(Rids.of(Base64.getDecoder().decode("{{$didBase64}}"), "{{$didOrigin}}"), "{{$domainName}}", {{$sourceArtifactSimpleName}}.class, Types.get({{$sourceArtifactSimpleName}}.class));
+    return Domains.create(Rids.create(Base64Functions.convertUrlNoPaddingBase64ToBytes("{{$didBase64}}"), "{{$didOrigin}}"), "{{$domainName}}", {{$sourceArtifactSimpleName}}.class, Types.get({{$sourceArtifactSimpleName}}.class));
   }
 
 {{for projection : $projections}}

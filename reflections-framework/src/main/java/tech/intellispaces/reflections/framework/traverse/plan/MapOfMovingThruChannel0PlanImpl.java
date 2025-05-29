@@ -33,27 +33,27 @@ public class MapOfMovingThruChannel0PlanImpl extends AbstractTraverseThruChannel
 
   @Override
   public Object execute(Object source, Object qualifier, TraverseExecutor executor) throws TraverseException {
-    throw UnexpectedExceptions.withMessage("Expected traverse with no qualifier");
+    throw UnexpectedExceptions.withMessage("Expected traverse with no qualifiers");
   }
 
   @Override
   public Object execute(
       Object source, Object qualifier1, Object qualifier2, TraverseExecutor executor
   ) throws TraverseException {
-    throw UnexpectedExceptions.withMessage("Expected traverse with no qualifier");
+    throw UnexpectedExceptions.withMessage("Expected traverse with no qualifiers");
   }
 
   @Override
   public Object execute(
     Object source, Object qualifier1, Object qualifier2, Object qualifier3, TraverseExecutor executor
   ) throws TraverseException {
-    throw UnexpectedExceptions.withMessage("Expected traverse with no qualifier");
+    throw UnexpectedExceptions.withMessage("Expected traverse with no qualifiers");
   }
 
   @Override
   public Object execute(
       Object source, Object qualifier1, Object qualifier2, Object qualifier3, Object qualifier4, TraverseExecutor executor
   ) throws TraverseException {
-    throw UnexpectedExceptions.withMessage("Expected traverse with no qualifier");
+    throw UnexpectedExceptions.withMessage("Expected traverse with no qualifiers");
   }
 }

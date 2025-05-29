@@ -1,5 +1,6 @@
 package tech.intellispaces.reflections.framework.system;
 
+import tech.intellispaces.commons.exception.NotImplementedExceptions;
 import tech.intellispaces.reflections.framework.exception.TraverseException;
 import tech.intellispaces.reflections.framework.exception.TraverseExceptions;
 import tech.intellispaces.reflections.framework.guide.n0.Guide0;
@@ -21,6 +22,7 @@ import tech.intellispaces.reflections.framework.traverse.plan.MapOfMovingThruCha
 import tech.intellispaces.reflections.framework.traverse.plan.MapOfMovingThruChannel2TraversePlan;
 import tech.intellispaces.reflections.framework.traverse.plan.MapOfMovingThruChannel3TraversePlan;
 import tech.intellispaces.reflections.framework.traverse.plan.MapOfMovingThruChannel4TraversePlan;
+import tech.intellispaces.reflections.framework.traverse.plan.MapSpecificReflectionToSpecificDomainAndClassTraversePlan;
 import tech.intellispaces.reflections.framework.traverse.plan.MapThruChannel0TraversePlan;
 import tech.intellispaces.reflections.framework.traverse.plan.MapThruChannel1TraversePlan;
 import tech.intellispaces.reflections.framework.traverse.plan.MapThruChannel2TraversePlan;
@@ -291,5 +293,28 @@ public class LocalTraverseExecutor implements TraverseExecutor {
           "channel {1}. Suitable guide has not been found", source.getClass().getCanonicalName(), plan.channelId());
     }
     return executionPlan.execute(source, qualifier1, qualifier2, qualifier3, qualifier4, this);
+  }
+
+  @Override
+  public Object execute(
+      MapSpecificReflectionToSpecificDomainAndClassTraversePlan plan
+  ) throws TraverseException {
+
+
+    return null;
+  }
+
+  @Override
+  public int executeReturnInt(
+      MapSpecificReflectionToSpecificDomainAndClassTraversePlan plan
+  ) throws TraverseException {
+    throw NotImplementedExceptions.withCode("qkAfJQ");
+  }
+
+  @Override
+  public double executeReturnDouble(
+      MapSpecificReflectionToSpecificDomainAndClassTraversePlan plan
+  ) throws TraverseException {
+    throw NotImplementedExceptions.withCode("30u4tw");
   }
 }

@@ -1,9 +1,9 @@
 package tech.intellispaces.reflections.framework.annotationprocessor.reflection;
 
-import java.util.Base64;
 import java.util.List;
 
 import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
+import tech.intellispaces.commons.data.Base64Functions;
 import tech.intellispaces.commons.exception.NotImplementedExceptions;
 import tech.intellispaces.commons.type.PrimitiveFunctions;
 import tech.intellispaces.commons.type.Type;
@@ -122,7 +122,7 @@ public class MovableReflectionWrapperGenerator extends AbstractReflectionWrapper
         Domain.class,
         Rids.class,
         Domains.class,
-        Base64.class
+        Base64Functions.class
     );
 
     analyzeDomain();
@@ -134,7 +134,7 @@ public class MovableReflectionWrapperGenerator extends AbstractReflectionWrapper
     analyzeConversionMethods(domainType);
     analyzeUnbindMethod();
 
-    addVariable("didBase64", new String(Base64.getEncoder().encode(domainRid.raw())));
+    addVariable("didBase64", Base64Functions.createUrlNoPadding(domainRid.raw()));
     addVariable("didOrigin", domainRid.toString());
     addVariable("domainName", domainType.canonicalName());
     addVariable("typeParamsFull", typeParamsFull);

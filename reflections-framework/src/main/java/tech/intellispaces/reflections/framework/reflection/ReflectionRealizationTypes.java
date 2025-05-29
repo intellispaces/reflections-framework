@@ -50,7 +50,7 @@ public interface ReflectionRealizationTypes {
           case 2 -> buildMethodAction2(reflectionClass, method);
           case 3 -> buildMethodAction3(reflectionClass, method);
           case 4 -> buildMethodAction4(reflectionClass, method);
-          default -> throw NotImplementedExceptions.withCode("CoVntQ==");
+          default -> throw NotImplementedExceptions.withCode("CoVntQ");
         };
         actions.add(action);
       }
@@ -153,9 +153,9 @@ public interface ReflectionRealizationTypes {
   @SuppressWarnings("unchecked")
   private static Action buildMethodAction4(Class<?> reflectionClass, ReflectionRealizationMethod method) {
     if (method.traverseType().isMapping()) {
-      throw NotImplementedExceptions.withCode("GYhrXA==");
+      throw NotImplementedExceptions.withCode("GYhrXA");
     } else if (method.traverseType().isMoving()) {
-      throw NotImplementedExceptions.withCode("8xOuXA==");
+      throw NotImplementedExceptions.withCode("8xOuXA");
     } else {
       return DelegateActions.delegateAction5(CachedSupplierActions.get(TraverseActions::mapOfMovingThruChannel4,
           reflectionClass,
@@ -209,7 +209,7 @@ public interface ReflectionRealizationTypes {
     } else if ("specguide".equals(method.injectionKind())) {
       return GuideInjections.get(null, method.injectionName(), method.injectionType());
     } else {
-      throw NotImplementedExceptions.withCode("DfsonQ==");
+      throw NotImplementedExceptions.withCode("DfsonQ");
     }
   }
 }

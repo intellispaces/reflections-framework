@@ -102,7 +102,13 @@ public enum TraversePlanTypes implements TraversePlanType, Enumeration<TraverseP
   /**
    * The execution plan to ascend to overlying reflection and call guide.
    */
-  AscendAndExecute1;
+  AscendAndExecute1,
+
+  /**
+   * The declarative plan to map specified reflection to specific target domain
+   */
+  MapSpecificSourceToSpecificDomainAndSpecificTargetClass;
+
 
   public static TraversePlanTypes of(TraversePlanType value) {
     return VALUES[value.ordinal()];

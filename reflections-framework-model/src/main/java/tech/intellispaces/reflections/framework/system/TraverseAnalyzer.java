@@ -1,5 +1,7 @@
 package tech.intellispaces.reflections.framework.system;
 
+import tech.intellispaces.core.Domain;
+import tech.intellispaces.core.Reflection;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 import tech.intellispaces.reflections.framework.traverse.plan.ExecutionTraversePlan;
 import tech.intellispaces.reflections.framework.traverse.plan.MapOfMovingThruChannel0Plan;
@@ -11,6 +13,7 @@ import tech.intellispaces.reflections.framework.traverse.plan.MapThruChannel0Tra
 import tech.intellispaces.reflections.framework.traverse.plan.MapThruChannel1TraversePlan;
 import tech.intellispaces.reflections.framework.traverse.plan.MapThruChannel2TraversePlan;
 import tech.intellispaces.reflections.framework.traverse.plan.MapThruChannel3TraversePlan;
+import tech.intellispaces.reflections.framework.traverse.plan.MapSpecificReflectionToSpecificDomainAndClassTraversePlan;
 import tech.intellispaces.reflections.framework.traverse.plan.MoveThruChannel0TraversePlan;
 import tech.intellispaces.reflections.framework.traverse.plan.MoveThruChannel1TraversePlan;
 import tech.intellispaces.reflections.framework.traverse.plan.MoveThruChannel2TraversePlan;
@@ -18,6 +21,8 @@ import tech.intellispaces.reflections.framework.traverse.plan.MoveThruChannel3Tr
 import tech.intellispaces.reflections.framework.traverse.plan.TraverseThruChannelPlan;
 
 public interface TraverseAnalyzer {
+
+  MapSpecificReflectionToSpecificDomainAndClassTraversePlan buildMapT0Plan(Reflection source, Domain targetDomain, Class<?> targetClass);
 
   MapThruChannel0TraversePlan buildMapThruChannel0Plan(Class<?> sourceClass, String cid, ReflectionForm targetForm);
 

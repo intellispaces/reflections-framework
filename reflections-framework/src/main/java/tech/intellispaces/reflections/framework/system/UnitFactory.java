@@ -222,7 +222,7 @@ class UnitFactory {
           method.requiredProjections().get(3).targetClass(),
           method.requiredProjections().get(4).name(),
           method.requiredProjections().get(4).targetClass());
-      default -> throw NotImplementedExceptions.withCode("uOJm+w==");
+      default -> throw NotImplementedExceptions.withCode("uOJm+w");
     };
   }
 

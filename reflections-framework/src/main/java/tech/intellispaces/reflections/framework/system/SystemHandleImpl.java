@@ -1,5 +1,6 @@
 package tech.intellispaces.reflections.framework.system;
 
+import tech.intellispaces.core.Domain;
 import tech.intellispaces.core.Reflection;
 import tech.intellispaces.core.ReflectionContract;
 import tech.intellispaces.reflections.framework.channel.Channel0;
@@ -33,6 +34,21 @@ public class SystemHandleImpl implements SystemHandle {
     @Override
     public Reflection create(ReflectionContract contract) {
         return engine.createReflection(contract);
+    }
+
+    @Override
+    public <S, T> T mapSourceTo(S source, Domain domain) {
+        return engine.mapSourceTo(source, domain);
+    }
+
+    @Override
+    public Reflection mapSourceTo(Reflection source, Domain domain) {
+        return engine.mapSourceTo(source, domain);
+    }
+
+    @Override
+    public <R extends Reflection> R mapSourceTo(Reflection source, Domain domain, Class<R> targetClass) {
+        return engine.mapSourceTo(source, domain, targetClass);
     }
 
     @Override

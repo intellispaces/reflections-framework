@@ -29,12 +29,12 @@ public class LocalGuideRegistry implements GuideRegistry {
 
   @Override
   public List<Guide<?, ?>> findGuides(
-      String cid, GuideKind kind, Class<?> sourceReflectionClass, ReflectionForm targetForm
+      String cid, GuideKind kind, Class<?> sourceClass, ReflectionForm targetForm
   ) {
     List<Guide<?, ?>> resultGuides = new ArrayList<>();
     List<Guide<?, ?>> guides = findGuides(cid, kind);
     for (Guide<?, ?> guide : guides) {
-      if (isSuitableGuide(guide,sourceReflectionClass, targetForm)) {
+      if (isSuitableGuide(guide, sourceClass, targetForm)) {
         resultGuides.add(guide);
       }
     }

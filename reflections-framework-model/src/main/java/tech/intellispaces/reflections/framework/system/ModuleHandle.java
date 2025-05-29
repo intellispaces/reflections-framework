@@ -114,9 +114,9 @@ public interface ModuleHandle extends Module {
 
   <G> G getAutoGuide(Class<G> guideClass);
 
-  <T> T getProjection(String name, Class<T> targetReflectionClass);
+  <T> T getProjection(String name, Class<T> targetClass);
 
-  <T> List<T> getProjections(Class<T> targetReflectionClass);
+  <T> List<T> getProjections(Class<T> targetClass);
 
   Collection<ModuleProjection> moduleProjections();
 

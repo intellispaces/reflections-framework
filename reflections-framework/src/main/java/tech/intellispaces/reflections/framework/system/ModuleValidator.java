@@ -6,6 +6,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import tech.intellispaces.commons.type.ClassFunctions;
+import tech.intellispaces.core.System;
 import tech.intellispaces.core.Unit;
 import tech.intellispaces.reflections.framework.exception.ConfigurationExceptions;
 import tech.intellispaces.reflections.framework.system.injection.InjectionKinds;
@@ -69,6 +70,9 @@ public class ModuleValidator {
         .map(injection -> (ProjectionInjection) injection)
         .toList();
     for (ProjectionInjection injection : injections) {
+      if (injection.targetClass() == System.class) {
+        continue;
+      }
       UnitProjectionDefinition pd = projectionDefinitions.get(injection.name());
       if (pd == null) {
         throw ConfigurationExceptions.withMessage("Projection injection by name '{0}' declared in unit {1} " +

@@ -12,6 +12,6 @@ import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 public interface GuideProvider {
 
   List<Guide<?, ?>> findGuides(
-      String cid, GuideKind kind, Class<?> sourceReflectionClass, ReflectionForm targetForm
+      String cid, GuideKind kind, Class<?> sourceClass, ReflectionForm targetForm
   );
 }

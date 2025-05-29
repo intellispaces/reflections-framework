@@ -14,7 +14,6 @@ import tech.intellispaces.actions.Action9;
 import tech.intellispaces.commons.properties.PropertiesSet;
 import tech.intellispaces.commons.type.Type;
 import tech.intellispaces.core.Reflection;
-import tech.intellispaces.core.ReflectionContract;
 
 public interface FactoryRegistry {
 

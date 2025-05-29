@@ -1,25 +1,19 @@
 package tech.intellispaces.reflections.framework.traverse.plan;
 
 import tech.intellispaces.reflections.framework.exception.TraverseException;
-import tech.intellispaces.reflections.framework.guide.n0.Guide0;
 import tech.intellispaces.reflections.framework.system.TraverseExecutor;
 
-public class CallGuide0PlanImpl extends AbstractTraversePlan implements CallGuide0Plan {
-  private final Guide0<Object, Object> guide;
-
-  @SuppressWarnings("unchecked")
-  public CallGuide0PlanImpl(Guide0<?, ?> guide) {
-    this.guide = (Guide0<Object, Object>) guide;
+public class MapOfMovingSpecifiedClassSourceThruIdentifiedChannel0PlanImpl
+  extends AbstractTraverseSpecifiedClassSourceThruIdentifierChannelTraversePlan
+  implements MapOfMovingSpecifiedClassSourceThruIdentifiedChannel0Plan
+{
+  public MapOfMovingSpecifiedClassSourceThruIdentifiedChannel0PlanImpl(Class<?> reflectionClass, String cid) {
+    super(reflectionClass, cid);
   }
 
   @Override
   public TraversePlanType type() {
-    return TraversePlanTypes.CallLocalGuide0;
-  }
-
-  @Override
-  public Guide0<?, ?> guide() {
-    return guide;
+    return TraversePlanTypes.MapOfMovingSpecifiedClassSourceThruIdentifiedChannel0;
   }
 
   @Override
@@ -34,6 +28,6 @@ public class CallGuide0PlanImpl extends AbstractTraversePlan implements CallGuid
 
   @Override
   public double executeReturnDouble(Object source, TraverseExecutor executor) throws TraverseException {
-    return executor.executeReturnInt(this, source);
+    return executor.executeReturnDouble(this, source);
   }
 }

@@ -2,97 +2,100 @@ package tech.intellispaces.reflections.framework.traverse.plan;
 
 import tech.intellispaces.commons.abstraction.Enumeration;
 
+/**
+ * Task plan types.
+ */
 public enum TraversePlanTypes implements TraversePlanType, Enumeration<TraversePlanType> {
 
   /**
-   * The execution plan to call not-parametrized guide.
+   * Call local not-parametrized guide.
    */
-  CallGuide0,
+  CallLocalGuide0,
 
   /**
-   * The execution plan to call one-parametrized guide.
+   * Call local guide with one unspecified qualifier.
    */
-  CallGuide1,
+  CallLocalGuide1,
 
   /**
-   * The execution plan to call two times parametrized guide.
+   * Call local guide with two unspecified qualifiers.
    */
-  CallGuide2,
+  CallLocalGuide2,
 
   /**
-   * The execution plan to call three times parametrized guide.
+   * Call local guide with three unspecified qualifiers.
    */
-  CallGuide3,
+  CallLocalGuide3,
 
   /**
-   * The execution plan to call four times parametrized guide.
+   * Call local guide with four unspecified qualifiers.
    */
-  CallGuide4,
+  CallLocalGuide4,
 
   /**
-   * The declarative plan to map reflection through not-parametrized channel.
+   * Map source of specified class through identified not-parametrized channel.
    */
-  MapThruChannel0,
+  MapSpecifiedClassSourceThruIdentifiedChannel0,
 
   /**
-   * The declarative traverse plan to map reflection through one-parametrized channel.
+   * Map source of specified class through identified channel with one unspecified qualifiers.
    */
-  MapThruChannel1,
+  MapSpecifiedClassSourceThruIdentifiedChannel1,
 
   /**
-   * The declarative traverse plan to map reflection through two times parametrized channel.
+   * Map source of specified class through identified channel with two unspecified qualifiers.
    */
-  MapThruChannel2,
+  MapSpecifiedClassSourceThruIdentifiedChannel2,
 
   /**
-   * The declarative traverse plan to map reflection through three times parametrized channel.
+   * Map source of specified class through identified channel with three unspecified qualifiers.
    */
-  MapThruChannel3,
+  MapSpecifiedClassSourceThruIdentifiedChannel3,
 
   /**
-   * The declarative traverse plan to move reflection through not-parametrized channel.
+   * Move source of specified class through identified not-parametrized channel.
    */
-  MoveThruChannel0,
+  MoveSpecifiedClassSourceThruIdentifiedChannel0,
 
   /**
-   * The declarative traverse plan to move reflection through one-parametrized channel.
+   * Map source of specified class through identified channel with one unspecified qualifiers.
    */
-  MoveThruChannel1,
+  MoveSpecifiedClassSourceThruIdentifiedChannel1,
 
   /**
-   * The declarative traverse plan to move reflection through two times parametrized channel.
+   * Map source of specified class through identified channel with ywo unspecified qualifiers.
    */
-  MoveThruChannel2,
+  MoveSpecifiedClassSourceThruIdentifiedChannel2,
 
   /**
-   * The declarative traverse plan to move reflection through three times parametrized channel.
+   * Map source of specified class through identified channel with three unspecified qualifiers.
    */
-  MoveThruChannel3,
+  MoveSpecifiedClassSourceThruIdentifiedChannel3,
 
   /**
-   * The declarative traverse plan to map of moving reflection through not-parametrized channel.
+   * Map of moving of the source of specified class through identified not-parametrized channel.
    */
-  MapOfMovingThruChannel0,
+  MapOfMovingSpecifiedClassSourceThruIdentifiedChannel0,
 
   /**
-   * The declarative traverse plan to map of moving reflection through one-parametrized channel.
+   * Map of moving of the source of specified class through identified channel with one unspecified qualifiers.
    */
-  MapOfMovingThruChannel1,
+  MapOfMovingSpecifiedClassSourceThruIdentifiedChannel1,
 
   /**
-   * The declarative traverse plan to map of moving reflection through two times parametrized channel.
+   * Map of moving of the source of specified class through identified channel with two unspecified qualifiers.
    */
-  MapOfMovingChannel2,
+  MapOfMovingSpecifiedClassSourceThruIdentifiedChannel2,
 
   /**
-   * The declarative traverse plan to map of moving reflection through three times parametrized channel.
+   * Map of moving of the source of specified class through identified channel with three unspecified qualifiers.
    */
-  MapOfMovingThruChannel3,
+  MapOfMovingSpecifiedClassSourceThruIdentifiedChannel3,
 
   /**
-   * The declarative traverse plan to map of moving reflection through four times parametrized channel.
+   * Map of moving of the source of specified class through identified channel with four unspecified qualifiers.
    */
-  MapOfMovingThruChannel4,
+  MapOfMovingSpecifiedClassSourceThruIdentifiedChannel4,
 
   /**
    * The execution plan to ascend to overlying reflection and call guide.
@@ -105,9 +108,9 @@ public enum TraversePlanTypes implements TraversePlanType, Enumeration<TraverseP
   AscendAndExecute1,
 
   /**
-   * The declarative plan to map specified reflection to specific target domain
+   * Map specified source to specified target domain and specified target reflection class.
    */
-  MapSpecificSourceToSpecificDomainAndSpecificTargetClass;
+  MapSpecifiedSourceToSpecifiedTargetDomainAndClass;
 
 
   public static TraversePlanTypes of(TraversePlanType value) {

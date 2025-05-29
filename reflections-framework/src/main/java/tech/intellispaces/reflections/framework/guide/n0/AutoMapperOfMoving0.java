@@ -1,7 +1,5 @@
 package tech.intellispaces.reflections.framework.guide.n0;
 
-import tech.intellispaces.commons.exception.NotImplementedExceptions;
-import tech.intellispaces.core.Channel;
 import tech.intellispaces.reflections.framework.exception.TraverseException;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 import tech.intellispaces.reflections.framework.system.TraverseExecutor;

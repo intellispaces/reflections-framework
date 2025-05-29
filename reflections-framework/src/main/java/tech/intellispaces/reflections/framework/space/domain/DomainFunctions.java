@@ -1,18 +1,25 @@
 package tech.intellispaces.reflections.framework.space.domain;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import tech.intellispaces.commons.data.UuidFunctions;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.commons.type.ClassFunctions;
+import tech.intellispaces.core.Channel;
+import tech.intellispaces.core.Channels;
+import tech.intellispaces.core.Rid;
+import tech.intellispaces.core.Rids;
 import tech.intellispaces.javareflection.JavaStatements;
 import tech.intellispaces.javareflection.customtype.CustomType;
 import tech.intellispaces.javareflection.method.MethodStatement;
@@ -26,13 +33,13 @@ import tech.intellispaces.reflections.framework.annotation.Domain;
 import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
 import tech.intellispaces.reflections.framework.node.ReflectionsNodeFunctions;
 import tech.intellispaces.reflections.framework.settings.ChannelTypes;
+import tech.intellispaces.reflections.framework.space.channel.ChannelFunctions;
+
 
 /**
  * Domain functions.
  */
 public final class DomainFunctions {
-
-  private DomainFunctions() {}
 
   public static String getDomainId(CustomType domain) {
     return domain.selectAnnotation(Domain.class).orElseThrow().value();
@@ -260,4 +267,19 @@ public final class DomainFunctions {
         ));
     return superDomainNames.values();
   }
+
+  public static Channel findChannel(CustomType sourceDomain, Rid targetDomainRid) {
+    for (MethodStatement method : sourceDomain.actualMethods()) {
+      if (ChannelFunctions.isChannelMethod(method)) {
+        String did = getDomainId(method.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow().targetType());
+        if (Arrays.equals(UuidFunctions.uuidToBytes(did), targetDomainRid.raw())) {
+          String cid = ChannelFunctions.getChannelId(method);
+          return Channels.create(Rids.create(UUID.fromString(cid)), null);
+        }
+      }
+    }
+    return null;
+  }
+
+  private DomainFunctions() {}
 }

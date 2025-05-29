@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import tech.intellispaces.annotationprocessor.ArtifactValidator;
+import tech.intellispaces.core.System;
 import tech.intellispaces.javareflection.customtype.CustomType;
 import tech.intellispaces.javareflection.instance.AnnotationInstance;
 import tech.intellispaces.javareflection.method.MethodParam;
@@ -142,10 +143,23 @@ public class ModuleValidator implements ArtifactValidator {
       throw ReflectionsExceptions.withMessage("Abstract method '{0}' in unit {1} should have no parameters",
           method.name(), method.owner().canonicalName());
     }
-    if (!ReflectionFunctions.isObjectFormType(returnType.get()) && !GuideFunctions.isGuideType(returnType.get())) {
+    if (
+        !ReflectionFunctions.isObjectFormType(returnType.get())
+          && !GuideFunctions.isGuideType(returnType.get())
+          && ! isSystemTypeReference(returnType.get())
+    ) {
       throw ReflectionsExceptions.withMessage("Injection '{0}' in unit {1} should return " +
-              "reflection or guide class", method.name(), method.owner().canonicalName());
+              "reflection, guide or system class", method.name(), method.owner().canonicalName());
     }
+  }
+
+  private boolean isSystemTypeReference(TypeReference typeReference) {
+    if (!typeReference.isCustomTypeReference()) {
+      return false;
+    }
+    return System.class.getCanonicalName().equals(
+        typeReference.asCustomTypeReference().orElseThrow().targetType().canonicalName()
+    );
   }
 
   private void checkAbstractProjectionProviderAnnotation(MethodStatement method) {

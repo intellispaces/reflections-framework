@@ -1,25 +1,19 @@
 package tech.intellispaces.reflections.framework.traverse.plan;
 
 import tech.intellispaces.reflections.framework.exception.TraverseException;
-import tech.intellispaces.reflections.framework.guide.n4.Guide4;
 import tech.intellispaces.reflections.framework.system.TraverseExecutor;
 
-public class CallGuide4PlanImpl extends AbstractTraversePlan implements CallGuide4Plan {
-  private final Guide4<Object, Object, Object, Object, Object, Object> guide;
-
-  @SuppressWarnings("unchecked")
-  public CallGuide4PlanImpl(Guide4<?, ?, ?, ?, ?, ?> guide) {
-    this.guide = (Guide4<Object, Object, Object, Object, Object, Object>) guide;
+public class MapOfMovingSpecifiedClassSourceThruIdentifiedChannel4TraversePlanImpl
+    extends AbstractTraverseSpecifiedClassSourceThruIdentifierChannelTraversePlan
+    implements MapOfMovingSpecifiedClassSourceThruIdentifiedChannel4TraversePlan
+{
+  public MapOfMovingSpecifiedClassSourceThruIdentifiedChannel4TraversePlanImpl(Class<?> reflectionClass, String cid) {
+    super(reflectionClass, cid);
   }
 
   @Override
   public TraversePlanType type() {
-    return TraversePlanTypes.CallLocalGuide4;
-  }
-
-  @Override
-  public Guide4<?, ?, ?, ?, ?, ?> guide() {
-    return guide;
+    return TraversePlanTypes.MapOfMovingSpecifiedClassSourceThruIdentifiedChannel4;
   }
 
   @Override

@@ -5,7 +5,9 @@ import java.util.stream.Collectors;
 
 import tech.intellispaces.commons.exception.NotImplementedExceptions;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
+import tech.intellispaces.core.Channel;
 import tech.intellispaces.core.Domain;
+import tech.intellispaces.core.repository.SpaceRepository;
 import tech.intellispaces.reflections.framework.guide.Guide;
 import tech.intellispaces.reflections.framework.guide.GuideKind;
 import tech.intellispaces.reflections.framework.guide.GuideKinds;
@@ -16,6 +18,7 @@ import tech.intellispaces.reflections.framework.guide.n3.Guide3;
 import tech.intellispaces.reflections.framework.guide.n4.Guide4;
 import tech.intellispaces.reflections.framework.reflection.Reflection;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
+import tech.intellispaces.reflections.framework.reflection.ReflectionForms;
 import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
 import tech.intellispaces.reflections.framework.space.channel.ChannelFunctions;
 import tech.intellispaces.reflections.framework.system.GuideProvider;
@@ -27,52 +30,54 @@ import tech.intellispaces.reflections.framework.traverse.plan.CallGuide2PlanImpl
 import tech.intellispaces.reflections.framework.traverse.plan.CallGuide3PlanImpl;
 import tech.intellispaces.reflections.framework.traverse.plan.CallGuide4PlanImpl;
 import tech.intellispaces.reflections.framework.traverse.plan.ExecutionTraversePlan;
-import tech.intellispaces.reflections.framework.traverse.plan.MapOfMovingThruChannel0Plan;
-import tech.intellispaces.reflections.framework.traverse.plan.MapOfMovingThruChannel0PlanImpl;
-import tech.intellispaces.reflections.framework.traverse.plan.MapOfMovingThruChannel1TraversePlan;
-import tech.intellispaces.reflections.framework.traverse.plan.MapOfMovingThruChannel1TraversePlanImpl;
-import tech.intellispaces.reflections.framework.traverse.plan.MapOfMovingThruChannel2TraversePlan;
-import tech.intellispaces.reflections.framework.traverse.plan.MapOfMovingThruChannel2TraversePlanImpl;
-import tech.intellispaces.reflections.framework.traverse.plan.MapOfMovingThruChannel3TraversePlan;
-import tech.intellispaces.reflections.framework.traverse.plan.MapOfMovingThruChannel3TraversePlanImpl;
-import tech.intellispaces.reflections.framework.traverse.plan.MapOfMovingThruChannel4TraversePlan;
-import tech.intellispaces.reflections.framework.traverse.plan.MapOfMovingThruChannel4TraversePlanImpl;
-import tech.intellispaces.reflections.framework.traverse.plan.MapSpecificReflectionToSpecificDomainAndClassTraversePlan;
-import tech.intellispaces.reflections.framework.traverse.plan.MapSpecificReflectionToSpecificDomainAndClassTraversePlanImpl;
-import tech.intellispaces.reflections.framework.traverse.plan.MapThruChannel0TraversePlan;
-import tech.intellispaces.reflections.framework.traverse.plan.MapThruChannel0TraversePlanImpl;
-import tech.intellispaces.reflections.framework.traverse.plan.MapThruChannel1TraversePlan;
-import tech.intellispaces.reflections.framework.traverse.plan.MapThruChannel1TraversePlanImpl;
-import tech.intellispaces.reflections.framework.traverse.plan.MapThruChannel2TraversePlan;
-import tech.intellispaces.reflections.framework.traverse.plan.MapThruChannel2TraversePlanImpl;
-import tech.intellispaces.reflections.framework.traverse.plan.MapThruChannel3TraversePlan;
-import tech.intellispaces.reflections.framework.traverse.plan.MapThruChannel3TraversePlanImpl;
-import tech.intellispaces.reflections.framework.traverse.plan.MoveThruChannel0TraversePlan;
-import tech.intellispaces.reflections.framework.traverse.plan.MoveThruChannel0TraversePlanImpl;
-import tech.intellispaces.reflections.framework.traverse.plan.MoveThruChannel1TraversePlan;
-import tech.intellispaces.reflections.framework.traverse.plan.MoveThruChannel1TraversePlanImpl;
-import tech.intellispaces.reflections.framework.traverse.plan.MoveThruChannel2TraversePlan;
-import tech.intellispaces.reflections.framework.traverse.plan.MoveThruChannel2TraversePlanImpl;
-import tech.intellispaces.reflections.framework.traverse.plan.MoveThruChannel3TraversePlan;
-import tech.intellispaces.reflections.framework.traverse.plan.MoveThruChannel3TraversePlanImpl;
+import tech.intellispaces.reflections.framework.traverse.plan.MapOfMovingSpecifiedClassSourceThruIdentifiedChannel0Plan;
+import tech.intellispaces.reflections.framework.traverse.plan.MapOfMovingSpecifiedClassSourceThruIdentifiedChannel0PlanImpl;
+import tech.intellispaces.reflections.framework.traverse.plan.MapOfMovingSpecifiedClassSourceThruIdentifiedChannel1TraversePlan;
+import tech.intellispaces.reflections.framework.traverse.plan.MapOfMovingSpecifiedClassSourceThruIdentifiedChannel1TraversePlanImpl;
+import tech.intellispaces.reflections.framework.traverse.plan.MapOfMovingSpecifiedClassSourceThruIdentifiedChannel2TraversePlan;
+import tech.intellispaces.reflections.framework.traverse.plan.MapOfMovingSpecifiedClassSourceThruIdentifiedChannel2TraversePlanImpl;
+import tech.intellispaces.reflections.framework.traverse.plan.MapOfMovingSpecifiedClassSourceThruIdentifiedChannel3TraversePlan;
+import tech.intellispaces.reflections.framework.traverse.plan.MapOfMovingSpecifiedClassSourceThruIdentifiedChannel3TraversePlanImpl;
+import tech.intellispaces.reflections.framework.traverse.plan.MapOfMovingSpecifiedClassSourceThruIdentifiedChannel4TraversePlan;
+import tech.intellispaces.reflections.framework.traverse.plan.MapOfMovingSpecifiedClassSourceThruIdentifiedChannel4TraversePlanImpl;
+import tech.intellispaces.reflections.framework.traverse.plan.MapSpecifiedClassSourceThruIdentifiedChannel0TraversePlan;
+import tech.intellispaces.reflections.framework.traverse.plan.MapSpecifiedClassSourceThruIdentifiedChannel0TraversePlanImpl;
+import tech.intellispaces.reflections.framework.traverse.plan.MapSpecifiedClassSourceThruIdentifiedChannel1TraversePlan;
+import tech.intellispaces.reflections.framework.traverse.plan.MapSpecifiedClassSourceThruIdentifiedChannel1TraversePlanImpl;
+import tech.intellispaces.reflections.framework.traverse.plan.MapSpecifiedClassSourceThruIdentifiedChannel2TraversePlan;
+import tech.intellispaces.reflections.framework.traverse.plan.MapSpecifiedClassSourceThruIdentifiedChannel2TraversePlanImpl;
+import tech.intellispaces.reflections.framework.traverse.plan.MapSpecifiedClassSourceThruIdentifiedChannel3TraversePlan;
+import tech.intellispaces.reflections.framework.traverse.plan.MapSpecifiedClassSourceThruIdentifiedChannel3TraversePlanImpl;
+import tech.intellispaces.reflections.framework.traverse.plan.MapSpecifiedSourceToSpecifiedTargetDomainAndClassTraversePlan;
+import tech.intellispaces.reflections.framework.traverse.plan.MapSpecifiedSourceToSpecifiedTargetDomainAndClassTraversePlanImpl;
+import tech.intellispaces.reflections.framework.traverse.plan.MoveSpecifiedClassSourceThruIdentifiedChannel0TraversePlan;
+import tech.intellispaces.reflections.framework.traverse.plan.MoveSpecifiedClassSourceThruIdentifiedChannel0TraversePlanImpl;
+import tech.intellispaces.reflections.framework.traverse.plan.MoveSpecifiedClassSourceThruIdentifiedChannel1TraversePlan;
+import tech.intellispaces.reflections.framework.traverse.plan.MoveSpecifiedClassSourceThruIdentifiedChannel1TraversePlanImpl;
+import tech.intellispaces.reflections.framework.traverse.plan.MoveSpecifiedClassSourceThruIdentifiedChannel2TraversePlan;
+import tech.intellispaces.reflections.framework.traverse.plan.MoveSpecifiedClassSourceThruIdentifiedChannel2TraversePlanImpl;
+import tech.intellispaces.reflections.framework.traverse.plan.MoveSpecifiedClassSourceThruIdentifiedChannel3TraversePlan;
+import tech.intellispaces.reflections.framework.traverse.plan.MoveSpecifiedClassSourceThruIdentifiedChannel3TraversePlanImpl;
 import tech.intellispaces.reflections.framework.traverse.plan.TraversePlanType;
 import tech.intellispaces.reflections.framework.traverse.plan.TraversePlanTypes;
-import tech.intellispaces.reflections.framework.traverse.plan.TraverseThruChannelPlan;
+import tech.intellispaces.reflections.framework.traverse.plan.TraverseSpecifiedClassSourceThruIdentifierChannelTraversePlan;
 
 class TraverseAnalyzerImpl implements TraverseAnalyzer {
+  private SpaceRepository spaceRepository;
   private final GuideProvider guideProvider;
 
-  public TraverseAnalyzerImpl(GuideProvider guideProvider) {
+  public TraverseAnalyzerImpl(SpaceRepository spaceRepository, GuideProvider guideProvider) {
+    this.spaceRepository = spaceRepository;
     this.guideProvider = guideProvider;
   }
 
   @Override
-  public MapSpecificReflectionToSpecificDomainAndClassTraversePlan buildMapT0Plan(
+  public MapSpecifiedSourceToSpecifiedTargetDomainAndClassTraversePlan buildMapToTraversePlan(
       tech.intellispaces.core.Reflection source,
       Domain targetDomain,
       Class<?> targetClass
   ) {
-    var declarativePlan = new MapSpecificReflectionToSpecificDomainAndClassTraversePlanImpl(
+    var declarativePlan = new MapSpecifiedSourceToSpecifiedTargetDomainAndClassTraversePlanImpl(
         source, targetDomain, targetClass
     );
     buildPreliminaryExecutionPlan(declarativePlan);
@@ -80,152 +85,152 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
   }
 
   @Override
-  public MapThruChannel0TraversePlan buildMapThruChannel0Plan(
+  public MapSpecifiedClassSourceThruIdentifiedChannel0TraversePlan buildMapThruChannel0TraversePlan(
     Class<?> sourceClass, String cid, ReflectionForm targetForm
   ) {
-    MapThruChannel0TraversePlan declarativePlan = new MapThruChannel0TraversePlanImpl(sourceClass, cid);
+    var declarativePlan = new MapSpecifiedClassSourceThruIdentifiedChannel0TraversePlanImpl(sourceClass, cid);
     buildPreliminaryExecutionPlan(declarativePlan, sourceClass, targetForm);
     return declarativePlan;
   }
 
   @Override
-  public MapThruChannel1TraversePlan buildMapThruChannel1Plan(
+  public MapSpecifiedClassSourceThruIdentifiedChannel1TraversePlan buildMapThruChannel1TraversePlan(
     Class<?> sourceClass, String cid, ReflectionForm targetForm
   ) {
-    MapThruChannel1TraversePlan declarativePlan = new MapThruChannel1TraversePlanImpl(sourceClass, cid);
+    var declarativePlan = new MapSpecifiedClassSourceThruIdentifiedChannel1TraversePlanImpl(sourceClass, cid);
     buildPreliminaryExecutionPlan(declarativePlan, sourceClass, targetForm);
     return declarativePlan;
   }
 
   @Override
-  public MapThruChannel2TraversePlan buildMapThruChannel2Plan(
+  public MapSpecifiedClassSourceThruIdentifiedChannel2TraversePlan buildMapThruChannel2TraversePlan(
     Class<?> sourceClass, String cid, ReflectionForm targetForm
   ) {
-    MapThruChannel2TraversePlan declarativePlan = new MapThruChannel2TraversePlanImpl(sourceClass, cid);
+    var declarativePlan = new MapSpecifiedClassSourceThruIdentifiedChannel2TraversePlanImpl(sourceClass, cid);
     buildPreliminaryExecutionPlan(declarativePlan, sourceClass, targetForm);
     return declarativePlan;
   }
 
   @Override
-  public MapThruChannel3TraversePlan buildMapThruChannel3Plan(
+  public MapSpecifiedClassSourceThruIdentifiedChannel3TraversePlan buildMapThruChannel3TraversePlan(
     Class<?> sourceClass, String cid, ReflectionForm targetForm
   ) {
-    MapThruChannel3TraversePlan declarativePlan = new MapThruChannel3TraversePlanImpl(sourceClass, cid);
+    var declarativePlan = new MapSpecifiedClassSourceThruIdentifiedChannel3TraversePlanImpl(sourceClass, cid);
     buildPreliminaryExecutionPlan(declarativePlan, sourceClass, targetForm);
     return declarativePlan;
   }
 
   @Override
-  public MoveThruChannel0TraversePlan buildMoveThruChannel0Plan(
+  public MoveSpecifiedClassSourceThruIdentifiedChannel0TraversePlan buildMoveThruChannel0TraversePlan(
     Class<?> sourceClass, String cid, ReflectionForm targetForm
   ) {
-    MoveThruChannel0TraversePlan declarativePlan = new MoveThruChannel0TraversePlanImpl(sourceClass, cid);
+    var declarativePlan = new MoveSpecifiedClassSourceThruIdentifiedChannel0TraversePlanImpl(sourceClass, cid);
     buildPreliminaryExecutionPlan(declarativePlan, sourceClass, targetForm);
     return declarativePlan;
   }
 
   @Override
-  public MoveThruChannel1TraversePlan buildMoveThruChannel1Plan(
+  public MoveSpecifiedClassSourceThruIdentifiedChannel1TraversePlan buildMoveThruChannel1TraversePlan(
     Class<?> sourceClass, String cid, ReflectionForm targetForm
   ) {
-    MoveThruChannel1TraversePlan declarativePlan = new MoveThruChannel1TraversePlanImpl(sourceClass, cid);
+    var declarativePlan = new MoveSpecifiedClassSourceThruIdentifiedChannel1TraversePlanImpl(sourceClass, cid);
     buildPreliminaryExecutionPlan(declarativePlan, sourceClass, targetForm);
     return declarativePlan;
   }
 
   @Override
-  public MoveThruChannel2TraversePlan buildMoveThruChannel2Plan(
+  public MoveSpecifiedClassSourceThruIdentifiedChannel2TraversePlan buildMoveThruChannel2TraversePlan(
     Class<?> sourceClass, String cid, ReflectionForm targetForm
   ) {
-    MoveThruChannel2TraversePlan declarativePlan = new MoveThruChannel2TraversePlanImpl(sourceClass, cid);
+    var declarativePlan = new MoveSpecifiedClassSourceThruIdentifiedChannel2TraversePlanImpl(sourceClass, cid);
     buildPreliminaryExecutionPlan(declarativePlan, sourceClass, targetForm);
     return declarativePlan;
   }
 
   @Override
-  public MoveThruChannel3TraversePlan buildMoveThruChannel3Plan(
+  public MoveSpecifiedClassSourceThruIdentifiedChannel3TraversePlan buildMoveThruChannel3TraversePlan(
     Class<?> sourceClass, String cid, ReflectionForm targetForm
   ) {
-    MoveThruChannel3TraversePlan declarativePlan = new MoveThruChannel3TraversePlanImpl(sourceClass, cid);
+    var declarativePlan = new MoveSpecifiedClassSourceThruIdentifiedChannel3TraversePlanImpl(sourceClass, cid);
     buildPreliminaryExecutionPlan(declarativePlan, sourceClass, targetForm);
     return declarativePlan;
   }
 
   @Override
-  public MapOfMovingThruChannel0Plan buildMapOfMovingThruChannel0Plan(
+  public MapOfMovingSpecifiedClassSourceThruIdentifiedChannel0Plan buildMapOfMovingThruChannel0TraversePlan(
       Class<?> sourceClass, String cid, ReflectionForm targetForm
   ) {
-    MapOfMovingThruChannel0Plan declarativePlan = new MapOfMovingThruChannel0PlanImpl(sourceClass, cid);
+    var declarativePlan = new MapOfMovingSpecifiedClassSourceThruIdentifiedChannel0PlanImpl(sourceClass, cid);
     buildPreliminaryExecutionPlan(declarativePlan, sourceClass, targetForm);
     return declarativePlan;
   }
 
   @Override
-  public MapOfMovingThruChannel1TraversePlan buildMapOfMovingThruChannel1Plan(
+  public MapOfMovingSpecifiedClassSourceThruIdentifiedChannel1TraversePlan buildMapOfMovingThruChannel1TraversePlan(
       Class<?> sourceClass, String cid, ReflectionForm targetForm
   ) {
-    MapOfMovingThruChannel1TraversePlan declarativePlan = new MapOfMovingThruChannel1TraversePlanImpl(sourceClass, cid);
+    var declarativePlan = new MapOfMovingSpecifiedClassSourceThruIdentifiedChannel1TraversePlanImpl(sourceClass, cid);
     buildPreliminaryExecutionPlan(declarativePlan, sourceClass, targetForm);
     return declarativePlan;
   }
 
   @Override
-  public MapOfMovingThruChannel2TraversePlan buildMapOfMovingThruChannel2Plan(
+  public MapOfMovingSpecifiedClassSourceThruIdentifiedChannel2TraversePlan buildMapOfMovingThruChannel2TraversePlan(
       Class<?> sourceClass, String cid, ReflectionForm targetForm
   ) {
-    MapOfMovingThruChannel2TraversePlan declarativePlan = new MapOfMovingThruChannel2TraversePlanImpl(sourceClass, cid);
+    var declarativePlan = new MapOfMovingSpecifiedClassSourceThruIdentifiedChannel2TraversePlanImpl(sourceClass, cid);
     buildPreliminaryExecutionPlan(declarativePlan, sourceClass, targetForm);
     return declarativePlan;
   }
 
   @Override
-  public MapOfMovingThruChannel3TraversePlan buildMapOfMovingThruChannel3Plan(
+  public MapOfMovingSpecifiedClassSourceThruIdentifiedChannel3TraversePlan buildMapOfMovingThruChannel3TraversePlan(
       Class<?> sourceClass, String cid, ReflectionForm targetForm
   ) {
-    MapOfMovingThruChannel3TraversePlan declarativePlan = new MapOfMovingThruChannel3TraversePlanImpl(sourceClass, cid);
+    var declarativePlan = new MapOfMovingSpecifiedClassSourceThruIdentifiedChannel3TraversePlanImpl(sourceClass, cid);
     buildPreliminaryExecutionPlan(declarativePlan, sourceClass, targetForm);
     return declarativePlan;
   }
 
   @Override
-  public MapOfMovingThruChannel4TraversePlan buildMapOfMovingThruChannel4Plan(
+  public MapOfMovingSpecifiedClassSourceThruIdentifiedChannel4TraversePlan buildMapOfMovingThruChannel4TraversePlan(
       Class<?> sourceClass, String cid, ReflectionForm targetForm
   ) {
-    MapOfMovingThruChannel4TraversePlan declarativePlan = new MapOfMovingThruChannel4TraversePlanImpl(sourceClass, cid);
+    var declarativePlan = new MapOfMovingSpecifiedClassSourceThruIdentifiedChannel4TraversePlanImpl(sourceClass, cid);
     buildPreliminaryExecutionPlan(declarativePlan, sourceClass, targetForm);
     return declarativePlan;
   }
 
   private void buildPreliminaryExecutionPlan(
-      MapSpecificReflectionToSpecificDomainAndClassTraversePlan plan
+      MapSpecifiedSourceToSpecifiedTargetDomainAndClassTraversePlan plan
   ) {
-    getExecutionPlan(plan);
+    buildExecutionPlan(plan);
   }
 
   private void buildPreliminaryExecutionPlan(
-      TraverseThruChannelPlan plan, Class<?> sourceClass, ReflectionForm targetForm
+      TraverseSpecifiedClassSourceThruIdentifierChannelTraversePlan plan, Class<?> sourceClass, ReflectionForm targetForm
   ) {
-    getExecutionPlan(plan, sourceClass, targetForm);
+    buildExecutionPlan(plan, sourceClass, targetForm);
   }
 
   @Override
-  public ExecutionTraversePlan getExecutionPlan(
-      TraverseThruChannelPlan plan, Class<?> sourceClass, ReflectionForm targetForm
+  public ExecutionTraversePlan buildExecutionPlan(
+      TraverseSpecifiedClassSourceThruIdentifierChannelTraversePlan plan, Class<?> sourceClass, ReflectionForm targetForm
   ) {
-    return getExecutionPlan(plan, sourceClass, null, targetForm);
+    return buildExecutionPlan(plan, sourceClass, null, targetForm);
   }
 
   @Override
-  public ExecutionTraversePlan getExecutionPlan(
-      TraverseThruChannelPlan plan, Object source, ReflectionForm targetForm
+  public ExecutionTraversePlan buildExecutionPlan(
+      TraverseSpecifiedClassSourceThruIdentifierChannelTraversePlan plan, Object source, ReflectionForm targetForm
   ) {
-    return getExecutionPlan(plan, source.getClass(), source, targetForm);
+    return buildExecutionPlan(plan, source.getClass(), source, targetForm);
   }
 
-  private ExecutionTraversePlan getExecutionPlan(
-      TraverseThruChannelPlan plan, Class<?> sourceClass, Object source, ReflectionForm targetForm
+  private ExecutionTraversePlan buildExecutionPlan(
+      TraverseSpecifiedClassSourceThruIdentifierChannelTraversePlan plan, Class<?> sourceClass, Object source, ReflectionForm targetForm
   ) {
-    ExecutionTraversePlan executionPlan = plan.cachedExecutionPlan(sourceClass);
+    ExecutionTraversePlan executionPlan = plan.executionPlan(sourceClass);
     if (executionPlan != null) {
       return executionPlan;
     }
@@ -237,29 +242,29 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
       throw UnexpectedExceptions.withMessage("Traverse plan of type {0} expected any object form to input", planType);
     }
     Class<?> reflectionClass = ReflectionFunctions.getReflectionClass(sourceClass);
-    executionPlan = plan.cachedExecutionPlan(reflectionClass);
+    executionPlan = plan.executionPlan(reflectionClass);
     if (executionPlan != null) {
       return executionPlan;
     }
 
-    if (sourceClass != plan.reflectionClass() && !plan.reflectionClass().isAssignableFrom(sourceClass)) {
+    if (sourceClass != plan.sourceClass() && !plan.sourceClass().isAssignableFrom(sourceClass)) {
       throw UnexpectedExceptions.withMessage("Traverse plan of type {0} expected reflection of class {1} " +
-          "or it subclass", planType, plan.reflectionClass());
+          "or it subclass", planType, plan.sourceClass());
     }
-    executionPlan = plan.cachedExecutionPlan(plan.reflectionClass());
+    executionPlan = plan.executionPlan(plan.sourceClass());
     if (executionPlan != null) {
       return executionPlan;
     }
 
     executionPlan = buildExecutionTraversePlan(planType, cid, sourceClass, targetForm);
     if (executionPlan != null) {
-      plan.cacheExecutionPlan(sourceClass, executionPlan);
+      plan.setExecutionPlan(sourceClass, executionPlan);
       return executionPlan;
     } else {
       executionPlan = buildExecutionTraversePlan(planType, cid, reflectionClass, targetForm);
       if (executionPlan != null) {
-        plan.cacheExecutionPlan(sourceClass, executionPlan);
-        plan.cacheExecutionPlan(reflectionClass, executionPlan);
+        plan.setExecutionPlan(sourceClass, executionPlan);
+        plan.setExecutionPlan(reflectionClass, executionPlan);
         return executionPlan;
       }
     }
@@ -270,7 +275,7 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
         sourceReflection = sourceReflection.overlyingReflection();
         sourceClass = sourceReflection.getClass();
 
-        executionPlan = plan.cachedExecutionPlan(sourceClass);
+        executionPlan = plan.executionPlan(sourceClass);
         if (executionPlan != null) {
           return executionPlan;
         }
@@ -290,18 +295,24 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
     return executionPlan;
   }
 
-  private ExecutionTraversePlan getExecutionPlan(MapSpecificReflectionToSpecificDomainAndClassTraversePlan plan) {
-
-
-
-    return null;
+  @Override
+  public ExecutionTraversePlan buildExecutionPlan(
+      MapSpecifiedSourceToSpecifiedTargetDomainAndClassTraversePlan plan
+  ) {
+    Channel channel = spaceRepository.findChannel(plan.source().domain(), plan.targetDomain());
+    if (channel == null) {
+      return null;
+    }
+    return buildExecutionTraversePlan(
+        plan.type(), channel.rid().toString(), plan.targetClass(), ReflectionForms.Reflection
+    );
   }
 
   private ExecutionTraversePlan buildExecutionTraversePlan(
-      TraversePlanType planType, String cid, Class<?> reflectionClass, ReflectionForm targetForm
+      TraversePlanType planType, String cid, Class<?> sourceClass, ReflectionForm targetForm
   ) {
     GuideKinds guideKind = getGuideKind(planType);
-    List<Guide<?, ?>> guides = findGuides(cid, guideKind, reflectionClass, targetForm);
+    List<Guide<?, ?>> guides = findGuides(cid, guideKind, sourceClass, targetForm);
     if (guides.isEmpty()) {
       return null;
     }
@@ -320,13 +331,13 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
     };
   }
 
-  private List<Guide<?, ?>> findGuides(String cid, GuideKind kind, Class<?> reflectionClass, ReflectionForm form) {
-    List<Guide<?, ?>> guides = guideProvider.findGuides(cid, kind, reflectionClass, form);
+  private List<Guide<?, ?>> findGuides(String cid, GuideKind kind, Class<?> sourceClass, ReflectionForm form) {
+    List<Guide<?, ?>> guides = guideProvider.findGuides(cid, kind, sourceClass, form);
     if (guides.isEmpty()) {
-      Class<?> domainClass = ReflectionFunctions.getReflectionDomainClass(reflectionClass);
+      Class<?> domainClass = ReflectionFunctions.getReflectionDomainClass(sourceClass);
       String originDomainChannelId = ChannelFunctions.getOriginDomainChannelId(domainClass, cid);
       if (originDomainChannelId != null) {
-        guides = guideProvider.findGuides(originDomainChannelId, kind, reflectionClass, form);
+        guides = guideProvider.findGuides(originDomainChannelId, kind, sourceClass, form);
       }
     }
     return guides;
@@ -334,19 +345,20 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
 
   private GuideKinds getGuideKind(TraversePlanType planType) {
     return switch (TraversePlanTypes.of(planType)) {
-      case MapThruChannel0 -> GuideKinds.Mapper0;
-      case MapThruChannel1 -> GuideKinds.Mapper1;
-      case MapThruChannel2 -> GuideKinds.Mapper2;
-      case MapThruChannel3 -> GuideKinds.Mapper3;
-      case MoveThruChannel0 -> GuideKinds.Mover0;
-      case MoveThruChannel1 -> GuideKinds.Mover1;
-      case MoveThruChannel2 -> GuideKinds.Mover2;
-      case MoveThruChannel3 -> GuideKinds.Mover3;
-      case MapOfMovingThruChannel0 -> GuideKinds.MapperOfMoving0;
-      case MapOfMovingThruChannel1 -> GuideKinds.MapperOfMoving1;
-      case MapOfMovingChannel2 -> GuideKinds.MapperOfMoving2;
-      case MapOfMovingThruChannel3 -> GuideKinds.MapperOfMoving3;
-      case MapOfMovingThruChannel4 -> GuideKinds.MapperOfMoving4;
+      case MapSpecifiedClassSourceThruIdentifiedChannel0 -> GuideKinds.Mapper0;
+      case MapSpecifiedClassSourceThruIdentifiedChannel1 -> GuideKinds.Mapper1;
+      case MapSpecifiedClassSourceThruIdentifiedChannel2 -> GuideKinds.Mapper2;
+      case MapSpecifiedClassSourceThruIdentifiedChannel3 -> GuideKinds.Mapper3;
+      case MoveSpecifiedClassSourceThruIdentifiedChannel0 -> GuideKinds.Mover0;
+      case MoveSpecifiedClassSourceThruIdentifiedChannel1 -> GuideKinds.Mover1;
+      case MoveSpecifiedClassSourceThruIdentifiedChannel2 -> GuideKinds.Mover2;
+      case MoveSpecifiedClassSourceThruIdentifiedChannel3 -> GuideKinds.Mover3;
+      case MapOfMovingSpecifiedClassSourceThruIdentifiedChannel0 -> GuideKinds.MapperOfMoving0;
+      case MapOfMovingSpecifiedClassSourceThruIdentifiedChannel1 -> GuideKinds.MapperOfMoving1;
+      case MapOfMovingSpecifiedClassSourceThruIdentifiedChannel2 -> GuideKinds.MapperOfMoving2;
+      case MapOfMovingSpecifiedClassSourceThruIdentifiedChannel3 -> GuideKinds.MapperOfMoving3;
+      case MapOfMovingSpecifiedClassSourceThruIdentifiedChannel4 -> GuideKinds.MapperOfMoving4;
+      case MapSpecifiedSourceToSpecifiedTargetDomainAndClass -> GuideKinds.Mapper0;
       default -> throw NotImplementedExceptions.withCode("5cYSWA");
     };
   }

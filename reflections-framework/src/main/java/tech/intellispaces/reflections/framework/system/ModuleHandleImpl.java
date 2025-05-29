@@ -336,13 +336,17 @@ public class ModuleHandleImpl implements ModuleHandle {
     }
 
     @Override
-    public <T> T getProjection(String name, Class<T> targetReflectionClass) {
-        return engine.getProjection(name, targetReflectionClass);
+    @SuppressWarnings("unchecked")
+    public <T> T getProjection(String name, Class<T> targetClass) {
+        if (targetClass == System.class) {
+            return (T) system();
+        }
+        return engine.getProjection(name, targetClass);
     }
 
     @Override
-    public <T> List<T> getProjections(Class<T> targetReflectionClass) {
-        return engine.getProjections(targetReflectionClass);
+    public <T> List<T> getProjections(Class<T> targetClass) {
+        return engine.getProjections(targetClass);
     }
 
     @Override

@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import tech.intellispaces.commons.data.Holder;
-import tech.intellispaces.commons.data.SingleHolder;
+import tech.intellispaces.commons.data.ResettableSingleHolder;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.reflections.framework.ReflectionsFramework;
 import tech.intellispaces.reflections.framework.engine.EngineRegistrar;
@@ -49,7 +49,7 @@ public class ReflectionsNodeFunctions {
   }
 
   static Holder<ModuleHandle> createModuleHolder() {
-    return new SingleHolder<>();
+    return new ResettableSingleHolder<>();
   }
 
   private ReflectionsNodeFunctions() {}

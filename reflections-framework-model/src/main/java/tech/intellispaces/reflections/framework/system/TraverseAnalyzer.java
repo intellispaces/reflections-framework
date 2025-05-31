@@ -18,6 +18,7 @@ import tech.intellispaces.reflections.framework.traverse.plan.MoveSpecifiedClass
 import tech.intellispaces.reflections.framework.traverse.plan.MoveSpecifiedClassSourceThruIdentifiedChannel1TraversePlan;
 import tech.intellispaces.reflections.framework.traverse.plan.MoveSpecifiedClassSourceThruIdentifiedChannel2TraversePlan;
 import tech.intellispaces.reflections.framework.traverse.plan.MoveSpecifiedClassSourceThruIdentifiedChannel3TraversePlan;
+import tech.intellispaces.reflections.framework.traverse.plan.TraversePlan;
 import tech.intellispaces.reflections.framework.traverse.plan.TraverseSpecifiedClassSourceThruIdentifierChannelTraversePlan;
 
 /**
@@ -81,7 +82,7 @@ public interface TraverseAnalyzer {
       Class<?> sourceClass, String cid, ReflectionForm targetForm
   );
 
-  ExecutionTraversePlan buildExecutionPlan(
+  TraversePlan buildExecutionPlan(
       MapSpecifiedSourceToSpecifiedTargetDomainAndClassTraversePlan plan
   );
 

@@ -33,8 +33,14 @@ public class DefaultEngineFactory implements EngineFactory {
         GuideRegistry guideRegistry = new LocalGuideRegistry();
         AutoGuideRegistry autoGuideRegistry = new AutoGuideRegistry();
 
-        TraverseAnalyzer traverseAnalyzer = new TraverseAnalyzerImpl(spaceRepository, guideRegistry);
-        TraverseExecutor traverseExecutor = new LocalTraverseExecutor(traverseAnalyzer);
+        TraverseAnalyzer traverseAnalyzer = new TraverseAnalyzerImpl(
+            spaceRepository,
+            guideRegistry,
+            reflectionRegistry
+        );
+        TraverseExecutor traverseExecutor = new LocalTraverseExecutor(
+            traverseAnalyzer
+        );
         return new DefaultEngine(
             projectionRegistry,
             guideRegistry,

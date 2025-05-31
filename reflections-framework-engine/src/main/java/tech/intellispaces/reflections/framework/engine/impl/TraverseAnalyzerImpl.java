@@ -1,5 +1,6 @@
 package tech.intellispaces.reflections.framework.engine.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,6 +23,7 @@ import tech.intellispaces.reflections.framework.reflection.ReflectionForms;
 import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
 import tech.intellispaces.reflections.framework.space.channel.ChannelFunctions;
 import tech.intellispaces.reflections.framework.system.GuideProvider;
+import tech.intellispaces.reflections.framework.system.ReflectionRegistry;
 import tech.intellispaces.reflections.framework.system.TraverseAnalyzer;
 import tech.intellispaces.reflections.framework.traverse.plan.AscendAndExecutePlan1Impl;
 import tech.intellispaces.reflections.framework.traverse.plan.CallGuide0PlanImpl;
@@ -58,17 +60,24 @@ import tech.intellispaces.reflections.framework.traverse.plan.MoveSpecifiedClass
 import tech.intellispaces.reflections.framework.traverse.plan.MoveSpecifiedClassSourceThruIdentifiedChannel2TraversePlanImpl;
 import tech.intellispaces.reflections.framework.traverse.plan.MoveSpecifiedClassSourceThruIdentifiedChannel3TraversePlan;
 import tech.intellispaces.reflections.framework.traverse.plan.MoveSpecifiedClassSourceThruIdentifiedChannel3TraversePlanImpl;
+import tech.intellispaces.reflections.framework.traverse.plan.TraversePlan;
 import tech.intellispaces.reflections.framework.traverse.plan.TraversePlanType;
 import tech.intellispaces.reflections.framework.traverse.plan.TraversePlanTypes;
 import tech.intellispaces.reflections.framework.traverse.plan.TraverseSpecifiedClassSourceThruIdentifierChannelTraversePlan;
 
 class TraverseAnalyzerImpl implements TraverseAnalyzer {
-  private SpaceRepository spaceRepository;
+  private final SpaceRepository spaceRepository;
   private final GuideProvider guideProvider;
+  private final ReflectionRegistry reflectionRegistry;
 
-  public TraverseAnalyzerImpl(SpaceRepository spaceRepository, GuideProvider guideProvider) {
+  public TraverseAnalyzerImpl(
+      SpaceRepository spaceRepository,
+      GuideProvider guideProvider,
+      ReflectionRegistry reflectionRegistry
+  ) {
     this.spaceRepository = spaceRepository;
     this.guideProvider = guideProvider;
+    this.reflectionRegistry = reflectionRegistry;
   }
 
   @Override
@@ -228,7 +237,10 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
   }
 
   private ExecutionTraversePlan buildExecutionPlan(
-      TraverseSpecifiedClassSourceThruIdentifierChannelTraversePlan plan, Class<?> sourceClass, Object source, ReflectionForm targetForm
+      TraverseSpecifiedClassSourceThruIdentifierChannelTraversePlan plan,
+      Class<?> sourceClass,
+      Object source,
+      ReflectionForm targetForm
   ) {
     ExecutionTraversePlan executionPlan = plan.executionPlan(sourceClass);
     if (executionPlan != null) {
@@ -296,23 +308,44 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
   }
 
   @Override
-  public ExecutionTraversePlan buildExecutionPlan(
+  public TraversePlan buildExecutionPlan(
       MapSpecifiedSourceToSpecifiedTargetDomainAndClassTraversePlan plan
   ) {
     Channel channel = spaceRepository.findChannel(plan.source().domain(), plan.targetDomain());
     if (channel == null) {
       return null;
     }
-    return buildExecutionTraversePlan(
-        plan.type(), channel.rid().toString(), plan.targetClass(), ReflectionForms.Reflection
+    ExecutionTraversePlan executionPlan = buildExecutionTraversePlan(
+        plan.type(), channel.rid().toString(), plan.source(), ReflectionForms.Reflection
     );
+    if (executionPlan == null) {
+      tech.intellispaces.core.Reflection registeredReflection = reflectionRegistry.get(plan.source().rid());
+      if (registeredReflection != null) {
+        executionPlan = buildExecutionTraversePlan(
+            plan.type(), channel.rid().toString(), registeredReflection, ReflectionForms.Reflection
+        );
+        if (executionPlan != null) {
+          var replaceSourcePlan = new MapSpecifiedSourceToSpecifiedTargetDomainAndClassTraversePlanImpl(
+              registeredReflection,
+              plan.targetDomain(),
+              plan.targetClass()
+          );
+          replaceSourcePlan.setExecutionPlan(executionPlan);
+          return replaceSourcePlan;
+        }
+      }
+    }
+    return executionPlan;
   }
 
   private ExecutionTraversePlan buildExecutionTraversePlan(
-      TraversePlanType planType, String cid, Class<?> sourceClass, ReflectionForm targetForm
+      TraversePlanType planType,
+      String cid,
+      Class<?> sourceClass,
+      ReflectionForm targetForm
   ) {
     GuideKinds guideKind = getGuideKind(planType);
-    List<Guide<?, ?>> guides = findGuides(cid, guideKind, sourceClass, targetForm);
+    List<Guide<?, ?>> guides = findGuides(guideKind, cid, sourceClass, targetForm);
     if (guides.isEmpty()) {
       return null;
     }
@@ -331,15 +364,57 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
     };
   }
 
-  private List<Guide<?, ?>> findGuides(String cid, GuideKind kind, Class<?> sourceClass, ReflectionForm form) {
-    List<Guide<?, ?>> guides = guideProvider.findGuides(cid, kind, sourceClass, form);
+  private ExecutionTraversePlan buildExecutionTraversePlan(
+      TraversePlanType planType,
+      String cid,
+      tech.intellispaces.core.Reflection source,
+      ReflectionForm targetForm
+  ) {
+    GuideKinds guideKind = getGuideKind(planType);
+    List<Guide<?, ?>> guides = findGuides(guideKind, cid, source, targetForm);
+    if (guides.isEmpty()) {
+      return null;
+    }
+    if (guides.size() > 1) {
+      throw NotImplementedExceptions.withCodeAndMessage("J2ni0Q", "Multiple guides are found:\n{0}",
+          guides.stream().map(Object::toString).collect(Collectors.joining("\n"))
+      );
+    }
+    return switch (guideKind) {
+      case Mapper0, Mover0, MapperOfMoving0 -> new CallGuide0PlanImpl((Guide0<?, ?>) guides.get(0));
+      case Mapper1, Mover1, MapperOfMoving1 -> new CallGuide1PlanImpl((Guide1<?, ?, ?>) guides.get(0));
+      case Mapper2, Mover2, MapperOfMoving2 -> new CallGuide2PlanImpl((Guide2<?, ?, ?, ?>) guides.get(0));
+      case Mapper3, Mover3, MapperOfMoving3 -> new CallGuide3PlanImpl((Guide3<?, ?, ?, ?, ?>) guides.get(0));
+      case Mapper4, Mover4, MapperOfMoving4 -> new CallGuide4PlanImpl((Guide4<?, ?, ?, ?, ?, ?>) guides.get(0));
+      default -> throw NotImplementedExceptions.withCode("Ma6ylg");
+    };
+  }
+
+  private List<Guide<?, ?>> findGuides(
+      GuideKind guideKind,
+      String cid,
+      Class<?> sourceClass,
+      ReflectionForm targetForm
+  ) {
+    List<Guide<?, ?>> guides = guideProvider.findGuides(cid, guideKind, sourceClass, targetForm);
     if (guides.isEmpty()) {
       Class<?> domainClass = ReflectionFunctions.getReflectionDomainClass(sourceClass);
       String originDomainChannelId = ChannelFunctions.getOriginDomainChannelId(domainClass, cid);
       if (originDomainChannelId != null) {
-        guides = guideProvider.findGuides(originDomainChannelId, kind, sourceClass, form);
+        guides = guideProvider.findGuides(originDomainChannelId, guideKind, sourceClass, targetForm);
       }
     }
+    return guides;
+  }
+
+  private List<Guide<?, ?>> findGuides(
+      GuideKind guideKind,
+      String cid,
+      tech.intellispaces.core.Reflection source,
+      ReflectionForm targetForm
+  ) {
+    List<Guide<?, ?>> guides = new ArrayList<>();
+    guides.addAll(guideProvider.findGuides(cid, guideKind, source.getClass(), targetForm));
     return guides;
   }
 

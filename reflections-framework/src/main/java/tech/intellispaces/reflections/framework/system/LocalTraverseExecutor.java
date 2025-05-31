@@ -31,6 +31,7 @@ import tech.intellispaces.reflections.framework.traverse.plan.MoveSpecifiedClass
 import tech.intellispaces.reflections.framework.traverse.plan.MoveSpecifiedClassSourceThruIdentifiedChannel1TraversePlan;
 import tech.intellispaces.reflections.framework.traverse.plan.MoveSpecifiedClassSourceThruIdentifiedChannel2TraversePlan;
 import tech.intellispaces.reflections.framework.traverse.plan.MoveSpecifiedClassSourceThruIdentifiedChannel3TraversePlan;
+import tech.intellispaces.reflections.framework.traverse.plan.TraversePlan;
 
 public class LocalTraverseExecutor implements TraverseExecutor {
   private final TraverseAnalyzer analyzer;
@@ -377,10 +378,13 @@ public class LocalTraverseExecutor implements TraverseExecutor {
   public Object execute(
       MapSpecifiedSourceToSpecifiedTargetDomainAndClassTraversePlan plan
   ) throws TraverseException {
-    ExecutionTraversePlan executionPlan = analyzer.buildExecutionPlan(plan);
+    TraversePlan executionPlan = analyzer.buildExecutionPlan(plan);
     if (executionPlan == null) {
       throw TraverseExceptions.withMessage("Cannot to build traverse plan to map specified source to domain {0}",
           plan.targetDomain());
+    }
+    if (executionPlan instanceof MapSpecifiedSourceToSpecifiedTargetDomainAndClassTraversePlan) {
+      return executionPlan.execute(this);
     }
     return executionPlan.execute(plan.source(), this);
   }

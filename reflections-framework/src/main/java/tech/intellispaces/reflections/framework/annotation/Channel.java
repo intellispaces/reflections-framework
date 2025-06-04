@@ -20,7 +20,7 @@ public @interface Channel {
   String value();
 
   /**
-   * The simple channel name.
+   * The channel name.
    */
   String name() default "";
 

@@ -1,5 +1,7 @@
 package tech.intellispaces.reflections.framework.traverse.plan;
 
+import tech.intellispaces.core.Rid;
+
 /**
  * The declarative plan to traverse source of specified class through identified channel.
  */
@@ -13,7 +15,7 @@ public interface TraverseSpecifiedClassSourceThruIdentifierChannelTraversePlan e
   /**
    * The channel ID.
    */
-  String channelId();
+  Rid channelId();
 
   ExecutionTraversePlan executionPlan(Class<?> sourceClass);
 

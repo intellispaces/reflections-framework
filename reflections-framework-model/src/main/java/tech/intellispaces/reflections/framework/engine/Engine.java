@@ -18,6 +18,7 @@ import tech.intellispaces.commons.type.Type;
 import tech.intellispaces.core.Domain;
 import tech.intellispaces.core.Reflection;
 import tech.intellispaces.core.ReflectionContract;
+import tech.intellispaces.core.Rid;
 import tech.intellispaces.reflections.framework.channel.Channel0;
 import tech.intellispaces.reflections.framework.channel.Channel1;
 import tech.intellispaces.reflections.framework.channel.Channel2;
@@ -62,21 +63,21 @@ public interface Engine {
 
   <R extends Reflection> R mapSourceTo(Reflection source, Domain targetDomain, Class<R> targetClass);
 
-  <S, T> T mapThruChannel0(S source, String cid);
+  <S, T> T mapThruChannel0(S source, Rid cid);
 
   <S, T, C extends Channel0 & MappingTraverse> T mapThruChannel0(S source, Class<C> channelClass);
 
-  <S, T, Q> T mapThruChannel1(S source, String cid, Q qualifier);
+  <S, T, Q> T mapThruChannel1(S source, Rid cid, Q qualifier);
 
   <S, T, Q, C extends Channel1 & MappingTraverse> T mapThruChannel1(S source, Class<C> channelClass, Q qualifier);
 
-  <S, R> R moveThruChannel0(S source, String cid);
+  <S, R> R moveThruChannel0(S source, Rid cid);
 
-  <S, R, Q> R moveThruChannel1(S source, String cid, Q qualifier);
+  <S, R, Q> R moveThruChannel1(S source, Rid cid, Q qualifier);
 
   <S, R, Q, C extends Channel1 & MappingOfMovingTraverse> R mapOfMovingThruChannel1(S source, Class<C> channelClass, Q qualifier);
 
-  <S, R, Q> R mapOfMovingThruChannel1(S source, String cid, Q qualifier);
+  <S, R, Q> R mapOfMovingThruChannel1(S source, Rid cid, Q qualifier);
 
   /**
    * Adds module projection.
@@ -102,33 +103,33 @@ public interface Engine {
    */
   Reflection createReflection(ReflectionContract contract);
 
-  <S, T> Mapper0<S, T> autoMapperThruChannel0(Type<S> sourceType, String cid, ReflectionForm targetForm);
+  <S, T> Mapper0<S, T> autoMapperThruChannel0(Type<S> sourceType, Rid cid, ReflectionForm targetForm);
 
-  <S, T, Q> Mapper1<S, T, Q> autoMapperThruChannel1(Type<S> sourceType, String cid, ReflectionForm targetForm);
+  <S, T, Q> Mapper1<S, T, Q> autoMapperThruChannel1(Type<S> sourceType, Rid cid, ReflectionForm targetForm);
 
-  <S, T, Q1, Q2> Mapper2<S, T, Q1, Q2> autoMapperThruChannel2(Type<S> sourceType, String cid, ReflectionForm targetForm);
+  <S, T, Q1, Q2> Mapper2<S, T, Q1, Q2> autoMapperThruChannel2(Type<S> sourceType, Rid cid, ReflectionForm targetForm);
 
-  <S, T, Q1, Q2, Q3> Mapper3<S, T, Q1, Q2, Q3> autoMapperThruChannel3(Type<S> sourceType, String cid, ReflectionForm targetForm);
+  <S, T, Q1, Q2, Q3> Mapper3<S, T, Q1, Q2, Q3> autoMapperThruChannel3(Type<S> sourceType, Rid cid, ReflectionForm targetForm);
 
-  <S> Mover0<S> autoMoverThruChannel0(Type<S> sourceType, String cid, ReflectionForm targetForm);
+  <S> Mover0<S> autoMoverThruChannel0(Type<S> sourceType, Rid cid, ReflectionForm targetForm);
 
-  <S, Q> Mover1<S, Q> autoMoverThruChannel1(Class<S> sourceClass, String cid, ReflectionForm targetForm);
+  <S, Q> Mover1<S, Q> autoMoverThruChannel1(Class<S> sourceClass, Rid cid, ReflectionForm targetForm);
 
-  <S, Q> Mover1<S, Q> autoMoverThruChannel1(Type<S> sourceType, String cid, ReflectionForm targetForm);
+  <S, Q> Mover1<S, Q> autoMoverThruChannel1(Type<S> sourceType, Rid cid, ReflectionForm targetForm);
 
-  <S, Q1, Q2> Mover2<S, Q1, Q2> autoMoverThruChannel2(Type<S> sourceType, String cid, ReflectionForm targetForm);
+  <S, Q1, Q2> Mover2<S, Q1, Q2> autoMoverThruChannel2(Type<S> sourceType, Rid cid, ReflectionForm targetForm);
 
-  <S, Q1, Q2, Q3> Mover3<S, Q1, Q2, Q3> autoMoverThruChannel3(Type<S> sourceType, String cid, ReflectionForm targetForm);
+  <S, Q1, Q2, Q3> Mover3<S, Q1, Q2, Q3> autoMoverThruChannel3(Type<S> sourceType, Rid cid, ReflectionForm targetForm);
 
-  <S, T> MapperOfMoving0<S, T> autoMapperOfMovingThruChannel0(Type<S> sourceType, String cid, ReflectionForm targetForm);
+  <S, T> MapperOfMoving0<S, T> autoMapperOfMovingThruChannel0(Type<S> sourceType, Rid cid, ReflectionForm targetForm);
 
-  <S, T, Q> MapperOfMoving1<S, T, Q> autoMapperOfMovingThruChannel1(Type<S> sourceType, String cid, ReflectionForm targetForm);
+  <S, T, Q> MapperOfMoving1<S, T, Q> autoMapperOfMovingThruChannel1(Type<S> sourceType, Rid cid, ReflectionForm targetForm);
 
-  <S, T, Q1, Q2> MapperOfMoving2<S, T, Q1, Q2> autoMapperOfMovingThruChannel2(Type<S> sourceType, String cid, ReflectionForm targetForm);
+  <S, T, Q1, Q2> MapperOfMoving2<S, T, Q1, Q2> autoMapperOfMovingThruChannel2(Type<S> sourceType, Rid cid, ReflectionForm targetForm);
 
-  <S, T, Q1, Q2, Q3> MapperOfMoving3<S, T, Q1, Q2, Q3> autoMapperOfMovingThruChannel3(Type<S> sourceType, String cid, ReflectionForm targetForm);
+  <S, T, Q1, Q2, Q3> MapperOfMoving3<S, T, Q1, Q2, Q3> autoMapperOfMovingThruChannel3(Type<S> sourceType, Rid cid, ReflectionForm targetForm);
 
-  <S, T, Q1, Q2, Q3, Q4> MapperOfMoving4<S, T, Q1, Q2, Q3, Q4> autoMapperOfMovingThruChannel4(Type<S> sourceType, String cid, ReflectionForm targetForm);
+  <S, T, Q1, Q2, Q3, Q4> MapperOfMoving4<S, T, Q1, Q2, Q3, Q4> autoMapperOfMovingThruChannel4(Type<S> sourceType, Rid cid, ReflectionForm targetForm);
 
   <S, T> Mapper0<S, T> autoMapperThruChannel0(Type<S> sourceType, Class<? extends Channel0> channelClass, ReflectionForm targetForm);
 

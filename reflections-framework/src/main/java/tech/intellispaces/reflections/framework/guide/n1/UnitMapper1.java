@@ -1,5 +1,6 @@
 package tech.intellispaces.reflections.framework.guide.n1;
 
+import tech.intellispaces.core.Rid;
 import tech.intellispaces.javareflection.method.MethodStatement;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 import tech.intellispaces.reflections.framework.system.UnitWrapper;
@@ -16,7 +17,7 @@ public class UnitMapper1<S, T, Q>
     implements AbstractMapper1<S, T, Q>
 {
   public UnitMapper1(
-      String cid,
+      Rid cid,
       UnitWrapper unitInstance,
       MethodStatement guideMethod,
       int guideOrdinal,

@@ -17,7 +17,6 @@ import tech.intellispaces.reflections.framework.annotation.Channel;
 import tech.intellispaces.reflections.framework.annotation.Ignore;
 import tech.intellispaces.reflections.framework.annotationprocessor.AnnotationFunctions;
 import tech.intellispaces.reflections.framework.artifact.ArtifactTypes;
-import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
 import tech.intellispaces.reflections.framework.node.ReflectionsNodeFunctions;
 
 import static tech.intellispaces.javareflection.customtype.AnnotationFunctions.allAnnotationsOf;
@@ -105,7 +104,7 @@ public interface DomainProcessorFunctions {
   private static void addDownwardReflectionGenerators(
       CustomType domainType, List<ArtifactGenerator> generators
   ) {
-    if (ReflectionsNodeFunctions.ontologyReference().getDomainByName(NameConventionFunctions.convertToDomainName(domainType.canonicalName())) != null) {
+    if (ReflectionsNodeFunctions.ontologyReference().getDomainByClassName(domainType.className()) != null) {
       return;
     }
 

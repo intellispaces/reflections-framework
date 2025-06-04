@@ -1,5 +1,6 @@
 package tech.intellispaces.reflections.framework.traverse.plan;
 
+import tech.intellispaces.core.Rid;
 import tech.intellispaces.reflections.framework.exception.TraverseException;
 import tech.intellispaces.reflections.framework.system.TraverseExecutor;
 
@@ -7,7 +8,7 @@ public class MapOfMovingSpecifiedClassSourceThruIdentifiedChannel3TraversePlanIm
     extends AbstractTraverseSpecifiedClassSourceThruIdentifierChannelTraversePlan
     implements MapOfMovingSpecifiedClassSourceThruIdentifiedChannel3TraversePlan
 {
-  public MapOfMovingSpecifiedClassSourceThruIdentifiedChannel3TraversePlanImpl(Class<?> reflectionClass, String cid) {
+  public MapOfMovingSpecifiedClassSourceThruIdentifiedChannel3TraversePlanImpl(Class<?> reflectionClass, Rid cid) {
     super(reflectionClass, cid);
   }
 

@@ -1,5 +1,6 @@
 package tech.intellispaces.reflections.framework.guide.n1;
 
+import tech.intellispaces.core.Rid;
 import tech.intellispaces.javareflection.method.MethodStatement;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 import tech.intellispaces.reflections.framework.system.ReflectionWrapper;
@@ -17,7 +18,7 @@ public class ObjectMover1<S extends ReflectionWrapper, Q>
     implements AbstractMover1<S, Q>
 {
   public ObjectMover1(
-      String cid,
+      Rid cid,
       Class<S> reflectionClass,
       MethodStatement guideMethod,
       int traverseOrdinal,

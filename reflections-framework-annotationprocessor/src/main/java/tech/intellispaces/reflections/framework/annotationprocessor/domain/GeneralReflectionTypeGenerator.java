@@ -55,7 +55,12 @@ public class GeneralReflectionTypeGenerator extends AbstractReflectionFormGenera
 
   @Override
   public String generatedArtifactName() {
-    return NameConventionFunctions.getObjectTypename(sourceArtifact().className(), ReflectionForms.Reflection, MovabilityTypes.General, false);
+    return NameConventionFunctions.getObjectTypename(
+        sourceArtifact().canonicalName(),
+        ReflectionForms.Reflection,
+        MovabilityTypes.General,
+        false
+    );
   }
 
   @Override
@@ -95,7 +100,7 @@ public class GeneralReflectionTypeGenerator extends AbstractReflectionFormGenera
 
   private String getSimpleObjectClassName() {
     return addImportAndGetSimpleName(
-        NameConventionFunctions.getGeneralRegularFormClassname(sourceArtifact().className(), false));
+        NameConventionFunctions.getGeneralRegularFormClassName(sourceArtifact().className(), false));
   }
 
   private String getSimpleReflectionName() {

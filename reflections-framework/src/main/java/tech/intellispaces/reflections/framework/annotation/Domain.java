@@ -13,7 +13,12 @@ import java.lang.annotation.Target;
 public @interface Domain {
 
   /**
-   * Domain identifier.
+   * The domain identifier.
    */
   String value();
+
+  /**
+   * The domain name.
+   */
+  String name() default "";
 }

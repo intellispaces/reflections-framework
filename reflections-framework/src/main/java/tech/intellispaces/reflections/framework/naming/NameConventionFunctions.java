@@ -31,14 +31,6 @@ public interface NameConventionFunctions {
     return canonicalName.endsWith(DOMAIN);
   }
 
-  static String convertToDomainClassName(String domainName) {
-    return domainName + DOMAIN;
-  }
-
-  static String convertToDomainName(String domainClassName) {
-    return StringFunctions.removeTailIfPresent(domainClassName, DOMAIN);
-  }
-
   static String convertToChannelClassName(String channelName) {
     return channelName + CHANNEL;
   }
@@ -52,11 +44,11 @@ public interface NameConventionFunctions {
   }
 
   static String getObjectTypename(
-          String domainClassName, ReflectionForm objectForm, MovabilityType movabilityType, boolean replaceDomainWithDelegate
+        String domainClassName, ReflectionForm objectForm, MovabilityType movabilityType, boolean replaceDomainWithDelegate
   ) {
     return switch (ReflectionForms.of(objectForm)) {
       case Regular -> switch (MovabilityTypes.of(movabilityType)) {
-        case General -> getGeneralRegularFormClassname(domainClassName, replaceDomainWithDelegate);
+        case General -> getGeneralRegularFormClassName(domainClassName, replaceDomainWithDelegate);
         case Movable -> getMovableRegularFormTypeName(domainClassName, replaceDomainWithDelegate);
         case Unmovable -> getUnmovableRegularFormTypeName(domainClassName, replaceDomainWithDelegate);
       };
@@ -70,33 +62,29 @@ public interface NameConventionFunctions {
     };
   }
 
-  static String getGeneralRegularFormClassname(String domainClassName, boolean replaceDomainWithDelegate) {
+  static String getGeneralRegularFormClassName(String domainClassName, boolean replaceDomainWithDelegate) {
+    DomainReference domain = ReflectionsNodeFunctions.ontologyReference().getDomainByClassName(domainClassName);
     if (replaceDomainWithDelegate) {
-      String domainName = convertToDomainName(domainClassName);
-      DomainReference domain = ReflectionsNodeFunctions.ontologyReference().getDomainByName(domainName);
-      if (domain != null) {
-        return domain.delegateClassName() != null ? domain.delegateClassName() : domainName;
+      if (domain != null && domain.delegateClassName() != null) {
+        return domain.delegateClassName();
       }
     } else {
-      DomainReference domain = ReflectionsNodeFunctions.ontologyReference().getDomainByName(domainClassName);
       if (domain != null) {
-        return domain.domainName();
+        domainClassName = domain.classCanonicalName();
       }
     }
     return StringFunctions.removeTailOrElseThrow(transformClassName(domainClassName), DOMAIN);
   }
 
   static String getGeneralReflectionTypeName(String domainClassName, boolean replaceDomainWithDelegate) {
+    DomainReference domain = ReflectionsNodeFunctions.ontologyReference().getDomainByClassName(domainClassName);
     if (replaceDomainWithDelegate) {
-      String domainName = convertToDomainName(domainClassName);
-      DomainReference domain = ReflectionsNodeFunctions.ontologyReference().getDomainByName(domainName);
-      if (domain != null) {
-        return domain.delegateClassName() != null ? domain.delegateClassName() : domainName;
+      if (domain != null && domain.delegateClassName() != null) {
+        return domain.delegateClassName();
       }
     } else {
-      DomainReference domain = ReflectionsNodeFunctions.ontologyReference().getDomainByName(domainClassName);
       if (domain != null) {
-        return domain.domainName();
+        domainClassName = domain.classCanonicalName();
       }
     }
     return StringFunctions.replaceTailOrElseThrow(transformClassName(domainClassName), DOMAIN, REFLECTION);
@@ -109,7 +97,7 @@ public interface NameConventionFunctions {
 
   static String getUnmovableRegularFormTypeName(String domainClassName, boolean replaceDomainWithDelegate) {
     if (replaceDomainWithDelegate) {
-      DomainReference domain = ReflectionsNodeFunctions.ontologyReference().getDomainByName(convertToDomainName(domainClassName));
+      DomainReference domain = ReflectionsNodeFunctions.ontologyReference().getDomainByClassName(domainClassName);
       if (domain != null && domain.delegateClassName() != null && (
           DomainTypes.Number.is(domain.type()) ||
               DomainTypes.Short.is(domain.type()) ||
@@ -126,7 +114,7 @@ public interface NameConventionFunctions {
 
   static String getMovableRegularFormTypeName(String domainClassName, boolean replaceDomainWithDelegate) {
     if (replaceDomainWithDelegate) {
-      DomainReference domain = ReflectionsNodeFunctions.ontologyReference().getDomainByName(convertToDomainName(domainClassName));
+      DomainReference domain = ReflectionsNodeFunctions.ontologyReference().getDomainByClassName(domainClassName);
       if (domain != null && domain.delegateClassName() != null && (
           DomainTypes.Number.is(domain.type()) ||
               DomainTypes.Short.is(domain.type()) ||
@@ -143,7 +131,7 @@ public interface NameConventionFunctions {
 
   static String getUnmovableReflectionTypeName(String domainClassName, boolean replaceDomainWithDelegate) {
     if (replaceDomainWithDelegate) {
-      DomainReference domain = ReflectionsNodeFunctions.ontologyReference().getDomainByName(convertToDomainName(domainClassName));
+      DomainReference domain = ReflectionsNodeFunctions.ontologyReference().getDomainByClassName(domainClassName);
       if (domain != null && domain.delegateClassName() != null && (
           DomainTypes.Number.is(domain.type()) ||
               DomainTypes.Short.is(domain.type()) ||
@@ -159,7 +147,7 @@ public interface NameConventionFunctions {
 
   static String getMovableReflectionTypeName(String domainClassName, boolean replaceDomainWithDelegate) {
     if (replaceDomainWithDelegate) {
-      DomainReference domain = ReflectionsNodeFunctions.ontologyReference().getDomainByName(convertToDomainName(domainClassName));
+      DomainReference domain = ReflectionsNodeFunctions.ontologyReference().getDomainByClassName(domainClassName);
       if (domain != null && domain.delegateClassName() != null && (
           DomainTypes.Number.is(domain.type()) ||
               DomainTypes.Short.is(domain.type()) ||

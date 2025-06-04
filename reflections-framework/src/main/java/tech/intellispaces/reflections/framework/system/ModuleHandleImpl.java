@@ -7,6 +7,7 @@ import tech.intellispaces.actions.cache.CachedSupplierActions;
 import tech.intellispaces.actions.supplier.SupplierAction;
 import tech.intellispaces.commons.type.Type;
 import tech.intellispaces.core.Guide;
+import tech.intellispaces.core.Rid;
 import tech.intellispaces.core.System;
 import tech.intellispaces.core.Unit;
 import tech.intellispaces.reflections.framework.channel.Channel0;
@@ -108,7 +109,7 @@ public class ModuleHandleImpl implements ModuleHandle {
     }
 
     @Override
-    public <S, T> T mapThruChannel0(S source, String cid) {
+    public <S, T> T mapThruChannel0(S source, Rid cid) {
         return engine.mapThruChannel0(source, cid);
     }
 
@@ -118,7 +119,7 @@ public class ModuleHandleImpl implements ModuleHandle {
     }
 
     @Override
-    public <S, T, Q> T mapThruChannel1(S source, String cid, Q qualifier) {
+    public <S, T, Q> T mapThruChannel1(S source, Rid cid, Q qualifier) {
         return engine.mapThruChannel1(source, cid, qualifier);
     }
 
@@ -128,12 +129,12 @@ public class ModuleHandleImpl implements ModuleHandle {
     }
 
     @Override
-    public <S, R> R moveThruChannel0(S source, String cid) {
+    public <S, R> R moveThruChannel0(S source, Rid cid) {
         return engine.moveThruChannel0(source, cid);
     }
 
     @Override
-    public <S, R, Q> R moveThruChannel1(S source, String cid, Q qualifier) {
+    public <S, R, Q> R moveThruChannel1(S source, Rid cid, Q qualifier) {
         return engine.moveThruChannel1(source, cid, qualifier);
     }
 
@@ -145,96 +146,96 @@ public class ModuleHandleImpl implements ModuleHandle {
     }
 
     @Override
-    public <S, R, Q> R mapOfMovingThruChannel1(S source, String cid, Q qualifier) {
+    public <S, R, Q> R mapOfMovingThruChannel1(S source, Rid cid, Q qualifier) {
         return engine.mapOfMovingThruChannel1(source, cid, qualifier);
     }
 
     @Override
-    public <S, T> Mapper0<S, T> autoMapperThruChannel0(Type<S> sourceType, String cid, ReflectionForm targetForm) {
+    public <S, T> Mapper0<S, T> autoMapperThruChannel0(Type<S> sourceType, Rid cid, ReflectionForm targetForm) {
         return engine.autoMapperThruChannel0(sourceType, cid, targetForm);
     }
 
     @Override
     public <S, T, Q> Mapper1<S, T, Q> autoMapperThruChannel1(
-        Type<S> sourceType, String cid, ReflectionForm targetForm
+        Type<S> sourceType, Rid cid, ReflectionForm targetForm
     ) {
         return engine.autoMapperThruChannel1(sourceType, cid, targetForm);
     }
 
     @Override
     public <S, T, Q1, Q2> Mapper2<S, T, Q1, Q2> autoMapperThruChannel2(
-        Type<S> sourceType, String cid, ReflectionForm targetForm
+        Type<S> sourceType, Rid cid, ReflectionForm targetForm
     ) {
         return engine.autoMapperThruChannel2(sourceType, cid, targetForm);
     }
 
     @Override
     public <S, T, Q1, Q2, Q3> Mapper3<S, T, Q1, Q2, Q3> autoMapperThruChannel3(
-        Type<S> sourceType, String cid, ReflectionForm targetForm
+        Type<S> sourceType, Rid cid, ReflectionForm targetForm
     ) {
         return engine.autoMapperThruChannel3(sourceType, cid, targetForm);
     }
 
     @Override
-    public <S> Mover0<S> autoMoverThruChannel0(Type<S> sourceType, String cid, ReflectionForm targetForm) {
+    public <S> Mover0<S> autoMoverThruChannel0(Type<S> sourceType, Rid cid, ReflectionForm targetForm) {
         return engine.autoMoverThruChannel0(sourceType, cid, targetForm);
     }
 
     @Override
-    public <S, Q> Mover1<S, Q> autoMoverThruChannel1(Class<S> sourceClass, String cid, ReflectionForm targetForm) {
+    public <S, Q> Mover1<S, Q> autoMoverThruChannel1(Class<S> sourceClass, Rid cid, ReflectionForm targetForm) {
         return engine.autoMoverThruChannel1(sourceClass, cid, targetForm);
     }
 
     @Override
-    public <S, Q> Mover1<S, Q> autoMoverThruChannel1(Type<S> sourceType, String cid, ReflectionForm targetForm) {
+    public <S, Q> Mover1<S, Q> autoMoverThruChannel1(Type<S> sourceType, Rid cid, ReflectionForm targetForm) {
         return engine.autoMoverThruChannel1(sourceType, cid, targetForm);
     }
 
     @Override
     public <S, Q1, Q2> Mover2<S, Q1, Q2> autoMoverThruChannel2(
-        Type<S> sourceType, String cid, ReflectionForm targetForm
+        Type<S> sourceType, Rid cid, ReflectionForm targetForm
     ) {
         return engine.autoMoverThruChannel2(sourceType, cid, targetForm);
     }
 
     @Override
     public <S, Q1, Q2, Q3> Mover3<S, Q1, Q2, Q3> autoMoverThruChannel3(
-        Type<S> sourceType, String cid, ReflectionForm targetForm
+        Type<S> sourceType, Rid cid, ReflectionForm targetForm
     ) {
         return engine.autoMoverThruChannel3(sourceType, cid, targetForm);
     }
 
     @Override
     public <S, T> MapperOfMoving0<S, T> autoMapperOfMovingThruChannel0(
-        Type<S> sourceType, String cid, ReflectionForm targetForm
+        Type<S> sourceType, Rid cid, ReflectionForm targetForm
     ) {
         return engine.autoMapperOfMovingThruChannel0(sourceType, cid, targetForm);
     }
 
     @Override
     public <S, T, Q> MapperOfMoving1<S, T, Q> autoMapperOfMovingThruChannel1(
-        Type<S> sourceType, String cid, ReflectionForm targetForm
+        Type<S> sourceType, Rid cid, ReflectionForm targetForm
     ) {
         return engine.autoMapperOfMovingThruChannel1(sourceType, cid, targetForm);
     }
 
     @Override
     public <S, T, Q1, Q2> MapperOfMoving2<S, T, Q1, Q2> autoMapperOfMovingThruChannel2(
-        Type<S> sourceType, String cid, ReflectionForm targetForm
+        Type<S> sourceType, Rid cid, ReflectionForm targetForm
     ) {
         return engine.autoMapperOfMovingThruChannel2(sourceType, cid, targetForm);
     }
 
     @Override
     public <S, T, Q1, Q2, Q3> MapperOfMoving3<S, T, Q1, Q2, Q3> autoMapperOfMovingThruChannel3(
-        Type<S> sourceType, String cid, ReflectionForm targetForm
+        Type<S> sourceType, Rid cid, ReflectionForm targetForm
     ) {
         return engine.autoMapperOfMovingThruChannel3(sourceType, cid, targetForm);
     }
 
     @Override
     public <S, T, Q1, Q2, Q3, Q4> MapperOfMoving4<S, T, Q1, Q2, Q3, Q4> autoMapperOfMovingThruChannel4(
-        Type<S> sourceType, String cid, ReflectionForm targetForm
+        Type<S> sourceType, Rid cid, ReflectionForm targetForm
     ) {
         return engine.autoMapperOfMovingThruChannel4(sourceType, cid, targetForm);
     }

@@ -1,5 +1,7 @@
 package tech.intellispaces.reflections.framework.settings;
 
+import tech.intellispaces.core.Rid;
+
 /**
  * The channel reference description.
  */
@@ -11,9 +13,9 @@ public interface ChannelReference {
   ChannelType type();
 
   /**
-   * The channel CID.
+   * The channel RID.
    */
-  String channelId();
+  Rid channelId();
 
   String alias();
 }

@@ -3,6 +3,7 @@ package tech.intellispaces.reflections.framework.system;
 import java.util.List;
 
 import tech.intellispaces.actions.Action;
+import tech.intellispaces.core.Rid;
 import tech.intellispaces.reflections.framework.guide.GuideKind;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 
@@ -53,7 +54,7 @@ public interface UnitMethod {
 
   GuideKind guideKind();
 
-  String guideChannelId();
+  Rid guideChannelId();
 
   ReflectionForm guideTargetForm();
 }

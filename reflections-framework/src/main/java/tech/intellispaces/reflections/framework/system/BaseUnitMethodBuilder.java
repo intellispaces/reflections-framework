@@ -3,6 +3,7 @@ package tech.intellispaces.reflections.framework.system;
 import java.util.List;
 
 import tech.intellispaces.actions.Action;
+import tech.intellispaces.core.Rid;
 import tech.intellispaces.reflections.framework.guide.GuideKind;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 
@@ -22,7 +23,7 @@ class BaseUnitMethodBuilder<B extends BaseUnitMethodBuilder<B>> {
   private boolean lazyLoading;
   private int guideOrdinal;
   private GuideKind guideKind;
-  private String guideCid;
+  private Rid guideCid;
   private ReflectionForm guideTargetForm;
 
   BaseUnitMethodBuilder(String name, List<Class<?>> paramClasses) {
@@ -103,7 +104,7 @@ class BaseUnitMethodBuilder<B extends BaseUnitMethodBuilder<B>> {
   }
 
   @SuppressWarnings("unchecked")
-  public B guideCid(String guideCid) {
+  public B guideCid(Rid guideCid) {
     this.guideCid = guideCid;
     return (B) this;
   }

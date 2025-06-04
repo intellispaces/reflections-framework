@@ -12,6 +12,7 @@ class OntologyReferenceImpl implements OntologyReference {
   private final List<ChannelReference> channels;
   private final Map<DomainType, DomainReference> domainIndexByType;
   private final Map<String, DomainReference> domainIndexByName;
+  private final Map<String, DomainReference> domainIndexByClassName;
   private final Map<String, DomainReference> domainIndexByDelegateClass;
   private final Map<ChannelType, ChannelReference> channelIndexByType;
 
@@ -19,8 +20,8 @@ class OntologyReferenceImpl implements OntologyReference {
     this.domains = domains;
     this.channels = channels;
     this.domainIndexByType = domains.stream().collect(Collectors.toMap(DomainReference::type, Function.identity()));
-    this.domainIndexByName = domains.stream().collect(Collectors.toMap(DomainReference::domainName, Function.identity())
-    );
+    this.domainIndexByName = domains.stream().collect(Collectors.toMap(DomainReference::domainName, Function.identity()));
+    this.domainIndexByClassName = domains.stream().collect(Collectors.toMap(DomainReference::classCanonicalName, Function.identity()));
     this.domainIndexByDelegateClass = domains.stream()
         .filter(d -> d.delegateClassName() != null)
         .collect(Collectors.toMap(DomainReference::delegateClassName, Function.identity())
@@ -56,6 +57,11 @@ class OntologyReferenceImpl implements OntologyReference {
   @Override
   public DomainReference getDomainByName(String domainName) {
     return domainIndexByName.get(domainName);
+  }
+
+  @Override
+  public DomainReference getDomainByClassName(String domainClassName) {
+    return domainIndexByClassName.get(domainClassName);
   }
 
   @Override

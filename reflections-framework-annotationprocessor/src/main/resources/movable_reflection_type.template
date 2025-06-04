@@ -34,7 +34,7 @@ public interface {{$generatedArtifactSimpleName}}{{$reflectionTypeParamsFull}} e
   }
 
   @Override
-  <Q> {{$generatedArtifactSimpleName}}{{$reflectionTypeParamsBrief}} moveThru(java.lang.String cid, Q qualifier) throws TraverseException;
+  <Q> {{$generatedArtifactSimpleName}}{{$reflectionTypeParamsBrief}} moveThru(Rid cid, Q qualifier) throws TraverseException;
 
 {{when $isAlias}}
   @Override
@@ -57,7 +57,7 @@ public interface {{$generatedArtifactSimpleName}}{{$reflectionTypeParamsFull}} e
   <Q> {{$generatedArtifactSimpleName}}{{$reflectionTypeParamsBrief}} moveThru(Class<? extends Channel1> channelClass, Q qualifier) throws TraverseException;
 
   @Override
-  <R, Q> R mapOfMovingThru(java.lang.String cid, Q qualifier) throws TraverseException;
+  <R, Q> R mapOfMovingThru(Rid cid, Q qualifier) throws TraverseException;
 
   @Override
   <R> R mapOfMovingThru(Class<? extends Channel0> channelClass) throws TraverseException;

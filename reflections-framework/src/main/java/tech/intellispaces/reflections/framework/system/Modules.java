@@ -1,7 +1,7 @@
 package tech.intellispaces.reflections.framework.system;
 
-import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import tech.intellispaces.core.Module;
 import tech.intellispaces.reflections.framework.engine.Engine;
@@ -21,34 +21,13 @@ public class Modules {
   /**
    * Loads a new system module.
    *
-   * @param moduleClass the module class.
    * @param args command line arguments.
-   * @return the created module.
-   */
-  public static ModuleHandle load(Class<?> moduleClass, String[] args) {
-    return load(List.of(moduleClass), args);
-  }
-
-  /**
-   * Loads a new system module.
-   *
    * @param unitClasses unit classes.
    * @return the created module.
    */
-  public static ModuleHandle load(Class<?>... unitClasses) {
-    return load(Arrays.stream(unitClasses).toList(), new String[0]);
-  }
-
-  /**
-   * Loads a new system module.
-   *
-   * @param unitClasses unit classes.
-   * @param args command line arguments.
-   * @return the created module.
-   */
-  public static ModuleHandle load(List<Class<?>> unitClasses, String[] args) {
+  public static ModuleHandle load(List<Class<?>> unitClasses, String[] args, Map<String, Object> engineAttributes) {
     synchronized (Modules.class) {
-      Engine engine = Engines.create(args);
+      Engine engine = Engines.create(args, engineAttributes);
       ModuleHandle module = createModule(unitClasses, engine);
       validateModule(module);
       moduleHolder().set(module);

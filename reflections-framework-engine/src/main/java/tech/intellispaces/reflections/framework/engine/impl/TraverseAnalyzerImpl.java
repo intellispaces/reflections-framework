@@ -8,6 +8,7 @@ import tech.intellispaces.commons.exception.NotImplementedExceptions;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.core.Channel;
 import tech.intellispaces.core.Domain;
+import tech.intellispaces.core.Rid;
 import tech.intellispaces.core.repository.SpaceRepository;
 import tech.intellispaces.reflections.framework.guide.Guide;
 import tech.intellispaces.reflections.framework.guide.GuideKind;
@@ -95,7 +96,7 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
 
   @Override
   public MapSpecifiedClassSourceThruIdentifiedChannel0TraversePlan buildMapThruChannel0TraversePlan(
-    Class<?> sourceClass, String cid, ReflectionForm targetForm
+      Class<?> sourceClass, Rid cid, ReflectionForm targetForm
   ) {
     var declarativePlan = new MapSpecifiedClassSourceThruIdentifiedChannel0TraversePlanImpl(sourceClass, cid);
     buildPreliminaryExecutionPlan(declarativePlan, sourceClass, targetForm);
@@ -104,7 +105,7 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
 
   @Override
   public MapSpecifiedClassSourceThruIdentifiedChannel1TraversePlan buildMapThruChannel1TraversePlan(
-    Class<?> sourceClass, String cid, ReflectionForm targetForm
+    Class<?> sourceClass, Rid cid, ReflectionForm targetForm
   ) {
     var declarativePlan = new MapSpecifiedClassSourceThruIdentifiedChannel1TraversePlanImpl(sourceClass, cid);
     buildPreliminaryExecutionPlan(declarativePlan, sourceClass, targetForm);
@@ -113,7 +114,7 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
 
   @Override
   public MapSpecifiedClassSourceThruIdentifiedChannel2TraversePlan buildMapThruChannel2TraversePlan(
-    Class<?> sourceClass, String cid, ReflectionForm targetForm
+    Class<?> sourceClass, Rid cid, ReflectionForm targetForm
   ) {
     var declarativePlan = new MapSpecifiedClassSourceThruIdentifiedChannel2TraversePlanImpl(sourceClass, cid);
     buildPreliminaryExecutionPlan(declarativePlan, sourceClass, targetForm);
@@ -122,7 +123,7 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
 
   @Override
   public MapSpecifiedClassSourceThruIdentifiedChannel3TraversePlan buildMapThruChannel3TraversePlan(
-    Class<?> sourceClass, String cid, ReflectionForm targetForm
+    Class<?> sourceClass, Rid cid, ReflectionForm targetForm
   ) {
     var declarativePlan = new MapSpecifiedClassSourceThruIdentifiedChannel3TraversePlanImpl(sourceClass, cid);
     buildPreliminaryExecutionPlan(declarativePlan, sourceClass, targetForm);
@@ -131,7 +132,7 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
 
   @Override
   public MoveSpecifiedClassSourceThruIdentifiedChannel0TraversePlan buildMoveThruChannel0TraversePlan(
-    Class<?> sourceClass, String cid, ReflectionForm targetForm
+    Class<?> sourceClass, Rid cid, ReflectionForm targetForm
   ) {
     var declarativePlan = new MoveSpecifiedClassSourceThruIdentifiedChannel0TraversePlanImpl(sourceClass, cid);
     buildPreliminaryExecutionPlan(declarativePlan, sourceClass, targetForm);
@@ -140,7 +141,7 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
 
   @Override
   public MoveSpecifiedClassSourceThruIdentifiedChannel1TraversePlan buildMoveThruChannel1TraversePlan(
-    Class<?> sourceClass, String cid, ReflectionForm targetForm
+    Class<?> sourceClass, Rid cid, ReflectionForm targetForm
   ) {
     var declarativePlan = new MoveSpecifiedClassSourceThruIdentifiedChannel1TraversePlanImpl(sourceClass, cid);
     buildPreliminaryExecutionPlan(declarativePlan, sourceClass, targetForm);
@@ -149,7 +150,7 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
 
   @Override
   public MoveSpecifiedClassSourceThruIdentifiedChannel2TraversePlan buildMoveThruChannel2TraversePlan(
-    Class<?> sourceClass, String cid, ReflectionForm targetForm
+    Class<?> sourceClass, Rid cid, ReflectionForm targetForm
   ) {
     var declarativePlan = new MoveSpecifiedClassSourceThruIdentifiedChannel2TraversePlanImpl(sourceClass, cid);
     buildPreliminaryExecutionPlan(declarativePlan, sourceClass, targetForm);
@@ -158,7 +159,7 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
 
   @Override
   public MoveSpecifiedClassSourceThruIdentifiedChannel3TraversePlan buildMoveThruChannel3TraversePlan(
-    Class<?> sourceClass, String cid, ReflectionForm targetForm
+    Class<?> sourceClass, Rid cid, ReflectionForm targetForm
   ) {
     var declarativePlan = new MoveSpecifiedClassSourceThruIdentifiedChannel3TraversePlanImpl(sourceClass, cid);
     buildPreliminaryExecutionPlan(declarativePlan, sourceClass, targetForm);
@@ -167,7 +168,7 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
 
   @Override
   public MapOfMovingSpecifiedClassSourceThruIdentifiedChannel0Plan buildMapOfMovingThruChannel0TraversePlan(
-      Class<?> sourceClass, String cid, ReflectionForm targetForm
+      Class<?> sourceClass, Rid cid, ReflectionForm targetForm
   ) {
     var declarativePlan = new MapOfMovingSpecifiedClassSourceThruIdentifiedChannel0PlanImpl(sourceClass, cid);
     buildPreliminaryExecutionPlan(declarativePlan, sourceClass, targetForm);
@@ -176,7 +177,7 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
 
   @Override
   public MapOfMovingSpecifiedClassSourceThruIdentifiedChannel1TraversePlan buildMapOfMovingThruChannel1TraversePlan(
-      Class<?> sourceClass, String cid, ReflectionForm targetForm
+      Class<?> sourceClass, Rid cid, ReflectionForm targetForm
   ) {
     var declarativePlan = new MapOfMovingSpecifiedClassSourceThruIdentifiedChannel1TraversePlanImpl(sourceClass, cid);
     buildPreliminaryExecutionPlan(declarativePlan, sourceClass, targetForm);
@@ -185,7 +186,7 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
 
   @Override
   public MapOfMovingSpecifiedClassSourceThruIdentifiedChannel2TraversePlan buildMapOfMovingThruChannel2TraversePlan(
-      Class<?> sourceClass, String cid, ReflectionForm targetForm
+      Class<?> sourceClass, Rid cid, ReflectionForm targetForm
   ) {
     var declarativePlan = new MapOfMovingSpecifiedClassSourceThruIdentifiedChannel2TraversePlanImpl(sourceClass, cid);
     buildPreliminaryExecutionPlan(declarativePlan, sourceClass, targetForm);
@@ -194,7 +195,7 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
 
   @Override
   public MapOfMovingSpecifiedClassSourceThruIdentifiedChannel3TraversePlan buildMapOfMovingThruChannel3TraversePlan(
-      Class<?> sourceClass, String cid, ReflectionForm targetForm
+      Class<?> sourceClass, Rid cid, ReflectionForm targetForm
   ) {
     var declarativePlan = new MapOfMovingSpecifiedClassSourceThruIdentifiedChannel3TraversePlanImpl(sourceClass, cid);
     buildPreliminaryExecutionPlan(declarativePlan, sourceClass, targetForm);
@@ -203,7 +204,7 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
 
   @Override
   public MapOfMovingSpecifiedClassSourceThruIdentifiedChannel4TraversePlan buildMapOfMovingThruChannel4TraversePlan(
-      Class<?> sourceClass, String cid, ReflectionForm targetForm
+      Class<?> sourceClass, Rid cid, ReflectionForm targetForm
   ) {
     var declarativePlan = new MapOfMovingSpecifiedClassSourceThruIdentifiedChannel4TraversePlanImpl(sourceClass, cid);
     buildPreliminaryExecutionPlan(declarativePlan, sourceClass, targetForm);
@@ -248,7 +249,7 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
     }
 
     TraversePlanType planType = plan.type();
-    String cid = plan.channelId();
+    Rid cid = plan.channelId();
 
     if (!ReflectionFunctions.isObjectFormClass(sourceClass)) {
       throw UnexpectedExceptions.withMessage("Traverse plan of type {0} expected any object form to input", planType);
@@ -294,7 +295,7 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
 
         reflectionClass = ReflectionFunctions.getReflectionClass(sourceClass);
         Class<?> domainClass = ReflectionFunctions.getReflectionDomainClass(reflectionClass);
-        String originCid = ChannelFunctions.getOriginDomainChannelId(domainClass, cid);
+        Rid originCid = ChannelFunctions.getOriginDomainChannelId(domainClass, cid);
         if (originCid != null) {
           executionPlan = buildExecutionTraversePlan(planType, originCid, sourceClass, targetForm);
           if (executionPlan != null) {
@@ -316,13 +317,13 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
       return null;
     }
     ExecutionTraversePlan executionPlan = buildExecutionTraversePlan(
-        plan.type(), channel.rid().toString(), plan.source(), ReflectionForms.Reflection
+        plan.type(), channel.rid(), plan.source(), ReflectionForms.Reflection
     );
     if (executionPlan == null) {
       tech.intellispaces.core.Reflection registeredReflection = reflectionRegistry.get(plan.source().rid());
       if (registeredReflection != null) {
         executionPlan = buildExecutionTraversePlan(
-            plan.type(), channel.rid().toString(), registeredReflection, ReflectionForms.Reflection
+            plan.type(), channel.rid(), registeredReflection, ReflectionForms.Reflection
         );
         if (executionPlan != null) {
           var replaceSourcePlan = new MapSpecifiedSourceToSpecifiedTargetDomainAndClassTraversePlanImpl(
@@ -340,7 +341,7 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
 
   private ExecutionTraversePlan buildExecutionTraversePlan(
       TraversePlanType planType,
-      String cid,
+      Rid cid,
       Class<?> sourceClass,
       ReflectionForm targetForm
   ) {
@@ -366,7 +367,7 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
 
   private ExecutionTraversePlan buildExecutionTraversePlan(
       TraversePlanType planType,
-      String cid,
+      Rid cid,
       tech.intellispaces.core.Reflection source,
       ReflectionForm targetForm
   ) {
@@ -392,14 +393,14 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
 
   private List<Guide<?, ?>> findGuides(
       GuideKind guideKind,
-      String cid,
+      Rid cid,
       Class<?> sourceClass,
       ReflectionForm targetForm
   ) {
     List<Guide<?, ?>> guides = guideProvider.findGuides(cid, guideKind, sourceClass, targetForm);
     if (guides.isEmpty()) {
       Class<?> domainClass = ReflectionFunctions.getReflectionDomainClass(sourceClass);
-      String originDomainChannelId = ChannelFunctions.getOriginDomainChannelId(domainClass, cid);
+      Rid originDomainChannelId = ChannelFunctions.getOriginDomainChannelId(domainClass, cid);
       if (originDomainChannelId != null) {
         guides = guideProvider.findGuides(originDomainChannelId, guideKind, sourceClass, targetForm);
       }
@@ -409,7 +410,7 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
 
   private List<Guide<?, ?>> findGuides(
       GuideKind guideKind,
-      String cid,
+      Rid cid,
       tech.intellispaces.core.Reflection source,
       ReflectionForm targetForm
   ) {

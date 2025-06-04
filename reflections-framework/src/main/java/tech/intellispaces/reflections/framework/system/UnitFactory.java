@@ -7,6 +7,7 @@ import java.util.List;
 import tech.intellispaces.actions.Action;
 import tech.intellispaces.commons.exception.NotImplementedExceptions;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
+import tech.intellispaces.core.Rid;
 import tech.intellispaces.javareflection.method.MethodStatement;
 import tech.intellispaces.javareflection.method.Methods;
 import tech.intellispaces.reflections.framework.action.InvokeUnitMethodAction;
@@ -250,7 +251,7 @@ class UnitFactory {
   static UnitGuide<?, ?> createMapper(
       UnitWrapper unitInstance, Class<?> unitClass, UnitMethod unitMethod
   ) {
-    String cid = unitMethod.guideChannelId();
+    Rid cid = unitMethod.guideChannelId();
     int guideOrdinal = unitMethod.guideOrdinal();
     Class<?> sourceClass = unitMethod.paramClasses().get(0);
     int qualifiersCount = unitMethod.paramClasses().size() - 1;
@@ -269,14 +270,14 @@ class UnitFactory {
   static UnitGuide<?, ?> createMover(
       UnitWrapper unitInstance, Class<?> unitClass, UnitMethod unitMethod
   ) {
-    String cid = unitMethod.guideChannelId();
+    Rid cid = unitMethod.guideChannelId();
     throw NotImplementedExceptions.withCode("4GL2+g");
   }
 
   static UnitGuide<?, ?> createUnitMapperOfMoving(
       UnitWrapper unitInstance, Class<?> unitClass, UnitMethod unitMethod
   ) {
-    String cid = unitMethod.guideChannelId();
+    Rid cid = unitMethod.guideChannelId();
     int guideOrdinal = unitMethod.guideOrdinal();
     Class<?> sourceClass = unitMethod.paramClasses().get(0);
     int qualifiersCount = unitMethod.paramClasses().size() - 1;

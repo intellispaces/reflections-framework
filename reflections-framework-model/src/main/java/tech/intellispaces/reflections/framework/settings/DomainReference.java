@@ -16,6 +16,11 @@ public interface DomainReference {
   String domainName();
 
   /**
+   * The domain class canonical name.
+   */
+  String classCanonicalName();
+
+  /**
    * The delegate class canonical name.
    */
   String delegateClassName();

@@ -3,6 +3,7 @@ package tech.intellispaces.reflections.framework.system;
 import java.util.List;
 
 import tech.intellispaces.actions.Action;
+import tech.intellispaces.core.Rid;
 import tech.intellispaces.reflections.framework.guide.GuideKind;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 
@@ -22,7 +23,7 @@ class UnitMethodImpl implements UnitMethod {
   private final boolean lazyLoading;
   private final int guideOrdinal;
   private final GuideKind guideKind;
-  private final String guideCid;
+  private final Rid guideCid;
   private final ReflectionForm guideTargetForm;
 
   UnitMethodImpl(
@@ -41,7 +42,7 @@ class UnitMethodImpl implements UnitMethod {
       boolean lazyLoading,
       int guideOrdinal,
       GuideKind guideKind,
-      String guideCid,
+      Rid guideCid,
       ReflectionForm guideTargetForm
   ) {
     this.name = name;
@@ -142,7 +143,7 @@ class UnitMethodImpl implements UnitMethod {
   }
 
   @Override
-  public String guideChannelId() {
+  public Rid guideChannelId() {
     return guideCid;
   }
 

@@ -10,6 +10,8 @@ import java.util.Optional;
 import tech.intellispaces.commons.exception.NotImplementedExceptions;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.commons.type.ClassFunctions;
+import tech.intellispaces.core.Rid;
+import tech.intellispaces.core.Rids;
 import tech.intellispaces.javareflection.customtype.Classes;
 import tech.intellispaces.javareflection.customtype.CustomType;
 import tech.intellispaces.javareflection.customtype.CustomTypes;
@@ -186,7 +188,7 @@ public final class GuideFunctions {
     return ChannelFunctions.findObjectGuideChannelAnnotation(reflectionMethod);
   }
 
-  public static String getUnitGuideCid(Object unit, MethodStatement guideMethod) {
+  public static Rid getUnitGuideCid(Object unit, MethodStatement guideMethod) {
     return ChannelFunctions.getUnitGuideChannelId(unit, guideMethod);
   }
 
@@ -198,11 +200,11 @@ public final class GuideFunctions {
         Channel channel = findObjectChannelAnnotation(method);
         TraverseType traverseType = ChannelFunctions.getTraverseType(channel);
         if (TraverseTypes.Mapping.is(traverseType)) {
-          guides.add(createObjectMapper(reflectionClass, channel.value(), method));
+          guides.add(createObjectMapper(reflectionClass, Rids.create(channel.value()), method));
         } else if (TraverseTypes.Moving.is(traverseType)) {
-          guides.add(createObjectMover(reflectionClass, channel.value(), method));
+          guides.add(createObjectMover(reflectionClass, Rids.create(channel.value()), method));
         } else if (TraverseTypes.MappingOfMoving.is(traverseType)) {
-          guides.add(createObjectMapperOfMoving(reflectionClass, channel.value(), method));
+          guides.add(createObjectMapperOfMoving(reflectionClass, Rids.create(channel.value()), method));
         }
       }
     }
@@ -226,7 +228,7 @@ public final class GuideFunctions {
 
     for (MethodStatement method : domainType.declaredMethods()) {
       if (NameConventionFunctions.isConversionMethod(method)) {
-        String cid = method.selectAnnotation(Channel.class).orElseThrow().value();
+        Rid cid = Rids.create(method.selectAnnotation(Channel.class).orElseThrow().value());
 
         Optional<MethodStatement> wrapperMethod = reflectionWrapperType.declaredMethod(method.name(), List.of());
         int channelOrdinal = wrapperMethod.orElseThrow().selectAnnotation(Ordinal.class).orElseThrow().value();
@@ -253,7 +255,7 @@ public final class GuideFunctions {
 
   @SuppressWarnings("unchecked, rawtypes")
   private static <S, T> Guide<S, T> createObjectMapper(
-      Class<S> reflectionClass, String cid, MethodStatement guideMethod
+      Class<S> reflectionClass, Rid cid, MethodStatement guideMethod
   ) {
     ReflectionForm targetForm = getTargetForm(guideMethod);
     int channelOrdinal = getChannelOrdinal(reflectionClass, guideMethod);
@@ -270,7 +272,7 @@ public final class GuideFunctions {
 
   @SuppressWarnings("unchecked, rawtypes")
   private static <S, T> Guide<S, T> createObjectMover(
-      Class<S> reflectionClass, String cid, MethodStatement guideMethod
+      Class<S> reflectionClass, Rid cid, MethodStatement guideMethod
   ) {
     ReflectionForm targetForm = getTargetForm(guideMethod);
     int channelOrdinal = getChannelOrdinal(reflectionClass, guideMethod);
@@ -287,7 +289,7 @@ public final class GuideFunctions {
 
   @SuppressWarnings("unchecked, rawtypes")
   private static <S, T> Guide<S, T> createObjectMapperOfMoving(
-      Class<S> reflectionClass, String cid, MethodStatement guideMethod
+      Class<S> reflectionClass, Rid cid, MethodStatement guideMethod
   ) {
     ReflectionForm targetForm = getTargetForm(guideMethod);
     int channelOrdinal = getChannelOrdinal(reflectionClass, guideMethod);

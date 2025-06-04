@@ -1,6 +1,7 @@
 package tech.intellispaces.reflections.framework.engine;
 
 import java.util.List;
+import java.util.Map;
 import java.util.ServiceLoader;
 import java.util.stream.Collectors;
 
@@ -12,10 +13,11 @@ public class Engines {
    * Creates new engine.
    *
    * @param args command line arguments.
+   * @param engineAttributes engine attributes.
    * @return created engine.
    */
-  public static Engine create(String[] args) {
-    return findFactory().create(args);
+  public static Engine create(String[] args, Map<String, Object> engineAttributes) {
+    return findFactory().create(args, engineAttributes);
   }
 
   static EngineFactory findFactory() {

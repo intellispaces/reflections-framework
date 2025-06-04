@@ -11,6 +11,7 @@ import tech.intellispaces.actions.runnable.RunnableAction;
 import tech.intellispaces.actions.text.StringActions;
 import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
+import tech.intellispaces.core.Rids;
 import tech.intellispaces.javareflection.customtype.CustomType;
 import tech.intellispaces.javareflection.instance.AnnotationInstance;
 import tech.intellispaces.javareflection.instance.ClassInstance;
@@ -81,6 +82,7 @@ public class UnitWrapperGenerator extends ReflectionsArtifactGenerator {
       addImport(sourceArtifactName());
     }
     addImports(
+        Rids.class,
         Wrapper.class,
         Ordinal.class,
         UnitWrapper.class,
@@ -273,7 +275,7 @@ public class UnitWrapperGenerator extends ReflectionsArtifactGenerator {
 
     map.put("guideOrdinal", guideOrdinal);
     map.put("guideKind", GuideFunctions.getGuideKind(method).name());
-    map.put("guideCid", ChannelFunctions.getUnitGuideChannelId(method));
+    map.put("guideCid", ChannelFunctions.getUnitGuideChannelId(method).toString());
     map.put("guideTargetForm", GuideFunctions.getTargetForm(method).name());
     return map;
   }

@@ -11,6 +11,8 @@ import tech.intellispaces.commons.exception.NotImplementedExceptions;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.commons.text.StringFunctions;
 import tech.intellispaces.commons.type.Type;
+import tech.intellispaces.core.Rid;
+import tech.intellispaces.core.Rids;
 import tech.intellispaces.core.id.IdentifierFunctions;
 import tech.intellispaces.javareflection.customtype.CustomType;
 import tech.intellispaces.javareflection.customtype.CustomTypes;
@@ -73,54 +75,54 @@ public interface ChannelFunctions {
     return method.hasAnnotation(Channel.class);
   }
 
-  static String getChannelId(MethodStatement channelMethod) {
-    return channelMethod.selectAnnotation(Channel.class).orElseThrow().value();
+  static Rid getChannelId(MethodStatement channelMethod) {
+    return Rids.create(channelMethod.selectAnnotation(Channel.class).orElseThrow().value());
   }
 
-  static String getChannelId(Class<?> channelClass) {
+  static Rid getChannelId(Class<?> channelClass) {
     Channel channel = channelClass.getAnnotation(Channel.class);
     if (channel == null) {
       throw UnexpectedExceptions.withMessage("Class {0} does not contain annotation {1}",
           channelClass.getCanonicalName(), Channel.class.getSimpleName());
     }
-    return channel.value();
+    return Rids.create(channel.value());
   }
 
-  static <S, R> String getChannelId(Class<S> domain, ChannelFunction0<? super S, R> channelFunction) {
+  static <S, R> Rid getChannelId(Class<S> domain, ChannelFunction0<? super S, R> channelFunction) {
     return findChannelId(domain, channelFunction, channelFunction::traverse);
   }
 
-  static <S, R, Q> String getChannelId(
+  static <S, R, Q> Rid getChannelId(
       Class<S> domain, ChannelFunction1<? super S, R, Q> channelFunction, Q qualifierAnyValidValue
   ) {
     return findChannelId(domain, channelFunction,
         (trackedObject) -> channelFunction.traverse(trackedObject, qualifierAnyValidValue));
   }
 
-  static <S, R, Q> String getChannelId(
+  static <S, R, Q> Rid getChannelId(
       Type<S> domain, ChannelFunction1<? super S, R, Q> channelFunction, Q qualifierAnyValidValue
   ) {
     return findChannelId(domain, channelFunction,
         (trackedObject) -> channelFunction.traverse(trackedObject, qualifierAnyValidValue));
   }
 
-  static String getOriginDomainChannelId(Class<?> domainClass, String cid) {
+  static Rid getOriginDomainChannelId(Class<?> domainClass, Rid cid) {
     CustomType domainType = CustomTypes.of(domainClass);
     return getOriginDomainChannelId(domainType, domainType, cid);
   }
 
-  private static String getOriginDomainChannelId(CustomType originDomain, CustomType domain, String cid) {
+  private static Rid getOriginDomainChannelId(CustomType originDomain, CustomType domain, Rid cid) {
     for (CustomTypeReference parentDomain : domain.parentTypes()) {
       for (MethodStatement method : parentDomain.targetType().declaredMethods()) {
         if (method.hasAnnotation(Channel.class)) {
-          String curCid = method.selectAnnotation(Channel.class).orElseThrow().value();
+          Rid curCid = Rids.create(method.selectAnnotation(Channel.class).orElseThrow().value());
           if (cid.equals(curCid)) {
             Optional<MethodStatement> originDomainMethod = originDomain.declaredMethod(
                 method.name(), method.parameterTypes());
             if (originDomainMethod.isPresent()) {
               Optional<Channel> originChannelAnnotation = originDomainMethod.orElseThrow().selectAnnotation(Channel.class);
               if (originChannelAnnotation.isPresent()) {
-                return originChannelAnnotation.get().value();
+                return Rids.create(originChannelAnnotation.get().value());
               }
             }
           }
@@ -128,7 +130,7 @@ public interface ChannelFunctions {
       }
     }
     for (CustomTypeReference parentDomain : domain.parentTypes()) {
-      String originCid = getOriginDomainChannelId(originDomain, parentDomain.targetType(), cid);
+      Rid originCid = getOriginDomainChannelId(originDomain, parentDomain.targetType(), cid);
       if (originCid != null) {
         return originCid;
       }
@@ -142,7 +144,7 @@ public interface ChannelFunctions {
     );
   }
 
-  private static <S> String findChannelId(
+  private static <S> Rid findChannelId(
       Class<S> sourceDomain, Object channelFunction, Consumer<S> trackedObjectProcessor
   ) {
     Tracker tracker = Trackers.get();
@@ -153,7 +155,7 @@ public interface ChannelFunctions {
   }
 
   @SuppressWarnings("unchecked")
-  private static <S> String findChannelId(
+  private static <S> Rid findChannelId(
       Type<S> sourceDomainType, Object channelFunction, Consumer<S> trackedObjectProcessor
   ) {
     Class<S> sourceDomainClass = (Class<S>) sourceDomainType.asClassType().baseClass();;
@@ -168,8 +170,8 @@ public interface ChannelFunctions {
             "in class {0}", channelType.canonicalName()));
   }
 
-  static String getUnitGuideChannelId(MethodStatement guideMethod) {
-    String cid = guideMethod.selectAnnotation(Mapper.class.getCanonicalName())
+  static Rid getUnitGuideChannelId(MethodStatement guideMethod) {
+    Rid cid = guideMethod.selectAnnotation(Mapper.class.getCanonicalName())
         .map(ChannelFunctions::extractChannelId)
         .orElse(null);
     if (cid != null) {
@@ -233,11 +235,11 @@ public interface ChannelFunctions {
       throw UnexpectedExceptions.withMessage("Could not get unit guide annotation @Channel. Unit {0}, " +
               "guide method '{1}'", guideMethod.owner().canonicalName(), guideMethod.name());
     }
-    return channel.value();
+    return Rids.create(channel.value());
   }
 
-  static String getUnitGuideChannelId(Object unit, MethodStatement guideMethod) {
-    String cid = getUnitGuideChannelId(guideMethod);
+  static Rid getUnitGuideChannelId(Object unit, MethodStatement guideMethod) {
+    Rid cid = getUnitGuideChannelId(guideMethod);
     if (cid != null) {
       return cid;
     }
@@ -249,7 +251,7 @@ public interface ChannelFunctions {
     throw UnexpectedExceptions.withMessage("Could not define guide channel ID");
   }
 
-  private static String extractChannelId(AnnotationInstance annotation) {
+  private static Rid extractChannelId(AnnotationInstance annotation) {
     Optional<Instance> value = annotation.value();
     if (value.isEmpty()) {
       return null;
@@ -262,7 +264,7 @@ public interface ChannelFunctions {
         .selectAnnotation(Channel.class.getCanonicalName())
         .orElseThrow();
     Optional<Instance> cid = channelAnnotation.value();
-    return cid.map(instance -> instance.asString().orElseThrow().value()).orElse(null);
+    return cid.map(instance -> Rids.create(instance.asString().orElseThrow().value())).orElse(null);
   }
 
   private static Channel findOverrideChannelRecursive(MethodStatement guideMethod, CustomType aClass) {
@@ -375,7 +377,7 @@ public interface ChannelFunctions {
     return findReflectionMethodChannelAnnotation(reflectionMethod);
   }
 
-  private static String extractChannelId(
+  private static Rid extractChannelId(
       List<Method> trackedMethods, Class<?> sourceDomain, Object channelMethod
   ) {
     if (trackedMethods.isEmpty()) {
@@ -392,7 +394,7 @@ public interface ChannelFunctions {
       throw UnexpectedExceptions.withMessage("Method '{0}' of the domain class {1} hasn't annotation {2}",
           channelMethod, sourceDomain.getCanonicalName(), Channel.class.getCanonicalName());
     }
-    return ta.value();
+    return Rids.create(ta.value());
   }
 
   static Class<?> getChannelClass(int qualifierCount) {

@@ -1,5 +1,6 @@
 package tech.intellispaces.reflections.framework.guide.n3;
 
+import tech.intellispaces.core.Rid;
 import tech.intellispaces.reflections.framework.exception.TraverseException;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 import tech.intellispaces.reflections.framework.system.TraverseExecutor;
@@ -15,14 +16,14 @@ import tech.intellispaces.reflections.framework.traverse.plan.TraversePlan;
  * @param <Q2> the second qualifier reflection type.
  */
 public class AutoMover3<S, Q1, Q2, Q3> implements AbstractMover3<S, Q1, Q2, Q3> {
-  private final String cid;
+  private final Rid cid;
   private final TraversePlan traversePlan;
   private final Class<S> sourceClass;
   private final ReflectionForm targetForm;
   private final TraverseExecutor traverseExecutor;
 
   public AutoMover3(
-      String cid,
+      Rid cid,
       TraversePlan traversePlan,
       Class<S> sourceClass,
       ReflectionForm targetForm,
@@ -36,7 +37,7 @@ public class AutoMover3<S, Q1, Q2, Q3> implements AbstractMover3<S, Q1, Q2, Q3> 
   }
 
   @Override
-  public String channelId() {
+  public Rid channelId() {
     return cid;
   }
 

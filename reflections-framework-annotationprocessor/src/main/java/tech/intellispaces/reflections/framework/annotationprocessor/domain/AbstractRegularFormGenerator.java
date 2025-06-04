@@ -11,7 +11,7 @@ public abstract class AbstractRegularFormGenerator extends AbstractReflectionFor
 
   protected String getGeneralRegularFormClassName() {
     return addImportAndGetSimpleName(
-        NameConventionFunctions.getGeneralRegularFormClassname(sourceArtifact().className(), false)
+        NameConventionFunctions.getGeneralRegularFormClassName(sourceArtifact().className(), false)
     );
   }
 }

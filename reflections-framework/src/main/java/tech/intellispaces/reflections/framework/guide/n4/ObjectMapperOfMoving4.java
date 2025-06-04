@@ -1,5 +1,6 @@
 package tech.intellispaces.reflections.framework.guide.n4;
 
+import tech.intellispaces.core.Rid;
 import tech.intellispaces.javareflection.method.MethodStatement;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 import tech.intellispaces.reflections.framework.system.ReflectionWrapper;
@@ -20,7 +21,7 @@ public class ObjectMapperOfMoving4<S extends ReflectionWrapper, T, Q1, Q2, Q3, Q
     implements AbstractMapperOfMoving4<S, T, Q1, Q2, Q3, Q4>
 {
   public ObjectMapperOfMoving4(
-      String cid,
+      Rid cid,
       Class<S> reflectionClass,
       MethodStatement guideMethod,
       int traverseOrdinal,

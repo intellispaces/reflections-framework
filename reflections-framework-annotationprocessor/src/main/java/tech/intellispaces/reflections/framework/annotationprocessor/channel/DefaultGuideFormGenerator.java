@@ -12,6 +12,7 @@ import tech.intellispaces.commons.type.ClassFunctions;
 import tech.intellispaces.commons.type.ClassNameFunctions;
 import tech.intellispaces.commons.type.PrimitiveFunctions;
 import tech.intellispaces.commons.type.PrimitiveTypes;
+import tech.intellispaces.core.Rid;
 import tech.intellispaces.javareflection.customtype.CustomType;
 import tech.intellispaces.javareflection.method.MethodParam;
 import tech.intellispaces.javareflection.method.MethodStatement;
@@ -97,6 +98,7 @@ public class DefaultGuideFormGenerator extends ReflectionsArtifactGenerator {
       addImport(sourceArtifact().canonicalName());
     }
     addImports(
+        Rid.class,
         Guide.class,
         Objects.class,
         ChannelFunctions.class,

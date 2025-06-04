@@ -28,6 +28,7 @@ import tech.intellispaces.commons.properties.PropertiesSet;
 import tech.intellispaces.commons.resource.ResourceFunctions;
 import tech.intellispaces.commons.type.Classes;
 import tech.intellispaces.commons.type.Type;
+import tech.intellispaces.core.Domain;
 import tech.intellispaces.core.Reflection;
 import tech.intellispaces.reflections.framework.exception.ConfigurationExceptions;
 import tech.intellispaces.reflections.framework.factory.FactoryFunctions;
@@ -41,12 +42,11 @@ public class LocalFactoryRegistry implements FactoryRegistry {
 
   @Override
   public <R extends Reflection> Action1<R, PropertiesSet> factoryAction(
-      Class<?> targetDomainClass, String contractType
+      Domain targetDomain, String contractType
   ) {
-    List<FactoryMethod> descriptions = domainToDescriptions.get(targetDomainClass);
+    List<FactoryMethod> descriptions = domainToDescriptions.get(targetDomain);
     if (descriptions == null) {
-      throw ConfigurationExceptions.withMessage("No factory for domain {0} were found",
-          targetDomainClass.getCanonicalName());
+      throw ConfigurationExceptions.withMessage("No factory for domain {0} were found", targetDomain);
     }
     for (FactoryMethod description : descriptions) {
       if (description.contractType().equals(contractType)) {

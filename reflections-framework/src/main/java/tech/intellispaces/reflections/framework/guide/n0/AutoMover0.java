@@ -1,5 +1,6 @@
 package tech.intellispaces.reflections.framework.guide.n0;
 
+import tech.intellispaces.core.Rid;
 import tech.intellispaces.reflections.framework.exception.TraverseException;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 import tech.intellispaces.reflections.framework.system.TraverseExecutor;
@@ -13,14 +14,14 @@ import tech.intellispaces.reflections.framework.traverse.plan.TraversePlan;
  * @param <S> the source reflection type.
  */
 public class AutoMover0<S> implements AbstractMover0<S> {
-  private final String cid;
+  private final Rid cid;
   private final TraversePlan traversePlan;
   private final Class<S> sourceClass;
   private final ReflectionForm targetForm;
   private final TraverseExecutor traverseExecutor;
 
   public AutoMover0(
-      String cid,
+      Rid cid,
       TraversePlan traversePlan,
       Class<S> sourceClass,
       ReflectionForm targetForm,
@@ -34,7 +35,7 @@ public class AutoMover0<S> implements AbstractMover0<S> {
   }
 
   @Override
-  public String channelId() {
+  public Rid channelId() {
     return cid;
   }
 

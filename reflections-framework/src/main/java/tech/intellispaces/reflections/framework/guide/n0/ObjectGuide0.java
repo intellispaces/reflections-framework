@@ -3,6 +3,7 @@ package tech.intellispaces.reflections.framework.guide.n0;
 import java.util.stream.Collectors;
 
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
+import tech.intellispaces.core.Rid;
 import tech.intellispaces.javareflection.method.MethodParam;
 import tech.intellispaces.javareflection.method.MethodStatement;
 import tech.intellispaces.reflections.framework.exception.TraverseException;
@@ -13,13 +14,13 @@ import tech.intellispaces.reflections.framework.system.ReflectionWrapper;
 
 abstract class ObjectGuide0<S extends ReflectionWrapper, R> implements Guide0<S, R> {
   private final Class<S> reflectionClass;
-  private final String cid;
+  private final Rid cid;
   private final ReflectionForm targetForm;
   private final MethodStatement guideMethod;
   private final int traverseOrdinal;
 
   ObjectGuide0(
-    String cid,
+      Rid cid,
     Class<S> reflectionClass,
     ReflectionForm targetForm,
     MethodStatement guideMethod,
@@ -36,7 +37,7 @@ abstract class ObjectGuide0<S extends ReflectionWrapper, R> implements Guide0<S,
   }
 
   @Override
-  public String channelId() {
+  public Rid channelId() {
     return cid;
   }
 

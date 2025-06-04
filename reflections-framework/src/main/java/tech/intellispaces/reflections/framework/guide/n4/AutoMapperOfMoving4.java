@@ -1,5 +1,6 @@
 package tech.intellispaces.reflections.framework.guide.n4;
 
+import tech.intellispaces.core.Rid;
 import tech.intellispaces.reflections.framework.exception.TraverseException;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 import tech.intellispaces.reflections.framework.system.TraverseExecutor;
@@ -18,14 +19,14 @@ import tech.intellispaces.reflections.framework.traverse.plan.TraversePlan;
  * @param <Q4> the third qualifier reflection type.
  */
 public class AutoMapperOfMoving4<S, T, Q1, Q2,  Q3, Q4> implements AbstractMapperOfMoving4<S, T, Q1, Q2, Q3, Q4> {
-  private final String cid;
+  private final Rid cid;
   private final TraversePlan traversePlan;
   private final Class<S> sourceClass;
   private final ReflectionForm targetForm;
   private final TraverseExecutor traverseExecutor;
 
   public AutoMapperOfMoving4(
-      String cid,
+      Rid cid,
       TraversePlan traversePlan,
       Class<S> sourceClass,
       ReflectionForm targetForm,
@@ -39,7 +40,7 @@ public class AutoMapperOfMoving4<S, T, Q1, Q2,  Q3, Q4> implements AbstractMappe
   }
 
   @Override
-  public String channelId() {
+  public Rid channelId() {
     return cid;
   }
 

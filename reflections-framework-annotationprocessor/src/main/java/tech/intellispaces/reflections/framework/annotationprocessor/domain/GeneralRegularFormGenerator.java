@@ -58,7 +58,7 @@ public class GeneralRegularFormGenerator extends AbstractRegularFormGenerator {
 
   @Override
   public String generatedArtifactName() {
-    return NameConventionFunctions.getGeneralRegularFormClassname(sourceArtifact().className(), false);
+    return NameConventionFunctions.getGeneralRegularFormClassName(sourceArtifact().className(), false);
   }
 
   @Override

@@ -13,6 +13,7 @@ import tech.intellispaces.actions.Action8;
 import tech.intellispaces.actions.Action9;
 import tech.intellispaces.commons.properties.PropertiesSet;
 import tech.intellispaces.commons.type.Type;
+import tech.intellispaces.core.Domain;
 import tech.intellispaces.core.Reflection;
 
 public interface FactoryRegistry {
@@ -22,13 +23,13 @@ public interface FactoryRegistry {
    * <p>
    * If several factories are found, any one of them is returned.
    *
-   * @param targetDomainClass the required target domain class.
+   * @param targetDomain the required target domain.
    * @param contractType the required contract type.
    * @return the factory action.
    * @param <R> the required reflection type.
    */
   <R extends Reflection> Action1<R, PropertiesSet> factoryAction(
-      Class<?> targetDomainClass,
+      Domain targetDomain,
       String contractType
   );
 

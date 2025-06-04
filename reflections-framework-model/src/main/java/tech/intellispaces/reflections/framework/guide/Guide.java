@@ -1,5 +1,6 @@
 package tech.intellispaces.reflections.framework.guide;
 
+import tech.intellispaces.core.Rid;
 import tech.intellispaces.reflections.framework.exception.TraverseException;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 
@@ -28,7 +29,7 @@ public interface Guide<S, R> extends tech.intellispaces.core.Guide {
    *
    * Related channel defined guide capability.
    */
-  String channelId();
+  Rid channelId();
 
   Class<S> sourceClass();
 

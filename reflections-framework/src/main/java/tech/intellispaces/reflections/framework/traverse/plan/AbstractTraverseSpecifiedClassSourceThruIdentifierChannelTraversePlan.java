@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
+import tech.intellispaces.core.Rid;
 import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
 
 public abstract class AbstractTraverseSpecifiedClassSourceThruIdentifierChannelTraversePlan
@@ -11,12 +12,12 @@ public abstract class AbstractTraverseSpecifiedClassSourceThruIdentifierChannelT
   implements TraverseSpecifiedClassSourceThruIdentifierChannelTraversePlan
 {
   private final Class<?> sourceClass;
-  private final String cid;
+  private final Rid cid;
   private final Map<Class<?>, ExecutionTraversePlan> executionPlans = new HashMap<>();
   private Class<?> lastSourceClass;
   private ExecutionTraversePlan lastExecutionPlan;
 
-  public AbstractTraverseSpecifiedClassSourceThruIdentifierChannelTraversePlan(Class<?> sourceClass, String cid) {
+  public AbstractTraverseSpecifiedClassSourceThruIdentifierChannelTraversePlan(Class<?> sourceClass, Rid cid) {
     this.sourceClass = sourceClass;
     this.cid = cid;
   }
@@ -27,7 +28,7 @@ public abstract class AbstractTraverseSpecifiedClassSourceThruIdentifierChannelT
   }
 
   @Override
-  public String channelId() {
+  public Rid channelId() {
     return cid;
   }
 

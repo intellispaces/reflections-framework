@@ -7,14 +7,15 @@ import java.util.List;
 import java.util.Map;
 
 import tech.intellispaces.commons.type.ClassFunctions;
+import tech.intellispaces.core.Rid;
 import tech.intellispaces.reflections.framework.guide.Guide;
 import tech.intellispaces.reflections.framework.guide.GuideKind;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 
 public class LocalGuideRegistry implements GuideRegistry {
-  private final Map<String, List<Guide<?, ?>>> mapperGuides = new HashMap<>();
-  private final Map<String, List<Guide<?, ?>>> moverGuides = new HashMap<>();
-  private final Map<String, List<Guide<?, ?>>> mapperOfMovingGuides = new HashMap<>();
+  private final Map<Rid, List<Guide<?, ?>>> mapperGuides = new HashMap<>();
+  private final Map<Rid, List<Guide<?, ?>>> moverGuides = new HashMap<>();
+  private final Map<Rid, List<Guide<?, ?>>> mapperOfMovingGuides = new HashMap<>();
 
   @Override
   public void addGuide(Guide<?, ?> guide) {
@@ -29,7 +30,7 @@ public class LocalGuideRegistry implements GuideRegistry {
 
   @Override
   public List<Guide<?, ?>> findGuides(
-      String cid, GuideKind kind, Class<?> sourceClass, ReflectionForm targetForm
+      Rid cid, GuideKind kind, Class<?> sourceClass, ReflectionForm targetForm
   ) {
     List<Guide<?, ?>> resultGuides = new ArrayList<>();
     List<Guide<?, ?>> guides = findGuides(cid, kind);
@@ -48,7 +49,7 @@ public class LocalGuideRegistry implements GuideRegistry {
         && (guide.targetForm() == targetForm);
   }
 
-  private List<Guide<?, ?>> findGuides(String cid, GuideKind kind) {
+  private List<Guide<?, ?>> findGuides(Rid cid, GuideKind kind) {
     List<Guide<?, ?>> guides = null;
     if (kind.isMapper()) {
       guides = mapperGuides.get(cid);

@@ -131,8 +131,7 @@ public abstract class AbstractReflectionFormGenerator extends ReflectionsArtifac
     String targetType = buildObjectFormDeclaration(parent, getForm(), getMovabilityType(), true);
 
     DomainReference domain = ReflectionsNodeFunctions.ontologyReference().getDomainByType(DomainTypes.Number);
-    String domainClassName = NameConventionFunctions.convertToDomainClassName(domain.domainName());
-    if (parent.targetType().canonicalName().equals(domainClassName)) {
+    if (parent.targetType().canonicalName().equals(domain.classCanonicalName())) {
       underlyingTypes.add(domain.domainName());
     } else {
       underlyingTypes.add(targetType);
@@ -290,12 +289,12 @@ public abstract class AbstractReflectionFormGenerator extends ReflectionsArtifac
     sb.append(returnType.actualDeclaration(this::convertName));
   }
 
-  private String convertName(String name) {
-    DomainReference domainReference = ReflectionsNodeFunctions.ontologyReference().getDomainByName(NameConventionFunctions.convertToDomainName(name));
-    if (domainReference != null && domainReference.delegateClassName() != null) {
-      return addImportAndGetSimpleName(domainReference.delegateClassName());
+  private String convertName(String domainClassName) {
+    DomainReference domain = ReflectionsNodeFunctions.ontologyReference().getDomainByClassName(domainClassName);
+    if (domain != null && domain.delegateClassName() != null) {
+      return addImportAndGetSimpleName(domain.delegateClassName());
     }
-    return addImportAndGetSimpleName(name);
+    return addImportAndGetSimpleName(domainClassName);
   }
 
   protected Stream<MethodStatement> getObjectFormMethods(CustomType customType, ArtifactGeneratorContext context) {

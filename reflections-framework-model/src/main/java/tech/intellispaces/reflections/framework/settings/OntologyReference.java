@@ -17,6 +17,8 @@ public interface OntologyReference {
 
   DomainReference getDomainByName(String domainName);
 
+  DomainReference getDomainByClassName(String domainClassName);
+
   DomainReference getDomainByDelegateClass(String delegateClass);
 
   boolean isDomainOfDomains(String domainName);

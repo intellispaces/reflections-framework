@@ -12,6 +12,11 @@ import tech.intellispaces.javareflection.customtype.CustomTypes;
 import tech.intellispaces.reflections.framework.space.domain.DomainFunctions;
 
 public class LocalClassPathSpaceRepository implements SpaceRepository {
+  private final String prefix;
+
+  public LocalClassPathSpaceRepository(String prefix) {
+    this.prefix = prefix;
+  }
 
   @Override
   public Domain findDomain(String name) {
@@ -35,7 +40,7 @@ public class LocalClassPathSpaceRepository implements SpaceRepository {
       return domain.domainClass();
     }
     if (domain.name() != null) {
-      Optional<Class<?>> domainClass = ClassFunctions.getClass(domain.name());
+      Optional<Class<?>> domainClass = ClassFunctions.getClass(prefix + domain.name());
       return domainClass.orElse(null);
     }
     throw NotImplementedExceptions.withCode("a6vc/A");

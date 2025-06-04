@@ -208,7 +208,7 @@ public class ReflectionFunctions {
     if (isDefaultReflectionType(domainType)) {
       return domainType.canonicalName();
     }
-    return NameConventionFunctions.getGeneralRegularFormClassname(domainType.className(), false);
+    return NameConventionFunctions.getGeneralRegularFormClassName(domainType.className(), false);
   }
 
   public static String getGeneralReflectionTypename(CustomType domainType) {
@@ -234,14 +234,21 @@ public class ReflectionFunctions {
     if (!DomainFunctions.isDomainType(customType)) {
       return customType.canonicalName();
     }
-    return NameConventionFunctions.getObjectTypename(customType.className(), objectForm, movabilityType, replaceDomainWithDelegate);
+    return NameConventionFunctions.getObjectTypename(
+        customType.canonicalName(),
+        objectForm,
+        movabilityType,
+        replaceDomainWithDelegate
+    );
   }
 
-  public static String getObjectTypename(String canonicalName, ReflectionForm objectForm, MovabilityType movabilityType) {
-    if (isDefaultReflectionType(canonicalName)) {
-      return canonicalName;
+  public static String getObjectTypename(
+      String domainClassName, ReflectionForm objectForm, MovabilityType movabilityType
+  ) {
+    if (isDefaultReflectionType(domainClassName)) {
+      return domainClassName;
     }
-    return NameConventionFunctions.getObjectTypename(canonicalName, objectForm, movabilityType, true);
+    return NameConventionFunctions.getObjectTypename(domainClassName, objectForm, movabilityType, true);
   }
 
   public static Class<?> getReflectionClass(Class<?> aClass) {
@@ -531,9 +538,8 @@ public class ReflectionFunctions {
 
   public static Class<?> propertiesReflectionClass() {
     if (propertiesReflectionClass == null) {
-      DomainReference domainReference = ReflectionsNodeFunctions.ontologyReference().getDomainByType(DomainTypes.PropertiesSet);
-      String domainClassName = NameConventionFunctions.convertToDomainClassName(domainReference.domainName());
-      String reflectionClassName = NameConventionFunctions.getGeneralRegularFormClassname(domainClassName, false);
+      DomainReference domain = ReflectionsNodeFunctions.ontologyReference().getDomainByType(DomainTypes.PropertiesSet);
+      String reflectionClassName = NameConventionFunctions.getGeneralRegularFormClassName(domain.classCanonicalName(), false);
       propertiesReflectionClass = ClassFunctions.getClass(reflectionClassName).orElseThrow(() ->
           UnexpectedExceptions.withMessage("Could not get class {0}", reflectionClassName)
       );

@@ -1,5 +1,7 @@
 package tech.intellispaces.reflections.framework.engine.impl;
 
+import java.util.Map;
+
 import com.google.auto.service.AutoService;
 
 import tech.intellispaces.core.repository.SpaceRepository;
@@ -23,8 +25,8 @@ import tech.intellispaces.reflections.framework.system.TraverseExecutor;
 public class DefaultEngineFactory implements EngineFactory {
 
     @Override
-    public Engine create(String[] args) {
-        SpaceRepository spaceRepository = new LocalClassPathSpaceRepository();
+    public Engine create(String[] args, Map<String, Object> engineAttributes) {
+        SpaceRepository spaceRepository = getSpaceRepository(engineAttributes);
 
         FactoryRegistry factoryRegistry = new LocalFactoryRegistry();
         ProjectionRegistry projectionRegistry = new LocalProjectionRegistry();
@@ -50,5 +52,13 @@ public class DefaultEngineFactory implements EngineFactory {
             factoryRegistry,
             reflectionRegistry
         );
+    }
+
+    private SpaceRepository getSpaceRepository(Map<String, Object> engineAttributes) {
+        SpaceRepository repository = (SpaceRepository) engineAttributes.get("space.repository");
+        if (repository == null) {
+            repository = new LocalClassPathSpaceRepository("");
+        }
+        return repository;
     }
 }

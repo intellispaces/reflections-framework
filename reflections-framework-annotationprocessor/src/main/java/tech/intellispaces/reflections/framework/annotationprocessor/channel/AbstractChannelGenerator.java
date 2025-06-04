@@ -5,6 +5,7 @@ import java.util.List;
 import tech.intellispaces.actions.runnable.RunnableAction;
 import tech.intellispaces.actions.text.StringActions;
 import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
+import tech.intellispaces.core.Rid;
 import tech.intellispaces.javareflection.customtype.CustomType;
 import tech.intellispaces.javareflection.method.MethodStatement;
 import tech.intellispaces.javareflection.reference.TypeReference;
@@ -52,7 +53,7 @@ public abstract class AbstractChannelGenerator extends ReflectionsArtifactGenera
     addVariable("channelMethod", buildChannelMethodSignature());
     addVariable("channelClasses", buildChannelClassesDeclaration());
     addVariable("channelMethodName", channelMethod.name());
-    addVariable("id", getCid());
+    addVariable("id", getCid().toString());
     return true;
   }
 
@@ -83,7 +84,7 @@ public abstract class AbstractChannelGenerator extends ReflectionsArtifactGenera
     return sb.toString();
   }
 
-  private String getCid() {
+  private Rid getCid() {
     return ChannelFunctions.getChannelId(channelMethod);
   }
 

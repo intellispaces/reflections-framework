@@ -3,6 +3,7 @@ package tech.intellispaces.reflections.framework.system;
 import tech.intellispaces.core.Domain;
 import tech.intellispaces.core.Reflection;
 import tech.intellispaces.core.ReflectionContract;
+import tech.intellispaces.core.Rid;
 import tech.intellispaces.reflections.framework.channel.Channel0;
 import tech.intellispaces.reflections.framework.channel.Channel1;
 import tech.intellispaces.reflections.framework.engine.Engine;
@@ -52,7 +53,7 @@ public class SystemHandleImpl implements SystemHandle {
     }
 
     @Override
-    public <S, T> T mapThruChannel0(S source, String cid) {
+    public <S, T> T mapThruChannel0(S source, Rid cid) {
         return null;
     }
 
@@ -62,7 +63,7 @@ public class SystemHandleImpl implements SystemHandle {
     }
 
     @Override
-    public <S, T, Q> T mapThruChannel1(S source, String cid, Q qualifier) {
+    public <S, T, Q> T mapThruChannel1(S source, Rid cid, Q qualifier) {
         return null;
     }
 
@@ -72,12 +73,12 @@ public class SystemHandleImpl implements SystemHandle {
     }
 
     @Override
-    public <S, R> R moveThruChannel0(S source, String cid) {
+    public <S, R> R moveThruChannel0(S source, Rid cid) {
         return null;
     }
 
     @Override
-    public <S, R, Q> R moveThruChannel1(S source, String cid, Q qualifier) {
+    public <S, R, Q> R moveThruChannel1(S source, Rid cid, Q qualifier) {
         return null;
     }
 
@@ -87,7 +88,7 @@ public class SystemHandleImpl implements SystemHandle {
     }
 
     @Override
-    public <S, R, Q> R mapOfMovingThruChannel1(S source, String cid, Q qualifier) {
+    public <S, R, Q> R mapOfMovingThruChannel1(S source, Rid cid, Q qualifier) {
         return null;
     }
 }

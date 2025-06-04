@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -35,14 +34,17 @@ import tech.intellispaces.reflections.framework.node.ReflectionsNodeFunctions;
 import tech.intellispaces.reflections.framework.settings.ChannelTypes;
 import tech.intellispaces.reflections.framework.space.channel.ChannelFunctions;
 
-
 /**
  * Domain functions.
  */
 public final class DomainFunctions {
 
-  public static String getDomainId(CustomType domain) {
-    return domain.selectAnnotation(Domain.class).orElseThrow().value();
+  public static Rid getDomainId(CustomType domain) {
+    return Rids.create(domain.selectAnnotation(Domain.class).orElseThrow().value());
+  }
+
+  public static String getDomainName(CustomType domain) {
+    return domain.selectAnnotation(Domain.class).orElseThrow().name();
   }
 
   public static boolean isDomainClass(Class<?> aClass) {
@@ -271,10 +273,10 @@ public final class DomainFunctions {
   public static Channel findChannel(CustomType sourceDomain, Rid targetDomainRid) {
     for (MethodStatement method : sourceDomain.actualMethods()) {
       if (ChannelFunctions.isChannelMethod(method)) {
-        String did = getDomainId(method.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow().targetType());
-        if (Arrays.equals(UuidFunctions.uuidToBytes(did), targetDomainRid.raw())) {
-          String cid = ChannelFunctions.getChannelId(method);
-          return Channels.create(Rids.create(UUID.fromString(cid)), null);
+        Rid did = getDomainId(method.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow().targetType());
+        if (did.equals(targetDomainRid)) {
+          Rid cid = ChannelFunctions.getChannelId(method);
+          return Channels.create(cid, null);
         }
       }
     }

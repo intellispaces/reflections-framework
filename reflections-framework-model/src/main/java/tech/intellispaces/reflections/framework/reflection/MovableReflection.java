@@ -2,6 +2,7 @@ package tech.intellispaces.reflections.framework.reflection;
 
 import java.util.List;
 
+import tech.intellispaces.core.Rid;
 import tech.intellispaces.reflections.framework.channel.Channel0;
 import tech.intellispaces.reflections.framework.channel.Channel1;
 import tech.intellispaces.reflections.framework.channel.ChannelFunction0;
@@ -23,7 +24,7 @@ public interface MovableReflection<D> extends Reflection<D> {
     return true;
   }
 
-  <Q> MovableReflection<D> moveThru(String cid, Q qualifier) throws TraverseException;
+  <Q> MovableReflection<D> moveThru(Rid cid, Q qualifier) throws TraverseException;
 
   MovableReflection<D> moveThru(Class<? extends Channel0> channelClass) throws TraverseException;
 
@@ -33,7 +34,7 @@ public interface MovableReflection<D> extends Reflection<D> {
 
   <Q> MovableReflection<D> moveThru(ChannelFunction1<D, D, Q> channelFunction, Q qualifier) throws TraverseException;
 
-  <R, Q> R mapOfMovingThru(String cid, Q qualifier) throws TraverseException;
+  <R, Q> R mapOfMovingThru(Rid cid, Q qualifier) throws TraverseException;
 
   <R> R mapOfMovingThru(Class<? extends Channel0> channelClass) throws TraverseException;
 

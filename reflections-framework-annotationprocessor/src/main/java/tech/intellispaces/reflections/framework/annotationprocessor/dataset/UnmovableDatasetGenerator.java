@@ -142,7 +142,7 @@ public class UnmovableDatasetGenerator extends AbstractReflectionFormGenerator {
   @Override
   protected void analyzeDomain() {
     domainType = sourceArtifact();
-    domainRid = Rids.create(UUID.fromString(DomainFunctions.getDomainId(domainType)));
+    domainRid = DomainFunctions.getDomainId(domainType);
   }
 
   private void analyzeProjections() {

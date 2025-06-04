@@ -20,6 +20,7 @@ import tech.intellispaces.commons.type.Types;
 import tech.intellispaces.core.Domain;
 import tech.intellispaces.core.Reflection;
 import tech.intellispaces.core.ReflectionContract;
+import tech.intellispaces.core.Rid;
 import tech.intellispaces.reflections.framework.channel.Channel0;
 import tech.intellispaces.reflections.framework.channel.Channel1;
 import tech.intellispaces.reflections.framework.channel.Channel2;
@@ -141,7 +142,7 @@ public class DefaultEngine implements Engine {
 
   @Override
   @SuppressWarnings("unchecked")
-  public <S, T> T mapThruChannel0(S source, String cid) {
+  public <S, T> T mapThruChannel0(S source, Rid cid) {
     DeclarativeTraversePlan traversePlan = traverseAnalyzer.buildMapThruChannel0TraversePlan(
         ReflectionFunctions.getReflectionClass(source.getClass()), cid, ReflectionForms.Reflection);
     return (T) traversePlan.execute(source, traverseExecutor);
@@ -154,7 +155,7 @@ public class DefaultEngine implements Engine {
 
   @Override
   @SuppressWarnings("unchecked")
-  public <S, T, Q> T mapThruChannel1(S source, String cid, Q qualifier) {
+  public <S, T, Q> T mapThruChannel1(S source, Rid cid, Q qualifier) {
     DeclarativeTraversePlan traversePlan = traverseAnalyzer.buildMapThruChannel1TraversePlan(
         ReflectionFunctions.getReflectionClass(source.getClass()), cid, ReflectionForms.Reflection);
     return (T) traversePlan.execute(source, qualifier, traverseExecutor);
@@ -167,7 +168,7 @@ public class DefaultEngine implements Engine {
 
   @Override
   @SuppressWarnings("unchecked")
-  public <S, R> R moveThruChannel0(S source, String cid) {
+  public <S, R> R moveThruChannel0(S source, Rid cid) {
     TraversePlan traversePlan = traverseAnalyzer.buildMoveThruChannel0TraversePlan(
         ReflectionFunctions.getReflectionClass(source.getClass()), cid, ReflectionForms.Reflection);
     return (R) traversePlan.execute(source, traverseExecutor);
@@ -175,7 +176,7 @@ public class DefaultEngine implements Engine {
 
   @Override
   @SuppressWarnings("unchecked")
-  public <S, R, Q> R moveThruChannel1(S source, String cid, Q qualifier) {
+  public <S, R, Q> R moveThruChannel1(S source, Rid cid, Q qualifier) {
     TraversePlan traversePlan = traverseAnalyzer.buildMoveThruChannel1TraversePlan(
         ReflectionFunctions.getReflectionClass(source.getClass()), cid, ReflectionForms.Reflection);
     return (R) traversePlan.execute(source, qualifier, traverseExecutor);
@@ -190,7 +191,7 @@ public class DefaultEngine implements Engine {
 
   @Override
   @SuppressWarnings("unchecked")
-  public <S, R, Q> R mapOfMovingThruChannel1(S source, String cid, Q qualifier) {
+  public <S, R, Q> R mapOfMovingThruChannel1(S source, Rid cid, Q qualifier) {
     TraversePlan traversePlan = traverseAnalyzer.buildMapOfMovingThruChannel1TraversePlan(
         ReflectionFunctions.getReflectionClass(source.getClass()), cid, ReflectionForms.Reflection);
     return (R) traversePlan.execute(source, qualifier, traverseExecutor);
@@ -214,7 +215,7 @@ public class DefaultEngine implements Engine {
   @Override
   public Reflection createReflection(ReflectionContract contract) {
     Reflection reflection = factoryRegistry.factoryAction(
-        contract.domain().domainClass(),
+        contract.domain(),
         contract.type()
     ).execute(contract.properties());
     return reflectionRegistry.register(reflection);
@@ -223,7 +224,7 @@ public class DefaultEngine implements Engine {
   @Override
   @SuppressWarnings("unchecked")
   public <S, T> Mapper0<S, T> autoMapperThruChannel0(
-      Type<S> sourceType, String cid, ReflectionForm targetForm
+      Type<S> sourceType, Rid cid, ReflectionForm targetForm
   ) {
     TraversePlan traversePlan = traverseAnalyzer.buildMapThruChannel0TraversePlan(
         sourceType.asClassType().baseClass(), cid, targetForm
@@ -240,7 +241,7 @@ public class DefaultEngine implements Engine {
   @Override
   @SuppressWarnings("unchecked")
   public <S, T, Q> Mapper1<S, T, Q> autoMapperThruChannel1(
-      Type<S> sourceType, String cid, ReflectionForm targetForm
+      Type<S> sourceType, Rid cid, ReflectionForm targetForm
   ) {
     TraversePlan traversePlan = traverseAnalyzer.buildMapThruChannel1TraversePlan(
         sourceType.asClassType().baseClass(), cid, targetForm
@@ -257,7 +258,7 @@ public class DefaultEngine implements Engine {
   @Override
   @SuppressWarnings("unchecked")
   public <S, T, Q1, Q2> Mapper2<S, T, Q1, Q2> autoMapperThruChannel2(
-      Type<S> sourceType, String cid, ReflectionForm targetForm
+      Type<S> sourceType, Rid cid, ReflectionForm targetForm
   ) {
     TraversePlan traversePlan = traverseAnalyzer.buildMapThruChannel2TraversePlan(
         sourceType.asClassType().baseClass(), cid, targetForm
@@ -274,7 +275,7 @@ public class DefaultEngine implements Engine {
   @Override
   @SuppressWarnings("unchecked")
   public <S, T, Q1, Q2, Q3> Mapper3<S, T, Q1, Q2, Q3> autoMapperThruChannel3(
-      Type<S> sourceType, String cid, ReflectionForm targetForm
+      Type<S> sourceType, Rid cid, ReflectionForm targetForm
   ) {
     TraversePlan traversePlan = traverseAnalyzer.buildMapThruChannel3TraversePlan(
         sourceType.asClassType().baseClass(), cid, targetForm
@@ -290,7 +291,7 @@ public class DefaultEngine implements Engine {
 
   @Override
   @SuppressWarnings("unchecked")
-  public <S> Mover0<S> autoMoverThruChannel0(Type<S> sourceType, String cid, ReflectionForm targetForm) {
+  public <S> Mover0<S> autoMoverThruChannel0(Type<S> sourceType, Rid cid, ReflectionForm targetForm) {
     TraversePlan traversePlan = traverseAnalyzer.buildMoveThruChannel0TraversePlan(
         sourceType.asClassType().baseClass(), cid, targetForm
     );
@@ -305,7 +306,7 @@ public class DefaultEngine implements Engine {
 
   @Override
   public <S, Q> Mover1<S, Q> autoMoverThruChannel1(
-      Class<S> sourceClass, String cid, ReflectionForm targetForm
+      Class<S> sourceClass, Rid cid, ReflectionForm targetForm
   ) {
     return autoMoverThruChannel1(Types.get(sourceClass), cid, targetForm);
   }
@@ -313,7 +314,7 @@ public class DefaultEngine implements Engine {
   @Override
   @SuppressWarnings("unchecked")
   public <S, Q> Mover1<S, Q> autoMoverThruChannel1(
-      Type<S> sourceType, String cid, ReflectionForm targetForm
+      Type<S> sourceType, Rid cid, ReflectionForm targetForm
   ) {
     TraversePlan traversePlan = traverseAnalyzer.buildMoveThruChannel1TraversePlan(
         sourceType.asClassType().baseClass(), cid, targetForm
@@ -330,7 +331,7 @@ public class DefaultEngine implements Engine {
   @Override
   @SuppressWarnings("unchecked")
   public <S, Q1, Q2> Mover2<S, Q1, Q2> autoMoverThruChannel2(
-      Type<S> sourceType, String cid, ReflectionForm targetForm
+      Type<S> sourceType, Rid cid, ReflectionForm targetForm
   ) {
     TraversePlan traversePlan = traverseAnalyzer.buildMoveThruChannel2TraversePlan(
         sourceType.asClassType().baseClass(), cid, targetForm
@@ -347,7 +348,7 @@ public class DefaultEngine implements Engine {
   @Override
   @SuppressWarnings("unchecked")
   public <S, Q1, Q2, Q3> Mover3<S, Q1, Q2, Q3> autoMoverThruChannel3(
-      Type<S> sourceType, String cid, ReflectionForm targetForm
+      Type<S> sourceType, Rid cid, ReflectionForm targetForm
   ) {
     TraversePlan traversePlan = traverseAnalyzer.buildMoveThruChannel3TraversePlan(
         sourceType.asClassType().baseClass(), cid, targetForm
@@ -364,7 +365,7 @@ public class DefaultEngine implements Engine {
   @Override
   @SuppressWarnings("unchecked")
   public <S, T> MapperOfMoving0<S, T> autoMapperOfMovingThruChannel0(
-      Type<S> sourceType, String cid, ReflectionForm targetForm
+      Type<S> sourceType, Rid cid, ReflectionForm targetForm
   ) {
     TraversePlan traversePlan = traverseAnalyzer.buildMapOfMovingThruChannel0TraversePlan(
         sourceType.asClassType().baseClass(), cid, targetForm
@@ -381,7 +382,7 @@ public class DefaultEngine implements Engine {
   @Override
   @SuppressWarnings("unchecked")
   public <S, T, Q> MapperOfMoving1<S, T, Q> autoMapperOfMovingThruChannel1(
-      Type<S> sourceType, String cid, ReflectionForm targetForm
+      Type<S> sourceType, Rid cid, ReflectionForm targetForm
   ) {
     TraversePlan traversePlan = traverseAnalyzer.buildMapOfMovingThruChannel1TraversePlan(
         sourceType.asClassType().baseClass(), cid, targetForm
@@ -398,7 +399,7 @@ public class DefaultEngine implements Engine {
   @Override
   @SuppressWarnings("unchecked")
   public <S, T, Q1, Q2> MapperOfMoving2<S, T, Q1, Q2> autoMapperOfMovingThruChannel2(
-      Type<S> sourceType, String cid, ReflectionForm targetForm
+      Type<S> sourceType, Rid cid, ReflectionForm targetForm
   ) {
     TraversePlan traversePlan = traverseAnalyzer.buildMapOfMovingThruChannel2TraversePlan(
         sourceType.asClassType().baseClass(), cid, targetForm
@@ -415,7 +416,7 @@ public class DefaultEngine implements Engine {
   @Override
   @SuppressWarnings("unchecked")
   public <S, T, Q1, Q2, Q3> MapperOfMoving3<S, T, Q1, Q2, Q3> autoMapperOfMovingThruChannel3(
-      Type<S> sourceType, String cid, ReflectionForm targetForm
+      Type<S> sourceType, Rid cid, ReflectionForm targetForm
   ) {
     TraversePlan traversePlan = traverseAnalyzer.buildMapOfMovingThruChannel3TraversePlan(
         sourceType.asClassType().baseClass(), cid, targetForm
@@ -432,7 +433,7 @@ public class DefaultEngine implements Engine {
   @Override
   @SuppressWarnings("unchecked")
   public <S, T, Q1, Q2, Q3, Q4> MapperOfMoving4<S, T, Q1, Q2, Q3, Q4> autoMapperOfMovingThruChannel4(
-      Type<S> sourceType, String cid, ReflectionForm targetForm
+      Type<S> sourceType, Rid cid, ReflectionForm targetForm
   ) {
     TraversePlan traversePlan = traverseAnalyzer.buildMapOfMovingThruChannel4TraversePlan(
         sourceType.asClassType().baseClass(), cid, targetForm

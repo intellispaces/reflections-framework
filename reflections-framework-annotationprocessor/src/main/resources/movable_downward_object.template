@@ -63,7 +63,7 @@ public class {{$generatedArtifactSimpleName}}{{$classTypeParams}} implements {{$
   }
 
   @Override
-  public <Q> {{$movableReflectionName}}{{$domainTypeArguments}} moveThru(java.lang.String cid, Q qualifier) throws TraverseException {
+  public <Q> {{$movableReflectionName}}{{$domainTypeArguments}} moveThru(Rid cid, Q qualifier) throws TraverseException {
     {{$childField}}.moveThru(cid, qualifier);
     return this;
   }
@@ -92,7 +92,7 @@ public class {{$generatedArtifactSimpleName}}{{$classTypeParams}} implements {{$
 
   @Override
   public <Q> {{$movableReflectionName}}{{$domainTypeArguments}} moveThru(ChannelFunction1<{{$domainClassSimpleName}}{{$domainTypeArguments}}, {{$domainClassSimpleName}}{{$domainTypeArguments}}, Q> channelFunction, Q qualifier) throws TraverseException {
-    java.lang.String cid = ChannelFunctions.getChannelId(new TypeOf<{{$domainClassSimpleName}}{{$domainTypeArguments}}>() {}, channelFunction, qualifier);
+    Rid cid = ChannelFunctions.getChannelId(new TypeOf<{{$domainClassSimpleName}}{{$domainTypeArguments}}>() {}, channelFunction, qualifier);
     return moveThru(cid, qualifier);
   }
 {{end}}
@@ -111,7 +111,7 @@ public class {{$generatedArtifactSimpleName}}{{$classTypeParams}} implements {{$
   }
 
   @Override
-  public <R, Q> R mapOfMovingThru(java.lang.String cid, Q qualifier) throws TraverseException {
+  public <R, Q> R mapOfMovingThru(Rid cid, Q qualifier) throws TraverseException {
     return (R) Reflections.movableReflectionOf({{$childField}}, {{$sourceArtifactSimpleName}}.class).mapOfMovingThru(cid, qualifier);
   }
 

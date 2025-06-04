@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
+import tech.intellispaces.core.Rid;
 import tech.intellispaces.javareflection.customtype.CustomType;
 import tech.intellispaces.javareflection.method.MethodStatement;
 import tech.intellispaces.javareflection.reference.CustomTypeReference;
@@ -69,6 +70,7 @@ public class MovableReflectionTypeGenerator extends AbstractReflectionFormGenera
   @Override
   protected boolean analyzeSourceArtifact(ArtifactGeneratorContext context) {
     addImports(
+        Rid.class,
         Movable.class,
         Reflection.class,
         MovableReflection.class,

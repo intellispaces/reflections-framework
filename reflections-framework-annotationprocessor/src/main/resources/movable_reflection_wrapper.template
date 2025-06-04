@@ -105,7 +105,7 @@ public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sour
   }
 
   @Override
-  public <Q> {{$generatedArtifactSimpleName}}{{$typeParamsBrief}} moveThru(java.lang.String cid, Q qualifier) throws TraverseException {
+  public <Q> {{$generatedArtifactSimpleName}}{{$typeParamsBrief}} moveThru(Rid cid, Q qualifier) throws TraverseException {
     return Modules.current().moveThruChannel1(this, cid, qualifier);
   }
 
@@ -148,7 +148,7 @@ public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sour
   }
 
   @Override
-  public <R, Q> R mapOfMovingThru(java.lang.String cid, Q qualifier) throws TraverseException {
+  public <R, Q> R mapOfMovingThru(Rid cid, Q qualifier) throws TraverseException {
     return Modules.current().mapOfMovingThruChannel1(this, cid, qualifier);
   }
 

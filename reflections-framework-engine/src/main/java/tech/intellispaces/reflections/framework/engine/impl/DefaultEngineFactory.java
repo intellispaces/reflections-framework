@@ -4,7 +4,7 @@ import java.util.Map;
 
 import com.google.auto.service.AutoService;
 
-import tech.intellispaces.core.repository.SpaceRepository;
+import tech.intellispaces.core.repository.OntologyRepository;
 import tech.intellispaces.reflections.framework.engine.Engine;
 import tech.intellispaces.reflections.framework.engine.EngineFactory;
 import tech.intellispaces.reflections.framework.system.AutoGuideRegistry;
@@ -26,7 +26,7 @@ public class DefaultEngineFactory implements EngineFactory {
 
     @Override
     public Engine create(String[] args, Map<String, Object> engineAttributes) {
-        SpaceRepository spaceRepository = getSpaceRepository(engineAttributes);
+        OntologyRepository spaceRepository = getSpaceRepository(engineAttributes);
 
         FactoryRegistry factoryRegistry = new LocalFactoryRegistry();
         ProjectionRegistry projectionRegistry = new LocalProjectionRegistry();
@@ -54,8 +54,8 @@ public class DefaultEngineFactory implements EngineFactory {
         );
     }
 
-    private SpaceRepository getSpaceRepository(Map<String, Object> engineAttributes) {
-        SpaceRepository repository = (SpaceRepository) engineAttributes.get("space.repository");
+    private OntologyRepository getSpaceRepository(Map<String, Object> engineAttributes) {
+        OntologyRepository repository = (OntologyRepository) engineAttributes.get("space.repository");
         if (repository == null) {
             repository = new LocalClassPathSpaceRepository("");
         }

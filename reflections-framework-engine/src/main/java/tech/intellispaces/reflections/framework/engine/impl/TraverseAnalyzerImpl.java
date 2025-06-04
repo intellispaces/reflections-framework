@@ -9,7 +9,7 @@ import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.core.Channel;
 import tech.intellispaces.core.Domain;
 import tech.intellispaces.core.Rid;
-import tech.intellispaces.core.repository.SpaceRepository;
+import tech.intellispaces.core.repository.OntologyRepository;
 import tech.intellispaces.reflections.framework.guide.Guide;
 import tech.intellispaces.reflections.framework.guide.GuideKind;
 import tech.intellispaces.reflections.framework.guide.GuideKinds;
@@ -67,12 +67,12 @@ import tech.intellispaces.reflections.framework.traverse.plan.TraversePlanTypes;
 import tech.intellispaces.reflections.framework.traverse.plan.TraverseSpecifiedClassSourceThruIdentifierChannelTraversePlan;
 
 class TraverseAnalyzerImpl implements TraverseAnalyzer {
-  private final SpaceRepository spaceRepository;
+  private final OntologyRepository spaceRepository;
   private final GuideProvider guideProvider;
   private final ReflectionRegistry reflectionRegistry;
 
   public TraverseAnalyzerImpl(
-      SpaceRepository spaceRepository,
+      OntologyRepository spaceRepository,
       GuideProvider guideProvider,
       ReflectionRegistry reflectionRegistry
   ) {

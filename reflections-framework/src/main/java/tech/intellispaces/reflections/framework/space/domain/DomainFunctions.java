@@ -1,7 +1,6 @@
 package tech.intellispaces.reflections.framework.space.domain;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -12,7 +11,6 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import tech.intellispaces.commons.data.UuidFunctions;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.commons.type.ClassFunctions;
 import tech.intellispaces.core.Channel;

@@ -6,12 +6,12 @@ import tech.intellispaces.commons.exception.NotImplementedExceptions;
 import tech.intellispaces.commons.type.ClassFunctions;
 import tech.intellispaces.core.Channel;
 import tech.intellispaces.core.Domain;
-import tech.intellispaces.core.repository.SpaceRepository;
+import tech.intellispaces.core.repository.OntologyRepository;
 import tech.intellispaces.javareflection.customtype.CustomType;
 import tech.intellispaces.javareflection.customtype.CustomTypes;
 import tech.intellispaces.reflections.framework.space.domain.DomainFunctions;
 
-public class LocalClassPathSpaceRepository implements SpaceRepository {
+public class LocalClassPathSpaceRepository implements OntologyRepository {
   private final String prefix;
 
   public LocalClassPathSpaceRepository(String prefix) {
@@ -40,7 +40,7 @@ public class LocalClassPathSpaceRepository implements SpaceRepository {
       return domain.domainClass();
     }
     if (domain.name() != null) {
-      Optional<Class<?>> domainClass = ClassFunctions.getClass(prefix + domain.name());
+      Optional<Class<?>> domainClass = ClassFunctions.getClass(prefix + domain.name() + "Domain");
       return domainClass.orElse(null);
     }
     throw NotImplementedExceptions.withCode("a6vc/A");

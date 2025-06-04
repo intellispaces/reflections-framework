@@ -6,19 +6,19 @@ import java.util.Map;
 import tech.intellispaces.core.Channel;
 import tech.intellispaces.core.Domain;
 import tech.intellispaces.core.SpaceFunctions;
-import tech.intellispaces.core.repository.SpaceRepository;
+import tech.intellispaces.core.repository.OntologyRepository;
 
-public class MultiSpaceRepository implements SpaceRepository {
-  private final Map<String, SpaceRepository> repositories = new HashMap<>();
+public class MultiSpaceRepository implements OntologyRepository {
+  private final Map<String, OntologyRepository> repositories = new HashMap<>();
 
-  public void addRepository(String spaceName, SpaceRepository repository) {
+  public void addRepository(String spaceName, OntologyRepository repository) {
     repositories.put(spaceName, repository);
   }
 
   @Override
   public Domain findDomain(String name) {
     String space = SpaceFunctions.spaceNameOfDomain(name);
-    SpaceRepository repository = repositories.get(space);
+    OntologyRepository repository = repositories.get(space);
     if (repository == null) {
       return null;
     }
@@ -28,7 +28,7 @@ public class MultiSpaceRepository implements SpaceRepository {
   @Override
   public Channel findChannel(String name) {
     String space = SpaceFunctions.spaceNameOfDomain(name);
-    SpaceRepository repository = repositories.get(space);
+    OntologyRepository repository = repositories.get(space);
     if (repository == null) {
       return null;
     }
@@ -39,13 +39,13 @@ public class MultiSpaceRepository implements SpaceRepository {
   public Channel findChannel(Domain sourceDomain, Domain targetDomain) {
     if (sourceDomain.name() != null) {
       String space = SpaceFunctions.spaceNameOfDomain(sourceDomain.name());
-      SpaceRepository repository = repositories.get(space);
+      OntologyRepository repository = repositories.get(space);
       if (repository == null) {
         return null;
       }
       return repository.findChannel(sourceDomain, targetDomain);
     }
-    for (SpaceRepository repository : repositories.values()) {
+    for (OntologyRepository repository : repositories.values()) {
       Channel channel = repository.findChannel(sourceDomain, targetDomain);
       if (channel != null) {
         return channel;

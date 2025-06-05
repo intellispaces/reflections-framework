@@ -5,14 +5,14 @@ import tech.intellispaces.reflections.framework.exception.TraverseException;
 import tech.intellispaces.reflections.framework.traverse.MappingTraverse;
 
 /**
- * The abstract object reflection.<p/>
+ * The typed reflection.<p/>
  *
  * The object reflection it a link from the system to the object.<p/>
  * Any interaction of the system with the object is performed through the object reflection only.
  *
  * @param <D> the domain type.
  */
-public interface AbstractReflection<D> extends tech.intellispaces.core.Reflection {
+public interface TypedReflection<D> extends tech.intellispaces.core.Reflection {
 
   /**
    * Returns <code>true</code> if this reflection is focused.

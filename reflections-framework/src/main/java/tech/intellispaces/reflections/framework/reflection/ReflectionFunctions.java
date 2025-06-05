@@ -551,7 +551,7 @@ public class ReflectionFunctions {
     unbindSilently(tech.intellispaces.reflections.framework.reflection.Reflections.reflection(objectReference));
   }
 
-  public static void unbindSilently(AbstractReflection<?> reflection) {
+  public static void unbindSilently(TypedReflection<?> reflection) {
     if (reflection == null) {
       return;
     }
@@ -562,7 +562,7 @@ public class ReflectionFunctions {
     }
   }
 
-  public static void unbindEach(List<AbstractReflection<?>> reflections) {
+  public static void unbindEach(List<TypedReflection<?>> reflections) {
     List<Exception> exceptions = null;
     for (var objectReference : reflections) {
       try {

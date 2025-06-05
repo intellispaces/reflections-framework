@@ -7,7 +7,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * Tests for {@link ReflectionForms}.
  */
-public class AbstractReflectionFormTest {
+public class TypedReflectionFormTest {
 
   @Test
   public void testOrdinal() {

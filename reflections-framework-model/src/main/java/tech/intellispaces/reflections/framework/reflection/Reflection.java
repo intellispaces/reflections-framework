@@ -3,11 +3,11 @@ package tech.intellispaces.reflections.framework.reflection;
 import java.util.List;
 
 /**
- * The focused object reflection.
+ * The focused reflection.
  *
  * @param <D> the domain type.
  */
-public interface Reflection<D> extends AbstractReflection<D> {
+public interface Reflection<D> extends TypedReflection<D> {
 
 //  <R extends Reflection<D>> R as(Class<R> reflectionClass);
 

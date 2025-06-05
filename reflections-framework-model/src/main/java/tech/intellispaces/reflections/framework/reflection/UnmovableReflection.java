@@ -3,9 +3,9 @@ package tech.intellispaces.reflections.framework.reflection;
 import java.util.List;
 
 /**
- * The unmovable object reflection.<p/>
+ * The unmovable reflection.<p/>
  *
- * The unmovable object reflection being moved cannot move in space.
+ * The unmovable reflection being moved cannot move in the notion space.
  *
  * @param <D> the domain type.
  */

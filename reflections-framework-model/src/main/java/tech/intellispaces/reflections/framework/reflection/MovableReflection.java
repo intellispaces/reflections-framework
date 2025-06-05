@@ -11,9 +11,9 @@ import tech.intellispaces.reflections.framework.exception.TraverseException;
 import tech.intellispaces.reflections.framework.traverse.MappingOfMovingTraverse;
 
 /**
- * The movable object reflection.<p/>
+ * The movable reflection.<p/>
  *
- * Movable reflection being moved can move in space.
+ * Movable reflection being moved can move in the notion space.
  *
  * @param <D> the domain type.
  */

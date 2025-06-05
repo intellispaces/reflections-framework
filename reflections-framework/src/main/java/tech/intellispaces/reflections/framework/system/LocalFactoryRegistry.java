@@ -3,10 +3,13 @@ package tech.intellispaces.reflections.framework.system;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import tech.intellispaces.actions.Action;
@@ -30,6 +33,8 @@ import tech.intellispaces.commons.type.Classes;
 import tech.intellispaces.commons.type.Type;
 import tech.intellispaces.core.Domain;
 import tech.intellispaces.core.Reflection;
+import tech.intellispaces.core.Rid;
+import tech.intellispaces.core.repository.OntologyRepository;
 import tech.intellispaces.reflections.framework.exception.ConfigurationExceptions;
 import tech.intellispaces.reflections.framework.factory.FactoryFunctions;
 import tech.intellispaces.reflections.framework.factory.FactoryMethod;
@@ -37,20 +42,24 @@ import tech.intellispaces.reflections.framework.factory.FactoryWrapper;
 import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
 
 public class LocalFactoryRegistry implements FactoryRegistry {
+  private final OntologyRepository ontologyRepository;
   private boolean isLoaded;
-  private Map<Class<?>, List<FactoryMethod>> domainToDescriptions = Map.of();
+  private Map<Rid, List<FactoryMethod>> domainRidToFactoryMethods = Map.of();
+  private Map<String, List<FactoryMethod>> domainNameToFactoryMethods = Map.of();
+  private Map<Class<?>, List<FactoryMethod>> domainClassToFactoryMethods = Map.of();
+
+  public LocalFactoryRegistry(OntologyRepository ontologyRepository) {
+    this.ontologyRepository = ontologyRepository;
+  }
 
   @Override
   public <R extends Reflection> Action1<R, PropertiesSet> factoryAction(
       Domain targetDomain, String contractType
   ) {
-    List<FactoryMethod> descriptions = domainToDescriptions.get(targetDomain);
-    if (descriptions == null) {
-      throw ConfigurationExceptions.withMessage("No factory for domain {0} were found", targetDomain);
-    }
-    for (FactoryMethod description : descriptions) {
-      if (description.contractType().equals(contractType)) {
-        return FactoryFunctions.createFactoryAction(description);
+    Collection<FactoryMethod> factoryMethods = findFactoryMethods(targetDomain);
+    for (FactoryMethod factoryMethod : factoryMethods) {
+      if (factoryMethod.contractType().equals(contractType)) {
+        return FactoryFunctions.createFactoryAction(targetDomain, factoryMethod);
       }
     }
     throw ConfigurationExceptions.withMessage("No factory for contract type {0} were found", contractType);
@@ -311,7 +320,7 @@ public class LocalFactoryRegistry implements FactoryRegistry {
       return;
     }
 
-    List<FactoryMethod> descriptions = new ArrayList<>();
+    List<FactoryMethod> factoryMethods = new ArrayList<>();
     try {
       Enumeration<URL> enumeration = LocalFactoryRegistry.class.getClassLoader().getResources(
           NameConventionFunctions.getFactoriesResourceName()
@@ -329,15 +338,22 @@ public class LocalFactoryRegistry implements FactoryRegistry {
             throw UnexpectedExceptions.withMessage("Unable to load factory class {0}", factoryClassName);
           }
           var wrapper = (FactoryWrapper) Objects.get(factoryClass.get());
-          descriptions.addAll(wrapper.methods());
+          factoryMethods.addAll(wrapper.methods());
         }
       }
     } catch (IOException e) {
       throw UnexpectedExceptions.withCauseAndMessage(e, "Unable to load factories");
     }
 
-    domainToDescriptions = descriptions.stream()
-        .collect(Collectors.groupingBy(FactoryMethod::returnedDomainClass));
+    domainRidToFactoryMethods = factoryMethods.stream()
+        .filter(factoryMethod -> factoryMethod.returnedDomain().rid() != null)
+        .collect(Collectors.groupingBy(factoryMethod -> factoryMethod.returnedDomain().rid()));
+    domainNameToFactoryMethods = factoryMethods.stream()
+        .filter(factoryMethod -> factoryMethod.returnedDomain().name() != null)
+        .collect(Collectors.groupingBy(factoryMethod -> factoryMethod.returnedDomain().name()));
+    domainClassToFactoryMethods = factoryMethods.stream()
+        .filter(factoryMethod -> factoryMethod.returnedDomain().domainClass() != null)
+        .collect(Collectors.groupingBy(factoryMethod -> factoryMethod.returnedDomain().domainClass()));
     isLoaded = true;
   }
 
@@ -363,20 +379,44 @@ public class LocalFactoryRegistry implements FactoryRegistry {
       String contractType,
       List<Type<?>> contractQualifierTypes
   ) {
-    List<FactoryMethod> descriptions = domainToDescriptions.get(targetDomainClass);
-    if (descriptions == null) {
+    List<FactoryMethod> factoryMethods = domainClassToFactoryMethods.get(targetDomainClass);
+    if (factoryMethods == null) {
       throw ConfigurationExceptions.withMessage("No factory for domain {0} were found",
           targetDomainClass.getCanonicalName());
     }
-    for (FactoryMethod description : descriptions) {
+    for (FactoryMethod factoryMethod : factoryMethods) {
       if (
-          description.contractType().equals(contractType) &&
-              isMatchContractQualifiers(description, contractQualifierTypes)
+          factoryMethod.contractType().equals(contractType) &&
+              isMatchContractQualifiers(factoryMethod, contractQualifierTypes)
       ) {
-        return FactoryFunctions.makeAction(description);
+        return FactoryFunctions.makeAction(factoryMethod);
       }
     }
     throw ConfigurationExceptions.withMessage("No factory for domain {0} and contract type {1} were found",
         targetDomainClass.getCanonicalName(), contractType);
+  }
+
+  Collection<FactoryMethod> findFactoryMethods(Domain domain) {
+    Set<FactoryMethod> factoryMethods = new HashSet<>();
+    findFactoryMethods(domain, factoryMethods);
+    if (domain.foreignDomainName() != null) {
+      Domain foreignDomain = ontologyRepository.findDomain(domain.foreignDomainName());
+      if (foreignDomain != null) {
+        findFactoryMethods(foreignDomain, factoryMethods);
+      }
+    }
+    return factoryMethods;
+  }
+
+  private void findFactoryMethods(Domain domain, Collection<FactoryMethod> factoryMethods) {
+    if (domain.rid() != null) {
+      factoryMethods.addAll(domainRidToFactoryMethods.getOrDefault(domain.rid(), List.of()));
+    }
+    if (domain.name() != null) {
+      factoryMethods.addAll(domainNameToFactoryMethods.getOrDefault(domain.name(), List.of()));
+    }
+    if (domain.domainClass() != null) {
+      factoryMethods.addAll(domainClassToFactoryMethods.getOrDefault(domain.domainClass(), List.of()));
+    }
   }
 }

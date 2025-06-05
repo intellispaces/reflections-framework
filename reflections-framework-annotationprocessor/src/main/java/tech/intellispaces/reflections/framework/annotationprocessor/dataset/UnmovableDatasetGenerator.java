@@ -118,7 +118,7 @@ public class UnmovableDatasetGenerator extends AbstractReflectionFormGenerator {
 
     addVariable("didBase64", Base64Functions.createUrlNoPadding(domainRid.raw()));
     addVariable("didOrigin", domainRid.toString());
-    addVariable("domainName", domainType.canonicalName());
+    addVariable("domainName", DomainFunctions.getDomainName(domainType));
     addVariable("reflectionClassName", NameConventionFunctions.getUnmovableReflectionTypeName(sourceArtifact().className(), true));
     addVariable("movableReflectionClassName", NameConventionFunctions.getMovableReflectionTypeName(sourceArtifact().className(), true));
     addVariable("typeParamsBrief", typeParamsBrief);

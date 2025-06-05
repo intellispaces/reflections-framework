@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.jetbrains.annotations.Nullable;
+
 import tech.intellispaces.commons.exception.NotImplementedExceptions;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.core.Channel;
@@ -67,16 +69,16 @@ import tech.intellispaces.reflections.framework.traverse.plan.TraversePlanTypes;
 import tech.intellispaces.reflections.framework.traverse.plan.TraverseSpecifiedClassSourceThruIdentifierChannelTraversePlan;
 
 class TraverseAnalyzerImpl implements TraverseAnalyzer {
-  private final OntologyRepository spaceRepository;
+  private final OntologyRepository ontologyRepository;
   private final GuideProvider guideProvider;
   private final ReflectionRegistry reflectionRegistry;
 
   public TraverseAnalyzerImpl(
-      OntologyRepository spaceRepository,
+      OntologyRepository ontologyRepository,
       GuideProvider guideProvider,
       ReflectionRegistry reflectionRegistry
   ) {
-    this.spaceRepository = spaceRepository;
+    this.ontologyRepository = ontologyRepository;
     this.guideProvider = guideProvider;
     this.reflectionRegistry = reflectionRegistry;
   }
@@ -312,10 +314,12 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
   public TraversePlan buildExecutionPlan(
       MapSpecifiedSourceToSpecifiedTargetDomainAndClassTraversePlan plan
   ) {
-    Channel channel = spaceRepository.findChannel(plan.source().domain(), plan.targetDomain());
+    Domain sourceDomain = plan.source().domain();
+    Channel channel = findChannel(sourceDomain, plan.targetDomain());
     if (channel == null) {
       return null;
     }
+
     ExecutionTraversePlan executionPlan = buildExecutionTraversePlan(
         plan.type(), channel.rid(), plan.source(), ReflectionForms.Reflection
     );
@@ -337,6 +341,17 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
       }
     }
     return executionPlan;
+  }
+
+  private @Nullable Channel findChannel(Domain sourceDomain, Domain targetDomain) {
+    Channel channel = ontologyRepository.findChannel(sourceDomain, targetDomain);
+    if (channel == null && sourceDomain.foreignDomainName() != null) {
+      Domain foreignSourceDomain = ontologyRepository.findDomain(sourceDomain.foreignDomainName());
+      if (foreignSourceDomain != null) {
+        channel = ontologyRepository.findChannel(foreignSourceDomain, targetDomain);
+      }
+    }
+    return channel;
   }
 
   private ExecutionTraversePlan buildExecutionTraversePlan(

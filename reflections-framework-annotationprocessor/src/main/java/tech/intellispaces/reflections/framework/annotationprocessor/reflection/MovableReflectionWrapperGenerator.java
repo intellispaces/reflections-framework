@@ -44,6 +44,7 @@ import tech.intellispaces.reflections.framework.reflection.ReflectionRealization
 import tech.intellispaces.reflections.framework.reflection.ReflectionRealizationType;
 import tech.intellispaces.reflections.framework.reflection.ReflectionRealizationTypes;
 import tech.intellispaces.reflections.framework.space.channel.ChannelFunctions;
+import tech.intellispaces.reflections.framework.space.domain.DomainFunctions;
 import tech.intellispaces.reflections.framework.system.Modules;
 import tech.intellispaces.reflections.framework.system.ReflectionWrapper;
 import tech.intellispaces.reflections.framework.traverse.MappingOfMovingTraverse;
@@ -136,7 +137,7 @@ public class MovableReflectionWrapperGenerator extends AbstractReflectionWrapper
 
     addVariable("didBase64", Base64Functions.createUrlNoPadding(domainRid.raw()));
     addVariable("didOrigin", domainRid.toString());
-    addVariable("domainName", domainType.canonicalName());
+    addVariable("domainName", DomainFunctions.getDomainName(domainType));
     addVariable("typeParamsFull", typeParamsFull);
     addVariable("typeParamsBrief", typeParamsBrief);
     addVariable("domainClassSimpleName", domainSimpleClassName);

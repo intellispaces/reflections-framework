@@ -26,9 +26,9 @@ public class DefaultEngineFactory implements EngineFactory {
 
     @Override
     public Engine create(String[] args, Map<String, Object> engineAttributes) {
-        OntologyRepository spaceRepository = getSpaceRepository(engineAttributes);
+        OntologyRepository ontologyRepository = getSpaceRepository(engineAttributes);
 
-        FactoryRegistry factoryRegistry = new LocalFactoryRegistry();
+        FactoryRegistry factoryRegistry = new LocalFactoryRegistry(ontologyRepository);
         ProjectionRegistry projectionRegistry = new LocalProjectionRegistry();
         ReflectionRegistry reflectionRegistry = new HashMapReflectionRegistry();
 
@@ -36,7 +36,7 @@ public class DefaultEngineFactory implements EngineFactory {
         AutoGuideRegistry autoGuideRegistry = new AutoGuideRegistry();
 
         TraverseAnalyzer traverseAnalyzer = new TraverseAnalyzerImpl(
-            spaceRepository,
+            ontologyRepository,
             guideRegistry,
             reflectionRegistry
         );

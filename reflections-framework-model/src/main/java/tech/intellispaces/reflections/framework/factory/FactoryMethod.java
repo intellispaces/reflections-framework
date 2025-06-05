@@ -4,6 +4,7 @@ import java.util.List;
 
 import tech.intellispaces.actions.Action;
 import tech.intellispaces.commons.type.Type;
+import tech.intellispaces.core.Domain;
 
 /**
  * The factory method description.
@@ -26,9 +27,9 @@ public interface FactoryMethod {
   Type<?> returnedType();
 
   /**
-   * The returned object domain class.
+   * The returned object domain.
    */
-  Class<?> returnedDomainClass();
+  Domain returnedDomain();
 
   /**
    * Contract qualifier names.

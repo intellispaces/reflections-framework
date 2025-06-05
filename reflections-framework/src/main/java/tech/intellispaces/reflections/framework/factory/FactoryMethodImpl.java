@@ -4,12 +4,13 @@ import java.util.List;
 
 import tech.intellispaces.actions.Action;
 import tech.intellispaces.commons.type.Type;
+import tech.intellispaces.core.Domain;
 
 public class FactoryMethodImpl implements FactoryMethod {
   private final Object factoryInstance;
   private final String contractType;
   private final Type<?> returnedType;
-  private final Class<?> returnedDomainClass;
+  private final Domain returnedDomain;
   private final List<String> contractQualifierNames;
   private final List<Type<?>> contractQualifierTypes;
   private final Action action;
@@ -18,7 +19,7 @@ public class FactoryMethodImpl implements FactoryMethod {
       Object factoryInstance,
       String contractType,
       Type<?> returnedType,
-      Class<?> returnedDomainClass,
+      Domain returnedDomain,
       List<String> contractQualifierNames,
       List<Type<?>> contractQualifierTypes,
       Action action
@@ -26,7 +27,7 @@ public class FactoryMethodImpl implements FactoryMethod {
     this.factoryInstance = factoryInstance;
     this.contractType = contractType;
     this.returnedType = returnedType;
-    this.returnedDomainClass = returnedDomainClass;
+    this.returnedDomain = returnedDomain;
     this.contractQualifierNames = contractQualifierNames;
     this.contractQualifierTypes = contractQualifierTypes;
     this.action = action;
@@ -48,8 +49,8 @@ public class FactoryMethodImpl implements FactoryMethod {
   }
 
   @Override
-  public Class<?> returnedDomainClass() {
-    return returnedDomainClass;
+  public Domain returnedDomain() {
+    return returnedDomain;
   }
 
   @Override

@@ -20,7 +20,8 @@ public class LocalClassPathSpaceRepository implements OntologyRepository {
 
   @Override
   public Domain findDomain(String name) {
-    throw NotImplementedExceptions.withCode("iGEHvQ");
+    Optional<Class<?>> domainClass = ClassFunctions.getClass(prefix + name + "Domain");
+    return domainClass.map(DomainFunctions::getDomain).orElse(null);
   }
 
   @Override

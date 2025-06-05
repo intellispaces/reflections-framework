@@ -13,8 +13,10 @@ import java.util.stream.Collectors;
 
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.commons.type.ClassFunctions;
+import tech.intellispaces.commons.type.Types;
 import tech.intellispaces.core.Channel;
 import tech.intellispaces.core.Channels;
+import tech.intellispaces.core.Domains;
 import tech.intellispaces.core.Rid;
 import tech.intellispaces.core.Rids;
 import tech.intellispaces.javareflection.JavaStatements;
@@ -26,6 +28,7 @@ import tech.intellispaces.javareflection.reference.NamedReference;
 import tech.intellispaces.javareflection.reference.NotPrimitiveReference;
 import tech.intellispaces.javareflection.reference.TypeReference;
 import tech.intellispaces.javareflection.reference.TypeReferenceFunctions;
+import tech.intellispaces.javareflection.type.TypeOf;
 import tech.intellispaces.reflections.framework.annotation.Domain;
 import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
 import tech.intellispaces.reflections.framework.node.ReflectionsNodeFunctions;
@@ -37,12 +40,29 @@ import tech.intellispaces.reflections.framework.space.channel.ChannelFunctions;
  */
 public final class DomainFunctions {
 
-  public static Rid getDomainId(CustomType domain) {
-    return Rids.create(domain.selectAnnotation(Domain.class).orElseThrow().value());
+  public static tech.intellispaces.core.Domain getDomain(Class<?> domainClass) {
+    return Domains.create(
+        getDomainId(domainClass),
+        getDomainName(domainClass),
+        domainClass,
+        Types.get(domainClass)
+    );
   }
 
-  public static String getDomainName(CustomType domain) {
-    return domain.selectAnnotation(Domain.class).orElseThrow().name();
+  public static Rid getDomainId(CustomType domainType) {
+    return Rids.create(domainType.selectAnnotation(Domain.class).orElseThrow().value());
+  }
+
+  public static Rid getDomainId(Class<?> domainClass) {
+    return Rids.create(domainClass.getAnnotation(Domain.class).value());
+  }
+
+  public static String getDomainName(CustomType domainType) {
+    return domainType.selectAnnotation(Domain.class).orElseThrow().name();
+  }
+
+  public static String getDomainName(Class<?> domainClass) {
+    return domainClass.getAnnotation(Domain.class).name();
   }
 
   public static boolean isDomainClass(Class<?> aClass) {

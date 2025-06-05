@@ -14,6 +14,7 @@ import tech.intellispaces.commons.function.Function7;
 import tech.intellispaces.commons.function.Function8;
 import tech.intellispaces.commons.function.Function9;
 import tech.intellispaces.commons.type.Type;
+import tech.intellispaces.reflections.framework.space.domain.DomainFunctions;
 
 public interface FactoryMethods {
 
@@ -28,7 +29,7 @@ public interface FactoryMethods {
         factoryInstance,
         contractType,
         returnType,
-        returnedDomainClass,
+        DomainFunctions.getDomain(returnedDomainClass),
         List.of(),
         List.of(),
         FunctionActions.ofFunction(function)
@@ -48,7 +49,7 @@ public interface FactoryMethods {
         factoryInstance,
         contractType,
         returnType,
-        returnedDomainClass,
+        DomainFunctions.getDomain(returnedDomainClass),
         List.of(qualifierName),
         List.of(qualifierType),
         FunctionActions.ofBiFunction(function)
@@ -68,7 +69,7 @@ public interface FactoryMethods {
         factoryInstance,
         contractType,
         returnType,
-        returnedDomainClass,
+        DomainFunctions.getDomain(returnedDomainClass),
         List.of(qualifierName1, qualifierName2),
         List.of(qualifierType1, qualifierType2),
         FunctionActions.ofFunction3(function)
@@ -89,7 +90,7 @@ public interface FactoryMethods {
         factoryInstance,
         contractType,
         returnType,
-        returnedDomainClass,
+        DomainFunctions.getDomain(returnedDomainClass),
         List.of(qualifierName1, qualifierName2, qualifierName3),
         List.of(qualifierType1, qualifierType2, qualifierType3),
         FunctionActions.ofFunction4(function)
@@ -111,7 +112,7 @@ public interface FactoryMethods {
         factoryInstance,
         contractType,
         returnType,
-        returnedDomainClass,
+        DomainFunctions.getDomain(returnedDomainClass),
         List.of(qualifierName1, qualifierName2, qualifierName3, qualifierName4),
         List.of(qualifierType1, qualifierType2, qualifierType3, qualifierType4),
         FunctionActions.ofFunction5(function)
@@ -134,7 +135,7 @@ public interface FactoryMethods {
         factoryInstance,
         contractType,
         returnType,
-        returnedDomainClass,
+        DomainFunctions.getDomain(returnedDomainClass),
         List.of(qualifierName1, qualifierName2, qualifierName3, qualifierName4, qualifierName5),
         List.of(qualifierType1, qualifierType2, qualifierType3, qualifierType4, qualifierType5),
         FunctionActions.ofFunction6(function)
@@ -158,7 +159,7 @@ public interface FactoryMethods {
         factoryInstance,
         contractType,
         returnType,
-        returnedDomainClass,
+        DomainFunctions.getDomain(returnedDomainClass),
         List.of(qualifierName1, qualifierName2, qualifierName3, qualifierName4, qualifierName5, qualifierName6),
         List.of(qualifierType1, qualifierType2, qualifierType3, qualifierType4, qualifierType5, qualifierType6),
         FunctionActions.ofFunction7(function)
@@ -183,7 +184,7 @@ public interface FactoryMethods {
         factoryInstance,
         contractType,
         returnType,
-        returnedDomainClass,
+        DomainFunctions.getDomain(returnedDomainClass),
         List.of(qualifierName1, qualifierName2, qualifierName3, qualifierName4, qualifierName5, qualifierName6, qualifierName7),
         List.of(qualifierType1, qualifierType2, qualifierType3, qualifierType4, qualifierType5, qualifierType6, qualifierType7),
         FunctionActions.ofFunction8(function)
@@ -209,7 +210,7 @@ public interface FactoryMethods {
         factoryInstance,
         contractType,
         returnType,
-        returnedDomainClass,
+        DomainFunctions.getDomain(returnedDomainClass),
         List.of(qualifierName1, qualifierName2, qualifierName3, qualifierName4, qualifierName5, qualifierName6, qualifierName7, qualifierName8),
         List.of(qualifierType1, qualifierType2, qualifierType3, qualifierType4, qualifierType5, qualifierType6, qualifierType7, qualifierType8),
         FunctionActions.ofFunction9(function)
@@ -236,7 +237,7 @@ public interface FactoryMethods {
         factoryInstance,
         contractType,
         returnType,
-        returnedDomainClass,
+        DomainFunctions.getDomain(returnedDomainClass),
         List.of(qualifierName1, qualifierName2, qualifierName3, qualifierName4, qualifierName5, qualifierName6, qualifierName7, qualifierName8, qualifierName9),
         List.of(qualifierType1, qualifierType2, qualifierType3, qualifierType4, qualifierType5, qualifierType6, qualifierType7, qualifierType8, qualifierType9),
         FunctionActions.ofFunction10(function)

@@ -93,17 +93,17 @@ public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sour
   }
 
   @Override
-  public java.util.List<UnmovableReflection<?>> underlyingReflections() {
-    return (java.util.List<UnmovableReflection<?>>) $handle.underlyingReflections();
+  public java.util.List<SystemReflection> underlyingReflections() {
+    return (java.util.List<SystemReflection>) $handle.underlyingReflections();
   }
 
   @Override
-  public UnmovableReflection<?> overlyingReflection() {
-    return (UnmovableReflection<?>) $handle.overlyingReflection();
+  public SystemReflection overlyingReflection() {
+    return (SystemReflection) $handle.overlyingReflection();
   }
 
   @Override
-  public void setOverlyingReflection(Reflection<?> overlyingReflection) {
+  public void setOverlyingReflection(SystemReflection overlyingReflection) {
     throw NotImplementedExceptions.withCode("Gxgitg");
   }
 

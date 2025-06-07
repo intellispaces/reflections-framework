@@ -24,7 +24,6 @@ import tech.intellispaces.reflections.framework.annotation.Projection;
 import tech.intellispaces.reflections.framework.exception.ConfigurationException;
 import tech.intellispaces.reflections.framework.exception.ConfigurationExceptions;
 import tech.intellispaces.reflections.framework.exception.CyclicDependencyExceptions;
-import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
 import tech.intellispaces.reflections.framework.system.projection.DirectProjectionDefinition;
 import tech.intellispaces.reflections.framework.system.projection.ModuleProjectionImpl;
 import tech.intellispaces.reflections.framework.system.projection.ProjectionDefinitionKinds;
@@ -160,10 +159,6 @@ public class LocalProjectionRegistry implements ProjectionRegistry {
       return (T) projection.target();
     }
     if (!ClassFunctions.isCompatibleClasses(type, projection.type())) {
-      T downgradedProjection = ReflectionFunctions.tryDowngrade(projection.target(), type);
-      if (downgradedProjection != null) {
-        return downgradedProjection;
-      }
       return null;
     }
     return (T) projection.target();

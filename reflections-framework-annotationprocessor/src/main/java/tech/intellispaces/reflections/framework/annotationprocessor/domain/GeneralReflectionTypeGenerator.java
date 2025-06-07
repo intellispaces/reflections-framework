@@ -1,5 +1,6 @@
 package tech.intellispaces.reflections.framework.annotationprocessor.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -9,10 +10,14 @@ import tech.intellispaces.commons.text.StringFunctions;
 import tech.intellispaces.commons.type.Type;
 import tech.intellispaces.commons.type.Types;
 import tech.intellispaces.javareflection.customtype.CustomType;
+import tech.intellispaces.javareflection.instance.AnnotationInstance;
 import tech.intellispaces.javareflection.method.MethodStatement;
 import tech.intellispaces.javareflection.reference.CustomTypeReference;
+import tech.intellispaces.javareflection.reference.NotPrimitiveReference;
+import tech.intellispaces.javareflection.reference.TypeReferenceFunctions;
 import tech.intellispaces.reflections.framework.ArtifactType;
 import tech.intellispaces.reflections.framework.annotation.Channel;
+import tech.intellispaces.reflections.framework.annotation.Customizer;
 import tech.intellispaces.reflections.framework.annotation.Reflection;
 import tech.intellispaces.reflections.framework.artifact.ArtifactTypes;
 import tech.intellispaces.reflections.framework.channel.Channel1;
@@ -22,6 +27,7 @@ import tech.intellispaces.reflections.framework.reflection.MovabilityType;
 import tech.intellispaces.reflections.framework.reflection.MovabilityTypes;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForms;
+import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
 import tech.intellispaces.reflections.framework.space.channel.ChannelFunctions;
 import tech.intellispaces.reflections.framework.space.domain.DomainFunctions;
 import tech.intellispaces.reflections.framework.traverse.MappingTraverse;
@@ -95,7 +101,36 @@ public class GeneralReflectionTypeGenerator extends AbstractReflectionFormGenera
     addVariable("primaryDomainTypeArguments", primaryDomainTypeArguments);
     addVariable("primaryDomainSimpleName", primaryDomainSimpleName);
     addVariable("simpleObject", getSimpleObjectClassName());
+    addVariable("parents", getParents(context));
     return true;
+  }
+
+  private List<String> getParents(ArtifactGeneratorContext context) {
+    var parents = new ArrayList<String>();
+    for (CustomTypeReference parent : sourceArtifact().parentTypes()) {
+      parents.add(
+          ReflectionFunctions.getObjectFormDeclaration(
+              parent, ReflectionForms.Reflection, MovabilityTypes.General, false, this::addImportAndGetSimpleName)
+      );
+    }
+    addCustomizerParents(parents, context);
+    return parents;
+  }
+
+  private void addCustomizerParents(List<String> parents, ArtifactGeneratorContext context) {
+    List<CustomType> customizers = findCustomizers(sourceArtifact(), context.initialRoundEnvironment());
+    for (CustomType customizer : customizers) {
+      AnnotationInstance annotation = customizer.selectAnnotation(Customizer.class.getCanonicalName()).orElseThrow();
+      CustomType domain = annotation.valueOf("origin").orElseThrow().asClass().orElseThrow().type();
+      Map<String, NotPrimitiveReference> parentTypeArgumentMapping = TypeReferenceFunctions.getTypeArgumentMapping(
+          sourceArtifact(), domain
+      );
+      for (CustomTypeReference customizerParent : customizer.parentTypes()) {
+        parents.add(
+            customizerParent.effective(parentTypeArgumentMapping).actualDeclaration(this::addImportAndGetSimpleName)
+        );
+      }
+    }
   }
 
   private String getSimpleObjectClassName() {

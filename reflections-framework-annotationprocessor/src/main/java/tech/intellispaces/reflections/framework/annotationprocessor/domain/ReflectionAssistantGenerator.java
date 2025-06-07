@@ -57,8 +57,6 @@ public class ReflectionAssistantGenerator extends ReflectionsArtifactGenerator {
 
     addVariable("handleSimpleName", addImportAndGetSimpleName(NameConventionFunctions.getObjectAssistantHandleCanonicalName(sourceArtifact())));
     addVariable("isDataset", AnnotationFunctions.isAssignableAnnotation(sourceArtifact(), Dataset.class));
-    addVariable("regularFirstLetterLowercaseSimpleName",
-        StringFunctions.lowercaseFirstLetter(StringFunctions.removeTailOrElseThrow(sourceArtifactSimpleName(), "Domain")));
     addVariable("datasetBuilderSimpleName",
         addImportAndGetSimpleName(NameConventionFunctions.getDatasetBuilderCanonicalName(sourceArtifact().className())));
     addVariable("generalReflectionSimpleName",
@@ -71,14 +69,14 @@ public class ReflectionAssistantGenerator extends ReflectionsArtifactGenerator {
   void addTypeParamVariables() {
     addVariable("typeParamsFull", ReflectionFunctions.getObjectFormTypeParamDeclaration(
         sourceArtifact(),
-        ReflectionForms.Regular,
+        ReflectionForms.Reflection,
         MovabilityTypes.General,
         this::addImportAndGetSimpleName,
         true,
         true));
     addVariable("typeParamsBrief", ReflectionFunctions.getObjectFormTypeParamDeclaration(
         sourceArtifact(),
-        ReflectionForms.Regular,
+        ReflectionForms.Reflection,
         MovabilityTypes.General,
         this::addImportAndGetSimpleName,
         true,

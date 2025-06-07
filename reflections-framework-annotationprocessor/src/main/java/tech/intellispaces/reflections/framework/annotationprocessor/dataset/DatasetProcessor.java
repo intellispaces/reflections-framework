@@ -35,7 +35,7 @@ public class DatasetProcessor extends ArtifactProcessor {
   @Override
   public List<ArtifactGenerator> makeGenerators(CustomType domainType, ArtifactGeneratorContext jobContext) {
     return List.of(
-        new UnmovableDatasetGenerator(domainType),
+        new DatasetGenerator(domainType),
         new DatasetBuilderGenerator(domainType)
     );
   }

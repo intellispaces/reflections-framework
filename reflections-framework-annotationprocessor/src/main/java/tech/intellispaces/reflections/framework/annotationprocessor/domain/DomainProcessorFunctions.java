@@ -11,13 +11,11 @@ import tech.intellispaces.annotationprocessor.ArtifactValidator;
 import tech.intellispaces.commons.object.Objects;
 import tech.intellispaces.javareflection.customtype.CustomType;
 import tech.intellispaces.javareflection.method.MethodStatement;
-import tech.intellispaces.javareflection.reference.CustomTypeReference;
 import tech.intellispaces.reflections.framework.annotation.AnnotationProcessor;
 import tech.intellispaces.reflections.framework.annotation.Channel;
 import tech.intellispaces.reflections.framework.annotation.Ignore;
 import tech.intellispaces.reflections.framework.annotationprocessor.AnnotationFunctions;
 import tech.intellispaces.reflections.framework.artifact.ArtifactTypes;
-import tech.intellispaces.reflections.framework.node.ReflectionsNodeFunctions;
 
 import static tech.intellispaces.javareflection.customtype.AnnotationFunctions.allAnnotationsOf;
 
@@ -40,9 +38,7 @@ public interface DomainProcessorFunctions {
         }
       }
     }
-    addSimpleObjectGenerators(domainType, generators, context.initialRoundEnvironment());
     addReflectionGenerators(domainType, generators, context.initialRoundEnvironment());
-    addDownwardReflectionGenerators(domainType, generators);
     addAttachedAnnotationGenerators(domainType, generators, context);
     addObjectAssistantGenerators(domainType, generators);
     return generators;
@@ -67,20 +63,6 @@ public interface DomainProcessorFunctions {
     }
   }
 
-  private static void addSimpleObjectGenerators(
-      CustomType domainType, List<ArtifactGenerator> generators, RoundEnvironment roundEnv
-  ) {
-    if (AnnotationFunctions.isAutoGenerationEnabled(domainType, ArtifactTypes.RegularObject, roundEnv)) {
-      generators.add(new GeneralRegularFormGenerator(domainType));
-    }
-    if (AnnotationFunctions.isAutoGenerationEnabled(domainType, ArtifactTypes.MovableRegularObject, roundEnv)) {
-      generators.add(new MovableRegularFormGenerator(domainType));
-    }
-    if (AnnotationFunctions.isAutoGenerationEnabled(domainType, ArtifactTypes.UnmovableRegularObject, roundEnv)) {
-      generators.add(new UnmovableRegularFormGenerator(domainType));
-    }
-  }
-
   private static void addReflectionGenerators(
       CustomType domainType, List<ArtifactGenerator> generators, RoundEnvironment roundEnv
   ) {
@@ -93,25 +75,6 @@ public interface DomainProcessorFunctions {
         AnnotationFunctions.isAutoGenerationEnabled(domainType, ArtifactTypes.MovableReflection, roundEnv)
     ) {
       generators.add(new MovableReflectionTypeGenerator(domainType));
-    }
-    if (
-        AnnotationFunctions.isAutoGenerationEnabled(domainType, ArtifactTypes.UnmovableReflection, roundEnv)
-    ) {
-      generators.add(new UnmovableReflectionTypeGenerator(domainType));
-    }
-  }
-
-  private static void addDownwardReflectionGenerators(
-      CustomType domainType, List<ArtifactGenerator> generators
-  ) {
-    if (ReflectionsNodeFunctions.ontologyReference().getDomainByClassName(domainType.className()) != null) {
-      return;
-    }
-
-    List<CustomTypeReference> superDomains = domainType.parentTypes();
-    for (CustomTypeReference superDomain : superDomains) {
-      generators.add(new UnmovableDownwardObjectGenerator(domainType, superDomain));
-      generators.add(new MovableDownwardObjectGenerator(domainType, superDomain));
     }
   }
 

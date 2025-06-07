@@ -80,17 +80,17 @@ public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sour
   }
 
   @Override
-  public java.util.List<MovableReflection<?>> underlyingReflections() {
-    return (java.util.List<MovableReflection<?>>) $handle.underlyingReflections();
+  public java.util.List<MovableReflection> underlyingReflections() {
+    return (java.util.List<MovableReflection>) $handle.underlyingReflections();
   }
 
   @Override
-  public MovableReflection<?> overlyingReflection() {
-    return (MovableReflection<?>) $handle.overlyingReflection();
+  public MovableReflection overlyingReflection() {
+    return (MovableReflection) $handle.overlyingReflection();
   }
 
   @Override
-  public void setOverlyingReflection(Reflection<?> overlyingReflection) {
+  public void setOverlyingReflection(SystemReflection overlyingReflection) {
     $handle.setOverlyingReflection(overlyingReflection);
   }
 
@@ -110,29 +110,29 @@ public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sour
   }
 
 {{when $isAlias}}
-  @Override
-  public {{$generatedArtifactSimpleName}}{{$typeParamsBrief}} moveThru(ChannelFunction0<{{$primaryDomainSimpleName}}{{$primaryDomainTypeArguments}}, {{$primaryDomainSimpleName}}{{$primaryDomainTypeArguments}}> channelMethod) throws TraverseException {
-    var cid = ChannelFunctions.getChannelId({{$domainClassSimpleName}}.class, channelMethod);
-    return Modules.current().moveThruChannel0(this, cid);
-  }
+//  @Override
+//  public {{$generatedArtifactSimpleName}}{{$typeParamsBrief}} moveThru(ChannelFunction0<{{$primaryDomainSimpleName}}{{$primaryDomainTypeArguments}}, {{$primaryDomainSimpleName}}{{$primaryDomainTypeArguments}}> channelMethod) throws TraverseException {
+//    var cid = ChannelFunctions.getChannelId({{$domainClassSimpleName}}.class, channelMethod);
+//    return Modules.current().moveThruChannel0(this, cid);
+//  }
 
-  @Override
-  public <Q> {{$generatedArtifactSimpleName}}{{$typeParamsBrief}} moveThru(ChannelFunction1<{{$primaryDomainSimpleName}}{{$primaryDomainTypeArguments}}, {{$primaryDomainSimpleName}}{{$primaryDomainTypeArguments}}, Q> channelMethod, Q qualifier) throws TraverseException {
-    var cid = ChannelFunctions.getChannelId({{$domainClassSimpleName}}.class, channelMethod, null);
-    return Modules.current().moveThruChannel1(this, cid, qualifier);
-  }
+//  @Override
+//  public <Q> {{$generatedArtifactSimpleName}}{{$typeParamsBrief}} moveThru(ChannelFunction1<{{$primaryDomainSimpleName}}{{$primaryDomainTypeArguments}}, {{$primaryDomainSimpleName}}{{$primaryDomainTypeArguments}}, Q> channelMethod, Q qualifier) throws TraverseException {
+//    var cid = ChannelFunctions.getChannelId({{$domainClassSimpleName}}.class, channelMethod, null);
+//    return Modules.current().moveThruChannel1(this, cid, qualifier);
+//  }
 {{else}}
-  @Override
-  public {{$generatedArtifactSimpleName}}{{$typeParamsBrief}} moveThru(ChannelFunction0<{{$domainClassSimpleName}}{{$typeParamsBrief}}, {{$domainClassSimpleName}}{{$typeParamsBrief}}> channelMethod) throws TraverseException {
-    var cid = ChannelFunctions.getChannelId({{$domainClassSimpleName}}.class, channelMethod);
-    return Modules.current().moveThruChannel0(this, cid);
-  }
-
-  @Override
-  public <Q> {{$generatedArtifactSimpleName}}{{$typeParamsBrief}} moveThru(ChannelFunction1<{{$domainClassSimpleName}}{{$typeParamsBrief}}, {{$domainClassSimpleName}}{{$typeParamsBrief}}, Q> channelMethod, Q qualifier) throws TraverseException {
-    var cid = ChannelFunctions.getChannelId({{$domainClassSimpleName}}.class, channelMethod, null);
-    return Modules.current().moveThruChannel1(this, cid, qualifier);
-  }
+//  @Override
+//  public {{$generatedArtifactSimpleName}}{{$typeParamsBrief}} moveThru(ChannelFunction0<{{$domainClassSimpleName}}{{$typeParamsBrief}}, {{$domainClassSimpleName}}{{$typeParamsBrief}}> channelMethod) throws TraverseException {
+//    var cid = ChannelFunctions.getChannelId({{$domainClassSimpleName}}.class, channelMethod);
+//    return Modules.current().moveThruChannel0(this, cid);
+//  }
+//
+//  @Override
+//  public <Q> {{$generatedArtifactSimpleName}}{{$typeParamsBrief}} moveThru(ChannelFunction1<{{$domainClassSimpleName}}{{$typeParamsBrief}}, {{$domainClassSimpleName}}{{$typeParamsBrief}}, Q> channelMethod, Q qualifier) throws TraverseException {
+//    var cid = ChannelFunctions.getChannelId({{$domainClassSimpleName}}.class, channelMethod, null);
+//    return Modules.current().moveThruChannel1(this, cid, qualifier);
+//  }
 {{end}}
 
   @Override
@@ -153,25 +153,25 @@ public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sour
   }
 
 {{when $isAlias}}
-  @Override
-  public <R> R mapOfMovingThru(ChannelFunction0<{{$primaryDomainSimpleName}}{{$primaryDomainTypeArguments}}, R> channelMethod) throws TraverseException {
-    throw NotImplementedExceptions.withCode("cuDSAA");
-  }
-
-  @Override
-  public <R, Q> R mapOfMovingThru(ChannelFunction1<{{$primaryDomainSimpleName}}{{$primaryDomainTypeArguments}}, R, Q> channelMethod, Q qualifier) throws TraverseException {
-    throw NotImplementedExceptions.withCode("PZX5vA");
-  }
+//  @Override
+//  public <R> R mapOfMovingThru(ChannelFunction0<{{$primaryDomainSimpleName}}{{$primaryDomainTypeArguments}}, R> channelMethod) throws TraverseException {
+//    throw NotImplementedExceptions.withCode("cuDSAA");
+//  }
+//
+//  @Override
+//  public <R, Q> R mapOfMovingThru(ChannelFunction1<{{$primaryDomainSimpleName}}{{$primaryDomainTypeArguments}}, R, Q> channelMethod, Q qualifier) throws TraverseException {
+//    throw NotImplementedExceptions.withCode("PZX5vA");
+//  }
 {{else}}
-  @Override
-  public <R> R mapOfMovingThru(ChannelFunction0<{{$domainClassSimpleName}}{{$typeParamsBrief}}, R> channelMethod) throws TraverseException {
-    throw NotImplementedExceptions.withCode("cuDSAA");
-  }
-
-  @Override
-  public <R, Q> R mapOfMovingThru(ChannelFunction1<{{$domainClassSimpleName}}{{$typeParamsBrief}}, R, Q> channelMethod, Q qualifier) throws TraverseException {
-    throw NotImplementedExceptions.withCode("PZX5vA");
-  }
+//  @Override
+//  public <R> R mapOfMovingThru(ChannelFunction0<{{$domainClassSimpleName}}{{$typeParamsBrief}}, R> channelMethod) throws TraverseException {
+//    throw NotImplementedExceptions.withCode("cuDSAA");
+//  }
+//
+//  @Override
+//  public <R, Q> R mapOfMovingThru(ChannelFunction1<{{$domainClassSimpleName}}{{$typeParamsBrief}}, R, Q> channelMethod, Q qualifier) throws TraverseException {
+//    throw NotImplementedExceptions.withCode("PZX5vA");
+//  }
 {{end}}
 
   @Override

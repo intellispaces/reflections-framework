@@ -19,7 +19,6 @@ import tech.intellispaces.javareflection.reference.TypeReference;
 import tech.intellispaces.reflections.framework.ArtifactType;
 import tech.intellispaces.reflections.framework.annotation.Movable;
 import tech.intellispaces.reflections.framework.annotation.Ordinal;
-import tech.intellispaces.reflections.framework.annotation.Unmovable;
 import tech.intellispaces.reflections.framework.annotation.Wrapper;
 import tech.intellispaces.reflections.framework.artifact.ArtifactTypes;
 import tech.intellispaces.reflections.framework.channel.Channel0;
@@ -36,7 +35,7 @@ import tech.intellispaces.reflections.framework.reflection.MovabilityTypes;
 import tech.intellispaces.reflections.framework.reflection.MovableReflection;
 import tech.intellispaces.reflections.framework.reflection.OverlyingReflectionController;
 import tech.intellispaces.reflections.framework.reflection.PostRegistrationReflectionHandler;
-import tech.intellispaces.reflections.framework.reflection.Reflection;
+import tech.intellispaces.reflections.framework.reflection.SystemReflection;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForms;
 import tech.intellispaces.reflections.framework.reflection.ReflectionHandle;
@@ -85,7 +84,7 @@ public class MovableReflectionWrapperGenerator extends AbstractReflectionWrapper
 
   @Override
   protected List<ArtifactType> relatedArtifactTypes() {
-    return List.of(ArtifactTypes.MovableObjectWrapper, ArtifactTypes.Reflection, ArtifactTypes.RegularObject);
+    return List.of(ArtifactTypes.MovableObjectWrapper, ArtifactTypes.Reflection);
   }
 
   @Override
@@ -96,7 +95,7 @@ public class MovableReflectionWrapperGenerator extends AbstractReflectionWrapper
         Type.class,
         Types.class,
         Modules.class,
-        Reflection.class,
+        SystemReflection.class,
         ReflectionWrapper.class,
         MovableReflection.class,
         OverlyingReflectionController.class,
@@ -132,7 +131,7 @@ public class MovableReflectionWrapperGenerator extends AbstractReflectionWrapper
     analyzeConstructors();
     analyzeInjectedGuides();
     analyzeReflectionMethods();
-    analyzeConversionMethods(domainType);
+//    analyzeConversionMethods(domainType);
     analyzeUnbindMethod();
 
     addVariable("didBase64", Base64Functions.createUrlNoPadding(domainRid.raw()));
@@ -165,8 +164,6 @@ public class MovableReflectionWrapperGenerator extends AbstractReflectionWrapper
       sb.append(buildObjectFormDeclaration(dDomainTypeReference, ReflectionForms.Reflection, MovabilityTypes.Movable, true));
     } else if (method.hasAnnotation(Movable.class) || NameConventionFunctions.isConversionMethod(method)) {
       sb.append(buildObjectFormDeclaration(domainReturnType, ReflectionForms.Reflection, MovabilityTypes.Movable, true));
-    } else if (method.hasAnnotation(Unmovable.class)) {
-      sb.append(buildObjectFormDeclaration(domainReturnType, ReflectionForms.Reflection, MovabilityTypes.Unmovable, true));
     } else {
       sb.append(buildObjectFormDeclaration(domainReturnType, ReflectionForms.Reflection, MovabilityTypes.General, true));
     }

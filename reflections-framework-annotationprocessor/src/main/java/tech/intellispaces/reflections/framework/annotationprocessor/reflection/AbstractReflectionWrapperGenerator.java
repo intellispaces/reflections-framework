@@ -1,7 +1,6 @@
 package tech.intellispaces.reflections.framework.annotationprocessor.reflection;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,7 +11,6 @@ import java.util.function.Function;
 import tech.intellispaces.actions.runnable.RunnableAction;
 import tech.intellispaces.actions.text.StringActions;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
-import tech.intellispaces.commons.text.StringFunctions;
 import tech.intellispaces.commons.type.ClassFunctions;
 import tech.intellispaces.commons.type.ClassNameFunctions;
 import tech.intellispaces.commons.type.PrimitiveTypes;
@@ -70,7 +68,16 @@ abstract class AbstractReflectionWrapperGenerator extends AbstractReflectionForm
         .filter(m -> !m.isDefault())
         .filter(m -> excludeDeepConversionMethods(m, domainType))
         .filter(DomainFunctions::isNotDomainClassGetter)
+        .filter(this::isReflectionReturnType)
         .toList();
+  }
+
+  private boolean isReflectionReturnType(MethodStatement method) {
+    TypeReference returnType = method.returnType().orElseThrow();
+    if (returnType.isCustomTypeReference()) {
+      return DomainFunctions.isDomainType(returnType.asCustomTypeReferenceOrElseThrow().targetType());
+    }
+    return true;
   }
 
   @SuppressWarnings("unchecked,rawtypes")
@@ -191,12 +198,6 @@ abstract class AbstractReflectionWrapperGenerator extends AbstractReflectionForm
     }
 
     List<MethodStatement> reflectionMethods = sourceArtifact().actualMethods();
-    if (NameConventionFunctions.isConversionMethod(domainMethod)) {
-      this.methodDescriptions.add(buildTraverseMethodDescriptions(domainMethod, targetForm, methodOrdinal));
-      this.methodDescriptions.add(buildConversionGuideMethodDescriptions(domainMethod, methodOrdinal));
-      return;
-    }
-
     this.methodDescriptions.add(buildTraverseMethodDescriptions(domainMethod, targetForm, methodOrdinal));
     MethodStatement guideMethod = findGuideMethod(domainMethod, reflectionMethods, targetForm);
     if (guideMethod != null && !guideMethod.isAbstract()) {
@@ -292,7 +293,7 @@ abstract class AbstractReflectionWrapperGenerator extends AbstractReflectionForm
     for (int i = 0; i < domainMethodParams.size(); i++) {
       MethodParam domainParam = domainMethodParams.get(i);
       String domainMethodParamDeclaration = ReflectionFunctions.getObjectFormDeclaration(
-          domainParam.type(), ReflectionForms.Regular, MovabilityTypes.General, true, false, Function.identity()
+          domainParam.type(), ReflectionForms.Reflection, MovabilityTypes.General, true, false, Function.identity()
       );
 
       MethodParam guideParam = guideMethodParams.get(i);
@@ -344,23 +345,6 @@ abstract class AbstractReflectionWrapperGenerator extends AbstractReflectionForm
     return map;
   }
 
-  private Map<String, Object> buildConversionGuideMethodDescriptions(
-      MethodStatement domainMethod, int ordinal
-  ) {
-    var map = new HashMap<String, Object>();
-
-    CustomTypeReference parentType = domainMethod.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow();
-    String methodName = "$as" +
-        StringFunctions.capitalizeFirstLetter(StringFunctions.removeTailOrElseThrow(parentType.targetType().simpleName(), "Domain")) +
-        "Guide";
-    map.put("name", methodName);
-
-    map.put("params", List.of());
-    map.put("purpose", ReflectionRealizationMethodPurposes.GuideMethod.name());
-    map.put("traverseOrdinal", ordinal);
-    return map;
-  }
-
   private Map<String, Object> buildAutoGuideInjectionMethodDescriptions(
       MethodStatement injectionMethod, int ordinal
   ) {
@@ -399,7 +383,7 @@ abstract class AbstractReflectionWrapperGenerator extends AbstractReflectionForm
     }
     return ReflectionFunctions.getObjectFormDeclaration(
         AnnotationGeneratorFunctions.normalizeType(type),
-        ReflectionForms.Regular,
+        ReflectionForms.Reflection,
         MovabilityTypes.General,
         false,
         true,
@@ -537,48 +521,5 @@ abstract class AbstractReflectionWrapperGenerator extends AbstractReflectionForm
     } else {
       throw UnexpectedExceptions.withMessage("Unsupported guide form - {0}", targetForm);
     }
-  }
-
-  protected void analyzeConversionMethods(CustomType domain) {
-    Collection<CustomTypeReference> superDomains = DomainFunctions.getEffectiveSuperDomains(domain);
-    superDomains.stream()
-        .map(this::buildConversionMethod)
-        .forEach(conversionMethods::add);
-  }
-
-  private Map<String, String> buildConversionMethod(CustomTypeReference superDomain) {
-    var sb = new StringBuilder();
-    sb.append("private ");
-    sb.append(buildObjectFormDeclaration(superDomain, getForm(), getMovabilityType(), true));
-    sb.append(" $");
-    sb.append(NameConventionFunctions.getConversionMethodName(superDomain));
-    sb.append("Guide() {\n");
-    sb.append("  return ");
-
-    if (hasSuperDomain(superDomain)) {
-      sb.append("new ");
-      Optional<CustomTypeReference> aliasBaseDomain = DomainFunctions.getAliasBaseDomain(domainType);
-      CustomType actualDomain = aliasBaseDomain.isPresent() ? aliasBaseDomain.get().targetType() : domainType;
-      sb.append(addImportAndGetSimpleName(
-          NameConventionFunctions.getDownwardReflectionTypename(actualDomain, superDomain.targetType(), getMovabilityType())
-      ));
-      sb.append("(this);");
-    } else {
-      String chain = DomainFunctions.buildConversionMethodsChain(domainType, superDomain.targetType());
-      sb.append("this");
-      sb.append(chain);
-      sb.append(";");
-    }
-    sb.append("\n}");
-    return Map.of("declaration", sb.toString());
-  }
-
-  private boolean hasSuperDomain(CustomTypeReference domain) {
-    for (CustomTypeReference superDomain : domainType.parentTypes()) {
-      if (superDomain.targetType().canonicalName().equals(domain.targetType().canonicalName())) {
-        return true;
-      }
-    }
-    return false;
   }
 }

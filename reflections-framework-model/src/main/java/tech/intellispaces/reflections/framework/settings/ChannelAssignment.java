@@ -3,7 +3,7 @@ package tech.intellispaces.reflections.framework.settings;
 import tech.intellispaces.commons.abstraction.Enumerable;
 
 /**
- * The basic domain type.
+ * The channel assignment.
  */
-public interface DomainType extends Enumerable<DomainType> {
+public interface ChannelAssignment extends Enumerable<ChannelAssignment> {
 }

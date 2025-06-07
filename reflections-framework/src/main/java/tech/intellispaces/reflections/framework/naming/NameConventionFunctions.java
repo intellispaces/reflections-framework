@@ -22,14 +22,10 @@ import tech.intellispaces.reflections.framework.reflection.MovabilityTypes;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForms;
 import tech.intellispaces.reflections.framework.settings.DomainReference;
-import tech.intellispaces.reflections.framework.settings.DomainTypes;
+import tech.intellispaces.reflections.framework.settings.DomainAssignments;
 import tech.intellispaces.reflections.framework.space.channel.ChannelFunctions;
 
 public interface NameConventionFunctions {
-
-  static boolean isDomainName(String canonicalName) {
-    return canonicalName.endsWith(DOMAIN);
-  }
 
   static String convertToChannelClassName(String channelName) {
     return channelName + CHANNEL;
@@ -37,7 +33,6 @@ public interface NameConventionFunctions {
 
   static String getDomainNameOfRegularObjectForm(String objectCanonicalName) {
     String simpleName = ClassNameFunctions.getSimpleName(objectCanonicalName);
-    simpleName = StringFunctions.removeHeadIfPresent(simpleName, UNMOVABLE);
     simpleName = StringFunctions.removeHeadIfPresent(simpleName, MOVABLE);
     simpleName = simpleName + DOMAIN;
     return ClassNameFunctions.replaceSimpleName(objectCanonicalName, simpleName);
@@ -47,15 +42,9 @@ public interface NameConventionFunctions {
         String domainClassName, ReflectionForm objectForm, MovabilityType movabilityType, boolean replaceDomainWithDelegate
   ) {
     return switch (ReflectionForms.of(objectForm)) {
-      case Regular -> switch (MovabilityTypes.of(movabilityType)) {
-        case General -> getGeneralRegularFormClassName(domainClassName, replaceDomainWithDelegate);
-        case Movable -> getMovableRegularFormTypeName(domainClassName, replaceDomainWithDelegate);
-        case Unmovable -> getUnmovableRegularFormTypeName(domainClassName, replaceDomainWithDelegate);
-      };
       case Reflection -> switch (MovabilityTypes.of(movabilityType)) {
         case General -> getGeneralReflectionTypeName(domainClassName, replaceDomainWithDelegate);
         case Movable -> getMovableReflectionTypeName(domainClassName, replaceDomainWithDelegate);
-        case Unmovable -> getUnmovableReflectionTypeName(domainClassName, replaceDomainWithDelegate);
       };
       case Primitive -> throw NotImplementedExceptions.withCode("LXc75Q");
       case PrimitiveWrapper -> throw NotImplementedExceptions.withCode("XGDuuQ");
@@ -87,40 +76,22 @@ public interface NameConventionFunctions {
         domainClassName = domain.classCanonicalName();
       }
     }
-    return StringFunctions.replaceTailOrElseThrow(transformClassName(domainClassName), DOMAIN, REFLECTION);
+    return StringFunctions.removeTailOrElseThrow(transformClassName(domainClassName), DOMAIN);
   }
 
   static String getUnmovableReflectionTypeName(String domainClassName) {
-    return ClassNameFunctions.addPrefixToSimpleName(UNMOVABLE,
-        StringFunctions.replaceTailOrElseThrow(transformClassName(domainClassName), DOMAIN, REFLECTION));
-  }
-
-  static String getUnmovableRegularFormTypeName(String domainClassName, boolean replaceDomainWithDelegate) {
-    if (replaceDomainWithDelegate) {
-      DomainReference domain = ReflectionsNodeFunctions.ontologyReference().getDomainByClassName(domainClassName);
-      if (domain != null && domain.delegateClassName() != null && (
-          DomainTypes.Number.is(domain.type()) ||
-              DomainTypes.Short.is(domain.type()) ||
-              DomainTypes.Integer.is(domain.type()) ||
-              DomainTypes.Float.is(domain.type()) ||
-              DomainTypes.Double.is(domain.type())
-      )) {
-        return domain.delegateClassName();
-      }
-    }
-    return ClassNameFunctions.addPrefixToSimpleName(UNMOVABLE,
-        StringFunctions.removeTailOrElseThrow(transformClassName(domainClassName), DOMAIN));
+    return StringFunctions.removeTailOrElseThrow(transformClassName(domainClassName), DOMAIN);
   }
 
   static String getMovableRegularFormTypeName(String domainClassName, boolean replaceDomainWithDelegate) {
     if (replaceDomainWithDelegate) {
       DomainReference domain = ReflectionsNodeFunctions.ontologyReference().getDomainByClassName(domainClassName);
       if (domain != null && domain.delegateClassName() != null && (
-          DomainTypes.Number.is(domain.type()) ||
-              DomainTypes.Short.is(domain.type()) ||
-              DomainTypes.Integer.is(domain.type()) ||
-              DomainTypes.Float.is(domain.type()) ||
-              DomainTypes.Double.is(domain.type())
+          DomainAssignments.Number.is(domain.assignment()) ||
+              DomainAssignments.Short.is(domain.assignment()) ||
+              DomainAssignments.Integer.is(domain.assignment()) ||
+              DomainAssignments.Float.is(domain.assignment()) ||
+              DomainAssignments.Double.is(domain.assignment())
       )) {
         return domain.delegateClassName();
       }
@@ -133,27 +104,27 @@ public interface NameConventionFunctions {
     if (replaceDomainWithDelegate) {
       DomainReference domain = ReflectionsNodeFunctions.ontologyReference().getDomainByClassName(domainClassName);
       if (domain != null && domain.delegateClassName() != null && (
-          DomainTypes.Number.is(domain.type()) ||
-              DomainTypes.Short.is(domain.type()) ||
-              DomainTypes.Integer.is(domain.type()) ||
-              DomainTypes.Float.is(domain.type()) ||
-              DomainTypes.Double.is(domain.type())
+          DomainAssignments.Number.is(domain.assignment()) ||
+              DomainAssignments.Short.is(domain.assignment()) ||
+              DomainAssignments.Integer.is(domain.assignment()) ||
+              DomainAssignments.Float.is(domain.assignment()) ||
+              DomainAssignments.Double.is(domain.assignment())
       )) {
         return domain.delegateClassName();
       }
     }
-    return ClassNameFunctions.addPrefixToSimpleName(UNMOVABLE, getGeneralReflectionTypeName(domainClassName, false));
+    return getGeneralReflectionTypeName(domainClassName, false);
   }
 
   static String getMovableReflectionTypeName(String domainClassName, boolean replaceDomainWithDelegate) {
     if (replaceDomainWithDelegate) {
       DomainReference domain = ReflectionsNodeFunctions.ontologyReference().getDomainByClassName(domainClassName);
       if (domain != null && domain.delegateClassName() != null && (
-          DomainTypes.Number.is(domain.type()) ||
-              DomainTypes.Short.is(domain.type()) ||
-              DomainTypes.Integer.is(domain.type()) ||
-              DomainTypes.Float.is(domain.type()) ||
-              DomainTypes.Double.is(domain.type())
+          DomainAssignments.Number.is(domain.assignment()) ||
+              DomainAssignments.Short.is(domain.assignment()) ||
+              DomainAssignments.Integer.is(domain.assignment()) ||
+              DomainAssignments.Float.is(domain.assignment()) ||
+              DomainAssignments.Double.is(domain.assignment())
       )) {
         return domain.delegateClassName();
       }
@@ -186,8 +157,7 @@ public interface NameConventionFunctions {
   }
 
   static String getUnmovableDatasetClassName(String domainClassName) {
-    return ClassNameFunctions.addPrefixToSimpleName(UNMOVABLE,
-        StringFunctions.replaceTailOrElseThrow(transformClassName(domainClassName), DOMAIN, DATASET));
+    return StringFunctions.replaceTailOrElseThrow(transformClassName(domainClassName), DOMAIN, DATASET);
   }
 
   static String getDatasetBuilderCanonicalName(String domainClassName) {
@@ -207,13 +177,13 @@ public interface NameConventionFunctions {
   }
 
   static String getChannelClassCanonicalName(
-      String spaceName, CustomType domain, MethodStatement channelMethod
+      String spaceName, CustomType sourceDomain, MethodStatement channelMethod
   ) {
     String channelSimpleName = channelMethod.selectAnnotation(Channel.class).orElseThrow().name();
     if (!channelSimpleName.isBlank()) {
       return ClassNameFunctions.joinPackageAndSimpleName(spaceName, channelSimpleName);
     }
-    return assignChannelClassCanonicalName(spaceName, domain, channelMethod);
+    return assignChannelClassCanonicalName(spaceName, sourceDomain, channelMethod);
   }
 
   static String getObjectFactoryWrapperClassName(String objectFactoryClassName) {
@@ -222,55 +192,6 @@ public interface NameConventionFunctions {
 
   static String getFactoriesResourceName() {
     return "META-INF/reflections/factories";
-  }
-
-  static String getUnmovableUpwardObjectTypename(CustomType domainType, CustomType baseDomainType) {
-    String packageName = ClassNameFunctions.getPackageName(domainType.canonicalName());
-    String simpleName = StringFunctions.removeTailOrElseThrow(domainType.simpleName(), DOMAIN) +
-        "BasedOn" +
-        StringFunctions.capitalizeFirstLetter(StringFunctions.removeTailOrElseThrow(baseDomainType.simpleName(), DOMAIN));
-    return ClassNameFunctions.joinPackageAndSimpleName(packageName, simpleName);
-  }
-
-  static String getDownwardReflectionTypename(
-      CustomType domainType, CustomType baseDomainType, MovabilityType movabilityType
-  ) {
-    return switch (MovabilityTypes.of(movabilityType)) {
-      case General -> getGeneralDownwardObjectTypename(domainType, baseDomainType);
-      case Unmovable -> getUnmovableDownwardObjectTypename(domainType, baseDomainType);
-      case Movable -> getMovableDownwardObjectTypename(domainType, baseDomainType);
-    };
-  }
-
-  static String getGeneralDownwardObjectTypename(CustomType domainType, CustomType baseDomainType) {
-    String packageName = ClassNameFunctions.getPackageName(domainType.canonicalName());
-    String simpleName = StringFunctions.capitalizeFirstLetter(StringFunctions.removeTailOrElseThrow(baseDomainType.simpleName(), DOMAIN)) +
-        "BasedOn" + StringFunctions.capitalizeFirstLetter(domainType.simpleName());
-    return ClassNameFunctions.joinPackageAndSimpleName(packageName, simpleName);
-  }
-
-  static String getMovableDownwardObjectTypename(CustomType domainType, CustomType baseDomainType) {
-    String packageName = ClassNameFunctions.getPackageName(domainType.canonicalName());
-    String simpleName = MOVABLE +
-        StringFunctions.capitalizeFirstLetter(StringFunctions.removeTailOrElseThrow(baseDomainType.simpleName(), DOMAIN)) +
-        "BasedOn" + StringFunctions.capitalizeFirstLetter(StringFunctions.removeTailOrElseThrow(domainType.simpleName(), DOMAIN));
-    return ClassNameFunctions.joinPackageAndSimpleName(packageName, simpleName);
-  }
-
-  static String getUnmovableDownwardObjectTypename(CustomType domainType, CustomType baseDomainType) {
-    String packageName = ClassNameFunctions.getPackageName(domainType.canonicalName());
-    String simpleName = UNMOVABLE +
-        StringFunctions.capitalizeFirstLetter(StringFunctions.removeTailOrElseThrow(baseDomainType.simpleName(), DOMAIN)) +
-        "BasedOn" + StringFunctions.capitalizeFirstLetter(StringFunctions.removeTailOrElseThrow(domainType.simpleName(), DOMAIN));
-    return ClassNameFunctions.joinPackageAndSimpleName(packageName, simpleName);
-  }
-
-  static String getMovableDownwardObjectTypename(Class<?> domainClass, Class<?> baseDomainClass) {
-    String packageName = ClassNameFunctions.getPackageName(domainClass.getCanonicalName());
-    String simpleName = MOVABLE +
-        StringFunctions.capitalizeFirstLetter(StringFunctions.removeTailOrElseThrow(baseDomainClass.getSimpleName(), DOMAIN)) +
-        "BasedOn" + StringFunctions.capitalizeFirstLetter(StringFunctions.removeTailOrElseThrow(domainClass.getSimpleName(), DOMAIN));
-    return ClassNameFunctions.joinPackageAndSimpleName(packageName, simpleName);
   }
 
   static String getConversionMethodName(CustomTypeReference reference) {
@@ -293,22 +214,22 @@ public interface NameConventionFunctions {
   }
 
   private static String assignChannelClassCanonicalName(
-      String spaceName, CustomType domainType, MethodStatement channelMethod
+      String spaceName, CustomType sourceDomain, MethodStatement channelMethod
   ) {
     final String simpleName;
     if (channelMethod.owner().hasAnnotation(Ontology.class)) {
       simpleName = getDefaultChannelClassSimpleName(channelMethod);
     } else {
-      simpleName = assumeChannelClassSimpleNameWhenDomainClass(domainType, channelMethod);
+      simpleName = assumeChannelClassSimpleNameWhenDomainClass(sourceDomain, channelMethod);
     }
     return ClassNameFunctions.joinPackageAndSimpleName(spaceName, simpleName);
   }
 
   private static String assumeChannelClassSimpleNameWhenDomainClass(
-      CustomType domainType, MethodStatement channelMethod
+      CustomType sourceDomain, MethodStatement channelMethod
   ) {
     String simpleName = StringFunctions.removeTailOrElseThrow(
-        ClassNameFunctions.getSimpleName(domainType.canonicalName()), DOMAIN
+        ClassNameFunctions.getSimpleName(sourceDomain.canonicalName()), DOMAIN
     );
     if (isMappingTraverseType(channelMethod)) {
       if (isConversionChannel(channelMethod)) {
@@ -396,30 +317,25 @@ public interface NameConventionFunctions {
   }
 
   static String getCustomizerCanonicalName(CustomType originArtifact, ArtifactType targetArtifactType) {
-    final String name = StringFunctions.removeTailOrElseThrow(originArtifact.canonicalName(), DOMAIN);
-    if (isDomainName(originArtifact.canonicalName())) {
-      return switch (ArtifactTypes.of(targetArtifactType)) {
-        case RegularObject -> name + CUSTOMIZER;
-        case MovableRegularObject -> ClassNameFunctions.addPrefixToSimpleName(MOVABLE, name) + CUSTOMIZER;
-        case UnmovableRegularObject -> ClassNameFunctions.addPrefixToSimpleName(UNMOVABLE, name) + CUSTOMIZER;
-        case Reflection -> name + REFLECTION + CUSTOMIZER;
-        case MovableReflection -> name + MOVABLE_REFLECTION + CUSTOMIZER;
-        case UnmovableReflection -> name + UNMOVABLE_REFLECTION + CUSTOMIZER;
-        case ObjectAssistant -> name + ASSISTANT + CUSTOMIZER;
-        default -> name;
-      };
-    }
-    throw NotImplementedExceptions.withCodeAndMessage("9kDR9g", "Origin artifact {0}, target artifact type {}",
-        originArtifact.canonicalName(), targetArtifactType.name());
+    String originArtifactName = originArtifact.canonicalName();
+    return getCustomizerCanonicalName(originArtifactName, targetArtifactType);
+  }
+
+  static String getCustomizerCanonicalName(String originArtifactName, ArtifactType targetArtifactType) {
+    String name = StringFunctions.removeTailOrElseThrow(originArtifactName, DOMAIN);
+    return switch (ArtifactTypes.of(targetArtifactType)) {
+      case Reflection -> name + REFLECTION + CUSTOMIZER;
+      case MovableReflection -> name + MOVABLE_REFLECTION + CUSTOMIZER;
+      case ObjectAssistant -> name + ASSISTANT + CUSTOMIZER;
+      default -> name;
+    };
   }
 
   String DOMAIN = "Domain";
   String CHANNEL = "Channel";
-  String UNMOVABLE = "Unmovable";
   String MOVABLE = "Movable";
   String REFLECTION = "Reflection";
-  String MOVABLE_REFLECTION = MOVABLE + REFLECTION;
-  String UNMOVABLE_REFLECTION = UNMOVABLE + REFLECTION;
+  String MOVABLE_REFLECTION = "Unmovable" + REFLECTION;
   String WRAPPER = "Wrapper";
   String GUIDE = "Guide";
   String AUTO_GUIDE = "AutoGuide";

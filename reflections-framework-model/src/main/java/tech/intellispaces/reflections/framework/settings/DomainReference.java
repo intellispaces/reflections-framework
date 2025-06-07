@@ -1,14 +1,14 @@
 package tech.intellispaces.reflections.framework.settings;
 
 /**
- * The domain reference description.
+ * The domain reference point.
  */
 public interface DomainReference {
 
   /**
-   * The domain type.
+   * The domain assignment.
    */
-  DomainType type();
+  DomainAssignment assignment();
 
   /**
    * The full qualified name.

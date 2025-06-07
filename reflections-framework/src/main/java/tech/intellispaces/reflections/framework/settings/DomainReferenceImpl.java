@@ -1,12 +1,12 @@
 package tech.intellispaces.reflections.framework.settings;
 
 class DomainReferenceImpl implements DomainReference {
-  private final DomainTypes type;
+  private final DomainAssignments type;
   private final String domainName;
   private final String classCanonicalName;
 
   DomainReferenceImpl(
-      DomainTypes type,
+      DomainAssignments type,
       String domainName,
       String classCanonicalName
   ) {
@@ -16,7 +16,7 @@ class DomainReferenceImpl implements DomainReference {
   }
 
   @Override
-  public DomainType type() {
+  public DomainAssignment assignment() {
     return type;
   }
 

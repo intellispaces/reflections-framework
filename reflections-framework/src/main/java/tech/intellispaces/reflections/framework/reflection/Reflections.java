@@ -4,18 +4,18 @@ import tech.intellispaces.commons.exception.UnexpectedExceptions;
 
 public interface Reflections {
 
-  static Reflection<?> reflection(Object reflection) {
+  static SystemReflection reflection(Object reflection) {
     if (reflection == null) {
       return null;
     }
-    if (reflection instanceof Reflection<?>) {
-      return (Reflection<?>) reflection;
+    if (reflection instanceof SystemReflection) {
+      return (SystemReflection) reflection;
     }
     throw UnexpectedExceptions.withMessage("Not a object reflection");
   }
 
   @SuppressWarnings("unchecked")
-  static <R extends Reflection<?>> R reflection(Object reflection, Class<R> reflectionClass) {
+  static <R extends SystemReflection> R reflection(Object reflection, Class<R> reflectionClass) {
     if (reflection == null) {
       return null;
     }
@@ -25,24 +25,22 @@ public interface Reflections {
     throw UnexpectedExceptions.withMessage("Not a object reflection");
   }
 
-  @SuppressWarnings("unchecked")
-  static <D> Reflection<D> reflectionOf(Object reflection, Class<D> domainClass) {
+  static <D> SystemReflection reflectionOf(Object reflection, Class<D> domainClass) {
     if (reflection == null) {
       return null;
     }
-    if (reflection instanceof Reflection<?>) {
-      return (Reflection<D>) reflection;
+    if (reflection instanceof SystemReflection) {
+      return (SystemReflection) reflection;
     }
     throw UnexpectedExceptions.withMessage("Not a object reflection");
   }
 
-  @SuppressWarnings("unchecked")
-  static <D> MovableReflection<D> movableReflectionOf(Object reflection, Class<D> domainClass) {
+  static <D> MovableReflection movableReflectionOf(Object reflection, Class<D> domainClass) {
     if (reflection == null) {
       return null;
     }
-    if (reflection instanceof Reflection<?>) {
-      return (MovableReflection<D>) reflection;
+    if (reflection instanceof SystemReflection) {
+      return (MovableReflection) reflection;
     }
     throw UnexpectedExceptions.withMessage("Not a movable object reflection");
   }

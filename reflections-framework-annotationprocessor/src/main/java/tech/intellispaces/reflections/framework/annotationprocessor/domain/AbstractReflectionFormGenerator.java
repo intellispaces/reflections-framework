@@ -1,7 +1,6 @@
 package tech.intellispaces.reflections.framework.annotationprocessor.domain;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -29,7 +28,6 @@ import tech.intellispaces.javareflection.reference.TypeReference;
 import tech.intellispaces.javareflection.reference.TypeReferenceFunctions;
 import tech.intellispaces.reflections.framework.ArtifactType;
 import tech.intellispaces.reflections.framework.annotation.Movable;
-import tech.intellispaces.reflections.framework.annotation.Unmovable;
 import tech.intellispaces.reflections.framework.annotationprocessor.AnnotationFunctions;
 import tech.intellispaces.reflections.framework.annotationprocessor.AnnotationGeneratorFunctions;
 import tech.intellispaces.reflections.framework.annotationprocessor.ReflectionsArtifactGenerator;
@@ -42,7 +40,7 @@ import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForms;
 import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
 import tech.intellispaces.reflections.framework.settings.DomainReference;
-import tech.intellispaces.reflections.framework.settings.DomainTypes;
+import tech.intellispaces.reflections.framework.settings.DomainAssignments;
 import tech.intellispaces.reflections.framework.space.channel.ChannelFunctions;
 import tech.intellispaces.reflections.framework.space.domain.DomainFunctions;
 
@@ -83,10 +81,10 @@ public abstract class AbstractReflectionFormGenerator extends ReflectionsArtifac
 
   protected void analyzeDomain() {
     typeParamsFull = ReflectionFunctions.getObjectFormTypeParamDeclaration(
-        sourceArtifact(), ReflectionForms.Regular, MovabilityTypes.General, this::addImportAndGetSimpleName, false, true
+        sourceArtifact(), ReflectionForms.Reflection, MovabilityTypes.General, this::addImportAndGetSimpleName, false, true
     );
     typeParamsBrief = ReflectionFunctions.getObjectFormTypeParamDeclaration(
-        sourceArtifact(), ReflectionForms.Regular, MovabilityTypes.General, this::addImportAndGetSimpleName, false, false
+        sourceArtifact(), ReflectionForms.Reflection, MovabilityTypes.General, this::addImportAndGetSimpleName, false, false
     );
     domainTypeParamsFull = sourceArtifact().typeParametersFullDeclaration();
     domainTypeParamsBrief = sourceArtifact().typeParametersBriefDeclaration();
@@ -119,18 +117,11 @@ public abstract class AbstractReflectionFormGenerator extends ReflectionsArtifac
     return sb.toString();
   }
 
-  protected void analyzeConversionMethods(CustomType domainType) {
-    Collection<CustomTypeReference> parents = DomainFunctions.getEffectiveSuperDomains(domainType);
-    parents.stream()
-        .map(this::buildConversionMethod)
-        .forEach(conversionMethods::add);
-  }
-
   private Map<String, String> buildConversionMethod(CustomTypeReference parent) {
     var sb = new StringBuilder();
     String targetType = buildObjectFormDeclaration(parent, getForm(), getMovabilityType(), true);
 
-    DomainReference domain = ReflectionsNodeFunctions.ontologyReference().getDomainByType(DomainTypes.Number);
+    DomainReference domain = ReflectionsNodeFunctions.ontologyReference().getDomainByType(DomainAssignments.Number);
     if (parent.targetType().canonicalName().equals(domain.classCanonicalName())) {
       underlyingTypes.add(domain.domainName());
     } else {
@@ -151,11 +142,6 @@ public abstract class AbstractReflectionFormGenerator extends ReflectionsArtifac
     for (MethodStatement method : methods) {
       MethodStatement effectiveMethod = convertMethodBeforeGenerate(method);
       analyzeRawDomainMethod(effectiveMethod);
-      if (hasMethodNormalForm(effectiveMethod)) {
-        if (includeMethodForm(effectiveMethod, ReflectionForms.Regular)) {
-          analyzeMethod(effectiveMethod, ReflectionForms.Regular, methodOrdinal++);
-        }
-      }
       if (includeMethodForm(effectiveMethod, ReflectionForms.Reflection)) {
         analyzeMethod(effectiveMethod, ReflectionForms.Reflection, methodOrdinal++);
       }
@@ -169,9 +155,7 @@ public abstract class AbstractReflectionFormGenerator extends ReflectionsArtifac
   }
 
   protected boolean includeMethodForm(MethodStatement method, ReflectionForm targetForm) {
-    if (ReflectionForms.Regular.is(targetForm)) {
-      return ReflectionForms.Regular.is(getForm());
-    } else if (ReflectionForms.Reflection.is(targetForm)) {
+    if (ReflectionForms.Reflection.is(targetForm)) {
       return ReflectionForms.Reflection.is(getForm());
     } else if (ReflectionForms.Primitive.is(targetForm)) {
       return isPrimitiveWrapper(method.returnType().orElseThrow());
@@ -265,7 +249,7 @@ public abstract class AbstractReflectionFormGenerator extends ReflectionsArtifac
       commaAppender.run();
       if (DomainFunctions.isDomainType(param.type())) {
         sb.append("(");
-        sb.append(ReflectionFunctions.getObjectFormDeclaration(param.type(), ReflectionForms.Regular, MovabilityTypes.General, true, this::addImportAndGetSimpleName));
+        sb.append(ReflectionFunctions.getObjectFormDeclaration(param.type(), ReflectionForms.Reflection, MovabilityTypes.General, true, this::addImportAndGetSimpleName));
         sb.append(") ");
       }
       sb.append(param.name());
@@ -278,7 +262,7 @@ public abstract class AbstractReflectionFormGenerator extends ReflectionsArtifac
   private boolean isDisableMoving(MethodStatement method) {
     return ChannelFunctions.isMovingBasedChannel(method)
         && ReflectionForms.Reflection.is(getForm())
-        && MovabilityTypes.Unmovable.is(getMovabilityType());
+        && !MovabilityTypes.Movable.is(getMovabilityType());
   }
 
   protected void appendMethodReturnType(StringBuilder sb, MethodStatement method) {
@@ -416,7 +400,7 @@ public abstract class AbstractReflectionFormGenerator extends ReflectionsArtifac
   }
 
   protected String getObjectFormMethodName(MethodStatement domainMethod, ReflectionForm targetForm) {
-    if (ReflectionForms.Regular.is(targetForm) || ReflectionForms.Reflection.is(targetForm)) {
+    if (ReflectionForms.Reflection.is(targetForm)) {
       return domainMethod.name();
     } else if (ReflectionForms.Primitive.is(targetForm)) {
       return domainMethod.name() + "AsPrimitive";
@@ -430,7 +414,7 @@ public abstract class AbstractReflectionFormGenerator extends ReflectionsArtifac
   protected void appendMethodReturnTypeDeclaration(
       StringBuilder sb, MethodStatement method, ReflectionForm targetForm
   ) {
-    if (ReflectionForms.Regular.is(targetForm) || ReflectionForms.Reflection.is(targetForm)) {
+    if (ReflectionForms.Reflection.is(targetForm)) {
       appendObjectFormMethodReturnType(sb, method);
     } else if (ReflectionForms.Primitive.is(targetForm)) {
       CustomType returnType = method.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow().targetType();
@@ -447,8 +431,6 @@ public abstract class AbstractReflectionFormGenerator extends ReflectionsArtifac
     } else {
       if (method.hasAnnotation(Movable.class)) {
         sb.append(buildObjectFormDeclaration(domainReturnType, getForm(), MovabilityTypes.Movable, true));
-      } else if (method.hasAnnotation(Unmovable.class)) {
-        sb.append(buildObjectFormDeclaration(domainReturnType, getForm(), MovabilityTypes.Unmovable, true));
       } else {
         sb.append(buildObjectFormDeclaration(domainReturnType, getForm(), MovabilityTypes.General, true));
       }
@@ -473,7 +455,7 @@ public abstract class AbstractReflectionFormGenerator extends ReflectionsArtifac
       commaAppender.run();
       sb.append(buildObjectFormDeclaration(
           AnnotationGeneratorFunctions.normalizeType(param.type()),
-          ReflectionForms.Regular,
+          ReflectionForms.Reflection,
           MovabilityTypes.General,
           true
       ));

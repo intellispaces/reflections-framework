@@ -13,11 +13,6 @@ public enum MovabilityTypes implements MovabilityType, Enumeration<MovabilityTyp
   General,
 
   /**
-   * The unmovable object type.
-   */
-  Unmovable,
-
-  /**
    * The movable object type.
    */
   Movable;

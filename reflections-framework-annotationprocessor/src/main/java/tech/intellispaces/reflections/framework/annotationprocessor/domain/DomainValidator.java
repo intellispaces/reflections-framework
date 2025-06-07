@@ -63,11 +63,6 @@ public class DomainValidator implements ArtifactValidator {
           throw ReflectionsExceptions.withMessage("Alias domain could not contain channel to base domain. See domain {0}",
               domainType.canonicalName());
         }
-      } else {
-        if (domainType.declaredMethod(NameConventionFunctions.getConversionMethodName(superDomain), List.of()).isEmpty()) {
-          throw ReflectionsExceptions.withMessage("Could not find conversion channel to domain {0}. See domain {1}",
-              superDomain.targetType().canonicalName(), domainType.canonicalName());
-        }
       }
     }
   }

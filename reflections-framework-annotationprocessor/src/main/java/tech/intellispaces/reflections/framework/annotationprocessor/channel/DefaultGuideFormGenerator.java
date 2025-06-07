@@ -127,7 +127,7 @@ public class DefaultGuideFormGenerator extends ReflectionsArtifactGenerator {
   private String getSourceTypename() {
     TypeReference sourceType = channelMethod.params().get(0).type();
     String sourceTypename = ReflectionFunctions.getObjectFormTypename(
-        ReflectionForms.Regular,
+        ReflectionForms.Reflection,
         sourceType,
         this::replaceNamedReference
     );
@@ -162,7 +162,7 @@ public class DefaultGuideFormGenerator extends ReflectionsArtifactGenerator {
       if (param.type().isPrimitiveReference()) {
         sb.append(param.type().asPrimitiveReferenceOrElseThrow().primitiveType().typename());
       } else {
-        sb.append(buildReflectionDeclaration(ReflectionForms.Regular, param.type(), Function.identity()));
+        sb.append(buildReflectionDeclaration(ReflectionForms.Reflection, param.type(), Function.identity()));
       }
       sb.append(" ");
       sb.append(param.name());
@@ -237,7 +237,7 @@ public class DefaultGuideFormGenerator extends ReflectionsArtifactGenerator {
     }
     for (MethodParam param : getQualifierMethodParams()) {
       sb.append(", ");
-      sb.append(buildReflectionDeclaration(ReflectionForms.Regular, param.type(), this::replaceNamedReference));
+      sb.append(buildReflectionDeclaration(ReflectionForms.Reflection, param.type(), this::replaceNamedReference));
     }
     sb.append(">");
     return sb.toString();
@@ -267,7 +267,7 @@ public class DefaultGuideFormGenerator extends ReflectionsArtifactGenerator {
     sb.append(" ").append("source");
     for (MethodParam param : getQualifierMethodParams()) {
       sb.append(", ");
-      sb.append(buildReflectionDeclaration(ReflectionForms.Regular, param.type(), this::replaceNamedReference));
+      sb.append(buildReflectionDeclaration(ReflectionForms.Reflection, param.type(), this::replaceNamedReference));
       sb.append(" ");
       sb.append(param.name());
     }
@@ -300,7 +300,7 @@ public class DefaultGuideFormGenerator extends ReflectionsArtifactGenerator {
     sb.append(" ").append("source");
     for (MethodParam param : getQualifierMethodParams()) {
       sb.append(", ");
-      sb.append(buildReflectionDeclaration(ReflectionForms.Regular, param.type(), this::replaceNamedReference));
+      sb.append(buildReflectionDeclaration(ReflectionForms.Reflection, param.type(), this::replaceNamedReference));
       sb.append(" ");
       sb.append(param.name());
     }
@@ -317,7 +317,7 @@ public class DefaultGuideFormGenerator extends ReflectionsArtifactGenerator {
     sb.append(" ").append("source");
     for (MethodParam param : getQualifierMethodParams()) {
       sb.append(", ");
-      sb.append(buildReflectionDeclaration(ReflectionForms.Regular, param.type(), this::replaceNamedReference));
+      sb.append(buildReflectionDeclaration(ReflectionForms.Reflection, param.type(), this::replaceNamedReference));
       sb.append(" ");
       sb.append(param.name());
     }
@@ -386,7 +386,7 @@ public class DefaultGuideFormGenerator extends ReflectionsArtifactGenerator {
       Function<TypeReference, TypeReference> typeReplacer, boolean full
   ) {
     return buildReflectionDeclaration(
-        ReflectionForms.Regular,
+        ReflectionForms.Reflection,
         channelMethod.params().get(0).type().asCustomTypeReferenceOrElseThrow(),
         typeReplacer,
         full

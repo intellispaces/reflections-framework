@@ -2,7 +2,7 @@ package tech.intellispaces.reflections.framework.settings;
 
 import tech.intellispaces.commons.abstraction.Enumeration;
 
-public enum DomainTypes implements Enumeration<DomainType>, DomainType {
+public enum DomainAssignments implements Enumeration<DomainAssignment>, DomainAssignment {
 
   /**
    * The domain of notions.
@@ -71,7 +71,7 @@ public enum DomainTypes implements Enumeration<DomainType>, DomainType {
 
   private final String delegateClassName;
 
-  DomainTypes(java.lang.String delegateClassName) {
+  DomainAssignments(java.lang.String delegateClassName) {
     this.delegateClassName = delegateClassName;
   }
 

@@ -9,34 +9,14 @@ import tech.intellispaces.reflections.framework.ArtifactType;
 public enum ArtifactTypes implements ArtifactType, Enumeration<ArtifactType> {
 
   /**
-   * The movable regular object interface.
+   * The general reflection interface.
    */
-  MovableRegularObject,
-
-  /**
-   * The unmovable regular object interface.
-   */
-  UnmovableRegularObject,
-
-  /**
-   * The general regular object interface.
-   */
-  RegularObject,
+  Reflection,
 
   /**
    * The movable reflection interface.
    */
   MovableReflection,
-
-  /**
-   * The unmovable reflection interface.
-   */
-  UnmovableReflection,
-
-  /**
-   * The general reflection interface.
-   */
-  Reflection,
 
   /**
    * The channel interface.
@@ -62,16 +42,6 @@ public enum ArtifactTypes implements ArtifactType, Enumeration<ArtifactType> {
    * The unmovable dataset interface.
    */
   UnmovableDataset,
-
-  /**
-   * The unmovable downward object class.
-   */
-  UnmovableDownwardObject,
-
-  /**
-   * The movable downward object class.
-   */
-  MovableDownwardObject,
 
   /**
    * The unmovable object wrapper class.

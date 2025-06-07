@@ -9,8 +9,8 @@ import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.reflections.framework.ReflectionsFramework;
 import tech.intellispaces.reflections.framework.engine.EngineRegistrar;
 import tech.intellispaces.reflections.framework.engine.SingleEngineRegistrar;
-import tech.intellispaces.reflections.framework.settings.OntologyReference;
-import tech.intellispaces.reflections.framework.settings.SettingsFunctions;
+import tech.intellispaces.reflections.framework.settings.OntologyReferences;
+import tech.intellispaces.reflections.framework.settings.OntologyReferencePoints;
 import tech.intellispaces.reflections.framework.system.ModuleHandle;
 
 /**
@@ -18,17 +18,17 @@ import tech.intellispaces.reflections.framework.system.ModuleHandle;
  */
 public class ReflectionsNodeFunctions {
   private static final Holder<ModuleHandle> MODULE_HOLDER = createModuleHolder();
-  private static OntologyReference ONTOLOGY_REFERENCE = null;
+  private static OntologyReferences ONTOLOGY_REFERENCE = null;
 
   /**
    * Returns ontology reference.
    */
-  public static OntologyReference ontologyReference() {
+  public static OntologyReferences ontologyReference() {
     if (ONTOLOGY_REFERENCE == null) {
       try {
-        List<OntologyReference> ontologyReferences = SettingsFunctions.loadOntologyReferences(
+        List<OntologyReferences> ontologyReferences = OntologyReferencePoints.load(
             ReflectionsFramework.class.getClassLoader());
-        ONTOLOGY_REFERENCE = SettingsFunctions.mergeOntologyReferences(ontologyReferences);
+        ONTOLOGY_REFERENCE = OntologyReferencePoints.merge(ontologyReferences);
       } catch (IOException e) {
         throw UnexpectedExceptions.withCauseAndMessage(e, "Unable to load ontology reference");
       }
@@ -36,8 +36,8 @@ public class ReflectionsNodeFunctions {
     return ONTOLOGY_REFERENCE;
   }
 
-  public static void ontologyReference(OntologyReference ontologyReference) {
-    ONTOLOGY_REFERENCE = ontologyReference;
+  public static void ontologyReference(OntologyReferences ontologyReferences) {
+    ONTOLOGY_REFERENCE = ontologyReferences;
   }
 
   public static Holder<ModuleHandle> moduleHolder() {

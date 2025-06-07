@@ -1,18 +1,19 @@
 package tech.intellispaces.reflections.framework.reflection;
 
+import java.util.List;
+
+import tech.intellispaces.core.Reflection;
 import tech.intellispaces.reflections.framework.channel.Channel1;
 import tech.intellispaces.reflections.framework.exception.TraverseException;
 import tech.intellispaces.reflections.framework.traverse.MappingTraverse;
 
 /**
- * The typed reflection.<p/>
- *
+ * The system reflection.
+ * <p>
  * The object reflection it a link from the system to the object.<p/>
  * Any interaction of the system with the object is performed through the object reflection only.
- *
- * @param <D> the domain type.
  */
-public interface TypedReflection<D> extends tech.intellispaces.core.Reflection {
+public interface SystemReflection extends Reflection {
 
   /**
    * Returns <code>true</code> if this reflection is focused.
@@ -53,4 +54,40 @@ public interface TypedReflection<D> extends tech.intellispaces.core.Reflection {
    * Unbinds reflection and connected object.
    */
   void unbind();
+
+  //  <R extends Reflection<D>> R as(Class<R> reflectionClass);
+
+  /**
+   * A flag indicating whether a reflection is movable or not.
+   *
+   * @return <code>true</code> if this reflection is movable or <code>false</code> otherwise.
+   */
+  default boolean isMovable() {
+    return false;
+  }
+
+  /**
+   * Returns movable representation of this reflection throws exception.
+   */
+  MovableReflection asMovableOrElseThrow();
+
+  /**
+   * Sets projection.
+   *
+   * @param targetDomain the target domain class.
+   * @param target the target reflection.
+   * @param <TD> the target domain type.
+   * @param <T> the target reflection type.
+   */
+  <TD, T> void addProjection(Class<TD> targetDomain, T target);
+
+  /**
+   * Returns nearest known underlying reflection or <code>null</code> if its are unknown.
+   */
+  List<? extends SystemReflection> underlyingReflections();
+
+  /**
+   * Returns nearest known overlying reflection or <code>null</code> if it is unknown.
+   */
+  SystemReflection overlyingReflection();
 }

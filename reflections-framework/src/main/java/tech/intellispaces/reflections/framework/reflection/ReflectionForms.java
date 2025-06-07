@@ -20,12 +20,7 @@ public enum ReflectionForms implements ReflectionForm, Enumeration<ReflectionFor
   /**
    * The form represented as object wrapper of primitive type.
    */
-  PrimitiveWrapper,
-
-  /**
-   * The form represented as regular object interface or primitive type.
-   */
-  Regular;
+  PrimitiveWrapper;
 
   public static ReflectionForms of(ReflectionForm value) {
     return VALUES[value.ordinal()];

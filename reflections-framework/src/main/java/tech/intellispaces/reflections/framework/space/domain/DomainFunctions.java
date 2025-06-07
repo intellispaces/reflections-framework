@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.commons.type.ClassFunctions;
+import tech.intellispaces.commons.type.Type;
 import tech.intellispaces.commons.type.Types;
 import tech.intellispaces.core.Channel;
 import tech.intellispaces.core.Channels;
@@ -28,11 +29,10 @@ import tech.intellispaces.javareflection.reference.NamedReference;
 import tech.intellispaces.javareflection.reference.NotPrimitiveReference;
 import tech.intellispaces.javareflection.reference.TypeReference;
 import tech.intellispaces.javareflection.reference.TypeReferenceFunctions;
-import tech.intellispaces.javareflection.type.TypeOf;
 import tech.intellispaces.reflections.framework.annotation.Domain;
 import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
 import tech.intellispaces.reflections.framework.node.ReflectionsNodeFunctions;
-import tech.intellispaces.reflections.framework.settings.ChannelTypes;
+import tech.intellispaces.reflections.framework.settings.ChannelAssignments;
 import tech.intellispaces.reflections.framework.space.channel.ChannelFunctions;
 
 /**
@@ -74,7 +74,7 @@ public final class DomainFunctions {
   }
 
   public static boolean isDomainType(CustomType type) {
-    return type.hasAnnotation(Domain.class);
+    return type.hasAnnotation(Domain.class) || isDefaultDomainType(type);
   }
 
   public static CustomType getDomainType(TypeReference type) {
@@ -211,28 +211,12 @@ public final class DomainFunctions {
 
   public static boolean isNotDomainClassGetter(MethodStatement method) {
     return !method.name().equals("domainClass") &&
-        !method.name().equals(ReflectionsNodeFunctions.ontologyReference().getChannelByType(ChannelTypes.PointToDomain).alias());
+        !method.name().equals(ReflectionsNodeFunctions.ontologyReference().getChannelByType(ChannelAssignments.PointToDomain).alias());
   }
 
   public static boolean isDefaultDomainType(CustomType type) {
     return DEFAULT_DOMAIN_CLASSES.contains(type.canonicalName());
   }
-
-  private final static Set<String> DEFAULT_DOMAIN_CLASSES = Set.of(
-      Object.class.getCanonicalName(),
-      Boolean.class.getCanonicalName(),
-      Number.class.getCanonicalName(),
-      Byte.class.getCanonicalName(),
-      Short.class.getCanonicalName(),
-      Integer.class.getCanonicalName(),
-      Long.class.getCanonicalName(),
-      Float.class.getCanonicalName(),
-      Double.class.getCanonicalName(),
-      Character.class.getCanonicalName(),
-      String.class.getCanonicalName(),
-      Class.class.getCanonicalName(),
-      Void.class.getCanonicalName()
-  );
 
   public static String buildConversionMethodsChain(CustomType sourceDomain, CustomType targetDomain) {
     return buildConversionMethodsChain("", sourceDomain, targetDomain);
@@ -300,6 +284,23 @@ public final class DomainFunctions {
     }
     return null;
   }
+
+  private final static Set<String> DEFAULT_DOMAIN_CLASSES = Set.of(
+      Type.class.getCanonicalName(),
+      Object.class.getCanonicalName(),
+      Boolean.class.getCanonicalName(),
+      Number.class.getCanonicalName(),
+      Byte.class.getCanonicalName(),
+      Short.class.getCanonicalName(),
+      Integer.class.getCanonicalName(),
+      Long.class.getCanonicalName(),
+      Float.class.getCanonicalName(),
+      Double.class.getCanonicalName(),
+      Character.class.getCanonicalName(),
+      String.class.getCanonicalName(),
+      Class.class.getCanonicalName(),
+      Void.class.getCanonicalName()
+  );
 
   private DomainFunctions() {}
 }

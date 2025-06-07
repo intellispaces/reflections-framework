@@ -59,7 +59,7 @@ public class DatasetBuilderGenerator extends ReflectionsArtifactGenerator {
         continue;
       }
       TypeReference type = method.returnType().orElseThrow();
-      String reflectionType = buildObjectFormDeclaration(type, ReflectionForms.Reflection, MovabilityTypes.Unmovable, true);
+      String reflectionType = buildObjectFormDeclaration(type, ReflectionForms.Reflection, MovabilityTypes.General, true);
 
       Map<String, String> properties = new HashMap<>();
       properties.put("type", reflectionType);

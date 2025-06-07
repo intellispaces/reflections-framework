@@ -92,7 +92,7 @@ public interface FactoryFunctions {
     if (targetDomain.foreignDomainName() == null) {
       return reflection;
     }
-    return (R) new NativeForeignReflection<>((NativeReflection<?>) reflection, targetDomain);
+    return (R) new NativeForeignReflection((NativeReflection) reflection, targetDomain);
   }
 
   private static List<Object> getQualifierValues(PropertiesSet props, FactoryMethod factoryMethod) {

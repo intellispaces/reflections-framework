@@ -3,17 +3,17 @@ package tech.intellispaces.reflections.framework.settings;
 import java.util.List;
 
 /**
- * The ontology reference description.
+ * The ontology reference points.
  */
-public interface OntologyReference {
+public interface OntologyReferences {
 
   List<DomainReference> getDomains();
 
   List<ChannelReference> getChannels();
 
-  boolean isDomainReferenceSpecified(DomainType domainType);
+  boolean isDomainReferenceSpecified(DomainAssignment assignment);
 
-  DomainReference getDomainByType(DomainType domainType);
+  DomainReference getDomainByType(DomainAssignment assignment);
 
   DomainReference getDomainByName(String domainName);
 
@@ -23,5 +23,5 @@ public interface OntologyReference {
 
   boolean isDomainOfDomains(String domainName);
 
-  ChannelReference getChannelByType(ChannelType channelType);
+  ChannelReference getChannelByType(ChannelAssignment assignment);
 }

@@ -1,5 +1,6 @@
 package tech.intellispaces.reflections.framework.annotationprocessor.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -13,7 +14,6 @@ import tech.intellispaces.javareflection.reference.TypeReference;
 import tech.intellispaces.reflections.framework.ArtifactType;
 import tech.intellispaces.reflections.framework.annotation.Movable;
 import tech.intellispaces.reflections.framework.annotation.Reflection;
-import tech.intellispaces.reflections.framework.annotation.Unmovable;
 import tech.intellispaces.reflections.framework.artifact.ArtifactTypes;
 import tech.intellispaces.reflections.framework.channel.Channel0;
 import tech.intellispaces.reflections.framework.channel.Channel1;
@@ -26,6 +26,7 @@ import tech.intellispaces.reflections.framework.reflection.MovabilityTypes;
 import tech.intellispaces.reflections.framework.reflection.MovableReflection;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForms;
+import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
 import tech.intellispaces.reflections.framework.space.channel.ChannelFunctions;
 import tech.intellispaces.reflections.framework.space.domain.DomainFunctions;
 import tech.intellispaces.reflections.framework.traverse.MappingOfMovingTraverse;
@@ -85,7 +86,6 @@ public class MovableReflectionTypeGenerator extends AbstractReflectionFormGenera
     analyzeDomain();
     analyzeAlias();
     analyzeObjectFormMethods(sourceArtifact(), context);
-    analyzeConversionMethods(sourceArtifact());
 
     addVariable("reflectionTypeParamsFull", typeParamsFull);
     addVariable("reflectionTypeParamsBrief", typeParamsBrief);
@@ -99,7 +99,19 @@ public class MovableReflectionTypeGenerator extends AbstractReflectionFormGenera
     addVariable("primaryDomainSimpleName", primaryDomainSimpleName);
     addVariable("primaryDomainTypeArguments", primaryDomainTypeArguments);
     addVariable("simpleObject", getSimpleObjectClassName());
+    addVariable("parents", getParents());
     return true;
+  }
+
+  private List<String> getParents() {
+    var parents = new ArrayList<String>();
+    for (CustomTypeReference parent : sourceArtifact().parentTypes()) {
+      parents.add(
+          ReflectionFunctions.getObjectFormDeclaration(
+              parent, ReflectionForms.Reflection, MovabilityTypes.Movable, false, this::addImportAndGetSimpleName)
+      );
+    }
+    return parents;
   }
 
   private String getSimpleObjectClassName() {
@@ -136,8 +148,6 @@ public class MovableReflectionTypeGenerator extends AbstractReflectionFormGenera
       sb.append(buildObjectFormDeclaration(sourceDomainReference, ReflectionForms.Reflection, MovabilityTypes.Movable, true));
     } else if (method.hasAnnotation(Movable.class)) {
       sb.append(buildObjectFormDeclaration(domainReturnType, ReflectionForms.Reflection, MovabilityTypes.Movable, true));
-    } else if (method.hasAnnotation(Unmovable.class)) {
-      sb.append(buildObjectFormDeclaration(domainReturnType, ReflectionForms.Reflection, MovabilityTypes.Unmovable, true));
     } else {
       sb.append(buildObjectFormDeclaration(domainReturnType, ReflectionForms.Reflection, MovabilityTypes.General, true));
     }

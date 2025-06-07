@@ -3,14 +3,14 @@ package tech.intellispaces.reflections.framework.settings;
 import tech.intellispaces.core.Rid;
 
 /**
- * The channel reference description.
+ * The channel reference point.
  */
 public interface ChannelReference {
 
   /**
-   * The type.
+   * The channel assignment.
    */
-  ChannelType type();
+  ChannelAssignment assignment();
 
   /**
    * The channel RID.

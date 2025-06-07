@@ -15,7 +15,7 @@ public class ReflectionHandleImpl implements ReflectionHandle {
   private final Action[] guideActions;
   private final Injection[] injections;
   private final Map<Class<?>, Object> projections = new HashMap<>();
-  private Reflection<?> overlyingReflection;
+  private SystemReflection overlyingReflection;
 
   public ReflectionHandleImpl(
       ReflectionRealizationType type,
@@ -59,17 +59,17 @@ public class ReflectionHandleImpl implements ReflectionHandle {
   }
 
   @Override
-  public List<? extends Reflection<?>> underlyingReflections() {
+  public List<? extends SystemReflection> underlyingReflections() {
     throw NotImplementedExceptions.withCode("KDpzfXvh");
   }
 
   @Override
-  public Reflection<?> overlyingReflection() {
+  public SystemReflection overlyingReflection() {
     return overlyingReflection;
   }
 
   @Override
-  public void setOverlyingReflection(Reflection<?> overlyingReflection) {
+  public void setOverlyingReflection(SystemReflection overlyingReflection) {
     this.overlyingReflection = overlyingReflection;
   }
 

@@ -9,13 +9,13 @@ import {{$importedClass}};
  * <p>
  * This class was generated automatically. Don't try to change it.
  */
-@Reflection({{$sourceArtifactSimpleName}}.class)
+@Reflection(domainClass = {{$sourceArtifactSimpleName}}.class)
 @Movable
 {{$generatedAnnotation}}
 {{when $isAlias}}
-public interface {{$generatedArtifactSimpleName}}{{$reflectionTypeParamsFull}} extends {{$simpleObject}}{{$reflectionTypeParamsBrief}}, {{$generalReflection}}{{$reflectionTypeParamsBrief}}, {{$baseReflection}} {
+public interface {{$generatedArtifactSimpleName}}{{$reflectionTypeParamsFull}} extends {{$generalReflection}}{{$reflectionTypeParamsBrief}}, {{$baseReflection}} {
 {{else}}
-public interface {{$generatedArtifactSimpleName}}{{$reflectionTypeParamsFull}} extends {{$simpleObject}}{{$reflectionTypeParamsBrief}}, {{$generalReflection}}{{$reflectionTypeParamsBrief}}, MovableReflection<{{$sourceArtifactSimpleName}}{{$domainTypeParamsBrief}}> {
+public interface {{$generatedArtifactSimpleName}}{{$reflectionTypeParamsFull}} extends {{$generalReflection}}{{$reflectionTypeParamsBrief}}, MovableReflection{{for parent : $parents}}, {{$parent}}{{end}} {
 {{end}}
 
 {{for method : $conversionMethods}}
@@ -37,17 +37,17 @@ public interface {{$generatedArtifactSimpleName}}{{$reflectionTypeParamsFull}} e
   <Q> {{$generatedArtifactSimpleName}}{{$reflectionTypeParamsBrief}} moveThru(Rid cid, Q qualifier) throws TraverseException;
 
 {{when $isAlias}}
-  @Override
-  {{$generatedArtifactSimpleName}}{{$reflectionTypeParamsBrief}} moveThru(ChannelFunction0<{{$primaryDomainSimpleName}}{{$primaryDomainTypeArguments}}, {{$primaryDomainSimpleName}}{{$primaryDomainTypeArguments}}> channelFunction) throws TraverseException;
+//  @Override
+////  {{$generatedArtifactSimpleName}}{{$reflectionTypeParamsBrief}} moveThru(ChannelFunction0<{{$primaryDomainSimpleName}}{{$primaryDomainTypeArguments}}, {{$primaryDomainSimpleName}}{{$primaryDomainTypeArguments}}> channelFunction) throws TraverseException;
 
-  @Override
-  <Q> {{$generatedArtifactSimpleName}}{{$reflectionTypeParamsBrief}} moveThru(ChannelFunction1<{{$primaryDomainSimpleName}}{{$primaryDomainTypeArguments}}, {{$primaryDomainSimpleName}}{{$primaryDomainTypeArguments}}, Q> channelFunction, Q qualifier) throws TraverseException;
+//  @Override
+//  <Q> {{$generatedArtifactSimpleName}}{{$reflectionTypeParamsBrief}} moveThru(ChannelFunction1<{{$primaryDomainSimpleName}}{{$primaryDomainTypeArguments}}, {{$primaryDomainSimpleName}}{{$primaryDomainTypeArguments}}, Q> channelFunction, Q qualifier) throws TraverseException;
 {{else}}
-  @Override
-  {{$generatedArtifactSimpleName}}{{$reflectionTypeParamsBrief}} moveThru(ChannelFunction0<{{$sourceArtifactSimpleName}}{{$domainTypeParamsBrief}}, {{$sourceArtifactSimpleName}}{{$domainTypeParamsBrief}}> channelFunction) throws TraverseException;
+//  @Override
+//  {{$generatedArtifactSimpleName}}{{$reflectionTypeParamsBrief}} moveThru(ChannelFunction0<{{$sourceArtifactSimpleName}}{{$domainTypeParamsBrief}}, {{$sourceArtifactSimpleName}}{{$domainTypeParamsBrief}}> channelFunction) throws TraverseException;
 
-  @Override
-  <Q> {{$generatedArtifactSimpleName}}{{$reflectionTypeParamsBrief}} moveThru(ChannelFunction1<{{$sourceArtifactSimpleName}}{{$domainTypeParamsBrief}}, {{$sourceArtifactSimpleName}}{{$domainTypeParamsBrief}}, Q> channelFunction, Q qualifier) throws TraverseException;
+//  @Override
+//  <Q> {{$generatedArtifactSimpleName}}{{$reflectionTypeParamsBrief}} moveThru(ChannelFunction1<{{$sourceArtifactSimpleName}}{{$domainTypeParamsBrief}}, {{$sourceArtifactSimpleName}}{{$domainTypeParamsBrief}}, Q> channelFunction, Q qualifier) throws TraverseException;
 {{end}}
 
   @Override
@@ -66,16 +66,16 @@ public interface {{$generatedArtifactSimpleName}}{{$reflectionTypeParamsFull}} e
   <R, Q, C extends Channel1 & MappingOfMovingTraverse> R mapOfMovingThru(Class<C> channelClass, Q qualifier) throws TraverseException;
 
 {{when $isAlias}}
-  @Override
-  <R> R mapOfMovingThru(ChannelFunction0<{{$primaryDomainSimpleName}}{{$primaryDomainTypeArguments}}, R> channelFunction) throws TraverseException;
+//  @Override
+//  <R> R mapOfMovingThru(ChannelFunction0<{{$primaryDomainSimpleName}}{{$primaryDomainTypeArguments}}, R> channelFunction) throws TraverseException;
 
-  @Override
-  <R, Q> R mapOfMovingThru(ChannelFunction1<{{$primaryDomainSimpleName}}{{$primaryDomainTypeArguments}}, R, Q> channelFunction, Q qualifier) throws TraverseException;
+//  @Override
+//  <R, Q> R mapOfMovingThru(ChannelFunction1<{{$primaryDomainSimpleName}}{{$primaryDomainTypeArguments}}, R, Q> channelFunction, Q qualifier) throws TraverseException;
 {{else}}
-  @Override
-  <R> R mapOfMovingThru(ChannelFunction0<{{$sourceArtifactSimpleName}}{{$domainTypeParamsBrief}}, R> channelFunction) throws TraverseException;
+//  @Override
+//  <R> R mapOfMovingThru(ChannelFunction0<{{$sourceArtifactSimpleName}}{{$domainTypeParamsBrief}}, R> channelFunction) throws TraverseException;
 
-  @Override
-  <R, Q> R mapOfMovingThru(ChannelFunction1<{{$sourceArtifactSimpleName}}{{$domainTypeParamsBrief}}, R, Q> channelFunction, Q qualifier) throws TraverseException;
+//  @Override
+//  <R, Q> R mapOfMovingThru(ChannelFunction1<{{$sourceArtifactSimpleName}}{{$domainTypeParamsBrief}}, R, Q> channelFunction, Q qualifier) throws TraverseException;
 {{end}}
 }

@@ -38,7 +38,7 @@ public class DomainChannelGenerator extends AbstractChannelGenerator {
 
   private String getSourceParamDeclaration() {
     var sb = new StringBuilder();
-    sb.append(sourceArtifact().simpleName());
+    sb.append(addImportAndGetSimpleName(sourceArtifact().canonicalName()));
     if (!sourceArtifact().typeParameters().isEmpty()) {
       sb.append("<");
       RunnableAction commaAppender = StringActions.skipFirstTimeCommaAppender(sb);

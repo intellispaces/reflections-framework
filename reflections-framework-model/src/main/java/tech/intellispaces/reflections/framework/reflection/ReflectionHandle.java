@@ -20,11 +20,11 @@ public interface ReflectionHandle {
 
   <D, R> void addProjection(Class<D> targetDomain, R target);
 
-  List<? extends Reflection<?>> underlyingReflections();
+  List<? extends SystemReflection> underlyingReflections();
 
-  Reflection<?> overlyingReflection();
+  SystemReflection overlyingReflection();
 
-  void setOverlyingReflection(Reflection<?> overlyingReflection);
+  void setOverlyingReflection(SystemReflection overlyingReflection);
 
   <D, R> R mapTo(Class<D> targetDomain);
 }

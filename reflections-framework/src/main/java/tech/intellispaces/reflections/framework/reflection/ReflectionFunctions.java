@@ -1,6 +1,5 @@
 package tech.intellispaces.reflections.framework.reflection;
 
-import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -34,12 +33,11 @@ import tech.intellispaces.javareflection.reference.TypeReference;
 import tech.intellispaces.javareflection.reference.WildcardReference;
 import tech.intellispaces.reflections.framework.annotation.Movable;
 import tech.intellispaces.reflections.framework.annotation.Reflection;
-import tech.intellispaces.reflections.framework.annotation.Unmovable;
 import tech.intellispaces.reflections.framework.annotation.Wrapper;
 import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
 import tech.intellispaces.reflections.framework.node.ReflectionsNodeFunctions;
 import tech.intellispaces.reflections.framework.settings.DomainReference;
-import tech.intellispaces.reflections.framework.settings.DomainTypes;
+import tech.intellispaces.reflections.framework.settings.DomainAssignments;
 import tech.intellispaces.reflections.framework.space.domain.DomainFunctions;
 
 public class ReflectionFunctions {
@@ -51,7 +49,7 @@ public class ReflectionFunctions {
     }
     if (type.isCustomTypeReference()) {
       CustomType targetType = type.asCustomTypeReferenceOrElseThrow().targetType();
-      if (targetType.hasParent(tech.intellispaces.reflections.framework.reflection.Reflection.class)) {
+      if (targetType.hasParent(SystemReflection.class)) {
         return true;
       }
     }
@@ -69,7 +67,7 @@ public class ReflectionFunctions {
     if (aClass.isAnnotationPresent(Reflection.class)) {
       return true;
     }
-    if (tech.intellispaces.reflections.framework.reflection.Reflection.class.isAssignableFrom(aClass)) {
+    if (SystemReflection.class.isAssignableFrom(aClass)) {
       return true;
     }
     Optional<Class<?>> domainClass = Classes.get(
@@ -91,7 +89,7 @@ public class ReflectionFunctions {
       return false;
     }
     CustomType customType = type.asCustomTypeReferenceOrElseThrow().targetType();
-    return customType.hasParent(tech.intellispaces.reflections.framework.reflection.Reflection.class);
+    return customType.hasParent(SystemReflection.class);
   }
 
   public static boolean isCustomReflectionClass(Class<?> aClass) {
@@ -102,7 +100,7 @@ public class ReflectionFunctions {
     if (aClass.isAnnotationPresent(Reflection.class)) {
       return true;
     }
-    if (tech.intellispaces.reflections.framework.reflection.Reflection.class.isAssignableFrom(aClass)) {
+    if (SystemReflection.class.isAssignableFrom(aClass)) {
       return true;
     };
     Optional<Class<?>> domainClass = Classes.get(
@@ -145,13 +143,12 @@ public class ReflectionFunctions {
   }
 
   public static boolean isUnmovableReflection(CustomType reflectionType) {
-    return AnnotationFunctions.isAssignableAnnotatedType(reflectionType, Unmovable.class);
+    return !isMovableReflection(reflectionType);
   }
 
   public static Class<?> getReflectionClass(MovabilityType movabilityType) {
     return switch (MovabilityTypes.of(movabilityType)) {
-      case General -> tech.intellispaces.reflections.framework.reflection.Reflection.class;
-      case Unmovable -> UnmovableReflection.class;
+      case General -> SystemReflection.class;
       case Movable -> MovableReflection.class;
     };
   }
@@ -160,7 +157,6 @@ public class ReflectionFunctions {
           ReflectionForm form, TypeReference type, Function<TypeReference, TypeReference> typeReplacer
   ) {
     return switch (ReflectionForms.of(form)) {
-      case Regular -> getGeneralRegularObjectTypename(type, typeReplacer);
       case Reflection -> getGeneralReflectionTypename(type, typeReplacer);
       default -> throw NotImplementedExceptions.withCode("UoXguA");
     };
@@ -300,19 +296,19 @@ public class ReflectionFunctions {
           .type();
     }
 
-    Optional<AnnotationInstance> reflection = objectFormType.selectAnnotation(
-        Reflection.class.getCanonicalName()
-    );
+    Optional<AnnotationInstance> reflection = objectFormType.selectAnnotation(Reflection.class.getCanonicalName());
     if (reflection.isPresent()) {
       return Optional.of(reflection.get()
-          .value().orElseThrow()
+          .valueOf("domainClass").orElseThrow()
           .asClass().orElseThrow()
           .type());
     }
 
-    Optional<Class<?>> domainClass = Classes.get(
-        NameConventionFunctions.getDomainNameOfRegularObjectForm(objectFormType.canonicalName())
-    );
+    String domainClassName = NameConventionFunctions.getDomainNameOfRegularObjectForm(objectFormType.canonicalName());
+    if (objectFormType.canonicalName().equals(domainClassName)) {
+      return Optional.of(objectFormType);
+    }
+    Optional<Class<?>> domainClass = Classes.get(domainClassName);
     return domainClass.map(CustomTypes::of);
   }
 
@@ -336,7 +332,7 @@ public class ReflectionFunctions {
 
     Reflection reflection = reflectionClass.getAnnotation(Reflection.class);
     if (reflection != null) {
-      return reflection.value();
+      return reflection.domainClass();
     }
 
     Optional<Class<?>> domainClass = Classes.get(
@@ -350,42 +346,10 @@ public class ReflectionFunctions {
         reflectionClass.getCanonicalName(), Reflection.class.getSimpleName());
   }
 
-  @SuppressWarnings("unchecked")
-  public static <T> T tryDowngrade(Object sourceReflection, Class<T> targetReflectionClass) {
-    Class<?> sourceReflectionClass = sourceReflection.getClass();
-    if (isCustomReflectionClass(sourceReflectionClass) && isCustomReflectionClass(targetReflectionClass)) {
-      CustomType sourceReflectionDomain = getDomainOfObjectFormOrElseThrow(CustomTypes.of(sourceReflectionClass));
-      CustomType targetReflectionDomain = getDomainOfObjectFormOrElseThrow(CustomTypes.of(targetReflectionClass));
-      if (sourceReflectionDomain.hasParent(targetReflectionDomain)) {
-        if (isMovableReflection(targetReflectionClass)) {
-          return (T) tryCreateDowngradeReflection(sourceReflection, sourceReflectionDomain, targetReflectionDomain);
-        }
-      }
-    }
-    return null;
-  }
-
-  private static Object tryCreateDowngradeReflection(
-      Object sourceReflection, CustomType sourceReflectionDomain, CustomType targetReflectionDomain
-  ) {
-    String downgradeReflectionCanonicalName = NameConventionFunctions.getMovableDownwardObjectTypename(
-        sourceReflectionDomain, targetReflectionDomain);
-    Optional<Class<?>> downgradeReflectionClass = ClassFunctions.getClass(downgradeReflectionCanonicalName);
-    if (downgradeReflectionClass.isPresent()) {
-      try {
-        Constructor<?> constructor = downgradeReflectionClass.get().getConstructors()[0];
-        return constructor.newInstance(sourceReflection);
-      } catch (Exception e) {
-        throw UnexpectedExceptions.withCauseAndMessage(e, "Could not create downgrade reflection");
-      }
-    }
-    return null;
-  }
-
-  public static String geGeneralRegularObjectDeclaration(
+  public static String getGeneralReflectionDeclaration(
       TypeReference domainType, boolean replaceDomainWithDelegate, Function<String, String> simpleNameMapping
   ) {
-    return getObjectFormDeclaration(domainType, ReflectionForms.Regular, MovabilityTypes.General, replaceDomainWithDelegate, simpleNameMapping);
+    return getObjectFormDeclaration(domainType, ReflectionForms.Reflection, MovabilityTypes.General, replaceDomainWithDelegate, simpleNameMapping);
   }
 
   public static String getObjectFormDeclaration(
@@ -439,7 +403,7 @@ public class ReflectionFunctions {
           for (NotPrimitiveReference argType : customTypeReference.typeArguments()) {
             commaAppender.run();
             sb.append(getObjectFormDeclaration(
-                argType, ReflectionForms.Regular, MovabilityTypes.General, true, replaceDomainWithDelegate, simpleNameMapping
+                argType, ReflectionForms.Reflection, MovabilityTypes.General, true, replaceDomainWithDelegate, simpleNameMapping
             ));
           }
           sb.append(">");
@@ -538,7 +502,7 @@ public class ReflectionFunctions {
 
   public static Class<?> propertiesReflectionClass() {
     if (propertiesReflectionClass == null) {
-      DomainReference domain = ReflectionsNodeFunctions.ontologyReference().getDomainByType(DomainTypes.PropertiesSet);
+      DomainReference domain = ReflectionsNodeFunctions.ontologyReference().getDomainByType(DomainAssignments.PropertiesSet);
       String reflectionClassName = NameConventionFunctions.getGeneralRegularFormClassName(domain.classCanonicalName(), false);
       propertiesReflectionClass = ClassFunctions.getClass(reflectionClassName).orElseThrow(() ->
           UnexpectedExceptions.withMessage("Could not get class {0}", reflectionClassName)
@@ -551,7 +515,7 @@ public class ReflectionFunctions {
     unbindSilently(tech.intellispaces.reflections.framework.reflection.Reflections.reflection(objectReference));
   }
 
-  public static void unbindSilently(TypedReflection<?> reflection) {
+  public static void unbindSilently(SystemReflection reflection) {
     if (reflection == null) {
       return;
     }
@@ -562,7 +526,7 @@ public class ReflectionFunctions {
     }
   }
 
-  public static void unbindEach(List<TypedReflection<?>> reflections) {
+  public static void unbindEach(List<SystemReflection> reflections) {
     List<Exception> exceptions = null;
     for (var objectReference : reflections) {
       try {

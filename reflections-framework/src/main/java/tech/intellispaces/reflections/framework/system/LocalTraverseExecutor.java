@@ -8,8 +8,8 @@ import tech.intellispaces.reflections.framework.guide.n1.Guide1;
 import tech.intellispaces.reflections.framework.guide.n2.Guide2;
 import tech.intellispaces.reflections.framework.guide.n3.Guide3;
 import tech.intellispaces.reflections.framework.guide.n4.Guide4;
-import tech.intellispaces.reflections.framework.reflection.Reflection;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForms;
+import tech.intellispaces.reflections.framework.reflection.SystemReflection;
 import tech.intellispaces.reflections.framework.traverse.plan.AscendAndExecutePlan1;
 import tech.intellispaces.reflections.framework.traverse.plan.CallGuide0Plan;
 import tech.intellispaces.reflections.framework.traverse.plan.CallGuide1Plan;
@@ -126,7 +126,7 @@ public class LocalTraverseExecutor implements TraverseExecutor {
       Object source,
       Object qualifier
   ) throws TraverseException {
-    var sourceReflection = (Reflection<?>) source;
+    var sourceReflection = (SystemReflection) source;
     var overlyingReflection = sourceReflection.overlyingReflection();
     return plan.executionPlan().execute(overlyingReflection, qualifier, this);
   }

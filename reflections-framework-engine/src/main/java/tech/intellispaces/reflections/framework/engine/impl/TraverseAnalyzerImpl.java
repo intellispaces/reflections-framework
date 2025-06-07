@@ -20,7 +20,7 @@ import tech.intellispaces.reflections.framework.guide.n1.Guide1;
 import tech.intellispaces.reflections.framework.guide.n2.Guide2;
 import tech.intellispaces.reflections.framework.guide.n3.Guide3;
 import tech.intellispaces.reflections.framework.guide.n4.Guide4;
-import tech.intellispaces.reflections.framework.reflection.Reflection;
+import tech.intellispaces.reflections.framework.reflection.SystemReflection;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForms;
 import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
@@ -285,7 +285,7 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
     }
 
     if (source != null) {
-      var sourceReflection = (Reflection<?>) source;
+      var sourceReflection = (SystemReflection) source;
       while (sourceReflection.overlyingReflection() != null) {
         sourceReflection = sourceReflection.overlyingReflection();
         sourceClass = sourceReflection.getClass();

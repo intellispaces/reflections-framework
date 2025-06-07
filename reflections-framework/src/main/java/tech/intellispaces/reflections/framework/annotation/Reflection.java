@@ -13,9 +13,9 @@ import java.lang.annotation.Target;
 public @interface Reflection {
 
   /**
-   * The reflection domain.
+   * The reflection domain class.
    */
-  Class<?> value();
+  Class<?> domainClass() default Void.class;
 
   /**
    * The reflection class simple name.

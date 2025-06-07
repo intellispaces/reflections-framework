@@ -31,14 +31,13 @@ import tech.intellispaces.reflections.framework.reflection.MovabilityType;
 import tech.intellispaces.reflections.framework.reflection.MovabilityTypes;
 import tech.intellispaces.reflections.framework.reflection.MovableReflection;
 import tech.intellispaces.reflections.framework.reflection.OverlyingReflectionController;
-import tech.intellispaces.reflections.framework.reflection.Reflection;
+import tech.intellispaces.reflections.framework.reflection.SystemReflection;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForms;
 import tech.intellispaces.reflections.framework.reflection.ReflectionHandle;
 import tech.intellispaces.reflections.framework.reflection.ReflectionRealizationMethodPurposes;
 import tech.intellispaces.reflections.framework.reflection.ReflectionRealizationType;
 import tech.intellispaces.reflections.framework.reflection.ReflectionRealizationTypes;
-import tech.intellispaces.reflections.framework.reflection.UnmovableReflection;
 import tech.intellispaces.reflections.framework.space.channel.ChannelFunctions;
 import tech.intellispaces.reflections.framework.space.domain.DomainFunctions;
 import tech.intellispaces.reflections.framework.system.Modules;
@@ -74,12 +73,12 @@ public class UnmovableReflectionWrapperGenerator extends AbstractReflectionWrapp
 
   @Override
   protected MovabilityType getMovabilityType() {
-    return MovabilityTypes.Unmovable;
+    return MovabilityTypes.General;
   }
 
   @Override
   protected List<ArtifactType> relatedArtifactTypes() {
-    return List.of(ArtifactTypes.UnmovableObjectWrapper, ArtifactTypes.Reflection, ArtifactTypes.RegularObject);
+    return List.of(ArtifactTypes.UnmovableObjectWrapper, ArtifactTypes.Reflection);
   }
 
   @Override
@@ -90,10 +89,9 @@ public class UnmovableReflectionWrapperGenerator extends AbstractReflectionWrapp
         Modules.class,
         Type.class,
         Types.class,
-        Reflection.class,
         ReflectionWrapper.class,
         MovableReflection.class,
-        UnmovableReflection.class,
+        SystemReflection.class,
         OverlyingReflectionController.class,
         Channel1.class,
         ChannelFunction0.class,
@@ -124,7 +122,7 @@ public class UnmovableReflectionWrapperGenerator extends AbstractReflectionWrapp
     analyzeConstructors();
     analyzeInjectedGuides();
     analyzeReflectionMethods();
-    analyzeConversionMethods(domainType);
+//    analyzeConversionMethods(domainType);
     analyzeUnbindMethod();
 
     addVariable("didBase64", Base64Functions.createUrlNoPadding(domainRid.raw()));

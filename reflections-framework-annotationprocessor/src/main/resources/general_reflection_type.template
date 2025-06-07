@@ -9,12 +9,12 @@ import {{$importedClass}};
  * <p>
  * This class was generated automatically. Don't try to change it.
  */
-@Reflection({{$sourceArtifactSimpleName}}.class)
+@Reflection(domainClass = {{$sourceArtifactSimpleName}}.class)
 {{$generatedAnnotation}}
 {{when $isAlias}}
-public interface {{$generatedArtifactSimpleName}}{{$reflectionTypeParamsFull}} extends {{$simpleObject}}{{$reflectionTypeParamsBrief}}, {{$primaryReflection}} {
+public interface {{$generatedArtifactSimpleName}}{{$reflectionTypeParamsFull}} extends {{$primaryReflection}} {
 {{else}}
-public interface {{$generatedArtifactSimpleName}}{{$reflectionTypeParamsFull}} extends {{$simpleObject}}{{$reflectionTypeParamsBrief}}, tech.intellispaces.reflections.framework.reflection.Reflection<{{$sourceArtifactSimpleName}}{{$domainTypeParamsBrief}}> {
+public interface {{$generatedArtifactSimpleName}}{{$reflectionTypeParamsFull}} extends tech.intellispaces.reflections.framework.reflection.SystemReflection{{for parent : $parents}}, {{$parent}}{{end}} {
 {{end}}
 
   @Override

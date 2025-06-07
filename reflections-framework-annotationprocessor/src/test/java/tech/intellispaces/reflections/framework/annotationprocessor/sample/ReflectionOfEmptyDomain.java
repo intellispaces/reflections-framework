@@ -1,8 +1,8 @@
 package tech.intellispaces.reflections.framework.annotationprocessor.sample;
 
 import tech.intellispaces.reflections.framework.annotation.Reflection;
-import tech.intellispaces.reflections.framework.reflection.TypedReflection;
+import tech.intellispaces.reflections.framework.reflection.SystemReflection;
 
-@Reflection(EmptyDomain.class)
-public interface ReflectionOfEmptyDomain extends TypedReflection<EmptyDomain> {
+@Reflection(domainClass = EmptyDomain.class)
+public interface ReflectionOfEmptyDomain extends SystemReflection {
 }

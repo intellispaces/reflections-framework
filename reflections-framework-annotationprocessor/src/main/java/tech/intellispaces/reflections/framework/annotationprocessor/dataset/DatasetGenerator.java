@@ -39,19 +39,19 @@ import tech.intellispaces.reflections.framework.reflection.MovabilityTypes;
 import tech.intellispaces.reflections.framework.reflection.MovableReflection;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForms;
-import tech.intellispaces.reflections.framework.reflection.UnmovableReflection;
+import tech.intellispaces.reflections.framework.reflection.SystemReflection;
 import tech.intellispaces.reflections.framework.space.domain.DomainFunctions;
 import tech.intellispaces.reflections.framework.system.Modules;
 import tech.intellispaces.reflections.framework.traverse.MappingTraverse;
 import tech.intellispaces.reflections.framework.traverse.TraverseTypes;
 
-public class UnmovableDatasetGenerator extends AbstractReflectionFormGenerator {
+public class DatasetGenerator extends AbstractReflectionFormGenerator {
   private String typeParamsBrief;
   private boolean isAlias;
   private String domainTypename;
   private final List<Map<String, String>> projectionProperties = new ArrayList<>();
 
-  public UnmovableDatasetGenerator(CustomType dataType) {
+  public DatasetGenerator(CustomType dataType) {
     super(dataType);
   }
 
@@ -72,17 +72,17 @@ public class UnmovableDatasetGenerator extends AbstractReflectionFormGenerator {
 
   @Override
   protected ReflectionForm getForm() {
-    return ReflectionForms.Regular;
+    return ReflectionForms.Reflection;
   }
 
   @Override
   protected MovabilityType getMovabilityType() {
-    return MovabilityTypes.Unmovable;
+    return MovabilityTypes.General;
   }
 
   @Override
   protected List<ArtifactType> relatedArtifactTypes() {
-    return List.of(ArtifactTypes.UnmovableDataset, ArtifactTypes.RegularObject, ArtifactTypes.Reflection);
+    return List.of(ArtifactTypes.UnmovableDataset, ArtifactTypes.Reflection);
   }
 
   @Override
@@ -100,7 +100,7 @@ public class UnmovableDatasetGenerator extends AbstractReflectionFormGenerator {
         Channel1.class,
         MappingTraverse.class,
         TraverseException.class,
-        UnmovableReflection.class,
+        SystemReflection.class,
         MovableReflection.class,
         NotImplementedExceptions.class,
         UnexpectedExceptions.class,
@@ -150,7 +150,7 @@ public class UnmovableDatasetGenerator extends AbstractReflectionFormGenerator {
         continue;
       }
       TypeReference type = method.returnType().orElseThrow();
-      String reflectionType = buildObjectFormDeclaration(type, ReflectionForms.Reflection, MovabilityTypes.Unmovable, true);
+      String reflectionType = buildObjectFormDeclaration(type, ReflectionForms.Reflection, MovabilityTypes.General, true);
 
       Map<String, String> properties = new HashMap<>();
       properties.put("type", reflectionType);

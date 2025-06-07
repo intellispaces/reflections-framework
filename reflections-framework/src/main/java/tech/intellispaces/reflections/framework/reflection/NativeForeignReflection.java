@@ -9,11 +9,11 @@ import tech.intellispaces.reflections.framework.channel.Channel1;
 import tech.intellispaces.reflections.framework.exception.TraverseException;
 import tech.intellispaces.reflections.framework.traverse.MappingTraverse;
 
-public class NativeForeignReflection<D> implements NativeReflection<D> {
-  private final NativeReflection<D> foreignReflection;
+public class NativeForeignReflection implements NativeReflection {
+  private final NativeReflection foreignReflection;
   private final Domain domain;
 
-  public NativeForeignReflection(NativeReflection<D> foreignReflection, Domain domain) {
+  public NativeForeignReflection(NativeReflection foreignReflection, Domain domain) {
     this.foreignReflection = foreignReflection;
     this.domain = domain;
   }
@@ -29,7 +29,7 @@ public class NativeForeignReflection<D> implements NativeReflection<D> {
   }
 
   @Override
-  public MovableReflection<D> asMovableOrElseThrow() {
+  public MovableReflection asMovableOrElseThrow() {
     throw NotImplementedExceptions.withCode("6IRFdw");
   }
 
@@ -39,12 +39,12 @@ public class NativeForeignReflection<D> implements NativeReflection<D> {
   }
 
   @Override
-  public List<? extends Reflection<?>> underlyingReflections() {
+  public List<? extends SystemReflection> underlyingReflections() {
     return foreignReflection.underlyingReflections();
   }
 
   @Override
-  public Reflection<?> overlyingReflection() {
+  public SystemReflection overlyingReflection() {
     return foreignReflection.overlyingReflection();
   }
 

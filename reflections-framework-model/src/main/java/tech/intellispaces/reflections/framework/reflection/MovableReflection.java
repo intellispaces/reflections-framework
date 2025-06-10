@@ -5,6 +5,8 @@ import java.util.List;
 import tech.intellispaces.core.Rid;
 import tech.intellispaces.reflections.framework.channel.Channel0;
 import tech.intellispaces.reflections.framework.channel.Channel1;
+import tech.intellispaces.reflections.framework.channel.ChannelFunction0;
+import tech.intellispaces.reflections.framework.channel.ChannelFunction1;
 import tech.intellispaces.reflections.framework.exception.TraverseException;
 import tech.intellispaces.reflections.framework.traverse.MappingOfMovingTraverse;
 
@@ -24,19 +26,23 @@ public interface MovableReflection extends SystemReflection {
 
   MovableReflection moveThru(Class<? extends Channel0> channelClass) throws TraverseException;
 
-//  MovableReflection moveThru(ChannelFunction0<?, ?> channelFunction) throws TraverseException;
+  <S> MovableReflection moveThru(Class<S> sourceDomain, ChannelFunction0<S, S> channelFunction) throws TraverseException;
 
   <Q> MovableReflection moveThru(Class<? extends Channel1> channelClass, Q qualifier) throws TraverseException;
 
-//  <Q> MovableReflection moveThru(ChannelFunction1<?, ?, Q> channelFunction, Q qualifier) throws TraverseException;
+  <S, QD, QR> MovableReflection moveThru(Class<S> sourceDomain, ChannelFunction1<S, S, QD> channelFunction, Class<QD> qualifierDomain, QR qualifier) throws TraverseException;
+
+  <S> MovableReflection moveThru(Class<S> sourceDomain, ChannelFunction1<S, S, String> channelFunction, String qualifier) throws TraverseException;
+
+  <S> MovableReflection moveThru(Class<S> sourceDomain, ChannelFunction1<S, S, Integer> channelFunction, int qualifier) throws TraverseException;
 
   <R, Q> R mapOfMovingThru(Rid cid, Q qualifier) throws TraverseException;
 
   <R> R mapOfMovingThru(Class<? extends Channel0> channelClass) throws TraverseException;
 
-//  <R> R mapOfMovingThru(ChannelFunction0<?, R> channelFunction) throws TraverseException;
+  <S, R> R mapOfMovingThru(Class<S> sourceDomain, ChannelFunction0<S, ?> channelFunction) throws TraverseException;
 
-//  <R, Q> R mapOfMovingThru(ChannelFunction1<?, R, Q> channelFunction, Q qualifier) throws TraverseException;
+  <S, R, QD, QR> R mapOfMovingThru(Class<S> sourceDomain, ChannelFunction1<?, ?, ?> channelFunction, Class<QD> qualifierDomain, QR qualifier) throws TraverseException;
 
   <R, Q, C extends Channel1 & MappingOfMovingTraverse> R mapOfMovingThru(Class<C> channelClass, Q qualifier) throws TraverseException;
 

@@ -192,8 +192,8 @@ public final class GuideFunctions {
     return ChannelFunctions.getUnitGuideChannelId(unit, guideMethod);
   }
 
-  public static List<Guide<?, ?>> loadReflectionsGuides(Class<?> reflectionClass) {
-    List<Guide<?, ?>> guides = new ArrayList<>();
+  public static List<SystemGuide<?, ?>> loadReflectionsGuides(Class<?> reflectionClass) {
+    List<SystemGuide<?, ?>> guides = new ArrayList<>();
     CustomType reflectionType = Classes.of(reflectionClass);
     for (MethodStatement method : reflectionType.actualMethods()) {
       if (isGuideMethod(method)) {
@@ -213,7 +213,7 @@ public final class GuideFunctions {
   }
 
   @SuppressWarnings("unchecked,rawtypes")
-  private static void addConversionGuides(Class<?> reflectionClass, List<Guide<?, ?>> guides) {
+  private static void addConversionGuides(Class<?> reflectionClass, List<SystemGuide<?, ?>> guides) {
     String implClassCanonicalName = NameConventionFunctions.getReflectionWrapperCanonicalName(
         reflectionClass
     );
@@ -233,7 +233,7 @@ public final class GuideFunctions {
         Optional<MethodStatement> wrapperMethod = reflectionWrapperType.declaredMethod(method.name(), List.of());
         int channelOrdinal = wrapperMethod.orElseThrow().selectAnnotation(Ordinal.class).orElseThrow().value();
 
-        Guide<?, ?> guide = new ObjectMapper0<>(
+        SystemGuide<?, ?> guide = new ObjectMapper0<>(
             cid,
             (Class) reflectionClass,
             method,
@@ -254,7 +254,7 @@ public final class GuideFunctions {
   }
 
   @SuppressWarnings("unchecked, rawtypes")
-  private static <S, T> Guide<S, T> createObjectMapper(
+  private static <S, T> SystemGuide<S, T> createObjectMapper(
       Class<S> reflectionClass, Rid cid, MethodStatement guideMethod
   ) {
     ReflectionForm targetForm = getTargetForm(guideMethod);
@@ -271,7 +271,7 @@ public final class GuideFunctions {
   }
 
   @SuppressWarnings("unchecked, rawtypes")
-  private static <S, T> Guide<S, T> createObjectMover(
+  private static <S, T> SystemGuide<S, T> createObjectMover(
       Class<S> reflectionClass, Rid cid, MethodStatement guideMethod
   ) {
     ReflectionForm targetForm = getTargetForm(guideMethod);
@@ -288,7 +288,7 @@ public final class GuideFunctions {
   }
 
   @SuppressWarnings("unchecked, rawtypes")
-  private static <S, T> Guide<S, T> createObjectMapperOfMoving(
+  private static <S, T> SystemGuide<S, T> createObjectMapperOfMoving(
       Class<S> reflectionClass, Rid cid, MethodStatement guideMethod
   ) {
     ReflectionForm targetForm = getTargetForm(guideMethod);

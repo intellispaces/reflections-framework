@@ -27,8 +27,8 @@ import tech.intellispaces.reflections.framework.channel.Channel2;
 import tech.intellispaces.reflections.framework.channel.Channel3;
 import tech.intellispaces.reflections.framework.channel.Channel4;
 import tech.intellispaces.reflections.framework.engine.Engine;
-import tech.intellispaces.reflections.framework.guide.Guide;
 import tech.intellispaces.reflections.framework.guide.GuideFunctions;
+import tech.intellispaces.reflections.framework.guide.SystemGuide;
 import tech.intellispaces.reflections.framework.guide.n0.AutoMapper0;
 import tech.intellispaces.reflections.framework.guide.n0.AutoMapperOfMoving0;
 import tech.intellispaces.reflections.framework.guide.n0.AutoMover0;
@@ -72,10 +72,10 @@ import tech.intellispaces.reflections.framework.system.ProjectionRegistry;
 import tech.intellispaces.reflections.framework.system.ReflectionRegistry;
 import tech.intellispaces.reflections.framework.system.TraverseAnalyzer;
 import tech.intellispaces.reflections.framework.system.TraverseExecutor;
+import tech.intellispaces.reflections.framework.task.plan.DeclarativeTraversePlan;
+import tech.intellispaces.reflections.framework.task.plan.TraversePlan;
 import tech.intellispaces.reflections.framework.traverse.MappingOfMovingTraverse;
 import tech.intellispaces.reflections.framework.traverse.MappingTraverse;
-import tech.intellispaces.reflections.framework.traverse.plan.DeclarativeTraversePlan;
-import tech.intellispaces.reflections.framework.traverse.plan.TraversePlan;
 
 public class DefaultEngine implements Engine {
   private final ProjectionRegistry projectionRegistry;
@@ -136,14 +136,14 @@ public class DefaultEngine implements Engine {
   @Override
   @SuppressWarnings("unchecked")
   public <R extends Reflection> R mapSourceTo(Reflection source, Domain targetDomain, Class<R> targetClass) {
-    DeclarativeTraversePlan traversePlan = traverseAnalyzer.buildMapToTraversePlan(source, targetDomain, targetClass);
+    DeclarativeTraversePlan traversePlan = traverseAnalyzer.buildMapToDomainPlan(source, targetDomain, targetClass);
     return (R) traversePlan.execute(traverseExecutor);
   }
 
   @Override
   @SuppressWarnings("unchecked")
   public <S, T> T mapThruChannel0(S source, Rid cid) {
-    DeclarativeTraversePlan traversePlan = traverseAnalyzer.buildMapThruChannel0TraversePlan(
+    DeclarativeTraversePlan traversePlan = traverseAnalyzer.buildMapThruChannelPlan(
         ReflectionFunctions.getReflectionClass(source.getClass()), cid, ReflectionForms.Reflection);
     return (T) traversePlan.execute(source, traverseExecutor);
   }
@@ -156,7 +156,7 @@ public class DefaultEngine implements Engine {
   @Override
   @SuppressWarnings("unchecked")
   public <S, T, Q> T mapThruChannel1(S source, Rid cid, Q qualifier) {
-    DeclarativeTraversePlan traversePlan = traverseAnalyzer.buildMapThruChannel1TraversePlan(
+    DeclarativeTraversePlan traversePlan = traverseAnalyzer.buildMapThruChannelPlan(
         ReflectionFunctions.getReflectionClass(source.getClass()), cid, ReflectionForms.Reflection);
     return (T) traversePlan.execute(source, qualifier, traverseExecutor);
   }
@@ -169,7 +169,7 @@ public class DefaultEngine implements Engine {
   @Override
   @SuppressWarnings("unchecked")
   public <S, R> R moveThruChannel0(S source, Rid cid) {
-    TraversePlan traversePlan = traverseAnalyzer.buildMoveThruChannel0TraversePlan(
+    TraversePlan traversePlan = traverseAnalyzer.buildMoveThruChannelPlan(
         ReflectionFunctions.getReflectionClass(source.getClass()), cid, ReflectionForms.Reflection);
     return (R) traversePlan.execute(source, traverseExecutor);
   }
@@ -177,7 +177,7 @@ public class DefaultEngine implements Engine {
   @Override
   @SuppressWarnings("unchecked")
   public <S, R, Q> R moveThruChannel1(S source, Rid cid, Q qualifier) {
-    TraversePlan traversePlan = traverseAnalyzer.buildMoveThruChannel1TraversePlan(
+    TraversePlan traversePlan = traverseAnalyzer.buildMoveThruChannelPlan(
         ReflectionFunctions.getReflectionClass(source.getClass()), cid, ReflectionForms.Reflection);
     return (R) traversePlan.execute(source, qualifier, traverseExecutor);
   }
@@ -192,7 +192,7 @@ public class DefaultEngine implements Engine {
   @Override
   @SuppressWarnings("unchecked")
   public <S, R, Q> R mapOfMovingThruChannel1(S source, Rid cid, Q qualifier) {
-    TraversePlan traversePlan = traverseAnalyzer.buildMapOfMovingThruChannel1TraversePlan(
+    TraversePlan traversePlan = traverseAnalyzer.buildMapOfMovingThruChannelPlan(
         ReflectionFunctions.getReflectionClass(source.getClass()), cid, ReflectionForms.Reflection);
     return (R) traversePlan.execute(source, qualifier, traverseExecutor);
   }
@@ -208,7 +208,7 @@ public class DefaultEngine implements Engine {
   }
 
   @Override
-  public void addGuide(Guide<?, ?> guide) {
+  public void addGuide(SystemGuide<?, ?> guide) {
     guideRegistry.addGuide(guide);
   }
 
@@ -226,7 +226,7 @@ public class DefaultEngine implements Engine {
   public <S, T> Mapper0<S, T> autoMapperThruChannel0(
       Type<S> sourceType, Rid cid, ReflectionForm targetForm
   ) {
-    TraversePlan traversePlan = traverseAnalyzer.buildMapThruChannel0TraversePlan(
+    TraversePlan traversePlan = traverseAnalyzer.buildMapThruChannelPlan(
         sourceType.asClassType().baseClass(), cid, targetForm
     );
     return new AutoMapper0<>(
@@ -243,7 +243,7 @@ public class DefaultEngine implements Engine {
   public <S, T, Q> Mapper1<S, T, Q> autoMapperThruChannel1(
       Type<S> sourceType, Rid cid, ReflectionForm targetForm
   ) {
-    TraversePlan traversePlan = traverseAnalyzer.buildMapThruChannel1TraversePlan(
+    TraversePlan traversePlan = traverseAnalyzer.buildMapThruChannelPlan(
         sourceType.asClassType().baseClass(), cid, targetForm
     );
     return new AutoMapper1<>(
@@ -260,7 +260,7 @@ public class DefaultEngine implements Engine {
   public <S, T, Q1, Q2> Mapper2<S, T, Q1, Q2> autoMapperThruChannel2(
       Type<S> sourceType, Rid cid, ReflectionForm targetForm
   ) {
-    TraversePlan traversePlan = traverseAnalyzer.buildMapThruChannel2TraversePlan(
+    TraversePlan traversePlan = traverseAnalyzer.buildMapThruChannelPlan(
         sourceType.asClassType().baseClass(), cid, targetForm
     );
     return new AutoMapper2<>(
@@ -277,7 +277,7 @@ public class DefaultEngine implements Engine {
   public <S, T, Q1, Q2, Q3> Mapper3<S, T, Q1, Q2, Q3> autoMapperThruChannel3(
       Type<S> sourceType, Rid cid, ReflectionForm targetForm
   ) {
-    TraversePlan traversePlan = traverseAnalyzer.buildMapThruChannel3TraversePlan(
+    TraversePlan traversePlan = traverseAnalyzer.buildMapThruChannelPlan(
         sourceType.asClassType().baseClass(), cid, targetForm
     );
     return new AutoMapper3<>(
@@ -292,7 +292,7 @@ public class DefaultEngine implements Engine {
   @Override
   @SuppressWarnings("unchecked")
   public <S> Mover0<S> autoMoverThruChannel0(Type<S> sourceType, Rid cid, ReflectionForm targetForm) {
-    TraversePlan traversePlan = traverseAnalyzer.buildMoveThruChannel0TraversePlan(
+    TraversePlan traversePlan = traverseAnalyzer.buildMoveThruChannelPlan(
         sourceType.asClassType().baseClass(), cid, targetForm
     );
     return new AutoMover0<>(
@@ -316,7 +316,7 @@ public class DefaultEngine implements Engine {
   public <S, Q> Mover1<S, Q> autoMoverThruChannel1(
       Type<S> sourceType, Rid cid, ReflectionForm targetForm
   ) {
-    TraversePlan traversePlan = traverseAnalyzer.buildMoveThruChannel1TraversePlan(
+    TraversePlan traversePlan = traverseAnalyzer.buildMoveThruChannelPlan(
         sourceType.asClassType().baseClass(), cid, targetForm
     );
     return new AutoMover1<>(
@@ -333,7 +333,7 @@ public class DefaultEngine implements Engine {
   public <S, Q1, Q2> Mover2<S, Q1, Q2> autoMoverThruChannel2(
       Type<S> sourceType, Rid cid, ReflectionForm targetForm
   ) {
-    TraversePlan traversePlan = traverseAnalyzer.buildMoveThruChannel2TraversePlan(
+    TraversePlan traversePlan = traverseAnalyzer.buildMoveThruChannelPlan(
         sourceType.asClassType().baseClass(), cid, targetForm
     );
     return new AutoMover2<>(
@@ -350,7 +350,7 @@ public class DefaultEngine implements Engine {
   public <S, Q1, Q2, Q3> Mover3<S, Q1, Q2, Q3> autoMoverThruChannel3(
       Type<S> sourceType, Rid cid, ReflectionForm targetForm
   ) {
-    TraversePlan traversePlan = traverseAnalyzer.buildMoveThruChannel3TraversePlan(
+    TraversePlan traversePlan = traverseAnalyzer.buildMoveThruChannelPlan(
         sourceType.asClassType().baseClass(), cid, targetForm
     );
     return new AutoMover3<>(
@@ -367,7 +367,7 @@ public class DefaultEngine implements Engine {
   public <S, T> MapperOfMoving0<S, T> autoMapperOfMovingThruChannel0(
       Type<S> sourceType, Rid cid, ReflectionForm targetForm
   ) {
-    TraversePlan traversePlan = traverseAnalyzer.buildMapOfMovingThruChannel0TraversePlan(
+    TraversePlan traversePlan = traverseAnalyzer.buildMapOfMovingThruChannelPlan(
         sourceType.asClassType().baseClass(), cid, targetForm
     );
     return new AutoMapperOfMoving0<>(
@@ -384,7 +384,7 @@ public class DefaultEngine implements Engine {
   public <S, T, Q> MapperOfMoving1<S, T, Q> autoMapperOfMovingThruChannel1(
       Type<S> sourceType, Rid cid, ReflectionForm targetForm
   ) {
-    TraversePlan traversePlan = traverseAnalyzer.buildMapOfMovingThruChannel1TraversePlan(
+    TraversePlan traversePlan = traverseAnalyzer.buildMapOfMovingThruChannelPlan(
         sourceType.asClassType().baseClass(), cid, targetForm
     );
     return new AutoMapperOfMoving1<>(
@@ -401,7 +401,7 @@ public class DefaultEngine implements Engine {
   public <S, T, Q1, Q2> MapperOfMoving2<S, T, Q1, Q2> autoMapperOfMovingThruChannel2(
       Type<S> sourceType, Rid cid, ReflectionForm targetForm
   ) {
-    TraversePlan traversePlan = traverseAnalyzer.buildMapOfMovingThruChannel2TraversePlan(
+    TraversePlan traversePlan = traverseAnalyzer.buildMapOfMovingThruChannelPlan(
         sourceType.asClassType().baseClass(), cid, targetForm
     );
     return new AutoMapperOfMoving2<>(
@@ -418,7 +418,7 @@ public class DefaultEngine implements Engine {
   public <S, T, Q1, Q2, Q3> MapperOfMoving3<S, T, Q1, Q2, Q3> autoMapperOfMovingThruChannel3(
       Type<S> sourceType, Rid cid, ReflectionForm targetForm
   ) {
-    TraversePlan traversePlan = traverseAnalyzer.buildMapOfMovingThruChannel3TraversePlan(
+    TraversePlan traversePlan = traverseAnalyzer.buildMapOfMovingThruChannelPlan(
         sourceType.asClassType().baseClass(), cid, targetForm
     );
     return new AutoMapperOfMoving3<>(
@@ -435,7 +435,7 @@ public class DefaultEngine implements Engine {
   public <S, T, Q1, Q2, Q3, Q4> MapperOfMoving4<S, T, Q1, Q2, Q3, Q4> autoMapperOfMovingThruChannel4(
       Type<S> sourceType, Rid cid, ReflectionForm targetForm
   ) {
-    TraversePlan traversePlan = traverseAnalyzer.buildMapOfMovingThruChannel4TraversePlan(
+    TraversePlan traversePlan = traverseAnalyzer.buildMapOfMovingThruChannelPlan(
         sourceType.asClassType().baseClass(), cid, targetForm
     );
     return new AutoMapperOfMoving4<>(
@@ -586,7 +586,7 @@ public class DefaultEngine implements Engine {
   private void loadReflectionGuides(Class<?> reflectionClass) {
     Class<?> actualReflectionClass = ReflectionFunctions.getReflectionClass(reflectionClass);
     if (actualReflectionClass != null) {
-      List<Guide<?, ?>> reflectionGuides = GuideFunctions.loadReflectionsGuides(actualReflectionClass);
+      List<SystemGuide<?, ?>> reflectionGuides = GuideFunctions.loadReflectionsGuides(actualReflectionClass);
       reflectionGuides.forEach(guideRegistry::addGuide);
     }
   }

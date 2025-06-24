@@ -24,7 +24,7 @@ import tech.intellispaces.reflections.framework.channel.Channel1;
 import tech.intellispaces.reflections.framework.channel.Channel2;
 import tech.intellispaces.reflections.framework.channel.Channel3;
 import tech.intellispaces.reflections.framework.channel.Channel4;
-import tech.intellispaces.reflections.framework.guide.Guide;
+import tech.intellispaces.reflections.framework.guide.SystemGuide;
 import tech.intellispaces.reflections.framework.guide.n0.Mapper0;
 import tech.intellispaces.reflections.framework.guide.n0.MapperOfMoving0;
 import tech.intellispaces.reflections.framework.guide.n0.Mover0;
@@ -93,7 +93,7 @@ public interface Engine {
    *
    * @param guide the guide.
    */
-  void addGuide(Guide<?, ?> guide);
+  void addGuide(SystemGuide<?, ?> guide);
 
   /**
    * Creates and registers new reflection.

@@ -10,7 +10,7 @@ import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 import tech.intellispaces.reflections.framework.system.UnitGuide;
 import tech.intellispaces.reflections.framework.system.UnitWrapper;
 
-abstract class UnitGuide1<S, R, Q> implements Guide1<S, R, Q>, UnitGuide<S, R> {
+abstract class UnitGuide1<S, R, Q> implements SystemGuide1<S, R, Q>, UnitGuide<S, R> {
   private final Rid cid;
   private final UnitWrapper unitInstance;
   private final MethodStatement guideMethod;

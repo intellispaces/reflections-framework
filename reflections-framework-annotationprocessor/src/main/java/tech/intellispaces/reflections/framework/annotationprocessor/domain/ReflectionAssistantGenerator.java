@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 
 import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
-import tech.intellispaces.commons.text.StringFunctions;
 import tech.intellispaces.commons.type.Type;
 import tech.intellispaces.javareflection.customtype.CustomType;
 import tech.intellispaces.javareflection.method.MethodParam;

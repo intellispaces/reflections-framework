@@ -1,26 +1,12 @@
 package tech.intellispaces.reflections.framework.system;
 
 import tech.intellispaces.reflections.framework.exception.TraverseException;
-import tech.intellispaces.reflections.framework.traverse.plan.AscendAndExecutePlan1;
-import tech.intellispaces.reflections.framework.traverse.plan.CallGuide0Plan;
-import tech.intellispaces.reflections.framework.traverse.plan.CallGuide1Plan;
-import tech.intellispaces.reflections.framework.traverse.plan.CallGuide2Plan;
-import tech.intellispaces.reflections.framework.traverse.plan.CallGuide3Plan;
-import tech.intellispaces.reflections.framework.traverse.plan.CallGuide4Plan;
-import tech.intellispaces.reflections.framework.traverse.plan.MapOfMovingSpecifiedClassSourceThruIdentifiedChannel0Plan;
-import tech.intellispaces.reflections.framework.traverse.plan.MapOfMovingSpecifiedClassSourceThruIdentifiedChannel1TraversePlan;
-import tech.intellispaces.reflections.framework.traverse.plan.MapOfMovingSpecifiedClassSourceThruIdentifiedChannel2TraversePlan;
-import tech.intellispaces.reflections.framework.traverse.plan.MapOfMovingSpecifiedClassSourceThruIdentifiedChannel3TraversePlan;
-import tech.intellispaces.reflections.framework.traverse.plan.MapOfMovingSpecifiedClassSourceThruIdentifiedChannel4TraversePlan;
-import tech.intellispaces.reflections.framework.traverse.plan.MapSpecifiedClassSourceThruIdentifiedChannel0TraversePlan;
-import tech.intellispaces.reflections.framework.traverse.plan.MapSpecifiedClassSourceThruIdentifiedChannel1TraversePlan;
-import tech.intellispaces.reflections.framework.traverse.plan.MapSpecifiedClassSourceThruIdentifiedChannel2TraversePlan;
-import tech.intellispaces.reflections.framework.traverse.plan.MapSpecifiedClassSourceThruIdentifiedChannel3TraversePlan;
-import tech.intellispaces.reflections.framework.traverse.plan.MapSpecifiedSourceToSpecifiedTargetDomainAndClassTraversePlan;
-import tech.intellispaces.reflections.framework.traverse.plan.MoveSpecifiedClassSourceThruIdentifiedChannel0TraversePlan;
-import tech.intellispaces.reflections.framework.traverse.plan.MoveSpecifiedClassSourceThruIdentifiedChannel1TraversePlan;
-import tech.intellispaces.reflections.framework.traverse.plan.MoveSpecifiedClassSourceThruIdentifiedChannel2TraversePlan;
-import tech.intellispaces.reflections.framework.traverse.plan.MoveSpecifiedClassSourceThruIdentifiedChannel3TraversePlan;
+import tech.intellispaces.reflections.framework.task.plan.AscendAndExecutePlan;
+import tech.intellispaces.reflections.framework.task.plan.CallGuidePlan;
+import tech.intellispaces.reflections.framework.task.plan.MapOfMovingSourceSpecifiedClassThruIdentifiedChannelPlan;
+import tech.intellispaces.reflections.framework.task.plan.MapSourceSpecifiedClassThruIdentifiedChannelPlan;
+import tech.intellispaces.reflections.framework.task.plan.MapSpecifiedSourceToSpecifiedTargetDomainAndClassPlan;
+import tech.intellispaces.reflections.framework.task.plan.MoveSourceSpecifiedClassThruIdentifiedChannelPlan;
 
 /**
  * The traverse plan executor.
@@ -28,35 +14,35 @@ import tech.intellispaces.reflections.framework.traverse.plan.MoveSpecifiedClass
 public interface TraverseExecutor {
 
   Object execute(
-      CallGuide0Plan plan,
+      CallGuidePlan plan,
       Object source
   ) throws TraverseException;
 
   int executeReturnInt(
-      CallGuide0Plan plan,
+      CallGuidePlan plan,
       Object source
   ) throws TraverseException;
 
   double executeReturnDouble(
-      CallGuide0Plan plan,
+      CallGuidePlan plan,
       Object source
   ) throws TraverseException;
 
   Object execute(
-      CallGuide1Plan plan,
+      CallGuidePlan plan,
       Object source,
       Object qualifier
-    ) throws TraverseException;
+  ) throws TraverseException;
 
   Object execute(
-      CallGuide2Plan plan,
+      CallGuidePlan plan,
       Object source,
       Object qualifier1,
       Object qualifier2
   ) throws TraverseException;
 
   Object execute(
-      CallGuide3Plan plan,
+      CallGuidePlan plan,
       Object source,
       Object qualifier1,
       Object qualifier2,
@@ -64,7 +50,7 @@ public interface TraverseExecutor {
   ) throws TraverseException;
 
   Object execute(
-      CallGuide4Plan plan,
+      CallGuidePlan plan,
       Object source,
       Object qualifier1,
       Object qualifier2,
@@ -73,41 +59,68 @@ public interface TraverseExecutor {
   ) throws TraverseException;
 
   Object execute(
-      AscendAndExecutePlan1 plan,
+      AscendAndExecutePlan plan,
       Object source,
       Object qualifier
   ) throws TraverseException;
 
   Object execute(
-      MapSpecifiedClassSourceThruIdentifiedChannel0TraversePlan plan,
+      MapSourceSpecifiedClassThruIdentifiedChannelPlan plan,
       Object source
   ) throws TraverseException;
 
   int executeReturnInt(
-      MapSpecifiedClassSourceThruIdentifiedChannel0TraversePlan plan,
+      MapSourceSpecifiedClassThruIdentifiedChannelPlan plan,
       Object source
   ) throws TraverseException;
 
   double executeReturnDouble(
-      MapSpecifiedClassSourceThruIdentifiedChannel0TraversePlan plan,
+      MapSourceSpecifiedClassThruIdentifiedChannelPlan plan,
       Object source
   ) throws TraverseException;
 
   Object execute(
-      MapSpecifiedClassSourceThruIdentifiedChannel1TraversePlan plan,
+      MapSourceSpecifiedClassThruIdentifiedChannelPlan plan,
       Object source,
       Object qualifier
   ) throws TraverseException;
 
   Object execute(
-      MapSpecifiedClassSourceThruIdentifiedChannel2TraversePlan plan,
+      MapSourceSpecifiedClassThruIdentifiedChannelPlan plan,
       Object source,
       Object qualifier1,
       Object qualifier2
   ) throws TraverseException;
 
   Object execute(
-      MapSpecifiedClassSourceThruIdentifiedChannel3TraversePlan plan,
+      MapSourceSpecifiedClassThruIdentifiedChannelPlan plan,
+      Object source,
+      Object qualifier1,
+      Object qualifier2,
+      Object qualifier3
+  ) throws TraverseException;
+
+
+  Object execute(
+      MoveSourceSpecifiedClassThruIdentifiedChannelPlan plan,
+      Object source
+  ) throws TraverseException;
+
+  Object execute(
+      MoveSourceSpecifiedClassThruIdentifiedChannelPlan plan,
+      Object source,
+      Object qualifier
+  ) throws TraverseException;
+
+  Object execute(
+      MoveSourceSpecifiedClassThruIdentifiedChannelPlan plan,
+      Object source,
+      Object qualifier1,
+      Object qualifier2
+  ) throws TraverseException;
+
+  Object execute(
+      MoveSourceSpecifiedClassThruIdentifiedChannelPlan plan,
       Object source,
       Object qualifier1,
       Object qualifier2,
@@ -115,61 +128,35 @@ public interface TraverseExecutor {
   ) throws TraverseException;
 
   Object execute(
-      MoveSpecifiedClassSourceThruIdentifiedChannel0TraversePlan plan,
-      Object source
-  ) throws TraverseException;
-
-  Object execute(
-      MoveSpecifiedClassSourceThruIdentifiedChannel1TraversePlan plan,
-      Object source,
-      Object qualifier
-  ) throws TraverseException;
-
-  Object execute(
-      MoveSpecifiedClassSourceThruIdentifiedChannel2TraversePlan plan,
-      Object source,
-      Object qualifier1,
-      Object qualifier2
-  ) throws TraverseException;
-
-  Object execute(
-      MoveSpecifiedClassSourceThruIdentifiedChannel3TraversePlan plan,
-      Object source,
-      Object qualifier1,
-      Object qualifier2,
-      Object qualifier3
-  ) throws TraverseException;
-
-  Object execute(
-      MapOfMovingSpecifiedClassSourceThruIdentifiedChannel0Plan plan,
+      MapOfMovingSourceSpecifiedClassThruIdentifiedChannelPlan plan,
       Object source
   ) throws TraverseException;
 
   int executeReturnInt(
-      MapOfMovingSpecifiedClassSourceThruIdentifiedChannel0Plan plan,
+      MapOfMovingSourceSpecifiedClassThruIdentifiedChannelPlan plan,
       Object source
   ) throws TraverseException;
 
   double executeReturnDouble(
-      MapOfMovingSpecifiedClassSourceThruIdentifiedChannel0Plan plan,
+      MapOfMovingSourceSpecifiedClassThruIdentifiedChannelPlan plan,
       Object source
   ) throws TraverseException;
 
   Object execute(
-      MapOfMovingSpecifiedClassSourceThruIdentifiedChannel1TraversePlan plan,
+      MapOfMovingSourceSpecifiedClassThruIdentifiedChannelPlan plan,
       Object source,
       Object qualifier
   ) throws TraverseException;
 
   Object execute(
-      MapOfMovingSpecifiedClassSourceThruIdentifiedChannel2TraversePlan plan,
+      MapOfMovingSourceSpecifiedClassThruIdentifiedChannelPlan plan,
       Object source,
       Object qualifier1,
       Object qualifier2
   ) throws TraverseException;
 
   Object execute(
-      MapOfMovingSpecifiedClassSourceThruIdentifiedChannel3TraversePlan plan,
+      MapOfMovingSourceSpecifiedClassThruIdentifiedChannelPlan plan,
       Object source,
       Object qualifier1,
       Object qualifier2,
@@ -177,7 +164,7 @@ public interface TraverseExecutor {
   ) throws TraverseException;
 
   Object execute(
-      MapOfMovingSpecifiedClassSourceThruIdentifiedChannel4TraversePlan plan,
+      MapOfMovingSourceSpecifiedClassThruIdentifiedChannelPlan plan,
       Object source,
       Object qualifier1,
       Object qualifier2,
@@ -186,14 +173,14 @@ public interface TraverseExecutor {
   ) throws TraverseException;
 
   Object execute(
-      MapSpecifiedSourceToSpecifiedTargetDomainAndClassTraversePlan plan
+      MapSpecifiedSourceToSpecifiedTargetDomainAndClassPlan plan
   ) throws TraverseException;
 
   int executeReturnInt(
-      MapSpecifiedSourceToSpecifiedTargetDomainAndClassTraversePlan plan
+      MapSpecifiedSourceToSpecifiedTargetDomainAndClassPlan plan
   ) throws TraverseException;
 
   double executeReturnDouble(
-      MapSpecifiedSourceToSpecifiedTargetDomainAndClassTraversePlan plan
+      MapSpecifiedSourceToSpecifiedTargetDomainAndClassPlan plan
   ) throws TraverseException;
 }

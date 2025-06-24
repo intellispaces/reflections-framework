@@ -9,5 +9,5 @@ package tech.intellispaces.reflections.framework.guide;
  *
  * @param <S> the source reflection type.
  */
-public interface Mover<S> extends Guide<S, S> {
+public interface Mover<S> extends SystemGuide<S, S> {
 }

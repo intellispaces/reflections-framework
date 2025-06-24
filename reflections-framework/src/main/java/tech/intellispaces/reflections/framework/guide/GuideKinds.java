@@ -28,17 +28,17 @@ public enum GuideKinds implements GuideKind, Enumeration<GuideKind> {
 
   Mover5(false, true, false, 5),
 
-  MapperOfMoving0(true, false, true, 0),
+  MapperOfMoving0(false, false, true, 0),
 
-  MapperOfMoving1(true, false, true, 1),
+  MapperOfMoving1(false, false, true, 1),
 
-  MapperOfMoving2(true, false, true, 2),
+  MapperOfMoving2(false, false, true, 2),
 
-  MapperOfMoving3(true, false, true, 3),
+  MapperOfMoving3(false, false, true, 3),
 
-  MapperOfMoving4(true, false, true, 4),
+  MapperOfMoving4(false, false, true, 4),
 
-  MapperOfMoving5(true, false, true, 5);
+  MapperOfMoving5(false, false, true, 5);
 
 
   private final boolean mapper;

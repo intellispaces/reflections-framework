@@ -8,17 +8,17 @@ import java.util.Map;
 
 import tech.intellispaces.commons.type.ClassFunctions;
 import tech.intellispaces.core.Rid;
-import tech.intellispaces.reflections.framework.guide.Guide;
-import tech.intellispaces.reflections.framework.guide.GuideKind;
+import tech.intellispaces.reflections.framework.guide.GuideType;
+import tech.intellispaces.reflections.framework.guide.SystemGuide;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 
 public class LocalGuideRegistry implements GuideRegistry {
-  private final Map<Rid, List<Guide<?, ?>>> mapperGuides = new HashMap<>();
-  private final Map<Rid, List<Guide<?, ?>>> moverGuides = new HashMap<>();
-  private final Map<Rid, List<Guide<?, ?>>> mapperOfMovingGuides = new HashMap<>();
+  private final Map<Rid, List<SystemGuide<?, ?>>> mapperGuides = new HashMap<>();
+  private final Map<Rid, List<SystemGuide<?, ?>>> moverGuides = new HashMap<>();
+  private final Map<Rid, List<SystemGuide<?, ?>>> mapperOfMovingGuides = new HashMap<>();
 
   @Override
-  public void addGuide(Guide<?, ?> guide) {
+  public void addGuide(SystemGuide<?, ?> guide) {
     if (guide.kind().isMapper()) {
       mapperGuides.computeIfAbsent(guide.channelId(), k -> new ArrayList<>()).add(guide);
     } else if (guide.kind().isMover()) {
@@ -29,12 +29,12 @@ public class LocalGuideRegistry implements GuideRegistry {
   }
 
   @Override
-  public List<Guide<?, ?>> findGuides(
-      Rid cid, GuideKind kind, Class<?> sourceClass, ReflectionForm targetForm
+  public List<SystemGuide<?, ?>> findGuides(
+      Rid cid, GuideType kind, Class<?> sourceClass, ReflectionForm targetForm
   ) {
-    List<Guide<?, ?>> resultGuides = new ArrayList<>();
-    List<Guide<?, ?>> guides = findGuides(cid, kind);
-    for (Guide<?, ?> guide : guides) {
+    List<SystemGuide<?, ?>> resultGuides = new ArrayList<>();
+    List<SystemGuide<?, ?>> guides = findGuides(cid, kind);
+    for (SystemGuide<?, ?> guide : guides) {
       if (isSuitableGuide(guide, sourceClass, targetForm)) {
         resultGuides.add(guide);
       }
@@ -43,19 +43,19 @@ public class LocalGuideRegistry implements GuideRegistry {
   }
 
   boolean isSuitableGuide(
-      Guide<?, ?> guide,Class<?> sourceReflectionClass, ReflectionForm targetForm
+      SystemGuide<?, ?> guide, Class<?> sourceReflectionClass, ReflectionForm targetForm
   ) {
     return ClassFunctions.isCompatibleClasses(guide.sourceClass(), sourceReflectionClass)
         && (guide.targetForm() == targetForm);
   }
 
-  private List<Guide<?, ?>> findGuides(Rid cid, GuideKind kind) {
-    List<Guide<?, ?>> guides = null;
-    if (kind.isMapper()) {
+  private List<SystemGuide<?, ?>> findGuides(Rid cid, GuideType guideType) {
+    List<SystemGuide<?, ?>> guides = null;
+    if (guideType.isMapper()) {
       guides = mapperGuides.get(cid);
-    } else if (kind.isMover()) {
+    } else if (guideType.isMover()) {
       guides = moverGuides.get(cid);
-    } else if (kind.isMapperOfMoving()) {
+    } else if (guideType.isMapperOfMoving()) {
       guides = mapperOfMovingGuides.get(cid);
     }
     if (guides == null) {

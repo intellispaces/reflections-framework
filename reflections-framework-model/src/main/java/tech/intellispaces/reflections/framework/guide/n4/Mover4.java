@@ -14,7 +14,7 @@ import tech.intellispaces.reflections.framework.guide.n5.Mover5;
  * @param <Q4> the fourth qualifier reflection type.
  */
 public interface Mover4<S, Q1, Q2, Q3, Q4> extends
-    Guide4<S, S, Q1, Q2, Q3, Q4>,
+    SystemGuide4<S, S, Q1, Q2, Q3, Q4>,
     Mover<S>,
     Mover5<S, Q1, Q2, Q3, Q4, Void>
 {
@@ -28,7 +28,7 @@ public interface Mover4<S, Q1, Q2, Q3, Q4> extends
   }
 
   @SuppressWarnings("unchecked")
-  default S traverse(S source, Object... qualifiers) throws TraverseException {
+  default S traverse(S source, Object[] qualifiers) throws TraverseException {
     return traverse(source, (Q1) qualifiers[0], (Q2) qualifiers[1], (Q3) qualifiers[2], (Q4) qualifiers[3]);
   }
 

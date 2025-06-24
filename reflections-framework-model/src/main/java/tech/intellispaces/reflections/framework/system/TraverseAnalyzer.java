@@ -4,97 +4,47 @@ import tech.intellispaces.core.Domain;
 import tech.intellispaces.core.Reflection;
 import tech.intellispaces.core.Rid;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
-import tech.intellispaces.reflections.framework.traverse.plan.ExecutionTraversePlan;
-import tech.intellispaces.reflections.framework.traverse.plan.MapOfMovingSpecifiedClassSourceThruIdentifiedChannel0Plan;
-import tech.intellispaces.reflections.framework.traverse.plan.MapOfMovingSpecifiedClassSourceThruIdentifiedChannel1TraversePlan;
-import tech.intellispaces.reflections.framework.traverse.plan.MapOfMovingSpecifiedClassSourceThruIdentifiedChannel2TraversePlan;
-import tech.intellispaces.reflections.framework.traverse.plan.MapOfMovingSpecifiedClassSourceThruIdentifiedChannel3TraversePlan;
-import tech.intellispaces.reflections.framework.traverse.plan.MapOfMovingSpecifiedClassSourceThruIdentifiedChannel4TraversePlan;
-import tech.intellispaces.reflections.framework.traverse.plan.MapSpecifiedClassSourceThruIdentifiedChannel0TraversePlan;
-import tech.intellispaces.reflections.framework.traverse.plan.MapSpecifiedClassSourceThruIdentifiedChannel1TraversePlan;
-import tech.intellispaces.reflections.framework.traverse.plan.MapSpecifiedClassSourceThruIdentifiedChannel2TraversePlan;
-import tech.intellispaces.reflections.framework.traverse.plan.MapSpecifiedClassSourceThruIdentifiedChannel3TraversePlan;
-import tech.intellispaces.reflections.framework.traverse.plan.MapSpecifiedSourceToSpecifiedTargetDomainAndClassTraversePlan;
-import tech.intellispaces.reflections.framework.traverse.plan.MoveSpecifiedClassSourceThruIdentifiedChannel0TraversePlan;
-import tech.intellispaces.reflections.framework.traverse.plan.MoveSpecifiedClassSourceThruIdentifiedChannel1TraversePlan;
-import tech.intellispaces.reflections.framework.traverse.plan.MoveSpecifiedClassSourceThruIdentifiedChannel2TraversePlan;
-import tech.intellispaces.reflections.framework.traverse.plan.MoveSpecifiedClassSourceThruIdentifiedChannel3TraversePlan;
-import tech.intellispaces.reflections.framework.traverse.plan.TraversePlan;
-import tech.intellispaces.reflections.framework.traverse.plan.TraverseSpecifiedClassSourceThruIdentifierChannelTraversePlan;
+import tech.intellispaces.reflections.framework.task.plan.ExecutionTraversePlan;
+import tech.intellispaces.reflections.framework.task.plan.MapOfMovingSourceSpecifiedClassThruIdentifiedChannelPlan;
+import tech.intellispaces.reflections.framework.task.plan.MapSourceSpecifiedClassThruIdentifiedChannelPlan;
+import tech.intellispaces.reflections.framework.task.plan.MapSpecifiedSourceToSpecifiedTargetDomainAndClassPlan;
+import tech.intellispaces.reflections.framework.task.plan.MoveSourceSpecifiedClassThruIdentifiedChannelPlan;
+import tech.intellispaces.reflections.framework.task.plan.TraversePlan;
+import tech.intellispaces.reflections.framework.task.plan.TraverseSourceSpecifiedClassThruIdentifierChannelTraversePlan;
 
 /**
  * The traverse analyzer.
  */
 public interface TraverseAnalyzer {
 
-  MapSpecifiedSourceToSpecifiedTargetDomainAndClassTraversePlan buildMapToTraversePlan(
+  MapSpecifiedSourceToSpecifiedTargetDomainAndClassPlan buildMapToDomainPlan(
       Reflection source, Domain targetDomain, Class<?> targetClass
   );
 
-  MapSpecifiedClassSourceThruIdentifiedChannel0TraversePlan buildMapThruChannel0TraversePlan(
+  MapSourceSpecifiedClassThruIdentifiedChannelPlan buildMapThruChannelPlan(
       Class<?> sourceClass, Rid cid, ReflectionForm targetForm
   );
 
-  MapSpecifiedClassSourceThruIdentifiedChannel1TraversePlan buildMapThruChannel1TraversePlan(
+  MoveSourceSpecifiedClassThruIdentifiedChannelPlan buildMoveThruChannelPlan(
       Class<?> sourceClass, Rid cid, ReflectionForm targetForm
   );
 
-  MapSpecifiedClassSourceThruIdentifiedChannel2TraversePlan buildMapThruChannel2TraversePlan(
-      Class<?> sourceClass, Rid cid, ReflectionForm targetForm
-  );
-
-  MapSpecifiedClassSourceThruIdentifiedChannel3TraversePlan buildMapThruChannel3TraversePlan(
-      Class<?> sourceClass, Rid cid, ReflectionForm targetForm
-  );
-
-  MoveSpecifiedClassSourceThruIdentifiedChannel0TraversePlan buildMoveThruChannel0TraversePlan(
-      Class<?> sourceClass, Rid cid, ReflectionForm targetForm
-  );
-
-  MoveSpecifiedClassSourceThruIdentifiedChannel1TraversePlan buildMoveThruChannel1TraversePlan(
-      Class<?> sourceClass, Rid cid, ReflectionForm targetForm
-  );
-
-  MoveSpecifiedClassSourceThruIdentifiedChannel2TraversePlan buildMoveThruChannel2TraversePlan(
-      Class<?> sourceClass, Rid cid, ReflectionForm targetForm
-  );
-
-  MoveSpecifiedClassSourceThruIdentifiedChannel3TraversePlan buildMoveThruChannel3TraversePlan(
-      Class<?> sourceClass, Rid cid, ReflectionForm targetForm
-  );
-
-  MapOfMovingSpecifiedClassSourceThruIdentifiedChannel0Plan buildMapOfMovingThruChannel0TraversePlan(
-      Class<?> sourceClass, Rid cid, ReflectionForm targetForm
-  );
-
-  MapOfMovingSpecifiedClassSourceThruIdentifiedChannel1TraversePlan buildMapOfMovingThruChannel1TraversePlan(
-      Class<?> sourceClass, Rid cid, ReflectionForm targetForm
-  );
-
-  MapOfMovingSpecifiedClassSourceThruIdentifiedChannel2TraversePlan buildMapOfMovingThruChannel2TraversePlan(
-      Class<?> sourceClass, Rid cid, ReflectionForm targetForm
-  );
-
-  MapOfMovingSpecifiedClassSourceThruIdentifiedChannel3TraversePlan buildMapOfMovingThruChannel3TraversePlan(
-      Class<?> sourceClass, Rid cid, ReflectionForm targetForm
-  );
-
-  MapOfMovingSpecifiedClassSourceThruIdentifiedChannel4TraversePlan buildMapOfMovingThruChannel4TraversePlan(
+  MapOfMovingSourceSpecifiedClassThruIdentifiedChannelPlan buildMapOfMovingThruChannelPlan(
       Class<?> sourceClass, Rid cid, ReflectionForm targetForm
   );
 
   TraversePlan buildExecutionPlan(
-      MapSpecifiedSourceToSpecifiedTargetDomainAndClassTraversePlan plan
+      MapSpecifiedSourceToSpecifiedTargetDomainAndClassPlan plan
   );
 
   ExecutionTraversePlan buildExecutionPlan(
-      TraverseSpecifiedClassSourceThruIdentifierChannelTraversePlan declarativePlan,
+      TraverseSourceSpecifiedClassThruIdentifierChannelTraversePlan declarativePlan,
       Object source,
       ReflectionForm targetForm
   );
 
   ExecutionTraversePlan buildExecutionPlan(
-      TraverseSpecifiedClassSourceThruIdentifierChannelTraversePlan declarativePlan,
+      TraverseSourceSpecifiedClassThruIdentifierChannelTraversePlan declarativePlan,
       Class<?> sourceClass,
       ReflectionForm targetForm
   );

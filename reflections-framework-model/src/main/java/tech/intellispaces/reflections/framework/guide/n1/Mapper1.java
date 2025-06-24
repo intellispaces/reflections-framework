@@ -19,7 +19,7 @@ import tech.intellispaces.reflections.framework.guide.n5.Mapper5;
  * @param <Q> the qualifier reflection type.
  */
 public interface Mapper1<S, T, Q> extends
-    Guide1<S, T, Q>,
+    SystemGuide1<S, T, Q>,
     Mapper<S, T>,
     Mapper2<S, T, Q, Void>,
     Mapper3<S, T, Q, Void, Void>,
@@ -64,7 +64,7 @@ public interface Mapper1<S, T, Q> extends
 
   @Override
   @SuppressWarnings("unchecked")
-  default T traverse(S source, Object... qualifiers) throws TraverseException {
+  default T traverse(S source, Object[] qualifiers) throws TraverseException {
     return traverse(source, (Q) qualifiers[0]);
   }
 

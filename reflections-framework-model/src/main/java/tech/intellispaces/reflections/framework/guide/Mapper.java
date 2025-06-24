@@ -12,5 +12,5 @@ package tech.intellispaces.reflections.framework.guide;
  * @param <S> source reflection type.
  * @param <T> target reflection type.
  */
-public interface Mapper<S, T> extends Guide<S, T> {
+public interface Mapper<S, T> extends SystemGuide<S, T> {
 }

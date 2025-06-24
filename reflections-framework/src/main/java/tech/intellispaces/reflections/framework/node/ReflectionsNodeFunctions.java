@@ -9,8 +9,8 @@ import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.reflections.framework.ReflectionsFramework;
 import tech.intellispaces.reflections.framework.engine.EngineRegistrar;
 import tech.intellispaces.reflections.framework.engine.SingleEngineRegistrar;
-import tech.intellispaces.reflections.framework.settings.OntologyReferences;
 import tech.intellispaces.reflections.framework.settings.OntologyReferencePoints;
+import tech.intellispaces.reflections.framework.settings.OntologyReferences;
 import tech.intellispaces.reflections.framework.system.ModuleHandle;
 
 /**

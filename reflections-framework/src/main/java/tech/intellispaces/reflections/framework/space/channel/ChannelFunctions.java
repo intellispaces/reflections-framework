@@ -43,6 +43,7 @@ import tech.intellispaces.reflections.framework.channel.Channel4;
 import tech.intellispaces.reflections.framework.channel.ChannelFunction0;
 import tech.intellispaces.reflections.framework.channel.ChannelFunction1;
 import tech.intellispaces.reflections.framework.exception.ConfigurationExceptions;
+import tech.intellispaces.reflections.framework.guide.SystemGuide;
 import tech.intellispaces.reflections.framework.id.RepetableUuidIdentifierGenerator;
 import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
 import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
@@ -244,8 +245,8 @@ public interface ChannelFunctions {
       return cid;
     }
 
-    if (unit instanceof tech.intellispaces.reflections.framework.guide.Guide) {
-      var guide = (tech.intellispaces.reflections.framework.guide.Guide<?, ?>) unit;
+    if (unit instanceof SystemGuide) {
+      var guide = (SystemGuide<?, ?>) unit;
       return guide.channelId();
     }
     throw UnexpectedExceptions.withMessage("Could not define guide channel ID");

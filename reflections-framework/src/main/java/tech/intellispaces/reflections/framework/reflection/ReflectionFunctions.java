@@ -36,8 +36,8 @@ import tech.intellispaces.reflections.framework.annotation.Reflection;
 import tech.intellispaces.reflections.framework.annotation.Wrapper;
 import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
 import tech.intellispaces.reflections.framework.node.ReflectionsNodeFunctions;
-import tech.intellispaces.reflections.framework.settings.DomainReference;
 import tech.intellispaces.reflections.framework.settings.DomainAssignments;
+import tech.intellispaces.reflections.framework.settings.DomainReference;
 import tech.intellispaces.reflections.framework.space.domain.DomainFunctions;
 
 public class ReflectionFunctions {

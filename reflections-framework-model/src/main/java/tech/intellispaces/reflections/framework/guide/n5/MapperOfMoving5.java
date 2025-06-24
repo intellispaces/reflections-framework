@@ -15,7 +15,7 @@ import tech.intellispaces.reflections.framework.guide.MapperOfMoving;
  * @param <Q5> the fifth qualifier reflection type.
  */
 public interface MapperOfMoving5<S, T, Q1, Q2, Q3, Q4, Q5> extends
-    Guide5<S, T, Q1, Q2, Q3, Q4, Q5>,
+    SystemGuide5<S, T, Q1, Q2, Q3, Q4, Q5>,
     MapperOfMoving<S, T>
 {
   default T map(S source, Q1 qualifier1, Q2 qualifier2, Q3 qualifier3, Q4 qualifier4, Q5 qualifier5) throws TraverseException {
@@ -24,7 +24,7 @@ public interface MapperOfMoving5<S, T, Q1, Q2, Q3, Q4, Q5> extends
 
   @Override
   @SuppressWarnings("unchecked")
-  default T traverse(S source, Object... qualifiers) throws TraverseException {
+  default T traverse(S source, Object[] qualifiers) throws TraverseException {
     return traverse(source, (Q1) qualifiers[0], (Q2) qualifiers[1], (Q3) qualifiers[2], (Q4) qualifiers[3], (Q5) qualifiers[4]);
   }
 }

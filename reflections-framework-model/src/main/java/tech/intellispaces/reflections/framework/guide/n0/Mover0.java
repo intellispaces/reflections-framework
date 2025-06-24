@@ -16,7 +16,7 @@ import tech.intellispaces.reflections.framework.guide.n5.Mover5;
  * @param <S> the source reflection type.
  */
 public interface Mover0<S> extends
-    Guide0<S, S>,
+    SystemGuide0<S, S>,
     Mover<S>,
     Mover1<S, Void>,
     Mover2<S, Void, Void>,
@@ -56,7 +56,7 @@ public interface Mover0<S> extends
   }
 
   @Override
-  default S traverse(S source, Object... qualifiers) throws TraverseException {
+  default S traverse(S source, Object[] qualifiers) throws TraverseException {
     return traverse(source);
   }
 

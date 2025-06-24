@@ -18,7 +18,7 @@ import tech.intellispaces.reflections.framework.guide.n5.MapperOfMoving5;
  * @param <T> the target reflection type.
  */
 public interface MapperOfMoving0<S, T> extends
-    Guide0<S, T>,
+    SystemGuide0<S, T>,
     MapperOfMoving<S, T>,
     MapperOfMoving1<S, T, Void>,
     MapperOfMoving2<S, T, Void, Void>,
@@ -63,7 +63,7 @@ public interface MapperOfMoving0<S, T> extends
   }
 
   @Override
-  default T traverse(S source, Object... qualifiers) throws TraverseException {
+  default T traverse(S source, Object[] qualifiers) throws TraverseException {
     return traverse(source);
   }
 

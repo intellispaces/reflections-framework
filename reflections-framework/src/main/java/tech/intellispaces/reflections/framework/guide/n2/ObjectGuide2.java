@@ -12,7 +12,7 @@ import tech.intellispaces.reflections.framework.guide.GuideLogger;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 import tech.intellispaces.reflections.framework.system.ReflectionWrapper;
 
-abstract class ObjectGuide2<S extends ReflectionWrapper, R, Q1, Q2> implements Guide2<S, R, Q1, Q2> {
+abstract class ObjectGuide2<S extends ReflectionWrapper, R, Q1, Q2> implements SystemGuide2<S, R, Q1, Q2> {
   private final Class<S> reflectionClass;
   private final Rid cid;
   private final MethodStatement guideMethod;

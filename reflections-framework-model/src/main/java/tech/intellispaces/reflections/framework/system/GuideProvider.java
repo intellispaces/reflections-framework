@@ -3,8 +3,8 @@ package tech.intellispaces.reflections.framework.system;
 import java.util.List;
 
 import tech.intellispaces.core.Rid;
-import tech.intellispaces.reflections.framework.guide.Guide;
-import tech.intellispaces.reflections.framework.guide.GuideKind;
+import tech.intellispaces.reflections.framework.guide.GuideType;
+import tech.intellispaces.reflections.framework.guide.SystemGuide;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 
 /**
@@ -12,7 +12,7 @@ import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
  */
 public interface GuideProvider {
 
-  List<Guide<?, ?>> findGuides(
-      Rid cid, GuideKind kind, Class<?> sourceClass, ReflectionForm targetForm
+  List<SystemGuide<?, ?>> findGuides(
+      Rid cid, GuideType guideType, Class<?> sourceClass, ReflectionForm targetForm
   );
 }

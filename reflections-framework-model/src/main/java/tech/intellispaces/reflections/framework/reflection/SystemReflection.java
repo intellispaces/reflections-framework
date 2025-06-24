@@ -10,7 +10,8 @@ import tech.intellispaces.reflections.framework.traverse.MappingTraverse;
 /**
  * The system reflection.
  * <p>
- * The object reflection it a link from the system to the object.<p/>
+ * The object reflection it a link from the system to the object.
+ * <p>
  * Any interaction of the system with the object is performed through the object reflection only.
  */
 public interface SystemReflection extends Reflection {

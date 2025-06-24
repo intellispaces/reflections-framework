@@ -4,7 +4,7 @@ import tech.intellispaces.core.Rid;
 import tech.intellispaces.reflections.framework.exception.TraverseException;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 import tech.intellispaces.reflections.framework.system.TraverseExecutor;
-import tech.intellispaces.reflections.framework.traverse.plan.TraversePlan;
+import tech.intellispaces.reflections.framework.task.plan.TraversePlan;
 
 /**
  * Two-parametrized automatic mover guide.

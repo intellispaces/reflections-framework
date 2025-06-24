@@ -39,8 +39,8 @@ import tech.intellispaces.reflections.framework.reflection.MovabilityTypes;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForms;
 import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
-import tech.intellispaces.reflections.framework.settings.DomainReference;
 import tech.intellispaces.reflections.framework.settings.DomainAssignments;
+import tech.intellispaces.reflections.framework.settings.DomainReference;
 import tech.intellispaces.reflections.framework.space.channel.ChannelFunctions;
 import tech.intellispaces.reflections.framework.space.domain.DomainFunctions;
 

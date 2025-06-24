@@ -18,7 +18,7 @@ import tech.intellispaces.reflections.framework.guide.n5.Mapper5;
  * @param <T> the target reflection type.
  */
 public interface Mapper0<S, T> extends
-    Guide0<S, T>,
+    SystemGuide0<S, T>,
     Mapper<S, T>,
     Mapper1<S, T, Void>,
     Mapper2<S, T, Void, Void>,
@@ -71,7 +71,7 @@ public interface Mapper0<S, T> extends
   }
 
   @Override
-  default T traverse(S source, Object... qualifiers) throws TraverseException {
+  default T traverse(S source, Object[] qualifiers) throws TraverseException {
     return traverse(source);
   }
 

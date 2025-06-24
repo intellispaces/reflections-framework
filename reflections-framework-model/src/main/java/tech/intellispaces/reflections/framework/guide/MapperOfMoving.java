@@ -8,5 +8,5 @@ package tech.intellispaces.reflections.framework.guide;
  * @param <S> the source reflection type.
  * @param <T> the target reflection type.
  */
-public interface MapperOfMoving<S, T> extends Guide<S, T> {
+public interface MapperOfMoving<S, T> extends SystemGuide<S, T> {
 }

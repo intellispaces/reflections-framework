@@ -16,7 +16,7 @@ import tech.intellispaces.reflections.framework.guide.n5.Mapper5;
  * @param <Q2> the second qualifier reflection type.
  */
 public interface Mapper2<S, T, Q1, Q2> extends
-    Guide2<S, T, Q1, Q2>,
+    SystemGuide2<S, T, Q1, Q2>,
     Mapper<S, T>,
     Mapper3<S, T, Q1, Q2, Void>,
     Mapper4<S, T, Q1, Q2, Void, Void>,
@@ -45,7 +45,7 @@ public interface Mapper2<S, T, Q1, Q2> extends
 
   @Override
   @SuppressWarnings("unchecked")
-  default T traverse(S source, Object... qualifiers) throws TraverseException {
+  default T traverse(S source, Object[] qualifiers) throws TraverseException {
     return traverse(source, (Q1) qualifiers[0], (Q2) qualifiers[1]);
   }
 

@@ -1,11 +1,11 @@
 package tech.intellispaces.reflections.framework.system;
 
-import tech.intellispaces.reflections.framework.guide.Guide;
+import tech.intellispaces.reflections.framework.guide.SystemGuide;
 
 /**
  * The guide registry.
  */
 public interface GuideRegistry extends GuideProvider {
 
-  void addGuide(Guide<?, ?> guide);
+  void addGuide(SystemGuide<?, ?> guide);
 }

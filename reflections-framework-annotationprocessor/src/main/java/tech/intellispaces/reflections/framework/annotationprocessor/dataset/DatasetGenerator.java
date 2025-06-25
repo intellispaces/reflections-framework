@@ -18,6 +18,7 @@ import tech.intellispaces.commons.type.Type;
 import tech.intellispaces.commons.type.Types;
 import tech.intellispaces.core.Domain;
 import tech.intellispaces.core.Domains;
+import tech.intellispaces.core.Projection;
 import tech.intellispaces.core.Rid;
 import tech.intellispaces.core.Rids;
 import tech.intellispaces.javareflection.customtype.CustomType;
@@ -108,7 +109,8 @@ public class DatasetGenerator extends AbstractReflectionFormGenerator {
         Domain.class,
         Rids.class,
         Domains.class,
-        Base64Functions.class
+        Base64Functions.class,
+        Projection.class
     );
 
     analyzeAlias();

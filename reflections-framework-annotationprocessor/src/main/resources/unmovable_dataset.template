@@ -99,4 +99,9 @@ public class {{$generatedArtifactSimpleName}} implements {{$reflectionClassName}
     Type<{{$sourceArtifactSimpleName}}{{$typeParamsBrief}}> sourceType = Types.get({{$sourceArtifactSimpleName}}.class);
     return Modules.current().mapThruChannel1(sourceType, channelClass, qualifier);
   }
+
+  @Override
+  public Projection projectThru(Rid cid) {
+    throw NotImplementedExceptions.withCode("TXLRZw");
+  }
 }

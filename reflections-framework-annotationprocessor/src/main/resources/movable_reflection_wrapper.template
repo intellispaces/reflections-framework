@@ -169,6 +169,11 @@ public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sour
   public <R, Q, C extends Channel1 & MappingOfMovingTraverse> R mapOfMovingThru(Class<C> channelClass, Q qualifier) throws TraverseException {
     return Modules.current().mapOfMovingThruChannel1(this, channelClass, qualifier);
   }
+
+  @Override
+  public Projection projectThru(Rid cid) {
+    throw NotImplementedExceptions.withCode("2ga09A");
+  }
 {{for method : $injectionMethods}}
   {{$method["javadoc"]}}
 {{for annotation : $method["annotations"]}}

@@ -11,7 +11,7 @@ import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.core.Channel;
 import tech.intellispaces.core.Domain;
 import tech.intellispaces.core.Rid;
-import tech.intellispaces.core.repository.OntologyRepository;
+import tech.intellispaces.core.OntologyRepository;
 import tech.intellispaces.reflections.framework.guide.GuideType;
 import tech.intellispaces.reflections.framework.guide.GuideTypes;
 import tech.intellispaces.reflections.framework.guide.SystemGuide;

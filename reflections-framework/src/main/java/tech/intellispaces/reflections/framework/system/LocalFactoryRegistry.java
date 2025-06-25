@@ -34,7 +34,7 @@ import tech.intellispaces.commons.type.Type;
 import tech.intellispaces.core.Domain;
 import tech.intellispaces.core.Reflection;
 import tech.intellispaces.core.Rid;
-import tech.intellispaces.core.repository.OntologyRepository;
+import tech.intellispaces.core.OntologyRepository;
 import tech.intellispaces.reflections.framework.exception.ConfigurationExceptions;
 import tech.intellispaces.reflections.framework.factory.FactoryFunctions;
 import tech.intellispaces.reflections.framework.factory.FactoryMethod;

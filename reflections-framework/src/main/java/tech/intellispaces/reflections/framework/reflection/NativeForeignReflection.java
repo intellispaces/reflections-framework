@@ -4,6 +4,7 @@ import java.util.List;
 
 import tech.intellispaces.commons.exception.NotImplementedExceptions;
 import tech.intellispaces.core.Domain;
+import tech.intellispaces.core.Projection;
 import tech.intellispaces.core.Rid;
 import tech.intellispaces.reflections.framework.channel.Channel1;
 import tech.intellispaces.reflections.framework.exception.TraverseException;
@@ -76,5 +77,10 @@ public class NativeForeignReflection implements NativeReflection {
   @Override
   public Domain domain() {
     return domain;
+  }
+
+  @Override
+  public Projection projectThru(Rid cid) {
+    throw NotImplementedExceptions.withCode("fQkkyA");
   }
 }

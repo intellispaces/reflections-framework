@@ -4,7 +4,7 @@ import java.util.Map;
 
 import com.google.auto.service.AutoService;
 
-import tech.intellispaces.core.repository.OntologyRepository;
+import tech.intellispaces.core.OntologyRepository;
 import tech.intellispaces.reflections.framework.engine.Engine;
 import tech.intellispaces.reflections.framework.engine.EngineFactory;
 import tech.intellispaces.reflections.framework.system.AutoGuideRegistry;

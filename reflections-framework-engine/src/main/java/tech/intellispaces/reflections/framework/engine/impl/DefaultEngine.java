@@ -2,6 +2,7 @@ package tech.intellispaces.reflections.framework.engine.impl;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 import tech.intellispaces.actions.Action0;
 import tech.intellispaces.actions.Action1;
@@ -18,9 +19,12 @@ import tech.intellispaces.commons.exception.NotImplementedExceptions;
 import tech.intellispaces.commons.type.Type;
 import tech.intellispaces.commons.type.Types;
 import tech.intellispaces.core.Domain;
+import tech.intellispaces.core.ModifiableOntologyRepository;
 import tech.intellispaces.core.Reflection;
 import tech.intellispaces.core.ReflectionContract;
+import tech.intellispaces.core.Reflections;
 import tech.intellispaces.core.Rid;
+import tech.intellispaces.core.Rids;
 import tech.intellispaces.reflections.framework.channel.Channel0;
 import tech.intellispaces.reflections.framework.channel.Channel1;
 import tech.intellispaces.reflections.framework.channel.Channel2;
@@ -69,7 +73,6 @@ import tech.intellispaces.reflections.framework.system.GuideRegistry;
 import tech.intellispaces.reflections.framework.system.ModuleProjection;
 import tech.intellispaces.reflections.framework.system.ProjectionDefinition;
 import tech.intellispaces.reflections.framework.system.ProjectionRegistry;
-import tech.intellispaces.reflections.framework.system.ReflectionRegistry;
 import tech.intellispaces.reflections.framework.system.TraverseAnalyzer;
 import tech.intellispaces.reflections.framework.system.TraverseExecutor;
 import tech.intellispaces.reflections.framework.task.plan.DeclarativeTraversePlan;
@@ -84,7 +87,7 @@ public class DefaultEngine implements Engine {
   private final TraverseAnalyzer traverseAnalyzer;
   private final TraverseExecutor traverseExecutor;
   private final FactoryRegistry factoryRegistry;
-  private final ReflectionRegistry reflectionRegistry;
+  private final ModifiableOntologyRepository reflectionRegistry;
 
   public DefaultEngine(
       ProjectionRegistry projectionRegistry,
@@ -93,7 +96,7 @@ public class DefaultEngine implements Engine {
       TraverseAnalyzer traverseAnalyzer,
       TraverseExecutor traverseExecutor,
       FactoryRegistry factoryRegistry,
-      ReflectionRegistry reflectionRegistry
+      ModifiableOntologyRepository reflectionRegistry
   ) {
     this.projectionRegistry = projectionRegistry;
     this.guideRegistry = guideRegistry;
@@ -218,7 +221,12 @@ public class DefaultEngine implements Engine {
         contract.domain(),
         contract.type()
     ).execute(contract.properties());
-    return reflectionRegistry.register(reflection);
+    Rid rid = Rids.create(UUID.randomUUID());
+    Reflection registredReflection = Reflections.build(reflection)
+        .rid(rid)
+        .get();
+    reflectionRegistry.add(registredReflection);
+    return registredReflection;
   }
 
   @Override

@@ -10,7 +10,9 @@ import tech.intellispaces.commons.type.ClassFunctions;
 import tech.intellispaces.core.Channel;
 import tech.intellispaces.core.Domain;
 import tech.intellispaces.core.OntologyRepository;
+import tech.intellispaces.core.Point;
 import tech.intellispaces.core.Reflection;
+import tech.intellispaces.core.Rid;
 import tech.intellispaces.core.Space;
 import tech.intellispaces.javareflection.customtype.CustomType;
 import tech.intellispaces.javareflection.customtype.CustomTypes;
@@ -24,6 +26,11 @@ public class LocalClassPathSpaceRepository implements OntologyRepository {
   }
 
   @Override
+  public @Nullable Reflection findReflection(Rid rid) {
+    throw NotImplementedExceptions.withCode("FrBiVg");
+  }
+
+  @Override
   public @Nullable Reflection findReflection(String reflectionName) {
     throw NotImplementedExceptions.withCode("q8HBoQhh");
   }
@@ -34,13 +41,13 @@ public class LocalClassPathSpaceRepository implements OntologyRepository {
   }
 
   @Override
-  public Domain findDomain(String name) {
-    Optional<Class<?>> domainClass = ClassFunctions.getClass(prefix + name + "Domain");
+  public Domain findDomain(String domainName) {
+    Optional<Class<?>> domainClass = ClassFunctions.getClass(prefix + domainName + "Domain");
     return domainClass.map(DomainFunctions::getDomain).orElse(null);
   }
 
   @Override
-  public Channel findChannel(String name) {
+  public Channel findChannel(String channelName) {
     throw NotImplementedExceptions.withCode("x9Q6gw");
   }
 
@@ -51,24 +58,29 @@ public class LocalClassPathSpaceRepository implements OntologyRepository {
     return DomainFunctions.findChannel(sourceDomainType, targetDomain.rid());
   }
 
-  private Class<?> getDomainClass(Domain domain) {
-    if (domain.domainClass() != null) {
-      return domain.domainClass();
-    }
-    if (domain.name() != null) {
-      Optional<Class<?>> domainClass = ClassFunctions.getClass(prefix + domain.name() + "Domain");
-      return domainClass.orElse(null);
-    }
-    throw NotImplementedExceptions.withCode("a6vc/A");
+  @Override
+  public @Nullable Point findPoint(String pointName) {
+    throw NotImplementedExceptions.withCode("MMPsbpVl");
   }
 
   @Override
-  public List<Channel> projectionChannels(String domainName) {
+  public List<Channel> findProjectionChannels(String domainName) {
     throw NotImplementedExceptions.withCode("we7j3Jqx");
   }
 
   @Override
   public List<Reflection> findRelatedReflections(String reflectionName) {
     throw NotImplementedExceptions.withCode("ahh0OpW7");
+  }
+
+  private Class<?> getDomainClass(Domain domain) {
+    if (domain.domainClass() != null) {
+      return domain.domainClass();
+    }
+    if (domain.rname() != null) {
+      Optional<Class<?>> domainClass = ClassFunctions.getClass(prefix + domain.rname() + "Domain");
+      return domainClass.orElse(null);
+    }
+    throw NotImplementedExceptions.withCode("a6vc/A");
   }
 }

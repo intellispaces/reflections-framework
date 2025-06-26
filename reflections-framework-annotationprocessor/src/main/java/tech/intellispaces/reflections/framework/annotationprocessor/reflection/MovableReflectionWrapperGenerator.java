@@ -11,6 +11,8 @@ import tech.intellispaces.commons.type.Types;
 import tech.intellispaces.core.Domain;
 import tech.intellispaces.core.Domains;
 import tech.intellispaces.core.Projection;
+import tech.intellispaces.core.ReflectionType;
+import tech.intellispaces.core.ReflectionTypes;
 import tech.intellispaces.core.Rid;
 import tech.intellispaces.core.Rids;
 import tech.intellispaces.javareflection.customtype.CustomType;
@@ -124,7 +126,9 @@ public class MovableReflectionWrapperGenerator extends AbstractReflectionWrapper
         Rids.class,
         Domains.class,
         Base64Functions.class,
-        Projection.class
+        Projection.class,
+        ReflectionType.class,
+        ReflectionTypes.class
     );
 
     analyzeDomain();
@@ -133,7 +137,6 @@ public class MovableReflectionWrapperGenerator extends AbstractReflectionWrapper
     analyzeConstructors();
     analyzeInjectedGuides();
     analyzeReflectionMethods();
-//    analyzeConversionMethods(domainType);
     analyzeUnbindMethod();
 
     addVariable("didBase64", Base64Functions.createUrlNoPadding(domainRid.raw()));

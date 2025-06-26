@@ -10,8 +10,8 @@ import tech.intellispaces.commons.exception.NotImplementedExceptions;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.core.Channel;
 import tech.intellispaces.core.Domain;
-import tech.intellispaces.core.Rid;
 import tech.intellispaces.core.OntologyRepository;
+import tech.intellispaces.core.Rid;
 import tech.intellispaces.reflections.framework.guide.GuideType;
 import tech.intellispaces.reflections.framework.guide.GuideTypes;
 import tech.intellispaces.reflections.framework.guide.SystemGuide;
@@ -21,7 +21,6 @@ import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
 import tech.intellispaces.reflections.framework.reflection.SystemReflection;
 import tech.intellispaces.reflections.framework.space.channel.ChannelFunctions;
 import tech.intellispaces.reflections.framework.system.GuideProvider;
-import tech.intellispaces.reflections.framework.system.ReflectionRegistry;
 import tech.intellispaces.reflections.framework.system.TraverseAnalyzer;
 import tech.intellispaces.reflections.framework.task.plan.AscendAndExecutePlanImpl;
 import tech.intellispaces.reflections.framework.task.plan.CallGuidePlanImpl;
@@ -42,12 +41,12 @@ import tech.intellispaces.reflections.framework.task.plan.TraverseSourceSpecifie
 class TraverseAnalyzerImpl implements TraverseAnalyzer {
   private final OntologyRepository ontologyRepository;
   private final GuideProvider guideProvider;
-  private final ReflectionRegistry reflectionRegistry;
+  private final OntologyRepository reflectionRegistry;
 
   public TraverseAnalyzerImpl(
       OntologyRepository ontologyRepository,
       GuideProvider guideProvider,
-      ReflectionRegistry reflectionRegistry
+      OntologyRepository reflectionRegistry
   ) {
     this.ontologyRepository = ontologyRepository;
     this.guideProvider = guideProvider;
@@ -205,7 +204,7 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
         plan.type(), channel.rid(), plan.source(), ReflectionForms.Reflection
     );
     if (executionPlan == null) {
-      tech.intellispaces.core.Reflection registeredReflection = reflectionRegistry.get(plan.source().rid());
+      tech.intellispaces.core.Reflection registeredReflection = reflectionRegistry.findReflection(plan.source().rid());
       if (registeredReflection != null) {
         executionPlan = buildExecutionTraversePlan(
             plan.type(), channel.rid(), registeredReflection, ReflectionForms.Reflection

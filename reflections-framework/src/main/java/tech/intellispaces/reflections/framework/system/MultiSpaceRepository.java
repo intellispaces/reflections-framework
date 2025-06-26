@@ -8,16 +8,29 @@ import org.jetbrains.annotations.Nullable;
 
 import tech.intellispaces.core.Channel;
 import tech.intellispaces.core.Domain;
+import tech.intellispaces.core.OntologyRepository;
+import tech.intellispaces.core.Point;
 import tech.intellispaces.core.Reflection;
+import tech.intellispaces.core.Rid;
 import tech.intellispaces.core.Space;
 import tech.intellispaces.core.SpaceFunctions;
-import tech.intellispaces.core.OntologyRepository;
 
 public class MultiSpaceRepository implements OntologyRepository {
   private final Map<String, OntologyRepository> repositories = new HashMap<>();
 
   public void addRepository(String spaceName, OntologyRepository repository) {
     repositories.put(spaceName, repository);
+  }
+
+  @Override
+  public @Nullable Reflection findReflection(Rid rid) {
+    for (OntologyRepository repository : repositories.values()) {
+      Reflection reflection = repository.findReflection(rid);
+      if (reflection != null) {
+        return reflection;
+      }
+    }
+    return null;
   }
 
   @Override
@@ -39,7 +52,7 @@ public class MultiSpaceRepository implements OntologyRepository {
   }
 
   @Override
-  public Domain findDomain(String domainName) {
+  public @Nullable Domain findDomain(String domainName) {
     OntologyRepository repository = selectRepository(domainName);
     if (repository == null) {
       return null;
@@ -48,7 +61,7 @@ public class MultiSpaceRepository implements OntologyRepository {
   }
 
   @Override
-  public Channel findChannel(String channelName) {
+  public @Nullable Channel findChannel(String channelName) {
     OntologyRepository repository = selectRepository(channelName);
     if (repository == null) {
       return null;
@@ -57,9 +70,9 @@ public class MultiSpaceRepository implements OntologyRepository {
   }
 
   @Override
-  public Channel findChannel(Domain sourceDomain, Domain targetDomain) {
-    if (sourceDomain.name() != null) {
-      OntologyRepository repository = selectRepository(sourceDomain.name());
+  public @Nullable Channel findChannel(Domain sourceDomain, Domain targetDomain) {
+    if (sourceDomain.rname() != null) {
+      OntologyRepository repository = selectRepository(sourceDomain.rname());
       if (repository == null) {
         return null;
       }
@@ -75,12 +88,21 @@ public class MultiSpaceRepository implements OntologyRepository {
   }
 
   @Override
-  public List<Channel> projectionChannels(String domainName) {
+  public @Nullable Point findPoint(String pointName) {
+    OntologyRepository repository = selectRepository(pointName);
+    if (repository == null) {
+      return null;
+    }
+    return repository.findPoint(pointName);
+  }
+
+  @Override
+  public List<Channel> findProjectionChannels(String domainName) {
     OntologyRepository repository = selectRepository(domainName);
     if (repository == null) {
       return null;
     }
-    return repository.projectionChannels(domainName);
+    return repository.findProjectionChannels(domainName);
   }
 
   @Override

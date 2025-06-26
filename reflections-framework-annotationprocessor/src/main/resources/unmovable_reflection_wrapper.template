@@ -30,13 +30,18 @@ public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sour
   }
 
   @Override
-  public boolean isFocused() {
-    return true;
+  public ReflectionType rtype() {
+    return ReflectionTypes.Point;
   }
 
   @Override
   public Rid rid() {
     return Rids.undefined();
+  }
+
+  @Override
+  public String rname() {
+    throw NotImplementedExceptions.withCode("a6zcyEJM");
   }
 
   @Override
@@ -120,6 +125,11 @@ public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sour
   @Override
   public Projection projectThru(Rid cid) {
     throw NotImplementedExceptions.withCode("e4Ekaw");
+  }
+
+  @Override
+  public Projection projectThru(String channelName) {
+    throw NotImplementedExceptions.withCode("7ahkn6aS");
   }
 
   private ReflectionHandle $registerReflection() {

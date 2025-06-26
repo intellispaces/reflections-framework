@@ -2,9 +2,12 @@ package tech.intellispaces.reflections.framework.reflection;
 
 import java.util.List;
 
+import org.jetbrains.annotations.Nullable;
+
 import tech.intellispaces.commons.exception.NotImplementedExceptions;
 import tech.intellispaces.core.Domain;
 import tech.intellispaces.core.Projection;
+import tech.intellispaces.core.ReflectionType;
 import tech.intellispaces.core.Rid;
 import tech.intellispaces.reflections.framework.channel.Channel1;
 import tech.intellispaces.reflections.framework.exception.TraverseException;
@@ -50,11 +53,6 @@ public class NativeForeignReflection implements NativeReflection {
   }
 
   @Override
-  public boolean isFocused() {
-    return foreignReflection.isFocused();
-  }
-
-  @Override
   public <TD, T> T mapTo(Class<TD> targetDomain) {
     return foreignReflection.mapTo(targetDomain);
   }
@@ -70,8 +68,18 @@ public class NativeForeignReflection implements NativeReflection {
   }
 
   @Override
-  public Rid rid() {
+  public ReflectionType rtype() {
+    return foreignReflection.rtype();
+  }
+
+  @Override
+  public @Nullable Rid rid() {
     return foreignReflection.rid();
+  }
+
+  @Override
+  public @Nullable String rname() {
+    return foreignReflection.rname();
   }
 
   @Override
@@ -82,5 +90,10 @@ public class NativeForeignReflection implements NativeReflection {
   @Override
   public Projection projectThru(Rid cid) {
     throw NotImplementedExceptions.withCode("fQkkyA");
+  }
+
+  @Override
+  public Projection projectThru(String channelName) {
+    throw NotImplementedExceptions.withCode("d9LaxMYX");
   }
 }

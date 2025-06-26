@@ -32,9 +32,9 @@ import tech.intellispaces.commons.resource.ResourceFunctions;
 import tech.intellispaces.commons.type.Classes;
 import tech.intellispaces.commons.type.Type;
 import tech.intellispaces.core.Domain;
+import tech.intellispaces.core.OntologyRepository;
 import tech.intellispaces.core.Reflection;
 import tech.intellispaces.core.Rid;
-import tech.intellispaces.core.OntologyRepository;
 import tech.intellispaces.reflections.framework.exception.ConfigurationExceptions;
 import tech.intellispaces.reflections.framework.factory.FactoryFunctions;
 import tech.intellispaces.reflections.framework.factory.FactoryMethod;
@@ -349,8 +349,8 @@ public class LocalFactoryRegistry implements FactoryRegistry {
         .filter(factoryMethod -> factoryMethod.returnedDomain().rid() != null)
         .collect(Collectors.groupingBy(factoryMethod -> factoryMethod.returnedDomain().rid()));
     domainNameToFactoryMethods = factoryMethods.stream()
-        .filter(factoryMethod -> factoryMethod.returnedDomain().name() != null)
-        .collect(Collectors.groupingBy(factoryMethod -> factoryMethod.returnedDomain().name()));
+        .filter(factoryMethod -> factoryMethod.returnedDomain().rname() != null)
+        .collect(Collectors.groupingBy(factoryMethod -> factoryMethod.returnedDomain().rname()));
     domainClassToFactoryMethods = factoryMethods.stream()
         .filter(factoryMethod -> factoryMethod.returnedDomain().domainClass() != null)
         .collect(Collectors.groupingBy(factoryMethod -> factoryMethod.returnedDomain().domainClass()));
@@ -412,8 +412,8 @@ public class LocalFactoryRegistry implements FactoryRegistry {
     if (domain.rid() != null) {
       factoryMethods.addAll(domainRidToFactoryMethods.getOrDefault(domain.rid(), List.of()));
     }
-    if (domain.name() != null) {
-      factoryMethods.addAll(domainNameToFactoryMethods.getOrDefault(domain.name(), List.of()));
+    if (domain.rname() != null) {
+      factoryMethods.addAll(domainNameToFactoryMethods.getOrDefault(domain.rname(), List.of()));
     }
     if (domain.domainClass() != null) {
       factoryMethods.addAll(domainClassToFactoryMethods.getOrDefault(domain.domainClass(), List.of()));

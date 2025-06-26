@@ -29,8 +29,18 @@ public class {{$generatedArtifactSimpleName}} implements {{$reflectionClassName}
   }
 
   @Override
+  public ReflectionType rtype() {
+    return ReflectionTypes.Point;
+  }
+
+  @Override
   public Rid rid() {
     return Rids.undefined();
+  }
+
+  @Override
+  public String rname() {
+    throw NotImplementedExceptions.withCode("P36MKNBx");
   }
 
   @Override
@@ -58,11 +68,6 @@ public class {{$generatedArtifactSimpleName}} implements {{$reflectionClassName}
   }
 {{end}}
 {{end}}
-
-  @Override
-  public boolean isFocused() {
-    return true;
-  }
 
   @Override
   public {{$movableReflectionClassName}} asMovableOrElseThrow() {
@@ -103,5 +108,10 @@ public class {{$generatedArtifactSimpleName}} implements {{$reflectionClassName}
   @Override
   public Projection projectThru(Rid cid) {
     throw NotImplementedExceptions.withCode("TXLRZw");
+  }
+
+  @Override
+  public Projection projectThru(String channelName) {
+    throw NotImplementedExceptions.withCode("V4k30q2u");
   }
 }

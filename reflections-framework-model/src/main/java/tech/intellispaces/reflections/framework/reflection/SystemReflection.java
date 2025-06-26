@@ -17,11 +17,6 @@ import tech.intellispaces.reflections.framework.traverse.MappingTraverse;
 public interface SystemReflection extends Reflection {
 
   /**
-   * Returns <code>true</code> if this reflection is focused.
-   */
-  boolean isFocused();
-
-  /**
    * Maps this reflection to given domain.
    *
    * @param targetDomain target domain class.

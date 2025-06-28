@@ -32,8 +32,8 @@ import tech.intellispaces.commons.resource.ResourceFunctions;
 import tech.intellispaces.commons.type.Classes;
 import tech.intellispaces.commons.type.Type;
 import tech.intellispaces.core.Domain;
-import tech.intellispaces.core.OntologyRepository;
 import tech.intellispaces.core.Reflection;
+import tech.intellispaces.core.ReflectionFactory;
 import tech.intellispaces.core.Rid;
 import tech.intellispaces.reflections.framework.exception.ConfigurationExceptions;
 import tech.intellispaces.reflections.framework.factory.FactoryFunctions;
@@ -42,14 +42,25 @@ import tech.intellispaces.reflections.framework.factory.FactoryWrapper;
 import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
 
 public class LocalFactoryRegistry implements FactoryRegistry {
-  private final OntologyRepository ontologyRepository;
   private boolean isLoaded;
   private Map<Rid, List<FactoryMethod>> domainRidToFactoryMethods = Map.of();
   private Map<String, List<FactoryMethod>> domainNameToFactoryMethods = Map.of();
   private Map<Class<?>, List<FactoryMethod>> domainClassToFactoryMethods = Map.of();
 
-  public LocalFactoryRegistry(OntologyRepository ontologyRepository) {
-    this.ontologyRepository = ontologyRepository;
+  @Override
+  public List<ReflectionFactory> findFactories(Domain domain) {
+    loadFactories();
+    Set<FactoryMethod> factories = new HashSet<>();
+    findFactoryMethods(domain, factories);
+
+    Domain borrowedDomain = domain.borrowedDomain();
+    if (borrowedDomain != null) {
+      findFactoryMethods(borrowedDomain, factories);
+    }
+
+    return factories.stream()
+        .map(it -> (ReflectionFactory) it)
+        .toList();
   }
 
   @Override
@@ -346,14 +357,14 @@ public class LocalFactoryRegistry implements FactoryRegistry {
     }
 
     domainRidToFactoryMethods = factoryMethods.stream()
-        .filter(factoryMethod -> factoryMethod.returnedDomain().rid() != null)
-        .collect(Collectors.groupingBy(factoryMethod -> factoryMethod.returnedDomain().rid()));
+        .filter(factoryMethod -> factoryMethod.outputDomain().rid() != null)
+        .collect(Collectors.groupingBy(factoryMethod -> factoryMethod.outputDomain().rid()));
     domainNameToFactoryMethods = factoryMethods.stream()
-        .filter(factoryMethod -> factoryMethod.returnedDomain().rname() != null)
-        .collect(Collectors.groupingBy(factoryMethod -> factoryMethod.returnedDomain().rname()));
+        .filter(factoryMethod -> factoryMethod.outputDomain().rname() != null)
+        .collect(Collectors.groupingBy(factoryMethod -> factoryMethod.outputDomain().rname()));
     domainClassToFactoryMethods = factoryMethods.stream()
-        .filter(factoryMethod -> factoryMethod.returnedDomain().domainClass() != null)
-        .collect(Collectors.groupingBy(factoryMethod -> factoryMethod.returnedDomain().domainClass()));
+        .filter(factoryMethod -> factoryMethod.outputDomain().domainClass() != null)
+        .collect(Collectors.groupingBy(factoryMethod -> factoryMethod.outputDomain().domainClass()));
     isLoaded = true;
   }
 
@@ -399,11 +410,10 @@ public class LocalFactoryRegistry implements FactoryRegistry {
   Collection<FactoryMethod> findFactoryMethods(Domain domain) {
     Set<FactoryMethod> factoryMethods = new HashSet<>();
     findFactoryMethods(domain, factoryMethods);
-    if (domain.foreignDomainName() != null) {
-      Domain foreignDomain = ontologyRepository.findDomain(domain.foreignDomainName());
-      if (foreignDomain != null) {
-        findFactoryMethods(foreignDomain, factoryMethods);
-      }
+
+    Domain borrowedDomain = domain.borrowedDomain();
+    if (borrowedDomain != null) {
+      findFactoryMethods(borrowedDomain, factoryMethods);
     }
     return factoryMethods;
   }

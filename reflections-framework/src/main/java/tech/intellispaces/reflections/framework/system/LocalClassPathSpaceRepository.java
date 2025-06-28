@@ -47,6 +47,21 @@ public class LocalClassPathSpaceRepository implements OntologyRepository {
   }
 
   @Override
+  public List<Domain> findSubdomains(Rid did) {
+    return null;
+  }
+
+  @Override
+  public List<Domain> findSubdomains(String domainName) {
+    return null;
+  }
+
+  @Override
+  public @Nullable Domain findBorrowedDomain(String domainName) {
+    return null;
+  }
+
+  @Override
   public Channel findChannel(String channelName) {
     throw NotImplementedExceptions.withCode("x9Q6gw");
   }

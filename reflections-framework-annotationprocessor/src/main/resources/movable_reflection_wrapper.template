@@ -62,7 +62,7 @@ public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sour
 
   @Override
   public String rname() {
-    throw NotImplementedExceptions.withCode("crB069eD");
+    return null;
   }
 
   @Override

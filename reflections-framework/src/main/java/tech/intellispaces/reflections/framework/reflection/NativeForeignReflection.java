@@ -15,10 +15,16 @@ import tech.intellispaces.reflections.framework.traverse.MappingTraverse;
 
 public class NativeForeignReflection implements NativeReflection {
   private final NativeReflection foreignReflection;
+  private final Rid rid;
   private final Domain domain;
 
   public NativeForeignReflection(NativeReflection foreignReflection, Domain domain) {
+    this(foreignReflection, foreignReflection.rid(), domain);
+  }
+
+  public NativeForeignReflection(NativeReflection foreignReflection, Rid rid, Domain domain) {
     this.foreignReflection = foreignReflection;
+    this.rid = rid;
     this.domain = domain;
   }
 
@@ -74,7 +80,7 @@ public class NativeForeignReflection implements NativeReflection {
 
   @Override
   public @Nullable Rid rid() {
-    return foreignReflection.rid();
+    return rid;
   }
 
   @Override

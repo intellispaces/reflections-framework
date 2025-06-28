@@ -61,6 +61,35 @@ public class MultiSpaceRepository implements OntologyRepository {
   }
 
   @Override
+  public List<Domain> findSubdomains(Rid did) {
+    for (OntologyRepository repository : repositories.values()) {
+      List<Domain> subdomains = repository.findSubdomains(did);
+      if (subdomains != null) {
+        return subdomains;
+      }
+    }
+    return null;
+  }
+
+  @Override
+  public List<Domain> findSubdomains(String domainName) {
+    OntologyRepository repository = selectRepository(domainName);
+    if (repository == null) {
+      return null;
+    }
+    return repository.findSubdomains(domainName);
+  }
+
+  @Override
+  public @Nullable Domain findBorrowedDomain(String domainName) {
+    OntologyRepository repository = selectRepository(domainName);
+    if (repository == null) {
+      return null;
+    }
+    return repository.findBorrowedDomain(domainName);
+  }
+
+  @Override
   public @Nullable Channel findChannel(String channelName) {
     OntologyRepository repository = selectRepository(channelName);
     if (repository == null) {

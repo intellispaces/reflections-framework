@@ -10,7 +10,7 @@ public class FactoryMethodImpl implements FactoryMethod {
   private final Object factoryInstance;
   private final String contractType;
   private final Type<?> returnedType;
-  private final Domain returnedDomain;
+  private final Domain outputDomain;
   private final List<String> contractQualifierNames;
   private final List<Type<?>> contractQualifierTypes;
   private final Action action;
@@ -19,7 +19,7 @@ public class FactoryMethodImpl implements FactoryMethod {
       Object factoryInstance,
       String contractType,
       Type<?> returnedType,
-      Domain returnedDomain,
+      Domain outputDomain,
       List<String> contractQualifierNames,
       List<Type<?>> contractQualifierTypes,
       Action action
@@ -27,7 +27,7 @@ public class FactoryMethodImpl implements FactoryMethod {
     this.factoryInstance = factoryInstance;
     this.contractType = contractType;
     this.returnedType = returnedType;
-    this.returnedDomain = returnedDomain;
+    this.outputDomain = outputDomain;
     this.contractQualifierNames = contractQualifierNames;
     this.contractQualifierTypes = contractQualifierTypes;
     this.action = action;
@@ -49,8 +49,8 @@ public class FactoryMethodImpl implements FactoryMethod {
   }
 
   @Override
-  public Domain returnedDomain() {
-    return returnedDomain;
+  public Domain outputDomain() {
+    return outputDomain;
   }
 
   @Override

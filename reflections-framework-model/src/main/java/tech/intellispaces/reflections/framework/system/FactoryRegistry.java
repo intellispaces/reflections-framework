@@ -1,5 +1,7 @@
 package tech.intellispaces.reflections.framework.system;
 
+import java.util.List;
+
 import tech.intellispaces.actions.Action0;
 import tech.intellispaces.actions.Action1;
 import tech.intellispaces.actions.Action10;
@@ -15,8 +17,17 @@ import tech.intellispaces.commons.properties.PropertiesSet;
 import tech.intellispaces.commons.type.Type;
 import tech.intellispaces.core.Domain;
 import tech.intellispaces.core.Reflection;
+import tech.intellispaces.core.ReflectionFactory;
 
 public interface FactoryRegistry {
+
+  /**
+   * Searches for factories that create reflections of a given domain.
+   *
+   * @param domain the reflection domain.
+   * @return the list of factories.
+   */
+  List<ReflectionFactory> findFactories(Domain domain);
 
   /**
    * Returns the factory action.

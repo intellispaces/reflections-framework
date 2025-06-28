@@ -225,10 +225,10 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
 
   private @Nullable Channel findChannel(Domain sourceDomain, Domain targetDomain) {
     Channel channel = ontologyRepository.findChannel(sourceDomain, targetDomain);
-    if (channel == null && sourceDomain.foreignDomainName() != null) {
-      Domain foreignSourceDomain = ontologyRepository.findDomain(sourceDomain.foreignDomainName());
-      if (foreignSourceDomain != null) {
-        channel = ontologyRepository.findChannel(foreignSourceDomain, targetDomain);
+    if (channel == null && sourceDomain.borrowedDomain() != null) {
+      Domain borrowedSourceDomain = sourceDomain.borrowedDomain();
+      if (borrowedSourceDomain != null) {
+        channel = ontologyRepository.findChannel(borrowedSourceDomain, targetDomain);
       }
     }
     return channel;

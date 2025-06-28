@@ -1,5 +1,6 @@
 package tech.intellispaces.reflections.framework.engine.impl;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
@@ -20,8 +21,10 @@ import tech.intellispaces.commons.type.Type;
 import tech.intellispaces.commons.type.Types;
 import tech.intellispaces.core.Domain;
 import tech.intellispaces.core.ModifiableOntologyRepository;
+import tech.intellispaces.core.OntologyRepository;
 import tech.intellispaces.core.Reflection;
 import tech.intellispaces.core.ReflectionContract;
+import tech.intellispaces.core.ReflectionFactory;
 import tech.intellispaces.core.Reflections;
 import tech.intellispaces.core.Rid;
 import tech.intellispaces.core.Rids;
@@ -59,6 +62,8 @@ import tech.intellispaces.reflections.framework.guide.n3.MapperOfMoving3;
 import tech.intellispaces.reflections.framework.guide.n3.Mover3;
 import tech.intellispaces.reflections.framework.guide.n4.AutoMapperOfMoving4;
 import tech.intellispaces.reflections.framework.guide.n4.MapperOfMoving4;
+import tech.intellispaces.reflections.framework.reflection.NativeForeignReflection;
+import tech.intellispaces.reflections.framework.reflection.NativeReflection;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForms;
 import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
@@ -81,6 +86,7 @@ import tech.intellispaces.reflections.framework.traverse.MappingOfMovingTraverse
 import tech.intellispaces.reflections.framework.traverse.MappingTraverse;
 
 public class DefaultEngine implements Engine {
+  private final OntologyRepository ontologyRepository;
   private final ProjectionRegistry projectionRegistry;
   private final GuideRegistry guideRegistry;
   private final AutoGuideRegistry autoGuideRegistry;
@@ -90,6 +96,7 @@ public class DefaultEngine implements Engine {
   private final ModifiableOntologyRepository reflectionRegistry;
 
   public DefaultEngine(
+      OntologyRepository ontologyRepository,
       ProjectionRegistry projectionRegistry,
       GuideRegistry guideRegistry,
       AutoGuideRegistry autoGuideRegistry,
@@ -98,6 +105,7 @@ public class DefaultEngine implements Engine {
       FactoryRegistry factoryRegistry,
       ModifiableOntologyRepository reflectionRegistry
   ) {
+    this.ontologyRepository = ontologyRepository;
     this.projectionRegistry = projectionRegistry;
     this.guideRegistry = guideRegistry;
     this.autoGuideRegistry = autoGuideRegistry;
@@ -221,12 +229,38 @@ public class DefaultEngine implements Engine {
         contract.domain(),
         contract.type()
     ).execute(contract.properties());
+    Reflection identifiedReflection = identifyReflection(reflection);
+    reflectionRegistry.add(identifiedReflection);
+    return identifiedReflection;
+  }
+
+  private static Reflection identifyReflection(Reflection reflection) {
     Rid rid = Rids.create(UUID.randomUUID());
-    Reflection registredReflection = Reflections.build(reflection)
+    if (reflection instanceof NativeReflection) {
+      return new NativeForeignReflection((NativeReflection) reflection, rid, reflection.domain());
+    }
+    return Reflections.build(reflection)
         .rid(rid)
         .get();
-    reflectionRegistry.add(registredReflection);
-    return registredReflection;
+  }
+
+  @Override
+  public List<ReflectionFactory> findFactories(Domain domain) {
+    List<ReflectionFactory> factories = new ArrayList<>(factoryRegistry.findFactories(domain));
+
+    List<Domain> subdomains = null;
+    if (domain.rid() != null) {
+      subdomains = ontologyRepository.findSubdomains(domain.rid());
+    }
+    if (subdomains == null && domain.rname() != null) {
+      subdomains = ontologyRepository.findSubdomains(domain.rname());
+    }
+    if (subdomains != null) {
+      for (Domain subdomain : subdomains) {
+        factories.addAll(findFactories(subdomain));
+      }
+    }
+    return factories;
   }
 
   @Override

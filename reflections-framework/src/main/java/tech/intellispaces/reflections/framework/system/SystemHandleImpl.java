@@ -1,8 +1,11 @@
 package tech.intellispaces.reflections.framework.system;
 
+import java.util.List;
+
 import tech.intellispaces.core.Domain;
 import tech.intellispaces.core.Reflection;
 import tech.intellispaces.core.ReflectionContract;
+import tech.intellispaces.core.ReflectionFactory;
 import tech.intellispaces.core.Rid;
 import tech.intellispaces.reflections.framework.channel.Channel0;
 import tech.intellispaces.reflections.framework.channel.Channel1;
@@ -38,6 +41,11 @@ public class SystemHandleImpl implements SystemHandle {
     }
 
     @Override
+    public List<ReflectionFactory> findFactories(Domain domain) {
+        return engine.findFactories(domain);
+    }
+
+    @Override
     public <S, T> T mapSourceTo(S source, Domain domain) {
         return engine.mapSourceTo(source, domain);
     }
@@ -68,7 +76,9 @@ public class SystemHandleImpl implements SystemHandle {
     }
 
     @Override
-    public <S, T, Q, C extends Channel1 & MappingTraverse> T mapThruChannel1(S source, Class<C> channelClass, Q qualifier) {
+    public <S, T, Q, C extends Channel1 & MappingTraverse> T mapThruChannel1(
+        S source, Class<C> channelClass, Q qualifier
+    ) {
         return null;
     }
 
@@ -83,7 +93,9 @@ public class SystemHandleImpl implements SystemHandle {
     }
 
     @Override
-    public <S, R, Q, C extends Channel1 & MappingOfMovingTraverse> R mapOfMovingThruChannel1(S source, Class<C> channelClass, Q qualifier) {
+    public <S, R, Q, C extends Channel1 & MappingOfMovingTraverse> R mapOfMovingThruChannel1(
+        S source, Class<C> channelClass, Q qualifier
+    ) {
         return null;
     }
 

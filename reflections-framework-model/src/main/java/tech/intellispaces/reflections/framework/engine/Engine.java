@@ -18,6 +18,7 @@ import tech.intellispaces.commons.type.Type;
 import tech.intellispaces.core.Domain;
 import tech.intellispaces.core.Reflection;
 import tech.intellispaces.core.ReflectionContract;
+import tech.intellispaces.core.ReflectionFactory;
 import tech.intellispaces.core.Rid;
 import tech.intellispaces.reflections.framework.channel.Channel0;
 import tech.intellispaces.reflections.framework.channel.Channel1;
@@ -102,6 +103,14 @@ public interface Engine {
    * @return the created reflection.
    */
   Reflection createReflection(ReflectionContract contract);
+
+  /**
+   * Searches for factories that create reflections of a given domain.
+   *
+   * @param domain the reflection domain.
+   * @return the list of factories.
+   */
+  List<ReflectionFactory> findFactories(Domain domain);
 
   <S, T> Mapper0<S, T> autoMapperThruChannel0(Type<S> sourceType, Rid cid, ReflectionForm targetForm);
 

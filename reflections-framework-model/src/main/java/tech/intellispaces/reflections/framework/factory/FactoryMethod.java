@@ -4,12 +4,12 @@ import java.util.List;
 
 import tech.intellispaces.actions.Action;
 import tech.intellispaces.commons.type.Type;
-import tech.intellispaces.core.Domain;
+import tech.intellispaces.core.ReflectionFactory;
 
 /**
  * The factory method description.
  */
-public interface FactoryMethod {
+public interface FactoryMethod extends ReflectionFactory {
 
   /**
    * The factory instance.
@@ -17,19 +17,9 @@ public interface FactoryMethod {
   Object factoryInstance();
 
   /**
-   * The contract type.
-   */
-  String contractType();
-
-  /**
    * The returned reflection type.
    */
   Type<?> returnedType();
-
-  /**
-   * The returned object domain.
-   */
-  Domain returnedDomain();
 
   /**
    * Contract qualifier names.

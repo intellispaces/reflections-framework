@@ -74,8 +74,8 @@ public class NativeForeignReflection implements NativeReflection {
   }
 
   @Override
-  public ReflectionType rtype() {
-    return foreignReflection.rtype();
+  public ReflectionType reflectionType() {
+    return foreignReflection.reflectionType();
   }
 
   @Override
@@ -84,8 +84,8 @@ public class NativeForeignReflection implements NativeReflection {
   }
 
   @Override
-  public @Nullable String rname() {
-    return foreignReflection.rname();
+  public @Nullable String reflectionName() {
+    return foreignReflection.reflectionName();
   }
 
   @Override
@@ -94,12 +94,17 @@ public class NativeForeignReflection implements NativeReflection {
   }
 
   @Override
-  public Projection projectThru(Rid cid) {
+  public Projection projectionThru(Rid cid) {
     throw NotImplementedExceptions.withCode("fQkkyA");
   }
 
   @Override
-  public Projection projectThru(String channelName) {
+  public Projection projectionThru(String channelName) {
     throw NotImplementedExceptions.withCode("d9LaxMYX");
+  }
+
+  @Override
+  public Projection projectionTo(String domainName) {
+    throw NotImplementedExceptions.withCode("3gDj9g");
   }
 }

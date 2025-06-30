@@ -51,7 +51,7 @@ public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sour
 {{end}}
 
   @Override
-  public ReflectionType rtype() {
+  public ReflectionType reflectionType() {
     return ReflectionTypes.Point;
   }
 
@@ -61,7 +61,7 @@ public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sour
   }
 
   @Override
-  public String rname() {
+  public String reflectionName() {
     return null;
   }
 
@@ -176,13 +176,18 @@ public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sour
   }
 
   @Override
-  public Projection projectThru(Rid cid) {
+  public Projection projectionThru(Rid cid) {
     throw NotImplementedExceptions.withCode("2ga09A");
   }
 
   @Override
-  public Projection projectThru(String channelName) {
+  public Projection projectionThru(String channelName) {
     throw NotImplementedExceptions.withCode("2N1yyLbo");
+  }
+
+  @Override
+  public Projection projectionTo(String domainName) {
+    throw NotImplementedExceptions.withCode("iG6RBQ");
   }
 {{for method : $injectionMethods}}
   {{$method["javadoc"]}}

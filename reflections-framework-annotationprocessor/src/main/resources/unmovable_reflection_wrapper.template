@@ -30,7 +30,7 @@ public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sour
   }
 
   @Override
-  public ReflectionType rtype() {
+  public ReflectionType reflectionType() {
     return ReflectionTypes.Point;
   }
 
@@ -40,7 +40,7 @@ public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sour
   }
 
   @Override
-  public String rname() {
+  public String reflectionName() {
     throw NotImplementedExceptions.withCode("a6zcyEJM");
   }
 
@@ -123,13 +123,18 @@ public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sour
   }
 
   @Override
-  public Projection projectThru(Rid cid) {
+  public Projection projectionThru(Rid cid) {
     throw NotImplementedExceptions.withCode("e4Ekaw");
   }
 
   @Override
-  public Projection projectThru(String channelName) {
+  public Projection projectionThru(String channelName) {
     throw NotImplementedExceptions.withCode("7ahkn6aS");
+  }
+
+  @Override
+  public Projection projectionTo(String domainName) {
+    throw NotImplementedExceptions.withCode("TbHOLQ");
   }
 
   private ReflectionHandle $registerReflection() {

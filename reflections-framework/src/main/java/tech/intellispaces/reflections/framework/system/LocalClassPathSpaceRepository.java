@@ -92,8 +92,8 @@ public class LocalClassPathSpaceRepository implements OntologyRepository {
     if (domain.domainClass() != null) {
       return domain.domainClass();
     }
-    if (domain.rname() != null) {
-      Optional<Class<?>> domainClass = ClassFunctions.getClass(prefix + domain.rname() + "Domain");
+    if (domain.reflectionName() != null) {
+      Optional<Class<?>> domainClass = ClassFunctions.getClass(prefix + domain.reflectionName() + "Domain");
       return domainClass.orElse(null);
     }
     throw NotImplementedExceptions.withCode("a6vc/A");

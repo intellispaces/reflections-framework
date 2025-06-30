@@ -360,8 +360,8 @@ public class LocalFactoryRegistry implements FactoryRegistry {
         .filter(factoryMethod -> factoryMethod.outputDomain().rid() != null)
         .collect(Collectors.groupingBy(factoryMethod -> factoryMethod.outputDomain().rid()));
     domainNameToFactoryMethods = factoryMethods.stream()
-        .filter(factoryMethod -> factoryMethod.outputDomain().rname() != null)
-        .collect(Collectors.groupingBy(factoryMethod -> factoryMethod.outputDomain().rname()));
+        .filter(factoryMethod -> factoryMethod.outputDomain().reflectionName() != null)
+        .collect(Collectors.groupingBy(factoryMethod -> factoryMethod.outputDomain().reflectionName()));
     domainClassToFactoryMethods = factoryMethods.stream()
         .filter(factoryMethod -> factoryMethod.outputDomain().domainClass() != null)
         .collect(Collectors.groupingBy(factoryMethod -> factoryMethod.outputDomain().domainClass()));
@@ -422,8 +422,8 @@ public class LocalFactoryRegistry implements FactoryRegistry {
     if (domain.rid() != null) {
       factoryMethods.addAll(domainRidToFactoryMethods.getOrDefault(domain.rid(), List.of()));
     }
-    if (domain.rname() != null) {
-      factoryMethods.addAll(domainNameToFactoryMethods.getOrDefault(domain.rname(), List.of()));
+    if (domain.reflectionName() != null) {
+      factoryMethods.addAll(domainNameToFactoryMethods.getOrDefault(domain.reflectionName(), List.of()));
     }
     if (domain.domainClass() != null) {
       factoryMethods.addAll(domainClassToFactoryMethods.getOrDefault(domain.domainClass(), List.of()));

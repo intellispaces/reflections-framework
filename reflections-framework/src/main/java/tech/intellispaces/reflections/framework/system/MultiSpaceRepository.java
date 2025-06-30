@@ -100,8 +100,8 @@ public class MultiSpaceRepository implements OntologyRepository {
 
   @Override
   public @Nullable Channel findChannel(Domain sourceDomain, Domain targetDomain) {
-    if (sourceDomain.rname() != null) {
-      OntologyRepository repository = selectRepository(sourceDomain.rname());
+    if (sourceDomain.reflectionName() != null) {
+      OntologyRepository repository = selectRepository(sourceDomain.reflectionName());
       if (repository == null) {
         return null;
       }

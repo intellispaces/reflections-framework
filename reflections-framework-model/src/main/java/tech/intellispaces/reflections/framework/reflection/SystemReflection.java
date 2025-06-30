@@ -8,7 +8,7 @@ import tech.intellispaces.reflections.framework.exception.TraverseException;
 import tech.intellispaces.reflections.framework.traverse.MappingTraverse;
 
 /**
- * The system reflection.
+ * The extended version of the reflection in system.
  * <p>
  * The object reflection it a link from the system to the object.
  * <p>

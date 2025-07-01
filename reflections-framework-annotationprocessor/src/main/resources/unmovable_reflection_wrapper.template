@@ -137,6 +137,11 @@ public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sour
     throw NotImplementedExceptions.withCode("TbHOLQ");
   }
 
+  @Override
+  public List<Point> underlyingPoints() {
+    throw NotImplementedExceptions.withCode("d3jvbw");
+  }
+
   private ReflectionHandle $registerReflection() {
     var engine = Modules.current().engine();
     if ($TYPE == null) {

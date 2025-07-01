@@ -189,6 +189,11 @@ public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sour
   public Projection projectionTo(String domainName) {
     throw NotImplementedExceptions.withCode("iG6RBQ");
   }
+
+  @Override
+  public List<Point> underlyingPoints() {
+    throw NotImplementedExceptions.withCode("1fm6Ng");
+  }
 {{for method : $injectionMethods}}
   {{$method["javadoc"]}}
 {{for annotation : $method["annotations"]}}

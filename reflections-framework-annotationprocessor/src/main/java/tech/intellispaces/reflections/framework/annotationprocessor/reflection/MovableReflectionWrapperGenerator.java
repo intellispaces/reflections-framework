@@ -10,6 +10,7 @@ import tech.intellispaces.commons.type.Type;
 import tech.intellispaces.commons.type.Types;
 import tech.intellispaces.core.Domain;
 import tech.intellispaces.core.Domains;
+import tech.intellispaces.core.Point;
 import tech.intellispaces.core.Projection;
 import tech.intellispaces.core.ReflectionType;
 import tech.intellispaces.core.ReflectionTypes;
@@ -123,12 +124,14 @@ public class MovableReflectionWrapperGenerator extends AbstractReflectionWrapper
         ReflectionsNodeFunctions.class,
         Rid.class,
         Domain.class,
+        Point.class,
         Rids.class,
         Domains.class,
         Base64Functions.class,
         Projection.class,
         ReflectionType.class,
-        ReflectionTypes.class
+        ReflectionTypes.class,
+        List.class
     );
 
     analyzeDomain();

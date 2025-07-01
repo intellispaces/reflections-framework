@@ -119,4 +119,9 @@ public class {{$generatedArtifactSimpleName}} implements {{$reflectionClassName}
   public Projection projectionTo(String domainName) {
     throw NotImplementedExceptions.withCode("7rzzGw");
   }
+
+  @Override
+  public List<Point> underlyingPoints() {
+    return List.of();
+  }
 }

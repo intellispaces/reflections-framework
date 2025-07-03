@@ -21,7 +21,7 @@ public enum ArtifactTypes implements ArtifactType, Enumeration<ArtifactType> {
   /**
    * The channel interface.
    */
-  Channel,
+  ReflectionChannel,
 
   /**
    * The mapper guide interface.

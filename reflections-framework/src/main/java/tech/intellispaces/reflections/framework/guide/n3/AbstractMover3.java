@@ -2,7 +2,7 @@ package tech.intellispaces.reflections.framework.guide.n3;
 
 import tech.intellispaces.commons.exception.NotImplementedExceptions;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
-import tech.intellispaces.core.Channel;
+import tech.intellispaces.core.ReflectionChannel;
 import tech.intellispaces.reflections.framework.guide.GuideKind;
 import tech.intellispaces.reflections.framework.guide.GuideKinds;
 import tech.intellispaces.reflections.framework.guide.n0.SystemGuide0;
@@ -19,7 +19,7 @@ public interface AbstractMover3<S, Q1, Q2, Q3> extends Mover3<S, Q1, Q2, Q3> {
   }
 
   @Override
-  default Channel channel() {
+  default ReflectionChannel channel() {
     throw NotImplementedExceptions.withCode("cmuX0A");
   }
 

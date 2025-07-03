@@ -6,13 +6,12 @@ import java.util.Map;
 
 import org.jetbrains.annotations.Nullable;
 
-import tech.intellispaces.core.Channel;
-import tech.intellispaces.core.Domain;
 import tech.intellispaces.core.OntologyRepository;
-import tech.intellispaces.core.Point;
 import tech.intellispaces.core.Reflection;
+import tech.intellispaces.core.ReflectionChannel;
+import tech.intellispaces.core.ReflectionDomain;
+import tech.intellispaces.core.ReflectionSpace;
 import tech.intellispaces.core.Rid;
-import tech.intellispaces.core.Space;
 import tech.intellispaces.core.SpaceFunctions;
 
 public class MultiSpaceRepository implements OntologyRepository {
@@ -43,7 +42,7 @@ public class MultiSpaceRepository implements OntologyRepository {
   }
 
   @Override
-  public @Nullable Space findSpace(String spaceName) {
+  public @Nullable ReflectionSpace findSpace(String spaceName) {
     OntologyRepository repository = selectRepository(spaceName);
     if (repository == null) {
       return null;
@@ -52,7 +51,7 @@ public class MultiSpaceRepository implements OntologyRepository {
   }
 
   @Override
-  public @Nullable Domain findDomain(String domainName) {
+  public @Nullable ReflectionDomain findDomain(String domainName) {
     OntologyRepository repository = selectRepository(domainName);
     if (repository == null) {
       return null;
@@ -61,9 +60,9 @@ public class MultiSpaceRepository implements OntologyRepository {
   }
 
   @Override
-  public List<Domain> findSubdomains(Rid did) {
+  public List<ReflectionDomain> findSubdomains(Rid did) {
     for (OntologyRepository repository : repositories.values()) {
-      List<Domain> subdomains = repository.findSubdomains(did);
+      List<ReflectionDomain> subdomains = repository.findSubdomains(did);
       if (subdomains != null) {
         return subdomains;
       }
@@ -72,7 +71,7 @@ public class MultiSpaceRepository implements OntologyRepository {
   }
 
   @Override
-  public List<Domain> findSubdomains(String domainName) {
+  public List<ReflectionDomain> findSubdomains(String domainName) {
     OntologyRepository repository = selectRepository(domainName);
     if (repository == null) {
       return null;
@@ -81,7 +80,7 @@ public class MultiSpaceRepository implements OntologyRepository {
   }
 
   @Override
-  public @Nullable Domain findBorrowedDomain(String domainName) {
+  public @Nullable ReflectionDomain findBorrowedDomain(String domainName) {
     OntologyRepository repository = selectRepository(domainName);
     if (repository == null) {
       return null;
@@ -90,7 +89,7 @@ public class MultiSpaceRepository implements OntologyRepository {
   }
 
   @Override
-  public @Nullable Channel findChannel(String channelName) {
+  public @Nullable ReflectionChannel findChannel(String channelName) {
     OntologyRepository repository = selectRepository(channelName);
     if (repository == null) {
       return null;
@@ -99,16 +98,9 @@ public class MultiSpaceRepository implements OntologyRepository {
   }
 
   @Override
-  public @Nullable Channel findChannel(Domain sourceDomain, Domain targetDomain) {
-    if (sourceDomain.reflectionName() != null) {
-      OntologyRepository repository = selectRepository(sourceDomain.reflectionName());
-      if (repository == null) {
-        return null;
-      }
-      return repository.findChannel(sourceDomain, targetDomain);
-    }
+  public @Nullable ReflectionChannel findChannel(ReflectionDomain sourceDomain, ReflectionDomain targetDomain) {
     for (OntologyRepository repository : repositories.values()) {
-      Channel channel = repository.findChannel(sourceDomain, targetDomain);
+      ReflectionChannel channel = repository.findChannel(sourceDomain, targetDomain);
       if (channel != null) {
         return channel;
       }
@@ -117,21 +109,12 @@ public class MultiSpaceRepository implements OntologyRepository {
   }
 
   @Override
-  public @Nullable Point findPoint(String pointName) {
-    OntologyRepository repository = selectRepository(pointName);
-    if (repository == null) {
-      return null;
-    }
-    return repository.findPoint(pointName);
-  }
-
-  @Override
-  public List<Channel> findProjectionChannels(String domainName) {
+  public List<ReflectionChannel> findDomainChannels(String domainName) {
     OntologyRepository repository = selectRepository(domainName);
     if (repository == null) {
       return null;
     }
-    return repository.findProjectionChannels(domainName);
+    return repository.findDomainChannels(domainName);
   }
 
   @Override

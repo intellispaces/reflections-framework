@@ -259,7 +259,7 @@ public abstract class AbstractReflectionFormGenerator extends ReflectionsArtifac
     return Map.of("declaration", sb.toString());
   }
 
-  private boolean isDisableMoving(MethodStatement method) {
+  protected boolean isDisableMoving(MethodStatement method) {
     return ChannelFunctions.isMovingBasedChannel(method)
         && ReflectionForms.Reflection.is(getForm())
         && !MovabilityTypes.Movable.is(getMovabilityType());

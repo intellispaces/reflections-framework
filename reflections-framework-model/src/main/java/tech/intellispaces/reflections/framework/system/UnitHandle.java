@@ -4,12 +4,11 @@ import java.util.List;
 import java.util.Optional;
 
 import tech.intellispaces.actions.Action;
-import tech.intellispaces.core.Unit;
 
 /**
  * The unit handle.
  */
-public interface UnitHandle extends Unit {
+public interface UnitHandle extends ReflectionUnit {
 
   Class<?> unitClass();
 

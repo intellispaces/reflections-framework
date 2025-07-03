@@ -15,11 +15,18 @@ import tech.intellispaces.actions.Action7;
 import tech.intellispaces.actions.Action8;
 import tech.intellispaces.actions.Action9;
 import tech.intellispaces.commons.type.Type;
-import tech.intellispaces.core.Domain;
 import tech.intellispaces.core.Reflection;
+import tech.intellispaces.core.ReflectionChannel;
 import tech.intellispaces.core.ReflectionContract;
-import tech.intellispaces.core.ReflectionFactory;
+import tech.intellispaces.core.ReflectionDomain;
+import tech.intellispaces.core.ReflectionPoint;
+import tech.intellispaces.core.ReflectionSpace;
 import tech.intellispaces.core.Rid;
+import tech.intellispaces.core.TraversableReflection;
+import tech.intellispaces.core.TraversableReflectionChannel;
+import tech.intellispaces.core.TraversableReflectionDomain;
+import tech.intellispaces.core.TraversableReflectionPoint;
+import tech.intellispaces.core.TraversableReflectionSpace;
 import tech.intellispaces.reflections.framework.channel.Channel0;
 import tech.intellispaces.reflections.framework.channel.Channel1;
 import tech.intellispaces.reflections.framework.channel.Channel2;
@@ -44,6 +51,7 @@ import tech.intellispaces.reflections.framework.reflection.ReflectionHandle;
 import tech.intellispaces.reflections.framework.reflection.ReflectionRealizationType;
 import tech.intellispaces.reflections.framework.system.ModuleProjection;
 import tech.intellispaces.reflections.framework.system.ProjectionDefinition;
+import tech.intellispaces.reflections.framework.system.ReflectionFactory;
 import tech.intellispaces.reflections.framework.traverse.MappingOfMovingTraverse;
 import tech.intellispaces.reflections.framework.traverse.MappingTraverse;
 
@@ -58,11 +66,11 @@ public interface Engine {
 
   void stop();
 
-  <S, T> T mapSourceTo(S source, Domain domain);
+  <S, T> T mapSourceTo(S source, ReflectionDomain domain);
 
-  Reflection mapSourceTo(Reflection source, Domain domain);
+  TraversableReflectionPoint mapSourceTo(Reflection source, ReflectionDomain domain);
 
-  <R extends Reflection> R mapSourceTo(Reflection source, Domain targetDomain, Class<R> targetClass);
+  <R extends Reflection> R mapSourceTo(ReflectionPoint source, ReflectionDomain targetDomain, Class<R> targetClass);
 
   <S, T> T mapThruChannel0(S source, Rid cid);
 
@@ -96,13 +104,25 @@ public interface Engine {
    */
   void addGuide(SystemGuide<?, ?> guide);
 
+  TraversableReflection getReflection(Reflection reflection);
+
+  TraversableReflectionPoint getReflection(ReflectionPoint point);
+
+  TraversableReflectionDomain getReflection(ReflectionDomain domain);
+
+  TraversableReflectionChannel getReflection(ReflectionChannel channel);
+
+  TraversableReflectionSpace getReflection(ReflectionSpace space);
+
+  <T> T castToReflectionPoint(Reflection reflection, Class<T> reflectionClass);
+
   /**
    * Creates and registers new reflection.
    *
    * @param contract the reflection contract.
    * @return the created reflection.
    */
-  Reflection createReflection(ReflectionContract contract);
+  TraversableReflectionPoint createReflection(ReflectionContract contract);
 
   /**
    * Searches for factories that create reflections of a given domain.
@@ -110,7 +130,7 @@ public interface Engine {
    * @param domain the reflection domain.
    * @return the list of factories.
    */
-  List<ReflectionFactory> findFactories(Domain domain);
+  List<ReflectionFactory> findFactories(ReflectionDomain domain);
 
   <S, T> Mapper0<S, T> autoMapperThruChannel0(Type<S> sourceType, Rid cid, ReflectionForm targetForm);
 

@@ -2,7 +2,7 @@ package tech.intellispaces.reflections.framework.reflection;
 
 import java.util.List;
 
-import tech.intellispaces.core.Reflection;
+import tech.intellispaces.core.TraversableReflectionPoint;
 import tech.intellispaces.reflections.framework.channel.Channel1;
 import tech.intellispaces.reflections.framework.exception.TraverseException;
 import tech.intellispaces.reflections.framework.traverse.MappingTraverse;
@@ -14,7 +14,7 @@ import tech.intellispaces.reflections.framework.traverse.MappingTraverse;
  * <p>
  * Any interaction of the system with the object is performed through the object reflection only.
  */
-public interface SystemReflection extends Reflection {
+public interface SystemReflection extends TraversableReflectionPoint {
 
   /**
    * Maps this reflection to given domain.

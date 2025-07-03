@@ -23,12 +23,12 @@ import tech.intellispaces.commons.exception.NotImplementedExceptions;
 import tech.intellispaces.commons.properties.PropertiesSet;
 import tech.intellispaces.commons.text.StringFunctions;
 import tech.intellispaces.commons.type.Type;
-import tech.intellispaces.core.Domain;
 import tech.intellispaces.core.Reflection;
+import tech.intellispaces.core.ReflectionDomain;
 import tech.intellispaces.javareflection.method.MethodStatement;
 import tech.intellispaces.reflections.framework.annotation.Contract;
-import tech.intellispaces.reflections.framework.reflection.NativeForeignReflection;
-import tech.intellispaces.reflections.framework.reflection.NativeReflection;
+import tech.intellispaces.reflections.framework.reflection.NativeForeignPoint;
+import tech.intellispaces.reflections.framework.reflection.NativePoint;
 import tech.intellispaces.reflections.framework.space.domain.DomainFunctions;
 
 public interface FactoryFunctions {
@@ -51,7 +51,7 @@ public interface FactoryFunctions {
   }
 
   static  <R extends Reflection> Action1<R, PropertiesSet> createFactoryAction(
-      Domain targetDomain, FactoryMethod factoryMethod
+      ReflectionDomain targetDomain, FactoryMethod factoryMethod
   ) {
     int numQualifiers = factoryMethod.contractQualifierTypes().size();
     return switch (numQualifiers) {
@@ -63,7 +63,7 @@ public interface FactoryFunctions {
 
   @SuppressWarnings("unchecked")
   private static <R extends Reflection> Action1<R, PropertiesSet> createFactoryAction1(
-      Domain targetDomain, FactoryMethod factoryMethod
+      ReflectionDomain targetDomain, FactoryMethod factoryMethod
   ) {
     var rootAction = (Action1<R, Object>) makeAction1(factoryMethod);
     Function<PropertiesSet, R> function = (PropertiesSet props) -> {
@@ -75,7 +75,7 @@ public interface FactoryFunctions {
 
   @SuppressWarnings("unchecked")
   private static <R extends Reflection> Action1<R, PropertiesSet> createFactoryAction2(
-      Domain targetDomain, FactoryMethod factoryMethod
+      ReflectionDomain targetDomain, FactoryMethod factoryMethod
   ) {
     var rootAction = (Action2<R, Object, Object>) makeAction2(factoryMethod);
     Function<PropertiesSet, R> function = (PropertiesSet props) -> {
@@ -87,12 +87,12 @@ public interface FactoryFunctions {
 
   @SuppressWarnings("unchecked")
   private static <R extends Reflection> R castToTargetDomain(
-      R reflection, Domain targetDomain
+      R reflection, ReflectionDomain targetDomain
   ) {
     if (targetDomain.borrowedDomain() == null) {
       return reflection;
     }
-    return (R) new NativeForeignReflection((NativeReflection) reflection, targetDomain);
+    return (R) new NativeForeignPoint((NativePoint) reflection, targetDomain);
   }
 
   private static List<Object> getQualifierValues(PropertiesSet props, FactoryMethod factoryMethod) {

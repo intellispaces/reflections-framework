@@ -12,9 +12,9 @@ import {{$importedClass}};
 @Reflection(domainClass = {{$sourceArtifactSimpleName}}.class)
 {{$generatedAnnotation}}
 {{when $isAlias}}
-public interface {{$generatedArtifactSimpleName}}{{$reflectionTypeParamsFull}} extends {{$primaryReflection}}, tech.intellispaces.core.Point {
+public interface {{$generatedArtifactSimpleName}}{{$reflectionTypeParamsFull}} extends {{$primaryReflection}}, tech.intellispaces.core.ReflectionPoint {
 {{else}}
-public interface {{$generatedArtifactSimpleName}}{{$reflectionTypeParamsFull}} extends tech.intellispaces.reflections.framework.reflection.SystemReflection, tech.intellispaces.core.Point{{for parent : $parents}}, {{$parent}}{{end}} {
+public interface {{$generatedArtifactSimpleName}}{{$reflectionTypeParamsFull}} extends tech.intellispaces.reflections.framework.reflection.SystemReflection, tech.intellispaces.core.ReflectionPoint{{for parent : $parents}}, {{$parent}}{{end}} {
 {{end}}
 
 {{for method : $domainMethods}}

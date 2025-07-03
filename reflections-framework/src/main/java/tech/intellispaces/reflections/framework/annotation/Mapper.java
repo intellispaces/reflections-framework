@@ -13,7 +13,9 @@ import java.lang.annotation.Target;
 public @interface Mapper {
 
   /**
-   * Channel class.
+   * ReflectionChannel class.
    */
   Class<?> value() default Void.class;
+
+  String cid() default "";
 }

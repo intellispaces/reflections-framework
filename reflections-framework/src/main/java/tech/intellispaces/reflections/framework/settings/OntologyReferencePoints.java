@@ -43,13 +43,13 @@ public class OntologyReferencePoints {
     for (OntologyReferences ontology : ontologyReferences) {
       for (DomainReference domain : ontology.getDomains()) {
         if (!domainAssignments.add(domain.assignment())) {
-          throw UnexpectedExceptions.withMessage("Domain reference {0} is already registered", domain.assignment().name());
+          throw UnexpectedExceptions.withMessage("ReflectionDomain reference {0} is already registered", domain.assignment().name());
         }
         domains.add(domain);
       }
       for (ChannelReference channel : ontology.getChannels()) {
         if (!channelAssignments.add(channel.assignment())) {
-          throw UnexpectedExceptions.withMessage("Channel reference {0} is already registered", channel.assignment().name());
+          throw UnexpectedExceptions.withMessage("ReflectionChannel reference {0} is already registered", channel.assignment().name());
         }
         channels.add(channel);
       }

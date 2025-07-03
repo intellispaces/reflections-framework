@@ -4,8 +4,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import tech.intellispaces.core.Module;
 import tech.intellispaces.reflections.framework.system.Modules;
+import tech.intellispaces.reflections.framework.system.ReflectionModule;
 
 /**
  * Reflections framework.
@@ -18,7 +18,7 @@ public class ReflectionsFramework {
    * @param moduleClass the module class.
    * @return the loaded module.
    */
-  public static Module loadModule(Class<?> moduleClass) {
+  public static ReflectionModule loadModule(Class<?> moduleClass) {
     return Modules.load(List.of(moduleClass), new String[0], Map.of());
   }
 
@@ -29,7 +29,7 @@ public class ReflectionsFramework {
    * @param args command line arguments.
    * @return the loaded module.
    */
-  public static Module loadModule(Class<?> moduleClass, String[] args) {
+  public static ReflectionModule loadModule(Class<?> moduleClass, String[] args) {
     return loadModule(List.of(moduleClass), args, Map.of());
   }
 
@@ -40,7 +40,7 @@ public class ReflectionsFramework {
    * @param engineAttribute engine attributes.
    * @return the loaded module.
    */
-  public static Module loadModule(Class<?> moduleClass, Map<String, Object> engineAttribute) {
+  public static ReflectionModule loadModule(Class<?> moduleClass, Map<String, Object> engineAttribute) {
     return Modules.load(List.of(moduleClass), new String[0], engineAttribute);
   }
 
@@ -50,7 +50,7 @@ public class ReflectionsFramework {
    * @param unitClasses unit classes.
    * @return the loaded module.
    */
-  public static Module loadModule(Class<?>... unitClasses) {
+  public static ReflectionModule loadModule(Class<?>... unitClasses) {
     return Modules.load(Arrays.stream(unitClasses).toList(), new String[0], Map.of());
   }
 
@@ -62,7 +62,7 @@ public class ReflectionsFramework {
    * @param engineAttribute engine attributes.
    * @return the loaded module.
    */
-  public static Module loadModule(
+  public static ReflectionModule loadModule(
       List<Class<?>> unitClasses,
       String[] args,
       Map<String, Object> engineAttribute
@@ -76,7 +76,7 @@ public class ReflectionsFramework {
    * @param unitClasses module unit classes.
    */
   public static void flashModule(Class<?>... unitClasses) {
-    Module module = null;
+    ReflectionModule module = null;
     try {
       module = loadModule(unitClasses);
       module.start();

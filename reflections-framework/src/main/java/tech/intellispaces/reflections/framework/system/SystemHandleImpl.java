@@ -2,11 +2,18 @@ package tech.intellispaces.reflections.framework.system;
 
 import java.util.List;
 
-import tech.intellispaces.core.Domain;
 import tech.intellispaces.core.Reflection;
+import tech.intellispaces.core.ReflectionChannel;
 import tech.intellispaces.core.ReflectionContract;
-import tech.intellispaces.core.ReflectionFactory;
+import tech.intellispaces.core.ReflectionDomain;
+import tech.intellispaces.core.ReflectionPoint;
+import tech.intellispaces.core.ReflectionSpace;
 import tech.intellispaces.core.Rid;
+import tech.intellispaces.core.TraversableReflection;
+import tech.intellispaces.core.TraversableReflectionChannel;
+import tech.intellispaces.core.TraversableReflectionDomain;
+import tech.intellispaces.core.TraversableReflectionPoint;
+import tech.intellispaces.core.TraversableReflectionSpace;
 import tech.intellispaces.reflections.framework.channel.Channel0;
 import tech.intellispaces.reflections.framework.channel.Channel1;
 import tech.intellispaces.reflections.framework.engine.Engine;
@@ -36,27 +43,57 @@ public class SystemHandleImpl implements SystemHandle {
     }
 
     @Override
-    public Reflection create(ReflectionContract contract) {
+    public TraversableReflection getReflection(Reflection reflection) {
+        return engine.getReflection(reflection);
+    }
+
+    @Override
+    public TraversableReflectionPoint getReflection(ReflectionPoint point) {
+        return engine.getReflection(point);
+    }
+
+    @Override
+    public TraversableReflectionDomain getReflection(ReflectionDomain domain) {
+        return engine.getReflection(domain);
+    }
+
+    @Override
+    public TraversableReflectionChannel getReflection(ReflectionChannel channel) {
+        return engine.getReflection(channel);
+    }
+
+    @Override
+    public TraversableReflectionSpace getReflection(ReflectionSpace space) {
+        return engine.getReflection(space);
+    }
+
+    @Override
+    public <T> T castToReflectionPoint(Reflection reflection, Class<T> reflectionClass) {
+        return engine.castToReflectionPoint(reflection, reflectionClass);
+    }
+
+    @Override
+    public TraversableReflectionPoint createReflection(ReflectionContract contract) {
         return engine.createReflection(contract);
     }
 
     @Override
-    public List<ReflectionFactory> findFactories(Domain domain) {
+    public List<ReflectionFactory> findFactories(ReflectionDomain domain) {
         return engine.findFactories(domain);
     }
 
     @Override
-    public <S, T> T mapSourceTo(S source, Domain domain) {
+    public <S, T> T mapSourceTo(S source, ReflectionDomain domain) {
         return engine.mapSourceTo(source, domain);
     }
 
     @Override
-    public Reflection mapSourceTo(Reflection source, Domain domain) {
+    public TraversableReflectionPoint mapSourceTo(ReflectionPoint source, ReflectionDomain domain) {
         return engine.mapSourceTo(source, domain);
     }
 
     @Override
-    public <R extends Reflection> R mapSourceTo(Reflection source, Domain domain, Class<R> targetClass) {
+    public <R extends Reflection> R mapSourceTo(ReflectionPoint source, ReflectionDomain domain, Class<R> targetClass) {
         return engine.mapSourceTo(source, domain, targetClass);
     }
 

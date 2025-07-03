@@ -3,6 +3,7 @@ package tech.intellispaces.reflections.framework.engine.impl;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import tech.intellispaces.actions.Action0;
@@ -17,17 +18,26 @@ import tech.intellispaces.actions.Action7;
 import tech.intellispaces.actions.Action8;
 import tech.intellispaces.actions.Action9;
 import tech.intellispaces.commons.exception.NotImplementedExceptions;
+import tech.intellispaces.commons.exception.UnexpectedExceptions;
+import tech.intellispaces.commons.type.Classes;
 import tech.intellispaces.commons.type.Type;
 import tech.intellispaces.commons.type.Types;
-import tech.intellispaces.core.Domain;
 import tech.intellispaces.core.ModifiableOntologyRepository;
 import tech.intellispaces.core.OntologyRepository;
 import tech.intellispaces.core.Reflection;
+import tech.intellispaces.core.ReflectionChannel;
 import tech.intellispaces.core.ReflectionContract;
-import tech.intellispaces.core.ReflectionFactory;
-import tech.intellispaces.core.Reflections;
+import tech.intellispaces.core.ReflectionDomain;
+import tech.intellispaces.core.ReflectionPoint;
+import tech.intellispaces.core.ReflectionSpace;
 import tech.intellispaces.core.Rid;
 import tech.intellispaces.core.Rids;
+import tech.intellispaces.core.TraversableReflection;
+import tech.intellispaces.core.TraversableReflectionChannel;
+import tech.intellispaces.core.TraversableReflectionDomain;
+import tech.intellispaces.core.TraversableReflectionPoint;
+import tech.intellispaces.core.TraversableReflectionSpace;
+import tech.intellispaces.javareflection.customtype.CustomTypes;
 import tech.intellispaces.reflections.framework.channel.Channel0;
 import tech.intellispaces.reflections.framework.channel.Channel1;
 import tech.intellispaces.reflections.framework.channel.Channel2;
@@ -62,8 +72,9 @@ import tech.intellispaces.reflections.framework.guide.n3.MapperOfMoving3;
 import tech.intellispaces.reflections.framework.guide.n3.Mover3;
 import tech.intellispaces.reflections.framework.guide.n4.AutoMapperOfMoving4;
 import tech.intellispaces.reflections.framework.guide.n4.MapperOfMoving4;
-import tech.intellispaces.reflections.framework.reflection.NativeForeignReflection;
-import tech.intellispaces.reflections.framework.reflection.NativeReflection;
+import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
+import tech.intellispaces.reflections.framework.reflection.NativeForeignPoint;
+import tech.intellispaces.reflections.framework.reflection.NativePoint;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForms;
 import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
@@ -71,6 +82,8 @@ import tech.intellispaces.reflections.framework.reflection.ReflectionHandle;
 import tech.intellispaces.reflections.framework.reflection.ReflectionHandleImpl;
 import tech.intellispaces.reflections.framework.reflection.ReflectionRealizationType;
 import tech.intellispaces.reflections.framework.reflection.ReflectionRealizationTypeImpl;
+import tech.intellispaces.reflections.framework.reflection.SystemPointImpl;
+import tech.intellispaces.reflections.framework.reflection.SystemReflectionImpl;
 import tech.intellispaces.reflections.framework.space.channel.ChannelFunctions;
 import tech.intellispaces.reflections.framework.system.AutoGuideRegistry;
 import tech.intellispaces.reflections.framework.system.FactoryRegistry;
@@ -78,6 +91,7 @@ import tech.intellispaces.reflections.framework.system.GuideRegistry;
 import tech.intellispaces.reflections.framework.system.ModuleProjection;
 import tech.intellispaces.reflections.framework.system.ProjectionDefinition;
 import tech.intellispaces.reflections.framework.system.ProjectionRegistry;
+import tech.intellispaces.reflections.framework.system.ReflectionFactory;
 import tech.intellispaces.reflections.framework.system.TraverseAnalyzer;
 import tech.intellispaces.reflections.framework.system.TraverseExecutor;
 import tech.intellispaces.reflections.framework.task.plan.DeclarativeTraversePlan;
@@ -135,18 +149,18 @@ public class DefaultEngine implements Engine {
   }
 
   @Override
-  public <S, T> T mapSourceTo(S source, Domain domain) {
+  public <S, T> T mapSourceTo(S source, ReflectionDomain domain) {
     throw NotImplementedExceptions.withCode("ZIKQyQ");
   }
 
   @Override
-  public Reflection mapSourceTo(Reflection source, Domain domain) {
+  public TraversableReflectionPoint mapSourceTo(Reflection source, ReflectionDomain domain) {
     throw NotImplementedExceptions.withCode("Vfn2cg");
   }
 
   @Override
   @SuppressWarnings("unchecked")
-  public <R extends Reflection> R mapSourceTo(Reflection source, Domain targetDomain, Class<R> targetClass) {
+  public <R extends Reflection> R mapSourceTo(ReflectionPoint source, ReflectionDomain targetDomain, Class<R> targetClass) {
     DeclarativeTraversePlan traversePlan = traverseAnalyzer.buildMapToDomainPlan(source, targetDomain, targetClass);
     return (R) traversePlan.execute(traverseExecutor);
   }
@@ -224,31 +238,92 @@ public class DefaultEngine implements Engine {
   }
 
   @Override
-  public Reflection createReflection(ReflectionContract contract) {
-    Reflection reflection = factoryRegistry.factoryAction(
+  public TraversableReflection getReflection(Reflection reflection) {
+    if (reflection.canBeRepresentedAsPoint()) {
+      return getReflection(reflection.asPoint());
+    } else if (reflection.canBeRepresentedAsDomain()) {
+      return getReflection(reflection.asDomain());
+    } else if (reflection.canBeRepresentedAsChannel()) {
+      return getReflection(reflection.asChannel());
+    } else if (reflection.canBeRepresentedAsSpace()) {
+      return getReflection(reflection.asSpace());
+    }
+    return new SystemReflectionImpl(reflection, ontologyRepository);
+  }
+
+  @Override
+  public TraversableReflectionPoint getReflection(ReflectionPoint point) {
+    return new SystemPointImpl(point, ontologyRepository);
+  }
+
+  @Override
+  public TraversableReflectionDomain getReflection(ReflectionDomain domain) {
+    throw NotImplementedExceptions.withCode("m8QXh2vG");
+  }
+
+  @Override
+  public TraversableReflectionChannel getReflection(ReflectionChannel channel) {
+    throw NotImplementedExceptions.withCode("dG81VnZA");
+  }
+
+  @Override
+  public TraversableReflectionSpace getReflection(ReflectionSpace space) {
+    throw NotImplementedExceptions.withCode("mwgxL2ng");
+  }
+
+  @Override
+  @SuppressWarnings("unchecked")
+  public <T> T castToReflectionPoint(Reflection reflection, Class<T> reflectionClass) {
+    var reflectionAnnotation = reflectionClass.getAnnotation(
+        tech.intellispaces.reflections.framework.annotation.Reflection.class
+    );
+    if (reflectionAnnotation != null) {
+      String domainClassName = null;
+      if (reflectionAnnotation.domainClass() != Void.class) {
+        domainClassName = reflectionAnnotation.domainClass().getCanonicalName();
+      }
+      if (domainClassName != null) {
+        String adapterClassName = NameConventionFunctions.getReflectionAdapterClassName(domainClassName);
+        Optional<Class<?>> adapterClass = Classes.get(adapterClassName);
+        if (adapterClass.isPresent()) {
+          if (CustomTypes.of(adapterClass.get()).isAbstract()) {
+            throw UnexpectedExceptions.withMessage(
+                "Reflection adapter class {0} is abstract and cannot be instantiated",
+                reflectionClass.getCanonicalName());
+          }
+          return (T) tech.intellispaces.commons.object.Objects.get(
+              adapterClass.get(), Reflection.class, getReflection(reflection)
+          );
+        }
+      }
+    }
+    throw NotImplementedExceptions.withCode("RP2b2w");
+  }
+
+  @Override
+  public TraversableReflectionPoint createReflection(ReflectionContract contract) {
+    var reflection = (ReflectionPoint) factoryRegistry.factoryAction(
         contract.domain(),
         contract.type()
     ).execute(contract.properties());
-    Reflection identifiedReflection = identifyReflection(reflection);
+    TraversableReflectionPoint identifiedReflection = identifyReflection(reflection);
     reflectionRegistry.add(identifiedReflection);
     return identifiedReflection;
   }
 
-  private static Reflection identifyReflection(Reflection reflection) {
+  private TraversableReflectionPoint identifyReflection(ReflectionPoint point) {
     Rid rid = Rids.create(UUID.randomUUID());
-    if (reflection instanceof NativeReflection) {
-      return new NativeForeignReflection((NativeReflection) reflection, rid, reflection.domain());
+    if (point instanceof NativePoint) {
+      return new NativeForeignPoint((NativePoint) point, rid);
     }
-    return Reflections.build(reflection)
-        .rid(rid)
-        .get();
+    return new SystemPointImpl(rid, point, ontologyRepository);
   }
 
   @Override
-  public List<ReflectionFactory> findFactories(Domain domain) {
+  public List<ReflectionFactory> findFactories(ReflectionDomain domain) {
     List<ReflectionFactory> factories = new ArrayList<>(factoryRegistry.findFactories(domain));
 
-    List<Domain> subdomains = null;
+    List<ReflectionDomain> subdomains = null;
     if (domain.rid() != null) {
       subdomains = ontologyRepository.findSubdomains(domain.rid());
     }
@@ -256,7 +331,7 @@ public class DefaultEngine implements Engine {
       subdomains = ontologyRepository.findSubdomains(domain.reflectionName());
     }
     if (subdomains != null) {
-      for (Domain subdomain : subdomains) {
+      for (ReflectionDomain subdomain : subdomains) {
         factories.addAll(findFactories(subdomain));
       }
     }

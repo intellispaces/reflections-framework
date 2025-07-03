@@ -3,7 +3,6 @@ package tech.intellispaces.reflections.framework.system;
 import java.util.List;
 import java.util.Map;
 
-import tech.intellispaces.core.Module;
 import tech.intellispaces.reflections.framework.engine.Engine;
 import tech.intellispaces.reflections.framework.engine.Engines;
 import tech.intellispaces.reflections.framework.exception.ConfigurationExceptions;
@@ -41,7 +40,7 @@ public class Modules {
    *
    * @param module the module.
    */
-  public static void unload(Module module) {
+  public static void unload(ReflectionModule module) {
     synchronized (Modules.class) {
       module.stop();
       moduleHolder().set(null);

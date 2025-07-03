@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
 public @interface MapperOfMoving {
 
   /**
-   * Channel class.
+   * ReflectionChannel class.
    */
   Class<?> value() default Void.class;
 }

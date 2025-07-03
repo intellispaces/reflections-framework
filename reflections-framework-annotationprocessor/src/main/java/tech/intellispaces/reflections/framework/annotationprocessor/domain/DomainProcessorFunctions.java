@@ -32,7 +32,7 @@ public interface DomainProcessorFunctions {
     for (MethodStatement method : domainType.declaredMethods()) {
       if (method.hasAnnotation(Channel.class)) {
         if (AnnotationFunctions.isAutoGenerationEnabled(
-            domainType, ArtifactTypes.Channel, context.initialRoundEnvironment())
+            domainType, ArtifactTypes.ReflectionChannel, context.initialRoundEnvironment())
         ) {
           generators.add(new DomainChannelGenerator(domainType, method));
         }
@@ -41,6 +41,7 @@ public interface DomainProcessorFunctions {
     addReflectionGenerators(domainType, generators, context.initialRoundEnvironment());
     addAttachedAnnotationGenerators(domainType, generators, context);
     addObjectAssistantGenerators(domainType, generators);
+    generators.add(new ReflectionAdapterGenerator(domainType));
     return generators;
   }
 

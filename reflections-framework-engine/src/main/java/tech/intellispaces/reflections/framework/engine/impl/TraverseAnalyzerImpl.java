@@ -8,17 +8,20 @@ import org.jetbrains.annotations.Nullable;
 
 import tech.intellispaces.commons.exception.NotImplementedExceptions;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
-import tech.intellispaces.core.Channel;
-import tech.intellispaces.core.Domain;
+import tech.intellispaces.core.Domains;
 import tech.intellispaces.core.OntologyRepository;
+import tech.intellispaces.core.ReflectionChannel;
+import tech.intellispaces.core.ReflectionDomain;
 import tech.intellispaces.core.Rid;
 import tech.intellispaces.reflections.framework.guide.GuideType;
 import tech.intellispaces.reflections.framework.guide.GuideTypes;
 import tech.intellispaces.reflections.framework.guide.SystemGuide;
+import tech.intellispaces.reflections.framework.node.ReflectionsNodeFunctions;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForms;
 import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
 import tech.intellispaces.reflections.framework.reflection.SystemReflection;
+import tech.intellispaces.reflections.framework.settings.DomainAssignments;
 import tech.intellispaces.reflections.framework.space.channel.ChannelFunctions;
 import tech.intellispaces.reflections.framework.system.GuideProvider;
 import tech.intellispaces.reflections.framework.system.TraverseAnalyzer;
@@ -55,8 +58,8 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
 
   @Override
   public MapSpecifiedSourceToSpecifiedTargetDomainAndClassPlan buildMapToDomainPlan(
-      tech.intellispaces.core.Reflection source,
-      Domain targetDomain,
+      tech.intellispaces.core.ReflectionPoint source,
+      ReflectionDomain targetDomain,
       Class<?> targetClass
   ) {
     var declarativePlan = new MapSpecifiedSourceToSpecifiedTargetDomainAndClassPlanImpl(
@@ -194,8 +197,8 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
   public TraversePlan buildExecutionPlan(
       MapSpecifiedSourceToSpecifiedTargetDomainAndClassPlan plan
   ) {
-    Domain sourceDomain = plan.source().domain();
-    Channel channel = findChannel(sourceDomain, plan.targetDomain());
+    ReflectionDomain sourceDomain = plan.source().asPoint().domain();
+    ReflectionChannel channel = findChannel(sourceDomain, plan.targetDomain());
     if (channel == null) {
       return null;
     }
@@ -223,10 +226,15 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
     return executionPlan;
   }
 
-  private @Nullable Channel findChannel(Domain sourceDomain, Domain targetDomain) {
-    Channel channel = ontologyRepository.findChannel(sourceDomain, targetDomain);
+  private @Nullable ReflectionChannel findChannel(ReflectionDomain sourceDomain, ReflectionDomain targetDomain) {
+    if (sourceDomain == null) {
+      sourceDomain = Domains.create(
+          ReflectionsNodeFunctions.ontologyReference().getDomainByType(DomainAssignments.Notion).domainName()
+      );
+    }
+    ReflectionChannel channel = ontologyRepository.findChannel(sourceDomain, targetDomain);
     if (channel == null && sourceDomain.borrowedDomain() != null) {
-      Domain borrowedSourceDomain = sourceDomain.borrowedDomain();
+      ReflectionDomain borrowedSourceDomain = sourceDomain.borrowedDomain();
       if (borrowedSourceDomain != null) {
         channel = ontologyRepository.findChannel(borrowedSourceDomain, targetDomain);
       }

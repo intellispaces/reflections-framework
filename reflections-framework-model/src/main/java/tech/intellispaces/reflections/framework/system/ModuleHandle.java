@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.List;
 
 import tech.intellispaces.commons.type.Type;
-import tech.intellispaces.core.Module;
 import tech.intellispaces.core.Rid;
 import tech.intellispaces.reflections.framework.channel.Channel0;
 import tech.intellispaces.reflections.framework.channel.Channel1;
@@ -32,7 +31,7 @@ import tech.intellispaces.reflections.framework.traverse.MappingTraverse;
 /**
  * The module handle.
  */
-public interface ModuleHandle extends Module {
+public interface ModuleHandle extends ReflectionModule {
 
   /**
    * Returns the module engine.

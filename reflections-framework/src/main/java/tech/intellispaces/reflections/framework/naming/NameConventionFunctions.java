@@ -164,11 +164,15 @@ public interface NameConventionFunctions {
     return StringFunctions.replaceTailOrElseThrow(transformClassName(domainClassName), DOMAIN, BUILDER);
   }
 
+  static String getReflectionAdapterClassName(String domainClassName) {
+    return StringFunctions.replaceTailOrElseThrow(transformClassName(domainClassName), DOMAIN, ADAPTER);
+  }
+
   static String getChannelClassCanonicalName(MethodStatement channelMethod) {
     String spaceName = channelMethod.owner().packageName();
     CustomType owner = channelMethod.owner();
     if (!owner.hasAnnotation(Domain.class) && !owner.hasAnnotation(Ontology.class)) {
-      throw UnexpectedExceptions.withMessage("Channel method {0} should be declared " +
+      throw UnexpectedExceptions.withMessage("ReflectionChannel method {0} should be declared " +
               "in domain or ontology class. But actual class {1} is not marked with annotation",
           channelMethod.name(), owner.canonicalName()
       );
@@ -340,6 +344,7 @@ public interface NameConventionFunctions {
   String GUIDE = "Guide";
   String AUTO_GUIDE = "AutoGuide";
   String DATASET = "Dataset";
+  String ADAPTER = "Adapter";
   String BUILDER = "Builder";
   String CUSTOMIZER = "Customizer";
   String ASSISTANT = "Assistant";

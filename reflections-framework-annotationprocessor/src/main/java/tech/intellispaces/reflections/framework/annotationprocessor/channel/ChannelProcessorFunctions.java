@@ -23,7 +23,7 @@ public interface ChannelProcessorFunctions {
   static List<ArtifactGenerator> makeGenerators(CustomType channelType) {
     List<MethodStatement> methods = channelType.declaredMethods();
     if (methods.size() != 1) {
-      throw ConfigurationExceptions.withMessage("Channel class should contain one method only. Check class {0}",
+      throw ConfigurationExceptions.withMessage("ReflectionChannel class should contain one method only. Check class {0}",
           channelType.canonicalName());
     }
     MethodStatement method = methods.get(0);

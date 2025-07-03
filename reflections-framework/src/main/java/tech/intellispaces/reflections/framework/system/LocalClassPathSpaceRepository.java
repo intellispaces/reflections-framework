@@ -7,13 +7,13 @@ import org.jetbrains.annotations.Nullable;
 
 import tech.intellispaces.commons.exception.NotImplementedExceptions;
 import tech.intellispaces.commons.type.ClassFunctions;
-import tech.intellispaces.core.Channel;
-import tech.intellispaces.core.Domain;
+import tech.intellispaces.core.Channels;
 import tech.intellispaces.core.OntologyRepository;
-import tech.intellispaces.core.Point;
 import tech.intellispaces.core.Reflection;
+import tech.intellispaces.core.ReflectionChannel;
+import tech.intellispaces.core.ReflectionDomain;
+import tech.intellispaces.core.ReflectionSpace;
 import tech.intellispaces.core.Rid;
-import tech.intellispaces.core.Space;
 import tech.intellispaces.javareflection.customtype.CustomType;
 import tech.intellispaces.javareflection.customtype.CustomTypes;
 import tech.intellispaces.reflections.framework.space.domain.DomainFunctions;
@@ -36,50 +36,56 @@ public class LocalClassPathSpaceRepository implements OntologyRepository {
   }
 
   @Override
-  public @Nullable Space findSpace(String spaceName) {
+  public @Nullable ReflectionSpace findSpace(String spaceName) {
     throw NotImplementedExceptions.withCode("hiUBxA");
   }
 
   @Override
-  public Domain findDomain(String domainName) {
+  public ReflectionDomain findDomain(String domainName) {
     Optional<Class<?>> domainClass = ClassFunctions.getClass(prefix + domainName + "Domain");
     return domainClass.map(DomainFunctions::getDomain).orElse(null);
   }
 
   @Override
-  public List<Domain> findSubdomains(Rid did) {
+  public List<ReflectionDomain> findSubdomains(Rid did) {
     return null;
   }
 
   @Override
-  public List<Domain> findSubdomains(String domainName) {
+  public List<ReflectionDomain> findSubdomains(String domainName) {
     return null;
   }
 
   @Override
-  public @Nullable Domain findBorrowedDomain(String domainName) {
+  public @Nullable ReflectionDomain findBorrowedDomain(String domainName) {
     return null;
   }
 
   @Override
-  public Channel findChannel(String channelName) {
+  public ReflectionChannel findChannel(String channelName) {
     throw NotImplementedExceptions.withCode("x9Q6gw");
   }
 
   @Override
-  public Channel findChannel(Domain sourceDomain, Domain targetDomain) {
+  public @Nullable ReflectionChannel findChannel(ReflectionDomain sourceDomain, ReflectionDomain targetDomain) {
     Class<?> sourceDomainClass = getDomainClass(sourceDomain);
+    if (sourceDomainClass == null) {
+      return null;
+    }
     CustomType sourceDomainType = CustomTypes.of(sourceDomainClass);
-    return DomainFunctions.findChannel(sourceDomainType, targetDomain.rid());
+    Rid cid = DomainFunctions.findChannel(sourceDomainType, targetDomain.rid());
+    if (cid == null) {
+      return null;
+    }
+    return Channels.build()
+        .cid(cid)
+        .sourceDomain(sourceDomain)
+        .targetDomain(targetDomain)
+        .get();
   }
 
   @Override
-  public @Nullable Point findPoint(String pointName) {
-    throw NotImplementedExceptions.withCode("MMPsbpVl");
-  }
-
-  @Override
-  public List<Channel> findProjectionChannels(String domainName) {
+  public List<ReflectionChannel> findDomainChannels(String domainName) {
     throw NotImplementedExceptions.withCode("we7j3Jqx");
   }
 
@@ -88,7 +94,7 @@ public class LocalClassPathSpaceRepository implements OntologyRepository {
     throw NotImplementedExceptions.withCode("ahh0OpW7");
   }
 
-  private Class<?> getDomainClass(Domain domain) {
+  private @Nullable Class<?> getDomainClass(ReflectionDomain domain) {
     if (domain.domainClass() != null) {
       return domain.domainClass();
     }

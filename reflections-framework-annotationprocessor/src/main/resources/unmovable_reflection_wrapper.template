@@ -30,11 +30,6 @@ public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sour
   }
 
   @Override
-  public ReflectionType reflectionType() {
-    return ReflectionTypes.Point;
-  }
-
-  @Override
   public Rid rid() {
     return Rids.undefined();
   }
@@ -45,7 +40,7 @@ public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sour
   }
 
   @Override
-  public Domain domain() {
+  public ReflectionDomain domain() {
     return Domains.create(Rids.create(Base64Functions.convertUrlNoPaddingBase64ToBytes("{{$didBase64}}"), "{{$didOrigin}}"), "{{$domainName}}", {{$domainClassSimpleName}}.class, {{when $isAlias}}{{$primaryDomainTypeDeclaration}}{{else}}{{$domainTypeDeclaration}}{{end}});
   }
 
@@ -138,8 +133,53 @@ public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sour
   }
 
   @Override
-  public List<Point> underlyingPoints() {
+  public List<ReflectionPoint> underlyingPoints() {
     throw NotImplementedExceptions.withCode("d3jvbw");
+  }
+
+  @Override
+  public List<Reflection> relatedReflections() {
+    throw NotImplementedExceptions.withCode("iFXrcK3a");
+  }
+
+  @Override
+  public boolean canBeRepresentedAsPoint() {
+    return true;
+  }
+
+  @Override
+  public boolean canBeRepresentedAsDomain() {
+    return false;
+  }
+
+  @Override
+  public boolean canBeRepresentedAsChannel() {
+    return false;
+  }
+
+  @Override
+  public boolean canBeRepresentedAsSpace() {
+    return false;
+  }
+
+  @Override
+  public ReflectionPoint asPoint() {
+    return this;
+  }
+
+  @Override
+  public ReflectionDomain asDomain() {
+    throw UnexpectedExceptions.withMessage("This reflection cannot be considered as a reflection domain");
+  }
+
+  @Override
+  public ReflectionChannel asChannel() {
+    throw UnexpectedExceptions.withMessage("This reflection cannot be considered as a reflection channel");
+  }
+
+  @Override
+  public ReflectionSpace asSpace() {
+    throw UnexpectedExceptions.withMessage("This reflection cannot be considered as a reflection space");
   }
 
   private ReflectionHandle $registerReflection() {

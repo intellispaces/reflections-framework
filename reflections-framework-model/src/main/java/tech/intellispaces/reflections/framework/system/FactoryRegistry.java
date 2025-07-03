@@ -15,9 +15,8 @@ import tech.intellispaces.actions.Action8;
 import tech.intellispaces.actions.Action9;
 import tech.intellispaces.commons.properties.PropertiesSet;
 import tech.intellispaces.commons.type.Type;
-import tech.intellispaces.core.Domain;
 import tech.intellispaces.core.Reflection;
-import tech.intellispaces.core.ReflectionFactory;
+import tech.intellispaces.core.ReflectionDomain;
 
 public interface FactoryRegistry {
 
@@ -27,7 +26,7 @@ public interface FactoryRegistry {
    * @param domain the reflection domain.
    * @return the list of factories.
    */
-  List<ReflectionFactory> findFactories(Domain domain);
+  List<ReflectionFactory> findFactories(ReflectionDomain domain);
 
   /**
    * Returns the factory action.
@@ -40,7 +39,7 @@ public interface FactoryRegistry {
    * @param <R> the required reflection type.
    */
   <R extends Reflection> Action1<R, PropertiesSet> factoryAction(
-      Domain targetDomain,
+      ReflectionDomain targetDomain,
       String contractType
   );
 

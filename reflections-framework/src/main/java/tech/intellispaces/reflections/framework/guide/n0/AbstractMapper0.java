@@ -4,7 +4,7 @@ import java.util.function.Function;
 
 import tech.intellispaces.commons.exception.NotImplementedExceptions;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
-import tech.intellispaces.core.Channel;
+import tech.intellispaces.core.ReflectionChannel;
 import tech.intellispaces.reflections.framework.guide.GuideKind;
 import tech.intellispaces.reflections.framework.guide.GuideKinds;
 import tech.intellispaces.reflections.framework.guide.n1.SystemGuide1;
@@ -26,7 +26,7 @@ public interface AbstractMapper0<S, T> extends Mapper0<S, T> {
   }
 
   @Override
-  default Channel channel() {
+  default ReflectionChannel channel() {
     throw NotImplementedExceptions.withCode("47zmOg");
   }
 

@@ -5,7 +5,7 @@ import {{$importedClass}};
 {{end}}
 
 /**
- * The object assistant handle. Domain  {@link {{$sourceArtifactSimpleName}}}.
+ * The object assistant handle. ReflectionDomain  {@link {{$sourceArtifactSimpleName}}}.
  * <p>
  * This class was generated automatically. Don't try to change it.
  */

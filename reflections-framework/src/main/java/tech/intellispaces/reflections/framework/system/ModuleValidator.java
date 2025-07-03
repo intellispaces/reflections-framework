@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 
 import tech.intellispaces.commons.type.ClassFunctions;
 import tech.intellispaces.core.System;
-import tech.intellispaces.core.Unit;
 import tech.intellispaces.reflections.framework.exception.ConfigurationExceptions;
 import tech.intellispaces.reflections.framework.system.injection.InjectionKinds;
 
@@ -24,7 +23,7 @@ public class ModuleValidator {
 
   static void checkThatOneMainUnit(ModuleHandle module) {
     List<UnitHandle> mainUnits = module.unitHandles().stream()
-        .filter(Unit::isMain)
+        .filter(ReflectionUnit::isMain)
         .toList();
     if (mainUnits.isEmpty()) {
       throw ConfigurationExceptions.withMessage("Main unit is not found");
@@ -70,7 +69,7 @@ public class ModuleValidator {
         .map(injection -> (ProjectionInjection) injection)
         .toList();
     for (ProjectionInjection injection : injections) {
-      if (injection.targetClass() == System.class) {
+      if (injection.targetClass() == System.class || injection.targetClass() == ReflectionSystem.class) {
         continue;
       }
       UnitProjectionDefinition pd = projectionDefinitions.get(injection.name());

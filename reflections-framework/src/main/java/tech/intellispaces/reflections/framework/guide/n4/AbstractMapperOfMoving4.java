@@ -2,7 +2,7 @@ package tech.intellispaces.reflections.framework.guide.n4;
 
 import tech.intellispaces.commons.exception.NotImplementedExceptions;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
-import tech.intellispaces.core.Channel;
+import tech.intellispaces.core.ReflectionChannel;
 import tech.intellispaces.reflections.framework.guide.GuideKind;
 import tech.intellispaces.reflections.framework.guide.GuideKinds;
 import tech.intellispaces.reflections.framework.guide.n0.SystemGuide0;
@@ -19,7 +19,7 @@ public interface AbstractMapperOfMoving4<S, T, Q1, Q2, Q3, Q4> extends MapperOfM
   }
 
   @Override
-  default Channel channel() {
+  default ReflectionChannel channel() {
     throw NotImplementedExceptions.withCode("eXtbbw");
   }
 

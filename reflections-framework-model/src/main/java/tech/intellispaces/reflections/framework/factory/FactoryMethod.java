@@ -4,7 +4,7 @@ import java.util.List;
 
 import tech.intellispaces.actions.Action;
 import tech.intellispaces.commons.type.Type;
-import tech.intellispaces.core.ReflectionFactory;
+import tech.intellispaces.reflections.framework.system.ReflectionFactory;
 
 /**
  * The factory method description.

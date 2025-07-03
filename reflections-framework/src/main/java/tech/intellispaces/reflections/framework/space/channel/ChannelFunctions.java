@@ -51,7 +51,7 @@ import tech.intellispaces.reflections.framework.space.domain.DomainFunctions;
 import tech.intellispaces.reflections.framework.traverse.TraverseType;
 
 /**
- * Channel related functions.
+ * ReflectionChannel related functions.
  */
 public interface ChannelFunctions {
 
@@ -253,11 +253,19 @@ public interface ChannelFunctions {
   }
 
   private static Rid extractChannelId(AnnotationInstance annotation) {
-    Optional<Instance> value = annotation.value();
-    if (value.isEmpty()) {
+    Optional<Instance> cidAttribute = annotation.valueOf("cid");
+    if (cidAttribute.isPresent()) {
+      String cid = cidAttribute.get().asString().orElseThrow().value();
+      if (StringFunctions.isNotBlank(cid)) {
+        return Rids.create(cid);
+      }
+    }
+
+    Optional<Instance> valueAttribute = annotation.value();
+    if (valueAttribute.isEmpty()) {
       return null;
     }
-    ClassInstance valueClassInstance = value.get().asClass().orElseThrow();
+    ClassInstance valueClassInstance = valueAttribute.get().asClass().orElseThrow();
     if (Void.class.getCanonicalName().equals(valueClassInstance.type().canonicalName())) {
       return null;
     }
@@ -311,7 +319,7 @@ public interface ChannelFunctions {
         .findAny();
     if (channel.isEmpty()) {
       throw UnexpectedExceptions.withMessage("Could not find annotation @{0} of method '{1}' in domain {2}",
-        Channel.class.getSimpleName(), domainMethod.name(), domainMethod.owner().canonicalName());
+          Channel.class.getSimpleName(), domainMethod.name(), domainMethod.owner().canonicalName());
     }
     return channel.get();
   }
@@ -322,7 +330,7 @@ public interface ChannelFunctions {
     Channel channel = findReflectionMethodChannelAnnotation(reflectionMethod, domainClass);
     if (channel == null) {
       throw UnexpectedExceptions.withMessage("Failed to find related channel annotation " +
-          "of method '{0}' in {1}. Domain class {2}",
+          "of method '{0}' in {1}. ReflectionDomain class {2}",
           reflectionMethod.name(), reflectionClass.canonicalName(), domainClass.canonicalName());
     }
     return channel;

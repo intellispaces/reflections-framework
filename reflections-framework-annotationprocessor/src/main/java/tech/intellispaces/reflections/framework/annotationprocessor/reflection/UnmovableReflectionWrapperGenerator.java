@@ -10,12 +10,13 @@ import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.commons.type.PrimitiveFunctions;
 import tech.intellispaces.commons.type.Type;
 import tech.intellispaces.commons.type.Types;
-import tech.intellispaces.core.Domain;
 import tech.intellispaces.core.Domains;
-import tech.intellispaces.core.Point;
 import tech.intellispaces.core.Projection;
-import tech.intellispaces.core.ReflectionType;
-import tech.intellispaces.core.ReflectionTypes;
+import tech.intellispaces.core.Reflection;
+import tech.intellispaces.core.ReflectionChannel;
+import tech.intellispaces.core.ReflectionDomain;
+import tech.intellispaces.core.ReflectionPoint;
+import tech.intellispaces.core.ReflectionSpace;
 import tech.intellispaces.core.Rid;
 import tech.intellispaces.core.Rids;
 import tech.intellispaces.javareflection.customtype.CustomType;
@@ -114,14 +115,15 @@ public class UnmovableReflectionWrapperGenerator extends AbstractReflectionWrapp
         EngineRegistrar.class,
         ReflectionsNodeFunctions.class,
         Rid.class,
-        Domain.class,
-        Point.class,
+        Reflection.class,
+        ReflectionPoint.class,
+        ReflectionSpace.class,
+        ReflectionDomain.class,
+        ReflectionChannel.class,
         Rids.class,
         Domains.class,
         Base64Functions.class,
         Projection.class,
-        ReflectionType.class,
-        ReflectionTypes.class,
         List.class
     );
 

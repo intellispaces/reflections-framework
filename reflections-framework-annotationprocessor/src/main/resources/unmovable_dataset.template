@@ -29,11 +29,6 @@ public class {{$generatedArtifactSimpleName}} implements {{$reflectionClassName}
   }
 
   @Override
-  public ReflectionType reflectionType() {
-    return ReflectionTypes.Point;
-  }
-
-  @Override
   public Rid rid() {
     return Rids.undefined();
   }
@@ -44,7 +39,7 @@ public class {{$generatedArtifactSimpleName}} implements {{$reflectionClassName}
   }
 
   @Override
-  public Domain domain() {
+  public ReflectionDomain domain() {
     return Domains.create(Rids.create(Base64Functions.convertUrlNoPaddingBase64ToBytes("{{$didBase64}}"), "{{$didOrigin}}"), "{{$domainName}}", {{$sourceArtifactSimpleName}}.class, Types.get({{$sourceArtifactSimpleName}}.class));
   }
 
@@ -121,7 +116,52 @@ public class {{$generatedArtifactSimpleName}} implements {{$reflectionClassName}
   }
 
   @Override
-  public List<Point> underlyingPoints() {
+  public List<ReflectionPoint> underlyingPoints() {
     return List.of();
+  }
+
+  @Override
+  public List<tech.intellispaces.core.Reflection> relatedReflections() {
+    return List.of();
+  }
+
+  @Override
+  public boolean canBeRepresentedAsPoint() {
+    return true;
+  }
+
+  @Override
+  public boolean canBeRepresentedAsDomain() {
+    return false;
+  }
+
+  @Override
+  public boolean canBeRepresentedAsChannel() {
+    return false;
+  }
+
+  @Override
+  public boolean canBeRepresentedAsSpace() {
+    return false;
+  }
+
+  @Override
+  public ReflectionPoint asPoint() {
+    return this;
+  }
+
+  @Override
+  public ReflectionDomain asDomain() {
+    throw UnexpectedExceptions.withMessage("This reflection cannot be considered as a reflection point");
+  }
+
+  @Override
+  public ReflectionChannel asChannel() {
+    throw UnexpectedExceptions.withMessage("This reflection cannot be considered as a reflection channel");
+  }
+
+  @Override
+  public ReflectionSpace asSpace() {
+    throw UnexpectedExceptions.withMessage("This reflection cannot be considered as a reflection space");
   }
 }

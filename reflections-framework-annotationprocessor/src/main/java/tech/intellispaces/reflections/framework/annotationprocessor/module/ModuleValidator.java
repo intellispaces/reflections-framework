@@ -21,6 +21,7 @@ import tech.intellispaces.reflections.framework.exception.ReflectionsExceptions;
 import tech.intellispaces.reflections.framework.guide.GuideFunctions;
 import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
 import tech.intellispaces.reflections.framework.system.ModuleFunctions;
+import tech.intellispaces.reflections.framework.system.ReflectionSystem;
 
 /**
  * Module type validator.
@@ -157,9 +158,9 @@ public class ModuleValidator implements ArtifactValidator {
     if (!typeReference.isCustomTypeReference()) {
       return false;
     }
-    return System.class.getCanonicalName().equals(
-        typeReference.asCustomTypeReference().orElseThrow().targetType().canonicalName()
-    );
+    CustomType type = typeReference.asCustomTypeReference().orElseThrow().targetType();
+    return ReflectionSystem.class.getCanonicalName().equals(type.canonicalName())
+        || System.class.getCanonicalName().equals(type.canonicalName());
   }
 
   private void checkAbstractProjectionProviderAnnotation(MethodStatement method) {

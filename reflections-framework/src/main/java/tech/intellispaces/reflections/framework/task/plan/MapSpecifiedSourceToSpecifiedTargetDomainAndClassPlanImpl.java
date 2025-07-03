@@ -1,8 +1,8 @@
 package tech.intellispaces.reflections.framework.task.plan;
 
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
-import tech.intellispaces.core.Domain;
 import tech.intellispaces.core.Reflection;
+import tech.intellispaces.core.ReflectionDomain;
 import tech.intellispaces.reflections.framework.exception.TraverseException;
 import tech.intellispaces.reflections.framework.system.TraverseExecutor;
 
@@ -10,13 +10,13 @@ public class MapSpecifiedSourceToSpecifiedTargetDomainAndClassPlanImpl
     implements MapSpecifiedSourceToSpecifiedTargetDomainAndClassPlan
 {
   private final Reflection source;
-  private final Domain targetDomain;
+  private final ReflectionDomain targetDomain;
   private final Class<?> targetClas;
   private ExecutionTraversePlan executionPlan;
 
   public MapSpecifiedSourceToSpecifiedTargetDomainAndClassPlanImpl(
       Reflection source,
-      Domain targetDomain,
+      ReflectionDomain targetDomain,
       Class<?> targetClas
   ) {
     this.source = source;
@@ -30,7 +30,7 @@ public class MapSpecifiedSourceToSpecifiedTargetDomainAndClassPlanImpl
   }
 
   @Override
-  public Domain targetDomain() {
+  public ReflectionDomain targetDomain() {
     return targetDomain;
   }
 

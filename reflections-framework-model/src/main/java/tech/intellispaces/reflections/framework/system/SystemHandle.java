@@ -1,7 +1,6 @@
 package tech.intellispaces.reflections.framework.system;
 
 import tech.intellispaces.core.Rid;
-import tech.intellispaces.core.System;
 import tech.intellispaces.reflections.framework.channel.Channel0;
 import tech.intellispaces.reflections.framework.channel.Channel1;
 import tech.intellispaces.reflections.framework.engine.Engine;
@@ -11,7 +10,7 @@ import tech.intellispaces.reflections.framework.traverse.MappingTraverse;
 /**
  * The reflections system handle.
  */
-public interface SystemHandle extends System {
+public interface SystemHandle extends ReflectionSystem {
 
   ModuleHandle currentModule();
 

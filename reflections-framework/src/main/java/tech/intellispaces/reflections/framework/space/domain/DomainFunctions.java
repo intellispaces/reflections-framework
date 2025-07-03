@@ -5,18 +5,19 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import org.jetbrains.annotations.Nullable;
+
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.commons.type.ClassFunctions;
 import tech.intellispaces.commons.type.Type;
 import tech.intellispaces.commons.type.Types;
-import tech.intellispaces.core.Channel;
-import tech.intellispaces.core.Channels;
 import tech.intellispaces.core.Domains;
 import tech.intellispaces.core.Rid;
 import tech.intellispaces.core.Rids;
@@ -33,14 +34,16 @@ import tech.intellispaces.reflections.framework.annotation.Domain;
 import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
 import tech.intellispaces.reflections.framework.node.ReflectionsNodeFunctions;
 import tech.intellispaces.reflections.framework.settings.ChannelAssignments;
+import tech.intellispaces.reflections.framework.settings.DomainAssignments;
+import tech.intellispaces.reflections.framework.settings.DomainReference;
 import tech.intellispaces.reflections.framework.space.channel.ChannelFunctions;
 
 /**
- * Domain functions.
+ * ReflectionDomain functions.
  */
 public final class DomainFunctions {
 
-  public static tech.intellispaces.core.Domain getDomain(Class<?> domainClass) {
+  public static tech.intellispaces.core.ReflectionDomain getDomain(Class<?> domainClass) {
     return Domains.create(
         getDomainId(domainClass),
         getDomainName(domainClass),
@@ -49,7 +52,22 @@ public final class DomainFunctions {
     );
   }
 
+  public static tech.intellispaces.core.ReflectionDomain getDomain(CustomType domainType) {
+    return Domains.create(
+        getDomainId(domainType),
+        getDomainName(domainType),
+        null,
+        null
+    );
+  }
+
   public static Rid getDomainId(CustomType domainType) {
+    DomainReference domainReference = ReflectionsNodeFunctions
+        .ontologyReference()
+        .getDomainByDelegateClass(domainType.canonicalName());
+    if (domainReference != null) {
+      return null;
+    }
     return Rids.create(domainType.selectAnnotation(Domain.class).orElseThrow().value());
   }
 
@@ -272,13 +290,12 @@ public final class DomainFunctions {
     return superDomainNames.values();
   }
 
-  public static Channel findChannel(CustomType sourceDomain, Rid targetDomainRid) {
+  public static @Nullable Rid findChannel(CustomType sourceDomain, Rid targetDomainRid) {
     for (MethodStatement method : sourceDomain.actualMethods()) {
       if (ChannelFunctions.isChannelMethod(method)) {
         Rid did = getDomainId(method.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow().targetType());
-        if (did.equals(targetDomainRid)) {
-          Rid cid = ChannelFunctions.getChannelId(method);
-          return Channels.create(cid, null);
+        if (Objects.equals(did, targetDomainRid)) {
+          return ChannelFunctions.getChannelId(method);
         }
       }
     }

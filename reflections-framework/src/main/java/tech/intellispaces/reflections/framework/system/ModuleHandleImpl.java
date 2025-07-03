@@ -9,7 +9,6 @@ import tech.intellispaces.commons.type.Type;
 import tech.intellispaces.core.Guide;
 import tech.intellispaces.core.Rid;
 import tech.intellispaces.core.System;
-import tech.intellispaces.core.Unit;
 import tech.intellispaces.reflections.framework.channel.Channel0;
 import tech.intellispaces.reflections.framework.channel.Channel1;
 import tech.intellispaces.reflections.framework.channel.Channel2;
@@ -46,7 +45,7 @@ public class ModuleHandleImpl implements ModuleHandle {
     }
 
     @Override
-    public System system() {
+    public ReflectionSystem system() {
         return system;
     }
 
@@ -62,8 +61,8 @@ public class ModuleHandleImpl implements ModuleHandle {
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<Unit> units() {
-        return (List<Unit>) (List<?>) units;
+    public List<ReflectionUnit> units() {
+        return (List<ReflectionUnit>) (List<?>) units;
     }
 
     @Override
@@ -339,7 +338,7 @@ public class ModuleHandleImpl implements ModuleHandle {
     @Override
     @SuppressWarnings("unchecked")
     public <T> T getProjection(String name, Class<T> targetClass) {
-        if (targetClass == System.class) {
+        if (targetClass == System.class || targetClass == ReflectionSystem.class) {
             return (T) system();
         }
         return engine.getProjection(name, targetClass);
@@ -367,7 +366,7 @@ public class ModuleHandleImpl implements ModuleHandle {
 
     private UnitHandle mainUnitSupplier() {
         return units.stream()
-            .filter(Unit::isMain)
+            .filter(ReflectionUnit::isMain)
             .findFirst()
             .orElseThrow();
     }

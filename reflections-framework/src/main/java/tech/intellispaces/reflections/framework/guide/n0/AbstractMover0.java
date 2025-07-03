@@ -6,7 +6,7 @@ import java.util.function.Consumer;
 import tech.intellispaces.commons.exception.NotImplementedExceptions;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.commons.exception.WrappedExceptions;
-import tech.intellispaces.core.Channel;
+import tech.intellispaces.core.ReflectionChannel;
 import tech.intellispaces.reflections.framework.exception.TraverseException;
 import tech.intellispaces.reflections.framework.exception.TraverseExceptions;
 import tech.intellispaces.reflections.framework.guide.GuideKind;
@@ -51,7 +51,7 @@ public interface AbstractMover0<S> extends Mover0<S> {
   }
 
   @Override
-  default Channel channel() {
+  default ReflectionChannel channel() {
     throw NotImplementedExceptions.withCode("f5zaYQ");
   }
 

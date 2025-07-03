@@ -1,0 +1,139 @@
+package {{$generatedArtifactPackageName}};
+
+{{for importedClass : $importedClasses}}
+import {{$importedClass}};
+{{end}}
+
+/**
+ * Unmovable reflection reflection casing. ReflectionDomain {@link {{$sourceArtifactSimpleName}}}.
+ * <p>
+ * This class was generated automatically. Don't try to change it.
+ */
+{{$generatedAnnotation}}
+public{{when $isAbstract}} abstract{{end}} class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} implements {{$reflectionClassName}}{{$typeParamsBrief}} {
+  private final Reflection reflection;
+
+  public {{$generatedArtifactSimpleName}}(Reflection reflection) {
+    this.reflection = reflection;
+  }
+
+  @Override
+  public Rid rid() {
+    return reflection.rid();
+  }
+
+  @Override
+  public java.lang.String reflectionName() {
+    return reflection.reflectionName();
+  }
+
+  @Override
+  public ReflectionDomain domain() {
+    return DomainFunctions.getDomain({{$sourceArtifactSimpleName}}.class);
+  }
+
+{{for method : $domainMethods}}
+  {{$method["declaration"]}};
+
+{{end}}
+
+  @Override
+  public {{$movableReflectionClassName}}{{$typeParamsBrief}} asMovableOrElseThrow() {
+    throw UnexpectedExceptions.withMessage("Unmovable object");
+  }
+
+  @Override
+  public void unbind() {
+    // do nothing
+  }
+
+  @Override
+  public <TD, TH> void addProjection(Class<TD> targetDomain, TH target) {
+    throw NotImplementedExceptions.withCode("TZLxRQ");
+  }
+
+  @Override
+  public java.util.List<SystemReflection> underlyingReflections() {
+    throw NotImplementedExceptions.withCode("xFNCaA");
+  }
+
+  @Override
+  public SystemReflection overlyingReflection() {
+    throw NotImplementedExceptions.withCode("2rNGRQ");
+  }
+
+  @Override
+  public <TD, TH> TH mapTo(Class<TD> targetDomain) {
+    throw NotImplementedExceptions.withCode("VldLww");
+  }
+
+  @Override
+  public <T, Q, C extends Channel1 & MappingTraverse> T mapThru(Class<C> channelClass, Q qualifier) throws TraverseException {
+    throw NotImplementedExceptions.withCode("vIfsWw");
+  }
+
+  @Override
+  public Projection projectionThru(Rid cid) {
+    return reflection.projectionThru(cid);
+  }
+
+  @Override
+  public Projection projectionThru(java.lang.String channelName) {
+    return reflection.projectionThru(channelName);
+  }
+
+  @Override
+  public Projection projectionTo(java.lang.String domainName) {
+    return reflection.projectionTo(domainName);
+  }
+
+  @Override
+  public List<ReflectionPoint> underlyingPoints() {
+    throw NotImplementedExceptions.withCode("95WRTg");
+  }
+
+  @Override
+  public List<Reflection> relatedReflections() {
+    return reflection.relatedReflections();
+  }
+
+  @Override
+  public boolean canBeRepresentedAsPoint() {
+    return true;
+  }
+
+  @Override
+  public boolean canBeRepresentedAsDomain() {
+    throw NotImplementedExceptions.withCode("wPHmdkUw");
+  }
+
+  @Override
+  public boolean canBeRepresentedAsChannel() {
+    throw NotImplementedExceptions.withCode("TjXaLbuM");
+  }
+
+  @Override
+  public boolean canBeRepresentedAsSpace() {
+    throw NotImplementedExceptions.withCode("3Pqh91pP");
+  }
+
+  @Override
+  public ReflectionPoint asPoint() {
+    return this;
+  }
+
+  @Override
+  public ReflectionDomain asDomain() {
+    throw NotImplementedExceptions.withCode("5mNn3ZF8");
+  }
+
+  @Override
+  public ReflectionChannel asChannel() {
+    throw NotImplementedExceptions.withCode("4mKgAN3D");
+  }
+
+  @Override
+  public ReflectionSpace asSpace() {
+    throw NotImplementedExceptions.withCode("fOmccbVD");
+  }
+}

@@ -31,9 +31,8 @@ import tech.intellispaces.commons.properties.PropertiesSet;
 import tech.intellispaces.commons.resource.ResourceFunctions;
 import tech.intellispaces.commons.type.Classes;
 import tech.intellispaces.commons.type.Type;
-import tech.intellispaces.core.Domain;
 import tech.intellispaces.core.Reflection;
-import tech.intellispaces.core.ReflectionFactory;
+import tech.intellispaces.core.ReflectionDomain;
 import tech.intellispaces.core.Rid;
 import tech.intellispaces.reflections.framework.exception.ConfigurationExceptions;
 import tech.intellispaces.reflections.framework.factory.FactoryFunctions;
@@ -48,12 +47,12 @@ public class LocalFactoryRegistry implements FactoryRegistry {
   private Map<Class<?>, List<FactoryMethod>> domainClassToFactoryMethods = Map.of();
 
   @Override
-  public List<ReflectionFactory> findFactories(Domain domain) {
+  public List<ReflectionFactory> findFactories(ReflectionDomain domain) {
     loadFactories();
     Set<FactoryMethod> factories = new HashSet<>();
     findFactoryMethods(domain, factories);
 
-    Domain borrowedDomain = domain.borrowedDomain();
+    ReflectionDomain borrowedDomain = domain.borrowedDomain();
     if (borrowedDomain != null) {
       findFactoryMethods(borrowedDomain, factories);
     }
@@ -65,7 +64,7 @@ public class LocalFactoryRegistry implements FactoryRegistry {
 
   @Override
   public <R extends Reflection> Action1<R, PropertiesSet> factoryAction(
-      Domain targetDomain, String contractType
+      ReflectionDomain targetDomain, String contractType
   ) {
     Collection<FactoryMethod> factoryMethods = findFactoryMethods(targetDomain);
     for (FactoryMethod factoryMethod : factoryMethods) {
@@ -407,18 +406,18 @@ public class LocalFactoryRegistry implements FactoryRegistry {
         targetDomainClass.getCanonicalName(), contractType);
   }
 
-  Collection<FactoryMethod> findFactoryMethods(Domain domain) {
+  Collection<FactoryMethod> findFactoryMethods(ReflectionDomain domain) {
     Set<FactoryMethod> factoryMethods = new HashSet<>();
     findFactoryMethods(domain, factoryMethods);
 
-    Domain borrowedDomain = domain.borrowedDomain();
+    ReflectionDomain borrowedDomain = domain.borrowedDomain();
     if (borrowedDomain != null) {
       findFactoryMethods(borrowedDomain, factoryMethods);
     }
     return factoryMethods;
   }
 
-  private void findFactoryMethods(Domain domain, Collection<FactoryMethod> factoryMethods) {
+  private void findFactoryMethods(ReflectionDomain domain, Collection<FactoryMethod> factoryMethods) {
     if (domain.rid() != null) {
       factoryMethods.addAll(domainRidToFactoryMethods.getOrDefault(domain.rid(), List.of()));
     }

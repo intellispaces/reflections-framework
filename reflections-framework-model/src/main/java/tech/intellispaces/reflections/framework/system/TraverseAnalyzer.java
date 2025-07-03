@@ -1,7 +1,7 @@
 package tech.intellispaces.reflections.framework.system;
 
-import tech.intellispaces.core.Domain;
-import tech.intellispaces.core.Reflection;
+import tech.intellispaces.core.ReflectionDomain;
+import tech.intellispaces.core.ReflectionPoint;
 import tech.intellispaces.core.Rid;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 import tech.intellispaces.reflections.framework.task.plan.ExecutionTraversePlan;
@@ -18,7 +18,7 @@ import tech.intellispaces.reflections.framework.task.plan.TraverseSourceSpecifie
 public interface TraverseAnalyzer {
 
   MapSpecifiedSourceToSpecifiedTargetDomainAndClassPlan buildMapToDomainPlan(
-      Reflection source, Domain targetDomain, Class<?> targetClass
+      ReflectionPoint source, ReflectionDomain targetDomain, Class<?> targetClass
   );
 
   MapSourceSpecifiedClassThruIdentifiedChannelPlan buildMapThruChannelPlan(

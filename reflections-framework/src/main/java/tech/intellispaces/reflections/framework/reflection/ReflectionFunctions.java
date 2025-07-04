@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -321,7 +322,7 @@ public class ReflectionFunctions {
     return domainType.get();
   }
 
-  public static Class<?> getReflectionDomainClass(Class<?> reflectionClass) {
+  public static @Nullable Class<?> getReflectionDomainClass(Class<?> reflectionClass) {
     if (isDefaultReflectionClass(reflectionClass)) {
       return reflectionClass;
     }
@@ -338,12 +339,7 @@ public class ReflectionFunctions {
     Optional<Class<?>> domainClass = Classes.get(
         NameConventionFunctions.getDomainNameOfRegularObjectForm(reflectionClass.getCanonicalName())
     );
-    if (domainClass.isPresent()) {
-      return domainClass.get();
-    }
-
-    throw UnexpectedExceptions.withMessage("Reflection class {0} must be annotated with annotation {1}",
-        reflectionClass.getCanonicalName(), Reflection.class.getSimpleName());
+    return domainClass.orElse(null);
   }
 
   public static String getGeneralReflectionDeclaration(

@@ -14,12 +14,11 @@ import tech.intellispaces.core.ReflectionDomain;
 import tech.intellispaces.core.ReflectionPoint;
 import tech.intellispaces.core.ReflectionSpace;
 import tech.intellispaces.core.Rid;
-import tech.intellispaces.core.TraversableReflection;
 import tech.intellispaces.reflections.framework.channel.Channel1;
 import tech.intellispaces.reflections.framework.exception.TraverseException;
 import tech.intellispaces.reflections.framework.traverse.MappingTraverse;
 
-public class SystemReflectionImpl implements TraversableReflection, SystemReflection {
+public class SystemReflectionImpl implements SystemReflection {
   private final Rid rid;
   private final Reflection wrappedReflection;
   private final OntologyRepository ontologyRepository;
@@ -83,11 +82,6 @@ public class SystemReflectionImpl implements TraversableReflection, SystemReflec
   @Override
   public @Nullable String reflectionName() {
     return wrappedReflection.reflectionName();
-  }
-
-  @Override
-  public ReflectionDomain domain() {
-    return null;
   }
 
   @Override
@@ -159,11 +153,6 @@ public class SystemReflectionImpl implements TraversableReflection, SystemReflec
   }
 
   @Override
-  public List<ReflectionPoint> underlyingPoints() {
-    return null;
-  }
-
-  @Override
   public boolean canBeRepresentedAsPoint() {
     return wrappedReflection.canBeRepresentedAsPoint();
   }
@@ -185,6 +174,27 @@ public class SystemReflectionImpl implements TraversableReflection, SystemReflec
 
   @Override
   public ReflectionPoint asPoint() {
+    if (wrappedReflection.canBeRepresentedAsPoint()) {
+      return new SystemReflectionPointImpl(wrappedReflection.asPoint(), ontologyRepository);
+    }
+    if (rid != null) {
+      Reflection reflection = ontologyRepository.findReflection(rid);
+      if (reflection != null && reflection.canBeRepresentedAsPoint()) {
+        return reflection.asPoint();
+      }
+    }
+    if (wrappedReflection.reflectionName() != null) {
+      Reflection reflection = ontologyRepository.findReflection(wrappedReflection.reflectionName());
+      if (reflection != null) {
+        if (reflection.canBeRepresentedAsPoint()) {
+          return reflection.asPoint();
+        } else if (reflection.canBeRepresentedAsDomain()) {
+          return new SystemReflectionDomainImpl(reflection.asDomain(), ontologyRepository).asPoint();
+        } else if (reflection.canBeRepresentedAsSpace()) {
+          return new SystemReflectionSpaceImpl(reflection.asSpace(), ontologyRepository).asPoint();
+        }
+      }
+    }
     throw NotImplementedExceptions.withCode("vq5z2A");
   }
 

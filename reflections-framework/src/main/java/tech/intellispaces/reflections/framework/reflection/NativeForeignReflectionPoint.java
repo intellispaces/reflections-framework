@@ -17,24 +17,24 @@ import tech.intellispaces.reflections.framework.channel.Channel1;
 import tech.intellispaces.reflections.framework.exception.TraverseException;
 import tech.intellispaces.reflections.framework.traverse.MappingTraverse;
 
-public class NativeForeignPoint implements NativePoint, TraversableReflectionPoint {
-  private final NativePoint foreignPoint;
+public class NativeForeignReflectionPoint implements NativeReflectionPoint, TraversableReflectionPoint {
+  private final NativeReflectionPoint foreignPoint;
   private final Rid rid;
   private final ReflectionDomain domain;
 
-  public NativeForeignPoint(NativePoint foreignPoint) {
+  public NativeForeignReflectionPoint(NativeReflectionPoint foreignPoint) {
     this(foreignPoint, foreignPoint.rid(), foreignPoint.domain());
   }
 
-  public NativeForeignPoint(NativePoint foreignPoint, Rid rid) {
+  public NativeForeignReflectionPoint(NativeReflectionPoint foreignPoint, Rid rid) {
     this(foreignPoint, rid, foreignPoint.domain());
   }
 
-  public NativeForeignPoint(NativePoint foreignPoint, ReflectionDomain domain) {
+  public NativeForeignReflectionPoint(NativeReflectionPoint foreignPoint, ReflectionDomain domain) {
     this(foreignPoint, foreignPoint.rid(), domain);
   }
 
-  public NativeForeignPoint(NativePoint foreignPoint, Rid rid, ReflectionDomain domain) {
+  public NativeForeignReflectionPoint(NativeReflectionPoint foreignPoint, Rid rid, ReflectionDomain domain) {
     this.foreignPoint = foreignPoint;
     this.rid = rid;
     this.domain = domain;

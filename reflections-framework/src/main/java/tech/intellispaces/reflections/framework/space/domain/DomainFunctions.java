@@ -34,7 +34,6 @@ import tech.intellispaces.reflections.framework.annotation.Domain;
 import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
 import tech.intellispaces.reflections.framework.node.ReflectionsNodeFunctions;
 import tech.intellispaces.reflections.framework.settings.ChannelAssignments;
-import tech.intellispaces.reflections.framework.settings.DomainAssignments;
 import tech.intellispaces.reflections.framework.settings.DomainReference;
 import tech.intellispaces.reflections.framework.space.channel.ChannelFunctions;
 

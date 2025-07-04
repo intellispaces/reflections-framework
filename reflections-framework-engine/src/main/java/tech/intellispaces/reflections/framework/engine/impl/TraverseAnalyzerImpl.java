@@ -1,6 +1,5 @@
 package tech.intellispaces.reflections.framework.engine.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -200,17 +199,25 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
     ReflectionDomain sourceDomain = plan.source().asPoint().domain();
     ReflectionChannel channel = findChannel(sourceDomain, plan.targetDomain());
     if (channel == null) {
+      for (ReflectionDomain parentDomain : sourceDomain.parentDomains()) {
+        channel = findChannel(parentDomain, plan.targetDomain());
+        if (channel != null) {
+          break;
+        }
+      }
+    }
+    if (channel == null) {
       return null;
     }
 
     ExecutionTraversePlan executionPlan = buildExecutionTraversePlan(
-        plan.type(), channel.rid(), plan.source(), ReflectionForms.Reflection
+        plan.type(), channel.rid(), plan.source().getClass(), ReflectionForms.Reflection
     );
     if (executionPlan == null) {
       tech.intellispaces.core.Reflection registeredReflection = reflectionRegistry.findReflection(plan.source().rid());
       if (registeredReflection != null) {
         executionPlan = buildExecutionTraversePlan(
-            plan.type(), channel.rid(), registeredReflection, ReflectionForms.Reflection
+            plan.type(), channel.rid(), registeredReflection.getClass(), ReflectionForms.Reflection
         );
         if (executionPlan != null) {
           var replaceSourcePlan = new MapSpecifiedSourceToSpecifiedTargetDomainAndClassPlanImpl(
@@ -261,25 +268,6 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
     return new CallGuidePlanImpl(guides.get(0));
   }
 
-  private ExecutionTraversePlan buildExecutionTraversePlan(
-      TaskPlanType planType,
-      Rid cid,
-      tech.intellispaces.core.Reflection source,
-      ReflectionForm targetForm
-  ) {
-    GuideType guideType = getGuideType(planType);
-    List<SystemGuide<?, ?>> guides = findGuides(guideType, cid, source, targetForm);
-    if (guides.isEmpty()) {
-      return null;
-    }
-    if (guides.size() > 1) {
-      throw NotImplementedExceptions.withCodeAndMessage("J2ni0Q", "Multiple guides are found:\n{0}",
-          guides.stream().map(Object::toString).collect(Collectors.joining("\n"))
-      );
-    }
-    return new CallGuidePlanImpl(guides.get(0));
-  }
-
   private List<SystemGuide<?, ?>> findGuides(
       GuideType guideType,
       Rid cid,
@@ -289,22 +277,13 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
     List<SystemGuide<?, ?>> guides = guideProvider.findGuides(cid, guideType, sourceClass, targetForm);
     if (guides.isEmpty()) {
       Class<?> domainClass = ReflectionFunctions.getReflectionDomainClass(sourceClass);
-      Rid originDomainChannelId = ChannelFunctions.getOriginDomainChannelId(domainClass, cid);
-      if (originDomainChannelId != null) {
-        guides = guideProvider.findGuides(originDomainChannelId, guideType, sourceClass, targetForm);
+      if (domainClass != null) {
+        Rid originDomainChannelId = ChannelFunctions.getOriginDomainChannelId(domainClass, cid);
+        if (originDomainChannelId != null) {
+          guides = guideProvider.findGuides(originDomainChannelId, guideType, sourceClass, targetForm);
+        }
       }
     }
-    return guides;
-  }
-
-  private List<SystemGuide<?, ?>> findGuides(
-      GuideType guideType,
-      Rid cid,
-      tech.intellispaces.core.Reflection source,
-      ReflectionForm targetForm
-  ) {
-    List<SystemGuide<?, ?>> guides = new ArrayList<>();
-    guides.addAll(guideProvider.findGuides(cid, guideType, source.getClass(), targetForm));
     return guides;
   }
 

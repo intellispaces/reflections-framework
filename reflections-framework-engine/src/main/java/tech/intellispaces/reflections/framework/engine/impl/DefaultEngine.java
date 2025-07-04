@@ -73,8 +73,8 @@ import tech.intellispaces.reflections.framework.guide.n3.Mover3;
 import tech.intellispaces.reflections.framework.guide.n4.AutoMapperOfMoving4;
 import tech.intellispaces.reflections.framework.guide.n4.MapperOfMoving4;
 import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
-import tech.intellispaces.reflections.framework.reflection.NativeForeignPoint;
-import tech.intellispaces.reflections.framework.reflection.NativePoint;
+import tech.intellispaces.reflections.framework.reflection.NativeForeignReflectionPoint;
+import tech.intellispaces.reflections.framework.reflection.NativeReflectionPoint;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForms;
 import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
@@ -82,7 +82,7 @@ import tech.intellispaces.reflections.framework.reflection.ReflectionHandle;
 import tech.intellispaces.reflections.framework.reflection.ReflectionHandleImpl;
 import tech.intellispaces.reflections.framework.reflection.ReflectionRealizationType;
 import tech.intellispaces.reflections.framework.reflection.ReflectionRealizationTypeImpl;
-import tech.intellispaces.reflections.framework.reflection.SystemPointImpl;
+import tech.intellispaces.reflections.framework.reflection.SystemReflectionPointImpl;
 import tech.intellispaces.reflections.framework.reflection.SystemReflectionImpl;
 import tech.intellispaces.reflections.framework.space.channel.ChannelFunctions;
 import tech.intellispaces.reflections.framework.system.AutoGuideRegistry;
@@ -161,7 +161,8 @@ public class DefaultEngine implements Engine {
   @Override
   @SuppressWarnings("unchecked")
   public <R extends Reflection> R mapSourceTo(ReflectionPoint source, ReflectionDomain targetDomain, Class<R> targetClass) {
-    DeclarativeTraversePlan traversePlan = traverseAnalyzer.buildMapToDomainPlan(source, targetDomain, targetClass);
+    ReflectionPoint systemSource = getReflection(source);
+    DeclarativeTraversePlan traversePlan = traverseAnalyzer.buildMapToDomainPlan(systemSource, targetDomain, targetClass);
     return (R) traversePlan.execute(traverseExecutor);
   }
 
@@ -253,7 +254,7 @@ public class DefaultEngine implements Engine {
 
   @Override
   public TraversableReflectionPoint getReflection(ReflectionPoint point) {
-    return new SystemPointImpl(point, ontologyRepository);
+    return new SystemReflectionPointImpl(point, ontologyRepository);
   }
 
   @Override
@@ -313,10 +314,10 @@ public class DefaultEngine implements Engine {
 
   private TraversableReflectionPoint identifyReflection(ReflectionPoint point) {
     Rid rid = Rids.create(UUID.randomUUID());
-    if (point instanceof NativePoint) {
-      return new NativeForeignPoint((NativePoint) point, rid);
+    if (point instanceof NativeReflectionPoint) {
+      return new NativeForeignReflectionPoint((NativeReflectionPoint) point, rid);
     }
-    return new SystemPointImpl(rid, point, ontologyRepository);
+    return new SystemReflectionPointImpl(rid, point, ontologyRepository);
   }
 
   @Override

@@ -27,8 +27,8 @@ import tech.intellispaces.core.Reflection;
 import tech.intellispaces.core.ReflectionDomain;
 import tech.intellispaces.javareflection.method.MethodStatement;
 import tech.intellispaces.reflections.framework.annotation.Contract;
-import tech.intellispaces.reflections.framework.reflection.NativeForeignPoint;
-import tech.intellispaces.reflections.framework.reflection.NativePoint;
+import tech.intellispaces.reflections.framework.reflection.NativeForeignReflectionPoint;
+import tech.intellispaces.reflections.framework.reflection.NativeReflectionPoint;
 import tech.intellispaces.reflections.framework.space.domain.DomainFunctions;
 
 public interface FactoryFunctions {
@@ -92,7 +92,7 @@ public interface FactoryFunctions {
     if (targetDomain.borrowedDomain() == null) {
       return reflection;
     }
-    return (R) new NativeForeignPoint((NativePoint) reflection, targetDomain);
+    return (R) new NativeForeignReflectionPoint((NativeReflectionPoint) reflection, targetDomain);
   }
 
   private static List<Object> getQualifierValues(PropertiesSet props, FactoryMethod factoryMethod) {

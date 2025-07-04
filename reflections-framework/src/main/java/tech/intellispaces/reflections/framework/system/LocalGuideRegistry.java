@@ -43,9 +43,9 @@ public class LocalGuideRegistry implements GuideRegistry {
   }
 
   boolean isSuitableGuide(
-      SystemGuide<?, ?> guide, Class<?> sourceReflectionClass, ReflectionForm targetForm
+      SystemGuide<?, ?> guide, Class<?> sourceClass, ReflectionForm targetForm
   ) {
-    return ClassFunctions.isCompatibleClasses(guide.sourceClass(), sourceReflectionClass)
+    return ClassFunctions.isCompatibleClasses(guide.sourceClass(), sourceClass)
         && (guide.targetForm() == targetForm);
   }
 

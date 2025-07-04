@@ -86,7 +86,7 @@ public class LocalClassPathSpaceRepository implements OntologyRepository {
 
   @Override
   public List<ReflectionChannel> findDomainChannels(String domainName) {
-    throw NotImplementedExceptions.withCode("we7j3Jqx");
+    return List.of();
   }
 
   @Override

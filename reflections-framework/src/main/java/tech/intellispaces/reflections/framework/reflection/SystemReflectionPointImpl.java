@@ -19,16 +19,16 @@ import tech.intellispaces.reflections.framework.channel.Channel1;
 import tech.intellispaces.reflections.framework.exception.TraverseException;
 import tech.intellispaces.reflections.framework.traverse.MappingTraverse;
 
-public class SystemPointImpl implements TraversableReflectionPoint, SystemReflection {
+public class SystemReflectionPointImpl implements TraversableReflectionPoint, SystemReflection {
   private final Rid rid;
   private final ReflectionPoint wrappedPoint;
   private final OntologyRepository ontologyRepository;
 
-  public SystemPointImpl(ReflectionPoint wrappedPoint, OntologyRepository ontologyRepository) {
+  public SystemReflectionPointImpl(ReflectionPoint wrappedPoint, OntologyRepository ontologyRepository) {
     this(wrappedPoint.rid(), wrappedPoint, ontologyRepository);
   }
 
-  public SystemPointImpl(
+  public SystemReflectionPointImpl(
       Rid rid,
       ReflectionPoint wrappedPoint,
       OntologyRepository ontologyRepository
@@ -97,7 +97,7 @@ public class SystemPointImpl implements TraversableReflectionPoint, SystemReflec
     if (domain == null) {
       return null;
     }
-    return new SystemDomainImpl(domain, ontologyRepository);
+    return new SystemReflectionDomainImpl(domain, ontologyRepository);
   }
 
   @Override

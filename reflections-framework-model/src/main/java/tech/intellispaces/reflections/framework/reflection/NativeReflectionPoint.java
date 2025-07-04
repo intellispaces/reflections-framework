@@ -1,9 +1,9 @@
 package tech.intellispaces.reflections.framework.reflection;
 
 /**
- * This interface is a marker of reflection bound to existing Java object.
+ * The interface-marker of reflection point bound to real Java object.
  */
-public interface NativePoint extends BoundPoint {
+public interface NativeReflectionPoint extends BoundReflectionPoint {
 
   /**
    * Returns bound Java object.

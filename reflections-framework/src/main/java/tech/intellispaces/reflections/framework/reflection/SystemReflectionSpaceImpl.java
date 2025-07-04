@@ -74,6 +74,11 @@ public class SystemReflectionSpaceImpl implements ReflectionSpace, ReflectionPoi
   }
 
   @Override
+  public Projection projectionTo(ReflectionDomain domain) {
+    return wrappedSpace.projectionTo(domain);
+  }
+
+  @Override
   public List<Reflection> relatedReflections() {
     List<Reflection> reflections = wrappedSpace.relatedReflections();
     if (reflections.isEmpty()) {

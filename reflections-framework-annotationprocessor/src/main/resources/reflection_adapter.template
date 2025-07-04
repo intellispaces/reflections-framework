@@ -88,6 +88,11 @@ public{{when $isAbstract}} abstract{{end}} class {{$generatedArtifactSimpleName}
   }
 
   @Override
+  public Projection projectionTo(ReflectionDomain domain) {
+    return reflection.projectionTo(domain);
+  }
+
+  @Override
   public List<ReflectionPoint> underlyingPoints() {
     throw NotImplementedExceptions.withCode("95WRTg");
   }

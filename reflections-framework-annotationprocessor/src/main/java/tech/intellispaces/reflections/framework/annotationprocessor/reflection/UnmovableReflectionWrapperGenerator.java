@@ -12,6 +12,7 @@ import tech.intellispaces.commons.type.Type;
 import tech.intellispaces.commons.type.Types;
 import tech.intellispaces.core.Domains;
 import tech.intellispaces.core.Projection;
+import tech.intellispaces.core.Projections;
 import tech.intellispaces.core.Reflection;
 import tech.intellispaces.core.ReflectionChannel;
 import tech.intellispaces.core.ReflectionDomain;
@@ -117,13 +118,14 @@ public class UnmovableReflectionWrapperGenerator extends AbstractReflectionWrapp
         Rid.class,
         Reflection.class,
         ReflectionPoint.class,
-        ReflectionSpace.class,
         ReflectionDomain.class,
         ReflectionChannel.class,
+        ReflectionSpace.class,
         Rids.class,
         Domains.class,
         Base64Functions.class,
         Projection.class,
+        Projections.class,
         List.class
     );
 

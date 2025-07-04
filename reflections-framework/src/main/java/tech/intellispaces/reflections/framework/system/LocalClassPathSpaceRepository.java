@@ -12,6 +12,7 @@ import tech.intellispaces.core.OntologyRepository;
 import tech.intellispaces.core.Reflection;
 import tech.intellispaces.core.ReflectionChannel;
 import tech.intellispaces.core.ReflectionDomain;
+import tech.intellispaces.core.ReflectionReference;
 import tech.intellispaces.core.ReflectionSpace;
 import tech.intellispaces.core.Rid;
 import tech.intellispaces.javareflection.customtype.CustomType;
@@ -27,12 +28,17 @@ public class LocalClassPathSpaceRepository implements OntologyRepository {
 
   @Override
   public @Nullable Reflection findReflection(Rid rid) {
-    throw NotImplementedExceptions.withCode("FrBiVg");
+    return null;
   }
 
   @Override
   public @Nullable Reflection findReflection(String reflectionName) {
-    throw NotImplementedExceptions.withCode("q8HBoQhh");
+    return null;
+  }
+
+  @Override
+  public @Nullable Reflection findReflection(ReflectionReference reference) {
+    throw NotImplementedExceptions.withCode("qXv8ZvJD");
   }
 
   @Override

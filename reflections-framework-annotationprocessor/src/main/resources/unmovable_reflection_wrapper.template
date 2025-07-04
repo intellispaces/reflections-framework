@@ -133,6 +133,11 @@ public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sour
   }
 
   @Override
+  public Projection projectionTo(ReflectionDomain domain) {
+    return Projections.unknown();
+  }
+
+  @Override
   public List<ReflectionPoint> underlyingPoints() {
     throw NotImplementedExceptions.withCode("d3jvbw");
   }

@@ -164,6 +164,27 @@ public class SystemReflectionPointImpl implements TraversableReflectionPoint, Sy
   }
 
   @Override
+  public Projection projectionTo(ReflectionDomain domain) {
+    Projection projection = wrappedPoint.projectionTo(domain);
+    if (!projection.isUnknown()) {
+      return projection;
+    }
+    if (rid() != null) {
+      Reflection reflection = ontologyRepository.findReflection(rid());
+      if (reflection != null) {
+        return reflection.projectionTo(domain);
+      }
+    }
+    if (reflectionName() != null) {
+      Reflection reflection = ontologyRepository.findReflection(reflectionName());
+      if (reflection != null) {
+        return reflection.projectionTo(domain);
+      }
+    }
+    return Projections.unknown();
+  }
+
+  @Override
   public List<Reflection> relatedReflections() {
     return ontologyRepository.findRelatedReflections(reflectionName());
   }

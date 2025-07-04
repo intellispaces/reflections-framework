@@ -102,17 +102,22 @@ public class NativeForeignReflectionPoint implements NativeReflectionPoint, Trav
 
   @Override
   public Projection projectionThru(Rid cid) {
-    throw NotImplementedExceptions.withCode("fQkkyA");
+    return foreignPoint.projectionThru(cid);
   }
 
   @Override
   public Projection projectionThru(String channelName) {
-    throw NotImplementedExceptions.withCode("d9LaxMYX");
+    return foreignPoint.projectionThru(channelName);
   }
 
   @Override
   public Projection projectionTo(String domainName) {
-    throw NotImplementedExceptions.withCode("3gDj9g");
+    return foreignPoint.projectionTo(domainName);
+  }
+
+  @Override
+  public Projection projectionTo(ReflectionDomain domain) {
+    return foreignPoint.projectionTo(domain);
   }
 
   @Override

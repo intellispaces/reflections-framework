@@ -18,6 +18,7 @@ import tech.intellispaces.commons.type.Type;
 import tech.intellispaces.commons.type.Types;
 import tech.intellispaces.core.Domains;
 import tech.intellispaces.core.Projection;
+import tech.intellispaces.core.Projections;
 import tech.intellispaces.core.ReflectionChannel;
 import tech.intellispaces.core.ReflectionDomain;
 import tech.intellispaces.core.ReflectionPoint;
@@ -117,6 +118,7 @@ public class DatasetGenerator extends AbstractReflectionFormGenerator {
         ReflectionSpace.class,
         ReflectionDomain.class,
         ReflectionChannel.class,
+        Projections.class,
         List.class
     );
 

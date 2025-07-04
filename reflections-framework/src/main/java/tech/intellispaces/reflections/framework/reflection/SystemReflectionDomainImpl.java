@@ -104,7 +104,12 @@ public class SystemReflectionDomainImpl implements ReflectionDomain, ReflectionP
 
   @Override
   public Projection projectionTo(String domainName) {
-    return projectionThru(domainName);
+    return wrappedDomain.projectionTo(domainName);
+  }
+
+  @Override
+  public Projection projectionTo(ReflectionDomain domain) {
+    return wrappedDomain.projectionTo(domain);
   }
 
   @Override

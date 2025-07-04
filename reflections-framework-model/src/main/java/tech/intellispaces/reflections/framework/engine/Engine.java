@@ -3,6 +3,8 @@ package tech.intellispaces.reflections.framework.engine;
 import java.util.Collection;
 import java.util.List;
 
+import org.jetbrains.annotations.Nullable;
+
 import tech.intellispaces.actions.Action0;
 import tech.intellispaces.actions.Action1;
 import tech.intellispaces.actions.Action10;
@@ -16,17 +18,13 @@ import tech.intellispaces.actions.Action8;
 import tech.intellispaces.actions.Action9;
 import tech.intellispaces.commons.type.Type;
 import tech.intellispaces.core.Reflection;
-import tech.intellispaces.core.ReflectionChannel;
 import tech.intellispaces.core.ReflectionContract;
 import tech.intellispaces.core.ReflectionDomain;
 import tech.intellispaces.core.ReflectionPoint;
-import tech.intellispaces.core.ReflectionSpace;
+import tech.intellispaces.core.ReflectionReference;
 import tech.intellispaces.core.Rid;
 import tech.intellispaces.core.TraversableReflection;
-import tech.intellispaces.core.TraversableReflectionChannel;
-import tech.intellispaces.core.TraversableReflectionDomain;
 import tech.intellispaces.core.TraversableReflectionPoint;
-import tech.intellispaces.core.TraversableReflectionSpace;
 import tech.intellispaces.reflections.framework.channel.Channel0;
 import tech.intellispaces.reflections.framework.channel.Channel1;
 import tech.intellispaces.reflections.framework.channel.Channel2;
@@ -70,7 +68,7 @@ public interface Engine {
 
   TraversableReflectionPoint mapSourceTo(Reflection source, ReflectionDomain domain);
 
-  <R extends Reflection> R mapSourceTo(ReflectionPoint source, ReflectionDomain targetDomain, Class<R> targetClass);
+  <R extends Reflection> R mapSourceTo(Reflection source, ReflectionDomain targetDomain, Class<R> targetClass);
 
   <S, T> T mapThruChannel0(S source, Rid cid);
 
@@ -104,17 +102,9 @@ public interface Engine {
    */
   void addGuide(SystemGuide<?, ?> guide);
 
-  TraversableReflection getReflection(Reflection reflection);
+  @Nullable TraversableReflection getReflection(ReflectionReference reflection);
 
-  TraversableReflectionPoint getReflection(ReflectionPoint point);
-
-  TraversableReflectionDomain getReflection(ReflectionDomain domain);
-
-  TraversableReflectionChannel getReflection(ReflectionChannel channel);
-
-  TraversableReflectionSpace getReflection(ReflectionSpace space);
-
-  <T> T castToReflectionPoint(Reflection reflection, Class<T> reflectionClass);
+  <T> T castReflection(ReflectionPoint reflection, Class<T> reflectionClass);
 
   /**
    * Creates and registers new reflection.

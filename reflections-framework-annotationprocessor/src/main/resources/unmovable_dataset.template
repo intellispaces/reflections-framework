@@ -116,6 +116,11 @@ public class {{$generatedArtifactSimpleName}} implements {{$reflectionClassName}
   }
 
   @Override
+  public Projection projectionTo(ReflectionDomain domain) {
+    return Projections.unknown();
+  }
+
+  @Override
   public List<ReflectionPoint> underlyingPoints() {
     return List.of();
   }

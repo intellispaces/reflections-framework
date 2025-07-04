@@ -10,6 +10,7 @@ import tech.intellispaces.core.OntologyRepository;
 import tech.intellispaces.core.Reflection;
 import tech.intellispaces.core.ReflectionChannel;
 import tech.intellispaces.core.ReflectionDomain;
+import tech.intellispaces.core.ReflectionReference;
 import tech.intellispaces.core.ReflectionSpace;
 import tech.intellispaces.core.Rid;
 import tech.intellispaces.core.SpaceFunctions;
@@ -39,6 +40,18 @@ public class MultiSpaceRepository implements OntologyRepository {
       return null;
     }
     return repository.findReflection(reflectionName);
+  }
+
+  @Override
+  public @Nullable Reflection findReflection(ReflectionReference reference) {
+    Reflection reflection = null;
+    if (reference.rid() != null) {
+      reflection = findReflection(reference.rid());
+    }
+    if (reflection == null && reference.reflectionName() != null) {
+      reflection = findReflection(reference.reflectionName());
+    }
+    return reflection;
   }
 
   @Override

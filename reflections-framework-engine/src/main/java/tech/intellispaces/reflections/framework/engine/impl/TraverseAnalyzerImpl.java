@@ -11,6 +11,7 @@ import tech.intellispaces.core.Domains;
 import tech.intellispaces.core.OntologyRepository;
 import tech.intellispaces.core.ReflectionChannel;
 import tech.intellispaces.core.ReflectionDomain;
+import tech.intellispaces.core.ReflectionPoint;
 import tech.intellispaces.core.Rid;
 import tech.intellispaces.reflections.framework.guide.GuideType;
 import tech.intellispaces.reflections.framework.guide.GuideTypes;
@@ -214,7 +215,8 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
         plan.type(), channel.rid(), plan.source().getClass(), ReflectionForms.Reflection
     );
     if (executionPlan == null) {
-      tech.intellispaces.core.Reflection registeredReflection = reflectionRegistry.findReflection(plan.source().rid());
+      ReflectionPoint source = plan.source();
+      ReflectionPoint registeredReflection = reflectionRegistry.findReflection(source.rid(), source.domainName());
       if (registeredReflection != null) {
         executionPlan = buildExecutionTraversePlan(
             plan.type(), channel.rid(), registeredReflection.getClass(), ReflectionForms.Reflection

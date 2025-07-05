@@ -8,6 +8,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import org.jetbrains.annotations.Nullable;
+
 import tech.intellispaces.actions.runnable.RunnableAction;
 import tech.intellispaces.actions.text.StringActions;
 import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
@@ -116,7 +118,8 @@ public class ReflectionAdapterGenerator extends AbstractReflectionFormGenerator 
         ReflectionPoint.class,
         ReflectionSpace.class,
         ReflectionChannel.class,
-        List.class
+        List.class,
+        Nullable.class
     );
 
     analyzeAlias();

@@ -10,7 +10,7 @@ import tech.intellispaces.core.OntologyRepository;
 import tech.intellispaces.core.Reflection;
 import tech.intellispaces.core.ReflectionChannel;
 import tech.intellispaces.core.ReflectionDomain;
-import tech.intellispaces.core.ReflectionReference;
+import tech.intellispaces.core.ReflectionPoint;
 import tech.intellispaces.core.ReflectionSpace;
 import tech.intellispaces.core.Rid;
 import tech.intellispaces.core.SpaceFunctions;
@@ -23,17 +23,6 @@ public class MultiSpaceRepository implements OntologyRepository {
   }
 
   @Override
-  public @Nullable Reflection findReflection(Rid rid) {
-    for (OntologyRepository repository : repositories.values()) {
-      Reflection reflection = repository.findReflection(rid);
-      if (reflection != null) {
-        return reflection;
-      }
-    }
-    return null;
-  }
-
-  @Override
   public @Nullable Reflection findReflection(String reflectionName) {
     OntologyRepository repository = selectRepository(reflectionName);
     if (repository == null) {
@@ -43,15 +32,14 @@ public class MultiSpaceRepository implements OntologyRepository {
   }
 
   @Override
-  public @Nullable Reflection findReflection(ReflectionReference reference) {
-    Reflection reflection = null;
-    if (reference.rid() != null) {
-      reflection = findReflection(reference.rid());
+  public @Nullable ReflectionPoint findReflection(Rid pid, String domainName) {
+    for (OntologyRepository repository : repositories.values()) {
+      ReflectionPoint reflection = repository.findReflection(pid, domainName);
+      if (reflection != null) {
+        return reflection;
+      }
     }
-    if (reflection == null && reference.reflectionName() != null) {
-      reflection = findReflection(reference.reflectionName());
-    }
-    return reflection;
+    return null;
   }
 
   @Override

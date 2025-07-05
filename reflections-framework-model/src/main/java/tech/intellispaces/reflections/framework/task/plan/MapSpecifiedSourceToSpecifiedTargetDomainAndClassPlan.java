@@ -1,7 +1,7 @@
 package tech.intellispaces.reflections.framework.task.plan;
 
-import tech.intellispaces.core.Reflection;
 import tech.intellispaces.core.ReflectionDomain;
+import tech.intellispaces.core.ReflectionPoint;
 
 /**
  * The declarative traverse plan to map specified source to specified target domain
@@ -10,7 +10,7 @@ import tech.intellispaces.core.ReflectionDomain;
 public interface MapSpecifiedSourceToSpecifiedTargetDomainAndClassPlan
     extends SpecifiedSourceDeclarativeTraversePlan
 {
-  Reflection source();
+  ReflectionPoint source();
 
   ReflectionDomain targetDomain();
 

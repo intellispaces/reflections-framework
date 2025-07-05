@@ -21,7 +21,6 @@ import tech.intellispaces.core.Reflection;
 import tech.intellispaces.core.ReflectionContract;
 import tech.intellispaces.core.ReflectionDomain;
 import tech.intellispaces.core.ReflectionPoint;
-import tech.intellispaces.core.ReflectionReference;
 import tech.intellispaces.core.Rid;
 import tech.intellispaces.core.TraversableReflection;
 import tech.intellispaces.core.TraversableReflectionPoint;
@@ -102,7 +101,22 @@ public interface Engine {
    */
   void addGuide(SystemGuide<?, ?> guide);
 
-  @Nullable TraversableReflection getReflection(ReflectionReference reflection);
+  /**
+   * Searches for a reflection by name in the system.
+   *
+   * @param reflectionName the qualified reflection name.
+   * @return the reflection or <code>null</code> if reflection is not found.
+   */
+  @Nullable TraversableReflection getReflection(String reflectionName);
+
+  /**
+   * Searches for a reflection by reflection identifier and domain name in the system.
+   *
+   * @param pid the reflection identifier.
+   * @param domainName the reflection domain name.
+   * @return the reflection or <code>null</code> if reflection is not found.
+   */
+  @Nullable TraversableReflectionPoint getReflection(Rid pid, String domainName);
 
   <T> T castReflection(ReflectionPoint reflection, Class<T> reflectionClass);
 

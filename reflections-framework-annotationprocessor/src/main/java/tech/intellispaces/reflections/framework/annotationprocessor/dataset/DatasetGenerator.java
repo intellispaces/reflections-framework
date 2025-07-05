@@ -7,6 +7,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.jetbrains.annotations.Nullable;
+
 import tech.intellispaces.actions.runnable.RunnableAction;
 import tech.intellispaces.actions.text.StringActions;
 import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
@@ -119,7 +121,8 @@ public class DatasetGenerator extends AbstractReflectionFormGenerator {
         ReflectionDomain.class,
         ReflectionChannel.class,
         Projections.class,
-        List.class
+        List.class,
+        Nullable.class
     );
 
     analyzeAlias();

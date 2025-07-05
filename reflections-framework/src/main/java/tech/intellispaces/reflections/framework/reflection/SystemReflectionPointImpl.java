@@ -101,13 +101,22 @@ public class SystemReflectionPointImpl implements TraversableReflectionPoint, Sy
   }
 
   @Override
+  public @Nullable String domainName() {
+    ReflectionDomain domain = domain();
+    if (domain == null) {
+      return null;
+    }
+    return domain.reflectionName();
+  }
+
+  @Override
   public Projection projectionThru(Rid cid) {
     Projection projection = wrappedPoint.projectionThru(cid);
     if (!projection.isUnknown()) {
       return projection;
     }
-    if (rid() != null) {
-      Reflection reflection = ontologyRepository.findReflection(rid());
+    if (rid() != null &&  domain() != null) {
+      Reflection reflection = ontologyRepository.findReflection(rid(), domain().reflectionName());
       if (reflection != null) {
         return reflection.projectionThru(cid);
       }
@@ -127,8 +136,8 @@ public class SystemReflectionPointImpl implements TraversableReflectionPoint, Sy
     if (!projection.isUnknown()) {
       return projection;
     }
-    if (rid() != null) {
-      Reflection reflection = ontologyRepository.findReflection(rid());
+    if (rid() != null && domainName() != null) {
+      Reflection reflection = ontologyRepository.findReflection(rid(), domainName());
       if (reflection != null) {
         return reflection.projectionThru(channelName);
       }
@@ -148,8 +157,8 @@ public class SystemReflectionPointImpl implements TraversableReflectionPoint, Sy
     if (!projection.isUnknown()) {
       return projection;
     }
-    if (rid() != null) {
-      Reflection reflection = ontologyRepository.findReflection(rid());
+    if (rid() != null && domainName() != null) {
+      Reflection reflection = ontologyRepository.findReflection(rid(), domainName());
       if (reflection != null) {
         return reflection.projectionTo(domainName);
       }
@@ -169,8 +178,8 @@ public class SystemReflectionPointImpl implements TraversableReflectionPoint, Sy
     if (!projection.isUnknown()) {
       return projection;
     }
-    if (rid() != null) {
-      Reflection reflection = ontologyRepository.findReflection(rid());
+    if (rid() != null && domainName() != null) {
+      Reflection reflection = ontologyRepository.findReflection(rid(), domainName());
       if (reflection != null) {
         return reflection.projectionTo(domain);
       }

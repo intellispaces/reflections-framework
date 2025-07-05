@@ -101,6 +101,11 @@ public class NativeForeignReflectionPoint implements NativeReflectionPoint, Trav
   }
 
   @Override
+  public @Nullable String domainName() {
+    return domain.reflectionName();
+  }
+
+  @Override
   public Projection projectionThru(Rid cid) {
     return foreignPoint.projectionThru(cid);
   }

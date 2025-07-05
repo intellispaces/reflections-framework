@@ -43,6 +43,11 @@ public class {{$generatedArtifactSimpleName}} implements {{$reflectionClassName}
     return Domains.create(Rids.create(Base64Functions.convertUrlNoPaddingBase64ToBytes("{{$didBase64}}"), "{{$didOrigin}}"), "{{$domainName}}", {{$sourceArtifactSimpleName}}.class, Types.get({{$sourceArtifactSimpleName}}.class));
   }
 
+  @Override
+  public @Nullable java.lang.String domainName() {
+    return "{{$domainName}}";
+  }
+
 {{for projection : $projections}}
   @Override
   public {{$projection["type"]}} {{$projection["name"]}}() {

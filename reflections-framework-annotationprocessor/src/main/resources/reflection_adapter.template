@@ -32,6 +32,11 @@ public{{when $isAbstract}} abstract{{end}} class {{$generatedArtifactSimpleName}
     return DomainFunctions.getDomain({{$sourceArtifactSimpleName}}.class);
   }
 
+  @Override
+  public @Nullable java.lang.String domainName() {
+    return DomainFunctions.getDomainName({{$sourceArtifactSimpleName}}.class);
+  }
+
 {{for method : $domainMethods}}
   {{$method["declaration"]}};
 

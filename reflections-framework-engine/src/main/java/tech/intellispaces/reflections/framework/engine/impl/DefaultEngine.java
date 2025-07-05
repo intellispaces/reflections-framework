@@ -31,7 +31,6 @@ import tech.intellispaces.core.Reflection;
 import tech.intellispaces.core.ReflectionContract;
 import tech.intellispaces.core.ReflectionDomain;
 import tech.intellispaces.core.ReflectionPoint;
-import tech.intellispaces.core.ReflectionReference;
 import tech.intellispaces.core.Rid;
 import tech.intellispaces.core.Rids;
 import tech.intellispaces.core.TraversableReflection;
@@ -253,15 +252,21 @@ public class DefaultEngine implements Engine {
   }
 
   @Override
-  public @Nullable TraversableReflection getReflection(ReflectionReference reference) {
-    Reflection reflection = ontologyRepository.findReflection(reference);
-    if (reflection == null) {
-      reflection = reflectionRegistry.findReflection(reference);
-    }
+  public @Nullable TraversableReflection getReflection(String reflectionName) {
+    Reflection reflection = ontologyRepository.findReflection(reflectionName);
     if (reflection == null) {
       return null;
     }
     return wrapToSystemReflection(reflection);
+  }
+
+  @Override
+  public @Nullable TraversableReflectionPoint getReflection(Rid pid, String domainName) {
+    Reflection reflection = ontologyRepository.findReflection(pid, domainName);
+    if (reflection == null) {
+      return null;
+    }
+    return (TraversableReflectionPoint) createSystemReflectionPoint(reflection);
   }
 
   private SystemReflection castToSystemReflection(Reflection reflection) {

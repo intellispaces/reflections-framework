@@ -2,6 +2,8 @@ package tech.intellispaces.reflections.framework.annotationprocessor.reflection;
 
 import java.util.List;
 
+import org.jetbrains.annotations.Nullable;
+
 import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
 import tech.intellispaces.commons.data.Base64Functions;
 import tech.intellispaces.commons.exception.NotImplementedExceptions;
@@ -137,7 +139,8 @@ public class MovableReflectionWrapperGenerator extends AbstractReflectionWrapper
         Projection.class,
         Projections.class,
         List.class,
-        UnexpectedExceptions.class
+        UnexpectedExceptions.class,
+        Nullable.class
     );
 
     analyzeDomain();

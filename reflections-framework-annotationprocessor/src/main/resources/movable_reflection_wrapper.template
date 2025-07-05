@@ -65,6 +65,11 @@ public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sour
     return Domains.create(Rids.create(Base64Functions.convertUrlNoPaddingBase64ToBytes("{{$didBase64}}"), "{{$didOrigin}}"), "{{$domainName}}", {{$domainClassSimpleName}}.class, {{when $isAlias}}{{$primaryDomainTypeDeclaration}}{{else}}{{$domainTypeDeclaration}}{{end}});
   }
 
+  @Override
+  public @Nullable java.lang.String domainName() {
+    return "{{$domainName}}";
+  }
+
   public Type<{{$primaryDomainSimpleName}}{{$primaryDomainTypeArguments}}> primaryDomain() {
     return {{$primaryDomainTypeDeclaration}};
   }

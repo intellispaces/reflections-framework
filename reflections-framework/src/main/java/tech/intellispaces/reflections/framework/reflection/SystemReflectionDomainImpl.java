@@ -78,6 +78,11 @@ public class SystemReflectionDomainImpl implements ReflectionDomain, ReflectionP
   }
 
   @Override
+  public @Nullable String domainName() {
+    return domain().reflectionName();
+  }
+
+  @Override
   public List<ReflectionPoint> underlyingPoints() {
     return List.of();
   }

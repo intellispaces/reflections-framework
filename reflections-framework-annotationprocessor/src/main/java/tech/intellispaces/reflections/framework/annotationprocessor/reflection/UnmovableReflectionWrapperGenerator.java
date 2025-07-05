@@ -3,6 +3,8 @@ package tech.intellispaces.reflections.framework.annotationprocessor.reflection;
 import java.util.List;
 import java.util.Map;
 
+import org.jetbrains.annotations.Nullable;
+
 import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
 import tech.intellispaces.commons.data.Base64Functions;
 import tech.intellispaces.commons.exception.NotImplementedExceptions;
@@ -126,7 +128,8 @@ public class UnmovableReflectionWrapperGenerator extends AbstractReflectionWrapp
         Base64Functions.class,
         Projection.class,
         Projections.class,
-        List.class
+        List.class,
+        Nullable.class
     );
 
     analyzeDomain();

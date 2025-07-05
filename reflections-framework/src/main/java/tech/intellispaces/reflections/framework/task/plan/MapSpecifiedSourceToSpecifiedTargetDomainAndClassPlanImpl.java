@@ -1,21 +1,21 @@
 package tech.intellispaces.reflections.framework.task.plan;
 
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
-import tech.intellispaces.core.Reflection;
 import tech.intellispaces.core.ReflectionDomain;
+import tech.intellispaces.core.ReflectionPoint;
 import tech.intellispaces.reflections.framework.exception.TraverseException;
 import tech.intellispaces.reflections.framework.system.TraverseExecutor;
 
 public class MapSpecifiedSourceToSpecifiedTargetDomainAndClassPlanImpl
     implements MapSpecifiedSourceToSpecifiedTargetDomainAndClassPlan
 {
-  private final Reflection source;
+  private final ReflectionPoint source;
   private final ReflectionDomain targetDomain;
   private final Class<?> targetClas;
   private ExecutionTraversePlan executionPlan;
 
   public MapSpecifiedSourceToSpecifiedTargetDomainAndClassPlanImpl(
-      Reflection source,
+      ReflectionPoint source,
       ReflectionDomain targetDomain,
       Class<?> targetClas
   ) {
@@ -25,7 +25,7 @@ public class MapSpecifiedSourceToSpecifiedTargetDomainAndClassPlanImpl
   }
 
   @Override
-  public Reflection source() {
+  public ReflectionPoint source() {
     return source;
   }
 

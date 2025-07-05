@@ -90,10 +90,13 @@ public class SystemReflectionImpl implements SystemReflection {
     if (!projection.isUnknown()) {
       return projection;
     }
-    if (rid() != null) {
-      Reflection reflection = ontologyRepository.findReflection(rid());
-      if (reflection != null) {
-        return reflection.projectionThru(cid);
+    if (rid() != null && canBeRepresentedAsPoint()) {
+      String domainName = asPoint().domainName();
+      if (domainName != null) {
+        Reflection reflection = ontologyRepository.findReflection(rid(), domainName);
+        if (reflection != null) {
+          return reflection.projectionThru(cid);
+        }
       }
     }
     if (reflectionName() != null) {
@@ -111,10 +114,13 @@ public class SystemReflectionImpl implements SystemReflection {
     if (!projection.isUnknown()) {
       return projection;
     }
-    if (rid() != null) {
-      Reflection reflection = ontologyRepository.findReflection(rid());
-      if (reflection != null) {
-        return reflection.projectionThru(channelName);
+    if (rid() != null && canBeRepresentedAsPoint()) {
+      String domainName = asPoint().domainName();
+      if (domainName != null) {
+        Reflection reflection = ontologyRepository.findReflection(rid(), domainName);
+        if (reflection != null) {
+          return reflection.projectionThru(channelName);
+        }
       }
     }
     if (reflectionName() != null) {
@@ -127,42 +133,48 @@ public class SystemReflectionImpl implements SystemReflection {
   }
 
   @Override
-  public Projection projectionTo(String domainName) {
-    Projection projection = wrappedReflection.projectionTo(domainName);
+  public Projection projectionTo(String targetDomainName) {
+    Projection projection = wrappedReflection.projectionTo(targetDomainName);
     if (!projection.isUnknown()) {
       return projection;
     }
-    if (rid() != null) {
-      Reflection reflection = ontologyRepository.findReflection(rid());
-      if (reflection != null) {
-        return reflection.projectionTo(domainName);
+    if (rid() != null && canBeRepresentedAsPoint()) {
+      String domainName = asPoint().domainName();
+      if (domainName != null) {
+        Reflection reflection = ontologyRepository.findReflection(rid(), domainName);
+        if (reflection != null) {
+          return reflection.projectionTo(targetDomainName);
+        }
       }
     }
     if (reflectionName() != null) {
       Reflection reflection = ontologyRepository.findReflection(reflectionName());
       if (reflection != null) {
-        return reflection.projectionTo(domainName);
+        return reflection.projectionTo(targetDomainName);
       }
     }
     return Projections.unknown();
   }
 
   @Override
-  public Projection projectionTo(ReflectionDomain domain) {
-    Projection projection = wrappedReflection.projectionTo(domain);
+  public Projection projectionTo(ReflectionDomain targetDomain) {
+    Projection projection = wrappedReflection.projectionTo(targetDomain);
     if (!projection.isUnknown()) {
       return projection;
     }
-    if (rid() != null) {
-      Reflection reflection = ontologyRepository.findReflection(rid());
-      if (reflection != null) {
-        return reflection.projectionTo(domain);
+    if (rid() != null && canBeRepresentedAsPoint()) {
+      String domainName = asPoint().domainName();
+      if (domainName != null) {
+        Reflection reflection = ontologyRepository.findReflection(rid(), domainName);
+        if (reflection != null) {
+          return reflection.projectionTo(targetDomain);
+        }
       }
     }
     if (reflectionName() != null) {
       Reflection reflection = ontologyRepository.findReflection(reflectionName());
       if (reflection != null) {
-        return reflection.projectionTo(domain);
+        return reflection.projectionTo(targetDomain);
       }
     }
     return Projections.unknown();
@@ -197,12 +209,6 @@ public class SystemReflectionImpl implements SystemReflection {
   public ReflectionPoint asPoint() {
     if (wrappedReflection.canBeRepresentedAsPoint()) {
       return new SystemReflectionPointImpl(wrappedReflection.asPoint(), ontologyRepository);
-    }
-    if (rid != null) {
-      Reflection reflection = ontologyRepository.findReflection(rid);
-      if (reflection != null && reflection.canBeRepresentedAsPoint()) {
-        return reflection.asPoint();
-      }
     }
     if (wrappedReflection.reflectionName() != null) {
       Reflection reflection = ontologyRepository.findReflection(wrappedReflection.reflectionName());

@@ -8,7 +8,6 @@ import tech.intellispaces.core.Reflection;
 import tech.intellispaces.core.ReflectionContract;
 import tech.intellispaces.core.ReflectionDomain;
 import tech.intellispaces.core.ReflectionPoint;
-import tech.intellispaces.core.ReflectionReference;
 import tech.intellispaces.core.Rid;
 import tech.intellispaces.core.TraversableReflection;
 import tech.intellispaces.core.TraversableReflectionPoint;
@@ -41,8 +40,13 @@ public class SystemHandleImpl implements SystemHandle {
     }
 
     @Override
-    public @Nullable TraversableReflection getReflection(ReflectionReference reference) {
-        return engine.getReflection(reference);
+    public @Nullable TraversableReflection getReflection(String reflectionName) {
+        return engine.getReflection(reflectionName);
+    }
+
+    @Override
+    public @Nullable TraversableReflectionPoint getReflection(Rid pid, String domainName) {
+        return engine.getReflection(pid, domainName);
     }
 
     @Override

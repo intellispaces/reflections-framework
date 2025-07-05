@@ -44,6 +44,11 @@ public class SystemReflectionSpaceImpl implements ReflectionSpace, ReflectionPoi
   }
 
   @Override
+  public @Nullable String domainName() {
+    return domain().reflectionName();
+  }
+
+  @Override
   public List<ReflectionPoint> underlyingPoints() {
     return List.of();
   }

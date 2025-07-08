@@ -227,7 +227,7 @@ public class SystemReflectionImpl implements SystemReflection {
 
   @Override
   public ReflectionDomain asDomain() {
-    throw NotImplementedExceptions.withCode("yOyWDcMh");
+    throw NotImplementedExceptions.withCode("ur0kBjsK");
   }
 
   @Override

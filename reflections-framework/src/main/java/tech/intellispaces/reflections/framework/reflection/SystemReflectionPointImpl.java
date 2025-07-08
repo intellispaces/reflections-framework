@@ -5,6 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.Nullable;
 
 import tech.intellispaces.commons.exception.NotImplementedExceptions;
+import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.core.OntologyRepository;
 import tech.intellispaces.core.Projection;
 import tech.intellispaces.core.Projections;
@@ -210,7 +211,7 @@ public class SystemReflectionPointImpl implements TraversableReflectionPoint, Sy
 
   @Override
   public boolean canBeRepresentedAsDomain() {
-    throw NotImplementedExceptions.withCode("YmzViJQr");
+    return wrappedPoint.canBeRepresentedAsDomain();
   }
 
   @Override
@@ -230,7 +231,10 @@ public class SystemReflectionPointImpl implements TraversableReflectionPoint, Sy
 
   @Override
   public ReflectionDomain asDomain() {
-    throw NotImplementedExceptions.withCode("yOyWDcMh");
+    if (canBeRepresentedAsDomain()) {
+      return new SystemReflectionDomainImpl(wrappedPoint.asDomain(), ontologyRepository);
+    }
+    throw UnexpectedExceptions.withMessage("This reflection cannot be casted to domain");
   }
 
   @Override

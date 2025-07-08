@@ -124,7 +124,7 @@ public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sour
 
   @Override
   public Projection projectionThru(Rid cid) {
-    throw NotImplementedExceptions.withCode("e4Ekaw");
+    return Projections.unknown();
   }
 
   @Override
@@ -144,7 +144,7 @@ public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sour
 
   @Override
   public List<ReflectionPoint> underlyingPoints() {
-    throw NotImplementedExceptions.withCode("d3jvbw");
+    return List.of();
   }
 
   @Override

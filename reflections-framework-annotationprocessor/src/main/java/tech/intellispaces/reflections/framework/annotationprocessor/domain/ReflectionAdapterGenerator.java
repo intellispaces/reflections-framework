@@ -16,6 +16,7 @@ import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
 import tech.intellispaces.commons.data.Base64Functions;
 import tech.intellispaces.commons.exception.NotImplementedExceptions;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
+import tech.intellispaces.commons.type.PrimitiveFunctions;
 import tech.intellispaces.commons.type.Type;
 import tech.intellispaces.commons.type.Types;
 import tech.intellispaces.core.Domains;
@@ -227,20 +228,24 @@ public class ReflectionAdapterGenerator extends AbstractReflectionFormGenerator 
     sb.append(" {\n");
     if (ReflectionForms.Reflection.is(targetForm)) {
       Rid cid = ChannelFunctions.getChannelId(method);
+      String returnType = buildReturnType(method, targetForm);
       sb.append("""
         %s projection = projectionThru(%s.create("%s"));
         if (projection.isFocused()) {
           return (%s) projection.asFocused().target();
         } else if (projection.isFuzzy()) {
           return (%s) projection.asFuzzy().mostLikelyProjection().target();
+        } else if (projection.isUnknown()) {
+          %s;
         }
         throw %s.withCode("hmTi6A");
         """.formatted(
             addImportAndGetSimpleName(Projection.class),
             addImportAndGetSimpleName(Rids.class),
             cid,
-            buildReturnType(method, targetForm),
-            buildReturnType(method, targetForm),
+            returnType,
+            returnType,
+            buildUnknownProjectionReturnStatement(returnType),
             addImportAndGetSimpleName(NotImplementedExceptions.class)
       ));
     } else {
@@ -251,6 +256,15 @@ public class ReflectionAdapterGenerator extends AbstractReflectionFormGenerator 
     sb.append("}");
 
     return Map.of("declaration", sb.toString());
+  }
+
+  private String buildUnknownProjectionReturnStatement(String returnType) {
+    if (PrimitiveFunctions.isPrimitiveTypename(returnType)) {
+      return "throw " + addImportAndGetSimpleName(UnexpectedExceptions.class)
+          + ".withMessage(\"Value is not defined because the unknown projection\")";
+    } else {
+      return "return null";
+    }
   }
 
   private String buildReturnType(MethodStatement method, ReflectionForm targetForm) {

@@ -4,8 +4,6 @@ import java.util.Map;
 
 import com.google.auto.service.AutoService;
 
-import tech.intellispaces.core.HashMapOntologyRepository;
-import tech.intellispaces.core.ModifiableOntologyRepository;
 import tech.intellispaces.core.OntologyRepository;
 import tech.intellispaces.reflections.framework.engine.Engine;
 import tech.intellispaces.reflections.framework.engine.EngineFactory;
@@ -30,19 +28,12 @@ public class DefaultEngineFactory implements EngineFactory {
 
         FactoryRegistry factoryRegistry = new LocalFactoryRegistry();
         ProjectionRegistry projectionRegistry = new LocalProjectionRegistry();
-        ModifiableOntologyRepository reflectionRegistry = new HashMapOntologyRepository();
 
         GuideRegistry guideRegistry = new LocalGuideRegistry();
         AutoGuideRegistry autoGuideRegistry = new AutoGuideRegistry();
 
-        TraverseAnalyzer traverseAnalyzer = new TraverseAnalyzerImpl(
-            ontologyRepository,
-            guideRegistry,
-            reflectionRegistry
-        );
-        TraverseExecutor traverseExecutor = new LocalTraverseExecutor(
-            traverseAnalyzer
-        );
+        TraverseAnalyzer traverseAnalyzer = new TraverseAnalyzerImpl(ontologyRepository, guideRegistry);
+        TraverseExecutor traverseExecutor = new LocalTraverseExecutor(traverseAnalyzer);
         return new DefaultEngine(
             ontologyRepository,
             projectionRegistry,
@@ -50,15 +41,14 @@ public class DefaultEngineFactory implements EngineFactory {
             autoGuideRegistry,
             traverseAnalyzer,
             traverseExecutor,
-            factoryRegistry,
-            reflectionRegistry
+            factoryRegistry
         );
     }
 
     private OntologyRepository getOntologyRepository(Map<String, Object> engineAttributes) {
         OntologyRepository repository = (OntologyRepository) engineAttributes.get("space.repository");
         if (repository == null) {
-            repository = new LocalClassPathSpaceRepository("");
+            repository = new LocalClassPathSpaceRepository("default", "");
         }
         return repository;
     }

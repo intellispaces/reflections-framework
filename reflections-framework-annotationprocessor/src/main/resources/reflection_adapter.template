@@ -11,9 +11,9 @@ import {{$importedClass}};
  */
 {{$generatedAnnotation}}
 public{{when $isAbstract}} abstract{{end}} class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} implements {{$reflectionClassName}}{{$typeParamsBrief}} {
-  private final Reflection reflection;
+  private final ReflectionPoint reflection;
 
-  public {{$generatedArtifactSimpleName}}(Reflection reflection) {
+  public {{$generatedArtifactSimpleName}}(ReflectionPoint reflection) {
     this.reflection = reflection;
   }
 
@@ -99,7 +99,7 @@ public{{when $isAbstract}} abstract{{end}} class {{$generatedArtifactSimpleName}
 
   @Override
   public List<ReflectionPoint> underlyingPoints() {
-    throw NotImplementedExceptions.withCode("95WRTg");
+    return reflection.underlyingPoints();
   }
 
   @Override

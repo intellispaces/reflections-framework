@@ -24,7 +24,6 @@ import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.commons.type.Classes;
 import tech.intellispaces.commons.type.Type;
 import tech.intellispaces.commons.type.Types;
-import tech.intellispaces.core.ModifiableOntologyRepository;
 import tech.intellispaces.core.OntologyRepository;
 import tech.intellispaces.core.Projection;
 import tech.intellispaces.core.Reflection;
@@ -108,7 +107,6 @@ public class DefaultEngine implements Engine {
   private final TraverseAnalyzer traverseAnalyzer;
   private final TraverseExecutor traverseExecutor;
   private final FactoryRegistry factoryRegistry;
-  private final ModifiableOntologyRepository reflectionRegistry;
 
   public DefaultEngine(
       OntologyRepository ontologyRepository,
@@ -117,8 +115,7 @@ public class DefaultEngine implements Engine {
       AutoGuideRegistry autoGuideRegistry,
       TraverseAnalyzer traverseAnalyzer,
       TraverseExecutor traverseExecutor,
-      FactoryRegistry factoryRegistry,
-      ModifiableOntologyRepository reflectionRegistry
+      FactoryRegistry factoryRegistry
   ) {
     this.ontologyRepository = ontologyRepository;
     this.projectionRegistry = projectionRegistry;
@@ -127,7 +124,6 @@ public class DefaultEngine implements Engine {
     this.traverseAnalyzer = traverseAnalyzer;
     this.traverseExecutor = traverseExecutor;
     this.factoryRegistry = factoryRegistry;
-    this.reflectionRegistry = reflectionRegistry;
   }
 
   @Override
@@ -342,7 +338,7 @@ public class DefaultEngine implements Engine {
         contract.type()
     ).execute(contract.properties());
     TraversableReflectionPoint identifiedReflection = identifyReflection(reflection);
-    reflectionRegistry.add(identifiedReflection);
+    ontologyRepository.add(identifiedReflection);
     return identifiedReflection;
   }
 

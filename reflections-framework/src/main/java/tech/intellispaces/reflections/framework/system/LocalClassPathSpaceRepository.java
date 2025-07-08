@@ -1,5 +1,6 @@
 package tech.intellispaces.reflections.framework.system;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,10 +21,22 @@ import tech.intellispaces.javareflection.customtype.CustomTypes;
 import tech.intellispaces.reflections.framework.space.domain.DomainFunctions;
 
 public class LocalClassPathSpaceRepository implements OntologyRepository {
-  private final String prefix;
+  private final String spaceName;
+  private final String classNamePrefix;
 
-  public LocalClassPathSpaceRepository(String prefix) {
-    this.prefix = prefix;
+  public LocalClassPathSpaceRepository(String spaceName, String classNamePrefix) {
+    this.spaceName = spaceName;
+    this.classNamePrefix = classNamePrefix;
+  }
+
+  @Override
+  public Collection<String> spaces() {
+    return List.of(spaceName);
+  }
+
+  @Override
+  public boolean add(Reflection reflection) {
+    return false;
   }
 
   @Override
@@ -43,7 +56,7 @@ public class LocalClassPathSpaceRepository implements OntologyRepository {
 
   @Override
   public ReflectionDomain findDomain(String domainName) {
-    Optional<Class<?>> domainClass = ClassFunctions.getClass(prefix + domainName + "Domain");
+    Optional<Class<?>> domainClass = ClassFunctions.getClass(classNamePrefix + domainName + "Domain");
     return domainClass.map(DomainFunctions::getDomain).orElse(null);
   }
 
@@ -100,7 +113,7 @@ public class LocalClassPathSpaceRepository implements OntologyRepository {
       return domain.domainClass();
     }
     if (domain.reflectionName() != null) {
-      Optional<Class<?>> domainClass = ClassFunctions.getClass(prefix + domain.reflectionName() + "Domain");
+      Optional<Class<?>> domainClass = ClassFunctions.getClass(classNamePrefix + domain.reflectionName() + "Domain");
       return domainClass.orElse(null);
     }
     throw NotImplementedExceptions.withCode("a6vc/A");

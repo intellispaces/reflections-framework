@@ -44,16 +44,13 @@ import tech.intellispaces.reflections.framework.task.plan.TraverseSourceSpecifie
 class TraverseAnalyzerImpl implements TraverseAnalyzer {
   private final OntologyRepository ontologyRepository;
   private final GuideProvider guideProvider;
-  private final OntologyRepository reflectionRegistry;
 
   public TraverseAnalyzerImpl(
       OntologyRepository ontologyRepository,
-      GuideProvider guideProvider,
-      OntologyRepository reflectionRegistry
+      GuideProvider guideProvider
   ) {
     this.ontologyRepository = ontologyRepository;
     this.guideProvider = guideProvider;
-    this.reflectionRegistry = reflectionRegistry;
   }
 
   @Override
@@ -216,7 +213,7 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
     );
     if (executionPlan == null) {
       ReflectionPoint source = plan.source();
-      ReflectionPoint registeredReflection = reflectionRegistry.findReflection(source.rid(), source.domainName());
+      ReflectionPoint registeredReflection = ontologyRepository.findReflection(source.rid(), source.domainName());
       if (registeredReflection != null) {
         executionPlan = buildExecutionTraversePlan(
             plan.type(), channel.rid(), registeredReflection.getClass(), ReflectionForms.Reflection

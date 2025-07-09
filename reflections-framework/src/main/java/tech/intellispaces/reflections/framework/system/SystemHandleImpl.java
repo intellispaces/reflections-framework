@@ -70,13 +70,15 @@ public class SystemHandleImpl implements SystemHandle {
     }
 
     @Override
-    public TraversableReflectionPoint mapSourceTo(Reflection source, ReflectionDomain domain) {
-        return engine.mapSourceTo(source, domain);
+    public TraversableReflectionPoint mapSourceTo(Reflection source, ReflectionDomain targetDomain) {
+        return engine.mapSourceTo(source, targetDomain);
     }
 
     @Override
-    public <R extends Reflection> R mapSourceTo(Reflection source, ReflectionDomain domain, Class<R> targetClass) {
-        return engine.mapSourceTo(source, domain, targetClass);
+    public <R extends Reflection> R mapAndCastSourceTo(
+        Reflection source, ReflectionDomain targetDomain, Class<R> targetClass
+    ) {
+        return engine.mapAndCastSourceTo(source, targetDomain, targetClass);
     }
 
     @Override

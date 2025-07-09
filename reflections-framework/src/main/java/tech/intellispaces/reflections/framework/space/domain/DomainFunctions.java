@@ -1,6 +1,7 @@
 package tech.intellispaces.reflections.framework.space.domain;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -19,10 +20,12 @@ import tech.intellispaces.commons.type.ClassFunctions;
 import tech.intellispaces.commons.type.Type;
 import tech.intellispaces.commons.type.Types;
 import tech.intellispaces.core.Domains;
+import tech.intellispaces.core.ReflectionDomain;
 import tech.intellispaces.core.Rid;
 import tech.intellispaces.core.Rids;
 import tech.intellispaces.javareflection.JavaStatements;
 import tech.intellispaces.javareflection.customtype.CustomType;
+import tech.intellispaces.javareflection.customtype.CustomTypes;
 import tech.intellispaces.javareflection.method.MethodStatement;
 import tech.intellispaces.javareflection.reference.CustomTypeReference;
 import tech.intellispaces.javareflection.reference.CustomTypeReferences;
@@ -42,7 +45,7 @@ import tech.intellispaces.reflections.framework.space.channel.ChannelFunctions;
  */
 public final class DomainFunctions {
 
-  public static tech.intellispaces.core.ReflectionDomain getDomain(Class<?> domainClass) {
+  public static ReflectionDomain getDomain(Class<?> domainClass) {
     return Domains.create(
         getDomainId(domainClass),
         getDomainName(domainClass),
@@ -51,7 +54,7 @@ public final class DomainFunctions {
     );
   }
 
-  public static tech.intellispaces.core.ReflectionDomain getDomain(CustomType domainType) {
+  public static ReflectionDomain getDomain(CustomType domainType) {
     return Domains.create(
         getDomainId(domainType),
         getDomainName(domainType),
@@ -299,6 +302,13 @@ public final class DomainFunctions {
       }
     }
     return null;
+  }
+
+  public static int getDomainProjectionChannelsExcludeConversionMethodsCount(Class<?> domainClass) {
+    return (int) CustomTypes.of(domainClass)
+        .actualMethods().stream()
+        .filter(m -> !NameConventionFunctions.isConversionMethod(m))
+        .count();
   }
 
   private final static Set<String> DEFAULT_DOMAIN_CLASSES = Set.of(

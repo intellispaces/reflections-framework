@@ -291,7 +291,9 @@ public class LocalTraverseExecutor implements TraverseExecutor {
   ) throws TraverseException {
     TraversePlan executionPlan = analyzer.buildExecutionPlan(plan);
     if (executionPlan == null) {
-      throw TraverseExceptions.withMessage("Cannot to build traverse plan to map specified source to domain {0}",
+      throw TraverseExceptions.withMessage("Cannot to build traverse plan to map specified source of domain {0} " +
+              "to domain {1}",
+          plan.source().domain(),
           plan.targetDomain());
     }
     if (executionPlan instanceof MapSpecifiedSourceToSpecifiedTargetDomainAndClassPlan) {

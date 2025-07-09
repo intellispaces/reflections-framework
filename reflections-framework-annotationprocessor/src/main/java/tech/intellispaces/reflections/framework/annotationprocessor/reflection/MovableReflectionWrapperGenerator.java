@@ -168,7 +168,6 @@ public class MovableReflectionWrapperGenerator extends AbstractReflectionWrapper
     addVariable("guideActionMethods", guideMethods);
     addVariable("traverseMethods", traverseMethods);
     addVariable("injectionMethods", injectionMethods);
-    addVariable("conversionMethods", conversionMethods);
     addVariable("notImplRelease", !implRelease);
     addVariable("reflectionClassSimpleName", getReflectionSimpleName());
     return true;

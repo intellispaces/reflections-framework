@@ -8,6 +8,7 @@ import org.jetbrains.annotations.Nullable;
 
 import tech.intellispaces.commons.exception.NotImplementedExceptions;
 import tech.intellispaces.commons.type.ClassFunctions;
+import tech.intellispaces.commons.type.ClassNameFunctions;
 import tech.intellispaces.core.Channels;
 import tech.intellispaces.core.OntologyRepository;
 import tech.intellispaces.core.Reflection;
@@ -20,13 +21,13 @@ import tech.intellispaces.javareflection.customtype.CustomType;
 import tech.intellispaces.javareflection.customtype.CustomTypes;
 import tech.intellispaces.reflections.framework.space.domain.DomainFunctions;
 
-public class LocalClassPathSpaceRepository implements OntologyRepository {
+public class ClassPathOntologyRepository implements OntologyRepository {
   private final String spaceName;
-  private final String classNamePrefix;
+  private final String packageName;
 
-  public LocalClassPathSpaceRepository(String spaceName, String classNamePrefix) {
+  public ClassPathOntologyRepository(String spaceName, String packageName) {
     this.spaceName = spaceName;
-    this.classNamePrefix = classNamePrefix;
+    this.packageName = packageName;
   }
 
   @Override
@@ -56,8 +57,11 @@ public class LocalClassPathSpaceRepository implements OntologyRepository {
 
   @Override
   public ReflectionDomain findDomain(String domainName) {
-    Optional<Class<?>> domainClass = ClassFunctions.getClass(classNamePrefix + domainName + "Domain");
-    return domainClass.map(DomainFunctions::getDomain).orElse(null);
+    Class<?> domainClass = findDomainClass(domainName);
+    if (domainClass == null) {
+      return null;
+    }
+    return DomainFunctions.getDomain(domainClass);
   }
 
   @Override
@@ -113,9 +117,14 @@ public class LocalClassPathSpaceRepository implements OntologyRepository {
       return domain.domainClass();
     }
     if (domain.reflectionName() != null) {
-      Optional<Class<?>> domainClass = ClassFunctions.getClass(classNamePrefix + domain.reflectionName() + "Domain");
-      return domainClass.orElse(null);
+      return findDomainClass(domain.reflectionName());
     }
     throw NotImplementedExceptions.withCode("a6vc/A");
+  }
+
+  private @Nullable Class<?> findDomainClass(String domainName) {
+    Optional<Class<?>> domainClass = ClassFunctions.getClass(
+        ClassNameFunctions.joinPackageAndSimpleName(packageName, domainName + "Domain"));
+    return domainClass.orElse(null);
   }
 }

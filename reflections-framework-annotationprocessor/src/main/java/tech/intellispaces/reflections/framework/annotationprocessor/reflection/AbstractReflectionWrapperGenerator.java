@@ -49,7 +49,6 @@ abstract class AbstractReflectionWrapperGenerator extends AbstractReflectionForm
   protected final List<Map<String, String>> traverseMethods = new ArrayList<>();
   protected final List<Map<String, String>> guideMethods = new ArrayList<>();
   protected final List<Map<String, Object>> injectionMethods = new ArrayList<>();
-  protected final List<Map<String, String>> conversionMethods = new ArrayList<>();
   protected final List<Map<String, Object>> methodDescriptions = new ArrayList<>();
 
   AbstractReflectionWrapperGenerator(CustomType reflectionType) {

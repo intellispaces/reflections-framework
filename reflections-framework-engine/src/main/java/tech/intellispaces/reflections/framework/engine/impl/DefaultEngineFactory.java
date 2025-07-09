@@ -10,7 +10,7 @@ import tech.intellispaces.reflections.framework.engine.EngineFactory;
 import tech.intellispaces.reflections.framework.system.AutoGuideRegistry;
 import tech.intellispaces.reflections.framework.system.FactoryRegistry;
 import tech.intellispaces.reflections.framework.system.GuideRegistry;
-import tech.intellispaces.reflections.framework.system.LocalClassPathSpaceRepository;
+import tech.intellispaces.reflections.framework.system.ClassPathOntologyRepository;
 import tech.intellispaces.reflections.framework.system.LocalFactoryRegistry;
 import tech.intellispaces.reflections.framework.system.LocalGuideRegistry;
 import tech.intellispaces.reflections.framework.system.LocalProjectionRegistry;
@@ -48,7 +48,7 @@ public class DefaultEngineFactory implements EngineFactory {
     private OntologyRepository getOntologyRepository(Map<String, Object> engineAttributes) {
         OntologyRepository repository = (OntologyRepository) engineAttributes.get("space.repository");
         if (repository == null) {
-            repository = new LocalClassPathSpaceRepository("default", "");
+            repository = new ClassPathOntologyRepository("default", "");
         }
         return repository;
     }

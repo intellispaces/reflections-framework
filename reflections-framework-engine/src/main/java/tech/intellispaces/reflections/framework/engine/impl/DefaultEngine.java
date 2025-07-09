@@ -151,13 +151,13 @@ public class DefaultEngine implements Engine {
   }
 
   @Override
-  public TraversableReflectionPoint mapSourceTo(Reflection source, ReflectionDomain domain) {
+  public TraversableReflectionPoint mapSourceTo(Reflection source, ReflectionDomain targetDomain) {
     throw NotImplementedExceptions.withCode("Vfn2cg");
   }
 
   @Override
   @SuppressWarnings("unchecked")
-  public <R extends Reflection> R mapSourceTo(
+  public <R extends Reflection> R mapAndCastSourceTo(
       Reflection source, ReflectionDomain targetDomain, Class<R> targetClass
   ) {
     SystemReflection systemSourceReflection = castToSystemReflection(source);

@@ -91,7 +91,6 @@ public class MovableReflectionTypeGenerator extends AbstractReflectionFormGenera
     addVariable("reflectionTypeParamsBrief", typeParamsBrief);
     addVariable("domainTypeParamsBrief", domainTypeParamsBrief);
     addVariable("generalReflection", generalReflection);
-    addVariable("conversionMethods", conversionMethods);
     addVariable("domainMethods", methods);
     addVariable("isAlias", isAlias);
     addVariable("baseReflection", baseReflection);

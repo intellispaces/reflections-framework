@@ -57,6 +57,7 @@ public class DatasetGenerator extends AbstractReflectionFormGenerator {
   private boolean isAlias;
   private String domainTypename;
   private final List<Map<String, String>> projectionProperties = new ArrayList<>();
+  protected final List<Map<String, String>> conversionMethods = new ArrayList<>();
 
   public DatasetGenerator(CustomType dataType) {
     super(dataType);
@@ -129,6 +130,7 @@ public class DatasetGenerator extends AbstractReflectionFormGenerator {
     analyzeDomain();
     analyzeTypeParams();
     analyzeProjections();
+    analyzeConversionMethods();
 
     addVariable("didBase64", Base64Functions.createUrlNoPadding(domainRid.raw()));
     addVariable("didOrigin", domainRid.toString());
@@ -138,6 +140,7 @@ public class DatasetGenerator extends AbstractReflectionFormGenerator {
     addVariable("typeParamsBrief", typeParamsBrief);
     addVariable("projections", projectionProperties);
     addVariable("domainType", domainTypename);
+    addVariable("conversionMethods", conversionMethods);
     return true;
   }
 
@@ -160,16 +163,30 @@ public class DatasetGenerator extends AbstractReflectionFormGenerator {
 
   private void analyzeProjections() {
     for (MethodStatement method : sourceArtifact().actualMethods()) {
-      if (isMovingMethod(method)) {
+      if (isMovingMethod(method) || NameConventionFunctions.isConversionMethod(method)) {
         continue;
       }
-      TypeReference type = method.returnType().orElseThrow();
-      String reflectionType = buildObjectFormDeclaration(type, ReflectionForms.Reflection, MovabilityTypes.General, true);
+      TypeReference returnType = method.returnType().orElseThrow();
+      String reflectionType = buildObjectFormDeclaration(returnType, ReflectionForms.Reflection, MovabilityTypes.General, true);
 
       Map<String, String> properties = new HashMap<>();
       properties.put("type", reflectionType);
       properties.put("name", method.name());
       projectionProperties.add(properties);
+    }
+  }
+
+  private void analyzeConversionMethods() {
+    for (MethodStatement method : sourceArtifact().actualMethods()) {
+      if (NameConventionFunctions.isConversionMethod(method)) {
+        TypeReference returnType = method.returnType().orElseThrow();
+        String reflectionType = buildObjectFormDeclaration(returnType, ReflectionForms.Reflection, MovabilityTypes.General, true);
+
+        Map<String, String> properties = new HashMap<>();
+        properties.put("type", reflectionType);
+        properties.put("name", method.name());
+        conversionMethods.add(properties);
+      }
     }
   }
 

@@ -30,10 +30,6 @@ public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sour
     return this.$handle;
   }
 
-{{for method : $conversionMethods}}
-  {{$method["declaration"]}}
-
-{{end}}
 {{for method : $traverseMethods}}
   @Override
   {{$method["declaration"]}}

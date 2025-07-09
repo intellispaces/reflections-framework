@@ -158,7 +158,6 @@ public class UnmovableReflectionWrapperGenerator extends AbstractReflectionWrapp
     addVariable("traverseMethods", traverseMethods);
     addVariable("domainMethods", rawDomainMethods);
     addVariable("injectionMethods", injectionMethods);
-    addVariable("conversionMethods", conversionMethods);
     addVariable("notImplRelease", !implRelease);
     addVariable("reflectionClassSimpleName", getReflectionSimpleName());
     addVariable("movableReflectionClassSimpleName", getMovableReflectionSimpleName());

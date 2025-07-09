@@ -65,9 +65,9 @@ public interface Engine {
 
   <S, T> T mapSourceTo(S source, ReflectionDomain domain);
 
-  TraversableReflectionPoint mapSourceTo(Reflection source, ReflectionDomain domain);
+  TraversableReflectionPoint mapSourceTo(Reflection source, ReflectionDomain targetDomain);
 
-  <R extends Reflection> R mapSourceTo(Reflection source, ReflectionDomain targetDomain, Class<R> targetClass);
+  <R extends Reflection> R mapAndCastSourceTo(Reflection source, ReflectionDomain targetDomain, Class<R> targetClass);
 
   <S, T> T mapThruChannel0(S source, Rid cid);
 

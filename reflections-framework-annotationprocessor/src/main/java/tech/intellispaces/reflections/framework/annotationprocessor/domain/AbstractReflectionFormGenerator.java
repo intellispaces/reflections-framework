@@ -59,7 +59,6 @@ public abstract class AbstractReflectionFormGenerator extends ReflectionsArtifac
   protected String primaryDomainSimpleName;
   protected String primaryDomainTypeArguments;
   protected final List<Map<String, String>> methods = new ArrayList<>();
-  protected final List<Map<String, String>> conversionMethods = new ArrayList<>();
   protected final List<Map<String, String>> rawDomainMethods = new ArrayList<>();
   protected final List<String> underlyingTypes = new ArrayList<>();
 

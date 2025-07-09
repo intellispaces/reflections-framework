@@ -55,7 +55,7 @@ public class DatasetBuilderGenerator extends ReflectionsArtifactGenerator {
 
   private void analyzeProjections() {
     for (MethodStatement method : sourceArtifact().actualMethods()) {
-      if (isMovingMethod(method)) {
+      if (isMovingMethod(method) || NameConventionFunctions.isConversionMethod(method)) {
         continue;
       }
       TypeReference type = method.returnType().orElseThrow();

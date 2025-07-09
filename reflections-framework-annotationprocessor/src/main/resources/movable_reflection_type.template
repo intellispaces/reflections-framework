@@ -18,11 +18,6 @@ public interface {{$generatedArtifactSimpleName}}{{$reflectionTypeParamsFull}} e
 public interface {{$generatedArtifactSimpleName}}{{$reflectionTypeParamsFull}} extends {{$generalReflection}}{{$reflectionTypeParamsBrief}}, MovableReflection{{for parent : $parents}}, {{$parent}}{{end}} {
 {{end}}
 
-{{for method : $conversionMethods}}
-  @Override
-  {{$method["declaration"]}};
-
-{{end}}
 {{for method : $domainMethods}}
   {{$method["javadoc"]}}
   {{$method["declaration"]}};

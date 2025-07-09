@@ -69,6 +69,13 @@ public class {{$generatedArtifactSimpleName}} implements {{$reflectionClassName}
 {{end}}
 {{end}}
 
+{{for method : $conversionMethods}}
+  @Override
+  public {{$method["type"]}} {{$method["name"]}}() {
+    return this;
+  }
+
+{{end}}
   @Override
   public {{$movableReflectionClassName}} asMovableOrElseThrow() {
     throw UnexpectedExceptions.withMessage("Unmovable object");

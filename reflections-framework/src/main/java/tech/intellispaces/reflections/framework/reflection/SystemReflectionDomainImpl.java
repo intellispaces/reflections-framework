@@ -203,4 +203,17 @@ public class SystemReflectionDomainImpl implements ReflectionDomain, ReflectionP
   public SystemReflection overlyingReflection() {
     throw NotImplementedExceptions.withCode("kkZjGQ");
   }
+
+  @Override
+  public String toString() {
+    String domainName = reflectionName();
+    Rid did = did();
+    if (domainName != null) {
+      return domainName + (did != null ? "(did = " + did + ")" : "");
+    }
+    if (did != null) {
+      return did.toString();
+    }
+    return super.toString();
+  }
 }

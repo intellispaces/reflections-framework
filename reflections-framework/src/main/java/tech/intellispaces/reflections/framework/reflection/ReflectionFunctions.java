@@ -205,7 +205,7 @@ public class ReflectionFunctions {
     if (isDefaultReflectionType(domainType)) {
       return domainType.canonicalName();
     }
-    return NameConventionFunctions.getGeneralRegularFormClassName(domainType.className(), false);
+    return NameConventionFunctions.getGeneralReflectionTypeName(domainType.className(), false);
   }
 
   public static String getGeneralReflectionTypename(CustomType domainType) {
@@ -499,7 +499,7 @@ public class ReflectionFunctions {
   public static Class<?> propertiesReflectionClass() {
     if (propertiesReflectionClass == null) {
       DomainReference domain = ReflectionsNodeFunctions.ontologyReference().getDomainByType(DomainAssignments.PropertiesSet);
-      String reflectionClassName = NameConventionFunctions.getGeneralRegularFormClassName(domain.classCanonicalName(), false);
+      String reflectionClassName = NameConventionFunctions.getGeneralReflectionTypeName(domain.classCanonicalName(), false);
       propertiesReflectionClass = ClassFunctions.getClass(reflectionClassName).orElseThrow(() ->
           UnexpectedExceptions.withMessage("Could not get class {0}", reflectionClassName)
       );

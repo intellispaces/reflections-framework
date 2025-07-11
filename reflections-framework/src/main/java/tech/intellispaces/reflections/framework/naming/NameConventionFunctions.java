@@ -51,18 +51,8 @@ public interface NameConventionFunctions {
     };
   }
 
-  static String getGeneralRegularFormClassName(String domainClassName, boolean replaceDomainWithDelegate) {
-    DomainReference domain = ReflectionsNodeFunctions.ontologyReference().getDomainByClassName(domainClassName);
-    if (replaceDomainWithDelegate) {
-      if (domain != null && domain.delegateClassName() != null) {
-        return domain.delegateClassName();
-      }
-    } else {
-      if (domain != null) {
-        domainClassName = domain.classCanonicalName();
-      }
-    }
-    return StringFunctions.removeTailOrElseThrow(transformClassName(domainClassName), DOMAIN);
+  static String getGeneralReflectionTypeName(String domainClassName) {
+    return getGeneralReflectionTypeName(domainClassName, false);
   }
 
   static String getGeneralReflectionTypeName(String domainClassName, boolean replaceDomainWithDelegate) {

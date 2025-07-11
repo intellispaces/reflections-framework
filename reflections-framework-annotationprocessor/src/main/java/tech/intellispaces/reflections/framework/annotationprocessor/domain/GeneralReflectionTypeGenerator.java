@@ -135,7 +135,7 @@ public class GeneralReflectionTypeGenerator extends AbstractReflectionFormGenera
 
   private String getSimpleObjectClassName() {
     return addImportAndGetSimpleName(
-        NameConventionFunctions.getGeneralRegularFormClassName(sourceArtifact().className(), false));
+        NameConventionFunctions.getGeneralReflectionTypeName(sourceArtifact().className(), false));
   }
 
   private String getSimpleReflectionName() {

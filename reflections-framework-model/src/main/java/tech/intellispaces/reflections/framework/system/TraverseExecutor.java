@@ -5,6 +5,7 @@ import tech.intellispaces.reflections.framework.task.plan.AscendAndExecutePlan;
 import tech.intellispaces.reflections.framework.task.plan.CallGuidePlan;
 import tech.intellispaces.reflections.framework.task.plan.MapOfMovingSourceSpecifiedClassThruIdentifiedChannelPlan;
 import tech.intellispaces.reflections.framework.task.plan.MapSourceSpecifiedClassThruIdentifiedChannelPlan;
+import tech.intellispaces.reflections.framework.task.plan.MapSpecifiedSourceAndQualifierToSpecifiedTargetDomainAndClassPlan;
 import tech.intellispaces.reflections.framework.task.plan.MapSpecifiedSourceToSpecifiedTargetDomainAndClassPlan;
 import tech.intellispaces.reflections.framework.task.plan.MoveSourceSpecifiedClassThruIdentifiedChannelPlan;
 
@@ -172,15 +173,11 @@ public interface TraverseExecutor {
       Object qualifier4
   ) throws TraverseException;
 
-  Object execute(
-      MapSpecifiedSourceToSpecifiedTargetDomainAndClassPlan plan
-  ) throws TraverseException;
+  Object execute(MapSpecifiedSourceToSpecifiedTargetDomainAndClassPlan plan) throws TraverseException;
 
-  int executeReturnInt(
-      MapSpecifiedSourceToSpecifiedTargetDomainAndClassPlan plan
-  ) throws TraverseException;
+  int executeReturnInt(MapSpecifiedSourceToSpecifiedTargetDomainAndClassPlan plan) throws TraverseException;
 
-  double executeReturnDouble(
-      MapSpecifiedSourceToSpecifiedTargetDomainAndClassPlan plan
-  ) throws TraverseException;
+  double executeReturnDouble(MapSpecifiedSourceToSpecifiedTargetDomainAndClassPlan plan) throws TraverseException;
+
+  Object execute(MapSpecifiedSourceAndQualifierToSpecifiedTargetDomainAndClassPlan plan) throws TraverseException;
 }

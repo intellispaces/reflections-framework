@@ -177,6 +177,18 @@ public class DefaultEngine implements Engine {
 
   @Override
   @SuppressWarnings("unchecked")
+  public <Q, R extends Reflection> R mapAndCastSourceTo(
+      Reflection source, ReflectionDomain targetDomain, Q qualifier, Class<R> targetClass
+  ) {
+    SystemReflection systemSourceReflection = castToSystemReflection(source);
+    DeclarativeTraversePlan traversePlan = traverseAnalyzer.buildMapToDomainPlan(
+        systemSourceReflection.asPoint(), targetDomain, qualifier, targetClass
+    );
+    return (R) traversePlan.execute(traverseExecutor);
+  }
+
+  @Override
+  @SuppressWarnings("unchecked")
   public <S, T> T mapThruChannel0(S source, Rid cid) {
     DeclarativeTraversePlan traversePlan = traverseAnalyzer.buildMapThruChannelPlan(
         ReflectionFunctions.getReflectionClass(source.getClass()), cid, ReflectionForms.Reflection);

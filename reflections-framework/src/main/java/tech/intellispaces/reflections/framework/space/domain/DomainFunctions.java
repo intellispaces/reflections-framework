@@ -78,6 +78,12 @@ public final class DomainFunctions {
   }
 
   public static String getDomainName(CustomType domainType) {
+    DomainReference domainReference = ReflectionsNodeFunctions
+        .ontologyReference()
+        .getDomainByDelegateClass(domainType.canonicalName());
+    if (domainReference != null) {
+      return domainReference.domainName();
+    }
     return domainType.selectAnnotation(Domain.class).orElseThrow().name();
   }
 
@@ -292,11 +298,18 @@ public final class DomainFunctions {
     return superDomainNames.values();
   }
 
-  public static @Nullable Rid findChannel(CustomType sourceDomain, Rid targetDomainRid) {
+  public static @Nullable Rid findChannel(CustomType sourceDomain, ReflectionDomain targetDomain) {
     for (MethodStatement method : sourceDomain.actualMethods()) {
       if (ChannelFunctions.isChannelMethod(method)) {
-        Rid did = getDomainId(method.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow().targetType());
-        if (Objects.equals(did, targetDomainRid)) {
+        CustomType returnType = method.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow().targetType();
+
+        String curChannelDomainName = getDomainName(returnType);
+        if (curChannelDomainName.equals(targetDomain.reflectionName())) {
+          return ChannelFunctions.getChannelId(method);
+        }
+
+        Rid curChannelDomainId = getDomainId(returnType);
+        if (curChannelDomainId != null && Objects.equals(curChannelDomainId, targetDomain.did())) {
           return ChannelFunctions.getChannelId(method);
         }
       }

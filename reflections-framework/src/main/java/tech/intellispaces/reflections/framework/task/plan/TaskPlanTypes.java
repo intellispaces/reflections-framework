@@ -35,7 +35,12 @@ public enum TaskPlanTypes implements TaskPlanType, Enumeration<TaskPlanType> {
   /**
    * Map specified source to specified target domain and specified target reflection class.
    */
-  MapSpecifiedSourceToSpecifiedTargetDomainAndClass;
+  MapSpecifiedSourceToSpecifiedTargetDomainAndClass,
+
+  /**
+   * Map specified source and qualifier to specified target domain and specified target reflection class.
+   */
+  MapSpecifiedSourceAndQualifierToSpecifiedTargetDomainAndClass;
 
 
   public static TaskPlanTypes of(TaskPlanType value) {

@@ -82,6 +82,13 @@ public class SystemHandleImpl implements SystemHandle {
     }
 
     @Override
+    public <Q, R extends Reflection> R mapAndCastSourceTo(
+        Reflection source, ReflectionDomain targetDomain, Q qualifier, Class<R> targetClass
+    ) {
+        return engine.mapAndCastSourceTo(source, targetDomain, qualifier, targetClass);
+    }
+
+    @Override
     public <S, T> T mapThruChannel0(S source, Rid cid) {
         return null;
     }

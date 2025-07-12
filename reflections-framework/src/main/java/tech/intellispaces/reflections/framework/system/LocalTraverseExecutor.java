@@ -11,6 +11,7 @@ import tech.intellispaces.reflections.framework.task.plan.CallGuidePlan;
 import tech.intellispaces.reflections.framework.task.plan.ExecutionTraversePlan;
 import tech.intellispaces.reflections.framework.task.plan.MapOfMovingSourceSpecifiedClassThruIdentifiedChannelPlan;
 import tech.intellispaces.reflections.framework.task.plan.MapSourceSpecifiedClassThruIdentifiedChannelPlan;
+import tech.intellispaces.reflections.framework.task.plan.MapSpecifiedSourceAndQualifierToSpecifiedTargetDomainAndClassPlan;
 import tech.intellispaces.reflections.framework.task.plan.MapSpecifiedSourceToSpecifiedTargetDomainAndClassPlan;
 import tech.intellispaces.reflections.framework.task.plan.MoveSourceSpecifiedClassThruIdentifiedChannelPlan;
 import tech.intellispaces.reflections.framework.task.plan.TraversePlan;
@@ -314,6 +315,23 @@ public class LocalTraverseExecutor implements TraverseExecutor {
       MapSpecifiedSourceToSpecifiedTargetDomainAndClassPlan plan
   ) throws TraverseException {
     throw NotImplementedExceptions.withCode("30u4tw");
+  }
+
+  @Override
+  public Object execute(
+      MapSpecifiedSourceAndQualifierToSpecifiedTargetDomainAndClassPlan plan
+  ) throws TraverseException {
+    TraversePlan executionPlan = analyzer.buildExecutionPlan(plan);
+    if (executionPlan == null) {
+      throw TraverseExceptions.withMessage("Cannot to build traverse plan to map specified source of domain {0} " +
+              "to domain {1}",
+          plan.source().domain(),
+          plan.targetDomain());
+    }
+    if (executionPlan instanceof MapSpecifiedSourceAndQualifierToSpecifiedTargetDomainAndClassPlan) {
+      return executionPlan.execute(this);
+    }
+    return executionPlan.execute(plan.source(), plan.qualifier(), this);
   }
 
   private ExecutionTraversePlan getOrThrowExecutionPlan(

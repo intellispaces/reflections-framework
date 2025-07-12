@@ -69,6 +69,8 @@ public interface Engine {
 
   <R extends Reflection> R mapAndCastSourceTo(Reflection source, ReflectionDomain targetDomain, Class<R> targetClass);
 
+  <Q, R extends Reflection> R mapAndCastSourceTo(Reflection source, ReflectionDomain targetDomain, Q qualifier, Class<R> targetClass);
+
   <S, T> T mapThruChannel0(S source, Rid cid);
 
   <S, T, C extends Channel0 & MappingTraverse> T mapThruChannel0(S source, Class<C> channelClass);

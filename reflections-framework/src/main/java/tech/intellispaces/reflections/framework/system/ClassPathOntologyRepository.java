@@ -91,7 +91,7 @@ public class ClassPathOntologyRepository implements OntologyRepository {
       return null;
     }
     CustomType sourceDomainType = CustomTypes.of(sourceDomainClass);
-    Rid cid = DomainFunctions.findChannel(sourceDomainType, targetDomain.rid());
+    Rid cid = DomainFunctions.findChannel(sourceDomainType, targetDomain);
     if (cid == null) {
       return null;
     }

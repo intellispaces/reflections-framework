@@ -17,6 +17,7 @@ public class {{$generatedArtifactSimpleName}} implements {{$reflectionClassName}
 {{for projection : $projections}}
   private final {{$projection["type"]}} {{$projection["name"]}};
 {{end}}
+  private final java.util.Map cidToProjectionMap = new java.util.HashMap<Rid, Object>();
 
   public {{$generatedArtifactSimpleName}}(
 {{for projection : $projections}}
@@ -25,6 +26,7 @@ public class {{$generatedArtifactSimpleName}} implements {{$reflectionClassName}
   ) {
 {{for projection : $projections}}
     this.{{$projection["name"]}} = {{$projection["name"]}};
+    cidToProjectionMap.put(Rids.create("{{$projection["cid"]}}"), {{$projection["name"]}});
 {{end}}
   }
 
@@ -40,7 +42,7 @@ public class {{$generatedArtifactSimpleName}} implements {{$reflectionClassName}
 
   @Override
   public ReflectionDomain domain() {
-    return Domains.create(Rids.create(Base64Functions.convertUrlNoPaddingBase64ToBytes("{{$didBase64}}"), "{{$didOrigin}}"), "{{$domainName}}", {{$sourceArtifactSimpleName}}.class, Types.get({{$sourceArtifactSimpleName}}.class));
+    return new ClassReflectionDomain({{$sourceArtifactSimpleName}}.class);
   }
 
   @Override
@@ -114,7 +116,14 @@ public class {{$generatedArtifactSimpleName}} implements {{$reflectionClassName}
 
   @Override
   public Projection projectionThru(Rid cid) {
-    throw NotImplementedExceptions.withCode("TXLRZw");
+    if (!cidToProjectionMap.containsKey(cid)) {
+       return Projections.unknown();
+    }
+    Object target = cidToProjectionMap.get(cid);
+    if (target == null) {
+        return Projections.voidProjection();
+    }
+    return Projections.focused(target);
   }
 
   @Override

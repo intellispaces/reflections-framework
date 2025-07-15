@@ -142,8 +142,8 @@ public interface NameConventionFunctions {
     return transformClassName(unitClassName) + WRAPPER;
   }
 
-  static String getAutoGuideCanonicalName(String guideClassName) {
-    return StringFunctions.replaceSingleOrElseThrow(transformClassName(guideClassName), GUIDE, AUTO_GUIDE);
+  static String getActionGuideImplementationCanonicalName(String guideClassName) {
+    return StringFunctions.replaceSingleOrElseThrow(transformClassName(guideClassName), GUIDE, ACTION_GUIDE);
   }
 
   static String getUnmovableDatasetClassName(String domainClassName) {
@@ -332,7 +332,7 @@ public interface NameConventionFunctions {
   String MOVABLE_REFLECTION = "Unmovable" + REFLECTION;
   String WRAPPER = "Wrapper";
   String GUIDE = "Guide";
-  String AUTO_GUIDE = "AutoGuide";
+  String ACTION_GUIDE = "ActionGuide";
   String DATASET = "Dataset";
   String ADAPTER = "Adapter";
   String BUILDER = "Builder";

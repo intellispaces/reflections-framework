@@ -15,4 +15,6 @@ public interface GuideProvider {
   List<SystemGuide<?, ?>> findGuides(
       Rid cid, GuideType guideType, Class<?> sourceClass, ReflectionForm targetForm
   );
+
+  <G> List<G> findGuides(Class<G> guideClass);
 }

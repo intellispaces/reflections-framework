@@ -1,5 +1,7 @@
 package tech.intellispaces.reflections.framework.system.injection;
 
+import java.util.List;
+
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.reflections.framework.system.GuideInjection;
 import tech.intellispaces.reflections.framework.system.InjectionKind;
@@ -41,6 +43,12 @@ class GuideInjectionImpl implements GuideInjection {
   public Object value() {
     if (guide == null) {
       guide = Modules.current().getProjection(name, guideClass);
+      if (guide == null) {
+        List<?> guides = Modules.current().guides(guideClass);
+        if (!guides.isEmpty()) {
+          guide = guides.get(0);
+        }
+      }
       if (guide == null) {
         throw UnexpectedExceptions.withMessage("Target of the guide injection '{0}' in unit {1} is not defined",
             name(), unitClass.getCanonicalName());

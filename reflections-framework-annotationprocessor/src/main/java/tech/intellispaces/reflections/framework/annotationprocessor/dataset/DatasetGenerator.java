@@ -47,6 +47,8 @@ import tech.intellispaces.reflections.framework.reflection.MovableReflection;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForms;
 import tech.intellispaces.reflections.framework.reflection.SystemReflection;
+import tech.intellispaces.reflections.framework.space.channel.ChannelFunctions;
+import tech.intellispaces.reflections.framework.space.domain.ClassReflectionDomain;
 import tech.intellispaces.reflections.framework.space.domain.DomainFunctions;
 import tech.intellispaces.reflections.framework.system.Modules;
 import tech.intellispaces.reflections.framework.traverse.MappingTraverse;
@@ -123,6 +125,7 @@ public class DatasetGenerator extends AbstractReflectionFormGenerator {
         ReflectionChannel.class,
         Projections.class,
         List.class,
+        ClassReflectionDomain.class,
         Nullable.class
     );
 
@@ -172,6 +175,7 @@ public class DatasetGenerator extends AbstractReflectionFormGenerator {
       Map<String, String> properties = new HashMap<>();
       properties.put("type", reflectionType);
       properties.put("name", method.name());
+      properties.put("cid", ChannelFunctions.getChannelId(method).toString());
       projectionProperties.add(properties);
     }
   }

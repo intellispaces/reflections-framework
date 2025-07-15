@@ -23,7 +23,7 @@ public class AutoGuideRegistry {
 
   @SuppressWarnings("unchecked")
   private <G> G createAutoGuide(Class<G> guideType) {
-    String autoGuideCanonicalName = NameConventionFunctions.getAutoGuideCanonicalName(guideType.getName());
+    String autoGuideCanonicalName = NameConventionFunctions.getActionGuideImplementationCanonicalName(guideType.getName());
     Class<G> autoGuideClass = (Class<G>) ClassFunctions.getClass(autoGuideCanonicalName)
         .orElseThrow(() -> UnexpectedExceptions.withMessage("Could not load auto guide class by name {0}",
             autoGuideCanonicalName)

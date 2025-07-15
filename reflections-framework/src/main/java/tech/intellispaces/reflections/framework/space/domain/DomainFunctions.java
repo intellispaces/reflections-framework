@@ -1,7 +1,6 @@
 package tech.intellispaces.reflections.framework.space.domain;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -18,8 +17,8 @@ import org.jetbrains.annotations.Nullable;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.commons.type.ClassFunctions;
 import tech.intellispaces.commons.type.Type;
-import tech.intellispaces.commons.type.Types;
 import tech.intellispaces.core.Domains;
+import tech.intellispaces.core.ReflectionChannel;
 import tech.intellispaces.core.ReflectionDomain;
 import tech.intellispaces.core.Rid;
 import tech.intellispaces.core.Rids;
@@ -39,6 +38,7 @@ import tech.intellispaces.reflections.framework.node.ReflectionsNodeFunctions;
 import tech.intellispaces.reflections.framework.settings.ChannelAssignments;
 import tech.intellispaces.reflections.framework.settings.DomainReference;
 import tech.intellispaces.reflections.framework.space.channel.ChannelFunctions;
+import tech.intellispaces.reflections.framework.space.channel.MethodReflectionChannel;
 
 /**
  * ReflectionDomain functions.
@@ -46,12 +46,7 @@ import tech.intellispaces.reflections.framework.space.channel.ChannelFunctions;
 public final class DomainFunctions {
 
   public static ReflectionDomain getDomain(Class<?> domainClass) {
-    return Domains.create(
-        getDomainId(domainClass),
-        getDomainName(domainClass),
-        domainClass,
-        Types.get(domainClass)
-    );
+    return new ClassReflectionDomain(domainClass);
   }
 
   public static ReflectionDomain getDomain(CustomType domainType) {
@@ -139,6 +134,17 @@ public final class DomainFunctions {
         allParentDomains(parent.targetType(), consumer);
       }
     }
+  }
+
+  public static List<ReflectionDomain> getParentDomains(Class<?> domainClass) {
+    CustomType domainType = CustomTypes.of(domainClass);
+    List<ReflectionDomain> parents = new ArrayList<>();
+    for (CustomTypeReference parent : domainType.parentTypes()) {
+      if (DomainFunctions.isDomainType(domainType)) {
+        parents.add(new ClassReflectionDomain(parent.targetClass()));
+      }
+    }
+    return parents;
   }
 
   public static boolean isAliasOf(CustomTypeReference testAliasDomain, CustomType domain) {
@@ -315,6 +321,17 @@ public final class DomainFunctions {
       }
     }
     return null;
+  }
+
+  public static List<ReflectionChannel> getDomainChannels(Class<?> domainClass) {
+    List<ReflectionChannel> channels = new ArrayList<>();
+    CustomType domainType = CustomTypes.of(domainClass);
+    for (MethodStatement method : domainType.actualMethods()) {
+      if (ChannelFunctions.isChannelMethod(method)) {
+        channels.add(new MethodReflectionChannel(domainClass, method));
+      }
+    }
+    return channels;
   }
 
   public static int getDomainProjectionChannelsExcludeConversionMethodsCount(Class<?> domainClass) {

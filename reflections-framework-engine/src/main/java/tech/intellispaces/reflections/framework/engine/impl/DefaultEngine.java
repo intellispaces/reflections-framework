@@ -705,7 +705,7 @@ public class DefaultEngine implements Engine {
 
   @Override
   public <G> List<G> guides(Class<G> guideClass) {
-    return projectionRegistry.findProjections(guideClass);
+    return guideRegistry.findGuides(guideClass);
   }
 
   @Override

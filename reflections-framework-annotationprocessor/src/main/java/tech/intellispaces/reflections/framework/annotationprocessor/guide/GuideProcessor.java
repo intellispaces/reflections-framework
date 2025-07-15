@@ -37,7 +37,7 @@ public class GuideProcessor extends ArtifactProcessor {
   @Override
   public List<ArtifactGenerator> makeGenerators(CustomType guideType, ArtifactGeneratorContext context) {
     if (guideType.asInterface().isPresent()) {
-      return List.of(new AutoGuideGenerator(guideType));
+      return List.of(new ActionGuideImplementationGenerator(guideType));
     } else {
       return List.of(new UnitWrapperGenerator(guideType));
     }

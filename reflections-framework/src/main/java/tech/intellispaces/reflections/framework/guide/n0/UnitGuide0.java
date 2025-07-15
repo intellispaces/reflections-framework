@@ -1,5 +1,6 @@
 package tech.intellispaces.reflections.framework.guide.n0;
 
+import tech.intellispaces.actions.Action;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.core.Rid;
 import tech.intellispaces.javareflection.method.MethodStatement;
@@ -100,5 +101,10 @@ abstract class UnitGuide0<S, R> implements SystemGuide0<S, R>, UnitGuide<S, R> {
       throw TraverseExceptions.withCauseAndMessage(e, "Failed to invoke unit guide {0} in unit {1}",
           guideMethod.name(), guideMethod.owner().canonicalName());
     }
+  }
+
+  @Override
+  public Action asAction() {
+    return unitInstance.$handle().guideAction(guideOrdinal);
   }
 }

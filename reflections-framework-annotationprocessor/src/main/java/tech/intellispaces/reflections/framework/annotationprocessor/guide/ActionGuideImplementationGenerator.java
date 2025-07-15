@@ -1,6 +1,5 @@
 package tech.intellispaces.reflections.framework.annotationprocessor.guide;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -24,12 +23,12 @@ import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForms;
 
-public class AutoGuideGenerator extends ReflectionsArtifactGenerator {
-  private List<Map<String, Object>> guideMethods;
+public class ActionGuideImplementationGenerator extends ReflectionsArtifactGenerator {
   private String typeParamsFullDeclaration;
   private String typeParamsBriefDeclaration;
+  private List<Map<String, String>> guides;
 
-  public AutoGuideGenerator(CustomType guideType) {
+  public ActionGuideImplementationGenerator(CustomType guideType) {
     super(guideType);
   }
 
@@ -40,12 +39,12 @@ public class AutoGuideGenerator extends ReflectionsArtifactGenerator {
 
   @Override
   public String generatedArtifactName() {
-    return NameConventionFunctions.getAutoGuideCanonicalName(sourceArtifact().className());
+    return NameConventionFunctions.getActionGuideImplementationCanonicalName(sourceArtifact().className());
   }
 
   @Override
   protected String templateName() {
-    return "/auto_guide.template";
+    return "/action_guide_impl.template";
   }
 
   @Override
@@ -56,11 +55,11 @@ public class AutoGuideGenerator extends ReflectionsArtifactGenerator {
     );
 
     analyzeTypeParams();
-    analyzeGuideMethods();
+    analyzeGuideMethod();
 
     addVariable("typeParamsFullDeclaration", typeParamsFullDeclaration);
     addVariable("typeParamsBriefDeclaration", typeParamsBriefDeclaration);
-    addVariable("guideMethods", guideMethods);
+    addVariable("guides", guides);
     return true;
   }
 
@@ -69,28 +68,30 @@ public class AutoGuideGenerator extends ReflectionsArtifactGenerator {
     typeParamsBriefDeclaration = sourceArtifact().typeParametersBriefDeclaration();
   }
 
-  private void analyzeGuideMethods() {
-    guideMethods = sourceArtifact().declaredMethods().stream()
+  private void analyzeGuideMethod() {
+    guides = sourceArtifact().declaredMethods().stream()
         .filter(m -> !m.isDefault())
-        .map(this::buildMethodMap)
+        .map(this::buildGuideMethod)
         .toList();
   }
 
-  private Map<String, Object> buildMethodMap(MethodStatement method) {
-    Map<String, Object> map = new HashMap<>();
-    map.put("signature", buildMethodSignature(method));
-
-    String actionName = buildActionName(method);
-    map.put("actionName", actionName);
-    map.put("actionDeclaration", buildActionDeclaration(method));
-    map.put("body", buildMethodBody(method, actionName));
-    return map;
+  private Map<String, String> buildGuideMethod(MethodStatement guideMethod) {
+    String actionName = buildActionName(guideMethod);
+    String autoActionDeclaration = buildAutoActionDeclaration(guideMethod);
+    String methodSignature = buildMethodSignature(guideMethod);
+    String methodBody = buildGuideMethodBody(guideMethod, actionName);
+    return Map.of(
+        "actionName", actionName,
+        "autoActionDeclaration", autoActionDeclaration,
+        "methodSignature", methodSignature,
+        "methodBody", methodBody
+    );
   }
 
-  private String buildActionName(MethodStatement method) {
+  private String buildActionName(MethodStatement guideMethod) {
     var sb = new StringBuilder();
-    sb.append(method.name());
-    for (MethodParam param : method.params()) {
+    sb.append(guideMethod.name());
+    for (MethodParam param : guideMethod.params()) {
       if (param.type().isPrimitiveReference()) {
         sb.append(StringFunctions.capitalizeFirstLetter(param.type().asPrimitiveReferenceOrElseThrow().typename()));
       } else if (param.type().isNamedReference()) {
@@ -105,27 +106,27 @@ public class AutoGuideGenerator extends ReflectionsArtifactGenerator {
     return sb.toString();
   }
 
-  private String buildActionDeclaration(MethodStatement method) {
-    TypeReference sourceType = method.params().get(0).type();
+  private String buildAutoActionDeclaration(MethodStatement guideMethod) {
+    TypeReference sourceType = guideMethod.params().get(0).type();
 
     var sb = new StringBuilder();
     sb.append(addImportAndGetSimpleName(DelegateActions.class));
     sb.append(".delegateAction");
-    sb.append(method.params().size());
+    sb.append(guideMethod.params().size());
     sb.append("(");
     sb.append(addImportAndGetSimpleName(CachedSupplierActions.class));
     sb.append(".get(");
     sb.append(addImportAndGetSimpleName(TraverseActions.class));
     sb.append("::");
-    if (GuideFunctions.isMapperMethod(method)) {
+    if (GuideFunctions.isMapperMethod(guideMethod)) {
       sb.append("map");
-    } else if (GuideFunctions.isMoverMethod(method)) {
+    } else if (GuideFunctions.isMoverMethod(guideMethod)) {
       sb.append("move");
-    } else if (GuideFunctions.isMapperOfMovingMethod(method)) {
+    } else if (GuideFunctions.isMapperOfMovingMethod(guideMethod)) {
       sb.append("mapOfMoving");
     }
     sb.append("ThruChannel");
-    sb.append(method.params().size() - 1);
+    sb.append(guideMethod.params().size() - 1);
     sb.append(",\n");
     sb.append("    ");
     sb.append(addImportAndGetSimpleName(Types.class));
@@ -136,29 +137,29 @@ public class AutoGuideGenerator extends ReflectionsArtifactGenerator {
     sb.append("> get(");
     sb.append(sourceType.simpleDeclaration(this::addImportAndGetSimpleName));
     sb.append(".class),\n    ");
-    sb.append(addImportAndGetSimpleName(GuideFunctions.getChannelType(method).canonicalName()));
+    sb.append(addImportAndGetSimpleName(GuideFunctions.getChannelType(guideMethod).canonicalName()));
     sb.append(".class,\n");
-    ReflectionForm targetForm = GuideFunctions.getTargetForm(method);
+    ReflectionForm targetForm = GuideFunctions.getTargetForm(guideMethod);
     sb.append("    ").append(addImportAndGetSimpleName(ReflectionForms.class)).append(".");
     sb.append(targetForm.name());
     sb.append("))");
     return sb.toString();
   }
 
-  private String buildMethodBody(MethodStatement method, String actionName) {
+  private String buildGuideMethodBody(MethodStatement guideMethod, String actionName) {
     var sb = new StringBuilder();
-    if (method.returnType().isPresent()) {
+    if (guideMethod.returnType().isPresent()) {
       sb.append("return ");
       sb.append("(");
-      sb.append(method.returnType().get().actualDeclaration(this::addImportAndGetSimpleName));
+      sb.append(guideMethod.returnType().get().actualDeclaration(this::addImportAndGetSimpleName));
       sb.append(") ");
     }
     sb.append(actionName);
     sb.append(".castToAction");
-    sb.append(method.params().size());
+    sb.append(guideMethod.params().size());
     sb.append("().execute(");
     RunnableAction commaAppender = StringActions.skipFirstTimeCommaAppender(sb);
-    for (MethodParam param : method.params()) {
+    for (MethodParam param : guideMethod.params()) {
       commaAppender.run();
       sb.append(param.name());
     }

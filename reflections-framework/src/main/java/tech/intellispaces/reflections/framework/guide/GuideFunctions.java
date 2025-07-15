@@ -9,6 +9,7 @@ import java.util.Optional;
 
 import tech.intellispaces.commons.exception.NotImplementedExceptions;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
+import tech.intellispaces.commons.text.StringFunctions;
 import tech.intellispaces.commons.type.ClassFunctions;
 import tech.intellispaces.core.Rid;
 import tech.intellispaces.core.Rids;
@@ -73,6 +74,30 @@ public final class GuideFunctions {
 
   public static boolean isGuideMethod(MethodStatement method) {
     return isMapperMethod(method) || isMoverMethod(method) || isMapperOfMovingMethod(method);
+  }
+
+  public static Rid getChannelId(MethodStatement guideMethod) {
+    GuideKind guideKind = getGuideKind(guideMethod);
+    if (guideKind.isMapper()) {
+      Mapper mapper = guideMethod.selectAnnotation(Mapper.class).orElseThrow();
+      if (StringFunctions.isNotBlank(mapper.cid())) {
+        return Rids.create(mapper.cid());
+      } else if (mapper.value() != Void.class) {
+        return ChannelFunctions.getChannelId(mapper.value());
+      }
+    } else if (guideKind.isMover()) {
+      Mover mover = guideMethod.selectAnnotation(Mover.class).orElseThrow();
+      if (mover.value() != Void.class) {
+        return ChannelFunctions.getChannelId(mover.value());
+      }
+    } else if (guideKind.isMapperOfMoving()) {
+      MapperOfMoving mapperOfMoving = guideMethod.selectAnnotation(MapperOfMoving.class).orElseThrow();
+      if (mapperOfMoving.value() != Void.class) {
+        return ChannelFunctions.getChannelId(mapperOfMoving.value());
+      }
+    }
+    throw UnexpectedExceptions.withMessage("Unable to get channel identifier of method {} in class {}",
+        guideKind.name(), guideMethod.owner().canonicalName());
   }
 
   public static GuideKind getGuideKind(MethodStatement method) {

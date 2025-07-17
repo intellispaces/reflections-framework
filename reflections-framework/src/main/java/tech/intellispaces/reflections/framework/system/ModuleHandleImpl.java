@@ -133,8 +133,8 @@ public class ModuleHandleImpl implements ModuleHandle {
     }
 
     @Override
-    public <S, R, Q> R moveThruChannel1(S source, Rid cid, Q qualifier) {
-        return engine.moveThruChannel1(source, cid, qualifier);
+    public <S, Q> void moveThruChannel1(S source, Rid cid, Q qualifier) {
+        engine.moveThruChannel1(source, cid, qualifier);
     }
 
     @Override

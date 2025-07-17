@@ -107,7 +107,8 @@ public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sour
 
   @Override
   public <Q> {{$generatedArtifactSimpleName}}{{$typeParamsBrief}} moveThru(Rid cid, Q qualifier) throws TraverseException {
-    return Modules.current().moveThruChannel1(this, cid, qualifier);
+    Modules.current().moveThruChannel1(this, cid, qualifier);
+    return this;
   }
 
   @Override
@@ -119,19 +120,22 @@ public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sour
   @Override
   public <S, QD, QR> MovableReflection moveThru(Class<S> sourceDomain, ChannelFunction1<S, S, QD> channelFunction, Class<QD> qualifierDomain, QR qualifier) throws TraverseException {
     var cid = ChannelFunctions.getChannelId(sourceDomain, channelFunction, null);
-    return Modules.current().moveThruChannel1(this, cid, qualifier);
+    Modules.current().moveThruChannel1(this, cid, qualifier);
+    return this;
   }
 
   @Override
   public <S> MovableReflection moveThru(Class<S> sourceDomain, ChannelFunction1<S, S, String> channelFunction, String qualifier) throws TraverseException {
     var cid = ChannelFunctions.getChannelId(sourceDomain, channelFunction, null);
-    return Modules.current().moveThruChannel1(this, cid, qualifier);
+    Modules.current().moveThruChannel1(this, cid, qualifier);
+    return this;
   }
 
   @Override
   public <S> MovableReflection moveThru(Class<S> sourceDomain, ChannelFunction1<S, S, Integer> channelFunction, int qualifier) throws TraverseException {
     var cid = ChannelFunctions.getChannelId(sourceDomain, channelFunction, null);
-    return Modules.current().moveThruChannel1(this, cid, qualifier);
+    Modules.current().moveThruChannel1(this, cid, qualifier);
+    return this;
   }
 
   @Override
@@ -153,7 +157,8 @@ public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sour
   @Override
   public <Q> {{$generatedArtifactSimpleName}}{{$typeParamsBrief}} moveThru(Class<? extends Channel1> channelClass, Q qualifier) throws TraverseException {
     var cid = ChannelFunctions.getChannelId(channelClass);
-    return Modules.current().moveThruChannel1(this, cid, qualifier);
+    Modules.current().moveThruChannel1(this, cid, qualifier);
+    return this;
   }
 
   @Override

@@ -40,6 +40,10 @@ public class NativeForeignReflectionPoint implements NativeReflectionPoint, Trav
     this.domain = domain;
   }
 
+  public NativeReflectionPoint foreignPoint() {
+    return foreignPoint;
+  }
+
   @Override
   public Object boundObject() {
     return foreignPoint.boundObject();

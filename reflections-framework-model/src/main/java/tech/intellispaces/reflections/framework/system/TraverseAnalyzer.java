@@ -10,6 +10,7 @@ import tech.intellispaces.reflections.framework.task.plan.MapSourceSpecifiedClas
 import tech.intellispaces.reflections.framework.task.plan.MapSpecifiedSourceAndQualifierToSpecifiedTargetDomainAndClassPlan;
 import tech.intellispaces.reflections.framework.task.plan.MapSpecifiedSourceToSpecifiedTargetDomainAndClassPlan;
 import tech.intellispaces.reflections.framework.task.plan.MoveSourceSpecifiedClassThruIdentifiedChannelPlan;
+import tech.intellispaces.reflections.framework.task.plan.MoveSpecifiedSourceAndQualifierThruChannel1Plan;
 import tech.intellispaces.reflections.framework.task.plan.TraversePlan;
 import tech.intellispaces.reflections.framework.task.plan.TraverseSourceSpecifiedClassThruIdentifierChannelTraversePlan;
 
@@ -34,6 +35,8 @@ public interface TraverseAnalyzer {
       Class<?> sourceClass, Rid cid, ReflectionForm targetForm
   );
 
+  MoveSpecifiedSourceAndQualifierThruChannel1Plan buildMoveThruChannel1Plan(Object source, Rid cid, Object qualifier);
+
   MapOfMovingSourceSpecifiedClassThruIdentifiedChannelPlan buildMapOfMovingThruChannelPlan(
       Class<?> sourceClass, Rid cid, ReflectionForm targetForm
   );
@@ -41,6 +44,8 @@ public interface TraverseAnalyzer {
   TraversePlan buildExecutionPlan(MapSpecifiedSourceToSpecifiedTargetDomainAndClassPlan plan);
 
   TraversePlan buildExecutionPlan(MapSpecifiedSourceAndQualifierToSpecifiedTargetDomainAndClassPlan plan);
+
+  TraversePlan buildExecutionPlan(MoveSpecifiedSourceAndQualifierThruChannel1Plan plan);
 
   ExecutionTraversePlan buildExecutionPlan(
       TraverseSourceSpecifiedClassThruIdentifierChannelTraversePlan declarativePlan,

@@ -65,27 +65,27 @@ public class SystemHandleImpl implements SystemHandle {
     }
 
     @Override
-    public <S, T> T mapSourceTo(S source, ReflectionDomain domain) {
-        return engine.mapSourceTo(source, domain);
+    public <S, T> T mapTo(S source, ReflectionDomain domain) {
+        return engine.mapTo(source, domain);
     }
 
     @Override
-    public TraversableReflectionPoint mapSourceTo(Reflection source, ReflectionDomain targetDomain) {
-        return engine.mapSourceTo(source, targetDomain);
+    public TraversableReflectionPoint mapTo(Reflection source, ReflectionDomain targetDomain) {
+        return engine.mapTo(source, targetDomain);
     }
 
     @Override
-    public <R extends Reflection> R mapAndCastSourceTo(
+    public <R extends Reflection> R mapAndCastTo(
         Reflection source, ReflectionDomain targetDomain, Class<R> targetClass
     ) {
-        return engine.mapAndCastSourceTo(source, targetDomain, targetClass);
+        return engine.mapAndCastTo(source, targetDomain, targetClass);
     }
 
     @Override
-    public <Q, R extends Reflection> R mapAndCastSourceTo(
+    public <Q, R extends Reflection> R mapAndCastTo(
         Reflection source, ReflectionDomain targetDomain, Q qualifier, Class<R> targetClass
     ) {
-        return engine.mapAndCastSourceTo(source, targetDomain, qualifier, targetClass);
+        return engine.mapAndCastTo(source, targetDomain, qualifier, targetClass);
     }
 
     @Override
@@ -116,8 +116,8 @@ public class SystemHandleImpl implements SystemHandle {
     }
 
     @Override
-    public <S, R, Q> R moveThruChannel1(S source, Rid cid, Q qualifier) {
-        return null;
+    public <S, Q> void moveThruChannel1(S reflection, Rid channelId, Q qualifier) {
+        engine.moveThruChannel1(reflection, channelId, qualifier);
     }
 
     @Override

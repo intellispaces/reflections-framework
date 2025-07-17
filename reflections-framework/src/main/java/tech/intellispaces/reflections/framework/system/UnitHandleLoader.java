@@ -246,7 +246,7 @@ public class UnitHandleLoader {
       UnitWrapper unitInstance, Class<?> unitClass, UnitMethod unitMethod
   ) {
     Rid cid = unitMethod.guideChannelId();
-    throw NotImplementedExceptions.withCode("4GL2+g");
+    throw NotImplementedExceptions.withCode("ce9R4tLU");
   }
 
   static UnitGuide<?, ?> createUnitMapperOfMoving(

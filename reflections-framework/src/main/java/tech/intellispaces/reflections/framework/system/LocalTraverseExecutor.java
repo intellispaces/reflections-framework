@@ -14,6 +14,7 @@ import tech.intellispaces.reflections.framework.task.plan.MapSourceSpecifiedClas
 import tech.intellispaces.reflections.framework.task.plan.MapSpecifiedSourceAndQualifierToSpecifiedTargetDomainAndClassPlan;
 import tech.intellispaces.reflections.framework.task.plan.MapSpecifiedSourceToSpecifiedTargetDomainAndClassPlan;
 import tech.intellispaces.reflections.framework.task.plan.MoveSourceSpecifiedClassThruIdentifiedChannelPlan;
+import tech.intellispaces.reflections.framework.task.plan.MoveSpecifiedSourceAndQualifierThruChannel1Plan;
 import tech.intellispaces.reflections.framework.task.plan.TraversePlan;
 
 public class LocalTraverseExecutor implements TraverseExecutor {
@@ -329,6 +330,21 @@ public class LocalTraverseExecutor implements TraverseExecutor {
           plan.targetDomain());
     }
     if (executionPlan instanceof MapSpecifiedSourceAndQualifierToSpecifiedTargetDomainAndClassPlan) {
+      return executionPlan.execute(this);
+    }
+    return executionPlan.execute(plan.source(), plan.qualifier(), this);
+  }
+
+  @Override
+  public Object execute(MoveSpecifiedSourceAndQualifierThruChannel1Plan plan) throws TraverseException {
+    TraversePlan executionPlan = analyzer.buildExecutionPlan(plan);
+    if (executionPlan == null) {
+      throw TraverseExceptions.withMessage("Cannot to build traverse plan to move specified source of class {0} " +
+              "thru channel {1}",
+          plan.source().getClass().getCanonicalName(),
+          plan.channel().cid());
+    }
+    if (executionPlan instanceof MoveSpecifiedSourceAndQualifierThruChannel1Plan) {
       return executionPlan.execute(this);
     }
     return executionPlan.execute(plan.source(), plan.qualifier(), this);

@@ -146,18 +146,18 @@ public class DefaultEngine implements Engine {
   }
 
   @Override
-  public <S, T> T mapSourceTo(S source, ReflectionDomain domain) {
+  public <S, T> T mapTo(S source, ReflectionDomain domain) {
     throw NotImplementedExceptions.withCode("ZIKQyQ");
   }
 
   @Override
-  public TraversableReflectionPoint mapSourceTo(Reflection source, ReflectionDomain targetDomain) {
+  public TraversableReflectionPoint mapTo(Reflection source, ReflectionDomain targetDomain) {
     throw NotImplementedExceptions.withCode("Vfn2cg");
   }
 
   @Override
   @SuppressWarnings("unchecked")
-  public <R extends Reflection> R mapAndCastSourceTo(
+  public <R extends Reflection> R mapAndCastTo(
       Reflection source, ReflectionDomain targetDomain, Class<R> targetClass
   ) {
     SystemReflection systemSourceReflection = castToSystemReflection(source);
@@ -177,7 +177,7 @@ public class DefaultEngine implements Engine {
 
   @Override
   @SuppressWarnings("unchecked")
-  public <Q, R extends Reflection> R mapAndCastSourceTo(
+  public <Q, R extends Reflection> R mapAndCastTo(
       Reflection source, ReflectionDomain targetDomain, Q qualifier, Class<R> targetClass
   ) {
     SystemReflection systemSourceReflection = castToSystemReflection(source);
@@ -222,11 +222,9 @@ public class DefaultEngine implements Engine {
   }
 
   @Override
-  @SuppressWarnings("unchecked")
-  public <S, R, Q> R moveThruChannel1(S source, Rid cid, Q qualifier) {
-    TraversePlan traversePlan = traverseAnalyzer.buildMoveThruChannelPlan(
-        ReflectionFunctions.getReflectionClass(source.getClass()), cid, ReflectionForms.Reflection);
-    return (R) traversePlan.execute(source, qualifier, traverseExecutor);
+  public <S, Q> void moveThruChannel1(S reflection, Rid cid, Q qualifier) {
+    TraversePlan traversePlan = traverseAnalyzer.buildMoveThruChannel1Plan(reflection, cid, qualifier);
+    traversePlan.execute(traverseExecutor);
   }
 
   @Override

@@ -8,6 +8,7 @@ import tech.intellispaces.reflections.framework.task.plan.MapSourceSpecifiedClas
 import tech.intellispaces.reflections.framework.task.plan.MapSpecifiedSourceAndQualifierToSpecifiedTargetDomainAndClassPlan;
 import tech.intellispaces.reflections.framework.task.plan.MapSpecifiedSourceToSpecifiedTargetDomainAndClassPlan;
 import tech.intellispaces.reflections.framework.task.plan.MoveSourceSpecifiedClassThruIdentifiedChannelPlan;
+import tech.intellispaces.reflections.framework.task.plan.MoveSpecifiedSourceAndQualifierThruChannel1Plan;
 
 /**
  * The traverse plan executor.
@@ -180,4 +181,6 @@ public interface TraverseExecutor {
   double executeReturnDouble(MapSpecifiedSourceToSpecifiedTargetDomainAndClassPlan plan) throws TraverseException;
 
   Object execute(MapSpecifiedSourceAndQualifierToSpecifiedTargetDomainAndClassPlan plan) throws TraverseException;
+
+  Object execute(MoveSpecifiedSourceAndQualifierThruChannel1Plan plan) throws TraverseException;
 }

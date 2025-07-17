@@ -52,7 +52,7 @@ public interface ModuleHandle extends ReflectionModule {
 
   <S, R> R moveThruChannel0(S source, Rid cid);
 
-  <S, R, Q> R moveThruChannel1(S source, Rid cid, Q qualifier);
+  <S, Q> void moveThruChannel1(S source, Rid cid, Q qualifier);
 
   <S, R, Q, C extends Channel1 & MappingOfMovingTraverse> R mapOfMovingThruChannel1(S source, Class<C> channelClass, Q qualifier);
 

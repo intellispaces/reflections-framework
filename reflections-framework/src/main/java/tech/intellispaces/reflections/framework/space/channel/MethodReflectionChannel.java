@@ -6,7 +6,6 @@ import org.jetbrains.annotations.Nullable;
 
 import tech.intellispaces.commons.exception.NotImplementedExceptions;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
-import tech.intellispaces.commons.type.ClassFunctions;
 import tech.intellispaces.core.Projection;
 import tech.intellispaces.core.Reflection;
 import tech.intellispaces.core.ReflectionChannel;

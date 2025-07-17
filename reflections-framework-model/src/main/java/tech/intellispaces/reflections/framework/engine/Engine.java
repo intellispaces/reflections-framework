@@ -63,13 +63,13 @@ public interface Engine {
 
   void stop();
 
-  <S, T> T mapSourceTo(S source, ReflectionDomain domain);
+  <S, T> T mapTo(S source, ReflectionDomain domain);
 
-  TraversableReflectionPoint mapSourceTo(Reflection source, ReflectionDomain targetDomain);
+  TraversableReflectionPoint mapTo(Reflection source, ReflectionDomain targetDomain);
 
-  <R extends Reflection> R mapAndCastSourceTo(Reflection source, ReflectionDomain targetDomain, Class<R> targetClass);
+  <R extends Reflection> R mapAndCastTo(Reflection source, ReflectionDomain targetDomain, Class<R> targetClass);
 
-  <Q, R extends Reflection> R mapAndCastSourceTo(Reflection source, ReflectionDomain targetDomain, Q qualifier, Class<R> targetClass);
+  <Q, R extends Reflection> R mapAndCastTo(Reflection source, ReflectionDomain targetDomain, Q qualifier, Class<R> targetClass);
 
   <S, T> T mapThruChannel0(S source, Rid cid);
 
@@ -81,7 +81,7 @@ public interface Engine {
 
   <S, R> R moveThruChannel0(S source, Rid cid);
 
-  <S, R, Q> R moveThruChannel1(S source, Rid cid, Q qualifier);
+  <S, Q> void moveThruChannel1(S reflection, Rid channelId, Q qualifier);
 
   <S, R, Q, C extends Channel1 & MappingOfMovingTraverse> R mapOfMovingThruChannel1(S source, Class<C> channelClass, Q qualifier);
 

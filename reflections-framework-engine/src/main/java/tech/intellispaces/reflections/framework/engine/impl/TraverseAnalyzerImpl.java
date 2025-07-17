@@ -7,6 +7,7 @@ import org.jetbrains.annotations.Nullable;
 
 import tech.intellispaces.commons.exception.NotImplementedExceptions;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
+import tech.intellispaces.core.Channels;
 import tech.intellispaces.core.Domains;
 import tech.intellispaces.core.OntologyRepository;
 import tech.intellispaces.core.ReflectionChannel;
@@ -17,6 +18,8 @@ import tech.intellispaces.reflections.framework.guide.GuideType;
 import tech.intellispaces.reflections.framework.guide.GuideTypes;
 import tech.intellispaces.reflections.framework.guide.SystemGuide;
 import tech.intellispaces.reflections.framework.node.ReflectionsNodeFunctions;
+import tech.intellispaces.reflections.framework.reflection.NativeForeignReflectionPoint;
+import tech.intellispaces.reflections.framework.reflection.NativeReflectionPoint;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForms;
 import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
@@ -38,6 +41,8 @@ import tech.intellispaces.reflections.framework.task.plan.MapSpecifiedSourceToSp
 import tech.intellispaces.reflections.framework.task.plan.MapSpecifiedSourceToSpecifiedTargetDomainAndClassPlanImpl;
 import tech.intellispaces.reflections.framework.task.plan.MoveSourceSpecifiedClassThruIdentifiedChannelPlan;
 import tech.intellispaces.reflections.framework.task.plan.MoveSourceSpecifiedClassThruIdentifiedChannelPlanImpl;
+import tech.intellispaces.reflections.framework.task.plan.MoveSpecifiedSourceAndQualifierThruChannel1Plan;
+import tech.intellispaces.reflections.framework.task.plan.MoveSpecifiedSourceAndQualifierThruChannel1PlanImpl;
 import tech.intellispaces.reflections.framework.task.plan.TaskPlanType;
 import tech.intellispaces.reflections.framework.task.plan.TaskPlanTypes;
 import tech.intellispaces.reflections.framework.task.plan.TraversePlan;
@@ -57,7 +62,7 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
 
   @Override
   public MapSpecifiedSourceToSpecifiedTargetDomainAndClassPlan buildMapToDomainPlan(
-      tech.intellispaces.core.ReflectionPoint source,
+      ReflectionPoint source,
       ReflectionDomain targetDomain,
       Class<?> targetClass
   ) {
@@ -77,6 +82,17 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
   ) {
     var declarativePlan = new MapSpecifiedSourceAndQualifierToSpecifiedTargetDomainAndClassPlanImpl(
         source, targetDomain, qualifier, targetClass
+    );
+    buildPreliminaryExecutionPlan(declarativePlan);
+    return declarativePlan;
+  }
+
+  @Override
+  public MoveSpecifiedSourceAndQualifierThruChannel1Plan buildMoveThruChannel1Plan(
+      Object source, Rid cid, Object qualifier
+  ) {
+    var declarativePlan = new MoveSpecifiedSourceAndQualifierThruChannel1PlanImpl(
+        source, Channels.build().cid(cid).get(), qualifier
     );
     buildPreliminaryExecutionPlan(declarativePlan);
     return declarativePlan;
@@ -115,9 +131,11 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
     buildExecutionPlan(plan);
   }
 
-  private void buildPreliminaryExecutionPlan(
-      MapSpecifiedSourceAndQualifierToSpecifiedTargetDomainAndClassPlan plan
-  ) {
+  private void buildPreliminaryExecutionPlan(MapSpecifiedSourceAndQualifierToSpecifiedTargetDomainAndClassPlan plan) {
+    buildExecutionPlan(plan);
+  }
+
+  private void buildPreliminaryExecutionPlan(MoveSpecifiedSourceAndQualifierThruChannel1Plan plan) {
     buildExecutionPlan(plan);
   }
 
@@ -303,6 +321,47 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
     return executionPlan;
   }
 
+  @Override
+  public TraversePlan buildExecutionPlan(MoveSpecifiedSourceAndQualifierThruChannel1Plan plan) {
+    Object source = plan.source();
+    Rid cid = plan.channel().cid();
+
+    ExecutionTraversePlan executionPlan = buildExecutionTraversePlan(
+        plan.type(), cid, source.getClass(), ReflectionForms.Reflection
+    );
+    if (executionPlan == null) {
+      if (source instanceof ReflectionPoint sourcePoint) {
+        ReflectionPoint registeredReflection = ontologyRepository.findReflection(sourcePoint.rid(), sourcePoint.domainName());
+        if (registeredReflection != null) {
+          return buildExecutionPlan(plan, registeredReflection);
+        }
+      }
+    }
+    return executionPlan;
+  }
+
+  private @Nullable TraversePlan buildExecutionPlan(
+      MoveSpecifiedSourceAndQualifierThruChannel1Plan plan, Object sourcePoint
+  ) {
+    Rid cid = plan.channel().cid();
+    ExecutionTraversePlan executionPlan = buildExecutionTraversePlan(
+        plan.type(), cid, sourcePoint.getClass(), ReflectionForms.Reflection
+    );
+    if (executionPlan != null) {
+      var replaceSourcePlan = new MoveSpecifiedSourceAndQualifierThruChannel1PlanImpl(
+          sourcePoint,
+          plan.channel(),
+          plan.qualifier()
+      );
+      replaceSourcePlan.setExecutionPlan(executionPlan);
+      return replaceSourcePlan;
+    }
+    if (sourcePoint instanceof NativeForeignReflectionPoint nativeReflectionPoint) {
+      return buildExecutionPlan(plan, nativeReflectionPoint.foreignPoint());
+    }
+    return null;
+  }
+
   private @Nullable ReflectionChannel findChannel(ReflectionDomain sourceDomain, ReflectionDomain targetDomain) {
     if (sourceDomain == null) {
       sourceDomain = Domains.create(
@@ -364,6 +423,7 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
       case MapOfMovingSourceSpecifiedClassThruIdentifiedChannel -> GuideTypes.MapperOfMoving;
       case MapSpecifiedSourceToSpecifiedTargetDomainAndClass -> GuideTypes.Mapper;
       case MapSpecifiedSourceAndQualifierToSpecifiedTargetDomainAndClass -> GuideTypes.Mapper;
+      case MoveSpecifiedSourceAndQualifierThruChannel1 -> GuideTypes.Mover;
       default -> throw NotImplementedExceptions.withCode("5cYSWA");
     };
   }

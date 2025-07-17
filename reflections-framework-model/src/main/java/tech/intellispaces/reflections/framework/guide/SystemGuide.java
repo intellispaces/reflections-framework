@@ -1,6 +1,5 @@
 package tech.intellispaces.reflections.framework.guide;
 
-import tech.intellispaces.actions.Action;
 import tech.intellispaces.core.Guide;
 import tech.intellispaces.core.Rid;
 import tech.intellispaces.reflections.framework.exception.TraverseException;

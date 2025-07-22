@@ -15,6 +15,7 @@ import tech.intellispaces.reflections.framework.channel.Channel2;
 import tech.intellispaces.reflections.framework.channel.Channel3;
 import tech.intellispaces.reflections.framework.channel.Channel4;
 import tech.intellispaces.reflections.framework.engine.Engine;
+import tech.intellispaces.reflections.framework.guide.SystemGuide;
 import tech.intellispaces.reflections.framework.guide.n0.Mapper0;
 import tech.intellispaces.reflections.framework.guide.n0.MapperOfMoving0;
 import tech.intellispaces.reflections.framework.guide.n0.Mover0;
@@ -105,6 +106,11 @@ public class ModuleHandleImpl implements ModuleHandle {
     @Override
     public <G> List<G> guides(Class<G> guideClass) {
         return engine.guides(guideClass);
+    }
+
+    @Override
+    public void addGuide(SystemGuide<?, ?> guide) {
+        engine.addGuide(guide);
     }
 
     @Override

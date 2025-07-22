@@ -3,6 +3,7 @@ package tech.intellispaces.reflections.framework.system;
 import java.util.List;
 
 import tech.intellispaces.core.Guide;
+import tech.intellispaces.reflections.framework.guide.SystemGuide;
 
 /**
  * The module of the reflection system.
@@ -36,4 +37,11 @@ public interface ReflectionModule {
    * @param <G> the requested guide type.
    */
   <G> List<G> guides(Class<G> guideClass);
+
+  /**
+   * Adds guide to module.
+   *
+   * @param guide the guide.
+   */
+  void addGuide(SystemGuide<?, ?> guide);
 }

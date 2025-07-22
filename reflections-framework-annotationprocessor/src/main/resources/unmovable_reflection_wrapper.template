@@ -35,7 +35,7 @@ public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sour
   }
 
   @Override
-  public String reflectionName() {
+  public java.lang.String reflectionName() {
     throw NotImplementedExceptions.withCode("a6zcyEJM");
   }
 
@@ -124,12 +124,12 @@ public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sour
   }
 
   @Override
-  public Projection projectionThru(String channelName) {
+  public Projection projectionThru(java.lang.String channelName) {
     throw NotImplementedExceptions.withCode("7ahkn6aS");
   }
 
   @Override
-  public Projection projectionTo(String domainName) {
+  public Projection projectionTo(java.lang.String domainName) {
     throw NotImplementedExceptions.withCode("TbHOLQ");
   }
 

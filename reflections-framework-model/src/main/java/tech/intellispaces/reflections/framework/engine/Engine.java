@@ -46,6 +46,7 @@ import tech.intellispaces.reflections.framework.guide.n4.MapperOfMoving4;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 import tech.intellispaces.reflections.framework.reflection.ReflectionHandle;
 import tech.intellispaces.reflections.framework.reflection.ReflectionRealizationType;
+import tech.intellispaces.reflections.framework.reflection.SystemReflection;
 import tech.intellispaces.reflections.framework.system.ModuleProjection;
 import tech.intellispaces.reflections.framework.system.ProjectionDefinition;
 import tech.intellispaces.reflections.framework.system.ReflectionFactory;
@@ -121,6 +122,8 @@ public interface Engine {
   @Nullable TraversableReflectionPoint getReflection(Rid pid, String domainName);
 
   <T> T castReflection(ReflectionPoint reflection, Class<T> reflectionClass);
+
+  SystemReflection wrapToSystemReflection(Reflection reflection);
 
   /**
    * Creates and registers new reflection.

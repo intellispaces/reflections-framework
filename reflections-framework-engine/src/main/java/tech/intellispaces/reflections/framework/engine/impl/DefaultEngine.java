@@ -160,7 +160,7 @@ public class DefaultEngine implements Engine {
   public <R extends Reflection> R mapAndCastTo(
       Reflection source, ReflectionDomain targetDomain, Class<R> targetClass
   ) {
-    SystemReflection systemSourceReflection = castToSystemReflection(source);
+    SystemReflection systemSourceReflection = wrapToSystemReflection(source);
 
     // First, checks the stored projections in the reflection
     Projection projection = systemSourceReflection.projectionTo(targetDomain);
@@ -180,7 +180,7 @@ public class DefaultEngine implements Engine {
   public <Q, R extends Reflection> R mapAndCastTo(
       Reflection source, ReflectionDomain targetDomain, Q qualifier, Class<R> targetClass
   ) {
-    SystemReflection systemSourceReflection = castToSystemReflection(source);
+    SystemReflection systemSourceReflection = wrapToSystemReflection(source);
     DeclarativeTraversePlan traversePlan = traverseAnalyzer.buildMapToDomainPlan(
         systemSourceReflection.asPoint(), targetDomain, qualifier, targetClass
     );
@@ -275,14 +275,11 @@ public class DefaultEngine implements Engine {
     return (TraversableReflectionPoint) createSystemReflectionPoint(reflection);
   }
 
-  private SystemReflection castToSystemReflection(Reflection reflection) {
+  @Override
+  public SystemReflection wrapToSystemReflection(Reflection reflection) {
     if (reflection instanceof SystemReflection systemReflection) {
       return systemReflection;
     }
-    return wrapToSystemReflection(reflection);
-  }
-
-  private SystemReflection wrapToSystemReflection(Reflection reflection) {
     if (reflection.canBeRepresentedAsPoint()) {
       return createSystemReflectionPoint(reflection);
     } else if (reflection.canBeRepresentedAsDomain()) {
@@ -331,7 +328,7 @@ public class DefaultEngine implements Engine {
                 "Reflection adapter class {0} is abstract and cannot be instantiated",
                 reflectionClass.getCanonicalName());
           }
-          ReflectionPoint systemReflectionPoint = castToSystemReflection(reflection).asPoint();
+          ReflectionPoint systemReflectionPoint = wrapToSystemReflection(reflection).asPoint();
           return (T) tech.intellispaces.commons.object.Objects.get(
               adapterClass.get(), ReflectionPoint.class, systemReflectionPoint
           );

@@ -14,12 +14,12 @@ import tech.intellispaces.core.ReflectionChannel;
 import tech.intellispaces.core.ReflectionDomain;
 import tech.intellispaces.core.ReflectionPoint;
 import tech.intellispaces.core.Rid;
+import tech.intellispaces.reflections.framework.engine.Engine;
 import tech.intellispaces.reflections.framework.guide.GuideType;
 import tech.intellispaces.reflections.framework.guide.GuideTypes;
 import tech.intellispaces.reflections.framework.guide.SystemGuide;
 import tech.intellispaces.reflections.framework.node.ReflectionsNodeFunctions;
 import tech.intellispaces.reflections.framework.reflection.NativeForeignReflectionPoint;
-import tech.intellispaces.reflections.framework.reflection.NativeReflectionPoint;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForm;
 import tech.intellispaces.reflections.framework.reflection.ReflectionForms;
 import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
@@ -51,6 +51,7 @@ import tech.intellispaces.reflections.framework.task.plan.TraverseSourceSpecifie
 class TraverseAnalyzerImpl implements TraverseAnalyzer {
   private final OntologyRepository ontologyRepository;
   private final GuideProvider guideProvider;
+  private Engine engine;
 
   public TraverseAnalyzerImpl(
       OntologyRepository ontologyRepository,
@@ -58,6 +59,10 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
   ) {
     this.ontologyRepository = ontologyRepository;
     this.guideProvider = guideProvider;
+  }
+
+  void setEngine(Engine engine) {
+    this.engine = engine;
   }
 
   @Override
@@ -240,7 +245,7 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
   public TraversePlan buildExecutionPlan(
       MapSpecifiedSourceToSpecifiedTargetDomainAndClassPlan plan
   ) {
-    ReflectionDomain sourceDomain = plan.source().asPoint().domain();
+    ReflectionDomain sourceDomain = engine.wrapToSystemReflection(plan.source().asPoint().domain()).asDomain();
     ReflectionChannel channel = findChannel(sourceDomain, plan.targetDomain());
     if (channel == null) {
       for (ReflectionDomain parentDomain : sourceDomain.parentDomains()) {

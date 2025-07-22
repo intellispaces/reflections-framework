@@ -42,6 +42,10 @@ public class ClassPathOntologyRepository implements OntologyRepository {
 
   @Override
   public @Nullable Reflection findReflection(String reflectionName) {
+    Reflection reflection = findDomain(reflectionName);
+    if (reflection != null) {
+      return reflection;
+    }
     return null;
   }
 

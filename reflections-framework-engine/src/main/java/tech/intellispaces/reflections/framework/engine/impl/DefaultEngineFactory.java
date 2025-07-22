@@ -16,8 +16,6 @@ import tech.intellispaces.reflections.framework.system.LocalGuideRegistry;
 import tech.intellispaces.reflections.framework.system.LocalProjectionRegistry;
 import tech.intellispaces.reflections.framework.system.LocalTraverseExecutor;
 import tech.intellispaces.reflections.framework.system.ProjectionRegistry;
-import tech.intellispaces.reflections.framework.system.TraverseAnalyzer;
-import tech.intellispaces.reflections.framework.system.TraverseExecutor;
 
 @AutoService(EngineFactory.class)
 public class DefaultEngineFactory implements EngineFactory {
@@ -32,9 +30,9 @@ public class DefaultEngineFactory implements EngineFactory {
         GuideRegistry guideRegistry = new LocalGuideRegistry();
         AutoGuideRegistry autoGuideRegistry = new AutoGuideRegistry();
 
-        TraverseAnalyzer traverseAnalyzer = new TraverseAnalyzerImpl(ontologyRepository, guideRegistry);
-        TraverseExecutor traverseExecutor = new LocalTraverseExecutor(traverseAnalyzer);
-        return new DefaultEngine(
+        var traverseAnalyzer = new TraverseAnalyzerImpl(ontologyRepository, guideRegistry);
+        var traverseExecutor = new LocalTraverseExecutor(traverseAnalyzer);
+        var engine = new DefaultEngine(
             ontologyRepository,
             projectionRegistry,
             guideRegistry,
@@ -43,6 +41,8 @@ public class DefaultEngineFactory implements EngineFactory {
             traverseExecutor,
             factoryRegistry
         );
+        traverseAnalyzer.setEngine(engine);
+        return engine;
     }
 
     private OntologyRepository getOntologyRepository(Map<String, Object> engineAttributes) {

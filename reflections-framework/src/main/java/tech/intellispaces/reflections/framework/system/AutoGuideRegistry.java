@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.WeakHashMap;
 
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
-import tech.intellispaces.commons.object.Objects;
+import tech.intellispaces.commons.instance.Instances;
 import tech.intellispaces.commons.type.ClassFunctions;
 import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
 
@@ -28,6 +28,6 @@ public class AutoGuideRegistry {
         .orElseThrow(() -> UnexpectedExceptions.withMessage("Could not load auto guide class by name {0}",
             autoGuideCanonicalName)
         );
-    return Objects.get(autoGuideClass);
+    return Instances.get(autoGuideClass);
   }
 }

@@ -9,7 +9,7 @@ import tech.intellispaces.actions.runnable.RunnableAction;
 import tech.intellispaces.actions.text.StringActions;
 import tech.intellispaces.annotationprocessor.TemplatedJavaArtifactGenerator;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
-import tech.intellispaces.commons.object.ObjectFunctions;
+import tech.intellispaces.commons.instance.Instances;
 import tech.intellispaces.commons.type.ClassFunctions;
 import tech.intellispaces.commons.type.PrimitiveType;
 import tech.intellispaces.commons.type.PrimitiveTypes;
@@ -60,7 +60,7 @@ public interface AnnotationGeneratorFunctions {
   static TypeReference normalizeType(TypeReference type) {
     if (type.isPrimitiveReference()) {
       String typename = type.asPrimitiveReferenceOrElseThrow().typename();
-      if (ObjectFunctions.equalsAnyOf(typename,
+      if (Instances.equalsAnyOf(typename,
           PrimitiveTypes.Boolean.typename(),
           PrimitiveTypes.Char.typename(),
           PrimitiveTypes.Byte.typename(),

@@ -11,6 +11,7 @@ import java.util.function.Function;
 import tech.intellispaces.actions.runnable.RunnableAction;
 import tech.intellispaces.actions.text.StringActions;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
+import tech.intellispaces.commons.instance.Instances;
 import tech.intellispaces.commons.type.ClassFunctions;
 import tech.intellispaces.commons.type.ClassNameFunctions;
 import tech.intellispaces.commons.type.PrimitiveTypes;
@@ -498,7 +499,7 @@ abstract class AbstractReflectionWrapperGenerator extends AbstractReflectionForm
       if (isPrimitiveWrapper(domainMethod.returnType().orElseThrow())) {
         CustomType returnType = domainMethod.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow().targetType();
         String typename = ClassFunctions.primitiveTypenameOfWrapper(returnType.canonicalName());
-        if (tech.intellispaces.commons.object.ObjectFunctions.equalsAnyOf(
+        if (Instances.equalsAnyOf(
             typename,
             PrimitiveTypes.Boolean.typename(),
             PrimitiveTypes.Char.typename(),

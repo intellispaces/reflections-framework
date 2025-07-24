@@ -8,7 +8,7 @@ import tech.intellispaces.annotationprocessor.ArtifactGenerator;
 import tech.intellispaces.annotationprocessor.ArtifactGeneratorContext;
 import tech.intellispaces.annotationprocessor.ArtifactProcessor;
 import tech.intellispaces.annotationprocessor.ArtifactValidator;
-import tech.intellispaces.commons.object.Objects;
+import tech.intellispaces.commons.instance.Instances;
 import tech.intellispaces.javareflection.customtype.CustomType;
 import tech.intellispaces.javareflection.method.MethodStatement;
 import tech.intellispaces.reflections.framework.annotation.AnnotationProcessor;
@@ -51,7 +51,7 @@ public interface DomainProcessorFunctions {
     List<ArtifactProcessor> processors = allAnnotationsOf(annotatedType, AnnotationProcessor.class).stream()
         .map(AnnotationFunctions::getAnnotationProcessorClass)
         .distinct()
-        .map(c -> (ArtifactProcessor) Objects.get(c))
+        .map(c -> (ArtifactProcessor) Instances.get(c))
         .toList();
     for (ArtifactProcessor processor : processors) {
       if (processor.isApplicable(annotatedType)) {

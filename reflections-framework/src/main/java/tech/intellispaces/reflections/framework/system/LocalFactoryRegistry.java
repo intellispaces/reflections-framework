@@ -26,7 +26,7 @@ import tech.intellispaces.actions.Action8;
 import tech.intellispaces.actions.Action9;
 import tech.intellispaces.commons.collection.CollectionFunctions;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
-import tech.intellispaces.commons.object.Objects;
+import tech.intellispaces.commons.instance.Instances;
 import tech.intellispaces.commons.properties.PropertiesSet;
 import tech.intellispaces.commons.resource.ResourceFunctions;
 import tech.intellispaces.commons.type.Classes;
@@ -347,7 +347,7 @@ public class LocalFactoryRegistry implements FactoryRegistry {
           if (factoryClass.isEmpty()) {
             throw UnexpectedExceptions.withMessage("Unable to load factory class {0}", factoryClassName);
           }
-          var wrapper = (FactoryWrapper) Objects.get(factoryClass.get());
+          var wrapper = (FactoryWrapper) Instances.get(factoryClass.get());
           factoryMethods.addAll(wrapper.methods());
         }
       }

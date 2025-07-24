@@ -12,6 +12,7 @@ import org.jetbrains.annotations.Nullable;
 
 import tech.intellispaces.actions.Action;
 import tech.intellispaces.commons.exception.NotImplementedExceptions;
+import tech.intellispaces.commons.instance.Instances;
 import tech.intellispaces.commons.type.ClassFunctions;
 import tech.intellispaces.core.Rid;
 import tech.intellispaces.javareflection.customtype.CustomTypes;
@@ -128,7 +129,7 @@ public class LocalGuideRegistry implements GuideRegistry {
       if (actionGuideImplClass.isEmpty()) {
         return null;
       }
-      return (G) tech.intellispaces.commons.object.Objects.get(actionGuideImplClass.get(), Action.class, unitGuide.asAction());
+      return (G) Instances.get(actionGuideImplClass.get(), Action.class, unitGuide.asAction());
     }
     return null;
   }

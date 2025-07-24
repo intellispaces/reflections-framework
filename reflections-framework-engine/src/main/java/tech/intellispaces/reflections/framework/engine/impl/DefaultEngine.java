@@ -21,6 +21,7 @@ import tech.intellispaces.actions.Action8;
 import tech.intellispaces.actions.Action9;
 import tech.intellispaces.commons.exception.NotImplementedExceptions;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
+import tech.intellispaces.commons.instance.Instances;
 import tech.intellispaces.commons.type.Classes;
 import tech.intellispaces.commons.type.Type;
 import tech.intellispaces.commons.type.Types;
@@ -329,7 +330,7 @@ public class DefaultEngine implements Engine {
                 reflectionClass.getCanonicalName());
           }
           ReflectionPoint systemReflectionPoint = wrapToSystemReflection(reflection).asPoint();
-          return (T) tech.intellispaces.commons.object.Objects.get(
+          return (T) Instances.get(
               adapterClass.get(), ReflectionPoint.class, systemReflectionPoint
           );
         }

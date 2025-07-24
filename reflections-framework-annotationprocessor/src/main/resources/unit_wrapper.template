@@ -35,22 +35,22 @@ public class {{$generatedArtifactSimpleName}}{{$typeParamsFullDeclaration}} exte
   }
 
 {{for method : $injectionMethods}}
-  {{$method["javadoc"]}}
-{{for annotation : $method["annotations"]}}
+  {{$method->javadoc}}
+{{for annotation : $method->annotations}}
   @{{$annotation}}
 {{end}}
-  public {{$method["signature"]}} {
-    {{$method["body"]}}
+  public {{$method->signature}} {
+    {{$method->body}}
   }
 {{end}}
 {{for method : $overrideGuideMethods}}
   @Override
   @Ordinal({{$method.index()}})
-  {{$method["declaration"]}}
+  {{$method->declaration}}
 
 {{end}}
 {{for method : $guideActionMethods}}
-  {{$method["declaration"]}};
+  {{$method->declaration}};
 
 {{end}}
 
@@ -63,56 +63,56 @@ public class {{$generatedArtifactSimpleName}}{{$typeParamsFullDeclaration}} exte
         {{$sourceArtifactSimpleName}}.class,
         List.of(
 {{for method : $methodDescriptions}}
-          unitMethod({{$generatedArtifactSimpleName}}.class, null, "{{$method["name"]}}"{{for param : $method["params"]}}, {{$param}}.class{{end}})
-            .purpose(UnitMethodPurposes.{{$method["purpose"]}})
-{{when $method["type"].eq("function")}}
-            .function({{$generatedArtifactSimpleName}}::{{$method["name"]}})
+          unitMethod({{$generatedArtifactSimpleName}}.class, null, "{{$method->name}}"{{for param : $method->params}}, {{$param}}.class{{end}})
+            .purpose(UnitMethodPurposes.{{$method->purpose}})
+{{when $method->type.eq("function")}}
+            .function({{$generatedArtifactSimpleName}}::{{$method->name}})
 {{end}}
-{{when $method["type"].eq("consumer")}}
-            .consumer({{$generatedArtifactSimpleName}}::{{$method["name"]}})
+{{when $method->type.eq("consumer")}}
+            .consumer({{$generatedArtifactSimpleName}}::{{$method->name}})
 {{end}}
-{{when $method["prototypeMethodName"].isNotVoid()}}
-            .prototypeMethodName("{{$method["prototypeMethodName"]}}")
+{{when $method->prototypeMethodName.isNotVoid()}}
+            .prototypeMethodName("{{$method->prototypeMethodName}}")
 {{end}}
-{{when $method["injectionName"].isNotVoid()}}
-            .injectionName("{{$method["injectionName"]}}")
+{{when $method->injectionName.isNotVoid()}}
+            .injectionName("{{$method->injectionName}}")
 {{end}}
-{{when $method["injectionClass"].isNotVoid()}}
-            .injectionClass({{$method["injectionClass"]}}.class)
+{{when $method->injectionClass.isNotVoid()}}
+            .injectionClass({{$method->injectionClass}}.class)
 {{end}}
-{{when $method["injectionKind"].isNotVoid()}}
-            .injectionKind({{$method["injectionKind"]}})
+{{when $method->injectionKind.isNotVoid()}}
+            .injectionKind({{$method->injectionKind}})
 {{end}}
-{{when $method["injectionOrdinal"].isNotVoid()}}
-            .injectionOrdinal({{$method["injectionOrdinal"]}})
+{{when $method->injectionOrdinal.isNotVoid()}}
+            .injectionOrdinal({{$method->injectionOrdinal}})
 {{end}}
-{{when $method["projectionName"].isNotVoid()}}
-            .projectionName("{{$method["projectionName"]}}")
+{{when $method->projectionName.isNotVoid()}}
+            .projectionName("{{$method->projectionName}}")
 {{end}}
-{{when $method["targetClass"].isNotVoid()}}
-            .targetClass({{$method["targetClass"]}}.class)
+{{when $method->targetClass.isNotVoid()}}
+            .targetClass({{$method->targetClass}}.class)
 {{end}}
-{{when $method["requiredProjections"].isNotVoid()}}
+{{when $method->requiredProjections.isNotVoid()}}
             .requiredProjections(ProjectionReferences.list(
-{{for projection : $method["requiredProjections"]}}
-              "{{$projection["name"]}}", {{$projection["class"]}}.class{{when $projection.isNotLast()}},{{end}}
+{{for projection : $method->requiredProjections}}
+              "{{$projection->name}}", {{$projection->class}}.class{{when $projection.isNotLast()}},{{end}}
 {{end}}
              ))
 {{end}}
-{{when $method["lazyLoading"].isNotVoid()}}
-            .lazyLoading({{$method["lazyLoading"]}})
+{{when $method->lazyLoading.isNotVoid()}}
+            .lazyLoading({{$method->lazyLoading}})
 {{end}}
-{{when $method["guideOrdinal"].isNotVoid()}}
-            .guideOrdinal({{$method["guideOrdinal"]}})
+{{when $method->guideOrdinal.isNotVoid()}}
+            .guideOrdinal({{$method->guideOrdinal}})
 {{end}}
-{{when $method["guideKind"].isNotVoid()}}
-            .guideKind(GuideKinds.{{$method["guideKind"]}})
+{{when $method->guideKind.isNotVoid()}}
+            .guideKind(GuideKinds.{{$method->guideKind}})
 {{end}}
-{{when $method["guideCid"].isNotVoid()}}
-            .guideCid(Rids.create("{{$method["guideCid"]}}"))
+{{when $method->guideCid.isNotVoid()}}
+            .guideCid(Rids.create("{{$method->guideCid}}"))
 {{end}}
-{{when $method["guideTargetForm"].isNotVoid()}}
-            .guideTargetForm(ReflectionForms.{{$method["guideTargetForm"]}})
+{{when $method->guideTargetForm.isNotVoid()}}
+            .guideTargetForm(ReflectionForms.{{$method->guideTargetForm}})
 {{end}}
             .get(){{when $method.isNotLast()}},{{end}}
 {{end}}

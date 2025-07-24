@@ -19,8 +19,8 @@ public interface {{$generatedArtifactSimpleName}}{{$reflectionTypeParamsFull}} e
 {{end}}
 
 {{for method : $domainMethods}}
-  {{$method["javadoc"]}}
-  {{$method["declaration"]}};
+  {{$method->javadoc}}
+  {{$method->declaration}};
 
 {{end}}
   @Override

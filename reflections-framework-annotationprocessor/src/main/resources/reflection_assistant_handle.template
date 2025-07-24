@@ -13,19 +13,19 @@ import {{$importedClass}};
 public class {{$generatedArtifactSimpleName}} implements {{for customizer : $customizers}}{{$customizer}}{{when $customizer.isNotLast()}}, {{end}}{{end}} {
 
 {{for method : $customizerMethods}}
-  public {{$method["signature"]}} {
-    return ({{$method["returnTypeDeclaration"]}}) {{$method["actionName"]}}.execute({{$method["paramNames"]}});
+  public {{$method->signature}} {
+    return ({{$method->returnTypeDeclaration}}) {{$method->actionName}}.execute({{$method->paramNames}});
   }
 
 {{end}}
 {{for method : $customizerMethods}}
-  private final {{$method["actionType"]}} {{$method["actionName"]}} = Modules.current().engine().getFactoryAction(
-    {{$method["returnDomainClass"]}}.class,
-    "{{$method["contractType"]}}",
-{{for paramType : $method["paramTypes"]}}
+  private final {{$method->actionType}} {{$method->actionName}} = Modules.current().engine().getFactoryAction(
+    {{$method->returnDomainClass}}.class,
+    "{{$method->contractType}}",
+{{for paramType : $method->paramTypes}}
     {{$paramType}},
 {{end}}
-    {{$method["returnType"]}}
+    {{$method->returnType}}
   );
 
 {{end}}

@@ -38,7 +38,7 @@ public{{when $isAbstract}} abstract{{end}} class {{$generatedArtifactSimpleName}
   }
 
 {{for method : $domainMethods}}
-  {{$method["declaration"]}};
+  {{$method->declaration}};
 
 {{end}}
 

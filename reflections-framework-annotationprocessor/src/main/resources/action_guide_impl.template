@@ -12,25 +12,25 @@ import {{$importedClass}};
 {{$generatedAnnotation}}
 public class {{$generatedArtifactSimpleName}}{{$typeParamsFullDeclaration}} implements {{$sourceArtifactSimpleName}}{{$typeParamsBriefDeclaration}} {
 {{for guide : $guides}}
-  private final Action {{$guide["actionName"]}};
+  private final Action {{$guide->actionName}};
 {{end}}
 
   public {{$generatedArtifactSimpleName}}{{$typeParamsBriefDeclaration}}() {
 {{for guide : $guides}}
-    this.{{$guide["actionName"]}} = {{$guide["autoActionDeclaration"]}};
+    this.{{$guide->actionName}} = {{$guide->autoActionDeclaration}};
 {{end}}
   }
 
-  public {{$generatedArtifactSimpleName}}{{$typeParamsBriefDeclaration}}({{for guide : $guides}}Action {{$guide["actionName"]}}{{when $guide.isNotLast()}}, {{end}}{{end}}) {
+  public {{$generatedArtifactSimpleName}}{{$typeParamsBriefDeclaration}}({{for guide : $guides}}Action {{$guide->actionName}}{{when $guide.isNotLast()}}, {{end}}{{end}}) {
 {{for guide : $guides}}
-    this.{{$guide["actionName"]}} = {{$guide["actionName"]}};
+    this.{{$guide->actionName}} = {{$guide->actionName}};
 {{end}}
   }
 
 {{for guide : $guides}}
   @Override
-  public {{$guide["methodSignature"]}} {
-    {{$guide["methodBody"]}}
+  public {{$guide->methodSignature}} {
+    {{$guide->methodBody}}
   }
 {{end}}
 }

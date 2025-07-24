@@ -19,14 +19,14 @@ public class {{$generatedArtifactSimpleName}} extends {{$sourceArtifactSimpleNam
     methods.add(
       FactoryMethods.factoryMethod(
         this,
-        "{{$method["contractType"]}}",
-        {{$method["returnedType"]}},
-        {{$method["returnedDomainClass"]}}.class,
-{{for qualifier : $method["qualifiers"]}}
-        "{{$qualifier["name"]}}",
-        {{$qualifier["type"]}},
+        "{{$method->contractType}}",
+        {{$method->returnedType}},
+        {{$method->returnedDomainClass}}.class,
+{{for qualifier : $method->qualifiers}}
+        "{{$qualifier->name}}",
+        {{$qualifier->type}},
 {{end}}
-        {{$generatedArtifactSimpleName}}::{{$method["name"]}}
+        {{$generatedArtifactSimpleName}}::{{$method->name}}
       )
     );
 {{end}}

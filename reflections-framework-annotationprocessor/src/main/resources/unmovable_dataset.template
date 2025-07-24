@@ -15,18 +15,18 @@ import {{$importedClass}};
 {{$generatedAnnotation}}
 public class {{$generatedArtifactSimpleName}} implements {{$reflectionClassName}} {
 {{for projection : $projections}}
-  private final {{$projection["type"]}} {{$projection["name"]}};
+  private final {{$projection->type}} {{$projection->name}};
 {{end}}
   private final java.util.Map cidToProjectionMap = new java.util.HashMap<Rid, Object>();
 
   public {{$generatedArtifactSimpleName}}(
 {{for projection : $projections}}
-    @Name("{{$projection["name"]}}") {{$projection["type"]}} {{$projection["name"]}}{{when $projection.isNotLast()}},{{end}}
+    @Name("{{$projection->name}}") {{$projection->type}} {{$projection->name}}{{when $projection.isNotLast()}},{{end}}
 {{end}}
   ) {
 {{for projection : $projections}}
-    this.{{$projection["name"]}} = {{$projection["name"]}};
-    cidToProjectionMap.put(Rids.create("{{$projection["cid"]}}"), {{$projection["name"]}});
+    this.{{$projection->name}} = {{$projection->name}};
+    cidToProjectionMap.put(Rids.create("{{$projection->cid}}"), {{$projection->name}});
 {{end}}
   }
 
@@ -52,28 +52,28 @@ public class {{$generatedArtifactSimpleName}} implements {{$reflectionClassName}
 
 {{for projection : $projections}}
   @Override
-  public {{$projection["type"]}} {{$projection["name"]}}() {
-    return this.{{$projection["name"]}};
+  public {{$projection->type}} {{$projection->name}}() {
+    return this.{{$projection->name}};
   }
 
-{{when $projection["type"].eq("Integer")}}
+{{when $projection->type.eq("Integer")}}
   @Override
-  public int {{$projection["name"]}}AsPrimitive() {
-    Objects.requireNonNull(this.{{$projection["name"]}});
-    return this.{{$projection["name"]}};
+  public int {{$projection->name}}AsPrimitive() {
+    Objects.requireNonNull(this.{{$projection->name}});
+    return this.{{$projection->name}};
   }
-{{else when $projection["type"].eq("Double")}}
+{{else when $projection->type.eq("Double")}}
   @Override
-  public double {{$projection["name"]}}AsPrimitive() {
-    Objects.requireNonNull(this.{{$projection["name"]}});
-    return this.{{$projection["name"]}};
+  public double {{$projection->name}}AsPrimitive() {
+    Objects.requireNonNull(this.{{$projection->name}});
+    return this.{{$projection->name}};
   }
 {{end}}
 {{end}}
 
 {{for method : $conversionMethods}}
   @Override
-  public {{$method["type"]}} {{$method["name"]}}() {
+  public {{$method->type}} {{$method->name}}() {
     return this;
   }
 

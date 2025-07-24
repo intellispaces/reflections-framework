@@ -12,12 +12,12 @@ import {{$importedClass}};
 {{$generatedAnnotation}}
 public class {{$generatedArtifactSimpleName}} {
 {{for projection : $projections}}
-  private {{$projection["type"]}} {{$projection["name"]}};
+  private {{$projection->type}} {{$projection->name}};
 {{end}}
 
 {{for projection : $projections}}
-  public {{$generatedArtifactSimpleName}} {{$projection["name"]}}({{$projection["type"]}} {{$projection["name"]}}) {
-    this.{{$projection["name"]}} = {{$projection["name"]}};
+  public {{$generatedArtifactSimpleName}} {{$projection->name}}({{$projection->type}} {{$projection->name}}) {
+    this.{{$projection->name}} = {{$projection->name}};
     return this;
   }
 
@@ -25,7 +25,7 @@ public class {{$generatedArtifactSimpleName}} {
   public {{$unmovableReflectionSimpleName}} getUnmovable() {
     return new {{$unmovableDatasetSimpleName}}(
 {{for projection : $projections}}
-      this.{{$projection["name"]}}{{when $projection.isNotLast()}},{{end}}
+      this.{{$projection->name}}{{when $projection.isNotLast()}},{{end}}
 {{end}}
     );
   }

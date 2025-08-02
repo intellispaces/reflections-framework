@@ -49,7 +49,7 @@ public class SystemReflectionDomainImpl implements ReflectionDomain, ReflectionP
 
   @Override
   public List<ReflectionChannel> domainChannels() {
-    return ontologyRepository.findDomainChannels(reflectionName());
+    return ontologyRepository.findDomainContextChannels(reflectionName());
   }
 
   @Override

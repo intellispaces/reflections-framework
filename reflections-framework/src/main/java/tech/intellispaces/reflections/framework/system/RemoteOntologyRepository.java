@@ -81,12 +81,17 @@ public class RemoteOntologyRepository implements OntologyRepository {
   }
 
   @Override
-  public List<ReflectionChannel> findDomainChannels(String domainName) {
+  public List<ReflectionChannel> findDomainContextChannels(String domainName) {
     throw NotImplementedExceptions.withCode("4ovHLbAh");
   }
 
   @Override
   public List<Reflection> findRelatedReflections(String reflectionName) {
     throw NotImplementedExceptions.withCode("TG4jgT2P");
+  }
+
+  @Override
+  public List<Reflection> findRelatedReflections(Rid pid, Rid did) {
+    throw NotImplementedExceptions.withCode("SLAwoQ");
   }
 }

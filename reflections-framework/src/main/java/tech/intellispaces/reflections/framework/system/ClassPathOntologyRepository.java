@@ -107,13 +107,18 @@ public class ClassPathOntologyRepository implements OntologyRepository {
   }
 
   @Override
-  public List<ReflectionChannel> findDomainChannels(String domainName) {
+  public List<ReflectionChannel> findDomainContextChannels(String domainName) {
     return List.of();
   }
 
   @Override
   public List<Reflection> findRelatedReflections(String reflectionName) {
     throw NotImplementedExceptions.withCode("ahh0OpW7");
+  }
+
+  @Override
+  public List<Reflection> findRelatedReflections(Rid pid, Rid did) {
+    return List.of();
   }
 
   private @Nullable Class<?> getDomainClass(ReflectionDomain domain) {

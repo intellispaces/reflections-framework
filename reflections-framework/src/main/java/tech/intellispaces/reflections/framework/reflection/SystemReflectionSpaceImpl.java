@@ -87,7 +87,7 @@ public class SystemReflectionSpaceImpl implements ReflectionSpace, ReflectionPoi
   public List<Reflection> relatedReflections() {
     List<Reflection> reflections = wrappedSpace.relatedReflections();
     if (reflections.isEmpty()) {
-      reflections = ontologyRepository.findRelatedReflections(wrappedSpace.reflectionName());
+      reflections = ontologyRepository.findRelatedReflections(wrappedSpace.rid(), domain().did());
     }
     return reflections;
   }

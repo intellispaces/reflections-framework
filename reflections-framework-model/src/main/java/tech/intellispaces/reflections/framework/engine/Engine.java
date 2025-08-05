@@ -105,21 +105,29 @@ public interface Engine {
   void addGuide(SystemGuide<?, ?> guide);
 
   /**
-   * Searches for a reflection by name in the system.
+   * Searches for a reflection registered in the system by its alias.
    *
-   * @param reflectionName the qualified reflection name.
+   * @param alias the qualified reflection alias.
    * @return the reflection or <code>null</code> if reflection is not found.
    */
-  @Nullable TraversableReflection getReflection(String reflectionName);
+  @Nullable TraversableReflection findReflection(String alias);
 
   /**
-   * Searches for a reflection by reflection identifier and domain name in the system.
+   * Searches for a reflection registered in the system by its identifier and domain alias.
    *
    * @param pid the reflection identifier.
-   * @param domainName the reflection domain name.
+   * @param domainAlias the qualified alias of the reflection domain.
    * @return the reflection or <code>null</code> if reflection is not found.
    */
-  @Nullable TraversableReflectionPoint getReflection(Rid pid, String domainName);
+  @Nullable TraversableReflectionPoint findReflection(Rid pid, String domainAlias);
+
+  /**
+   * Returns the system's representation of the reflection.
+   *
+   * @param reflection the origin reflection.
+   * @return the system's representation of the reflection.
+   */
+  TraversableReflectionPoint getReflection(Reflection reflection);
 
   <T> T castReflection(ReflectionPoint reflection, Class<T> reflectionClass);
 

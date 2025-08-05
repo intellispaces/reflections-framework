@@ -50,7 +50,7 @@ public class ReflectionFunctions {
     }
     if (type.isCustomTypeReference()) {
       CustomType targetType = type.asCustomTypeReferenceOrElseThrow().targetType();
-      if (targetType.hasParent(SystemReflection.class)) {
+      if (targetType.hasParent(tech.intellispaces.core.Reflection.class)) {
         return true;
       }
     }
@@ -68,7 +68,7 @@ public class ReflectionFunctions {
     if (aClass.isAnnotationPresent(Reflection.class)) {
       return true;
     }
-    if (SystemReflection.class.isAssignableFrom(aClass)) {
+    if (tech.intellispaces.core.Reflection.class.isAssignableFrom(aClass)) {
       return true;
     }
     Optional<Class<?>> domainClass = Classes.get(
@@ -90,7 +90,7 @@ public class ReflectionFunctions {
       return false;
     }
     CustomType customType = type.asCustomTypeReferenceOrElseThrow().targetType();
-    return customType.hasParent(SystemReflection.class);
+    return customType.hasParent(tech.intellispaces.core.Reflection.class);
   }
 
   public static boolean isCustomReflectionClass(Class<?> aClass) {
@@ -101,7 +101,7 @@ public class ReflectionFunctions {
     if (aClass.isAnnotationPresent(Reflection.class)) {
       return true;
     }
-    if (SystemReflection.class.isAssignableFrom(aClass)) {
+    if (tech.intellispaces.core.Reflection.class.isAssignableFrom(aClass)) {
       return true;
     };
     Optional<Class<?>> domainClass = Classes.get(

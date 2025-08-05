@@ -11,6 +11,8 @@ import tech.intellispaces.commons.type.ClassFunctions;
 import tech.intellispaces.commons.type.ClassNameFunctions;
 import tech.intellispaces.core.Channels;
 import tech.intellispaces.core.OntologyRepository;
+import tech.intellispaces.core.Projection;
+import tech.intellispaces.core.Projections;
 import tech.intellispaces.core.Reflection;
 import tech.intellispaces.core.ReflectionChannel;
 import tech.intellispaces.core.ReflectionDomain;
@@ -55,6 +57,11 @@ public class ClassPathOntologyRepository implements OntologyRepository {
   }
 
   @Override
+  public @Nullable ReflectionPoint findReflection(Rid pid, Rid did) {
+    return null;
+  }
+
+  @Override
   public @Nullable ReflectionSpace findSpace(String spaceName) {
     throw NotImplementedExceptions.withCode("hiUBxA");
   }
@@ -66,6 +73,11 @@ public class ClassPathOntologyRepository implements OntologyRepository {
       return null;
     }
     return DomainFunctions.getDomain(domainClass);
+  }
+
+  @Override
+  public Projection findProjection(Rid rid, Rid did, Rid cid) {
+    return Projections.unknown();
   }
 
   @Override
@@ -113,7 +125,7 @@ public class ClassPathOntologyRepository implements OntologyRepository {
 
   @Override
   public List<Reflection> findRelatedReflections(String reflectionName) {
-    throw NotImplementedExceptions.withCode("ahh0OpW7");
+    return List.of();
   }
 
   @Override
@@ -128,7 +140,7 @@ public class ClassPathOntologyRepository implements OntologyRepository {
     if (domain.reflectionName() != null) {
       return findDomainClass(domain.reflectionName());
     }
-    throw NotImplementedExceptions.withCode("a6vc/A");
+    return null;
   }
 
   private @Nullable Class<?> findDomainClass(String domainName) {

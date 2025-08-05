@@ -259,8 +259,8 @@ public class DefaultEngine implements Engine {
   }
 
   @Override
-  public @Nullable TraversableReflection getReflection(String reflectionName) {
-    Reflection reflection = ontologyRepository.findReflection(reflectionName);
+  public @Nullable TraversableReflection findReflection(String alias) {
+    Reflection reflection = ontologyRepository.findReflection(alias);
     if (reflection == null) {
       return null;
     }
@@ -268,11 +268,16 @@ public class DefaultEngine implements Engine {
   }
 
   @Override
-  public @Nullable TraversableReflectionPoint getReflection(Rid pid, String domainName) {
-    Reflection reflection = ontologyRepository.findReflection(pid, domainName);
+  public @Nullable TraversableReflectionPoint findReflection(Rid pid, String domainAlias) {
+    Reflection reflection = ontologyRepository.findReflection(pid, domainAlias);
     if (reflection == null) {
       return null;
     }
+    return (TraversableReflectionPoint) createSystemReflectionPoint(reflection);
+  }
+
+  @Override
+  public TraversableReflectionPoint getReflection(Reflection reflection) {
     return (TraversableReflectionPoint) createSystemReflectionPoint(reflection);
   }
 
@@ -298,6 +303,9 @@ public class DefaultEngine implements Engine {
   }
 
   private SystemReflection createSystemReflectionPoint(Reflection reflection) {
+    if (reflection instanceof SystemReflection systemReflection) {
+      return systemReflection;
+    }
     return new SystemReflectionPointImpl(reflection.asPoint(), ontologyRepository);
   }
 

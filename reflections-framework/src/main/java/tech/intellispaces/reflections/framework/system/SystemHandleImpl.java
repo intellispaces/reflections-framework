@@ -40,13 +40,18 @@ public class SystemHandleImpl implements SystemHandle {
     }
 
     @Override
-    public @Nullable TraversableReflection getReflection(String reflectionName) {
-        return engine.getReflection(reflectionName);
+    public @Nullable TraversableReflection findReflection(String alias) {
+        return engine.findReflection(alias);
     }
 
     @Override
-    public @Nullable TraversableReflectionPoint getReflection(Rid pid, String domainName) {
-        return engine.getReflection(pid, domainName);
+    public @Nullable TraversableReflectionPoint findReflection(Rid pid, String domainAlias) {
+        return engine.findReflection(pid, domainAlias);
+    }
+
+    @Override
+    public TraversableReflection getReflection(Reflection reflection) {
+        return engine.getReflection(reflection);
     }
 
     @Override

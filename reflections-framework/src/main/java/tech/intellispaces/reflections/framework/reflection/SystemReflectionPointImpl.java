@@ -116,10 +116,23 @@ public class SystemReflectionPointImpl implements TraversableReflectionPoint, Sy
     if (!projection.isUnknown()) {
       return projection;
     }
-    if (rid() != null &&  domain() != null) {
-      Reflection reflection = ontologyRepository.findReflection(rid(), domain().reflectionName());
-      if (reflection != null) {
-        return reflection.projectionThru(cid);
+    projection = ontologyRepository.findProjection(rid(), domain().did(), cid);
+    if (!projection.isUnknown()) {
+      return projection;
+    }
+
+    if (rid() != null && domain() != null) {
+      if (domain().did() != null) {
+        Reflection reflection = ontologyRepository.findReflection(rid(), domain().did());
+        if (reflection != null) {
+          return reflection.projectionThru(cid);
+        }
+      }
+      if (domain().reflectionName() != null) {
+        Reflection reflection = ontologyRepository.findReflection(rid(), domain().reflectionName());
+        if (reflection != null) {
+          return reflection.projectionThru(cid);
+        }
       }
     }
     if (reflectionName() != null) {
@@ -196,7 +209,7 @@ public class SystemReflectionPointImpl implements TraversableReflectionPoint, Sy
 
   @Override
   public List<Reflection> relatedReflections() {
-    return ontologyRepository.findRelatedReflections(reflectionName());
+    return ontologyRepository.findRelatedReflections(rid(), domain().did());
   }
 
   @Override

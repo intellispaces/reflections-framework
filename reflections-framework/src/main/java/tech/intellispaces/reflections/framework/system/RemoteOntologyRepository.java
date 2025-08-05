@@ -7,6 +7,8 @@ import org.jetbrains.annotations.Nullable;
 
 import tech.intellispaces.commons.exception.NotImplementedExceptions;
 import tech.intellispaces.core.OntologyRepository;
+import tech.intellispaces.core.Projection;
+import tech.intellispaces.core.Projections;
 import tech.intellispaces.core.Reflection;
 import tech.intellispaces.core.ReflectionChannel;
 import tech.intellispaces.core.ReflectionDomain;
@@ -46,6 +48,11 @@ public class RemoteOntologyRepository implements OntologyRepository {
   }
 
   @Override
+  public @Nullable ReflectionPoint findReflection(Rid pid, Rid did) {
+    throw NotImplementedExceptions.withCode("sC1Pcw");
+  }
+
+  @Override
   public @Nullable ReflectionSpace findSpace(String spaceName) {
     throw NotImplementedExceptions.withCode("ZNMqSAoN");
   }
@@ -53,6 +60,11 @@ public class RemoteOntologyRepository implements OntologyRepository {
   @Override
   public @Nullable ReflectionDomain findDomain(String domainName) {
     throw NotImplementedExceptions.withCode("yvQcDJJa");
+  }
+
+  @Override
+  public Projection findProjection(Rid rid, Rid did, Rid cid) {
+    return Projections.unknown();
   }
 
   @Override

@@ -99,7 +99,11 @@ public class SystemReflectionDomainImpl implements ReflectionDomain, ReflectionP
 
   @Override
   public Projection projectionThru(Rid cid) {
-    return wrappedDomain.projectionThru(cid);
+    Projection projection = wrappedDomain.projectionThru(cid);
+    if (!projection.isUnknown()) {
+      return projection;
+    }
+    throw NotImplementedExceptions.withCode("Ts76rQ");
   }
 
   @Override

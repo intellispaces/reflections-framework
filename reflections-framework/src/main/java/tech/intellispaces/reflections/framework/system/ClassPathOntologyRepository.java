@@ -91,8 +91,8 @@ public class ClassPathOntologyRepository implements OntologyRepository {
   }
 
   @Override
-  public @Nullable ReflectionDomain findBorrowedDomain(String domainName) {
-    return null;
+  public List<ReflectionDomain> findForeignDomains(Rid domainId) {
+    return List.of();
   }
 
   @Override

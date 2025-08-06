@@ -78,8 +78,8 @@ public class RemoteOntologyRepository implements OntologyRepository {
   }
 
   @Override
-  public @Nullable ReflectionDomain findBorrowedDomain(String domainName) {
-    throw NotImplementedExceptions.withCode("enfJaObf");
+  public List<ReflectionDomain> findForeignDomains(Rid domainId) {
+    return List.of();
   }
 
   @Override

@@ -11,17 +11,17 @@ public class MapSpecifiedSourceToSpecifiedTargetDomainAndClassPlanImpl
 {
   private final ReflectionPoint source;
   private final ReflectionDomain targetDomain;
-  private final Class<?> targetClas;
+  private final Class<?> targetClass;
   private ExecutionTraversePlan executionPlan;
 
   public MapSpecifiedSourceToSpecifiedTargetDomainAndClassPlanImpl(
       ReflectionPoint source,
       ReflectionDomain targetDomain,
-      Class<?> targetClas
+      Class<?> targetClass
   ) {
     this.source = source;
     this.targetDomain = targetDomain;
-    this.targetClas = targetClas;
+    this.targetClass = targetClass;
   }
 
   @Override
@@ -36,7 +36,7 @@ public class MapSpecifiedSourceToSpecifiedTargetDomainAndClassPlanImpl
 
   @Override
   public Class<?> targetClass() {
-    return targetClas;
+    return targetClass;
   }
 
   @Override

@@ -52,9 +52,11 @@ public class LocalFactoryRegistry implements FactoryRegistry {
     Set<FactoryMethod> factories = new HashSet<>();
     findFactoryMethods(domain, factories);
 
-    ReflectionDomain borrowedDomain = domain.borrowedDomain();
-    if (borrowedDomain != null) {
-      findFactoryMethods(borrowedDomain, factories);
+    List<ReflectionDomain> foreignDomains = domain.foreignDomains();
+    if (foreignDomains != null) {
+      for (ReflectionDomain foreignDomain : foreignDomains) {
+        findFactoryMethods(foreignDomain, factories);
+      }
     }
 
     return factories.stream()
@@ -410,9 +412,11 @@ public class LocalFactoryRegistry implements FactoryRegistry {
     Set<FactoryMethod> factoryMethods = new HashSet<>();
     findFactoryMethods(domain, factoryMethods);
 
-    ReflectionDomain borrowedDomain = domain.borrowedDomain();
-    if (borrowedDomain != null) {
-      findFactoryMethods(borrowedDomain, factoryMethods);
+    List<ReflectionDomain> foreignDomains = domain.foreignDomains();
+    if (foreignDomains != null) {
+      for (ReflectionDomain foreignDomain : foreignDomains) {
+        findFactoryMethods(foreignDomain, factoryMethods);
+      }
     }
     return factoryMethods;
   }

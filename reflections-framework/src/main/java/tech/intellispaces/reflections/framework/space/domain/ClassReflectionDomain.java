@@ -34,8 +34,8 @@ public class ClassReflectionDomain implements ReflectionDomain, ReflectionPoint 
   }
 
   @Override
-  public @Nullable ReflectionDomain borrowedDomain() {
-    return null;
+  public List<ReflectionDomain> foreignDomains() {
+    return List.of();
   }
 
   @Override

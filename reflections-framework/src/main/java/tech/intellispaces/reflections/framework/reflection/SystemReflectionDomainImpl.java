@@ -43,8 +43,12 @@ public class SystemReflectionDomainImpl implements ReflectionDomain, ReflectionP
   }
 
   @Override
-  public @Nullable ReflectionDomain borrowedDomain() {
-    return wrappedDomain.borrowedDomain();
+  public List<ReflectionDomain> foreignDomains() {
+    List<ReflectionDomain> foreignDomains = wrappedDomain.foreignDomains();
+    if (foreignDomains == null || foreignDomains.isEmpty()) {
+      foreignDomains = ontologyRepository.findForeignDomains(rid());
+    }
+    return foreignDomains != null ? foreignDomains : List.of();
   }
 
   @Override
@@ -103,7 +107,7 @@ public class SystemReflectionDomainImpl implements ReflectionDomain, ReflectionP
     if (!projection.isUnknown()) {
       return projection;
     }
-    throw NotImplementedExceptions.withCode("Ts76rQ");
+    return ontologyRepository.findProjection(rid(), domain().did(), cid);
   }
 
   @Override

@@ -12,19 +12,19 @@ public class MapSpecifiedSourceAndQualifierToSpecifiedTargetDomainAndClassPlanIm
   private final ReflectionPoint source;
   private final ReflectionDomain targetDomain;
   private final Object qualifier;
-  private final Class<?> targetClas;
+  private final Class<?> targetClass;
   private ExecutionTraversePlan executionPlan;
 
   public MapSpecifiedSourceAndQualifierToSpecifiedTargetDomainAndClassPlanImpl(
       ReflectionPoint source,
       ReflectionDomain targetDomain,
       Object qualifier,
-      Class<?> targetClas
+      Class<?> targetClass
   ) {
     this.source = source;
     this.targetDomain = targetDomain;
     this.qualifier = qualifier;
-    this.targetClas = targetClas;
+    this.targetClass = targetClass;
   }
 
   @Override
@@ -44,7 +44,7 @@ public class MapSpecifiedSourceAndQualifierToSpecifiedTargetDomainAndClassPlanIm
 
   @Override
   public Class<?> targetClass() {
-    return targetClas;
+    return targetClass;
   }
 
   @Override

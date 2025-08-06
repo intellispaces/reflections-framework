@@ -89,7 +89,7 @@ public interface FactoryFunctions {
   private static <R extends Reflection> R castToTargetDomain(
       R reflection, ReflectionDomain targetDomain
   ) {
-    if (targetDomain.borrowedDomain() == null) {
+    if (targetDomain.foreignDomains() == null || targetDomain.foreignDomains().isEmpty()) {
       return reflection;
     }
     return (R) new NativeForeignReflectionPoint((NativeReflectionPoint) reflection, targetDomain);

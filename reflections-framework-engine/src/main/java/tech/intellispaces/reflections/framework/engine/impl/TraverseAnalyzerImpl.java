@@ -374,10 +374,13 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
       );
     }
     ReflectionChannel channel = ontologyRepository.findChannel(sourceDomain, targetDomain);
-    if (channel == null && sourceDomain.borrowedDomain() != null) {
-      ReflectionDomain borrowedSourceDomain = sourceDomain.borrowedDomain();
-      if (borrowedSourceDomain != null) {
-        channel = ontologyRepository.findChannel(borrowedSourceDomain, targetDomain);
+    if (channel == null && !sourceDomain.foreignDomains().isEmpty()) {
+      List<ReflectionDomain> foreignDomains = sourceDomain.foreignDomains();
+      for (ReflectionDomain foreignDomain : foreignDomains) {
+        channel = ontologyRepository.findChannel(foreignDomain, targetDomain);
+        if (channel != null) {
+          return channel;
+        }
       }
     }
     return channel;

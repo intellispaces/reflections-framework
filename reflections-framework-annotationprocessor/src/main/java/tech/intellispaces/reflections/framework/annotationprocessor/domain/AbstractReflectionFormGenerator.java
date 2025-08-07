@@ -122,7 +122,7 @@ public abstract class AbstractReflectionFormGenerator extends ReflectionsArtifac
 
     DomainReference domain = ReflectionsNodeFunctions.ontologyReference().getDomainByType(DomainAssignments.Number);
     if (parent.targetType().canonicalName().equals(domain.classCanonicalName())) {
-      underlyingTypes.add(domain.domainName());
+      underlyingTypes.add(domain.domainAlias());
     } else {
       underlyingTypes.add(targetType);
     }

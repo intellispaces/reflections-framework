@@ -22,7 +22,7 @@ class OntologyReferencesImpl implements OntologyReferences {
     this.domainIndexByAssignment = domains.stream().collect(
         Collectors.toMap(DomainReference::assignment, Function.identity()));
     this.domainIndexByName = domains.stream().collect(
-        Collectors.toMap(DomainReference::domainName, Function.identity()));
+        Collectors.toMap(DomainReference::domainAlias, Function.identity()));
     this.domainIndexByClassName = domains.stream().collect(
         Collectors.toMap(DomainReference::classCanonicalName, Function.identity()));
     this.domainIndexByDelegateClassName = domains.stream()
@@ -75,7 +75,7 @@ class OntologyReferencesImpl implements OntologyReferences {
 
   @Override
   public boolean isDomainOfDomains(String domainName) {
-    return getDomainByType(DomainAssignments.Domain).domainName().equals(domainName);
+    return getDomainByType(DomainAssignments.Domain).domainAlias().equals(domainName);
   }
 
   @Override

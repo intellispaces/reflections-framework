@@ -25,6 +25,7 @@ import tech.intellispaces.reflections.framework.reflection.ReflectionForms;
 import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
 import tech.intellispaces.reflections.framework.reflection.SystemReflection;
 import tech.intellispaces.reflections.framework.settings.DomainAssignments;
+import tech.intellispaces.reflections.framework.settings.DomainReference;
 import tech.intellispaces.reflections.framework.space.channel.ChannelFunctions;
 import tech.intellispaces.reflections.framework.system.GuideProvider;
 import tech.intellispaces.reflections.framework.system.TraverseAnalyzer;
@@ -369,9 +370,13 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
 
   private @Nullable ReflectionChannel findChannel(ReflectionDomain sourceDomain, ReflectionDomain targetDomain) {
     if (sourceDomain == null) {
-      sourceDomain = Domains.create(
-          ReflectionsNodeFunctions.ontologyReference().getDomainByType(DomainAssignments.Notion).domainName()
+      DomainReference conceptDomainReference = ReflectionsNodeFunctions.ontologyReference().getDomainByType(
+          DomainAssignments.Notion
       );
+      sourceDomain = Domains.build()
+          .did(conceptDomainReference.domainId())
+          .name(conceptDomainReference.domainAlias())
+          .get();
     }
     ReflectionChannel channel = ontologyRepository.findChannel(sourceDomain, targetDomain);
     if (channel == null && !sourceDomain.foreignDomains().isEmpty()) {

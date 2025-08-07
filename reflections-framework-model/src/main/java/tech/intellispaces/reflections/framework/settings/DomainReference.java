@@ -1,5 +1,7 @@
 package tech.intellispaces.reflections.framework.settings;
 
+import tech.intellispaces.core.Rid;
+
 /**
  * The domain reference point.
  */
@@ -10,10 +12,12 @@ public interface DomainReference {
    */
   DomainAssignment assignment();
 
+  Rid domainId();
+
   /**
-   * The full qualified name.
+   * The domain qualified alias.
    */
-  String domainName();
+  String domainAlias();
 
   /**
    * The domain class canonical name.

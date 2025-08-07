@@ -1,17 +1,22 @@
 package tech.intellispaces.reflections.framework.settings;
 
+import tech.intellispaces.core.Rid;
+
 class DomainReferenceImpl implements DomainReference {
   private final DomainAssignments type;
-  private final String domainName;
+  private final Rid domainId;
+  private final String domainAlias;
   private final String classCanonicalName;
 
   DomainReferenceImpl(
       DomainAssignments type,
-      String domainName,
+      Rid domainId,
+      String domainAlias,
       String classCanonicalName
   ) {
     this.type = type;
-    this.domainName = domainName;
+    this.domainId = domainId;
+    this.domainAlias = domainAlias;
     this.classCanonicalName = classCanonicalName;
   }
 
@@ -21,8 +26,13 @@ class DomainReferenceImpl implements DomainReference {
   }
 
   @Override
-  public String domainName() {
-    return domainName;
+  public Rid domainId() {
+    return domainId;
+  }
+
+  @Override
+  public String domainAlias() {
+    return domainAlias;
   }
 
   @Override

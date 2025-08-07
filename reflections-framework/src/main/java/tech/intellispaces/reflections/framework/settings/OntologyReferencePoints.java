@@ -16,7 +16,10 @@ import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.commons.properties.PropertiesSet;
 import tech.intellispaces.commons.properties.PropertiesSets;
 import tech.intellispaces.commons.resource.ResourceFunctions;
+import tech.intellispaces.commons.type.ClassFunctions;
+import tech.intellispaces.core.Rid;
 import tech.intellispaces.core.Rids;
+import tech.intellispaces.reflections.framework.space.domain.DomainFunctions;
 
 public class OntologyReferencePoints {
 
@@ -79,104 +82,60 @@ public class OntologyReferencePoints {
   static void loadNotionOntologyReferences(
       PropertiesSet props, List<DomainReference> domains, List<ChannelReference> channels
   ) {
-    String domainName = props.traverseToString("notionDomain.name");
-    if (domainName != null) {
-      String className = props.traverseToString("notionDomain.class");
-      domains.add(new DomainReferenceImpl(DomainAssignments.Notion, domainName, className));
-
+    loadDomainReference(DomainAssignments.Notion, "notionDomain", props, domains);
+    String domainAlias = props.traverseToString("notionDomain.name");
+    if (domainAlias != null) {
       String notionToDomainChannelAlias = props.traverseToString("notionToDomainChannel.alias");
       channels.add(new ChannelReferenceImpl(ChannelAssignments.PointToDomain, null, notionToDomainChannelAlias));
     }
   }
 
   static void loadDomainOntologyReferences(PropertiesSet props, List<DomainReference> domains) {
-    String domainName = props.traverseToString("domainDomain.name");
-    if (domainName != null) {
-      String className = props.traverseToString("domainDomain.class");
-      domains.add(new DomainReferenceImpl(DomainAssignments.Domain, domainName, className));
-    }
+    loadDomainReference(DomainAssignments.Domain, "domainDomain", props, domains);
   }
 
   static void loadBooleanOntologyReferences(PropertiesSet props, List<DomainReference> domains) {
-    String domainName = props.traverseToString("booleanDomain.name");
-    if (domainName != null) {
-      String className = props.traverseToString("booleanDomain.class");
-      domains.add(new DomainReferenceImpl(DomainAssignments.Boolean, domainName, className));
-    }
+    loadDomainReference(DomainAssignments.Boolean, "booleanDomain", props, domains);
   }
 
   static void loadStringOntologyReferences(PropertiesSet props, List<DomainReference> domains) {
-    String domainName = props.traverseToString("stringDomain.name");
-    if (domainName != null) {
-      String className = props.traverseToString("stringDomain.class");
-      domains.add(new DomainReferenceImpl(DomainAssignments.String, domainName, className));
-    }
+    loadDomainReference(DomainAssignments.String, "stringDomain", props, domains);
   }
 
   static void loadNumberOntologyReferences(PropertiesSet props, List<DomainReference> domains) {
-    String domainName = props.traverseToString("numberDomain.name");
-    if (domainName != null) {
-      String className = props.traverseToString("numberDomain.class");
-      domains.add(new DomainReferenceImpl(DomainAssignments.Number, domainName, className));
-    }
+    loadDomainReference(DomainAssignments.Number, "numberDomain", props, domains);
   }
 
   static void loadByteOntologyReferences(PropertiesSet props, List<DomainReference> domains) {
-    String domainName = props.traverseToString("byteDomain.name");
-    if (domainName != null) {
-      String className = props.traverseToString("byteDomain.class");
-      domains.add(new DomainReferenceImpl(DomainAssignments.Byte, domainName, className));
-    }
+    loadDomainReference(DomainAssignments.Byte, "byteDomain", props, domains);
   }
 
   static void loadShortOntologyReferences(PropertiesSet props, List<DomainReference> domains) {
-    String domainName = props.traverseToString("shortDomain.name");
-    if (domainName != null) {
-      String className = props.traverseToString("shortDomain.class");
-      domains.add(new DomainReferenceImpl(DomainAssignments.Short, domainName, className));
-    }
+    loadDomainReference(DomainAssignments.Short, "shortDomain", props, domains);
   }
 
   static void loadIntegerOntologyReferences(PropertiesSet props, List<DomainReference> domains) {
-    String domainName = props.traverseToString("integerDomain.name");
-    if (domainName != null) {
-      String className = props.traverseToString("integerDomain.class");
-      domains.add(new DomainReferenceImpl(DomainAssignments.Integer, domainName, className));
-    }
+    loadDomainReference(DomainAssignments.Integer, "integerDomain", props, domains);
   }
 
   static void loadLongOntologyReferences(PropertiesSet props, List<DomainReference> domains) {
-    String domainName = props.traverseToString("longDomain.name");
-    if (domainName != null) {
-      String className = props.traverseToString("longDomain.class");
-      domains.add(new DomainReferenceImpl(DomainAssignments.Long, domainName, className));
-    }
+    loadDomainReference(DomainAssignments.Long, "longDomain", props, domains);
   }
 
   static void loadFloatOntologyReferences(PropertiesSet props, List<DomainReference> domains) {
-    String domainName = props.traverseToString("floatDomain.name");
-    if (domainName != null) {
-      String className = props.traverseToString("floatDomain.class");
-      domains.add(new DomainReferenceImpl(DomainAssignments.Float, domainName, className));
-    }
+    loadDomainReference(DomainAssignments.Float, "floatDomain", props, domains);
   }
 
   static void loadDoubleOntologyReferences(PropertiesSet props, List<DomainReference> domains) {
-    String domainName = props.traverseToString("doubleDomain.name");
-    if (domainName != null) {
-      String className = props.traverseToString("doubleDomain.class");
-      domains.add(new DomainReferenceImpl(DomainAssignments.Double, domainName, className));
-    }
+    loadDomainReference(DomainAssignments.Double, "doubleDomain", props, domains);
   }
 
   static void loadPropertiesSetOntologyReferences(
       PropertiesSet props, List<DomainReference> domains, List<ChannelReference> channels
   ) {
+    loadDomainReference(DomainAssignments.PropertiesSet, "propertiesSetDomain", props, domains);
     String domainName = props.traverseToString("propertiesSetDomain.name");
     if (domainName != null) {
-      String className = props.traverseToString("propertiesSetDomain.class");
-      domains.add(new DomainReferenceImpl(DomainAssignments.PropertiesSet, domainName, className));
-
       String propertiesSetToValueCid = props.traverseToString("propertiesSetToValueChannel.rid");
       channels.add(new ChannelReferenceImpl(ChannelAssignments.PropertiesSetToValue, Rids.create(propertiesSetToValueCid), null));
 
@@ -189,10 +148,19 @@ public class OntologyReferencePoints {
   }
 
   static void loadDatasetOntologyReferences(PropertiesSet props, List<DomainReference> domains) {
-    String domainName = props.traverseToString("datasetDomain.name");
-    if (domainName != null) {
-      String className = props.traverseToString("datasetDomain.class");
-      domains.add(new DomainReferenceImpl(DomainAssignments.Dataset, domainName, className));
+    loadDomainReference(DomainAssignments.Dataset, "datasetDomain", props, domains);
+  }
+
+  private static void loadDomainReference(
+      DomainAssignments domainAssignment, String propertyName, PropertiesSet props, List<DomainReference> domains
+  ) {
+    String domainAlias = props.traverseToString(propertyName + ".name");
+    if (domainAlias != null) {
+      String className = props.traverseToString(propertyName + ".class");
+      Rid domainId = ClassFunctions.getClass(className)
+          .map(DomainFunctions::getDomainId)
+          .orElse(null);
+      domains.add(new DomainReferenceImpl(domainAssignment, domainId, domainAlias, className));
     }
   }
 

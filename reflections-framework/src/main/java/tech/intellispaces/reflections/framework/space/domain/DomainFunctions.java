@@ -77,7 +77,7 @@ public final class DomainFunctions {
         .ontologyReference()
         .getDomainByDelegateClass(domainType.canonicalName());
     if (domainReference != null) {
-      return domainReference.domainName();
+      return domainReference.domainAlias();
     }
     return domainType.selectAnnotation(Domain.class).orElseThrow().name();
   }

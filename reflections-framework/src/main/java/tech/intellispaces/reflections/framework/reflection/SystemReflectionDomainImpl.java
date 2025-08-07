@@ -68,7 +68,8 @@ public class SystemReflectionDomainImpl implements ReflectionDomain, ReflectionP
         DomainAssignments.Notion
     );
     ReflectionDomain notionDomain = Domains.build()
-        .name(notionDomainReference.domainName())
+        .did(notionDomainReference.domainId())
+        .name(notionDomainReference.domainAlias())
         .get();
     return List.of(new SystemReflectionDomainImpl(notionDomain, ontologyRepository));
   }
@@ -78,7 +79,7 @@ public class SystemReflectionDomainImpl implements ReflectionDomain, ReflectionP
     DomainReference domainReference = ReflectionsNodeFunctions.ontologyReference().getDomainByType(
         DomainAssignments.Domain
     );
-    return new SystemReflectionDomainImpl(ontologyRepository.findDomain(domainReference.domainName()), ontologyRepository);
+    return new SystemReflectionDomainImpl(ontologyRepository.findDomain(domainReference.domainAlias()), ontologyRepository);
   }
 
   @Override

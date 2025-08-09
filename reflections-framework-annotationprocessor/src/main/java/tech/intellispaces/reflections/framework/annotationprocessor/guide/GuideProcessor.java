@@ -21,7 +21,7 @@ import tech.intellispaces.reflections.framework.annotationprocessor.module.UnitW
 public class GuideProcessor extends ArtifactProcessor {
 
   public GuideProcessor() {
-    super(Set.of(ElementKind.INTERFACE, ElementKind.CLASS), Guide.class, ReflectionsArtifactProcessor.SOURCE_VERSION);
+    super(Guide.class, Set.of(ElementKind.INTERFACE, ElementKind.CLASS), ReflectionsArtifactProcessor.SOURCE_VERSION);
   }
 
   @Override

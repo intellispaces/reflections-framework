@@ -19,7 +19,7 @@ import tech.intellispaces.reflections.framework.annotationprocessor.ReflectionsA
 public class ReflectionProcessor extends ArtifactProcessor {
 
   public ReflectionProcessor() {
-    super(ElementKind.CLASS, Reflection.class, ReflectionsArtifactProcessor.SOURCE_VERSION);
+    super(Reflection.class, ElementKind.CLASS, ReflectionsArtifactProcessor.SOURCE_VERSION);
   }
 
   @Override

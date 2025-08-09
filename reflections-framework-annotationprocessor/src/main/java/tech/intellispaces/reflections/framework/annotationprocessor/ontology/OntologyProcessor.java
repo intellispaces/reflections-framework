@@ -19,7 +19,7 @@ import tech.intellispaces.reflections.framework.annotationprocessor.ReflectionsA
 public class OntologyProcessor extends ArtifactProcessor {
 
   public OntologyProcessor() {
-    super(ElementKind.INTERFACE, Ontology.class, ReflectionsArtifactProcessor.SOURCE_VERSION);
+    super(Ontology.class, ElementKind.INTERFACE, ReflectionsArtifactProcessor.SOURCE_VERSION);
   }
 
   @Override

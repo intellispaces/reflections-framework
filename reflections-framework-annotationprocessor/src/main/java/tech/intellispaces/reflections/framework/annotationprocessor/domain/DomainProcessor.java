@@ -21,7 +21,7 @@ public class DomainProcessor extends ArtifactProcessor {
   private int index;
 
   public DomainProcessor() {
-    super(ElementKind.INTERFACE, Domain.class, ReflectionsArtifactProcessor.SOURCE_VERSION);
+    super(Domain.class, ElementKind.INTERFACE, ReflectionsArtifactProcessor.SOURCE_VERSION);
   }
 
   @Override

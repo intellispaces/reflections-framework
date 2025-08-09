@@ -19,7 +19,7 @@ import tech.intellispaces.reflections.framework.annotationprocessor.ReflectionsA
 public class DatasetProcessor extends ArtifactProcessor {
 
   public DatasetProcessor() {
-    super(ElementKind.INTERFACE, Dataset.class, ReflectionsArtifactProcessor.SOURCE_VERSION);
+    super(Dataset.class, ElementKind.INTERFACE, ReflectionsArtifactProcessor.SOURCE_VERSION);
   }
 
   @Override

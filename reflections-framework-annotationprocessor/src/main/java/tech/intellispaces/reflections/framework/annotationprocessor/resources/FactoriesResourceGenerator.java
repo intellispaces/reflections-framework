@@ -1,8 +1,8 @@
-package tech.intellispaces.reflections.framework.annotationprocessor.factory;
+package tech.intellispaces.reflections.framework.annotationprocessor.resources;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 import tech.intellispaces.annotationprocessor.Artifact;
 import tech.intellispaces.annotationprocessor.ArtifactGenerator;
@@ -11,11 +11,8 @@ import tech.intellispaces.annotationprocessor.ArtifactImpl;
 import tech.intellispaces.annotationprocessor.ArtifactKinds;
 import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
 
-public class FactoryMetaInfGenerator implements ArtifactGenerator {
-  private final List<String> factories = new ArrayList<>();
-
-  public FactoryMetaInfGenerator() {
-  }
+public class FactoriesResourceGenerator implements ArtifactGenerator {
+  private final Set<String> factories = new HashSet<>();
 
   @Override
   public boolean isRelevant(ArtifactGeneratorContext context) {
@@ -38,7 +35,7 @@ public class FactoryMetaInfGenerator implements ArtifactGenerator {
     }
     return Optional.of(new ArtifactImpl(
         ArtifactKinds.ResourceFile,
-        generatedArtifactName(),
+        NameConventionFunctions.getFactoriesResourceName(),
         String.join("\n", factories).toCharArray()
     ));
   }

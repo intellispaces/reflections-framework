@@ -17,14 +17,9 @@ import tech.intellispaces.reflections.framework.naming.NameConventionFunctions;
 import tech.intellispaces.reflections.framework.reflection.ReflectionFunctions;
 
 public class FactoryWrapperGenerator extends ReflectionsArtifactGenerator {
-  private final FactoryMetaInfGenerator metaInfGenerator;
 
-  public FactoryWrapperGenerator(
-      CustomType factoryType,
-      FactoryMetaInfGenerator metaInfGenerator
-  ) {
+  public FactoryWrapperGenerator(CustomType factoryType) {
     super(factoryType);
-    this.metaInfGenerator = metaInfGenerator;
   }
 
   @Override
@@ -54,8 +49,6 @@ public class FactoryWrapperGenerator extends ReflectionsArtifactGenerator {
     addImport(FactoryMethod.class);
 
     addVariable("factoryMethods", getFactoryMethods());
-
-    metaInfGenerator.addObjectFactory(generatedArtifactName());
     return true;
   }
 

@@ -1,7 +1,6 @@
 package tech.intellispaces.reflections.framework.annotationprocessor.customizer;
 
 import java.util.List;
-import java.util.Set;
 import javax.annotation.processing.Processor;
 import javax.lang.model.element.ElementKind;
 
@@ -19,7 +18,7 @@ import tech.intellispaces.reflections.framework.annotationprocessor.ReflectionsA
 public class CustomizerProcessor extends ArtifactProcessor {
 
   public CustomizerProcessor() {
-    super(Set.of(ElementKind.INTERFACE), Customizer.class, ReflectionsArtifactProcessor.SOURCE_VERSION);
+    super(Customizer.class, ElementKind.INTERFACE, ReflectionsArtifactProcessor.SOURCE_VERSION);
   }
 
   @Override

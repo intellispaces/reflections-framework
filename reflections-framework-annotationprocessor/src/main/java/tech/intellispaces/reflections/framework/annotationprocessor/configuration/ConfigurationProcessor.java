@@ -20,7 +20,7 @@ import tech.intellispaces.reflections.framework.annotationprocessor.module.UnitW
 public class ConfigurationProcessor extends ArtifactProcessor {
 
   public ConfigurationProcessor() {
-    super(ElementKind.CLASS, Configuration.class, ReflectionsArtifactProcessor.SOURCE_VERSION);
+    super(Configuration.class, ElementKind.CLASS, ReflectionsArtifactProcessor.SOURCE_VERSION);
   }
 
   @Override

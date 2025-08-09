@@ -19,7 +19,7 @@ import tech.intellispaces.reflections.framework.annotationprocessor.ReflectionsA
 public class ChannelProcessor extends ArtifactProcessor {
 
   public ChannelProcessor() {
-    super(ElementKind.INTERFACE, Channel.class, ReflectionsArtifactProcessor.SOURCE_VERSION);
+    super(Channel.class, ElementKind.INTERFACE, ReflectionsArtifactProcessor.SOURCE_VERSION);
   }
 
   @Override

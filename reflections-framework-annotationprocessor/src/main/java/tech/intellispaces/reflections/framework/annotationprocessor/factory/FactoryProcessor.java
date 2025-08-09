@@ -17,10 +17,9 @@ import tech.intellispaces.reflections.framework.annotationprocessor.ReflectionsA
 
 @AutoService(Processor.class)
 public class FactoryProcessor extends ArtifactProcessor {
-  private final FactoryMetaInfGenerator metaInfGenerator = new FactoryMetaInfGenerator();
 
   public FactoryProcessor() {
-    super(ElementKind.CLASS, Factory.class, ReflectionsArtifactProcessor.SOURCE_VERSION);
+    super(Factory.class, ElementKind.CLASS, ReflectionsArtifactProcessor.SOURCE_VERSION);
   }
 
   @Override
@@ -35,9 +34,6 @@ public class FactoryProcessor extends ArtifactProcessor {
 
   @Override
   public List<ArtifactGenerator> makeGenerators(CustomType objectFactoryType, ArtifactGeneratorContext context) {
-    return List.of(
-        metaInfGenerator,
-        new FactoryWrapperGenerator(objectFactoryType, metaInfGenerator)
-    );
+    return List.of(new FactoryWrapperGenerator(objectFactoryType));
   }
 }

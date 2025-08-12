@@ -48,6 +48,7 @@ import tech.intellispaces.reflections.framework.reflection.ReflectionHandle;
 import tech.intellispaces.reflections.framework.reflection.ReflectionRealizationType;
 import tech.intellispaces.reflections.framework.reflection.SystemReflection;
 import tech.intellispaces.reflections.framework.system.ModuleProjection;
+import tech.intellispaces.reflections.framework.system.OnModuleLoadEventHandler;
 import tech.intellispaces.reflections.framework.system.ProjectionDefinition;
 import tech.intellispaces.reflections.framework.system.ReflectionFactory;
 import tech.intellispaces.reflections.framework.traverse.MappingOfMovingTraverse;
@@ -56,7 +57,7 @@ import tech.intellispaces.reflections.framework.traverse.MappingTraverse;
 /**
  * Reflections engine.
  */
-public interface Engine {
+public interface Engine extends OnModuleLoadEventHandler {
 
   void start();
 

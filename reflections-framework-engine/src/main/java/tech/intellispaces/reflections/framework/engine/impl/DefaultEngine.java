@@ -25,6 +25,7 @@ import tech.intellispaces.commons.instance.Instances;
 import tech.intellispaces.commons.type.Classes;
 import tech.intellispaces.commons.type.Type;
 import tech.intellispaces.commons.type.Types;
+import tech.intellispaces.core.MultiSpaceOntologyRepository;
 import tech.intellispaces.core.OntologyRepository;
 import tech.intellispaces.core.Projection;
 import tech.intellispaces.core.Reflection;
@@ -89,7 +90,9 @@ import tech.intellispaces.reflections.framework.space.channel.ChannelFunctions;
 import tech.intellispaces.reflections.framework.system.AutoGuideRegistry;
 import tech.intellispaces.reflections.framework.system.FactoryRegistry;
 import tech.intellispaces.reflections.framework.system.GuideRegistry;
+import tech.intellispaces.reflections.framework.system.ModuleHandle;
 import tech.intellispaces.reflections.framework.system.ModuleProjection;
+import tech.intellispaces.reflections.framework.system.OnModuleLoadEventHandler;
 import tech.intellispaces.reflections.framework.system.ProjectionDefinition;
 import tech.intellispaces.reflections.framework.system.ProjectionRegistry;
 import tech.intellispaces.reflections.framework.system.ReflectionFactory;
@@ -144,6 +147,20 @@ public class DefaultEngine implements Engine {
   @Override
   public void stop() {
 
+  }
+
+  @Override
+  public void onModuleLoad(ModuleHandle module) {
+    if (ontologyRepository instanceof OnModuleLoadEventHandler handler) {
+      handler.onModuleLoad(module);
+    }
+    if (ontologyRepository instanceof MultiSpaceOntologyRepository multiRep) {
+      for (OntologyRepository rep : multiRep.repositories()) {
+        if (rep instanceof OnModuleLoadEventHandler h) {
+          h.onModuleLoad(module);
+        }
+      }
+    }
   }
 
   @Override

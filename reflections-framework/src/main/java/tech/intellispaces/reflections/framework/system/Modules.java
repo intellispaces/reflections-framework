@@ -31,6 +31,7 @@ public class Modules {
       validateModule(module);
       moduleHolder().set(module);
       loadEngine(engine, module);
+      engine.onModuleLoad(module);
       return module;
     }
   }

@@ -39,7 +39,7 @@ public class ClassReflectionDomain implements ReflectionDomain, ReflectionPoint 
   }
 
   @Override
-  public List<ReflectionChannel> domainChannels() {
+  public List<ReflectionChannel> contextChannels() {
     return DomainFunctions.getDomainChannels(domainClass);
   }
 
@@ -54,12 +54,12 @@ public class ClassReflectionDomain implements ReflectionDomain, ReflectionPoint 
   }
 
   @Override
-  public @Nullable String domainName() {
-    return domain().reflectionName();
+  public @Nullable String domainAlias() {
+    return domain().alias();
   }
 
   @Override
-  public List<ReflectionPoint> underlyingPoints() {
+  public List<ReflectionPoint> parentPoints() {
     throw NotImplementedExceptions.withCode("XfL38InR");
   }
 
@@ -134,7 +134,7 @@ public class ClassReflectionDomain implements ReflectionDomain, ReflectionPoint 
   }
 
   @Override
-  public @Nullable String reflectionName() {
+  public @Nullable String alias() {
     return DomainFunctions.getDomainName(domainClass);
   }
 }

@@ -310,7 +310,7 @@ public final class DomainFunctions {
         CustomType returnType = method.returnType().orElseThrow().asCustomTypeReferenceOrElseThrow().targetType();
 
         String curChannelDomainName = getDomainName(returnType);
-        if (curChannelDomainName.equals(targetDomain.reflectionName())) {
+        if (curChannelDomainName.equals(targetDomain.alias())) {
           return ChannelFunctions.getChannelId(method);
         }
 

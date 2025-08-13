@@ -65,8 +65,8 @@ public class NativeForeignReflectionPoint implements NativeReflectionPoint, Trav
   }
 
   @Override
-  public List<? extends SystemReflection> underlyingReflections() {
-    return foreignPoint.underlyingReflections();
+  public List<? extends SystemReflection> parentReflections() {
+    return foreignPoint.parentReflections();
   }
 
   @Override
@@ -95,8 +95,8 @@ public class NativeForeignReflectionPoint implements NativeReflectionPoint, Trav
   }
 
   @Override
-  public @Nullable String reflectionName() {
-    return foreignPoint.reflectionName();
+  public @Nullable String alias() {
+    return foreignPoint.alias();
   }
 
   @Override
@@ -105,8 +105,8 @@ public class NativeForeignReflectionPoint implements NativeReflectionPoint, Trav
   }
 
   @Override
-  public @Nullable String domainName() {
-    return domain.reflectionName();
+  public @Nullable String domainAlias() {
+    return domain.alias();
   }
 
   @Override
@@ -135,8 +135,8 @@ public class NativeForeignReflectionPoint implements NativeReflectionPoint, Trav
   }
 
   @Override
-  public List<ReflectionPoint> underlyingPoints() {
-    return foreignPoint.underlyingPoints();
+  public List<ReflectionPoint> parentPoints() {
+    return foreignPoint.parentPoints();
   }
 
   @Override

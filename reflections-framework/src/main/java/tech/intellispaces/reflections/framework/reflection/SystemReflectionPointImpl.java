@@ -67,7 +67,7 @@ public class SystemReflectionPointImpl implements TraversableReflectionPoint, Sy
   }
 
   @Override
-  public List<? extends SystemReflection> underlyingReflections() {
+  public List<? extends SystemReflection> parentReflections() {
     throw NotImplementedExceptions.withCode("m3K7D97z");
   }
 
@@ -82,15 +82,15 @@ public class SystemReflectionPointImpl implements TraversableReflectionPoint, Sy
   }
 
   @Override
-  public @Nullable String reflectionName() {
-    return wrappedPoint.reflectionName();
+  public @Nullable String alias() {
+    return wrappedPoint.alias();
   }
 
   @Override
   public ReflectionDomain domain() {
     ReflectionDomain domain = wrappedPoint.domain();
     if (domain == null) {
-      Reflection reflection = ontologyRepository.findReflection(reflectionName());
+      Reflection reflection = ontologyRepository.findReflection(alias());
       if (reflection != null) {
         domain = reflection.asPoint().domain();
       }
@@ -102,12 +102,12 @@ public class SystemReflectionPointImpl implements TraversableReflectionPoint, Sy
   }
 
   @Override
-  public @Nullable String domainName() {
+  public @Nullable String domainAlias() {
     ReflectionDomain domain = domain();
     if (domain == null) {
       return null;
     }
-    return domain.reflectionName();
+    return domain.alias();
   }
 
   @Override
@@ -128,15 +128,15 @@ public class SystemReflectionPointImpl implements TraversableReflectionPoint, Sy
           return reflection.projectionThru(cid);
         }
       }
-      if (domain().reflectionName() != null) {
-        Reflection reflection = ontologyRepository.findReflection(rid(), domain().reflectionName());
+      if (domain().alias() != null) {
+        Reflection reflection = ontologyRepository.findReflection(rid(), domain().alias());
         if (reflection != null) {
           return reflection.projectionThru(cid);
         }
       }
     }
-    if (reflectionName() != null) {
-      Reflection reflection = ontologyRepository.findReflection(reflectionName());
+    if (alias() != null) {
+      Reflection reflection = ontologyRepository.findReflection(alias());
       if (reflection != null) {
         return reflection.projectionThru(cid);
       }
@@ -150,14 +150,14 @@ public class SystemReflectionPointImpl implements TraversableReflectionPoint, Sy
     if (!projection.isUnknown()) {
       return projection;
     }
-    if (rid() != null && domainName() != null) {
-      Reflection reflection = ontologyRepository.findReflection(rid(), domainName());
+    if (rid() != null && domainAlias() != null) {
+      Reflection reflection = ontologyRepository.findReflection(rid(), domainAlias());
       if (reflection != null) {
         return reflection.projectionThru(channelName);
       }
     }
-    if (reflectionName() != null) {
-      Reflection reflection = ontologyRepository.findReflection(reflectionName());
+    if (alias() != null) {
+      Reflection reflection = ontologyRepository.findReflection(alias());
       if (reflection != null) {
         return reflection.projectionThru(channelName);
       }
@@ -171,14 +171,14 @@ public class SystemReflectionPointImpl implements TraversableReflectionPoint, Sy
     if (!projection.isUnknown()) {
       return projection;
     }
-    if (rid() != null && domainName() != null) {
-      Reflection reflection = ontologyRepository.findReflection(rid(), domainName());
+    if (rid() != null && domainAlias() != null) {
+      Reflection reflection = ontologyRepository.findReflection(rid(), domainAlias());
       if (reflection != null) {
         return reflection.projectionTo(domainName);
       }
     }
-    if (reflectionName() != null) {
-      Reflection reflection = ontologyRepository.findReflection(reflectionName());
+    if (alias() != null) {
+      Reflection reflection = ontologyRepository.findReflection(alias());
       if (reflection != null) {
         return reflection.projectionTo(domainName);
       }
@@ -192,14 +192,14 @@ public class SystemReflectionPointImpl implements TraversableReflectionPoint, Sy
     if (!projection.isUnknown()) {
       return projection;
     }
-    if (rid() != null && domainName() != null) {
-      Reflection reflection = ontologyRepository.findReflection(rid(), domainName());
+    if (rid() != null && domainAlias() != null) {
+      Reflection reflection = ontologyRepository.findReflection(rid(), domainAlias());
       if (reflection != null) {
         return reflection.projectionTo(domain);
       }
     }
-    if (reflectionName() != null) {
-      Reflection reflection = ontologyRepository.findReflection(reflectionName());
+    if (alias() != null) {
+      Reflection reflection = ontologyRepository.findReflection(alias());
       if (reflection != null) {
         return reflection.projectionTo(domain);
       }
@@ -213,8 +213,8 @@ public class SystemReflectionPointImpl implements TraversableReflectionPoint, Sy
   }
 
   @Override
-  public List<ReflectionPoint> underlyingPoints() {
-    return wrappedPoint.underlyingPoints();
+  public List<ReflectionPoint> parentPoints() {
+    return wrappedPoint.parentPoints();
   }
 
   @Override

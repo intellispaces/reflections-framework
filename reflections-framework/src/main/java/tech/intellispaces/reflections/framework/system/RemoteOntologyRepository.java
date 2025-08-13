@@ -35,7 +35,7 @@ public class RemoteOntologyRepository implements OntologyRepository {
   }
 
   @Override
-  public @Nullable Reflection findReflection(String reflectionName) {
+  public @Nullable Reflection findReflection(String reflectionAlias) {
     throw NotImplementedExceptions.withCode("c7fQVd43");
   }
 
@@ -98,7 +98,7 @@ public class RemoteOntologyRepository implements OntologyRepository {
   }
 
   @Override
-  public List<Reflection> findRelatedReflections(String reflectionName) {
+  public List<Reflection> findRelatedReflections(String reflectionAlias) {
     throw NotImplementedExceptions.withCode("TG4jgT2P");
   }
 

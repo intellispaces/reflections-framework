@@ -37,19 +37,19 @@ public class SystemReflectionSpaceImpl implements ReflectionSpace, ReflectionPoi
     return new SystemReflectionDomainImpl(
         Domains.build()
             .did(Rids.fromUuid("c0e2eafe-3e82-4aff-b35d-4555d63636cd"))
-            .name("ixora.basic.Space")
+            .alias("ixora.basic.Space")
             .get(),
         ontologyRepository
     );
   }
 
   @Override
-  public @Nullable String domainName() {
-    return domain().reflectionName();
+  public @Nullable String domainAlias() {
+    return domain().alias();
   }
 
   @Override
-  public List<ReflectionPoint> underlyingPoints() {
+  public List<ReflectionPoint> parentPoints() {
     return List.of();
   }
 
@@ -59,8 +59,8 @@ public class SystemReflectionSpaceImpl implements ReflectionSpace, ReflectionPoi
   }
 
   @Override
-  public @Nullable String reflectionName() {
-    return wrappedSpace.reflectionName();
+  public @Nullable String alias() {
+    return wrappedSpace.alias();
   }
 
   @Override
@@ -160,7 +160,7 @@ public class SystemReflectionSpaceImpl implements ReflectionSpace, ReflectionPoi
   }
 
   @Override
-  public List<? extends SystemReflection> underlyingReflections() {
+  public List<? extends SystemReflection> parentReflections() {
     throw NotImplementedExceptions.withCode("GZnN3A");
   }
 

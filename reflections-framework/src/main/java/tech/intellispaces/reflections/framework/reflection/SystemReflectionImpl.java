@@ -65,7 +65,7 @@ public class SystemReflectionImpl implements SystemReflection {
   }
 
   @Override
-  public List<? extends SystemReflection> underlyingReflections() {
+  public List<? extends SystemReflection> parentReflections() {
     throw NotImplementedExceptions.withCode("m3K7D97z");
   }
 
@@ -80,8 +80,8 @@ public class SystemReflectionImpl implements SystemReflection {
   }
 
   @Override
-  public @Nullable String reflectionName() {
-    return wrappedReflection.reflectionName();
+  public @Nullable String alias() {
+    return wrappedReflection.alias();
   }
 
   @Override
@@ -91,7 +91,7 @@ public class SystemReflectionImpl implements SystemReflection {
       return projection;
     }
     if (rid() != null && canBeRepresentedAsPoint()) {
-      String domainName = asPoint().domainName();
+      String domainName = asPoint().domainAlias();
       if (domainName != null) {
         Reflection reflection = ontologyRepository.findReflection(rid(), domainName);
         if (reflection != null) {
@@ -99,8 +99,8 @@ public class SystemReflectionImpl implements SystemReflection {
         }
       }
     }
-    if (reflectionName() != null) {
-      Reflection reflection = ontologyRepository.findReflection(reflectionName());
+    if (alias() != null) {
+      Reflection reflection = ontologyRepository.findReflection(alias());
       if (reflection != null) {
         return reflection.projectionThru(cid);
       }
@@ -115,7 +115,7 @@ public class SystemReflectionImpl implements SystemReflection {
       return projection;
     }
     if (rid() != null && canBeRepresentedAsPoint()) {
-      String domainName = asPoint().domainName();
+      String domainName = asPoint().domainAlias();
       if (domainName != null) {
         Reflection reflection = ontologyRepository.findReflection(rid(), domainName);
         if (reflection != null) {
@@ -123,8 +123,8 @@ public class SystemReflectionImpl implements SystemReflection {
         }
       }
     }
-    if (reflectionName() != null) {
-      Reflection reflection = ontologyRepository.findReflection(reflectionName());
+    if (alias() != null) {
+      Reflection reflection = ontologyRepository.findReflection(alias());
       if (reflection != null) {
         return reflection.projectionThru(channelName);
       }
@@ -139,7 +139,7 @@ public class SystemReflectionImpl implements SystemReflection {
       return projection;
     }
     if (rid() != null && canBeRepresentedAsPoint()) {
-      String domainName = asPoint().domainName();
+      String domainName = asPoint().domainAlias();
       if (domainName != null) {
         Reflection reflection = ontologyRepository.findReflection(rid(), domainName);
         if (reflection != null) {
@@ -147,8 +147,8 @@ public class SystemReflectionImpl implements SystemReflection {
         }
       }
     }
-    if (reflectionName() != null) {
-      Reflection reflection = ontologyRepository.findReflection(reflectionName());
+    if (alias() != null) {
+      Reflection reflection = ontologyRepository.findReflection(alias());
       if (reflection != null) {
         return reflection.projectionTo(targetDomainName);
       }
@@ -163,7 +163,7 @@ public class SystemReflectionImpl implements SystemReflection {
       return projection;
     }
     if (rid() != null && canBeRepresentedAsPoint()) {
-      String domainName = asPoint().domainName();
+      String domainName = asPoint().domainAlias();
       if (domainName != null) {
         Reflection reflection = ontologyRepository.findReflection(rid(), domainName);
         if (reflection != null) {
@@ -171,8 +171,8 @@ public class SystemReflectionImpl implements SystemReflection {
         }
       }
     }
-    if (reflectionName() != null) {
-      Reflection reflection = ontologyRepository.findReflection(reflectionName());
+    if (alias() != null) {
+      Reflection reflection = ontologyRepository.findReflection(alias());
       if (reflection != null) {
         return reflection.projectionTo(targetDomain);
       }
@@ -182,7 +182,7 @@ public class SystemReflectionImpl implements SystemReflection {
 
   @Override
   public List<Reflection> relatedReflections() {
-    return ontologyRepository.findRelatedReflections(reflectionName());
+    return ontologyRepository.findRelatedReflections(alias());
   }
 
   @Override
@@ -210,8 +210,8 @@ public class SystemReflectionImpl implements SystemReflection {
     if (wrappedReflection.canBeRepresentedAsPoint()) {
       return new SystemReflectionPointImpl(wrappedReflection.asPoint(), ontologyRepository);
     }
-    if (wrappedReflection.reflectionName() != null) {
-      Reflection reflection = ontologyRepository.findReflection(wrappedReflection.reflectionName());
+    if (wrappedReflection.alias() != null) {
+      Reflection reflection = ontologyRepository.findReflection(wrappedReflection.alias());
       if (reflection != null) {
         if (reflection.canBeRepresentedAsPoint()) {
           return reflection.asPoint();

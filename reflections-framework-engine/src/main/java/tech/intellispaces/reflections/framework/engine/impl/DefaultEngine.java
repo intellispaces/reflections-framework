@@ -391,8 +391,8 @@ public class DefaultEngine implements Engine {
     if (domain.rid() != null) {
       subdomains = ontologyRepository.findSubdomains(domain.rid());
     }
-    if (subdomains == null && domain.reflectionName() != null) {
-      subdomains = ontologyRepository.findSubdomains(domain.reflectionName());
+    if (subdomains == null && domain.alias() != null) {
+      subdomains = ontologyRepository.findSubdomains(domain.alias());
     }
     if (subdomains != null) {
       for (ReflectionDomain subdomain : subdomains) {

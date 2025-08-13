@@ -52,8 +52,8 @@ public class SystemReflectionDomainImpl implements ReflectionDomain, ReflectionP
   }
 
   @Override
-  public List<ReflectionChannel> domainChannels() {
-    return ontologyRepository.findDomainContextChannels(reflectionName());
+  public List<ReflectionChannel> contextChannels() {
+    return ontologyRepository.findDomainContextChannels(alias());
   }
 
   @Override
@@ -69,7 +69,7 @@ public class SystemReflectionDomainImpl implements ReflectionDomain, ReflectionP
     );
     ReflectionDomain notionDomain = Domains.build()
         .did(notionDomainReference.domainId())
-        .name(notionDomainReference.domainAlias())
+        .alias(notionDomainReference.domainAlias())
         .get();
     return List.of(new SystemReflectionDomainImpl(notionDomain, ontologyRepository));
   }
@@ -83,12 +83,12 @@ public class SystemReflectionDomainImpl implements ReflectionDomain, ReflectionP
   }
 
   @Override
-  public @Nullable String domainName() {
-    return domain().reflectionName();
+  public @Nullable String domainAlias() {
+    return domain().alias();
   }
 
   @Override
-  public List<ReflectionPoint> underlyingPoints() {
+  public List<ReflectionPoint> parentPoints() {
     return List.of();
   }
 
@@ -98,8 +98,8 @@ public class SystemReflectionDomainImpl implements ReflectionDomain, ReflectionP
   }
 
   @Override
-  public @Nullable String reflectionName() {
-    return wrappedDomain.reflectionName();
+  public @Nullable String alias() {
+    return wrappedDomain.alias();
   }
 
   @Override
@@ -130,7 +130,7 @@ public class SystemReflectionDomainImpl implements ReflectionDomain, ReflectionP
   public List<Reflection> relatedReflections() {
     List<Reflection> reflections = wrappedDomain.relatedReflections();
     if (reflections.isEmpty()) {
-      reflections = ontologyRepository.findRelatedReflections(wrappedDomain.reflectionName());
+      reflections = ontologyRepository.findRelatedReflections(wrappedDomain.alias());
     }
     return reflections;
   }
@@ -204,7 +204,7 @@ public class SystemReflectionDomainImpl implements ReflectionDomain, ReflectionP
   }
 
   @Override
-  public List<? extends SystemReflection> underlyingReflections() {
+  public List<? extends SystemReflection> parentReflections() {
     throw NotImplementedExceptions.withCode("3BVBXA");
   }
 
@@ -215,10 +215,10 @@ public class SystemReflectionDomainImpl implements ReflectionDomain, ReflectionP
 
   @Override
   public String toString() {
-    String domainName = reflectionName();
     Rid did = did();
-    if (domainName != null) {
-      return domainName + (did != null ? "(did = " + did + ")" : "");
+    String alias = alias();
+    if (alias != null) {
+      return alias + (did != null ? "(did = " + did + ")" : "");
     }
     if (did != null) {
       return did.toString();

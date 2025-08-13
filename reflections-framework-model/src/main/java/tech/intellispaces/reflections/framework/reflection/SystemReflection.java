@@ -80,7 +80,7 @@ public interface SystemReflection extends TraversableReflection {
   /**
    * Returns nearest known underlying reflection or <code>null</code> if its are unknown.
    */
-  List<? extends SystemReflection> underlyingReflections();
+  List<? extends SystemReflection> parentReflections();
 
   /**
    * Returns nearest known overlying reflection or <code>null</code> if it is unknown.

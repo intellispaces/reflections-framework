@@ -23,8 +23,8 @@ public{{when $isAbstract}} abstract{{end}} class {{$generatedArtifactSimpleName}
   }
 
   @Override
-  public java.lang.String reflectionName() {
-    return reflection.reflectionName();
+  public java.lang.String alias() {
+    return reflection.alias();
   }
 
   @Override
@@ -33,7 +33,7 @@ public{{when $isAbstract}} abstract{{end}} class {{$generatedArtifactSimpleName}
   }
 
   @Override
-  public @Nullable java.lang.String domainName() {
+  public @Nullable java.lang.String domainAlias() {
     return DomainFunctions.getDomainName({{$sourceArtifactSimpleName}}.class);
   }
 
@@ -58,7 +58,7 @@ public{{when $isAbstract}} abstract{{end}} class {{$generatedArtifactSimpleName}
   }
 
   @Override
-  public java.util.List<SystemReflection> underlyingReflections() {
+  public java.util.List<SystemReflection> parentReflections() {
     throw NotImplementedExceptions.withCode("xFNCaA");
   }
 
@@ -88,8 +88,8 @@ public{{when $isAbstract}} abstract{{end}} class {{$generatedArtifactSimpleName}
   }
 
   @Override
-  public Projection projectionTo(java.lang.String domainName) {
-    return reflection.projectionTo(domainName);
+  public Projection projectionTo(java.lang.String domainAlias) {
+    return reflection.projectionTo(domainAlias);
   }
 
   @Override
@@ -98,8 +98,8 @@ public{{when $isAbstract}} abstract{{end}} class {{$generatedArtifactSimpleName}
   }
 
   @Override
-  public List<ReflectionPoint> underlyingPoints() {
-    return reflection.underlyingPoints();
+  public List<ReflectionPoint> parentPoints() {
+    return reflection.parentPoints();
   }
 
   @Override

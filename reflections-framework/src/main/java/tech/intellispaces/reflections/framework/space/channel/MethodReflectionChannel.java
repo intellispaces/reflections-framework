@@ -45,12 +45,12 @@ public class MethodReflectionChannel implements ReflectionChannel, ReflectionPoi
   }
 
   @Override
-  public @Nullable String domainName() {
-    return domain().reflectionName();
+  public @Nullable String domainAlias() {
+    return domain().alias();
   }
 
   @Override
-  public List<ReflectionPoint> underlyingPoints() {
+  public List<ReflectionPoint> parentPoints() {
     return List.of();
   }
 
@@ -125,7 +125,7 @@ public class MethodReflectionChannel implements ReflectionChannel, ReflectionPoi
   }
 
   @Override
-  public @Nullable String reflectionName() {
+  public @Nullable String contextAlias() {
     throw NotImplementedExceptions.withCode("iZ8WTTH1");
   }
 }

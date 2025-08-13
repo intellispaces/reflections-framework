@@ -265,7 +265,7 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
     );
     if (executionPlan == null) {
       ReflectionPoint source = plan.source();
-      ReflectionPoint registeredReflection = ontologyRepository.findReflection(source.rid(), source.domainName());
+      ReflectionPoint registeredReflection = ontologyRepository.findReflection(source.rid(), source.domainAlias());
       if (registeredReflection != null) {
         executionPlan = buildExecutionTraversePlan(
             plan.type(), channel.rid(), registeredReflection.getClass(), ReflectionForms.Reflection
@@ -307,7 +307,7 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
     );
     if (executionPlan == null) {
       ReflectionPoint source = plan.source();
-      ReflectionPoint registeredReflection = ontologyRepository.findReflection(source.rid(), source.domainName());
+      ReflectionPoint registeredReflection = ontologyRepository.findReflection(source.rid(), source.domainAlias());
       if (registeredReflection != null) {
         executionPlan = buildExecutionTraversePlan(
             plan.type(), channel.rid(), registeredReflection.getClass(), ReflectionForms.Reflection
@@ -337,7 +337,7 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
     );
     if (executionPlan == null) {
       if (source instanceof ReflectionPoint sourcePoint) {
-        ReflectionPoint registeredReflection = ontologyRepository.findReflection(sourcePoint.rid(), sourcePoint.domainName());
+        ReflectionPoint registeredReflection = ontologyRepository.findReflection(sourcePoint.rid(), sourcePoint.domainAlias());
         if (registeredReflection != null) {
           return buildExecutionPlan(plan, registeredReflection);
         }
@@ -375,7 +375,7 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
       );
       sourceDomain = Domains.build()
           .did(conceptDomainReference.domainId())
-          .name(conceptDomainReference.domainAlias())
+          .alias(conceptDomainReference.domainAlias())
           .get();
     }
     ReflectionChannel channel = ontologyRepository.findChannel(sourceDomain, targetDomain);

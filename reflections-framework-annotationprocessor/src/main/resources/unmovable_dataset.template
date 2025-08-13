@@ -36,7 +36,7 @@ public class {{$generatedArtifactSimpleName}} implements {{$reflectionClassName}
   }
 
   @Override
-  public String reflectionName() {
+  public String alias() {
     throw NotImplementedExceptions.withCode("P36MKNBx");
   }
 
@@ -46,7 +46,7 @@ public class {{$generatedArtifactSimpleName}} implements {{$reflectionClassName}
   }
 
   @Override
-  public @Nullable java.lang.String domainName() {
+  public @Nullable java.lang.String domainAlias() {
     return "{{$domainName}}";
   }
 
@@ -94,7 +94,7 @@ public class {{$generatedArtifactSimpleName}} implements {{$reflectionClassName}
   }
 
   @Override
-  public java.util.List<SystemReflection> underlyingReflections() {
+  public java.util.List<SystemReflection> parentReflections() {
     throw NotImplementedExceptions.withCode("VCEdng");
   }
 
@@ -132,7 +132,7 @@ public class {{$generatedArtifactSimpleName}} implements {{$reflectionClassName}
   }
 
   @Override
-  public Projection projectionTo(String domainName) {
+  public Projection projectionTo(String domainAlias) {
     throw NotImplementedExceptions.withCode("7rzzGw");
   }
 
@@ -142,7 +142,7 @@ public class {{$generatedArtifactSimpleName}} implements {{$reflectionClassName}
   }
 
   @Override
-  public List<ReflectionPoint> underlyingPoints() {
+  public List<ReflectionPoint> parentPoints() {
     return List.of();
   }
 

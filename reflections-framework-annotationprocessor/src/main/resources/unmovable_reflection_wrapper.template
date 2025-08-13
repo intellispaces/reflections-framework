@@ -35,7 +35,7 @@ public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sour
   }
 
   @Override
-  public java.lang.String reflectionName() {
+  public java.lang.String alias() {
     throw NotImplementedExceptions.withCode("a6zcyEJM");
   }
 
@@ -45,7 +45,7 @@ public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sour
   }
 
   @Override
-  public @Nullable java.lang.String domainName() {
+  public @Nullable java.lang.String domainAlias() {
     return "{{$domainName}}";
   }
 
@@ -94,7 +94,7 @@ public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sour
   }
 
   @Override
-  public java.util.List<SystemReflection> underlyingReflections() {
+  public java.util.List<SystemReflection> parentReflections() {
     return (java.util.List<SystemReflection>) $handle.underlyingReflections();
   }
 
@@ -129,7 +129,7 @@ public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sour
   }
 
   @Override
-  public Projection projectionTo(java.lang.String domainName) {
+  public Projection projectionTo(java.lang.String domainAlias) {
     throw NotImplementedExceptions.withCode("TbHOLQ");
   }
 
@@ -139,7 +139,7 @@ public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sour
   }
 
   @Override
-  public List<ReflectionPoint> underlyingPoints() {
+  public List<ReflectionPoint> parentPoints() {
     return List.of();
   }
 

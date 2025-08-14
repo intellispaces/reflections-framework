@@ -13,7 +13,7 @@ import tech.intellispaces.actions.Action6;
 import tech.intellispaces.actions.Action7;
 import tech.intellispaces.actions.Action8;
 import tech.intellispaces.actions.Action9;
-import tech.intellispaces.commons.properties.PropertiesSet;
+import tech.intellispaces.commons.properties.TraversablePropertiesSet;
 import tech.intellispaces.commons.type.Type;
 import tech.intellispaces.core.Reflection;
 import tech.intellispaces.core.ReflectionDomain;
@@ -38,7 +38,7 @@ public interface FactoryRegistry {
    * @return the factory action.
    * @param <R> the required reflection type.
    */
-  <R extends Reflection> Action1<R, PropertiesSet> factoryAction(
+  <R extends Reflection> Action1<R, TraversablePropertiesSet> factoryAction(
       ReflectionDomain targetDomain,
       String contractType
   );

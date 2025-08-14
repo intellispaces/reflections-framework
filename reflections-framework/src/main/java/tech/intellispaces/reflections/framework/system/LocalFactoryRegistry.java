@@ -27,7 +27,7 @@ import tech.intellispaces.actions.Action9;
 import tech.intellispaces.commons.collection.CollectionFunctions;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.commons.instance.Instances;
-import tech.intellispaces.commons.properties.PropertiesSet;
+import tech.intellispaces.commons.properties.TraversablePropertiesSet;
 import tech.intellispaces.commons.resource.ResourceFunctions;
 import tech.intellispaces.commons.type.Classes;
 import tech.intellispaces.commons.type.Type;
@@ -65,7 +65,7 @@ public class LocalFactoryRegistry implements FactoryRegistry {
   }
 
   @Override
-  public <R extends Reflection> Action1<R, PropertiesSet> factoryAction(
+  public <R extends Reflection> Action1<R, TraversablePropertiesSet> factoryAction(
       ReflectionDomain targetDomain, String contractType
   ) {
     Collection<FactoryMethod> factoryMethods = findFactoryMethods(targetDomain);

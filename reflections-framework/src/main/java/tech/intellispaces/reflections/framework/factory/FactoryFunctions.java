@@ -20,7 +20,7 @@ import tech.intellispaces.actions.Action8;
 import tech.intellispaces.actions.Action9;
 import tech.intellispaces.actions.functional.FunctionActions;
 import tech.intellispaces.commons.exception.NotImplementedExceptions;
-import tech.intellispaces.commons.properties.PropertiesSet;
+import tech.intellispaces.commons.properties.TraversablePropertiesSet;
 import tech.intellispaces.commons.text.StringFunctions;
 import tech.intellispaces.commons.type.Type;
 import tech.intellispaces.core.Reflection;
@@ -50,7 +50,7 @@ public interface FactoryFunctions {
     return methodName;
   }
 
-  static  <R extends Reflection> Action1<R, PropertiesSet> createFactoryAction(
+  static  <R extends Reflection> Action1<R, TraversablePropertiesSet> createFactoryAction(
       ReflectionDomain targetDomain, FactoryMethod factoryMethod
   ) {
     int numQualifiers = factoryMethod.contractQualifierTypes().size();
@@ -62,11 +62,11 @@ public interface FactoryFunctions {
   }
 
   @SuppressWarnings("unchecked")
-  private static <R extends Reflection> Action1<R, PropertiesSet> createFactoryAction1(
+  private static <R extends Reflection> Action1<R, TraversablePropertiesSet> createFactoryAction1(
       ReflectionDomain targetDomain, FactoryMethod factoryMethod
   ) {
     var rootAction = (Action1<R, Object>) makeAction1(factoryMethod);
-    Function<PropertiesSet, R> function = (PropertiesSet props) -> {
+    Function<TraversablePropertiesSet, R> function = (TraversablePropertiesSet props) -> {
       List<Object> qualifierValues = getQualifierValues(props, factoryMethod);
       return castToTargetDomain(rootAction.execute(qualifierValues.get(0)), targetDomain);
     };
@@ -74,11 +74,11 @@ public interface FactoryFunctions {
   }
 
   @SuppressWarnings("unchecked")
-  private static <R extends Reflection> Action1<R, PropertiesSet> createFactoryAction2(
+  private static <R extends Reflection> Action1<R, TraversablePropertiesSet> createFactoryAction2(
       ReflectionDomain targetDomain, FactoryMethod factoryMethod
   ) {
     var rootAction = (Action2<R, Object, Object>) makeAction2(factoryMethod);
-    Function<PropertiesSet, R> function = (PropertiesSet props) -> {
+    Function<TraversablePropertiesSet, R> function = (TraversablePropertiesSet props) -> {
       List<Object> qualifierValues = getQualifierValues(props, factoryMethod);
       return castToTargetDomain(rootAction.execute(qualifierValues.get(0), qualifierValues.get(1)), targetDomain);
     };
@@ -95,7 +95,7 @@ public interface FactoryFunctions {
     return (R) new NativeForeignReflectionPoint((NativeReflectionPoint) reflection, targetDomain);
   }
 
-  private static List<Object> getQualifierValues(PropertiesSet props, FactoryMethod factoryMethod) {
+  private static List<Object> getQualifierValues(TraversablePropertiesSet props, FactoryMethod factoryMethod) {
     var qualifierValues = new ArrayList<>(factoryMethod.contractQualifierNames().size());
     Iterator<String> qualifierNames = factoryMethod.contractQualifierNames().iterator();
     Iterator<Type<?>> qualifierTypes = factoryMethod.contractQualifierTypes().iterator();
@@ -108,7 +108,7 @@ public interface FactoryFunctions {
   }
 
   private static Object getQualifierValue(
-      PropertiesSet props, String qualifierName, Type<?> qualifierType
+      TraversablePropertiesSet props, String qualifierName, Type<?> qualifierType
   ) {
     if (qualifierType.asClassType().baseClass() == String.class) {
       return props.traverse(qualifierName);

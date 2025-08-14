@@ -22,6 +22,7 @@ import tech.intellispaces.actions.Action9;
 import tech.intellispaces.commons.exception.NotImplementedExceptions;
 import tech.intellispaces.commons.exception.UnexpectedExceptions;
 import tech.intellispaces.commons.instance.Instances;
+import tech.intellispaces.commons.properties.PropertiesSets;
 import tech.intellispaces.commons.type.Classes;
 import tech.intellispaces.commons.type.Type;
 import tech.intellispaces.commons.type.Types;
@@ -369,7 +370,7 @@ public class DefaultEngine implements Engine {
     var reflection = (ReflectionPoint) factoryRegistry.factoryAction(
         contract.domain(),
         contract.type()
-    ).execute(contract.properties());
+    ).execute(PropertiesSets.createFlowingTraversable(contract.properties()));
     TraversableReflectionPoint identifiedReflection = identifyReflection(reflection);
     ontologyRepository.add(identifiedReflection);
     return identifiedReflection;

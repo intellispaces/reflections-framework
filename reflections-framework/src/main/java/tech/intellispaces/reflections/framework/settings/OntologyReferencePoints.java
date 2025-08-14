@@ -83,9 +83,8 @@ public class OntologyReferencePoints {
       PropertiesSet props, List<DomainReference> domains, List<ChannelReference> channels
   ) {
     loadDomainReference(DomainAssignments.Notion, "notionDomain", props, domains);
-    String domainAlias = props.traverseToString("notionDomain.name");
-    if (domainAlias != null) {
-      String notionToDomainChannelAlias = props.traverseToString("notionToDomainChannel.alias");
+    if (props.hasValue("notionDomain.name")) {
+      String notionToDomainChannelAlias = props.getString("notionToDomainChannel.alias");
       channels.add(new ChannelReferenceImpl(ChannelAssignments.PointToDomain, null, notionToDomainChannelAlias));
     }
   }
@@ -134,15 +133,14 @@ public class OntologyReferencePoints {
       PropertiesSet props, List<DomainReference> domains, List<ChannelReference> channels
   ) {
     loadDomainReference(DomainAssignments.PropertiesSet, "propertiesSetDomain", props, domains);
-    String domainName = props.traverseToString("propertiesSetDomain.name");
-    if (domainName != null) {
-      String propertiesSetToValueCid = props.traverseToString("propertiesSetToValueChannel.rid");
+    if (props.hasValue("propertiesSetDomain.name")) {
+      String propertiesSetToValueCid = props.getString("propertiesSetToValueChannel.rid");
       channels.add(new ChannelReferenceImpl(ChannelAssignments.PropertiesSetToValue, Rids.create(propertiesSetToValueCid), null));
 
-      String propertiesSetToDataCid = props.traverseToString("propertiesSetToDataChannel.rid");
+      String propertiesSetToDataCid = props.getString("propertiesSetToDataChannel.rid");
       channels.add(new ChannelReferenceImpl(ChannelAssignments.PropertiesSetToData, Rids.create(propertiesSetToDataCid), null));
 
-      String yamlStringToPropertiesSetCid = props.traverseToString("yamlStringToPropertiesSetChannel.rid");
+      String yamlStringToPropertiesSetCid = props.getString("yamlStringToPropertiesSetChannel.rid");
       channels.add(new ChannelReferenceImpl(ChannelAssignments.YamlStringToPropertiesSet, Rids.create(yamlStringToPropertiesSetCid), null));
     }
   }
@@ -154,9 +152,9 @@ public class OntologyReferencePoints {
   private static void loadDomainReference(
       DomainAssignments domainAssignment, String propertyName, PropertiesSet props, List<DomainReference> domains
   ) {
-    String domainAlias = props.traverseToString(propertyName + ".name");
+    String domainAlias = props.getString(propertyName + ".name");
     if (domainAlias != null) {
-      String className = props.traverseToString(propertyName + ".class");
+      String className = props.getString(propertyName + ".class");
       Rid domainId = ClassFunctions.getClass(className)
           .map(DomainFunctions::getDomainId)
           .orElse(null);

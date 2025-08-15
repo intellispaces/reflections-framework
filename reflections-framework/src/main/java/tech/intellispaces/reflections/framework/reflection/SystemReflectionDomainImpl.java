@@ -57,8 +57,8 @@ public class SystemReflectionDomainImpl implements ReflectionDomain, ReflectionP
   }
 
   @Override
-  public List<ReflectionDomain> parentDomains() {
-    List<ReflectionDomain> domains = wrappedDomain.parentDomains();
+  public List<ReflectionDomain> primaryDomains() {
+    List<ReflectionDomain> domains = wrappedDomain.primaryDomains();
     if (domains != null && !domains.isEmpty()) {
       return domains.stream()
           .map(domain -> (ReflectionDomain) new SystemReflectionDomainImpl(domain, ontologyRepository))
@@ -67,10 +67,10 @@ public class SystemReflectionDomainImpl implements ReflectionDomain, ReflectionP
     DomainReference notionDomainReference = ReflectionsNodeFunctions.ontologyReference().getDomainByType(
         DomainAssignments.Notion
     );
-    ReflectionDomain notionDomain = Domains.build()
+    ReflectionDomain notionDomain = Domains.blank()
         .did(notionDomainReference.domainId())
         .alias(notionDomainReference.domainAlias())
-        .get();
+        .release();
     return List.of(new SystemReflectionDomainImpl(notionDomain, ontologyRepository));
   }
 
@@ -88,7 +88,7 @@ public class SystemReflectionDomainImpl implements ReflectionDomain, ReflectionP
   }
 
   @Override
-  public List<ReflectionPoint> parentPoints() {
+  public List<ReflectionPoint> primaryPoints() {
     return List.of();
   }
 

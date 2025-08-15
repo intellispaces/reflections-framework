@@ -135,8 +135,8 @@ public class NativeForeignReflectionPoint implements NativeReflectionPoint, Trav
   }
 
   @Override
-  public List<ReflectionPoint> parentPoints() {
-    return foreignPoint.parentPoints();
+  public List<ReflectionPoint> primaryPoints() {
+    return foreignPoint.primaryPoints();
   }
 
   @Override

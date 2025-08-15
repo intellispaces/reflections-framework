@@ -44,8 +44,8 @@ public class ClassReflectionDomain implements ReflectionDomain, ReflectionPoint 
   }
 
   @Override
-  public List<ReflectionDomain> parentDomains() {
-    return DomainFunctions.getParentDomains(domainClass);
+  public List<ReflectionDomain> primaryDomains() {
+    return DomainFunctions.getPrimaryDomains(domainClass);
   }
 
   @Override
@@ -59,7 +59,7 @@ public class ClassReflectionDomain implements ReflectionDomain, ReflectionPoint 
   }
 
   @Override
-  public List<ReflectionPoint> parentPoints() {
+  public List<ReflectionPoint> primaryPoints() {
     throw NotImplementedExceptions.withCode("XfL38InR");
   }
 

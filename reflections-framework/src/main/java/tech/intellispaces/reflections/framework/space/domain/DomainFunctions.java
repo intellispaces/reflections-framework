@@ -50,7 +50,7 @@ public final class DomainFunctions {
   }
 
   public static ReflectionDomain getDomain(CustomType domainType) {
-    return Domains.create(
+    return Domains.get(
         getDomainId(domainType),
         getDomainName(domainType),
         null,
@@ -117,26 +117,26 @@ public final class DomainFunctions {
   public static List<CustomType> getDomainTypeAndParents(CustomType domainType) {
     List<CustomType> result = new ArrayList<>();
     result.add(domainType);
-    allParentDomains(domainType, result::add);
+    allPrimaryDomains(domainType, result::add);
     return result;
   }
 
-  public static List<CustomType> allParentDomains(CustomType domainType) {
+  public static List<CustomType> allPrimaryDomains(CustomType domainType) {
     List<CustomType> parents = new ArrayList<>();
-    allParentDomains(domainType, parents::add);
+    allPrimaryDomains(domainType, parents::add);
     return parents;
   }
 
-  private static void allParentDomains(CustomType domainType, Consumer<CustomType> consumer) {
+  private static void allPrimaryDomains(CustomType domainType, Consumer<CustomType> consumer) {
     for (CustomTypeReference parent : domainType.parentTypes()) {
       if (DomainFunctions.isDomainType(domainType)) {
         consumer.accept(parent.targetType());
-        allParentDomains(parent.targetType(), consumer);
+        allPrimaryDomains(parent.targetType(), consumer);
       }
     }
   }
 
-  public static List<ReflectionDomain> getParentDomains(Class<?> domainClass) {
+  public static List<ReflectionDomain> getPrimaryDomains(Class<?> domainClass) {
     CustomType domainType = CustomTypes.of(domainClass);
     List<ReflectionDomain> parents = new ArrayList<>();
     for (CustomTypeReference parent : domainType.parentTypes()) {

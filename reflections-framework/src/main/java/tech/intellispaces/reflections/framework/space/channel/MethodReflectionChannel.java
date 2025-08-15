@@ -50,7 +50,7 @@ public class MethodReflectionChannel implements ReflectionChannel, ReflectionPoi
   }
 
   @Override
-  public List<ReflectionPoint> parentPoints() {
+  public List<ReflectionPoint> primaryPoints() {
     return List.of();
   }
 
@@ -125,7 +125,7 @@ public class MethodReflectionChannel implements ReflectionChannel, ReflectionPoi
   }
 
   @Override
-  public @Nullable String contextAlias() {
+  public @Nullable String localAlias() {
     throw NotImplementedExceptions.withCode("iZ8WTTH1");
   }
 }

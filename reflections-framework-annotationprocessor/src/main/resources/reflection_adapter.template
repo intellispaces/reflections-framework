@@ -98,8 +98,8 @@ public{{when $isAbstract}} abstract{{end}} class {{$generatedArtifactSimpleName}
   }
 
   @Override
-  public List<ReflectionPoint> parentPoints() {
-    return reflection.parentPoints();
+  public List<ReflectionPoint> primaryPoints() {
+    return reflection.primaryPoints();
   }
 
   @Override

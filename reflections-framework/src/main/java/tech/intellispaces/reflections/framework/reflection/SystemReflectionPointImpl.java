@@ -213,8 +213,8 @@ public class SystemReflectionPointImpl implements TraversableReflectionPoint, Sy
   }
 
   @Override
-  public List<ReflectionPoint> parentPoints() {
-    return wrappedPoint.parentPoints();
+  public List<ReflectionPoint> primaryPoints() {
+    return wrappedPoint.primaryPoints();
   }
 
   @Override

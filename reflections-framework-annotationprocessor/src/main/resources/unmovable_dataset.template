@@ -142,7 +142,7 @@ public class {{$generatedArtifactSimpleName}} implements {{$reflectionClassName}
   }
 
   @Override
-  public List<ReflectionPoint> parentPoints() {
+  public List<ReflectionPoint> primaryPoints() {
     return List.of();
   }
 

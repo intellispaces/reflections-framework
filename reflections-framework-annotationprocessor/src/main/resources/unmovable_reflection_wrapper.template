@@ -41,7 +41,7 @@ public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sour
 
   @Override
   public ReflectionDomain domain() {
-    return Domains.create(Rids.create(Base64Functions.convertUrlNoPaddingBase64ToBytes("{{$didBase64}}"), "{{$didOrigin}}"), "{{$domainName}}", {{$domainClassSimpleName}}.class, {{when $isAlias}}{{$primaryDomainTypeDeclaration}}{{else}}{{$domainTypeDeclaration}}{{end}});
+    return Domains.get(Rids.create(Base64Functions.convertUrlNoPaddingBase64ToBytes("{{$didBase64}}"), "{{$didOrigin}}"), "{{$domainName}}", {{$domainClassSimpleName}}.class, {{when $isAlias}}{{$primaryDomainTypeDeclaration}}{{else}}{{$domainTypeDeclaration}}{{end}});
   }
 
   @Override
@@ -139,7 +139,7 @@ public class {{$generatedArtifactSimpleName}}{{$typeParamsFull}} extends {{$sour
   }
 
   @Override
-  public List<ReflectionPoint> parentPoints() {
+  public List<ReflectionPoint> primaryPoints() {
     return List.of();
   }
 

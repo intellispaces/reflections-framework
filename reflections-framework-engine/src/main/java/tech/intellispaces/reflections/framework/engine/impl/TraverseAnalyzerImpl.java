@@ -98,7 +98,7 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
       Object source, Rid cid, Object qualifier
   ) {
     var declarativePlan = new MoveSpecifiedSourceAndQualifierThruChannel1PlanImpl(
-        source, Channels.build().cid(cid).get(), qualifier
+        source, Channels.get(cid), qualifier
     );
     buildPreliminaryExecutionPlan(declarativePlan);
     return declarativePlan;
@@ -249,8 +249,8 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
     ReflectionDomain sourceDomain = engine.wrapToSystemReflection(plan.source().asPoint().domain()).asDomain();
     ReflectionChannel channel = findChannel(sourceDomain, plan.targetDomain());
     if (channel == null) {
-      for (ReflectionDomain parentDomain : sourceDomain.parentDomains()) {
-        channel = findChannel(parentDomain, plan.targetDomain());
+      for (ReflectionDomain primaryDomain : sourceDomain.primaryDomains()) {
+        channel = findChannel(primaryDomain, plan.targetDomain());
         if (channel != null) {
           break;
         }
@@ -291,8 +291,8 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
     ReflectionDomain sourceDomain = plan.source().asPoint().domain();
     ReflectionChannel channel = findChannel(sourceDomain, plan.targetDomain());
     if (channel == null) {
-      for (ReflectionDomain parentDomain : sourceDomain.parentDomains()) {
-        channel = findChannel(parentDomain, plan.targetDomain());
+      for (ReflectionDomain primaryDomain : sourceDomain.primaryDomains()) {
+        channel = findChannel(primaryDomain, plan.targetDomain());
         if (channel != null) {
           break;
         }
@@ -373,10 +373,10 @@ class TraverseAnalyzerImpl implements TraverseAnalyzer {
       DomainReference conceptDomainReference = ReflectionsNodeFunctions.ontologyReference().getDomainByType(
           DomainAssignments.Notion
       );
-      sourceDomain = Domains.build()
+      sourceDomain = Domains.blank()
           .did(conceptDomainReference.domainId())
           .alias(conceptDomainReference.domainAlias())
-          .get();
+          .release();
     }
     ReflectionChannel channel = ontologyRepository.findChannel(sourceDomain, targetDomain);
     if (channel == null && !sourceDomain.foreignDomains().isEmpty()) {
